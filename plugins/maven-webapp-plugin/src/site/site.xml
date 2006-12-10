@@ -1,0 +1,19 @@
+<project name="NMaven">
+    <bannerRight>
+        <src>http://sflogo.sourceforge.net/sflogo.php?group_id=176362&amp;type=4</src>
+    </bannerRight>
+
+    <body>
+        <links>
+            <item name="Project Site" href="http://sourceforge.net/projects/nmaven/"/>
+            <item name="NMaven" href="http://nmaven.sourceforge.net/"/>
+            <item name="NMaven SVN" href="http://svn.sourceforge.net/viewvc/nmaven/"/>
+            <item name="Maven" href="http://maven.apache.org/"/>
+            <item name="Mono Project" href="http://www.mono-project.com/"/>
+        </links>
+        <menu name="General Info">
+            <item name="About" href="index.html"/>            
+        </menu>
+        ${reports}
+    </body>
+</project>

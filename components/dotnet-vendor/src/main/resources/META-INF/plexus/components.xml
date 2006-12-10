@@ -1,0 +1,27 @@
+<component-set>
+    <components>
+        <component>
+            <role>org.apache.maven.dotnet.vendor.VendorInfoRepository</role>
+            <implementation>org.apache.maven.dotnet.vendor.impl.VendorInfoRepositoryImpl</implementation>
+            <requirements>
+                <requirement>
+                    <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+                </requirement>
+            </requirements>
+        </component>
+
+        <component>
+            <role>org.apache.maven.dotnet.vendor.StateMachineProcessor</role>
+            <implementation>org.apache.maven.dotnet.vendor.impl.StateMachineProcessorImpl</implementation>
+            <requirements>
+                <requirement>
+                    <role>org.apache.maven.dotnet.vendor.VendorInfoRepository</role>
+                </requirement>
+                <requirement>
+                    <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+                </requirement>
+            </requirements>
+        </component>
+    </components>
+</component-set>
+

@@ -1,0 +1,13 @@
+<component-set>
+    <components>
+        <component>
+            <role>org.apache.maven.dotnet.NMavenRepositoryRegistry</role>
+            <implementation>org.apache.maven.dotnet.impl.NMavenRepositoryRegistryImpl</implementation>
+            <requirements>
+                <requirement>
+                    <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+                </requirement>
+            </requirements>
+        </component>
+    </components>
+</component-set>

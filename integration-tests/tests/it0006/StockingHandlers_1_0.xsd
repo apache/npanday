@@ -1,0 +1,135 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<xsd:schema xmlns="http://www.w3.org/2001/XMLSchema"
+     targetNamespace="http://jvending.org/xsd/jvending-cp"
+     xmlns:jvending-cp="http://jvending.org/xsd/jvending-cp"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     elementFormDefault="qualified"
+     attributeFormDefault="unqualified"
+     version="1.0">
+
+	<xsd:element name = "stocking-handlers" type="jvending-cp:stockingHandlersType"/>
+	<xsd:element name = "stocking-handler" type="jvending-cp:stockingHandlerType"/>
+	<xsd:element name = "stocking-handler-name" type="xsd:string"/>
+
+    <xsd:element name = "white-list" type="jvending-cp:whiteListType"/>
+	<xsd:element name = "black-list" type="jvending-cp:blackListType"/>
+	<xsd:element name = "mime-accept" type="jvending-cp:mimeAcceptType"/>
+	<xsd:element name = "mime-block" type="jvending-cp:mimeBlockType"/>
+
+	<xsd:element name = "stocking-policy" type="jvending-cp:stockingPolicyType"/>
+	<xsd:element name = "stocking-filters" type="jvending-cp:stockingFiltersType"/>
+	<xsd:element name = "descriptor-handlers" type = "jvending-cp:descriptorHandlersType"/>
+	<xsd:element name = "descriptor-handler" type = "jvending-cp:descriptorHandlerType"/>
+
+	<xsd:element name = "content-policy" type="jvending-cp:policyType"/>
+	<xsd:element name = "descriptor-policy" type="jvending-cp:policyType"/>
+	<xsd:element name = "icon-policy" type="jvending-cp:policyType"/>
+	<xsd:element name = "preview-policy" type="jvending-cp:policyType"/>
+	<xsd:element name = "copyright-policy" type="jvending-cp:policyType"/>
+	<xsd:element name = "global-policy" type="jvending-cp:policyType"/>
+	<xsd:element name = "init-param" type = "jvending-cp:initParamType"/>
+
+	<xsd:element name = "mime-type" type="xsd:string"/>
+	<xsd:element name = "fetch-content" type="xsd:boolean"/>
+	<xsd:element name = "local-max-size" type = "xsd:integer"/>
+	<xsd:element name = "remote-max-size" type = "xsd:integer"/>
+	<xsd:element name = "uri" type = "xsd:anyURI"/>
+	<xsd:element name = "stocking-policy-class" type = "xsd:string"/>
+	<xsd:element name = "stocking-filter" type = "xsd:string"/>
+	<xsd:element name = "data-sink" type = "xsd:string"/>
+	<xsd:element name = "param-name" type = "xsd:string"/>
+	<xsd:element name = "param-value" type = "xsd:string"/>
+	<xsd:element name = "descriptor-handler-class" type = "xsd:string"/>
+
+ 	<xsd:complexType name="stockingHandlersType">
+		<xsd:sequence>
+            <xsd:element ref = "jvending-cp:stocking-handler" minOccurs = "0" maxOccurs = "unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+     <xsd:complexType name="descriptorHandlersType">
+		<xsd:sequence>
+			<xsd:element ref = "jvending-cp:descriptor-handler" minOccurs = "0" maxOccurs = "unbounded"/>
+		</xsd:sequence>       
+	</xsd:complexType>
+
+ 	<xsd:complexType name="descriptorHandlerType">
+		<xsd:sequence>
+			<xsd:element ref = "jvending-cp:mime-type" minOccurs = "1" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:descriptor-handler-class" minOccurs = "1" maxOccurs = "1"/>
+		</xsd:sequence>       
+	</xsd:complexType>
+
+ 	<xsd:complexType name="stockingFiltersType">
+		<xsd:sequence>
+			<xsd:element ref = "jvending-cp:stocking-filter" minOccurs = "0" maxOccurs = "unbounded"/>
+		</xsd:sequence>       
+	</xsd:complexType> 
+
+ 	<xsd:complexType name="initParamType">
+		<xsd:sequence>
+			<xsd:element ref = "jvending-cp:param-name" minOccurs = "1" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:param-value" minOccurs = "1" maxOccurs = "1"/>
+		</xsd:sequence>       
+	</xsd:complexType> 
+
+
+ 	<xsd:complexType name="stockingHandlerType">
+		<xsd:sequence>
+            <xsd:element ref = "jvending-cp:stocking-handler-name" minOccurs = "1" maxOccurs = "1"/>
+            <xsd:element ref = "jvending-cp:descriptor-handlers" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:stocking-filters" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:data-sink" minOccurs = "1" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:stocking-policy" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:init-param" minOccurs = "0" maxOccurs = "unbounded"/>
+		</xsd:sequence>       
+	</xsd:complexType> 
+
+ 	<xsd:complexType name="stockingPolicyType">
+		<xsd:sequence>
+			<xsd:element ref = "jvending-cp:global-policy" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:content-policy" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:descriptor-policy" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:icon-policy" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:preview-policy" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:copyright-policy" minOccurs = "0" maxOccurs = "1"/>
+		</xsd:sequence>       
+	</xsd:complexType> 
+
+ 	<xsd:complexType name="policyType">
+		<xsd:sequence>
+			<xsd:element ref = "jvending-cp:remote-max-size" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:local-max-size" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:fetch-content" minOccurs = "0" maxOccurs = "1"/>
+		    <xsd:element ref = "jvending-cp:mime-accept" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:mime-block" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:white-list" minOccurs = "0" maxOccurs = "1"/>
+			<xsd:element ref = "jvending-cp:black-list" minOccurs = "0" maxOccurs = "1"/>
+		</xsd:sequence>       
+	</xsd:complexType> 
+
+	<xsd:complexType name="whiteListType">
+		<xsd:sequence>
+			<xsd:element ref = "jvending-cp:uri" minOccurs = "0" maxOccurs = "unbounded"/>
+		</xsd:sequence>       
+	</xsd:complexType>
+
+	<xsd:complexType name="blackListType">
+		<xsd:sequence>
+			<xsd:element ref = "jvending-cp:uri" minOccurs = "0" maxOccurs = "unbounded"/>
+		</xsd:sequence>       
+	</xsd:complexType>
+
+	<xsd:complexType name="mimeAcceptType">
+		<xsd:sequence>
+			<xsd:element ref = "jvending-cp:mime-type" minOccurs = "0" maxOccurs = "unbounded"/>
+		</xsd:sequence>       
+	</xsd:complexType>
+
+	<xsd:complexType name="mimeBlockType">
+		<xsd:sequence>
+			<xsd:element ref = "jvending-cp:mime-type" minOccurs = "0" maxOccurs = "unbounded"/>
+		</xsd:sequence>       
+	</xsd:complexType>
+</xsd:schema>

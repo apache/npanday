@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>org.apache.maven.dotnet</groupId>
+        <version>0.14-SNAPSHOT</version>
+        <artifactId>dotnet-model</artifactId>
+    </parent>    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.dotnet</groupId>
+    <artifactId>dotnet-model-compiler-plugins</artifactId>
+    <version>0.14-SNAPSHOT</version>
+    <name>dotnet-model-compiler-plugins</name>
+    <description>
+        Compiler Model
+    </description>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.modello</groupId>
+                <artifactId>modello-maven-plugin</artifactId>
+                <version>1.0-alpha-10</version>                
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>xpp3-reader</goal>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <model>compiler-plugins.mdo</model>
+                    <version>1.0.0</version>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <workingDirectory>${project.build.directory}/site</workingDirectory>
+                    <siteDirectory>${project.build.directory}/generated-site</siteDirectory>
+
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+    </dependencies>
+    <distributionManagement>
+        <site>
+            <id>nmaven-site</id>
+            <name>NMaven Site</name>
+            <url>scp://shell.sourceforge.net//home/groups/n/nm/nmaven/htdocs/components/nmaven-model/nmaven-compile-plugin</url>
+        </site>
+    </distributionManagement>
+</project>

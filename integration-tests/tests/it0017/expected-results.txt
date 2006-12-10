@@ -1,0 +1,4 @@
+target/it0017-test.dll
+target/nunit-reports/TEST-it0017-1.0.0.xml
+target/test-assemblies/it0016.dll
+target/test-assemblies/nunit.framework.dll

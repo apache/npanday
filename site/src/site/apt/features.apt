@@ -1,0 +1,22 @@
+Features
+
+ * Mono Support: C#, Nemerle, PHP
+
+ * Microsoft Support: C#, VB, .NET Compact Profile
+
+ * DotGNU Support: C#
+
+ * NUnit support
+
+ * Resource generation and embedding
+
+ * Autmomatic Generation of AssemblyInfo.* based on language and contents of the pom.
+
+ * Web Application Packaging and Deployment
+
+ * XSD and WSDL Generation
+
+ * Pluggable architecture for adding new compilers and executables.
+
+ * nmaven-settings file for selecting the environment (MONO/MS/GNU, vendor/framework version, install location, etc)
+

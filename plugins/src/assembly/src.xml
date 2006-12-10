@@ -1,0 +1,22 @@
+<assembly>
+    <id>build</id>
+    <formats>
+        <format>tar.gz</format>
+        <format>zip</format>
+    </formats>
+  <includeBaseDirectory>true</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory></outputDirectory>
+            <excludes>
+                <exclude>*.ipr</exclude>
+                <exclude>*.iws</exclude>
+                <exclude>*.iml</exclude>
+                <exclude>src/**</exclude>
+                <exclude>**/site/**</exclude>                
+                <exclude>**/target/**</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
+</assembly>

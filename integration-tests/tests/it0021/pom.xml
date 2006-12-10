@@ -1,0 +1,22 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.it</groupId>
+    <artifactId>it0021</artifactId>
+    <packaging>library</packaging>
+    <version>1.0.0</version>
+    <name>it0021</name>
+
+    <build>
+        <sourceDirectory>src/main/vb</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.dotnet.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+                <extensions>true</extensions>
+		<configuration>
+			<language>VB</language>
+		</configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

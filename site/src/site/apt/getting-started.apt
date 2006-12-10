@@ -1,0 +1,305 @@
+Getting Started
+
+Sections
+
+ * {{{getting-started.html#Building NMaven}Building NMaven}}
+
+ * {{{getting-started.html#Assembly Info}Assembly Info}}
+
+ * {{{getting-started.html#Unit Testing with NUnit}Unit Testing with NUnit}}
+
+ * {{{getting-started.html#Building & Deploying Web Applications}Building & Deploying Web Applications}}
+
+ * {{{getting-started.html#Building with .NET Modules}Building with .NET Modules}}
+
+ * {{{getting-started.html#Installing Existing Assemblies in the Maven Repository}Installing Existing Assemblies in the Maven Repository}}
+
+ * {{{getting-started.html#Generating Resources}Generating Resources}}
+
+* {Building NMaven}
+
+ Make sure that you have jdk1.5+ installed and then do the following:
+
+  [[1]] Download the latest nmaven-components and nmaven-plugin project archives from the sourceforge site.
+
+  [[2]] Unarchive the nmaven-components. Build it by typing "mvn install" from the root directory.
+
+  [[3]] Unarchive the nmaven-plugins. Goto the scripts directory and run the appropriate batch or shell script for
+   your enviornment.  This does a bootstrap build of Java jars and .NET assemblies and places the 3rd party .NET libraries
+   in the local maven repo.
+
+ Building on Linux, may take some extra steps. By default, on many Linux environments, the GNU Compiler for Java is already
+ installed. The current GNU version will not work with NMaven. To check which version the system uses, type "java -version"
+ on the command line. If you see something similar to the following, you will need to take additional steps to get the
+ build setup:
+
++----+
+
+java version "1.4.2"
+gij (GNU libgcj) version 4.1.1 20060525 (Red Hat 4.1.1-1)
++----+
+
+ Create a file "/etc/profile.d/java.sh" with the following entries:
+
++----+
+
+ export JAVA_HOME=/usr/java/jdk1.5.0_09
+ export PATH=$JAVA_HOME/bin:$PATH
++----+
+
+ Type "mvn -version" from the command line. You should see the following:
+
++----+
+
+java version "1.5.0_09"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.5.0_09-b01)
+Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
++----+
+
+ On Linux, you also need Mono version 1.1.18 or higher. Type "mono -V" on the command line to see what version you
+ are running. If it is below 1.1.18, then download the latest mono version, unzip and run rpm from the commandline.
+ Detailed instructions are located here:
+ {{{ http://www.mono-project.com/Getting_Mono}Installing Mono}}
+
+* {Assembly Info}
+
+ Provided that you do not have your own AssemblyInfo class in your project, NMaven will automatically generate
+ an AssemblyInfo.* for you. It does the following mapping:
+
+*-------------------------+--------------------------------------------+
+| AssemblyDescription | $\{project.description\} |
+*-------------------------+--------------------------------------------+
+| AssemblyVersion | $\{project.version\} |
+*-------------------------+--------------------------------------------+
+| AssemblyTitle | $\{project.name\} |
+*-------------------------+--------------------------------------------+
+| AssemblyCompany | $\{project.organization.name\} |
+*-------------------------+--------------------------------------------+
+| AssemblyProduct | $\{project.organization.name\}-$\{project.name\} |
+*-------------------------+--------------------------------------------+
+| AssemblyCopyright | place a COPYRIGHT.txt file in your module directory and NMaven will pick it up and put it in the assembly |
+*-------------------------+--------------------------------------------+
+
+ Since the pom version is mapped to the assembly manifest, you MUST follow the 0.0.0.0 version convention specified by
+ Microsoft (or the build will fail).
+
+* {Unit Testing with NUnit}
+
+ Prior to being able to unit test with NUnit, you must install the nunit.framework.dll into the local maven repository.
+ Go to the scripts directory in the nmaven-plugins download and run the script install-1.1 (.NET 1.1 environment)
+ or install-2.0 (.NET 2.0 environment).
+
+ After installing NUnit, add the org.nunit dependency to your pom.xml (as shown below). You
+ will only need to add the nmaven-test-plugin to the pom under the following circumstances:
+
+  [[1]] If you do not add the nunit bin to your path;
+
+  [[2]] If you have the mono bin in your path and you want to use another installation of NUnit ;
+
+  [[3]] If you have both the mono bin and the NUnit bin in your path and you want to choose a specific one.
+
+ Sample configuration of the test-plugin:
+
++----+
+
+ <project>
+....
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven.sample</groupId>
+            <artifactId>csc1</artifactId>
+	        <type>module</type>
+            <version>2.0.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.nunit</groupId>
+            <artifactId>nunit.framework</artifactId>
+            <version>2.2.8.0</version>
+	        <type>library</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/csharp</sourceDirectory>
+        <testSourceDirectory>src/test/csharp</testSourceDirectory>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-test-plugin</artifactId>
+                <configuration>
+                    <nunitHome>C:\Programs\nunit</nunitHome>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+
+
+ On occasion, you may want to use one language for your main classes and another language for your test classes. In this
+ case use the \<testLanguage/> tag as shown below. The \<language/> and \<vendor/> tags are for the main classes and the
+ \<testLanguage/> and \<testVendor/> are for the test classes.
+
++----+
+
+ <project>
+....
+
+    <build>
+...
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+     	        <configuration>
+     	            <language>C_SHARP</language>
+     	            <vendor>MONO</vendor>
+     	            <testLanguage>VB</testLanguage>
+     	            <testVendor>MICROSOFT</testVendor>
+     	        </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+
+
+ NMaven defaults to the 2.0 Framework Version for compiling. To change this to 1.1 (for both the test compile and the
+ main compile), do the following:
+
++----+
+
+<plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+            <language>C_SHARP</language>
+            <vendor>MONO</vendor>
+            <frameworkVersion>1.1.4322</frameworkVersion>
+            <testLanguage>VB</testLanguage>
+            <testVendor>MICROSOFT</testVendor>
+            <testFrameworkVersion>1.1.4322</testFrameworkVersion>
+        </configuration>
+    </plugin>
+</plugins>
+
++----+
+
+ To disable the NUnit tests, add the system property -Dmaven.test.skip=true to the command line. You can also disable
+ tests by adding \<skipTests>true\</skipTests> to the configuration above.
+
+* {Building & Deploying Web Applications}
+
+ To enable building of the Web application, specify the packaging as "nar" - .NET Archive. NMaven will compile
+ classes in the source and test directories and then proceed to place the newly generated artifacts and its dependencies into
+ the target/$\{project.build.finalname\}/bin directory. NMaven will also copy any files from the src/main/webapp directory
+ into the target/$\{project.build.finalname\} directory, allowing you to add any additional resources such as Web.Config and
+ ASPX files.
+
+ You will only need to add the nmaven-webapp-plugin to the pom if you are planning on deploying the web application. In
+ that case, add the deployPath pom configuration as shown below. Type "mvn deploy" from the command line and NMaven will
+ copy the web application to the deployPath location.
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.sample</groupId>
+    <artifactId>webapp</artifactId>
+    <packaging>nar</packaging>
+    <version>2.0.0</version>
+    <name>nar</name>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven.sample</groupId>
+            <artifactId>csc2</artifactId>
+            <type>library</type>
+            <version>2.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/csharp</sourceDirectory>
+        <testSourceDirectory>src/test/csharp</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-webapp-plugin</artifactId>
+                <configuration>
+                    <deployPath>${MYAPP_HOME}/apps</deployPath>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+
+
+* {Building with .NET Modules}
+
+ Linking all of your .NET libraries to all of the .NET module transitive dependencies is probably not want you want to do.
+ NMaven will only link the modules that are directly specified within the project's pom. For the DotGNU compiler,
+ you can create modules, but (as of yet) there is no way to add them to other libraries during the compile process.
+
+* {Installing Existing Assemblies in the Maven Repository}
+
+ Unlike typical artifacts generated by Maven, the NMaven artifacts in the Maven repository do not include versions
+ in the file name. This has a number of advantages, including not needing to recompile all of your favorite open-source
+ assemblies that you want use as dependencies in your build. To install an artifact, execute a commandline argument
+ (directly or through a script) using the maven-install-plugin:
+
++----+
+ mvn org.apache.maven.plugins:maven-install-plugin:install-file
+        -Dfile=../imports/nunit-2.0/nunit.framework.dll
+        -DgroupId=org.nunit
+        -DartifactId=nunit.framework
+        -Dpackaging=dll
+        -Dversion=2.2.8.0
++----+
+
+ After that, include the dependency in your pom.xml file and you are ready to go.
+
++----+
+     <dependencies>
+        <dependency>
+            <groupId>org.nunit</groupId>
+            <artifactId>nunit.framework</artifactId>
+            <version>2.2.8.0</version>
+            <type>library</type>
+        </dependency>
+    </dependencies>
++----+
+
+* {Generating Resources}
+
+ There are four types of resources to include within an assembly: linked resources, embedded resources,
+ win32 resources and win32 icon. By placing your files in the appropriate directory, NMaven will pick them up
+ and embed/link them during the compile phase.
+
+*-------------------------+--------------------------------------------+
+| src/main/resources/linkresource | Link all files in this directory to the assembly  |
+*-------------------------+--------------------------------------------+
+| src/main/resources/resource | Embed all files in this directory to the assembly|
+*-------------------------+--------------------------------------------+
+| src/main/resources/resgen | Generate a resx file from all files in this directory and embed the resource in the assembly |
+*-------------------------+--------------------------------------------+
+| src/main/resources/win32res | Embed the resources in the assembly |
+*-------------------------+--------------------------------------------+
+| src/main/resources/win32icon | Embed the icon within the assembly (icon will show up in file viewer) |
+*-------------------------+--------------------------------------------+
+

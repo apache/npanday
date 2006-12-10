@@ -1,0 +1,36 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.it</groupId>
+    <artifactId>it0005</artifactId>
+    <packaging>nar</packaging>
+    <version>1.0.0</version>
+    <name>it0005</name>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven.it</groupId>
+            <artifactId>it0003</artifactId>
+            <type>library</type>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/csharp</sourceDirectory>
+        <testSourceDirectory>src/test/csharp</testSourceDirectory>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.dotnet.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.dotnet.plugins</groupId>
+                <artifactId>maven-webapp-plugin</artifactId>
+                <configuration>
+                    <deployPath>./target/test-deploy</deployPath>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

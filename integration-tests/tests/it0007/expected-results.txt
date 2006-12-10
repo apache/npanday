@@ -1,0 +1,2 @@
+target/it0007.dll
+target/generated-resources/registry-config.xsd

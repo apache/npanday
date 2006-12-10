@@ -1,0 +1,59 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven-site</groupId>
+    <artifactId>nmaven-site</artifactId>
+    <packaging>pom</packaging>
+    <version>0.10</version>
+    <name>NMaven</name>
+    <url>http://nmaven.sourceforge.net</url>
+    <description>
+        NMaven provides Maven 2.x plugins to support building of .NET applications
+    </description>
+
+    <scm>
+        <url>http://svn.sourceforge.net/viewvc/nmaven/</url>
+        <connection>scm:svn:https://svn.sourceforge.net/svnroot/nmaven/</connection>
+        <developerConnection>
+            scm:svn:https://svn.sourceforge.net/svnroot/nmaven/</developerConnection>
+        <tag>REL_0_10</tag>
+    </scm>
+
+    <organization>
+        <name>NMaven</name>
+        <url>http://nmaven.sourceforge.net</url>
+    </organization>
+
+    <issueManagement>
+        <system>Sourceforge Bugtracking</system>
+        <url>http://sourceforge.net/tracker/?atid=876936&amp;group_id=176362&amp;func=browse</url>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>LICENSE.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Shane Isbell</name>
+            <id>random7</id>
+            <email>random7@users.sourceforge.net</email>
+            <organization>NMaven</organization>
+            <url>http://jroller.com/page/random7</url>
+            <roles>
+                <role>admin</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <site>
+            <id>nmaven-site</id>
+            <name>NMaven Site</name>
+            <url>scp://shell.sourceforge.net//home/groups/n/nm/nmaven/htdocs</url>
+        </site>
+    </distributionManagement>
+</project>

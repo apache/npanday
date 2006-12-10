@@ -1,0 +1,270 @@
+Configuring the Environment
+
+* How NMaven Chooses the Compiler Environment
+
+ NMaven chooses the correct compiler by the following rules:
+
+  [[1]] Is the \<vendor/> tag set? If it is set, go to (2). If not, then detect operating system. If OS is windows,
+   set the vendor to MICROSOFT. If OS is not windows, set the vendor to MONO.
+
+  [[2]] Is the \<language> tag set? If it is set, go to (3). If not, then set the language to C_SHARP.
+
+  [[3]] Is the \<frameworkVersion/> tag set? If it is set, go to (4). If not, then set the version to 2.0.50727
+
+  [[4]] Is the \<profile> tag set? If if is set, go to (5). If not, then set to the value "FULL".
+
+  [[5]] Is there a match in the compiler-plugins.xml for the given vendor, language, frameworkVersion, profile and operating system?
+   If not, fail the build. If so, instantiate the correct compiler plugin.
+
+  [[6]] If vendor is MICROSOFT, then set the execution path to C:\WINDOWS\Microsoft.NET\Framework\v${frameworkVersion}\${executable}.
+   If this directory does not exist, fail the build. Note that this execution path is hard-coded, and precludes you from running the
+   compiler from a non-standard location. In a future release, NMaven will read the value from the registry. If vendor
+   is not MICROSOFT, then NMaven will run whatever is specified within the path.
+
+
+* CSharp2.0:exe:Microsoft
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.ms.csharp</groupId>
+    <artifactId>it-0001</artifactId>
+    <packaging>exe</packaging>
+    <version>0.1.0.0</version>
+    <name>csharp: it-0001</name>
+
+    <build>
+	<sourceDirectory>src/main/csharp</sourceDirectory>
+	<testSourceDirectory>src/test/csharp</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+
+
+* CSharp1.1:exe:Microsoft
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.ms.csharp</groupId>
+    <artifactId>it-0001</artifactId>
+    <packaging>exe</packaging>
+    <version>0.1.0.0</version>
+    <name>csharp: it-0001</name>
+
+    <build>
+	<sourceDirectory>src/main/csharp</sourceDirectory>
+	<testSourceDirectory>src/test/csharp</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+                <configuration>
+                    <frameworkVersion>1.1.4322</frameworkVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+
+
+* VB2.0: library:MS
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.ms.csharp</groupId>
+    <artifactId>it-0001</artifactId>
+    <packaging>library</packaging>
+    <version>0.1.0.0</version>
+    <name>vb:it-0001</name>
+
+    <build>
+	<sourceDirectory>src/main/vb</sourceDirectory>
+	<testSourceDirectory>src/test/vb</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+                <configuration>
+			        <language>VB</language>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>
+
++----+
+
+* CSharp1.1:module:Mono
+
+ You will only need to use the MONO vendor field if you want to build MONO on windows: MONO is the default vendor for
+ other OS's.
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.mono.csharp</groupId>
+    <artifactId>it-0001</artifactId>
+    <packaging>module</packaging>
+    <version>0.1.0.0</version>
+    <name>csharp: it-0001</name>
+
+    <build>
+	<sourceDirectory>src/main/csharp</sourceDirectory>
+	<testSourceDirectory>src/test/csharp</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+                <configuration>
+                    <vendor>MONO</vendor>
+                    <frameworkVersion>1.1.4322</frameworkVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+
+
+* CSharp2.0:library:Mono
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.mono.csharp</groupId>
+    <artifactId>it-0001</artifactId>
+    <packaging>library</packaging>
+    <version>0.1.0.0</version>
+    <name>csharp: it-0001</name>
+
+    <build>
+	<sourceDirectory>src/main/csharp</sourceDirectory>
+	<testSourceDirectory>src/test/csharp</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+                <configuration>
+                    <vendor>MONO</vendor>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+
+
+* CSharp:library:DotGNU
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.mono.csharp</groupId>
+    <artifactId>it-0001</artifactId>
+    <packaging>library</packaging>
+    <version>0.1.0.0</version>
+    <name>csharp: it-0001</name>
+
+    <build>
+	<sourceDirectory>src/main/csharp</sourceDirectory>
+	<testSourceDirectory>src/test/csharp</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+                <configuration>
+                    <vendor>DotGNU</vendor>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+
+
+* Nemerle:library:Mono
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.mono.nemerle</groupId>
+    <artifactId>it-0001</artifactId>
+    <packaging>library</packaging>
+    <version>0.1.0.0</version>
+    <name>nemerle: it-0001</name>
+
+    <build>
+	<sourceDirectory>src/main/nemerle</sourceDirectory>
+	<testSourceDirectory>src/test/nemerle</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+                <configuration>
+                    <language>NEMERLE</language>
+                    <vendor>MONO</vendor>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+
+
+* PHP:library:Mono
+
+ To get PHP to run with NMaven, you will need to include mPHPRuntime.dll under each module directory. This is a work
+ around until I create a mavenizer-plugin that will handle non-nmaven generated assemblies.
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.mono.php</groupId>
+    <artifactId>it-0001</artifactId>
+    <packaging>library</packaging>
+    <version>0.1.0.0</version>
+    <name>php: it-0001</name>
+
+    <build>
+	<sourceDirectory>src/main/php</sourceDirectory>
+	<testSourceDirectory>src/test/php</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+                <configuration>
+                    <language>PHP</language>
+                    <vendor>MONO</vendor>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+

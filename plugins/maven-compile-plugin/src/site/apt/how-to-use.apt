@@ -1,0 +1,82 @@
+How to Use
+
+ Also make sure that you read {{{http://nmaven.sourceforge.net/environment-configuration.html} Configuration}}
+
+
+* Pass-Through Compiler Commands
+
+ There may be cases that the specific compiler option that you want to use may not be directly supported by the
+ nmaven-compile-plugin. In this case, you can use the parameter(s) tag to pass through the command to the compiler.
+ Be aware that the command filter specified within the compiler-plugins.xml may choose not to pass this parameter
+ to the compiler. Typically, this will only be done for unsupported commands: (you will see a warn message in the output
+ if this occurs).
+
++----+
+<plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+            <parameters>
+                <parameter>/optimize+</parameter>
+            </parameters>
+        </configuration>
+    </plugin>
+</plugins>
++----+
+
+* Setting Framework Version
+
+ By default, the framework version for the main compile and the test compile are both 2.0.50727. To change this to
+ version 1.1, set the \<frameworkVersion/> & \<testFramework/> tags. Note that setting the \<frameworkVersion/> to 1.1.4322, will
+ not set the \<testFrameworkVersion/>: you will need to set both if your project also includes NUnit tests.
+
++----+
+<plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+            <parameters>
+                <frameworkVersion>1.1.4322</frameworkVersion>
+                <testFrameworkVersion>1.1.4322</testFrameworkVersion>
+            </parameters>
+        </configuration>
+    </plugin>
+</plugins>
++----+
+
+ The frameworkVersion is not supported for DotGNU: it depends on the target profile that the compiler was built under.
+
+* Compiling for Multiple Platforms
+
+ It is important to understand what setting the \<vendor/> tag means for multi-platform builds.
+
+ * In the case of not
+ setting the \<vendor/> tag, NMaven will use the Microsoft compiler for the windows platform and MONO for all other
+ platforms. By not specifying the vendor, you are indicating that the application should build with with both Microsoft
+ and Mono compilers. For most development environments, Microsoft is installed on Windows, and Mono comes by default
+  on many Linux distributions: so this option is usually a safe bet for multi-platform builds.
+
+ * In the case of setting the \<vendor/> tag to MICROSOFT, the application will only build under that compiler on Windows.
+ If you are using any Microsoft specific APIs (or any of the missing APIs in MONO), then you should set the vendor tag to
+ MICROSOFT.
+
+ * In the case of setting the \<vendor/> tag to MONO, the platform obviously must have Mono installed to be buildable. This
+ option should be used if you are using any of the Mono specific APIs that you are not including within the dependency
+ path of Maven.
+
+ * In the case of setting the \<vendor/> tag to DotGNU, the platform obviously must have DotGnu installed to be buildable.
+ The DotGNU compiler is not included
+ as a default for any of the platforms: so to target this environment, you must set the \<vendor/> tag. Also you may run
+ into some problems since there is currently no way to set the frameworkVersion/profile. I am giving some thought to this
+ problem, so keep an eye on the documentation.
+
+
+
+
+
+
+

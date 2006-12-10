@@ -1,0 +1,30 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.it</groupId>
+    <artifactId>it0011</artifactId>
+    <packaging>library</packaging>
+    <version>1.0.0</version>
+    <name>it0011</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven.it</groupId>
+            <artifactId>it0001</artifactId>
+            <type>module</type>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <sourceDirectory>src/main/csharp</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.dotnet.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <vendor>MONO</vendor>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
