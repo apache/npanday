@@ -1,0 +1,131 @@
+ <component-set>
+  
+  <components>
+  
+      <component>
+        <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+        <role-hint>dotnet-library</role-hint>
+        <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+        <configuration>
+          <phases>
+            <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
+            <!-- compile>org.apache.maven.plugins:maven-compiler-plugin:compile</compile -->            
+            <process-classes>org.apache.maven.plugins:maven-csharp-source-plugin:process-classes</process-classes>
+            <process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
+            <!-- test-compile>org.apache.maven.plugins:maven-compiler-plugin:testCompile</test-compile -->
+            <test>org.apache.maven.plugins:maven-nunit-plugin:test</test>
+            <package>org.apache.maven.plugins:maven-csharp-package-plugin:package</package>
+            <install>org.apache.maven.plugins:maven-install-plugin:install</install>
+            <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
+          </phases>
+        </configuration>
+      </component>
+      
+      <component> 
+             <role>org.apache.maven.artifact.handler.ArtifactHandler</role> 
+             <role-hint>dotnet-library</role-hint> 
+              <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation> 
+              <configuration> 
+                 <type>dotnet-library</type> 
+                 <extension>dll</extension> 
+                 <packaging>dotnet-library</packaging>
+                 <addedToClasspath>true</addedToClasspath>
+             </configuration> 
+      </component>
+    
+   <!--  Configuration for dotnet web projects --> 
+   <component>
+        <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+        <role-hint>dotnet-webapp</role-hint>
+        <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+        <configuration>
+          <phases>
+            <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
+            <process-classes>org.apache.maven.plugins:maven-csharp-source-plugin:process-classes</process-classes>
+            <process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
+            <!-- test>org.apache.maven.plugins:maven-nunit-plugin:test</test -->
+            <package>org.apache.maven.plugins:maven-csharp-package-plugin:package</package>
+            <install>org.apache.maven.plugins:maven-install-plugin:install</install>
+            <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
+          </phases>
+        </configuration>
+      </component>
+      
+      <component> 
+             <role>org.apache.maven.artifact.handler.ArtifactHandler</role> 
+             <role-hint>dotnet-webapp</role-hint> 
+              <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation> 
+              <configuration> 
+                 <type>dotnet-webapp</type> 
+                 <extension>dll</extension> 
+                 <packaging>dotnet-webapp</packaging>
+                 <addedToClasspath>true</addedToClasspath>
+             </configuration> 
+    </component>
+    
+    <component>
+        <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+        <role-hint>dotnet-exe</role-hint>
+        <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+        <configuration>
+          <phases>
+            <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
+            <!-- compile>org.apache.maven.plugins:maven-compiler-plugin:compile</compile -->            
+            <process-classes>org.apache.maven.plugins:maven-csharp-source-plugin:process-classes</process-classes>
+            <process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
+            <!-- test-compile>org.apache.maven.plugins:maven-compiler-plugin:testCompile</test-compile -->
+            <test>org.apache.maven.plugins:maven-nunit-plugin:test</test>
+            <package>org.apache.maven.plugins:maven-csharp-package-plugin:package</package>
+            <install>org.apache.maven.plugins:maven-install-plugin:install</install>
+            <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
+          </phases>
+        </configuration>
+      </component>
+      
+      <component> 
+             <role>org.apache.maven.artifact.handler.ArtifactHandler</role> 
+             <role-hint>dotnet-exe</role-hint> 
+              <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation> 
+              <configuration> 
+                 <type>dotnet-exe</type> 
+                 <extension>exe</extension> 
+                 <packaging>dotnet-exe</packaging>
+                 <addedToClasspath>true</addedToClasspath>
+             </configuration> 
+      </component>
+      
+      
+     <component>
+        <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+        <role-hint>dotnet-winexe</role-hint>
+        <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+        <configuration>
+          <phases>
+            <process-resources>org.apache.maven.plugins:maven-resources-plugin:resources</process-resources>
+            <!-- compile>org.apache.maven.plugins:maven-compiler-plugin:compile</compile -->            
+            <process-classes>org.apache.maven.plugins:maven-csharp-source-plugin:process-classes</process-classes>
+            <process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
+            <!-- test-compile>org.apache.maven.plugins:maven-compiler-plugin:testCompile</test-compile -->
+            <test>org.apache.maven.plugins:maven-nunit-plugin:test</test>
+            <package>org.apache.maven.plugins:maven-csharp-package-plugin:package</package>
+            <install>org.apache.maven.plugins:maven-install-plugin:install</install>
+            <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
+          </phases>
+        </configuration>
+      </component>
+      
+      <component> 
+             <role>org.apache.maven.artifact.handler.ArtifactHandler</role> 
+             <role-hint>dotnet-winexe</role-hint> 
+              <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation> 
+              <configuration> 
+                 <type>dotnet-winexe</type> 
+                 <extension>exe</extension> 
+                 <packaging>dotnet-winexe</packaging>
+                 <addedToClasspath>true</addedToClasspath>
+             </configuration> 
+      </component>
+    
+  </components>
+    
+</component-set>
