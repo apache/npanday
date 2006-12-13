@@ -64,8 +64,6 @@ public class NetExecutableFactoryImpl
 
     private StateMachineProcessor processor;
 
-    private boolean isFactoryInited = false;
-
     private Logger logger;
 
     public void enableLogging( Logger logger )
@@ -81,18 +79,7 @@ public class NetExecutableFactoryImpl
                                                         File assemblyPath )
         throws PlatformUnsupportedException
     {
-        if ( !isFactoryInited )
-        {
-            try
-            {
-                capabilityMatcher.init( project );
-                isFactoryInited = true;
-            }
-            catch ( InitializationException e )
-            {
-                throw new PlatformUnsupportedException( "NMAVEN-066-002: Unable to load the Executable Factory:", e );
-            }
-        }
+
         VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
         vendorInfo.setVendorVersion( compilerRequirement.getVendorVersion() );
         vendorInfo.setFrameworkVersion( compilerRequirement.getFrameworkVersion() );
@@ -145,18 +132,6 @@ public class NetExecutableFactoryImpl
                                                          List<String> commands )
         throws PlatformUnsupportedException
     {
-        if ( !isFactoryInited )
-        {
-            try
-            {
-                capabilityMatcher.init( project );
-                isFactoryInited = true;
-            }
-            catch ( InitializationException e )
-            {
-                throw new PlatformUnsupportedException( "NMAVEN-066-009: Unable to load the Executable Factory:", e );
-            }
-        }
 
         try
         {
@@ -225,18 +200,6 @@ public class NetExecutableFactoryImpl
                                               MavenProject project, List<String> commands, File netHome )
         throws PlatformUnsupportedException
     {
-        if ( !isFactoryInited )
-        {
-            try
-            {
-                capabilityMatcher.init( project );
-            }
-            catch ( InitializationException e )
-            {
-                throw new PlatformUnsupportedException( "NMAVEN-066-000: Unable to load the Executable Factory:", e );
-            }
-            isFactoryInited = true;
-        }
 
         VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
         vendorInfo.setVendorVersion( "" );

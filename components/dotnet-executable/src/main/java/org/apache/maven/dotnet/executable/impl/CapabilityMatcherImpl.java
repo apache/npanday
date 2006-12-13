@@ -19,7 +19,6 @@
 package org.apache.maven.dotnet.executable.impl;
 
 import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.InitializationException;
 import org.apache.maven.dotnet.executable.*;
 import org.apache.maven.dotnet.executable.compiler.*;
 
@@ -29,53 +28,49 @@ import java.util.ArrayList;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.project.MavenProject;
 
 /**
+ * Provides an implementation of the <code>CapabilityMatcher</code> interface.
+ *
  * @author Shane Isbell
  */
 public class CapabilityMatcherImpl
     implements CapabilityMatcher, LogEnabled
 {
-
     private Logger logger;
 
-    protected MavenProject project;
-
-    protected RepositoryRegistry repositoryRegistry;
+    private RepositoryRegistry repositoryRegistry;
 
     public void enableLogging( Logger logger )
     {
         this.logger = logger;
     }
 
-    public void init( MavenProject project )
-        throws InitializationException
-    {
-        this.project = project;
-    }
-
     public CompilerCapability matchCompilerCapabilityFor( CompilerRequirement compilerRequirement,
                                                           List<ExecutableMatchPolicy> matchPolicies )
         throws PlatformUnsupportedException
     {
+        if ( compilerRequirement == null )
+        {
+            throw new PlatformUnsupportedException( "NMAVEN-065-006: The compiler requirement should not be null." );
+        }
         if ( matchPolicies == null )
         {
             matchPolicies = new ArrayList<ExecutableMatchPolicy>();
         }
         matchPolicies.add( MatchPolicyFactory.createOperatingSystemPolicy( System.getProperty( "os.name" ) ) );
         matchPolicies.add( MatchPolicyFactory.createVendorPolicy( compilerRequirement.getVendor() ) );
-        matchPolicies.add( MatchPolicyFactory.createLanguagePolicy( ( compilerRequirement ).getLanguage() ) );
+        matchPolicies.add( MatchPolicyFactory.createLanguagePolicy( compilerRequirement.getLanguage() ) );
         matchPolicies.add(
             MatchPolicyFactory.createFrameworkVersionPolicy( compilerRequirement.getFrameworkVersion() ) );
         matchPolicies.add( MatchPolicyFactory.createProfilePolicy( compilerRequirement.getProfile() ) );
         return (CompilerCapability) matchFromExecutableCapabilities( getCompilerCapabilities(), matchPolicies );
     }
 
-    public CompilerCapability matchCompilerCapabilityFor( CompilerRequirement executableRequirement )
+    public CompilerCapability matchCompilerCapabilityFor( CompilerRequirement compilerRequirement )
         throws PlatformUnsupportedException
     {
-        return matchCompilerCapabilityFor( executableRequirement, new ArrayList<ExecutableMatchPolicy>() );
+        return matchCompilerCapabilityFor( compilerRequirement, new ArrayList<ExecutableMatchPolicy>() );
     }
 
     /**

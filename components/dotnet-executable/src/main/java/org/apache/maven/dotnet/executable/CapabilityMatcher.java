@@ -88,14 +88,4 @@ public interface CapabilityMatcher
                                                    List<ExecutableMatchPolicy> matchPolicies )
         throws PlatformUnsupportedException;
 
-    /**
-     * Initializes the factory.
-     *
-     * @param project the maven project
-     * @throws org.apache.maven.dotnet.InitializationException if there is a problem initializing this factory
-     *
-     */
-    void init( MavenProject project )
-        throws InitializationException;
-
 }
