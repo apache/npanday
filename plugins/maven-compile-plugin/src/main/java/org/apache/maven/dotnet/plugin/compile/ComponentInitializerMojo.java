@@ -84,10 +84,5 @@ public class ComponentInitializerMojo extends AbstractMojo {
         } catch (ArtifactNotFoundException e) {
             throw new MojoExecutionException("NMAVEN-901-001: Unable to resolve assemblies", e);
         }
-        try {
-            capabilityMatcher.init(project);
-        } catch (InitializationException e) {
-            throw new MojoExecutionException("NMAVEN-901-002: Unable to load the Executable Factory:", e);
-        }
     }
 }
