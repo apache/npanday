@@ -1,6 +1,58 @@
 <compilerPlugins>
     <compilerPlugin>
-        <identifier>MS-CS</identifier>
+        <identifier>MS-CS-1.1</identifier>
+        <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
+        <vendor>MICROSOFT</vendor>
+        <executable>csc</executable>
+        <language>C_SHARP</language>
+        <profile>FULL</profile>
+        <frameworkVersions>
+            <frameworkVersion>1.1.4322</frameworkVersion>
+        </frameworkVersions>
+        <platforms>
+            <platform>
+                <operatingSystem>Windows</operatingSystem>
+                <architecture>x86</architecture>
+            </platform>
+        </platforms>
+        <commandFilter>
+            <includes>
+                <include>out</include>
+                <include>target</include>
+                <include>doc</include>
+                <include>recurse</include>
+                <include>reference</include>
+                <include>addmodule</include>
+                <include>win32res</include>
+                <include>win32icon</include>
+                <include>resource</include>
+                <include>linkresource</include>
+                <include>debug</include>
+                <include>optimize</include>
+                <include>warnaserror</include>
+                <include>warn</include>
+                <include>nowarn</include>
+                <include>checked</include>
+                <include>unsafe</include>
+                <include>define</include>
+                <include>noconfig</include>
+                <include>baseaddress</include>
+                <include>bugreport</include>
+                <include>codepage</include>
+                <include>utf8output</include>
+                <include>main</include>
+                <include>fullpaths</include>
+                <include>filealign</include>
+                <include>nostdlib</include>
+                <include>lib</include>
+                <include>errorreport</include>
+                <include>nologo</include>                
+           </includes>
+        </commandFilter>        
+    </compilerPlugin>
+
+    <compilerPlugin>
+        <identifier>MS-CS-2.0</identifier>
         <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
         <vendor>MICROSOFT</vendor>
         <executable>csc</executable>
@@ -8,7 +60,6 @@
         <profile>FULL</profile>
         <frameworkVersions>
             <frameworkVersion>2.0.50727</frameworkVersion>
-            <frameworkVersion>1.1.4322</frameworkVersion>
         </frameworkVersions>
         <platforms>
             <platform>
@@ -54,11 +105,10 @@
                 <include>lib</include>
                 <include>errorreport</include>
                 <include>moduleassemblyname</include>
-                <include>nologo</include>                
+                <include>nologo</include>
            </includes>
-        </commandFilter>        
+        </commandFilter>
     </compilerPlugin>
-
     <compilerPlugin>
         <identifier>MS-CS:COMPACT</identifier>
         <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.CSharpCompilerForProfile</pluginClass>

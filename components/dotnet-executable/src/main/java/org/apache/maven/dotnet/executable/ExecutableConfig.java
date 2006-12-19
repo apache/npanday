@@ -20,6 +20,7 @@ package org.apache.maven.dotnet.executable;
 
 import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
 import org.apache.maven.dotnet.executable.compiler.ArtifactType;
+import org.apache.maven.dotnet.executable.compiler.KeyInfo;
 
 import java.util.List;
 import java.io.File;
@@ -80,6 +81,8 @@ public interface ExecutableConfig
         {
             return new CompilerConfig()
             {
+                private KeyInfo keyInfo;
+
                 private List<String> commands;
 
                 private String executionPath;
@@ -138,6 +141,15 @@ public interface ExecutableConfig
                 public void setLocalRepository( File localRepository )
                 {
                     this.localRepository = localRepository;
+                }
+
+                public KeyInfo getKeyInfo()
+                {
+                    return keyInfo;
+                }
+
+                public void setKeyInfo(KeyInfo keyInfo) {
+                    this.keyInfo = keyInfo;
                 }
             };
         }

@@ -38,7 +38,9 @@ import java.io.File;
  * @phase test-compile
  * @description Maven Mojo for compiling Test Class files to the .NET Intermediate Language
  */
-public final class TestCompilerMojo extends AbstractMojo {
+public final class TestCompilerMojo
+    extends AbstractMojo
+{
 
     /**
      * @parameter expression="${settings.localRepository}"
@@ -69,7 +71,7 @@ public final class TestCompilerMojo extends AbstractMojo {
     private boolean skipTestCompile;
 
     /**
-     * @parameter expression = "${testFrameworkVersion}" 
+     * @parameter expression = "${testFrameworkVersion}"
      */
     private String testFrameworkVersion;
 
@@ -120,47 +122,69 @@ public final class TestCompilerMojo extends AbstractMojo {
      * @throws MojoExecutionException thrown if MOJO is unable to compile the class files or if the environment is not
      *                                properly set.
      */
-    public void execute() throws MojoExecutionException {
-        String skipTests = System.getProperty("maven.test.skip");
-        if ((skipTests != null && skipTests.equalsIgnoreCase("true")) || skipTestCompile) {
-            getLog().warn("NMAVEN-903-004: Disabled unit tests: -Dmaven.test.skip=true");
+    public void execute()
+        throws MojoExecutionException
+    {
+        String skipTests = System.getProperty( "maven.test.skip" );
+        if ( ( skipTests != null && skipTests.equalsIgnoreCase( "true" ) ) || skipTestCompile )
+        {
+            getLog().warn( "NMAVEN-903-004: Disabled unit tests: -Dmaven.test.skip=true" );
             return;
         }
-        FileUtils.mkdir("target");
+        FileUtils.mkdir( "target" );
 
-        if (testLanguage == null) testLanguage = language;
-        if (testVendor == null) testVendor = vendor;
+        if ( testLanguage == null )
+        {
+            testLanguage = language;
+        }
+        if ( testVendor == null )
+        {
+            testVendor = vendor;
+        }
 
         //Requirement
         CompilerRequirement compilerRequirement = CompilerRequirement.Factory.createDefaultCompilerRequirement();
-        compilerRequirement.setLanguage(language);
-        compilerRequirement.setFrameworkVersion(testFrameworkVersion);
-        compilerRequirement.setProfile("FULL");
-        compilerRequirement.setVendorVersion(testVendorVersion);
-        try {
-            if(vendor != null) compilerRequirement.setVendor(VendorFactory.createVendorFromName(vendor));
-        } catch (PlatformUnsupportedException e) {
-            throw new MojoExecutionException("NMAVEN-900-000: Unknown Vendor: Vendor = " + vendor, e);
+        compilerRequirement.setLanguage( language );
+        compilerRequirement.setFrameworkVersion( testFrameworkVersion );
+        compilerRequirement.setProfile( "FULL" );
+        compilerRequirement.setVendorVersion( testVendorVersion );
+        try
+        {
+            if ( vendor != null )
+            {
+                compilerRequirement.setVendor( VendorFactory.createVendorFromName( vendor ) );
+            }
         }
-
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-900-000: Unknown Vendor: Vendor = " + vendor, e );
+        }
 
         //Config
         CompilerConfig compilerConfig = (CompilerConfig) CompilerConfig.Factory.createDefaultExecutableConfig();
-        if (testParameters != null) compilerConfig.setCommands(testParameters);
-        compilerConfig.setArtifactType(ArtifactType.LIBRARY);
-        compilerConfig.setTestCompile(true);
-        compilerConfig.setLocalRepository(localRepository);
+        if ( testParameters != null )
+        {
+            compilerConfig.setCommands( testParameters );
+        }
+        compilerConfig.setArtifactType( ArtifactType.LIBRARY );
+        compilerConfig.setTestCompile( true );
+        compilerConfig.setLocalRepository( localRepository );
 
-        try {
-            CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutableFor(compilerRequirement,
-                    compilerConfig, project, null);
+        try
+        {
+            CompilerExecutable compilerExecutable =
+                netExecutableFactory.getCompilerExecutableFor( compilerRequirement, compilerConfig, project, null );
             compilerExecutable.execute();
-        } catch (PlatformUnsupportedException e) {
-            throw new MojoExecutionException("NMAVEN-903-003: Unsupported Platform: Language = " + language
-                    + ", Vendor = " + vendor, e);
-        } catch (ExecutionException e) {
-            throw new MojoExecutionException("NMAVEN-903-002: Unable to Compile: Language = " + language
-                    + ", Vendor = " + vendor, e);
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException(
+                "NMAVEN-903-003: Unsupported Platform: Language = " + language + ", Vendor = " + vendor, e );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException(
+                "NMAVEN-903-002: Unable to Compile: Language = " + language + ", Vendor = " + vendor, e );
         }
     }
 }

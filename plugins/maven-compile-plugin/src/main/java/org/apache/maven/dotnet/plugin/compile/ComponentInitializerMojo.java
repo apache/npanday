@@ -36,7 +36,9 @@ import java.io.File;
  * @goal initialize
  * @phase compile
  */
-public class ComponentInitializerMojo extends AbstractMojo {
+public class ComponentInitializerMojo
+    extends AbstractMojo
+{
 
     /**
      * The maven project.
@@ -75,14 +77,21 @@ public class ComponentInitializerMojo extends AbstractMojo {
      */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
-    public void execute() throws MojoExecutionException {
-        try {
-            assemblyResolver.resolveTransitivelyFor(project, project.getArtifact(), project.getDependencies(), pomFile,
-                    localRepository, true);
-        } catch (ArtifactResolutionException e) {
-            throw new MojoExecutionException("NMAVEN-901-000: Unable to resolve assemblies", e);
-        } catch (ArtifactNotFoundException e) {
-            throw new MojoExecutionException("NMAVEN-901-001: Unable to resolve assemblies", e);
+    public void execute()
+        throws MojoExecutionException
+    {
+        try
+        {
+            assemblyResolver.resolveTransitivelyFor( project, project.getArtifact(), project.getDependencies(), pomFile,
+                                                     localRepository, true );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-901-000: Unable to resolve assemblies", e );
+        }
+        catch ( ArtifactNotFoundException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-901-001: Unable to resolve assemblies", e );
         }
     }
 }

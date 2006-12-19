@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.File;
+import java.io.InputStream;
 
 import org.apache.maven.project.MavenProject;
 
@@ -85,6 +86,12 @@ final class VBAssemblyInfoMarshaller
         }
     }
 
+    public AssemblyInfo unmarshall( InputStream inputStream )
+        throws IOException
+    {
+        return null;
+    }
+    
     /**
      * @see AssemblyInfoMarshaller#init(org.apache.maven.dotnet.model.assembly.plugins.AssemblyPlugin)
      */

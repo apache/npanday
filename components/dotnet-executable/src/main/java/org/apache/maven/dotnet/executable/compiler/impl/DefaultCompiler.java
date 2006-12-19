@@ -140,6 +140,13 @@ public final class DefaultCompiler
             commands.add( "/nologo" );
         }
 
+        if(compilerContext.getKeyInfo().getKeyFileUri() != null)
+        {
+            commands.add("/keyfile:" + compilerContext.getKeyInfo().getKeyFileUri());
+        } else if(compilerContext.getKeyInfo().getKeyContainerName() != null) {
+            commands.add("/keycontainer:" + compilerContext.getKeyInfo().getKeyContainerName());
+        }
+
         if ( config.getCommands() != null )
         {
             commands.addAll( config.getCommands() );

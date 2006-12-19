@@ -32,6 +32,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.dotnet.registry.Repository;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.RepositoryNotFoundException;
+import org.apache.maven.dotnet.vendor.Vendor;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 
@@ -133,6 +134,15 @@ public final class CompilerContextImpl
             artifacts.add( project.getArtifact() );
         }
         return artifacts;
+    }
+
+    public KeyInfo getKeyInfo() {
+        if((compilerRequirement.getVendor().equals( Vendor.MICROSOFT )
+            && compilerRequirement.getFrameworkVersion().equals("1.1.4322")) || config.getKeyInfo() == null) {
+            return KeyInfo.Factory.createDefaultKeyInfo();
+        } else {
+            return config.getKeyInfo();
+        }
     }
 
     public List<Artifact> getLibraryDependencies()

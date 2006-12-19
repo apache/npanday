@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.File;
+import java.io.InputStream;
 
 import org.apache.maven.project.MavenProject;
 
@@ -82,6 +83,12 @@ final class JavaAssemblyInfoMarshaller
                 man.close();
             }
         }
+    }
+
+    public AssemblyInfo unmarshall( InputStream inputStream )
+        throws IOException
+    {
+        return null;
     }
 
     /**

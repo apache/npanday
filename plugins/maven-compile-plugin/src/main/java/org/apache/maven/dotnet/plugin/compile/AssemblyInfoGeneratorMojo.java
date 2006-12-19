@@ -28,9 +28,11 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.maven.dotnet.InitializationException;
+import org.apache.maven.dotnet.vendor.*;
 import org.apache.maven.dotnet.assembler.AssemblerContext;
 import org.apache.maven.dotnet.assembler.AssemblyInfoMarshaller;
 import org.apache.maven.dotnet.assembler.AssemblyInfoException;
+import org.apache.maven.dotnet.assembler.AssemblyInfo;
 
 /**
  * Generates an AssemblyInfo.* class based on information within the pom file.
@@ -39,7 +41,9 @@ import org.apache.maven.dotnet.assembler.AssemblyInfoException;
  * @goal generate-assembly-info
  * @phase generate-sources
  */
-public class AssemblyInfoGeneratorMojo extends AbstractMojo {
+public class AssemblyInfoGeneratorMojo
+    extends AbstractMojo
+{
 
     /**
      * The maven project.
@@ -51,6 +55,16 @@ public class AssemblyInfoGeneratorMojo extends AbstractMojo {
     private MavenProject project;
 
     /**
+     * @parameter expression = "${frameworkVersion}"
+     */
+    private String frameworkVersion;
+
+    /**
+     * @parameter expression = "${vendorVersion}"
+     */
+    private String vendorVersion;
+
+    /**
      * .NET Language. The default value is <code>C_SHARP</code>. Not case or white-space sensitive.
      *
      * @parameter expression="${language}" default-value = "C_SHARP"
@@ -59,9 +73,35 @@ public class AssemblyInfoGeneratorMojo extends AbstractMojo {
     private String language;
 
     /**
+     * The Vendor for the Compiler. Not case or white-space sensitive.
+     *
+     * @parameter expression="${vendor}"
+     */
+    private String vendor;
+
+    /**
+     * Specify a strong name key file.
+     *
+     * @parameter expression = "${keyfile}"
+     */
+    private File keyfile;
+
+    /**
+     * Specifies a strong name key container. (not currently supported)
+     *
+     * @parameter expression = "${keycontainer}"
+     */
+    private String keycontainer;
+
+    /**
      * @component
      */
     private AssemblerContext assemblerContext;
+
+    /**
+     * @component
+     */
+    private org.apache.maven.dotnet.vendor.StateMachineProcessor stateMachineProcessor;
 
     /**
      * Source directory
@@ -76,37 +116,90 @@ public class AssemblyInfoGeneratorMojo extends AbstractMojo {
      *
      * @throws MojoExecutionException
      */
-    public void execute() throws MojoExecutionException {
-        if (project.getArtifact().getType().equals("module")) {
+    public void execute()
+        throws MojoExecutionException
+    {
+        if ( project.getArtifact().getType().equals( "module" ) )
+        {
             return;
         }
 
-        File srcFile = new File(sourceDirectory);
-        if (srcFile.exists()) {
-            try {
-                List files = FileUtils.getFiles(srcFile, "**/AssemblyInfo.*", null);
-                if (files.size() != 0) {
-                    getLog().info("NMAVEN-902-001: Found AssemblyInfo file(s), so will not generate one");
+        File srcFile = new File( sourceDirectory );
+        if ( srcFile.exists() )
+        {
+            try
+            {
+                List files = FileUtils.getFiles( srcFile, "**/AssemblyInfo.*", null );
+                if ( files.size() != 0 )
+                {
+                    getLog().info( "NMAVEN-902-001: Found AssemblyInfo file(s), so will not generate one" );
                     return;
                 }
-            } catch (IOException e) {
-                throw new MojoExecutionException("NMAVEN-902-004: Could not determine whether an AssemblyInfo file exists",
-                        e);
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException(
+                    "NMAVEN-902-004: Could not determine whether an AssemblyInfo file exists", e );
             }
         }
-        getLog().info("NMAVEN-902-000: Generating Assembly Info: Language = " + language.trim());
-        try {
-            try {
-                assemblerContext.init(project);
-            } catch (InitializationException e) {
-                throw new MojoExecutionException("NMAVEN-902-006: Failed to initialize the assembler context");
+        getLog().info( "NMAVEN-902-000: Generating Assembly Info: Language = " + language.trim() );
+
+        try
+        {
+            assemblerContext.init( project );
+        }
+        catch ( InitializationException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-902-006: Failed to initialize the assembler context" );
+        }
+
+        //TODO: Investigate the affect of not setting isDefault and profile. In the case of executables, this is
+        //managed by the framework. I intended to keep vendor info and state machine processor out of the
+        // Mojos. Unable to do so for this case. Look at new API.
+        VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
+        try
+        {
+            vendorInfo.setFrameworkVersion( frameworkVersion );
+            if ( vendor != null )
+            {
+                vendorInfo.setVendor( VendorFactory.createVendorFromName( vendor ) );
             }
-            AssemblyInfoMarshaller marshaller = assemblerContext.getAssemblyInfoMarshallerFor(language.trim());
-            marshaller.marshal(assemblerContext.getAssemblyInfo(), project, null);
-        } catch (IOException e) {
-            throw new MojoExecutionException("NMAVEN-902-002: Problem generating assembly info class", e);
-        } catch (AssemblyInfoException e) {
-            throw new MojoExecutionException("NMAVEN-902-005: Problem generating assembly info class", e);
+            vendorInfo.setVendorVersion( vendorVersion );
+        }
+        catch ( VendorUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-902-007: Vendor not supported: Vendor = " + vendor );
+        }
+
+        AssemblyInfo assemblyInfo = assemblerContext.getAssemblyInfo();
+        try
+        {
+            stateMachineProcessor.process( vendorInfo );
+        }
+        catch ( org.apache.maven.dotnet.vendor.IllegalStateException e )
+        {
+            throw new MojoExecutionException(
+                "NMAVEN-902-008: Illegal state of vendor info: Message =  " + e.getMessage() );
+        }
+
+        if ( vendorInfo.getVendor().equals( Vendor.MICROSOFT ) && vendorInfo.getVendorVersion().equals( "1.1.4322" ) )
+        {
+            System.out.println(keyfile + ":" + keycontainer);
+            assemblyInfo.setKeyFile( keyfile );
+            assemblyInfo.setKeyName( keycontainer );
+        }
+        try
+        {
+            AssemblyInfoMarshaller marshaller = assemblerContext.getAssemblyInfoMarshallerFor( language.trim() );
+            marshaller.marshal( assemblyInfo, project, null );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-902-002: Problem generating assembly info class", e );
+        }
+        catch ( AssemblyInfoException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-902-005: Problem generating assembly info class", e );
         }
 
     }

@@ -81,6 +81,8 @@ public interface CompilerContext
      */
     List<Artifact> getDirectModuleDependencies();
 
+    KeyInfo getKeyInfo();
+
     /**
      * Returns a list of library (dll) dependencies of the class files.
      *

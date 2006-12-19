@@ -137,7 +137,7 @@ public final class AssemblerContextImpl
     {
         AssemblyPlugin plugin = repository.getAssemblyPluginFor( language );
         String className = plugin.getPluginClass();
-        AssemblyInfoMarshaller marshaller = null;
+        AssemblyInfoMarshaller marshaller;
         try
         {
             Class cc = Class.forName( className );

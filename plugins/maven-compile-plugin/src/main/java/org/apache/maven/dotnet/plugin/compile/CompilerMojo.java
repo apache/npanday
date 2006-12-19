@@ -43,7 +43,9 @@ import java.io.File;
  * @phase compile
  * @description Maven Mojo for compiling Class files to the .NET Intermediate Language
  */
-public final class CompilerMojo extends AbstractMojo {
+public final class CompilerMojo
+    extends AbstractMojo
+{
 
     /**
      * @parameter expression="${settings.localRepository}"
@@ -72,12 +74,14 @@ public final class CompilerMojo extends AbstractMojo {
     private boolean delaysign;
 
     /**
-     * Specify a strong name key file. (not currently supported)
+     * Specify a strong name key file.
+     * @parameter expression = "${keyfile}"
      */
     private File keyfile;
 
     /**
      * Specifies a strong name key container. (not currently supported)
+     * @parameter expression = "${keycontainer}"
      */
     private String keycontainer;
 
@@ -89,7 +93,7 @@ public final class CompilerMojo extends AbstractMojo {
     private String platform;
 
     /**
-     * @parameter expression = "${frameworkVersion}" 
+     * @parameter expression = "${frameworkVersion}"
      */
     private String frameworkVersion;
 
@@ -110,7 +114,7 @@ public final class CompilerMojo extends AbstractMojo {
     private String language;
 
     /**
-     * The Vendor for the Compiler. Supports MONO and MICROSOFT: the default value is <code>MICROSOFT</code>. Not
+     * The Vendor for the Compiler. Not
      * case or white-space sensitive.
      *
      * @parameter expression="${vendor}"
@@ -140,56 +144,94 @@ public final class CompilerMojo extends AbstractMojo {
      * @throws MojoExecutionException thrown if MOJO is unable to compile the class files or if the environment is not
      *                                properly set.
      */
-    public void execute() throws MojoExecutionException {
-        if (profileAssemblyPath != null && !profileAssemblyPath.exists())
-            throw new MojoExecutionException("NMAVEN-900-007: Profile Assembly Path does not exist: Path = " +
-                    profileAssemblyPath.getAbsolutePath());
+    public void execute()
+        throws MojoExecutionException
+    {
+        if ( profileAssemblyPath != null && !profileAssemblyPath.exists() )
+        {
+            throw new MojoExecutionException( "NMAVEN-900-007: Profile Assembly Path does not exist: Path = " +
+                profileAssemblyPath.getAbsolutePath() );
+        }
 
         //Requirement
         CompilerRequirement compilerRequirement = CompilerRequirement.Factory.createDefaultCompilerRequirement();
-        compilerRequirement.setLanguage(language);
-        compilerRequirement.setFrameworkVersion(frameworkVersion);
-        compilerRequirement.setProfile(profile);
-        compilerRequirement.setVendorVersion(vendorVersion);
-        try {
-            if(vendor != null) compilerRequirement.setVendor(VendorFactory.createVendorFromName(vendor));
-        } catch (PlatformUnsupportedException e) {
-            throw new MojoExecutionException("NMAVEN-900-000: Unknown Vendor: Vendor = " + vendor, e);
+        compilerRequirement.setLanguage( language );
+        compilerRequirement.setFrameworkVersion( frameworkVersion );
+        compilerRequirement.setProfile( profile );
+        compilerRequirement.setVendorVersion( vendorVersion );
+        try
+        {
+            if ( vendor != null )
+            {
+                compilerRequirement.setVendor( VendorFactory.createVendorFromName( vendor ) );
+            }
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-900-000: Unknown Vendor: Vendor = " + vendor, e );
         }
 
         //Config
         CompilerConfig compilerConfig = (CompilerConfig) CompilerConfig.Factory.createDefaultExecutableConfig();
-        compilerConfig.setLocalRepository(localRepository);
-        if (parameters != null) compilerConfig.setCommands(parameters);
+        compilerConfig.setLocalRepository( localRepository );
+        if ( parameters != null )
+        {
+            compilerConfig.setCommands( parameters );
+        }
         String artifactTypeName = project.getArtifact().getType();
 
-        if (artifactTypeName.equals(ArtifactType.MODULE.getArtifactTypeName())) {
-            compilerConfig.setArtifactType(ArtifactType.MODULE);
-        } else if (artifactTypeName.equals(ArtifactType.LIBRARY.getArtifactTypeName())) {
-            compilerConfig.setArtifactType(ArtifactType.LIBRARY);
-        } else if (artifactTypeName.equals(ArtifactType.EXE.getArtifactTypeName())) {
-            compilerConfig.setArtifactType(ArtifactType.EXE);
-        } else if (artifactTypeName.equals(ArtifactType.WINEXE.getArtifactTypeName())) {
-            compilerConfig.setArtifactType(ArtifactType.WINEXE);
-        } else if (artifactTypeName.equals(ArtifactType.NAR.getArtifactTypeName())) {
-            compilerConfig.setArtifactType(ArtifactType.LIBRARY);
-        } else {
-            throw new MojoExecutionException("NMAVEN-900-001: Unrecognized artifact type: Language = " + language
-                    + ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName);
+        if ( artifactTypeName.equals( ArtifactType.MODULE.getArtifactTypeName() ) )
+        {
+            compilerConfig.setArtifactType( ArtifactType.MODULE );
+        }
+        else if ( artifactTypeName.equals( ArtifactType.LIBRARY.getArtifactTypeName() ) )
+        {
+            compilerConfig.setArtifactType( ArtifactType.LIBRARY );
+        }
+        else if ( artifactTypeName.equals( ArtifactType.EXE.getArtifactTypeName() ) )
+        {
+            compilerConfig.setArtifactType( ArtifactType.EXE );
+        }
+        else if ( artifactTypeName.equals( ArtifactType.WINEXE.getArtifactTypeName() ) )
+        {
+            compilerConfig.setArtifactType( ArtifactType.WINEXE );
+        }
+        else if ( artifactTypeName.equals( ArtifactType.NAR.getArtifactTypeName() ) )
+        {
+            compilerConfig.setArtifactType( ArtifactType.LIBRARY );
+        }
+        else
+        {
+            throw new MojoExecutionException( "NMAVEN-900-001: Unrecognized artifact type: Language = " + language +
+                ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName );
         }
 
-        try {
-            CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutableFor(compilerRequirement,
-                    compilerConfig, project, profileAssemblyPath);
+        if ( keyfile != null )
+        {
+            KeyInfo keyInfo = KeyInfo.Factory.createDefaultKeyInfo();
+            keyInfo.setKeyFileUri( keyfile.getAbsolutePath() );
+            compilerConfig.setKeyInfo( keyInfo );
+        }
+
+        try
+        {
+            CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutableFor( compilerRequirement,
+                                                                                                   compilerConfig,
+                                                                                                   project,
+                                                                                                   profileAssemblyPath );
             compilerExecutable.execute();
-            project.getArtifact().setFile(compilerExecutable.getCompiledArtifact());
-        } catch (PlatformUnsupportedException e) {
-            throw new MojoExecutionException("NMAVEN-900-003: Unsupported Platform: Language = " + language
-                    + ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName, e);
-        } catch (ExecutionException e) {
-            throw new MojoExecutionException("NMAVEN-900-004: Unable to Compile: Language = " + language
-                    + ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName + ", Source Directory = "
-                    + project.getBuild().getSourceDirectory(), e);
+            project.getArtifact().setFile( compilerExecutable.getCompiledArtifact() );
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-900-003: Unsupported Platform: Language = " + language +
+                ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName, e );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-900-004: Unable to Compile: Language = " + language +
+                ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName + ", Source Directory = " +
+                project.getBuild().getSourceDirectory(), e );
         }
     }
 }

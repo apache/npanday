@@ -18,6 +18,8 @@
  */
 package org.apache.maven.dotnet.assembler;
 
+import java.io.File;
+
 /**
  * Provides the information to be included within the assembly. Class can be extended to add additional assembly info
  * parameters.
@@ -71,6 +73,10 @@ public class AssemblyInfo
      */
     private String configuration;
 
+    private String keyName;
+
+    private File keyFile;
+
     /**
      * Default constructor
      */
@@ -91,6 +97,26 @@ public class AssemblyInfo
             .append( "\r\nCulture: " ).append( culture )
             .append( "\r\nConfiguration: " ).append( configuration );
         return sb.toString();
+    }
+
+    public String getKeyName()
+    {
+        return keyName;
+    }
+
+    public void setKeyName( String keyName )
+    {
+        this.keyName = keyName;
+    }
+
+    public File getKeyFile()
+    {
+        return keyFile;
+    }
+
+    public void setKeyFile( File keyFile )
+    {
+        this.keyFile = keyFile;
     }
 
     public String getVersion()
@@ -182,6 +208,7 @@ public class AssemblyInfo
     {
         this.configuration = configuration;
     }
+
 
     public boolean equals( Object o )
     {

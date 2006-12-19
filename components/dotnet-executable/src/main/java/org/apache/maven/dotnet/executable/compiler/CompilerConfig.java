@@ -45,6 +45,8 @@ public interface CompilerConfig
      * @return true if the compiler plugin should compile the test classes, otherwise returns false.
      */
     boolean isTestCompile();
+    
+    KeyInfo getKeyInfo();
 
     /**
      * Returns local repository
@@ -74,5 +76,6 @@ public interface CompilerConfig
      */
     void setLocalRepository( File localRepository );
 
+    void setKeyInfo(KeyInfo keyInfo);
 
 }

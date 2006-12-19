@@ -20,6 +20,7 @@ package org.apache.maven.dotnet.assembler;
 
 import java.io.OutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.dotnet.model.assembly.plugins.AssemblyPlugin;
@@ -42,6 +43,8 @@ public interface AssemblyInfoMarshaller
      */
     void marshal( AssemblyInfo assemblyInfo, MavenProject mavenProject, OutputStream outputStream )
         throws IOException;
+
+    AssemblyInfo unmarshall( InputStream inputStream) throws IOException;    
 
     /**
      * Initializes the marshaller.
