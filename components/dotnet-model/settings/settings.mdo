@@ -86,6 +86,10 @@
                     <name>installRoot</name>
                     <type>String</type>
                 </field>
+                <field>
+                    <name>sdkRoot</name>
+                    <type>String</type>
+                </field>
             </fields>
         </class>
     </classes>
