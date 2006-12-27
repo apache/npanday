@@ -253,7 +253,7 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/asf-import.iml" filepath="$PROJECT_DIR$/asf-import.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven-dotnet.iml" filepath="$PROJECT_DIR$/maven-dotnet.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" />
