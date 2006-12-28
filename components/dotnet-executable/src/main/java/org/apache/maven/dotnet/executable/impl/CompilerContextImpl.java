@@ -153,6 +153,7 @@ public final class CompilerContextImpl
         {
             libraries.add( project.getArtifact() );
         }
+
         return libraries;
     }
 
@@ -241,7 +242,7 @@ public final class CompilerContextImpl
         modules = new ArrayList<Artifact>();
         artifactContext.init( project, config.getLocalRepository() );
 
-        Set<Artifact> artifacts = project.getDependencyArtifacts();
+        Set<Artifact> artifacts = project.getDependencyArtifacts();//Can add WFC deps prior
         for ( Artifact artifact : artifacts )
         {
             String type = artifact.getType();

@@ -187,9 +187,10 @@ namespace NMaven.Utility.Settings
             string installRoot = (string) microsoftRegistryKey.GetValue("InstallRoot");
             if(installRoot == null) throw new ExecutionException("NMAVEN-9011-005");
 
-            nmavenSettingsVendor[] vendors = new nmavenSettingsVendor[2];
+            nmavenSettingsVendor[] vendors = new nmavenSettingsVendor[3];
             DirectoryInfo dirInfo11 = new DirectoryInfo(Path.Combine(installRoot, "v1.1.4322"));
             DirectoryInfo dirInfo20 = new DirectoryInfo(Path.Combine(installRoot, "v2.0.50727"));
+            DirectoryInfo dirInfo30 = new DirectoryInfo(Path.Combine(installRoot, "v3.0"));
             int vendorCounter = 0;
             if (dirInfo11.Exists)
             {
@@ -213,6 +214,19 @@ namespace NMaven.Utility.Settings
                 nmavenSettingsVendorFramework vf11 = new nmavenSettingsVendorFramework();
                 vf11.installRoot = dirInfo20.FullName;
                 vf11.frameworkVersion = "2.0.50727";
+                vendorFrameworks[0] = vf11;
+                vendor.frameworks = vendorFrameworks;
+                vendors[vendorCounter++] = vendor;
+            }
+            if (dirInfo30.Exists)
+            {
+                nmavenSettingsVendor vendor = new nmavenSettingsVendor();
+                vendor.vendorName = "MICROSOFT";
+                vendor.vendorVersion = "3.0";
+                nmavenSettingsVendorFramework[] vendorFrameworks = new nmavenSettingsVendorFramework[1];
+                nmavenSettingsVendorFramework vf11 = new nmavenSettingsVendorFramework();
+                vf11.installRoot = dirInfo30.FullName;
+                vf11.frameworkVersion = "3.0";
                 vendorFrameworks[0] = vf11;
                 vendor.frameworks = vendorFrameworks;
                 vendors[vendorCounter++] = vendor;

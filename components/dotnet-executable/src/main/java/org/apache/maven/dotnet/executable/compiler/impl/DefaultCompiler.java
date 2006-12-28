@@ -140,11 +140,28 @@ public final class DefaultCompiler
             commands.add( "/nologo" );
         }
 
-        if(compilerContext.getKeyInfo().getKeyFileUri() != null)
+        if ( compilerContext.getCompilerRequirement().getVendor().equals( Vendor.MICROSOFT ) &&
+            compilerContext.getCompilerRequirement().getFrameworkVersion().equals( "3.0" ) )
         {
-            commands.add("/keyfile:" + compilerContext.getKeyInfo().getKeyFileUri());
-        } else if(compilerContext.getKeyInfo().getKeyContainerName() != null) {
-            commands.add("/keycontainer:" + compilerContext.getKeyInfo().getKeyContainerName());
+            String wcfRef =
+                "/reference:C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.0\\Windows Communication Foundation\\";
+            //TODO: This is a hard-coded path: Don't have a registry value either.
+            commands.add( wcfRef + "System.ServiceModel.dll" );
+            commands.add( wcfRef + "Microsoft.Transactions.Bridge.dll" );
+            commands.add( wcfRef + "Microsoft.Transactions.Bridge.Dtc.dll" );
+            commands.add( wcfRef + "System.ServiceModel.Install.dll" );
+            commands.add( wcfRef + "System.ServiceModel.WasHosting.dll" );
+            commands.add( wcfRef + "System.Runtime.Serialization.dll" );
+            commands.add( wcfRef + "SMDiagnostics.dll" );
+        }
+
+        if ( compilerContext.getKeyInfo().getKeyFileUri() != null )
+        {
+            commands.add( "/keyfile:" + compilerContext.getKeyInfo().getKeyFileUri() );
+        }
+        else if ( compilerContext.getKeyInfo().getKeyContainerName() != null )
+        {
+            commands.add( "/keycontainer:" + compilerContext.getKeyInfo().getKeyContainerName() );
         }
 
         if ( config.getCommands() != null )

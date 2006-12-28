@@ -76,6 +76,11 @@ public final class TestCompilerMojo
     private String testFrameworkVersion;
 
     /**
+     * @parameter expression = "${frameworkVersion}"
+     */
+    private String frameworkVersion;
+
+    /**
      * The Vendor for the Compiler. Supports MONO and MICROSOFT: the default value is <code>MICROSOFT</code>. Not
      * case or white-space sensitive.
      *
@@ -140,6 +145,10 @@ public final class TestCompilerMojo
         if ( testVendor == null )
         {
             testVendor = vendor;
+        }
+        if ( testFrameworkVersion == null )
+        {
+            testFrameworkVersion = frameworkVersion;
         }
 
         //Requirement

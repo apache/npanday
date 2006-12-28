@@ -13,6 +13,9 @@
                 <groupId>org.apache.maven.dotnet.plugins</groupId>
                 <artifactId>maven-compile-plugin</artifactId>
                 <extensions>true</extensions>
+                        <configuration>
+                            <frameworkVersion>3.0</frameworkVersion>
+                        </configuration>
             </plugin>
         </plugins>
     </build>

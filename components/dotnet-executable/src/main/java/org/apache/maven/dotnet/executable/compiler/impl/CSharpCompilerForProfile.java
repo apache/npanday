@@ -89,7 +89,6 @@ public final class CSharpCompilerForProfile
     public List<String> getCommands()
         throws ExecutionException
     {
-        String fv = compilerContext.getCompilerRequirement().getFrameworkVersion();
         File path = new File( compilerContext.getCompilerCapability().getAssemblyPath() );
         if ( !path.exists() )
         {
