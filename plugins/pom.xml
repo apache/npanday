@@ -12,6 +12,7 @@
         <module>maven-test-plugin</module>
         <module>maven-webapp-plugin</module>
         <module>maven-xsd-plugin</module>
+        <module>maven-xsp-plugin</module>
         <module>maven-wsdl-plugin</module>
         <module>maven-install-plugin</module>
         <module>maven-resgen-plugin</module>

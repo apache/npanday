@@ -133,6 +133,8 @@ public class NetExecutableFactoryImpl
         throws PlatformUnsupportedException
     {
 
+        if(commands == null) commands = new ArrayList<String>();
+
         try
         {
             processor.process( vendorInfo );
