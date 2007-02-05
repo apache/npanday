@@ -10,7 +10,7 @@ Configuration
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
+                <groupId>org.apache.maven.dotnet.plugins</groupId>
                 <artifactId>maven-wsdl-plugin</artifactId>
                 <executions>
                     <execution>

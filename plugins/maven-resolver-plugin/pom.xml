@@ -13,4 +13,11 @@
     <description>
         Maven Plugin for .NET
     </description>
+  <distributionManagement>
+    <site>
+      <id>nmaven-apache-site</id>
+      <name>NMaven Site</name>
+      <url>file://${basedir}/../../../www/plugins/maven-resolver-plugin</url>
+    </site>
+  </distributionManagement>
 </project>

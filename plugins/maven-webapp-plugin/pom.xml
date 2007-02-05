@@ -26,4 +26,11 @@
             <version>2.0</version>
         </dependency>
     </dependencies>
+  <distributionManagement>
+    <site>
+      <id>nmaven-apache-site</id>
+      <name>NMaven Site</name>
+      <url>file://${basedir}/../../../www/plugins/maven-webapp-plugin</url>
+    </site>
+  </distributionManagement>
 </project>

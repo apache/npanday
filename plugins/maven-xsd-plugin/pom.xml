@@ -22,4 +22,11 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+  <distributionManagement>
+    <site>
+      <id>nmaven-apache-site</id>
+      <name>NMaven Site</name>
+      <url>file://${basedir}/../../../www/plugins/maven-xsd-plugin</url>
+    </site>
+  </distributionManagement>
 </project>

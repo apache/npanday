@@ -10,7 +10,6 @@
         </links>
         <menu name="General Info">
             <item name="About" href="index.html"/>
-            <item name="How to Use" href="how-to-use.html"/>
         </menu>
         ${reports}
     </body>
