@@ -6,6 +6,8 @@ Features
 
  * DotGNU Support: C#
 
+ * Multiple Framework Version Support: 1.1, 2.0, 3.0
+
  * NUnit support
 
  * Resource generation and embedding
@@ -20,3 +22,4 @@ Features
 
  * nmaven-settings file for selecting the environment (MONO/MS/GNU, vendor/framework version, install location, etc)
 
+ * Assembly Signing

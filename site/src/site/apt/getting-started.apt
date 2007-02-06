@@ -16,17 +16,17 @@ Sections
 
  * {{{getting-started.html#Generating Resources}Generating Resources}}
 
+ * {{{getting-started.html#Signing Assemblies}Signing Assemblies}}
+
+ * {{{getting-started.html#Using NMaven Settings File}Using NMaven Settings File}}
+
 * {Building NMaven}
 
  Make sure that you have jdk1.5+ installed and then do the following:
 
-  [[1]] Download the latest nmaven-components and nmaven-plugin project archives from the sourceforge site.
+  [[1]] Do an SVN checkout: svn co http://svn.apache.org/repos/asf/incubator/nmaven/trunk nmaven
 
-  [[2]] Unarchive the nmaven-components. Build it by typing "mvn install" from the root directory.
-
-  [[3]] Unarchive the nmaven-plugins. Goto the scripts directory and run the appropriate batch or shell script for
-   your enviornment.  This does a bootstrap build of Java jars and .NET assemblies and places the 3rd party .NET libraries
-   in the local maven repo.
+  [[2]] Execute bootstrap-build.bat (or bootstrap-build.sh) from the nmaven directory.
 
  Building on Linux, may take some extra steps. By default, on many Linux environments, the GNU Compiler for Java is already
  installed. The current GNU version will not work with NMaven. To check which version the system uses, type "java -version"
@@ -85,11 +85,7 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
 
 * {Unit Testing with NUnit}
 
- Prior to being able to unit test with NUnit, you must install the nunit.framework.dll into the local maven repository.
- Go to the scripts directory in the nmaven-plugins download and run the script install-1.1 (.NET 1.1 environment)
- or install-2.0 (.NET 2.0 environment).
-
- After installing NUnit, add the org.nunit dependency to your pom.xml (as shown below). You
+ Add the org.nunit dependency to your pom.xml (as shown below). You
  will only need to add the nmaven-test-plugin to the pom under the following circumstances:
 
   [[1]] If you do not add the nunit bin to your path;
@@ -285,6 +281,8 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
     </dependencies>
 +----+
 
+ Note that there is no current support for the use of classifiers within NMaven.
+
 * {Generating Resources}
 
  There are four types of resources to include within an assembly: linked resources, embedded resources,
@@ -303,3 +301,122 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
 | src/main/resources/win32icon | Embed the icon within the assembly (icon will show up in file viewer) |
 *-------------------------+--------------------------------------------+
 
+* {Signing Assemblies}
+
+ NMaven supports compile-time signing of assemblies. You can sign assemblies by using the keyfile field in the
+ maven-compile-plugin.
+
++----+
+  <build>
+    <sourceDirectory>src/main/csharp</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <keyfile>sample.snk</keyfile>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++----+
+
+ For both Mono framework versions 1.1/2.0 and Microsoft 2.0, NMaven uses the keyfile and keycontainer compiler
+ parameters. For Microsoft 1.1, NMaven adds the KeyName and KeyFile entries into the project's AssemblyInfo.cs.
+ Future NMaven features will include delayed-signing and post-compilation signing of assemblies.
+
+ * Using NMaven Settings File
+
+ On Windows, NMaven will read the Windows Registry - regarding information about Mono, Microsoft and DotGNU
+ installations -  and will then output the registry info into a ~/.m2/nmaven-settings.xml file. This file assists
+ NMaven in determining the capabilities of the build platform and in choosing the correct compiler and vendor for the
+ build. By going into the defaultSetup tag, you can change which vendor and framework version that NMaven will use
+ without needing to specify this information within the various pom.xml files.
+
+ In the case of Linux, there is no registry so the nmaven-settings.xml file is not automatically generated. You may,
+ however, create one by hand, allowing you to specify the location of DotGNU and Mono implementations.
+
+ +----+
+ <?xml version="1.0" encoding="utf-8"?>
+<nmavenSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <operatingSystem>Microsoft Windows NT 5.1.2600 Service Pack 2</operatingSystem>
+  <defaultSetup>
+    <vendorName>MICROSOFT</vendorName>
+    <vendorVersion>2.0.50727</vendorVersion>
+    <frameworkVersion>2.0.50727</frameworkVersion>
+  </defaultSetup>
+  <vendors>
+    <vendor>
+      <vendorName>MICROSOFT</vendorName>
+      <vendorVersion>1.1.4322</vendorVersion>
+      <frameworks>
+        <framework>
+          <frameworkVersion>1.1.4322</frameworkVersion>
+          <installRoot>C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322</installRoot>
+        </framework>
+      </frameworks>
+    </vendor>
+    <vendor>
+      <vendorName>MICROSOFT</vendorName>
+      <vendorVersion>2.0.50727</vendorVersion>
+      <frameworks>
+        <framework>
+          <frameworkVersion>2.0.50727</frameworkVersion>
+          <installRoot>C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727</installRoot>
+        </framework>
+      </frameworks>
+    </vendor>
+    <vendor>
+      <vendorName>MICROSOFT</vendorName>
+      <vendorVersion>3.0</vendorVersion>
+      <frameworks>
+        <framework>
+          <frameworkVersion>3.0</frameworkVersion>
+          <installRoot>C:\WINDOWS\Microsoft.NET\Framework\v3.0</installRoot>
+        </framework>
+      </frameworks>
+    </vendor>
+    <vendor>
+      <vendorName>MONO</vendorName>
+      <vendorVersion>1.1.13.8</vendorVersion>
+      <frameworks>
+        <framework>
+          <frameworkVersion>1.1.4322</frameworkVersion>
+          <installRoot>C:\Program Files\Mono-1.1.13.8\bin</installRoot>
+        </framework>
+        <framework>
+          <frameworkVersion>2.0.50727</frameworkVersion>
+          <installRoot>C:\Program Files\Mono-1.1.13.8\bin</installRoot>
+        </framework>
+      </frameworks>
+    </vendor>
+    <vendor>
+      <vendorName>MONO</vendorName>
+      <vendorVersion>1.1.18</vendorVersion>
+      <isDefault>true</isDefault>
+      <frameworks>
+        <framework>
+          <frameworkVersion>1.1.4322</frameworkVersion>
+          <installRoot>C:\Program Files\Mono-1.1.18\bin</installRoot>
+        </framework>
+        <framework>
+          <frameworkVersion>2.0.50727</frameworkVersion>
+          <installRoot>C:\Program Files\Mono-1.1.18\bin</installRoot>
+        </framework>
+      </frameworks>
+    </vendor>
+    <vendor>
+      <vendorName>DotGNU</vendorName>
+      <vendorVersion>0.7.2</vendorVersion>
+      <frameworks>
+        <framework>
+          <frameworkVersion>2.0.50727</frameworkVersion>
+          <installRoot>C:\Program Files\Portable.NET\0.7.2\bin</installRoot>
+        </framework>
+      </frameworks>
+    </vendor>
+  </vendors>
+</nmavenSettings>
++----+

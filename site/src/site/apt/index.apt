@@ -1,15 +1,15 @@
 About NMaven
 
- NMaven provides Maven 2.x plugins to support building of .NET applications. Technically, NMaven is its own framework
+ NMaven provides Maven 2.x plugins to support building of .NET applications. NMaven is its own framework
  that provides the correct .NET compiler based on the environment (vendor/language/operating system).  This framework
- allows the developer to easily add additional compiler support by implementing the NetCompiler interface and providing
- a compiler-plugins.xml file in the project directory. NMaven leverages Maven (and its plugin architecture) for the build
- lifecycle. So you can think of NMaven as a small, compiler-plugin-framework on top of the larger Maven build-framework.
+ leverages Maven (and its plugin architecture) for the build
+ lifecycle, making it a small, compiler-plugin-framework on top of the larger Maven build-framework.
 
 RoadMap
 
- The primary goal of NMaven is to provide a Maven build environment for all Mono compatible compilers. Specific, 
- near-term goals include:
+ The primary goal of NMaven is to provide a common Maven build environment across .NET compilers (C#, VB),
+ vendors (Microsoft, Novell, DotGNU) and platforms (Windows, Linux). Specific, near-term goals include:
 
- * Signing of Assemblies
- 
+ * .NET Integration Test module
+ * Expanded Support for Assembly Signing
+ * Support for Classifiers
