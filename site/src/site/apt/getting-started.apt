@@ -327,7 +327,7 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
  parameters. For Microsoft 1.1, NMaven adds the KeyName and KeyFile entries into the project's AssemblyInfo.cs.
  Future NMaven features will include delayed-signing and post-compilation signing of assemblies.
 
- * Using NMaven Settings File
+* {Using NMaven Settings File}
 
  On Windows, NMaven will read the Windows Registry - regarding information about Mono, Microsoft and DotGNU
  installations -  and will then output the registry info into a ~/.m2/nmaven-settings.xml file. This file assists
@@ -338,7 +338,7 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
  In the case of Linux, there is no registry so the nmaven-settings.xml file is not automatically generated. You may,
  however, create one by hand, allowing you to specify the location of DotGNU and Mono implementations.
 
- +----+
++----+
  <?xml version="1.0" encoding="utf-8"?>
 <nmavenSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <operatingSystem>Microsoft Windows NT 5.1.2600 Service Pack 2</operatingSystem>

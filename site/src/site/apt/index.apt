@@ -11,5 +11,7 @@ RoadMap
  vendors (Microsoft, Novell, DotGNU) and platforms (Windows, Linux). Specific, near-term goals include:
 
  * .NET Integration Test module
+
  * Expanded Support for Assembly Signing
+ 
  * Support for Classifiers
