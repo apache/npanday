@@ -1,26 +1,169 @@
-Configuring the Environment
+Sections
 
-* How NMaven Chooses the Compiler Environment
+ * {{{environment-configuration.html#Configuring the Environment}Configuring the Environment}}
 
- NMaven chooses the correct compiler by the following rules:
+ * {{{environment-configuration.html#Sample Configuration Files}Sample Configuration Files}}
 
-  [[1]] Is the \<vendor/> tag set? If it is set, go to (2). If not, then detect operating system. If OS is windows,
-   set the vendor to MICROSOFT. If OS is not windows, set the vendor to MONO.
+{Configuring the Environment}
 
-  [[2]] Is the \<language> tag set? If it is set, go to (3). If not, then set the language to C_SHARP.
+* Introduction
 
-  [[3]] Is the \<frameworkVersion/> tag set? If it is set, go to (4). If not, then set the version to 2.0.50727
+ NMaven is based on the concept of platform capabilities and platform requirements. Examples of platform capabilities include:
 
-  [[4]] Is the \<profile> tag set? If if is set, go to (5). If not, then set to the value "FULL".
+  [[1]] Linux (or Windows OS)
 
-  [[5]] Is there a match in the compiler-plugins.xml for the given vendor, language, frameworkVersion, profile and operating system?
-   If not, fail the build. If so, instantiate the correct compiler plugin.
+  [[2]] Mono 1.1.18 installed, Microsoft 2.0 installed
 
-  [[6]] If vendor is MICROSOFT, then set the execution path to C:\WINDOWS\Microsoft.NET\Framework\v${frameworkVersion}\${executable}.
-   If this directory does not exist, fail the build. Note that this execution path is hard-coded, and precludes you from running the
-   compiler from a non-standard location. In a future release, NMaven will read the value from the registry. If vendor
-   is not MICROSOFT, then NMaven will run whatever is specified within the path.
+  [[3]] PHP .NET compiler (from 3rd party)
 
+ Platform requirements are those build requirements specified by the developer. Typically, the requirements are given
+ either within the pom.xml or the nmaven-settings.xml file. Examples of platform requirements include:
+
+  [[1]] C# target language
+
+  [[2]] Microsoft SDK
+
+  [[3]] Framework version 2.0
+
+  [[3]] Compact Profile
+
+ It is up to NMaven to understand what the developer is asking for (platform requirements) and to determine whether the
+ build machine can support the requirements (with its platform capabilities). If the capabilities match the requirements, NMaven
+ will return an executable (or compiler) that satifies the requirements.
+
+* Capability/Requirement Matching
+
+[./images/matching_diagram.png]
+
+ Consider the sequence diagram above.
+ The developer provides the compiler requirements - vendor, vendor version, framework version, language and profile - within the pom.xml build file.
+
++----+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compile-plugin</artifactId>
+    <extensions>true</extensions>
+    <configuration>
+        <vendor>MICROSOFT</vendor>
+        <language>C_SHARP</language>
+        <frameworkVersion>1.1.4322</frameworkVersion>
+        <profile>COMPACT</profile>
+    </configuration>
+</plugin>
+
++----+
+
+ Next, the <<<CompilerMojo>>> class instance creates a <<<CompilerConfig>>> object (2), which contains artifact type (library, module) and key info.
+ The compiler needs the configuration information during execution, but the information is not necessary for NMaven to match the correct compiler.
+
+ The <<<CompilerMojo>>> object invokes the <<<NetExecutableFactory.getCompilerExecutableFor>>> method, passing in the <<<CompilerConfig>>>
+ and <<<CompilerRequirement>>> objects as parameters (3). In step (18), the <<<getCompilerExecutableFor>>> method returns a fully initialized
+ <<<CompilerExecutable>>> object. From the <<<CompilerMojo>>> class instance perspective, it simply constructs <<<CompilerConfig>>>
+ and <<<CompilerRequirement>>> objects based on parameters within the pom and gets back a fully initialized <<<CompilerExecutable>>> object from the <<<NetExecutableFactory>>>.
+
+ Now let’s dig a little deeper and see what’s going on underneath. The <<<NetExecutableFactory>>> object creates a <<<VendorInfo>>> object
+ (4) and populates the <<<VendorInfo>>> object with information – vendor, vendor version and framework version – from the
+ <<<CompilerRequirement>>> object (5). In short, we have a transfer of specific vendor information from the <<<CompilerRequirement>>> object
+  to the <<<VendorInfo>>> object because the <<<StateMachineProcessor>>> is only concerned with the vendor information, which
+  is the only required information for making a capability match (others are optionally used, if specified, but no attempt
+  is made to infer them if they don't exist).
+
+  The <<<StateMachineProcessor>>> fills in the missing vendor info (6, 7) based on a set of rules. Vendor-info may
+   be missing for any number of reasons. For example, a project may compile across multiple vendors (Microsoft/Novell)
+   or framework versions. In this case, the developer may choose to leave say the \<vendor/> and \<frameworkVersion/> tags
+   within the pom.xml blank. The <<<StateMachineProcessor>>> object uses the ~/.m2/nmaven-settings.xml file (if it exists)
+   to assist in infering the vendor information for the specific build machine. As you can see below, within the nmaven-settings.xml file
+   there is a default setup (which the developer can change).
+
++----+
+<nmavenSettings>
+  <defaultSetup>
+    <vendorName>MICROSOFT</vendorName>
+    <vendorVersion>2.0.50727</vendorVersion>
+    <frameworkVersion>2.0.50727</frameworkVersion>
+  </defaultSetup>
+  ...
+</nmavenSettings>
++----+
+
+  There are 23 states of vendor-info and both a start and stop state (for a total of 25 states).
+  The notation is \{Vendor, Vendor Version, Framework Version}. For Vendor, M denotes
+  Microsoft, N denotes Novell, G denotes DotGNU and F denotes false (unknown vendor).
+  For Vendor Version and Framework Version, T denotes true (it exists),  while F denotes false (does not exist). So
+  NFT means that the NMaven knows that it needs to choose a Novell (MONO) compiler and knows the framework version but
+  not the vendor version.
+
+  The 23 vendor-info states are defined below. They are divided between general states, states that can be determined through an
+  nmaven-settings file and states that can be determined without an nmaven-settings file.
+
+*-----------------------------------------------------------------------------------+----------------------------------+
+| <<STATE>>                                       | <<Description>>
+*-----------------------------------------------------------------------------------+----------------------------------+
+|  <<General States>>
+*-----------------------------------------------------------------------------------+----------------------------------+
+| MTT      | Vendor is Microsoft, vendor version exists, framework version exists
+*-----------------------------------------------------------------------------------+----------------------------------+
+| MTF      | Vendor is Microsoft, vendor version does not exist, framework version exists
+*-----------------------------------------------------------------------------------+----------------------------------+
+| MFT      | Vendor is Microsoft, vendor version does not exist, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| NTT      | Vendor is Novell, vendor version exists, framework version exists
+*-----------------------------------------------------------------------------------+----------------------------------+
+| <<Settings File States>>
+*-----------------------------------------------------------------------------------+----------------------------------+
+| MFF       | Vendor is Microsoft, vendor version does not exist, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| FTF       | Vendor is unknown, vendor version exists, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| FFT       | Vendor is unknown, vendor version does not exist, framework version exists
+*-----------------------------------------------------------------------------------+----------------------------------+
+| FTT       | Vendor is unknown, vendor version exists, framework version exists
+*-----------------------------------------------------------------------------------+----------------------------------+
+| FFF       | Vendor is unknown, vendor version does not exist, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| NFT       | Vendor is Novell, vendor version does not exist, framework version exists
+*-----------------------------------------------------------------------------------+----------------------------------+
+| NTF       | Vendor is Novell, vendor version exists, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| NTT       | Vendor is Novell, vendor version exists, framework version exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| NFF       | Vendor is Novell, vendor version does not exist, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| GFF       | Vendor is GNU vendor version does not exist, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| <<No Settings File States>>
+*-----------------------------------------------------------------------------------+----------------------------------+
+| MFF_NoSettings  | Vendor is Microsoft, vendor version does not exist, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| NFT_NoSettings  | Vendor is Novell, vendor version exists, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| NTF_NoSettings  | Vendor is Novell, vendor version exists, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| FTF_NoSettings  | Vendor is unknown, vendor version exists, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| FFT_NoSettings  | Vendor is unknown, vendor version does not exist, framework version exists
+*-----------------------------------------------------------------------------------+----------------------------------+
+| FTT_NoSettings  | Vendor is unknown, vendor version exists, framework version exists
+*-----------------------------------------------------------------------------------+----------------------------------+
+| FFF_NoSettings  | Vendor is unknown, vendor version does not exist, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| NFF_NoSettings  | Vendor is Novell, vendor version does not exist, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+| GFF_NoSettings  | Vendor is GNU vendor version does not exist, framework version does not exist
+*-----------------------------------------------------------------------------------+----------------------------------+
+
+ Going back to the sequence diagram, the <<<NetExecutableFactory>>> object fills in the missing vendor information into
+ the <<<CompilerRequirement>>> object (8): we now have a
+ complete <<<CompilerRequirement>>> to use for matching. The <<<NetExecutableFactory>>> object initializes the <<<CompilerContext>>>,
+ passing in the <<<CompilerRequirement>>> and <<<CompilerConfig>>> objects. During initialization, the <<<CompilerContext>>> object invokes
+ <<<CompilerMatcher.matchCompilerCapabilitiesFor(requirement)>>> (10). The <<<CompilerMatcher>>> class instance creates a list of platform
+ capabilities (11) and matches <<<CompilerCapability>>> properties to the <<<CompilerRequirement>>> properties (12). The
+ <<<CompilerMatcher>>> gets the class name of the <<<CompilerExecutable>>> by invoking <<<CompilerRequirement.getPluginClassName()>>> (13).
+ The <<<CompilerMatcher>>> dynamically instatiates and initializes the <<<CompilerExecutable>>> (14).
+
+ The <<<CompilerExecutable>>> is returned to the <<<CompilerMojo>>> (16, 17, 18), which then executes the Compiler (19).
+
+{Sample Configuration Files}
 
 * CSharp2.0:exe:Microsoft
 
@@ -49,7 +192,37 @@ Configuring the Environment
 
 +----+
 
-* CSharp1.1:exe:Microsoft
+* CSharp3.0:exe:Microsoft (on Windows)
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.ms.csharp</groupId>
+    <artifactId>it-0001</artifactId>
+    <packaging>exe</packaging>
+    <version>0.1.0.0</version>
+    <name>csharp: it-0001</name>
+
+    <build>
+	<sourceDirectory>src/main/csharp</sourceDirectory>
+	<testSourceDirectory>src/test/csharp</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+                <configuration>
+                    <frameworkVersion>3.0</frameworkVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+
+
+* CSharp1.1:exe:Microsoft (on Windows)
 
 +----+
 
@@ -78,6 +251,37 @@ Configuring the Environment
 </project>
 
 +----+
+
+* CSharp1.1:exe:Mono (on Linux)
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.ms.csharp</groupId>
+    <artifactId>it-0001</artifactId>
+    <packaging>exe</packaging>
+    <version>0.1.0.0</version>
+    <name>csharp: it-0001</name>
+
+    <build>
+	<sourceDirectory>src/main/csharp</sourceDirectory>
+	<testSourceDirectory>src/test/csharp</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+                <configuration>
+                    <frameworkVersion>1.1.4322</frameworkVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
++----+
+
 
 * VB2.0: library:MS
 
@@ -110,7 +314,7 @@ Configuring the Environment
 
 +----+
 
-* CSharp1.1:module:Mono
+* CSharp1.1:module:Mono (on Windows)
 
  You will only need to use the MONO vendor field if you want to build MONO on windows: MONO is the default vendor for
  other OS's.
