@@ -9,6 +9,6 @@
         <groupId>NMaven.Utility.Settings</groupId>
         <artifactId>SettingsGenerator</artifactId>
         <versionId>0.14</versionId>
-        <type>exe</type>
-    </netDependency>    
+       <type>exe</type>
+   </netDependency>
 </netDependencies>

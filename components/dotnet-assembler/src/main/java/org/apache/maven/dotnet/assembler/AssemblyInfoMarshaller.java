@@ -39,11 +39,18 @@ public interface AssemblyInfoMarshaller
      * @param assemblyInfo the assembly info
      * @param mavenProject the maven project
      * @param outputStream the output stream to write to (currently unused)
-     * @throws IOException if there was a problem writing out the class file.
+     * @throws IOException if there was a problem writing out the class file
      */
     void marshal( AssemblyInfo assemblyInfo, MavenProject mavenProject, OutputStream outputStream )
         throws IOException;
 
+    /**
+     * Unmarshalls an AssemblyInfo.* class file.
+     *
+     * @param inputStream the input stream of the AssemblyInfo.* class file
+     * @return an AssemblyInfo object for the specified input stream
+     * @throws IOException if there was a problem reading the AssemblyInfo class file
+     */
     AssemblyInfo unmarshall( InputStream inputStream) throws IOException;    
 
     /**

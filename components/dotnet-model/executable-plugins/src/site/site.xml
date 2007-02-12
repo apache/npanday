@@ -13,7 +13,7 @@
       <item name="DotGNU" href="http://dotgnu.org/"/>
     </links>
     <menu name="General Info">
-      <item name="About" href="compiler-plugin.html"/>
+      <item name="About" href="executable-plugin.html"/>
     </menu>
     ${reports}
   </body>

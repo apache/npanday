@@ -1,0 +1,120 @@
+Adding Executables
+
+* Adding Executable Info to Config Files
+
+ NMaven has a concept of two types of executables:
+
+ [[1]] An executable plugin that exists in a predetermined place on the file system. These are typically executables
+ that are part of the .NET framework or part of some other 3rd party program.
+
+ [[2]] An executable plugin that is resolved from a Maven repo. The NMaven .NET plugins, nmaven-utility-rex and nmaven-utility-settings
+ fall into this category.
+
+ []
+
+ How you handle each case is slightly different. In the first case, where the executable is already installed on the
+ file system, you add support for the executable by adding an entry
+ in the {{{components/dotnet-model/executable-plugins/executable-plugin.html}executable-plugins.xml}} file. Take the example below where XSD is part of the .NET framework.
+ The MS:XSD:SCHEMA entry uses a standard DefaultNetExecutable implementation. The <<executable>>
+ tag denotes the command as it is executed from the commandline, in this case xsd.  The <<commandFilter>> gives a list
+ of command options that the plugin will accept from the invoking AbstractMojo implementation.
+
+ NMaven will look at the <<vendor>> and <<framework>> to see if the xsd executable exists within the framework's install root.
+ If it does, then it constructs the absolute path. If it does not find the file, it will execute without a path (so
+ in this case you will need to make sure that the executable exists within the system path).
+
++----+
+
+ <executablePlugins>
+  <executablePlugin>
+    <identifier>MS:XSD:SCHEMA</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>xsd</executable>
+    <profile>XSD:SCHEMA</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+    <commandFilter>
+      <includes>
+        <include>classes</include>
+        <include>dataset</include>
+        <include>element</include>
+        <include>fields</include>
+        <include>enableDataBinding</include>
+        <include>namespace</include>
+        <include>language</include>
+        <include>out</include>
+        <include>o</include>
+        <include>type</include>
+        <include>uri</include>
+        <include>parameters</include>
+      </includes>
+    </commandFilter>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>MS:RESGEN</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>resgen</executable>
+    <profile>RESGEN</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+</executablePlugins>
+
++----+
+
+ In the second case, where the executable is not already installed, you add an entry within the net-dependencies.xml file.
+ This file tells NMaven how to resolve the executable from a Maven repository.
+
++----+
+
+ <netDependencies>
+    <netDependency>
+        <groupId>NMaven.Utility.ResX</groupId>
+        <artifactId>resx</artifactId>
+        <versionId>0.14</versionId>
+        <type>exe</type>
+    </netDependency>
+    <netDependency>
+        <groupId>NMaven.Utility.Settings</groupId>
+        <artifactId>SettingsGenerator</artifactId>
+        <versionId>0.14</versionId>
+       <type>exe</type>
+   </netDependency>
+</netDependencies>
+
++----+
+
+* Executing an executable from a Mojo
+
+ In the case where you have added the executable entry in the executable-plugins.xml file,
+  you should use the NetExecutableFactory.getNetExecutableFor method within the Mojo's execute method.
+
++----+
+             netExecutableFactory.getNetExecutableFor(vendor, frameworkVersion, profile,
+                    project, getCommands(), null).execute();
++----+
+
+
+ In the case where you have added the net dependency entry in the net-dependencies.xml file,
+  you should use the NetExecutableFactory.getNetExecutableFromRepository method within the Mojo's execute method.
+
++----+
+              netExecutableFactory.getNetExecutableFromRepository("NMaven.Utility.ResX", "resx",
+                    vendorInfo, project, localRepository, commands).execute();
++----+

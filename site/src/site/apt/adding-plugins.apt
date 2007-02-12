@@ -1,17 +1,24 @@
 Adding Compilers
 
- To add support for additional compilers, add a compiler-plugins.xml file, similar to
- the examples below, in the root of each module that you are building. NMaven will pick it up and add it to the list
- of supported compilers. Of course, if your compiler does not work with the DefaultCompiler, you will need to
- create your own implementation of org.apache.maven.dotnet.executable.NetExecutable and add the class-name implementation to
- the pluginClass tag.
+ You can add support for additional compilers in two different ways:
+
+ [[1]] Add a compiler-plugins.xml file, similar to the examples below, in the root of each module that you are building.
+ NMaven will pick it up and add it to the list of supported compilers.
+
+ [[2]] Add a compilerPlugin entry to the master file: components/dotnet-core/src/resources/META-INF/nmaven/compiler-plugins.xml.
+
+  []
+
+ Of course, if your compiler does not work with the <<<org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler>>>, you will also need to
+ create your own implementation of <<<org.apache.maven.dotnet.executable.compiler.CompilerExecutable>>> and add the
+ fully-qualified class name implementation to the pluginClass tag.
 
 * compiler-plugins.xml
 
-  * {{{http://svn.sourceforge.net/viewvc/nmaven/components/tags/REL_0_12/nmaven-core/src/main/resources/META-INF/nmaven/compiler-plugins.xml?view=markup}compiler-plugins.xml}}
+ * {{{https://svn.apache.org/repos/asf/incubator/nmaven/trunk/components/dotnet-core/src/main/resources/META-INF/nmaven/compiler-plugins.xml}compiler-plugins.xml}}
   is the master plugin file.
 
- * {{{http://nmaven.sourceforge.net/components/nmaven-model/nmaven-compile-plugin/compiler-plugin.html}Compiler Plugins Model}}
+ * {{{http://incubator.apache.org/nmaven/components/dotnet-model/compiler-plugins/compiler-plugin.html}Compiler Plugins Model}}
 
  Example:
 
@@ -86,7 +93,7 @@ Adding Compilers
 
  NMaven matches a plugin based on four user-specified parameters - vendor, language, framework version and profile - and on one
  platform parameter: operating system. Sometimes a user may want to target, say C# version 2.0.50727 but would like to
- use a different NetCompiler implementation than the standard one. The \<profile/> field gives this capability. The
+ use a different CompilerExecutable implementation than the standard one. The \<profile/> field gives this capability. The
  profile also has other uses such using a different set of command filters; or, as in the case of
  the COMPACT profile, specifying a new set of system assemblies.
 
@@ -136,9 +143,16 @@ Adding Assembly Plugins
 
 * assembly-plugins.xml
 
- For each compiler that implements a new language, you will also need to add an assembly-plugin entry. Currently, this
- needs to be placed in the nmaven-core jar (file system access in future release). The AssemblyInfoMarshaller tells the
- nmaven framework how to format the AssemblyInfo.*.
+ For each compiler that implements a new language, you will also need to 1) add an assembly-plugin entry to the
+ components/dotnet-core/src/resources/META-INF/nmaven/assembly-plugins.xml file and 2) implement a new AssemblyInfoMarshaller
+  interface (provided the default one does not work).
+
+ The assembly-plugin entry consists of an <<identifier>> (for traceability),
+ a <<pluginClass>>, which provides the fully-qualified class name of the
+ {{{https://svn.apache.org/repos/asf/incubator/nmaven/trunk/components/dotnet-assembler/src/main/java/org/apache/maven/dotnet/assembler/AssemblyInfoMarshaller.java}AssemblyInfoMarshaller}} implementation,
+ the <<language>> (which should match one of the supported .NET languages within the compiler-plugins.xml) and an <<extension>>
+ that NMaven will use in the class file name (the CS assembly plugin will generate a class file called
+ AssemblyInfo.cs).
 
 +----+
 
@@ -162,3 +176,4 @@ Adding Assembly Plugins
 </assemblyPlugins>
 
 +----+
+

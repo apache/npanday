@@ -17,9 +17,12 @@
       <item name="Features" href="features.html"/>
       <item name="Getting Started" href="getting-started.html"/>
       <item name="Plugins" href="/plugins/index.html"/>
-      <item name="Adding Compilers" href="adding-plugins.html"/>
       <item name="Configuration" href="environment-configuration.html"/>
-      <item name="JavaDocs" href="apidocs/index.html"/>      
+    </menu>
+    <menu name="Developer Documentation">
+      <item name="Adding Compilers" href="adding-plugins.html"/>
+      <item name="Adding Executables" href="adding-executables.html"/>
+      <item name="JavaDocs" href="apidocs/index.html"/>
     </menu>
     ${reports}
   </body>
