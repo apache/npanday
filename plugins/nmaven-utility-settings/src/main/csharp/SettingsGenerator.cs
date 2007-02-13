@@ -271,10 +271,16 @@ namespace NMaven.Utility.Settings
         private bool isValidVersion(String version)
         {
             string[] vendorVersionToken = version.Split('.');
-            float testValue = 0f;
             foreach (string token in vendorVersionToken)
             {
-                if (!Single.TryParse(token, out testValue)) return false;
+            	try
+            	{
+            		Single.Parse(token);
+            	}
+            	catch(Exception)
+            	{
+            		return false;
+            	}
             }
             return true;
         }

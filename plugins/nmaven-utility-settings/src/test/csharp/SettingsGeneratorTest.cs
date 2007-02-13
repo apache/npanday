@@ -53,7 +53,7 @@ namespace NMaven.Utility.Settings {
             }
             catch(ExecutionException e)
             {
-                if(!e.ToString().Contains("NMAVEN-9011-000")) Assert.Fail("Unexpected failure code: Message = "
+                if(e.ToString().IndexOf("NMAVEN-9011-000") == 0) Assert.Fail("Unexpected failure code: Message = "
                     + e.ToString());;
             }
 		}
@@ -67,7 +67,7 @@ namespace NMaven.Utility.Settings {
             }
             catch(ExecutionException e)
             {
-                if(!e.ToString().Contains("NMAVEN-9011-002")) Assert.Fail("Unexpected failure code: Message = "
+                if(e.ToString().IndexOf("NMAVEN-9011-002") == 0) Assert.Fail("Unexpected failure code: Message = "
                     + e.ToString());;
             }
 		}
@@ -95,7 +95,7 @@ namespace NMaven.Utility.Settings {
             }
             catch(ExecutionException e)
             {
-                if(!e.ToString().Contains("NMAVEN-9011-001")) Assert.Fail("Unexpected failure code: Message = "
+                if(e.ToString().IndexOf("NMAVEN-9011-001") == 0) Assert.Fail("Unexpected failure code: Message = "
                     + e.ToString());;
             }
 		}
