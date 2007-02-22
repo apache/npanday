@@ -1,3 +1,7 @@
+Prerequisites
+* csc.exe must be available on your PATH.  Usually it can be found in C:\WINDOWS\Microsoft.NET\Framework\[version]
+* NUnit must be installed or otherwise configured, see http://incubator.apache.org/nmaven/getting-started.html
+
 Initial Build
 * On the first build, execute the bootstrap-build script. On subsequent builds, you can just type mvn install from
 the command prompt.
