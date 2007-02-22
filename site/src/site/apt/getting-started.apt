@@ -22,12 +22,37 @@ Sections
 
 * {Building NMaven}
 
- Make sure that you have jdk1.5+ installed and then do the following:
+** Prerequisites
+
+ Prior to building NMaven, make sure that you have the following installed on your system:
+
+  [[1]] {{{ http://java.sun.com/javase/downloads/index_jdk5.jsp} JDK 5.0 Update x}}
+
+  [[2]] {{{http://msdn2.microsoft.com/en-us/netframework/default.aspx} Microsoft .NET Framework}} (1.1+)
+  OR {{{http://www.mono-project.com} Mono}} (1.1.13+ for Windows and 1.1.18+ for Linux)
+
+  [[3]] Subversion client 1.3+ (although 1.4 will soon be required). Click here for
+ {{{ http://subversion.tigris.org/servlets/ProjectDocumentView?documentID=35379&showInfo=true} Windows Subversion Client}}.
+
+  [[4]] {{{http://nunit.org/index.php?p=download} NUnit 2.2+}}
+
+** Bootstrap Build
+
+  To build NMaven:
 
   [[1]] Do an SVN checkout: svn co https://svn.apache.org/repos/asf/incubator/nmaven/trunk nmaven.
 
-  [[2]] If compiling on Windows, make sure that the csc executable is located on the system path. This is only needed
-  for the initial bootstrap build and can be removed afterwards.
+  [[2]] If compiling on Windows:
+
+   [[a]] the csc executable directory should be located on the system path. This is only needed for the initial bootstrap build
+   and may be removed afterwards.
+
+   [[b]] the directory path containing nunit-console should also be located on the system path. After the bootstrap build, you should leave
+   the directory path containing the nunit-console executable within the system path. For other options, see:
+   {{{getting-started.html#Unit Testing with NUnit}Unit Testing with NUnit}}
+
+   [[c]] If using Mono on Windows, both the csc executable and the nunit-console executable are located within the same path:
+   typically something like "C:\Program Files\Mono-1.1.18\bin"
 
   [[3]] Execute bootstrap-build.bat (or bootstrap-build.sh) from the nmaven directory.
 
@@ -38,8 +63,9 @@ Sections
  svn: This client is too old to work with working copy 'nmaven-utility-resx\src\main\csharp'; please get a newer Subversion client
 +----+
 
- In this case will need to upgrade to subversion 1.4 or higher. Click here for
- {{{ http://subversion.tigris.org/servlets/ProjectDocumentView?documentID=35379&showInfo=true} Windows Subversion Client}}.
+ In this case will need to upgrade to subversion 1.4 or higher.
+
+** Linux Specific Setup
 
  Building on Linux, may take some extra steps. By default, on many Linux environments, the GNU Compiler for Java is already
  installed. The current GNU version will not work with NMaven. To check which version the system uses, type "java -version"

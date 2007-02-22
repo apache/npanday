@@ -18,4 +18,10 @@ RoadMap
 
  * IDE Support: Visual Studio and SharpDevelop
 
- * .NET Plugin Support (for writing Maven plugins in .NET). 
+ * .NET Plugin Support (for writing Maven plugins in .NET).
+
+Reporting Bugs/Requesting Features
+
+ * {{{http://jira.codehaus.org/browse/NMAVEN} NMaven Issue Tracking}}
+
+ * {{{mailto:nmaven-dev@incubator.apache.org} Post to Mailing List}} 
