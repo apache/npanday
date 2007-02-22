@@ -24,9 +24,22 @@ Sections
 
  Make sure that you have jdk1.5+ installed and then do the following:
 
-  [[1]] Do an SVN checkout: svn co http://svn.apache.org/repos/asf/incubator/nmaven/trunk nmaven
+  [[1]] Do an SVN checkout: svn co https://svn.apache.org/repos/asf/incubator/nmaven/trunk nmaven.
 
-  [[2]] Execute bootstrap-build.bat (or bootstrap-build.sh) from the nmaven directory.
+  [[2]] If compiling on Windows, make sure that the csc executable is located on the system path. This is only needed
+  for the initial bootstrap build and can be removed afterwards.
+
+  [[3]] Execute bootstrap-build.bat (or bootstrap-build.sh) from the nmaven directory.
+
+ During step (1), you may receive an error similar to the following:
+
++----+
+
+ svn: This client is too old to work with working copy 'nmaven-utility-resx\src\main\csharp'; please get a newer Subversion client
++----+
+
+ In this case will need to upgrade to subversion 1.4 or higher. Click here for
+ {{{ http://subversion.tigris.org/servlets/ProjectDocumentView?documentID=35379&showInfo=true} Windows Subversion Client}}.
 
  Building on Linux, may take some extra steps. By default, on many Linux environments, the GNU Compiler for Java is already
  installed. The current GNU version will not work with NMaven. To check which version the system uses, type "java -version"

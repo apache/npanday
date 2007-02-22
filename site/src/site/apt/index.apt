@@ -15,3 +15,7 @@ RoadMap
  * Expanded Support for Assembly Signing
  
  * Support for Classifiers
+
+ * IDE Support: Visual Studio and SharpDevelop
+
+ * .NET Plugin Support (for writing Maven plugins in .NET). 
