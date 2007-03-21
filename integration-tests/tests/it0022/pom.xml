@@ -5,7 +5,6 @@
   <packaging>library</packaging>
   <version>1.0.0</version>
   <name>it0022</name>
-
   <build>
     <sourceDirectory>src/main/csharp</sourceDirectory>
     <plugins>

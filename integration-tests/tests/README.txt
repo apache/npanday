@@ -21,4 +21,5 @@ it0020: CS-MS-Resources: Generate resource file and embed into assembly
 it0021: VB: Resource generation for VB
 it0022: Signing of an assembly (verify manually by looking for the signature in the manifest)
 it0023: CS-MS: .NET 3.0 compiling
-it0024: CS-MS: .NET 3.0 NUnit 
+it0024: CS-MS: .NET 3.0 NUnit
+it0027: Compiling CS with flat directory structure

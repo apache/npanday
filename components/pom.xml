@@ -47,14 +47,12 @@
     <system>JIRA Bugtracking</system>
     <url>http://jira.codehaus.org/browse/NMAVEN</url>
   </issueManagement>
-
   <licenses>
     <license>
       <name>Apache 2.0</name>
       <url>LICENSE.txt</url>
     </license>
   </licenses>
-
   <developers>
     <developer>
       <name>Brett Porter</name>
@@ -152,6 +150,14 @@
         <configuration>
           <descriptor>src/assembly/src.xml</descriptor>
           <outputDirectory>src/target</outputDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
         </configuration>
       </plugin>
     </plugins>

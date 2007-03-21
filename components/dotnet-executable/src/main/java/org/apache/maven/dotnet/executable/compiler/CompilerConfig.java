@@ -18,7 +18,7 @@
  */
 package org.apache.maven.dotnet.executable.compiler;
 
-import org.apache.maven.dotnet.executable.compiler.ArtifactType;
+import org.apache.maven.dotnet.artifact.ArtifactType;
 import org.apache.maven.dotnet.executable.ExecutableConfig;
 
 import java.io.File;

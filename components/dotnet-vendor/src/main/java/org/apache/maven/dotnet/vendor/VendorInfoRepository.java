@@ -92,6 +92,9 @@ public interface VendorInfoRepository
     File getInstallRootFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException;
 
+    File getSdkInstallRootFor( VendorInfo vendorInfo )
+        throws PlatformUnsupportedException;
+
     /**
      * Returns true if this repository exists (and can be used), otherwise returns false.
      *

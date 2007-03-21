@@ -19,7 +19,7 @@
 package org.apache.maven.dotnet.executable;
 
 import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
-import org.apache.maven.dotnet.executable.compiler.ArtifactType;
+import org.apache.maven.dotnet.artifact.ArtifactType;
 import org.apache.maven.dotnet.executable.compiler.KeyInfo;
 
 import java.util.List;
@@ -54,14 +54,14 @@ public interface ExecutableConfig
      *
      * @return the execution path of the executable
      */
-    String getExecutionPath();
+    List<String> getExecutionPaths();
 
     /**
      * Sets the executation path of the executable.
      *
-     * @param executionPath
+     * @param executionPaths the execution paths
      */
-    void setExecutionPath( String executionPath );
+    void setExecutionPaths( List<String> executionPaths );
 
     public static class Factory
     {
@@ -85,7 +85,7 @@ public interface ExecutableConfig
 
                 private List<String> commands;
 
-                private String executionPath;
+                private List<String> executionPaths;
 
                 private ArtifactType artifactType;
 
@@ -103,14 +103,14 @@ public interface ExecutableConfig
                     this.commands = commands;
                 }
 
-                public String getExecutionPath()
+                public List<String> getExecutionPaths()
                 {
-                    return executionPath;
+                    return executionPaths;
                 }
 
-                public void setExecutionPath( String executionPath )
+                public void setExecutionPaths( List<String> executionPaths )
                 {
-                    this.executionPath = executionPath;
+                    this.executionPaths = executionPaths;
                 }
 
                 public ArtifactType getArtifactType()

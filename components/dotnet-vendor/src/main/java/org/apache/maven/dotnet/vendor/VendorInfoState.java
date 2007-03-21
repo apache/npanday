@@ -118,7 +118,12 @@ public enum VendorInfoState
     /**
      * Null state of VendorInfo object
      */
-    NULL;
+    NULL,
+
+    /**
+     * Post processing state
+     */
+    POST_PROCESS;
 
     /**
      * Returns the completion state of the specified vendor info
@@ -131,6 +136,16 @@ public enum VendorInfoState
         if ( vendorInfo == null )
         {
             return NULL;
+        }
+
+        if ( vendorInfo.getVendorVersion() != null && vendorInfo.getVendorVersion().trim().equals( "" ) )
+        {
+            vendorInfo.setVendorVersion( null );
+        }
+
+        if ( vendorInfo.getFrameworkVersion() != null && vendorInfo.getFrameworkVersion().trim().equals( "" ) )
+        {
+            vendorInfo.setFrameworkVersion( null );
         }
 
         if ( vendorInfo.getVendor() == null )

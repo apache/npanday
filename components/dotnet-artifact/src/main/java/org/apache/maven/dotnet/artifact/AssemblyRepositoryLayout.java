@@ -21,6 +21,7 @@ package org.apache.maven.dotnet.artifact;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
+import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.metadata.ArtifactMetadata;
 
 import java.io.File;
@@ -51,6 +52,12 @@ public class AssemblyRepositoryLayout
      */
     public String pathOf( Artifact artifact )
     {
+        if ( artifact.getType().equals( "pom" ) )//Use standard format for pom packaging
+        {
+            ArtifactRepositoryLayout defaultLayout = new DefaultRepositoryLayout();
+            return defaultLayout.pathOf( artifact );
+        }
+
         StringBuffer artifactPath = new StringBuffer();
         for ( String groupId : artifact.getGroupId().split( "[.]" ) )
         {
@@ -72,12 +79,13 @@ public class AssemblyRepositoryLayout
     /**
      * Returns the path (relative to the specified local repository) of an artifact's metadata.
      *
-     * @param metadata   the artifact metadata
-     * @param repository the artifact repository that contains the metadata
+     * @param metadata   the artifact metadata. This value may not be null.
+     * @param repository the artifact repository that contains the metadata. This value may not be null.
      * @return the path of an artifact's metadata within the specified repository
      */
     public String pathOfLocalRepositoryMetadata( ArtifactMetadata metadata, ArtifactRepository repository )
     {
+
         StringBuffer path = new StringBuffer();
         for ( String groupId : metadata.getGroupId().split( "[.]" ) )
         {
@@ -96,15 +104,28 @@ public class AssemblyRepositoryLayout
     }
 
     /**
-     * Returns empty string. This method is here because it is part of the required API but it is not used within the context of the
-     * invoking framework.
+     * Returns the path of an artifact's metadata within the the remote repository. This method is here because it is
+     * part of the required API but it is not used within the context of the invoking framework.
      *
-     * @param metadata the artifact metadata. This may be null.
-     * @return empty string
+     * @param metadata the artifact metadata. This may not be null.
+     * @return the path of an artifact's metadata within the specified repository.
      */
     public String pathOfRemoteRepositoryMetadata( ArtifactMetadata metadata )
     {
-        System.out.println( "CALLING REMOTE : " + metadata.getRemoteFilename() );
-        return "";
+        StringBuffer path = new StringBuffer();
+        for ( String groupId : metadata.getGroupId().split( "[.]" ) )
+        {
+            path.append( groupId ).append( File.separator );
+        }
+
+        if ( !metadata.storedInGroupDirectory() )
+        {
+            path.append( metadata.getArtifactId() ).append( File.separator );
+            if ( metadata.storedInArtifactVersionDirectory() )
+            {
+                path.append( metadata.getBaseVersion() ).append( File.separator );
+            }
+        }
+        return path.append( metadata.getRemoteFilename() ).toString();
     }
 }

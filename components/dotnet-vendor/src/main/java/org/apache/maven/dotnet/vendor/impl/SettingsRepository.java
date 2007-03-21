@@ -86,7 +86,7 @@ public class SettingsRepository
         catch ( XmlPullParserException e )
         {
             e.printStackTrace();
-            throw new IOException( "NMAVEN-104-000: Could not read executable-plugins.xml" );
+            throw new IOException( "NMAVEN-104-000: Could not read nmaven-settings.xml" );
         }
         vendors = settings.getVendors();
         defaultSetup = settings.getDefaultSetup();
@@ -99,7 +99,13 @@ public class SettingsRepository
             {
                 VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
                 vendorInfo.setVendorVersion( v.getVendorVersion() );
-                vendorInfo.setExecutablePath( new File( framework.getInstallRoot() ) );
+                List<File> executablePaths = new ArrayList<File>();
+                executablePaths.add(new File( framework.getInstallRoot() ));
+                if(framework.getSdkInstallRoot() != null)
+                {
+                    executablePaths.add( new File(framework.getSdkInstallRoot()));
+                }
+                vendorInfo.setExecutablePaths( executablePaths );
                 vendorInfo.setFrameworkVersion( framework.getFrameworkVersion() );
                 try
                 {
@@ -131,6 +137,33 @@ public class SettingsRepository
     List<VendorInfo> getVendorInfos()
     {
         return vendorInfos;
+    }
+
+    File getSdkInstallRootFor( String vendor, String vendorVersion, String frameworkVersion )
+        throws PlatformUnsupportedException
+    {
+        if ( vendor == null || vendorVersion == null || frameworkVersion == null )
+        {
+            throw new PlatformUnsupportedException( "NMAVEN-104-001: One of more of the parameters is null: Vendor = " +
+                vendor + ", Vendor Version = " + vendorVersion + ", Framework Version = " + frameworkVersion );
+        }
+        for ( Vendor v : vendors )
+        {
+            if ( vendor.equals( v.getVendorName().trim() ) && vendorVersion.equals( v.getVendorVersion().trim() ) )
+            {
+                List<Framework> frameworks = v.getFrameworks();
+                for ( Framework framework : frameworks )
+                {
+                    if ( frameworkVersion.equals( framework.getFrameworkVersion().trim() ) )
+                    {
+                         String sdkRoot = framework.getSdkInstallRoot();
+                         if(sdkRoot != null) return new File(sdkRoot );
+                    }
+                }
+            }
+        }
+        throw new PlatformUnsupportedException( "NMAVEN-104-003: Unable to find install root: Vendor = " + vendor +
+            ", Vendor Version = " + vendorVersion + ", Framework Version = " + frameworkVersion );
     }
 
     /**

@@ -1,17 +1,17 @@
 <entries>
-    <scm-trunk></scm-trunk>    
-    <entry>
-        <schedule>remove-snapshot</schedule>
-        <groupId></groupId>
-        <artifactId></artifactId>
-        <version>1.0.0</version>
-        <changeto>1.0.0.0</changeto>
-    </entry>
-    <entry>
-        <schedule>increment-version</schedule>
-        <groupId></groupId>
-        <artifactId></artifactId>
-        <version>1.0.0.0</version>
-        <changeto>1.0.1</changeto>
-    </entry>
+  <scm-trunk></scm-trunk>
+  <entry>
+    <schedule>remove-snapshot</schedule>
+    <groupId></groupId>
+    <artifactId></artifactId>
+    <version>1.0.0</version>
+    <changeto>1.0.0.0</changeto>
+  </entry>
+  <entry>
+    <schedule>increment-version</schedule>
+    <groupId></groupId>
+    <artifactId></artifactId>
+    <version>1.0.0.0</version>
+    <changeto>1.0.1</changeto>
+  </entry>
 </entries>

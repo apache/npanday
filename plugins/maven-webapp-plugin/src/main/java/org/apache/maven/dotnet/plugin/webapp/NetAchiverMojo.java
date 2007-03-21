@@ -39,7 +39,9 @@ import java.io.File;
  * @goal package
  * @phase package
  */
-public class NetAchiverMojo extends AbstractMojo {
+public class NetAchiverMojo
+    extends AbstractMojo
+{
 
     /**
      * The maven project.
@@ -80,52 +82,69 @@ public class NetAchiverMojo extends AbstractMojo {
 
     private List excludes;
 
-    public void execute() throws MojoExecutionException {
+    public void execute()
+        throws MojoExecutionException
+    {
         String outputDirectory = project.getBuild().getDirectory() + File.separator + project.getArtifactId();
         String sourceDirectory = project.getBasedir() + "/src/main/webapp";
         DirectoryScanner directoryScanner = new DirectoryScanner();
-        directoryScanner.setBasedir(sourceDirectory);
+        directoryScanner.setBasedir( sourceDirectory );
         directoryScanner.addDefaultExcludes();
         directoryScanner.scan();
         String[] files = directoryScanner.getIncludedFiles();
-        for (String file : files) {
-            try {
-                FileUtils.copyFile(new File(sourceDirectory + File.separator + file),
-                        new File(outputDirectory + File.separator + file));
-            } catch (IOException e) {
-                throw new MojoExecutionException("NMAVEN-1200-000: Unable to process sources", e);
+        for ( String file : files )
+        {
+            try
+            {
+                FileUtils.copyFile( new File( sourceDirectory + File.separator + file ),
+                                    new File( outputDirectory + File.separator + file ) );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1200-000: Unable to process sources", e );
             }
         }
 
         Set<Artifact> artifacts = project.getDependencyArtifacts();
         Set<Artifact> dependencies = new HashSet<Artifact>();
-        dependencies.add(project.getArtifact());
-        for (Artifact artifact : artifacts) {
-            if ((artifact.getType().equals("library") || artifact.getType().equals("module")) &&
-                    artifact.getScope().equals(Artifact.SCOPE_COMPILE) || artifact.getScope().equals(Artifact.SCOPE_RUNTIME))
+        dependencies.add( project.getArtifact() );
+        for ( Artifact artifact : artifacts )
+        {
+            if ( ( artifact.getType().equals( "library" ) || artifact.getType().equals( "module" ) ) &&
+                artifact.getScope().equals( Artifact.SCOPE_COMPILE ) ||
+                artifact.getScope().equals( Artifact.SCOPE_RUNTIME ) )
             {
-                dependencies.add(artifact);
+                dependencies.add( artifact );
             }
         }
 
-        for (Artifact artifact : dependencies) {
-            try {
-                FileUtils.copyFileToDirectory(artifact.getFile(), new File(outputDirectory + "/bin"));
-            } catch (IOException e) {
-                throw new MojoExecutionException("NMAVEN-1200-001", e);
+        for ( Artifact artifact : dependencies )
+        {
+            try
+            {
+                FileUtils.copyFileToDirectory( artifact.getFile(), new File( outputDirectory + "/bin" ) );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1200-001", e );
             }
         }
 
         ZipArchiver zipArchiver = new ZipArchiver();
-        zipArchiver.setDestFile(new File(outputDirectory + ".nar"));
-        try {
-            zipArchiver.addDirectory(new File(outputDirectory));
+        zipArchiver.setDestFile( new File( outputDirectory + ".nar" ) );
+        try
+        {
+            zipArchiver.addDirectory( new File( outputDirectory ) );
             zipArchiver.createArchive();
-            getLog().info("NMAVEN-1200-004: Created .NET Archive: File = " + outputDirectory + ".nar");
-        } catch (ArchiverException e) {
-            throw new MojoExecutionException("NMAVEN-1200-002: Unable to create .NET archive:", e);
-        } catch (IOException e) {
-            throw new MojoExecutionException("NMAVEN-1200-003: Unable to create .NET archive", e);
+            getLog().info( "NMAVEN-1200-004: Created .NET Archive: File = " + outputDirectory + ".nar" );
+        }
+        catch ( ArchiverException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1200-002: Unable to create .NET archive:", e );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1200-003: Unable to create .NET archive", e );
         }
     }
 }

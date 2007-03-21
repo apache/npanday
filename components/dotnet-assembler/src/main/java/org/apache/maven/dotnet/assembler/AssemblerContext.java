@@ -19,6 +19,7 @@
 package org.apache.maven.dotnet.assembler;
 
 import org.apache.maven.dotnet.InitializationException;
+import org.apache.maven.dotnet.PlatformUnsupportedException;
 import org.apache.maven.project.MavenProject;
 
 /**
@@ -50,6 +51,15 @@ public interface AssemblerContext
      */
     AssemblyInfoMarshaller getAssemblyInfoMarshallerFor( String language )
         throws AssemblyInfoException;
+
+    /**
+     * Returns the class extension (cs, vb) for the specified language.
+     *
+     * @param language the class language. Must match language within the assembly-plugins.xml file.
+     * @return the class extension (cs, vb) for the specified language.
+     * @throws PlatformUnsupportedException the language is not supported
+     */
+    String getClassExtensionFor(String language) throws PlatformUnsupportedException;
 
     /**
      * Initializes the context

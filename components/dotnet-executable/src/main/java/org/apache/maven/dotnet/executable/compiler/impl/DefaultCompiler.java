@@ -69,8 +69,28 @@ public final class DefaultCompiler
 
     public File getExecutionPath()
     {
-        return ( compilerContext.getNetCompilerConfig().getExecutionPath() != null ) ? new File(
-            compilerContext.getNetCompilerConfig().getExecutionPath() ) : null;
+        String executable;
+        try
+        {
+            executable = getExecutable();
+        }
+        catch ( ExecutionException e )
+        {
+            return null;
+        }
+        List<String> executablePaths = compilerContext.getNetCompilerConfig().getExecutionPaths();
+        if ( executablePaths != null )
+        {
+            for ( String executablePath : executablePaths )
+            {
+                File exe = new File( executablePath + File.separator +  executable);
+                if ( exe.exists() )
+                {
+                    return new File(executablePath);
+                }
+            }
+        }
+        return null;
     }
 
     public List<String> getCommands()

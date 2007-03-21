@@ -73,9 +73,11 @@ final class DefaultAssemblyInfoMarshaller
         FileOutputStream man = null;
         try
         {
-            File file = new File( src + "/META-INF/net/sf/nmaven" );
+            String groupIdAsDir = mavenProject.getGroupId().replace( ".", File.separator);
+            File file = new File( src + "/META-INF/" + groupIdAsDir );
             file.mkdirs();
-            man = new FileOutputStream( src + "/META-INF/net/sf/nmaven/AssemblyInfo." + plugin.getExtension() );
+            man = new FileOutputStream( src + "/META-INF/" + groupIdAsDir + File.separator +
+                "AssemblyInfo." + plugin.getExtension() );
             man.write( sb.toString().getBytes() );
         }
         catch ( IOException e )

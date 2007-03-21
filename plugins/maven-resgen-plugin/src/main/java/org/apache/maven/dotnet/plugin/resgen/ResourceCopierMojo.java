@@ -39,7 +39,9 @@ import java.io.IOException;
  * @goal copy-resources
  * @phase process-resources
  */
-public class ResourceCopierMojo extends AbstractMojo {
+public class ResourceCopierMojo
+    extends AbstractMojo
+{
 
     /**
      * The maven project.
@@ -49,58 +51,84 @@ public class ResourceCopierMojo extends AbstractMojo {
      */
     private MavenProject project;
 
-    public void execute() throws MojoExecutionException {
+    public void execute()
+        throws MojoExecutionException
+    {
         String targetDirectory = project.getBuild().getDirectory();
         List<Resource> resources = project.getResources();
-        if(resources.isEmpty()) {
-            getLog().info("NMAVEN-1500-000: No resources found");
+        if ( resources.isEmpty() )
+        {
+            getLog().info( "NMAVEN-1500-000: No resources found" );
             return;
         }
-        for(Resource resource: resources) {
-            if(!new File(resource.getDirectory()).exists()) continue;
-            copyResourceDirectory(resource.getDirectory(), targetDirectory, resource.getIncludes(),
-                    resource.getExcludes());
+        for ( Resource resource : resources )
+        {
+            if ( !new File( resource.getDirectory() ).exists() )
+            {
+                continue;
+            }
+            copyResourceDirectory( resource.getDirectory(), targetDirectory, resource.getIncludes(),
+                                   resource.getExcludes() );
         }
-        try {
-            FileUtils.copyDirectory(new File(project.getBasedir() + File.separator + "src/main/config"),
-                    new File(project.getBuild().getDirectory()), "*.exe.config", null);
-        } catch (IOException e) {
-           throw new MojoExecutionException("NMAVEN-1500-004: Failed to copy config file.", e);
+        try
+        {
+            FileUtils.copyDirectory( new File( project.getBasedir() + File.separator + "src/main/config" ),
+                                     new File( project.getBuild().getDirectory() ), "*.exe.config", null );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1500-004: Failed to copy config file.", e );
         }
     }
 
-    private void copyResourceDirectory(String sourceDirectory, String outputDirectory, List includes,
-                                       List excludes) throws MojoExecutionException {
+    private void copyResourceDirectory( String sourceDirectory, String outputDirectory, List includes, List excludes )
+        throws MojoExecutionException
+    {
         DirectoryScanner directoryScanner = new DirectoryScanner();
-        directoryScanner.setBasedir(sourceDirectory);
-        if(!includes.isEmpty()) directoryScanner.setIncludes(listAsStringArray(includes));
-        if(!excludes.isEmpty()) directoryScanner.setExcludes(listAsStringArray(excludes));
+        directoryScanner.setBasedir( sourceDirectory );
+        if ( !includes.isEmpty() )
+        {
+            directoryScanner.setIncludes( listAsStringArray( includes ) );
+        }
+        if ( !excludes.isEmpty() )
+        {
+            directoryScanner.setExcludes( listAsStringArray( excludes ) );
+        }
         directoryScanner.addDefaultExcludes();
         directoryScanner.scan();
         String[] files = directoryScanner.getIncludedFiles();
-        for (String file : files) {
-            File sourceFile = new File(sourceDirectory + File.separator + file);
+        for ( String file : files )
+        {
+            File sourceFile = new File( sourceDirectory + File.separator + file );
             File destinationFile =
-                    new File(outputDirectory + File.separator + "assembly-resources" + File.separator +  file);
-            try {
-                FileUtils.copyFile(sourceFile, destinationFile);
-                getLog().debug("NMAVEN-1500-001: Copied Resource File: Source File = " + sourceFile.getAbsolutePath() +
-                        ", Destination File = " + destinationFile.getAbsolutePath());
-            } catch (IOException e) {
-                throw new MojoExecutionException("NMAVEN-1500-002: Unable to copy resource file: Source File = " +
-                        sourceFile.getAbsolutePath(), e);
+                new File( outputDirectory + File.separator + "assembly-resources" + File.separator + file );
+            try
+            {
+                FileUtils.copyFile( sourceFile, destinationFile );
+                getLog().debug( "NMAVEN-1500-001: Copied Resource File: Source File = " + sourceFile.getAbsolutePath() +
+                    ", Destination File = " + destinationFile.getAbsolutePath() );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException(
+                    "NMAVEN-1500-002: Unable to copy resource file: Source File = " + sourceFile.getAbsolutePath(), e );
             }
         }
-        getLog().info("NMAVEN-1500-003: Copied resource directory: Number of Resources = " + files.length
-            + ", Resource Directory = " + sourceDirectory
-            + ", Destination Directory = " + outputDirectory + File.separator + "assembly-resources");
+        getLog().info( "NMAVEN-1500-003: Copied resource directory: Number of Resources = " + files.length +
+            ", Resource Directory = " + sourceDirectory + ", Destination Directory = " + outputDirectory + File
+            .separator + "assembly-resources" );
     }
 
-    private String[] listAsStringArray(List list) {
-        if(list == null) return new String[0];
+    private String[] listAsStringArray( List list )
+    {
+        if ( list == null )
+        {
+            return new String[0];
+        }
         String[] target = new String[list.size()];
         int j = 0;
-        for(Iterator i = list.iterator(); i.hasNext(); j++) {
+        for ( Iterator i = list.iterator(); i.hasNext(); j++ )
+        {
             target[j] = (String) i.next();
         }
         return target;

@@ -49,8 +49,28 @@ public class DefaultNetExecutable
 
     public File getExecutionPath()
     {
-        return ( executableContext.getExecutableConfig().getExecutionPath() != null ) ? new File(
-            executableContext.getExecutableConfig().getExecutionPath() ) : null;
+        String executable;
+        try
+        {
+            executable = getExecutable();
+        }
+        catch ( ExecutionException e )
+        {
+            return null;
+        }
+        List<String> executablePaths = executableContext.getExecutableConfig().getExecutionPaths();
+        if ( executablePaths != null )
+        {
+            for ( String executablePath : executablePaths )
+            {
+                File exe = new File( executablePath + File.separator +  executable);
+                if ( exe.exists() )
+                {
+                    return new File(executablePath);
+                }
+            }
+        }
+        return null;
     }
 
     public void execute()
@@ -74,7 +94,6 @@ public class DefaultNetExecutable
         }
     }
 
-
     public String getExecutable()
         throws ExecutionException
     {
@@ -83,12 +102,7 @@ public class DefaultNetExecutable
             throw new ExecutionException( "NMAVEN-063-002: Executable has not been initialized with a context" );
         }
         return executableContext.getExecutableCapability().getExecutable();
-        // String executionPath = executableContext.getExecutableConfig().getExecutionPath();
-        // return (executionPath != null && !executionPath.trim().equals("")) ? executionPath
-        //         + executableContext.getExecutableCapability().getExecutable()
-        //         : executableContext.getExecutableCapability().getExecutable();
     }
-
 
     public void init( NMavenContext nmavenContext )
     {

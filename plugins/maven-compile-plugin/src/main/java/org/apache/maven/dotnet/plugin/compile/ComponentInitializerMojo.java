@@ -25,6 +25,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 
 import org.apache.maven.dotnet.InitializationException;
+import org.apache.maven.dotnet.assembler.AssemblerContext;
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
 
 import java.io.File;
@@ -77,6 +78,11 @@ public class ComponentInitializerMojo
      */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
+    /**
+     * @component
+     */
+    private AssemblerContext assemblerContext;
+
     public void execute()
         throws MojoExecutionException
     {
@@ -92,6 +98,15 @@ public class ComponentInitializerMojo
         catch ( ArtifactNotFoundException e )
         {
             throw new MojoExecutionException( "NMAVEN-901-001: Unable to resolve assemblies", e );
+        }
+
+        try
+        {
+            assemblerContext.init( project );
+        }
+        catch ( InitializationException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-901-002: Failed to initialize the assembler context" );
         }
     }
 }

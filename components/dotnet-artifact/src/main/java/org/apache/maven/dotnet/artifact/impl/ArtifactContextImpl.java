@@ -111,8 +111,8 @@ public final class ArtifactContextImpl
      */
     public List<Artifact> getArtifactsFor( String groupId, String artifactId, String version, String type )
     {
-        NetDependenciesRepository repository =
-            (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
+        NetDependenciesRepositoryImpl repository =
+            (NetDependenciesRepositoryImpl) repositoryRegistry.find( "net-dependencies" );
         if ( repository == null )
         {
             logger.warn(
@@ -177,7 +177,7 @@ public final class ArtifactContextImpl
                                                                          dependency.getVersion() ),
                                                                      dependency.getType(), dependency.getClassifier(),
                                                                      scope, null );
-            depSet.add( art );
+            if(!art.getType().equals( "gac")) depSet.add( art );
         }
 
         try

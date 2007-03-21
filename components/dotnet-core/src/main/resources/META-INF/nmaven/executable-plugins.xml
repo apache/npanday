@@ -198,4 +198,48 @@
       </platform>
     </platforms>
   </executablePlugin>
+  <executablePlugin>
+    <identifier>MS:AL</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>al</executable>
+    <profile>AL</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>MONO:AL</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MONO</vendor>
+    <executable>al</executable>
+    <profile>AL</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Mac OS X</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Linux</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Solaris</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>FreeBSD</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
 </executablePlugins>

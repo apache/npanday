@@ -40,7 +40,9 @@ import java.io.IOException;
  * @goal generate
  * @phase process-resources
  */
-public class ResourceGeneratorMojo extends AbstractMojo {
+public class ResourceGeneratorMojo
+    extends AbstractMojo
+{
 
     /**
      * @parameter expression="${settings.localRepository}"
@@ -72,7 +74,7 @@ public class ResourceGeneratorMojo extends AbstractMojo {
     private String vendor;
 
     /**
-     * @parameter expression = "${frameworkVersion}" 
+     * @parameter expression = "${frameworkVersion}"
      */
     private String frameworkVersion;
 
@@ -96,61 +98,86 @@ public class ResourceGeneratorMojo extends AbstractMojo {
      */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
-    public void execute() throws MojoExecutionException {
+    public void execute()
+        throws MojoExecutionException
+    {
 
-        if (System.getProperty("bootstrap") != null)
+        if ( System.getProperty( "bootstrap" ) != null )
+        {
             return;
+        }
 
-        File sourceDirectory = new File(project.getBuild().getDirectory() + File.separator + "assembly-resources"
-                + File.separator + "resgen");
-        if (!sourceDirectory.exists())
+        File sourceDirectory = new File(
+            project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator + "resgen" );
+        if ( !sourceDirectory.exists() )
+        {
             return;
+        }
 
-        try {
+        try
+        {
             nmavenRegistry.createRepositoryRegistry();
-        } catch (IOException e) {
-            throw new MojoExecutionException("NMAVEN-1501-004: Failed to create the repository registry for this plugin", e);
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException(
+                "NMAVEN-1501-004: Failed to create the repository registry for this plugin", e );
         }
 
         //resx.exe
         List<String> commands = new ArrayList<String>();
-        commands.add(sourceDirectory.getAbsolutePath());
-        commands.add(project.getBuild().getDirectory() + File.separator + "assembly-resources"
-                + File.separator + project.getArtifactId() + ".resx");
-        try {
+        commands.add( sourceDirectory.getAbsolutePath() );
+        commands.add( project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator +
+            project.getArtifactId() + ".resx" );
+        try
+        {
             VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-            if(vendor != null) vendorInfo.setVendor(VendorFactory.createVendorFromName(vendor));
-            vendorInfo.setFrameworkVersion(frameworkVersion);
-            vendorInfo.setVendorVersion(vendorVersion);
-            netExecutableFactory.getNetExecutableFromRepository("NMaven.Utility.ResX", "resx",
-                    vendorInfo, project, localRepository, commands).execute();
-        } catch (PlatformUnsupportedException e) {
-            throw new MojoExecutionException("", e);
-        } catch(ExecutionException e) {
-            throw new MojoExecutionException("", e);
+            if ( vendor != null )
+            {
+                vendorInfo.setVendor( VendorFactory.createVendorFromName( vendor ) );
+            }
+            vendorInfo.setFrameworkVersion( frameworkVersion );
+            vendorInfo.setVendorVersion( vendorVersion );
+            netExecutableFactory.getNetExecutableFromRepository( "NMaven.Plugin", "NMaven.Plugin.Resx", vendorInfo,
+                                                                 project, localRepository, commands ).execute();
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "", e );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "", e );
         }
 
         //resgen.exe
-        FileUtils.mkdir(project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator
-                + "resource");
+        FileUtils.mkdir(
+            project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator + "resource" );
 
-        try {
-            netExecutableFactory.getNetExecutableFor(vendor, frameworkVersion, "RESGEN",
-                    project, getCommands(), netHome).execute();
-        } catch (ExecutionException e) {
-            throw new MojoExecutionException("NMAVEN-1501-002: Unable to execute resgen: Vendor = " + vendor
-                    + ", frameworkVersion = " + frameworkVersion, e);
-        } catch (PlatformUnsupportedException e) {
-            throw new MojoExecutionException("NMAVEN-1501-003: Platform Unsupported", e);
+        try
+        {
+            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, "RESGEN", project, getCommands(),
+                                                      netHome ).execute();
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1501-002: Unable to execute resgen: Vendor = " + vendor +
+                ", frameworkVersion = " + frameworkVersion, e );
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1501-003: Platform Unsupported", e );
         }
     }
 
-    public List<String> getCommands() throws MojoExecutionException {
+    public List<String> getCommands()
+        throws MojoExecutionException
+    {
         List<String> commands = new ArrayList<String>();
-        commands.add(project.getBuild().getDirectory() + File.separator + "assembly-resources"
-                + File.separator + project.getArtifactId() + ".resx");
-        commands.add(project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator
-                + "resource" + File.separator + project.getArtifactId() + ".resources");
+        commands.add( project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator +
+            project.getArtifactId() + ".resx" );
+        commands.add( project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator +
+            "resource" + File.separator + project.getArtifactId() + ".resources" );
         return commands;
     }
 }

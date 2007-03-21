@@ -20,5 +20,5 @@
 @REM This also assumes that M2_HOME and JAVA_HOME are set, which are verified in the bootstrap script only
 SET MAVEN_TEST_ENVAR=MAVEN_TEST_ENVAR_VALUE
 
-"%JAVA_HOME%\bin\java.exe" -Dmaven.home="%M2_HOME%" %MAVEN_OPTS% -cp "..\imports\maven-core-it-verifier-2.1.jar" org.apache.maven.it.Verifier %*
+"%JAVA_HOME%\bin\java.exe" -Dmaven.home="%M2_HOME%" %MAVEN_OPTS% -cp "..\..\imports\org.apache.maven\maven-core-it-verifier-2.1.jar" org.apache.maven.it.Verifier %*
 

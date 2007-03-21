@@ -1,47 +1,46 @@
 <model>
-    <id>assembly-plugin</id>
-    <name>AssemblyPlugin</name>
-    <description>Assembly Info Plugin</description>
-    <defaults>
-        <default>
-            <key>package</key>
-            <value>org.apache.maven.dotnet.model.assembly.plugins</value>
-        </default>
-    </defaults>
-    <classes>
-        <class rootElement="true" xml.tagName="assemblyPluginsXml">
-            <name>AssemblyPluginsModel</name>
-            <fields>
-                <field>
-                    <name>assemblyPlugins</name>
-                    <association>
-                        <type>AssemblyPlugin</type>
-                        <multiplicity>*</multiplicity>
-                    </association>
-                </field>
-            </fields>
-        </class>
-
-        <class xml.tagName="assemblyPlugins">
-            <name>AssemblyPlugin</name>
-            <fields>
-                <field>
-                    <name>identifier</name>
-                    <type>String</type>
-                </field>
-                <field>
-                    <name>pluginClass</name>
-                    <type>String</type>
-                </field>
-                <field>
-                    <name>language</name>
-                    <type>String</type>
-                </field>
-                <field>
-                    <name>extension</name>
-                    <type>String</type>
-                </field>
-            </fields>
-        </class>
-    </classes>
+  <id>assembly-plugin</id>
+  <name>AssemblyPlugin</name>
+  <description>Assembly Info Plugin</description>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.apache.maven.dotnet.model.assembly.plugins</value>
+    </default>
+  </defaults>
+  <classes>
+    <class rootElement="true" xml.tagName="assemblyPluginsXml">
+      <name>AssemblyPluginsModel</name>
+      <fields>
+        <field>
+          <name>assemblyPlugins</name>
+          <association>
+            <type>AssemblyPlugin</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class xml.tagName="assemblyPlugins">
+      <name>AssemblyPlugin</name>
+      <fields>
+        <field>
+          <name>identifier</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>pluginClass</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>language</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>extension</name>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+  </classes>
 </model>

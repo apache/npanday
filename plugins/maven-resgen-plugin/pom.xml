@@ -1,37 +1,38 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <parent>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
-        <version>0.14-SNAPSHOT</version>
-        <artifactId>maven-dotnet-plugins</artifactId>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.maven.dotnet.plugins</groupId>
-    <artifactId>maven-resgen-plugin</artifactId>
-    <packaging>maven-plugin</packaging>
     <version>0.14-SNAPSHOT</version>
-    <name>maven-resgen-plugin</name>
-    <description>
-        Maven Plugin for .NET
-    </description>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.dotnet.plugins</groupId>
-                <artifactId>maven-resolver-plugin</artifactId>
-                <configuration>
-                    <netDependencies>
-                        <netDependencies>
-                            <groupId>org.apache.maven.bogus</groupId>
-                            <artifactId>test</artifactId>
-                            <version>1.0.0</version>
-                            <type>exe</type>
-                        </netDependencies>
-                    </netDependencies>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    <distributionManagement>
+    <artifactId>maven-dotnet-plugins</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.maven.dotnet.plugins</groupId>
+  <artifactId>maven-resgen-plugin</artifactId>
+  <packaging>maven-plugin</packaging>
+  <version>0.14-SNAPSHOT</version>
+  <name>maven-resgen-plugin</name>
+  <description>
+    Maven Plugin for .NET
+  </description>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-resolver-plugin</artifactId>
+        <configuration>
+          <netDependencies>
+            <netDependencies>
+              <groupId>org.apache.maven.bogus</groupId>
+              <artifactId>test</artifactId>
+              <version>1.0.0</version>
+              <type>exe</type>
+            </netDependencies>
+          </netDependencies>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <distributionManagement>
     <site>
       <id>nmaven-apache-site</id>
       <name>NMaven Site</name>

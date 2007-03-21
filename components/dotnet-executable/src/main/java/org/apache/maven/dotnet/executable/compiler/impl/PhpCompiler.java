@@ -51,7 +51,28 @@ public final class PhpCompiler
 
     public File getExecutionPath()
     {
-        return new File( compilerContext.getNetCompilerConfig().getExecutionPath() );
+        String executable;
+        try
+        {
+            executable = getExecutable();
+        }
+        catch ( ExecutionException e )
+        {
+            return null;
+        }
+        List<String> executablePaths = compilerContext.getNetCompilerConfig().getExecutionPaths();
+        if ( executablePaths != null )
+        {
+            for ( String executablePath : executablePaths )
+            {
+                File exe = new File( executablePath + File.separator +  executable);
+                if ( exe.exists() )
+                {
+                    return new File(executablePath);
+                }
+            }
+        }
+        return null;
     }
 
     public List<String> getCommands()

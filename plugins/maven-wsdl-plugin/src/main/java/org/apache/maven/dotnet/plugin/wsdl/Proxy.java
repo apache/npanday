@@ -23,7 +23,8 @@ package org.apache.maven.dotnet.plugin.wsdl;
  *
  * @author Shane Isbell
  */
-public class Proxy {
+public class Proxy
+{
 
     private String id;
 
@@ -31,42 +32,59 @@ public class Proxy {
 
     private String hashAlg;
 
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId( String id )
+    {
         this.id = id;
     }
 
-    public boolean isHashPassword() {
+    public boolean isHashPassword()
+    {
         return hashPassword;
     }
 
-    public void setHashPassword(boolean hashPassword) {
+    public void setHashPassword( boolean hashPassword )
+    {
         this.hashPassword = hashPassword;
     }
 
-    public String getHashAlg() {
+    public String getHashAlg()
+    {
         return hashAlg;
     }
 
-    public void setHashAlg(String hashAlg) {
+    public void setHashAlg( String hashAlg )
+    {
         this.hashAlg = hashAlg;
     }
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() )
+        {
+            return false;
+        }
 
         final Proxy proxy = (Proxy) o;
 
-        if (!id.equals(proxy.id)) return false;
+        if ( !id.equals( proxy.id ) )
+        {
+            return false;
+        }
 
         return true;
     }
 
-    public int hashCode() {
+    public int hashCode()
+    {
         return id.hashCode();
     }
 }

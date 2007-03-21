@@ -19,6 +19,7 @@
 package org.apache.maven.dotnet.vendor;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Provides accessors for obtaining information about a vendor. 
@@ -73,14 +74,14 @@ public interface VendorInfo
      *
      * @return the path where the executable lives
      */
-    File getExecutablePath();
+    List<File> getExecutablePaths();
 
     /**
      * Sets the path where the executable lives.
      *
-     * @param executablePath the path where the executable lives
+     * @param executablePaths the path where the executable lives
      */
-    void setExecutablePath( File executablePath );
+    void setExecutablePaths( List<File> executablePaths );
 
     /**
      * If the vendor information is the default (or preferred) value for a given vendor, returns true,
@@ -126,7 +127,7 @@ public interface VendorInfo
 
                 private String frameworkVersion;
 
-                private File executablePath;
+                private List<File> executablePaths;
 
                 private boolean isDefault;
 
@@ -140,14 +141,14 @@ public interface VendorInfo
                     isDefault = aDefault;
                 }
 
-                public File getExecutablePath()
+                public List<File> getExecutablePaths()
                 {
-                    return executablePath;
+                    return executablePaths;
                 }
 
-                public void setExecutablePath( File executablePath )
+                public void setExecutablePaths( List<File> executablePaths )
                 {
-                    this.executablePath = executablePath;
+                    this.executablePaths = executablePaths;
                 }
 
                 public Vendor getVendor()
@@ -183,8 +184,8 @@ public interface VendorInfo
                 public String toString()
                 {
                     return "Vendor = " + vendor + ", Vendor Version = " + vendorVersion + ", Framework Version = " +
-                        frameworkVersion + ", Executable Path = " +
-                        ( ( executablePath != null ) ? executablePath.getAbsolutePath() : "" );
+                        frameworkVersion + ", Executable Paths = " +
+                        ( ( executablePaths != null ) ? executablePaths : "" );
                 }
             };
         }

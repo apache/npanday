@@ -3,7 +3,14 @@ Prerequisites
 * NUnit must be installed or otherwise configured, see http://incubator.apache.org/nmaven/getting-started.html
 
 Initial Build
-* On the first build, execute the bootstrap-build script. On subsequent builds, you can just type mvn install from
+* On the first build, for Windows execute
+    bootstrap-build.bat or
+    bootstrap-build.bat -DwithIDE
+ Or on *nix,
+    bootstrap-build.sh
+
+Note that the -DwithIDE option requires Microsoft 2.0 or higher. If this is a clean build (meaning that you do not have a ~./m2/nmaven-settings.xml file)
+then you will also need to make sure that you have csc within your path. On subsequent builds, you can just type mvn install from
 the command prompt.
 
 IntelliJ IDEA Setup

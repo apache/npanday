@@ -26,6 +26,7 @@ import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.ArrayList;
 import java.io.File;
 
 import org.codehaus.plexus.logging.Logger;
@@ -108,6 +109,7 @@ final class VendorInfoTransitionRuleFactory
         try
         {
             defaultVendor = VendorFactory.createVendorFromName( settingsRepository.getDefaultSetup().getVendorName() );
+            logger.debug( "NMAVEN-103-036: Default Vendor Initialized: Name = " + defaultVendor );
         }
         catch ( VendorUnsupportedException e )
         {
@@ -116,6 +118,45 @@ final class VendorInfoTransitionRuleFactory
         defaultVendorVersion = settingsRepository.getDefaultSetup().getVendorVersion().trim();
         defaultFrameworkVersion = settingsRepository.getDefaultSetup().getFrameworkVersion().trim();
         vendorInfos = settingsRepository.getVendorInfos();
+    }
+
+    VendorInfoTransitionRule createPostProcessRule()
+    {
+        return new VendorInfoTransitionRule()
+        {
+            public VendorInfoState process( VendorInfo vendorInfo )
+            {
+                logger.debug( "NMAVEN-103-034: Entering State = Post Process" );
+                if ( (vendorInfo.getExecutablePaths() == null ||
+                    vendorInfo.getExecutablePaths().size() == 0) && vendorInfoRepository.exists() )
+                {
+                    File sdkInstallRoot = null;
+                    try
+                    {
+                        sdkInstallRoot = vendorInfoRepository.getSdkInstallRootFor( vendorInfo );
+                    }
+                    catch ( PlatformUnsupportedException e )
+                    {
+                        logger.debug( "NMAVEN-103-36: Failed to resolve install sdk root." );
+                    }
+                    try
+                    {
+                        List<File> executablePaths = new ArrayList<File>();
+                        executablePaths.add( vendorInfoRepository.getInstallRootFor( vendorInfo ) );
+                        if ( sdkInstallRoot != null )
+                        {
+                            executablePaths.add( sdkInstallRoot );
+                        }
+                        vendorInfo.setExecutablePaths( executablePaths );
+                    }
+                    catch ( PlatformUnsupportedException e )
+                    {
+                        logger.debug( "NMAVEN-103-35: Failed to resolve install root." );
+                    }
+                }
+                return VendorInfoState.EXIT;
+            }
+        };
     }
 
     /**
@@ -130,7 +171,7 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NMAVEN-103-003: Entering State = NTT" );
-                return VendorInfoState.EXIT;
+                return VendorInfoState.POST_PROCESS;
             }
         };
     }
@@ -146,7 +187,7 @@ final class VendorInfoTransitionRuleFactory
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
                     vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
-                    return VendorInfoState.EXIT;
+                    return VendorInfoState.POST_PROCESS;
                 }
                 else
                 {
@@ -159,7 +200,7 @@ final class VendorInfoTransitionRuleFactory
                             {
                                 vendorInfo.setVendorVersion( vi.getVendorVersion() );
                                 vendorInfo.setFrameworkVersion( "2.0.50727" );
-                                return VendorInfoState.EXIT;
+                                return VendorInfoState.POST_PROCESS;
                             }
                         }
                     }
@@ -173,7 +214,7 @@ final class VendorInfoTransitionRuleFactory
                                 vendorInfo.setVendorVersion( vi.getVendorVersion() );
                                 vendorInfo.setFrameworkVersion(
                                     "2.0.50727" );  //TODO: this should be according to max version
-                                return VendorInfoState.EXIT;
+                                return VendorInfoState.POST_PROCESS;
                             }
                         }
                     }
@@ -203,7 +244,7 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NMAVEN-103-006: Entering State = NFT" );
-                return VendorInfoState.EXIT; //NO WAY TO KNOW
+                return VendorInfoState.POST_PROCESS; //NO WAY TO KNOW
             }
         };
     }
@@ -446,6 +487,14 @@ final class VendorInfoTransitionRuleFactory
                 }
                 else
                 {
+                    try
+                    {
+                        vendorInfo.setVendor( VendorFactory.getDefaultVendorForOS() );
+                    }
+                    catch ( PlatformUnsupportedException e )
+                    {
+                        return VendorInfoState.POST_PROCESS;
+                    }
                     List<VendorInfo> v = vendorInfoRepository.getVendorInfosFor( vendorInfo, true );
                     if ( !v.isEmpty() )
                     {
@@ -454,7 +503,6 @@ final class VendorInfoTransitionRuleFactory
                             if ( vi.getFrameworkVersion().equals( vendorInfo.getFrameworkVersion() ) )
                             {
                                 vendorInfo.setVendorVersion( vi.getVendorVersion() );
-                                vendorInfo.setVendor( vi.getVendor() );
                                 if ( vi.getVendor().equals( Vendor.MICROSOFT ) )
                                 {
                                     return VendorInfoState.MTT;
@@ -476,7 +524,6 @@ final class VendorInfoTransitionRuleFactory
                         if ( vi.getFrameworkVersion().equals( vendorInfo.getFrameworkVersion() ) )
                         {
                             vendorInfo.setVendorVersion( vi.getVendorVersion() );
-                            vendorInfo.setVendor( vi.getVendor() );
                             if ( vi.getVendor().equals( Vendor.MICROSOFT ) )
                             {
                                 return VendorInfoState.MTT;
@@ -511,7 +558,7 @@ final class VendorInfoTransitionRuleFactory
                 }
                 catch ( PlatformUnsupportedException e )
                 {
-                    return VendorInfoState.EXIT;
+                    return VendorInfoState.POST_PROCESS;
                 }
                 return ( vendorInfo.getVendor().equals( Vendor.MICROSOFT ) ) ? VendorInfoState.MFT
                     : VendorInfoState.NFT;
@@ -534,7 +581,7 @@ final class VendorInfoTransitionRuleFactory
                 }
                 catch ( PlatformUnsupportedException e )
                 {
-                    return VendorInfoState.EXIT;
+                    return VendorInfoState.POST_PROCESS;
                 }
                 if ( ( vendorVersion.equals( "2.0.50727" ) || vendorVersion.equals( "1.1.4322" ) ) &&
                     defaultVendor.equals( Vendor.MICROSOFT ) )
@@ -594,7 +641,7 @@ final class VendorInfoTransitionRuleFactory
                 }
                 catch ( PlatformUnsupportedException e )
                 {
-                    return VendorInfoState.EXIT;
+                    return VendorInfoState.POST_PROCESS;
                 }
                 return ( vendorInfo.getVendor().equals( Vendor.MICROSOFT ) ) ? VendorInfoState.MFF
                     : VendorInfoState.NFF;
@@ -612,7 +659,7 @@ final class VendorInfoTransitionRuleFactory
                 vendorInfo.setVendor( defaultVendor );
                 vendorInfo.setVendorVersion( defaultVendorVersion );
                 vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
-                return VendorInfoState.EXIT;
+                return VendorInfoState.POST_PROCESS;
             }
         };
     }
@@ -625,7 +672,7 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NMAVEN-103-018: Entering State = MTT" );
-                return VendorInfoState.EXIT;
+                return VendorInfoState.POST_PROCESS;
             }
         };
     }
@@ -665,20 +712,34 @@ final class VendorInfoTransitionRuleFactory
                 logger.debug( "NMAVEN-103-021: Entering State = MFF" );
                 File v1 = new File( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v1.1.4322" );
                 File v2 = new File( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v2.0.50727" );
+                File v3 = new File( "C:\\Program Files\\Microsoft.NET\\SDK\\v1.1" );
+                File v4 = new File( "C:\\Program Files\\Microsoft.NET\\SDK\\v2.0" );
+                List<File> executablePaths = new ArrayList<File>();
+
                 if ( v2.exists() )
                 {
                     vendorInfo.setFrameworkVersion( "2.0.50727" );
-                    vendorInfo.setExecutablePath( v2 );
+                    executablePaths.add( v2 );
+                    if ( v4.exists() )
+                    {
+                        executablePaths.add( v4 );
+                    }
                 }
                 else if ( v1.exists() )
                 {
                     vendorInfo.setFrameworkVersion( "1.1.4322" );
-                    vendorInfo.setExecutablePath( v1 );
+                    executablePaths.add( v1 );
+                    if ( v3.exists() )
+                    {
+                        executablePaths.add( v3 );
+                    }
                 }
                 else
                 {
                     vendorInfo.setFrameworkVersion( "2.0.50727" );
                 }
+
+                vendorInfo.setExecutablePaths( executablePaths );
                 return VendorInfoState.MFT;
             }
         };
@@ -738,7 +799,7 @@ final class VendorInfoTransitionRuleFactory
                 logger.debug( "NMAVEN-103-023: Entering State = GFF" );
                 vendorInfo.setFrameworkVersion( "2.0.50727" );
                 vendorInfo.setVendorVersion( "2.0.50727" );
-                return VendorInfoState.EXIT;
+                return VendorInfoState.POST_PROCESS;
             }
         };
     }
@@ -749,12 +810,12 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-023: Entering State = GFF" );
+                logger.debug( "NMAVEN-103-035: Entering State = GFF" );
                 if ( vendorInfo.getVendor().equals( defaultVendor ) )
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
                     vendorInfo.setFrameworkVersion( "2.0.50727" );
-                    return VendorInfoState.EXIT;
+                    return VendorInfoState.POST_PROCESS;
                 }
                 else
                 {
@@ -773,11 +834,11 @@ final class VendorInfoTransitionRuleFactory
                         String maxVersion = vendorInfoRepository.getMaxVersion( versions );
                         vendorInfo.setVendorVersion( maxVersion );
                         vendorInfo.setFrameworkVersion( "2.0.50727" );
-                        return VendorInfoState.EXIT;
+                        return VendorInfoState.POST_PROCESS;
                     }
                     catch ( InvalidVersionFormatException e )
                     {
-                        logger.info( "NMAVEN-103-030: Invalid version. Unable to determine best vendor version", e );
+                        logger.info( "NMAVEN-103-031: Invalid version. Unable to determine best vendor version", e );
                         return createVendorInfoSetterForGFF_NoSettings().process( vendorInfo );
                     }
                 }

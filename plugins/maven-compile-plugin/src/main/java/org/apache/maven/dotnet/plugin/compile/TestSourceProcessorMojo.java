@@ -25,6 +25,8 @@ import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Copies source files to target directory.
@@ -33,7 +35,9 @@ import java.io.IOException;
  * @goal process-test-sources
  * @phase process-sources
  */
-public class TestSourceProcessorMojo extends AbstractMojo {
+public class TestSourceProcessorMojo
+    extends AbstractMojo
+{
 
     /**
      * Source directory
@@ -51,23 +55,39 @@ public class TestSourceProcessorMojo extends AbstractMojo {
      */
     private String outputDirectory;
 
-    public void execute() throws MojoExecutionException {
-        if (!new File(sourceDirectory).exists()) {
-            getLog().info("NMAVEN-905-001: No test source files to copy");
+    public void execute()
+        throws MojoExecutionException
+    {
+        if ( !new File( sourceDirectory ).exists() )
+        {
+            getLog().info( "NMAVEN-905-001: No test source files to copy" );
             return;
         }
         DirectoryScanner directoryScanner = new DirectoryScanner();
-        directoryScanner.setBasedir(sourceDirectory);
+        directoryScanner.setBasedir( sourceDirectory );
+
+        List<String> excludeList = new ArrayList<String>();
+        excludeList.add( "*.suo" );
+        excludeList.add( "*.csproj" );
+        excludeList.add( "*.sln" );
+        excludeList.add( "obj/**" );
+        directoryScanner.setExcludes( excludeList.toArray( new String[excludeList.size()] ) );
+
         directoryScanner.addDefaultExcludes();
         directoryScanner.scan();
         String[] files = directoryScanner.getIncludedFiles();
-        getLog().info("NMAVEN-905-002: Copying test source files: From = " + sourceDirectory + ",  To = " + outputDirectory);
-        for (String file : files) {
-            try {
-                FileUtils.copyFile(new File(sourceDirectory + File.separator + file),
-                        new File(outputDirectory + File.separator + file));
-            } catch (IOException e) {
-                throw new MojoExecutionException("NMAVEN-905-000: Unable to process test sources", e);
+        getLog().info(
+            "NMAVEN-905-002: Copying test source files: From = " + sourceDirectory + ",  To = " + outputDirectory );
+        for ( String file : files )
+        {
+            try
+            {
+                FileUtils.copyFile( new File( sourceDirectory + File.separator + file ),
+                                    new File( outputDirectory + File.separator + file ) );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-905-000: Unable to process test sources", e );
             }
         }
     }

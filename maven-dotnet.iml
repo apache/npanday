@@ -5,43 +5,603 @@
     <output url="file://$MODULE_DIR$/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Core/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Core/src/test/csharp" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Plugin.Resx/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Plugin.Settings/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Plugin.Solution/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Service/Embedder/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Service/Embedder/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-artifact/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-artifact/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-assembler/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-assembler/src/test/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-assembler/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-assembler/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-assembler/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-core/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-core/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-core/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-embedder/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-embedder/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-embedder/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-executable/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/assembly-plugins/target/generated-sources/modello" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/compiler-plugins/target/generated-sources/modello" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/entries/target/generated-sources/modello" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/executable-plugins/target/generated-sources/modello" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/netdependency/target/generated-sources/modello" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/settings/target/generated-sources/modello" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-executable/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/assembly-plugins/src/site" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-registry/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-registry/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-vendor/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-vendor/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0001/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0002/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0003/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0004/src/test/csharp" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0005/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0010/src/main/vb" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0011/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0012/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0013/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0014/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0015/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0016/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0017/src/test/csharp" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0018/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0019/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0020/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0020/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0021/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0021/src/main/vb" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0022/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0025/it/test1/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0026/src/main/csharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0027" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/junk/maven-axis2-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-compile-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/maven-compile-plugin/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-install-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/maven-link-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-resgen-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-resolver-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-settings-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/maven-solution-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-test-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/maven-test-plugin/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/maven-vstudio-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-webapp-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-wsdl-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-xsd-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-xsp-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sandbox/maven-csharp/plugins/maven-csharp-helper-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sandbox/maven-csharp/plugins/maven-csharp-lifecycle-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sandbox/maven-csharp/plugins/maven-csharp-lifecycle-plugin/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sandbox/maven-csharp/plugins/maven-csharp-package-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sandbox/maven-csharp/plugins/maven-csharp-source-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sandbox/maven-csharp/plugins/maven-ndoc-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sandbox/maven-csharp/plugins/maven-ndoc-plugin/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sandbox/maven-csharp/plugins/maven-nunit-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sandbox/maven-csharp/plugins/maven-vstudio-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/sandbox/prototype/maven-csharp-test/src/main/csharp" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/junk" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="components" />
+    <orderEntry type="module" module-name="maven" exported="" />
     <orderEntry type="module-library">
-      <library>
+      <library name="Maven Dependency: ant:ant:jar:1.5:compile">
         <CLASSES>
-          <root url="jar://$localRepository$/org/apache/maven/maven-model/2.0/maven-model-2.0.jar!/" />
+          <root url="jar://$localRepository$/ant/ant/1.5/ant-1.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library>
+      <library name="Maven Dependency: classworlds:classworlds:jar:1.1-alpha-2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: classworlds:classworlds:jar:1.1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/classworlds/classworlds/1.1/classworlds-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: com.jcraft:jsch:jar:0.1.23:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/com/jcraft/jsch/0.1.23/jsch-0.1.23.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: com.jcraft:jsch:jar:0.1.24:runtime">
+        <CLASSES>
+          <root url="jar://$localRepository$/com/jcraft/jsch/0.1.24/jsch-0.1.24.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: commons-attributes:commons-attributes-api:jar:2.1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-attributes/commons-attributes-api/2.1/commons-attributes-api-2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: commons-beanutils:commons-beanutils:jar:1.7.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: commons-cli:commons-cli:jar:1.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-cli/commons-cli/1.0/commons-cli-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: commons-codec:commons-codec:jar:1.3:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-codec/commons-codec/1.3/commons-codec-1.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: commons-collections:commons-collections:jar:2.1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-collections/commons-collections/2.1/commons-collections-2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: commons-digester:commons-digester:jar:1.6:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-digester/commons-digester/1.6/commons-digester-1.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: commons-httpclient:commons-httpclient:jar:3.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-httpclient/commons-httpclient/3.0/commons-httpclient-3.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: commons-io:commons-io:jar:1.1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-io/commons-io/1.1/commons-io-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: commons-logging:commons-logging-api:jar:1.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-logging/commons-logging-api/1.0.4/commons-logging-api-1.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: commons-logging:commons-logging:jar:1.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: commons-validator:commons-validator:jar:1.2.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-validator/commons-validator/1.2.0/commons-validator-1.2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: doxia:doxia-sink-api:jar:1.0-alpha-4:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/doxia/doxia-sink-api/1.0-alpha-4/doxia-sink-api-1.0-alpha-4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: javax.activation:activation:jar:1.1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/javax/activation/activation/1.1/activation-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: javax.mail:mail:jar:1.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/javax/mail/mail/1.4/mail-1.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: jaxen:jaxen:jar:1.1-beta-9:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/jaxen/jaxen/1.1-beta-9/jaxen-1.1-beta-9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: jdom:jdom:jar:1.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/jdom/jdom/1.0/jdom-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: jivesoftware:smack:jar:1.5.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/jivesoftware/smack/1.5.0/smack-1.5.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: jivesoftware:smackx:jar:1.5.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/jivesoftware/smackx/1.5.0/smackx-1.5.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: junit:junit:jar:3.8.1:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: kxml2:kxml2:jar:2.1.8:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/kxml2/kxml2/2.1.8/kxml2-2.1.8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: net.java.dev.stax-utils:stax-utils:jar:20040917:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/net/java/dev/stax-utils/stax-utils/20040917/stax-utils-20040917.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.axis2:axis2-adb:jar:1.1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/axis2/axis2-adb/1.1/axis2-adb-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.axis2:axis2-codegen:jar:1.1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/axis2/axis2-codegen/1.1/axis2-codegen-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.axis2:axis2-kernel:jar:1.1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/axis2/axis2-kernel/1.1/axis2-kernel-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.doxia:doxia-core:jar:1.0-alpha-7:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/doxia/doxia-core/1.0-alpha-7/doxia-core-1.0-alpha-7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.doxia:doxia-decoration-model:jar:1.0-alpha-7:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/doxia/doxia-decoration-model/1.0-alpha-7/doxia-decoration-model-1.0-alpha-7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.doxia:doxia-sink-api:jar:1.0-alpha-7:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/doxia/doxia-sink-api/1.0-alpha-7/doxia-sink-api-1.0-alpha-7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.doxia:doxia-site-renderer:jar:1.0-alpha-7:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/doxia/doxia-site-renderer/1.0-alpha-7/doxia-site-renderer-1.0-alpha-7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.reporting:maven-reporting-api:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/reporting/maven-reporting-api/2.0.4/maven-reporting-api-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.reporting:maven-reporting-api:jar:2.0:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/reporting/maven-reporting-api/2.0/maven-reporting-api-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.reporting:maven-reporting-impl:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/reporting/maven-reporting-impl/2.0.4/maven-reporting-impl-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.shared:maven-plugin-testing-harness:jar:1.0-beta-1:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/shared/maven-plugin-testing-harness/1.0-beta-1/maven-plugin-testing-harness-1.0-beta-1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.wagon:wagon-file:jar:1.0-alpha-5:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-file/1.0-alpha-5/wagon-file-1.0-alpha-5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.wagon:wagon-file:jar:1.0-alpha-7:runtime">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-file/1.0-alpha-7/wagon-file-1.0-alpha-7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-alpha-5:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-http-lightweight/1.0-alpha-5/wagon-http-lightweight-1.0-alpha-5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-alpha-6:runtime">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-http-lightweight/1.0-alpha-6/wagon-http-lightweight-1.0-alpha-6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-provider-api/1.0-alpha-5/wagon-provider-api-1.0-alpha-5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-6:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-provider-api/1.0-alpha-6/wagon-provider-api-1.0-alpha-6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-provider-api/1.0-beta-2/wagon-provider-api-1.0-beta-2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.wagon:wagon-ssh-external:jar:1.0-alpha-6:runtime">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-ssh-external/1.0-alpha-6/wagon-ssh-external-1.0-alpha-6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.wagon:wagon-ssh:jar:1.0-alpha-5:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-ssh/1.0-alpha-5/wagon-ssh-1.0-alpha-5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven.wagon:wagon-ssh:jar:1.0-alpha-7:runtime">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-ssh/1.0-alpha-7/wagon-ssh-1.0-alpha-7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-artifact-manager:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-artifact-manager/2.0.4/maven-artifact-manager-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-artifact-manager:jar:2.0.5:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-artifact-manager/2.0.5/maven-artifact-manager-2.0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-artifact-manager:jar:2.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-artifact-manager/2.0/maven-artifact-manager-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-artifact:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-artifact/2.0.4/maven-artifact-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-artifact:jar:2.0.5:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-artifact/2.0.5/maven-artifact-2.0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-artifact:jar:2.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-artifact/2.0/maven-artifact-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-core:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-core/2.0.4/maven-core-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-core:jar:2.0:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-core/2.0/maven-core-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-embedder:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-embedder/2.0.4/maven-embedder-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-error-diagnostics:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-error-diagnostics/2.0.4/maven-error-diagnostics-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-error-diagnostics:jar:2.0:test">
         <CLASSES>
           <root url="jar://$localRepository$/org/apache/maven/maven-error-diagnostics/2.0/maven-error-diagnostics-2.0.jar!/" />
         </CLASSES>
@@ -50,9 +610,594 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-model:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-model/2.0.4/maven-model-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-model:jar:2.0.5:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-model/2.0.5/maven-model-2.0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-model:jar:2.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-model/2.0/maven-model-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-monitor:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-monitor/2.0.4/maven-monitor-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-monitor:jar:2.0:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-monitor/2.0/maven-monitor-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-plugin-api:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-plugin-api/2.0.4/maven-plugin-api-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-plugin-api:jar:2.0.5:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-plugin-api/2.0.5/maven-plugin-api-2.0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-plugin-api:jar:2.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-plugin-api/2.0/maven-plugin-api-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-plugin-descriptor:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-plugin-descriptor/2.0.4/maven-plugin-descriptor-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-plugin-descriptor:jar:2.0:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-plugin-descriptor/2.0/maven-plugin-descriptor-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-plugin-parameter-documenter/2.0.4/maven-plugin-parameter-documenter-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-plugin-parameter-documenter:jar:2.0:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-plugin-parameter-documenter/2.0/maven-plugin-parameter-documenter-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-plugin-registry:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-plugin-registry/2.0.4/maven-plugin-registry-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-plugin-registry:jar:2.0:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-plugin-registry/2.0/maven-plugin-registry-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-profile:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-profile/2.0.4/maven-profile-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-profile:jar:2.0.5:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-profile/2.0.5/maven-profile-2.0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-profile:jar:2.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-profile/2.0/maven-profile-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-project:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-project/2.0.4/maven-project-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-project:jar:2.0.5:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-project/2.0.5/maven-project-2.0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-project:jar:2.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-project/2.0/maven-project-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-repository-metadata:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-repository-metadata/2.0.4/maven-repository-metadata-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-repository-metadata:jar:2.0.5:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-repository-metadata/2.0.5/maven-repository-metadata-2.0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-repository-metadata:jar:2.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-repository-metadata/2.0/maven-repository-metadata-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-settings:jar:2.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-settings/2.0.4/maven-settings-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.maven:maven-settings:jar:2.0.5:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-settings/2.0.5/maven-settings-2.0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.ws.commons.axiom:axiom-api:jar:SNAPSHOT:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/ws/commons/axiom/axiom-api/SNAPSHOT/axiom-api-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.ws.commons.axiom:axiom-dom:jar:1.2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/ws/commons/axiom/axiom-dom/1.2/axiom-dom-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.apache.ws.commons:XmlSchema:jar:1.0.3:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/ws/commons/XmlSchema/1.0.3/XmlSchema-1.0.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.plexus:plexus-archiver:jar:1.0-alpha-3:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-archiver/1.0-alpha-3/plexus-archiver-1.0-alpha-3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-container-default/1.0-alpha-8/plexus-container-default-1.0-alpha-8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-container-default/1.0-alpha-9/plexus-container-default-1.0-alpha-9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.plexus:plexus-i18n:jar:1.0-beta-6:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-i18n/1.0-beta-6/plexus-i18n-1.0-beta-6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-interactivity-api/1.0-alpha-4/plexus-interactivity-api-1.0-alpha-4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.plexus:plexus-servlet:jar:1.0-beta-3:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-servlet/1.0-beta-3/plexus-servlet-1.0-beta-3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.plexus:plexus-utils:jar:1.0.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-utils/1.0.4/plexus-utils-1.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.plexus:plexus-utils:jar:1.1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-utils/1.1/plexus-utils-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.plexus:plexus-velocity:jar:1.1.2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-velocity/1.1.2/plexus-velocity-1.1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.xfire:javax.ws:jar:1.0.0:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/xfire/javax.ws/1.0.0/javax.ws-1.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.xfire:xfire-aegis:jar:1.2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/xfire/xfire-aegis/1.2/xfire-aegis-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.xfire:xfire-annotations:jar:1.2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/xfire/xfire-annotations/1.2/xfire-annotations-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.xfire:xfire-core:jar:1.2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/xfire/xfire-core/1.2/xfire-core-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.xfire:xfire-java5:jar:1.2.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/xfire/xfire-java5/1.2.4/xfire-java5-1.2.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.xfire:xfire-plexus:jar:1.2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/xfire/xfire-plexus/1.2/xfire-plexus-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.codehaus.xfire:xfire-xmpp:jar:1.2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/xfire/xfire-xmpp/1.2/xfire-xmpp-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: org.easymock:easymock:jar:2.0:test">
+        <CLASSES>
+          <root url="jar://$localRepository$/org/easymock/easymock/2.0/easymock-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: oro:oro:jar:2.0.7:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/oro/oro/2.0.7/oro-2.0.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: plexus:plexus-utils:jar:1.0.2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/plexus/plexus-utils/1.0.2/plexus-utils-1.0.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: qdox:qdox:jar:1.5:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/qdox/qdox/1.5/qdox-1.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: stax:stax-api:jar:1.0.1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/stax/stax-api/1.0.1/stax-api-1.0.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: velocity:velocity-dep:jar:1.4:runtime">
+        <CLASSES>
+          <root url="jar://$localRepository$/velocity/velocity-dep/1.4/velocity-dep-1.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: velocity:velocity:jar:1.4:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/velocity/velocity/1.4/velocity-1.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: woodstox:wstx-asl:jar:2.9.3:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/woodstox/wstx-asl/2.9.3/wstx-asl-2.9.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: wsdl4j:wsdl4j:jar:1.5.2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/wsdl4j/wsdl4j/1.5.2/wsdl4j-1.5.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: wsdl4j:wsdl4j:jar:1.6.1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/wsdl4j/wsdl4j/1.6.1/wsdl4j-1.6.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: xerces:xercesImpl:jar:2.6.2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: xerces:xmlParserAPIs:jar:2.6.2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: xfire:xfire-jsr181-api:jar:1.0-M1:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/xfire/xfire-jsr181-api/1.0-M1/xfire-jsr181-api-1.0-M1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: xml-apis:xml-apis:jar:1.0.b2:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: xml-apis:xml-apis:jar:1.3.03:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/xml-apis/xml-apis/1.3.03/xml-apis-1.3.03.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven Dependency: xmlpull:xmlpull:jar:1.1.3.4a:compile">
+        <CLASSES>
+          <root url="jar://$localRepository$/xmlpull/xmlpull/1.1.3.4a/xmlpull-1.1.3.4a.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$localRepository$/org/apache/maven/maven-core/2.0/maven-core-2.0.jar!/" />
+          <root url="jar://$localRepository$/classworlds/classworlds/1.1/classworlds-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/commons-io/commons-io/1.1/commons-io-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/kxml2/kxml2/2.1.8/kxml2-2.1.8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/axis2/axis2-codegen/1.1/axis2-codegen-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/axis2/axis2-kernel/1.1/axis2-kernel-1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -70,6 +1215,15 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-artifact/2.0.4/maven-artifact-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
           <root url="jar://$localRepository$/org/apache/maven/maven-artifact/2.0/maven-artifact-2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -79,17 +1233,106 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-utils/1.1/plexus-utils-1.1.jar!/" />
+          <root url="jar://$localRepository$/org/apache/maven/maven-core/2.0/maven-core-2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="maven-plugin-api-2.0" level="application" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-embedder/2.0.4/maven-embedder-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-error-diagnostics/2.0/maven-error-diagnostics-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-model/2.0.4/maven-model-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-model/2.0/maven-model-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-monitor/2.0.4/maven-monitor-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$localRepository$/org/apache/maven/maven-plugin-api/2.0/maven-plugin-api-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-project/2.0.4/maven-project-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-project/2.0/maven-project-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/maven-settings/2.0.4/maven-settings-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/shared/maven-plugin-testing-harness/1.0-beta-1/maven-plugin-testing-harness-1.0-beta-1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-provider-api/1.0-alpha-6/wagon-provider-api-1.0-alpha-6.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -116,25 +1359,25 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$localRepository$/org/apache/maven/maven-project/2.0/maven-project-2.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$localRepository$/org/apache/maven/maven-artifact/2.0.4/maven-artifact-2.0.4.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$localRepository$/org/codehaus/plexus/plexus-container-default/1.0-alpha-9/plexus-container-default-1.0-alpha-9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/plexus/plexus-utils/1.1/plexus-utils-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/codehaus/xfire/xfire-java5/1.2.4/xfire-java5-1.2.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -149,53 +1392,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$localRepository$/org/apache/maven/wagon/wagon-provider-api/1.0-alpha-6/wagon-provider-api-1.0-alpha-6.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$localRepository$/org/apache/maven/maven-settings/2.0.4/maven-settings-2.0.4.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module" module-name="components" />
-    <orderEntry type="module" module-name="maven" exported="" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$localRepository$/org/apache/maven/shared/maven-plugin-testing-harness/1.0-beta-1/maven-plugin-testing-harness-1.0-beta-1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$localRepository$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$localRepository$/org/apache/maven/maven-model/2.0.4/maven-model-2.0.4.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="maven-plugin-api-2.0" level="application" />
     <orderEntryProperties />
   </component>
 </module>

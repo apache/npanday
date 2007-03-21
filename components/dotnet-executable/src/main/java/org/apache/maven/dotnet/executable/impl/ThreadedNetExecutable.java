@@ -32,11 +32,11 @@ public class ThreadedNetExecutable
         }
         catch ( ExecutionException e )
         {
-          //  throw new ExecutionException( "NMAVEN-063-000: Command = " + commands, e );
+            //  throw new ExecutionException( "NMAVEN-063-000: Command = " + commands, e );
         }
         if ( commandExecutor.getStandardOut().contains( "error" ) )
         {
-         //   t/w new ExecutionException( "NMAVEN-063-001: Command = " + commands );
+            //   t/w new ExecutionException( "NMAVEN-063-001: Command = " + commands );
         }
     }
 
@@ -49,8 +49,28 @@ public class ThreadedNetExecutable
 
     public File getExecutionPath()
     {
-        return ( executableContext.getExecutableConfig().getExecutionPath() != null ) ? new File(
-            executableContext.getExecutableConfig().getExecutionPath() ) : null;
+        String executable;
+        try
+        {
+            executable = getExecutable();
+        }
+        catch ( ExecutionException e )
+        {
+            return null;
+        }
+        List<String> executablePaths = executableContext.getExecutableConfig().getExecutionPaths();
+        if ( executablePaths != null )
+        {
+            for ( String executablePath : executablePaths )
+            {
+                File exe = new File( executablePath + File.separator + executable );
+                if ( exe.exists() )
+                {
+                    return new File( executablePath );
+                }
+            }
+        }
+        return null;
     }
 
     public void execute()

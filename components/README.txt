@@ -1,4 +1,4 @@
-Find the latest documentation at: http://nmaven.sf.net (Usually updated within half a day of version release).
+Find the latest documentation at: http://incubator.apache.org/nmaven/
 
 Logs:
 000-019: nmaven-artifact

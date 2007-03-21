@@ -1,4 +1,4 @@
-Find the latest documentation at: http://nmaven.sf.net. 
+Find the latest documentation at: http://incubator.apache.org/nmaven 
 
 Before building the nmaven-plugin project, build the nmaven-components project and then go to the scripts directory and
 execute the install script. It will install the nunit.framework.dll and other 3rd party libs into the local Maven repo.

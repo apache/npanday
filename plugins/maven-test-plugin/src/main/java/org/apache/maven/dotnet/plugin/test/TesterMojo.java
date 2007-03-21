@@ -42,7 +42,9 @@ import org.apache.maven.dotnet.executable.CommandExecutor;
  * @goal test
  * @phase test
  */
-public class TesterMojo extends AbstractMojo {
+public class TesterMojo
+    extends AbstractMojo
+{
 
     /**
      * The maven project.
@@ -90,94 +92,128 @@ public class TesterMojo extends AbstractMojo {
     private String testAssemblyPath;
 
 
-    public String getExecutableFor(Vendor vendor, String home) {
-        return !(nunitHome == null || nunitHome.equals("")) ? nunitHome + File.separator + "bin"
-                + File.separator + "nunit-console" : "nunit-console";
+    public String getExecutableFor( Vendor vendor, String home )
+    {
+        return !( nunitHome == null || nunitHome.equals( "" ) ) ? nunitHome + File.separator + "bin" + File.separator +
+            "nunit-console" : "nunit-console";
     }
 
-    public List<String> getCommandsFor(Vendor vendor) throws MojoExecutionException {
+    public List<String> getCommandsFor( Vendor vendor )
+        throws MojoExecutionException
+    {
         String finalName = project.getBuild().getFinalName();
         List<String> commands = new ArrayList<String>();
-        commands.add(testAssemblyPath + File.separator + project.getArtifactId() + "-test.dll");
-        commands.add("/xml:" + reportsDirectory + File.separator + "TEST-" + finalName + ".xml");
+        commands.add( testAssemblyPath + File.separator + project.getArtifactId() + "-test.dll" );
+        commands.add( "/xml:" + reportsDirectory + File.separator + "TEST-" + finalName + ".xml" );
 
-        commands.add("/output:" + reportsDirectory + File.separator + "TEST-" + finalName + "-RESULTS.txt");
-        commands.add("/err:" + reportsDirectory + File.separator + "TEST-" + finalName + "-ERROR.txt");
-        commands.add("/labels");
+        commands.add( "/output:" + reportsDirectory + File.separator + "TEST-" + finalName + "-RESULTS.txt" );
+        commands.add( "/err:" + reportsDirectory + File.separator + "TEST-" + finalName + "-ERROR.txt" );
+        commands.add( "/labels" );
 
-        if (xmlConsole) commands.add("/xmlConsole");
+        if ( xmlConsole )
+        {
+            commands.add( "/xmlConsole" );
+        }
         return commands;
     }
 
-    public void execute() throws MojoExecutionException {
-        String skipTests = System.getProperty("maven.test.skip");
-        if ((skipTests != null && skipTests.equalsIgnoreCase("true")) || skipTest) {
-            getLog().warn("NMAVEN-1100-000: Unit tests have been disabled.");
+    public void execute()
+        throws MojoExecutionException
+    {
+        String skipTests = System.getProperty( "maven.test.skip" );
+        if ( ( skipTests != null && skipTests.equalsIgnoreCase( "true" ) ) || skipTest )
+        {
+            getLog().warn( "NMAVEN-1100-000: Unit tests have been disabled." );
             return;
         }
-        String testFileName = project.getBuild().getDirectory() + File.separator
-                + project.getArtifactId() + "-test.dll";
+        String testFileName =
+            project.getBuild().getDirectory() + File.separator + project.getArtifactId() + "-test.dll";
 
-        if (!(new File(testFileName).exists())) {
-            getLog().info("NMAVEN-1100-001: No Unit Tests");
+        if ( !( new File( testFileName ).exists() ) )
+        {
+            getLog().info( "NMAVEN-1100-001: No Unit Tests" );
             return;
         }
 
         List<Artifact> nunitLibs = new ArrayList<Artifact>();
         Set<Artifact> artifacts = project.getDependencyArtifacts();
-        for (Artifact artifact : artifacts) {
-            if (artifact.getGroupId().equals("org.nunit")) {
-                nunitLibs.add(artifact);
-            } else {
-                try {
-                    FileUtils.copyFileToDirectory(artifact.getFile(), new File(testAssemblyPath));
-                } catch (IOException e) {
-                    throw new MojoExecutionException("NMAVEN-1100-002", e);
+        for ( Artifact artifact : artifacts )
+        {
+            if ( artifact.getGroupId().equals( "NUnit" ) )
+            {
+                nunitLibs.add( artifact );
+            }
+            else
+            {
+                try
+                {
+                    FileUtils.copyFileToDirectory( artifact.getFile(), new File( testAssemblyPath ) );
+                }
+                catch ( IOException e )
+                {
+                    throw new MojoExecutionException( "NMAVEN-1100-002", e );
                 }
             }
         }
 
-        if (nunitLibs.size() == 0)
-            throw new MojoExecutionException("NMAVEN-1100-003: Could not find any nunit libraries.");
+        if ( nunitLibs.size() == 0 )
+        {
+            throw new MojoExecutionException( "NMAVEN-1100-003: Could not find any nunit libraries." );
+        }
 
         //Copy Main Artifact
-        try {
-            if (project.getArtifact() != null && project.getArtifact().getFile() != null
-                    && project.getArtifact().getFile().exists()) {
-                FileUtils.copyFileToDirectory(project.getArtifact().getFile(), new File(testAssemblyPath));
+        try
+        {
+            if ( project.getArtifact() != null && project.getArtifact().getFile() != null &&
+                project.getArtifact().getFile().exists() )
+            {
+                FileUtils.copyFileToDirectory( project.getArtifact().getFile(), new File( testAssemblyPath ) );
             }
-        } catch (IOException e) {
-            throw new MojoExecutionException("NMAVEN-1100-004: Unable to copy library to target directory: ", e);
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1100-004: Unable to copy library to target directory: ", e );
         }
 
         //Copy Test Artifact
-        try {
-            FileUtils.copyFileToDirectory(new File(testFileName), new File(testAssemblyPath));
-        } catch (IOException e) {
-            throw new MojoExecutionException("NMAVEN-1100-005: Unable to copy library to target directory: ", e);
+        try
+        {
+            FileUtils.copyFileToDirectory( new File( testFileName ), new File( testAssemblyPath ) );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1100-005: Unable to copy library to target directory: ", e );
         }
 
         //Copy  NUnit Dependencies
-        for (Artifact artifact : nunitLibs) {
-            File file = new File(testAssemblyPath + File.separator + artifact.getArtifactId() + ".dll");
-            try {
-                FileUtils.copyFile(artifact.getFile(), file);
-            } catch (IOException e) {
-                throw new MojoExecutionException("NMAVEN-1100-006: Unable to copy nunit library to target directory: File = " +
-                        file.getAbsolutePath(), e);
+        for ( Artifact artifact : nunitLibs )
+        {
+            File file = new File( testAssemblyPath + File.separator + artifact.getArtifactId() + ".dll" );
+            try
+            {
+                FileUtils.copyFile( artifact.getFile(), file );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException(
+                    "NMAVEN-1100-006: Unable to copy nunit library to target directory: File = " +
+                        file.getAbsolutePath(), e );
             }
         }
 
-        FileUtils.mkdir(reportsDirectory);
+        FileUtils.mkdir( reportsDirectory );
 
-        List<String> commands = getCommandsFor(null);
-        getLog().debug("NMAVEN-1100-008: " + commands.toString());
+        List<String> commands = getCommandsFor( null );
+        getLog().debug( "NMAVEN-1100-008: " + commands.toString() );
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         //commandExecutor.setLog(getLog());
-        try {
-            commandExecutor.executeCommand(getExecutableFor(null, null), commands);
-        } catch (ExecutionException e) {
-            throw new MojoExecutionException("NMAVEN-1100-007", e);
+        try
+        {
+            commandExecutor.executeCommand( getExecutableFor( null, null ), commands );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1100-007", e );
         }
     }
 }

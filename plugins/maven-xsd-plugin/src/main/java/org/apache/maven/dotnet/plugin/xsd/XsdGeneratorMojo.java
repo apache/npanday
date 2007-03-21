@@ -39,9 +39,9 @@ import org.apache.maven.dotnet.PlatformUnsupportedException;
  * @phase process-sources
  */
 
-public class XsdGeneratorMojo extends AbstractMojo {
-
-
+public class XsdGeneratorMojo
+    extends AbstractMojo
+{
     /**
      * The directory to place the generated binding classes.
      *
@@ -133,8 +133,7 @@ public class XsdGeneratorMojo extends AbstractMojo {
     private File netHome;
 
     /**
-     * The Vendor for the executable. Supports MONO and MICROSOFT: the default value is <code>MICROSOFT</code>. Not
-     * case or white-space sensitive.
+     * The Vendor for the executable. Supports MONO and MICROSOFT.
      *
      * @parameter expression="${vendor}"
      */
@@ -163,47 +162,75 @@ public class XsdGeneratorMojo extends AbstractMojo {
      */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
-    public void execute() throws MojoExecutionException {
-        try {
+    public void execute()
+        throws MojoExecutionException
+    {
+        try
+        {
             nmavenRegistry.createRepositoryRegistry();
-        } catch (IOException e) {
-            throw new MojoExecutionException("NMAVEN-1400-0032 Failed to create the repository registry for this plugin", e);
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException(
+                "NMAVEN-1400-0032 Failed to create the repository registry for this plugin", e );
         }
 
-        FileUtils.mkdir(outputDirectory);
-        try {
-            netExecutableFactory.getNetExecutableFor(vendor, frameworkVersion, profile,
-                    project, getCommands(), netHome).execute();
-        } catch (ExecutionException e) {
-            throw new MojoExecutionException("NMAVEN-1400-000: Unable to execute xsd: Vendor " + vendor
-                    + ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile,  e);
-        } catch (PlatformUnsupportedException e) {
-            throw new MojoExecutionException("NMAVEN-1400-001: Platform Unsupported: Vendor " + vendor
-                    + ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e);
+        FileUtils.mkdir( outputDirectory );
+        try
+        {
+            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, project, getCommands(),
+                                                      netHome ).execute();
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1400-000: Unable to execute xsd: Vendor " + vendor +
+                ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1400-001: Platform Unsupported: Vendor " + vendor +
+                ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
     }
 
-    public List<String> getCommands() throws MojoExecutionException {
+    public List<String> getCommands()
+        throws MojoExecutionException
+    {
         List<String> commands = new ArrayList<String>();
-        commands.add(new File(xsdFile.trim()).getAbsolutePath());
-        commands.add("/o:" + outputDirectory);
-        commands.add("/" + generate.trim());
-        commands.add("/language:" + language.trim());
-        commands.add("/namespace:" + namespace.trim());
-        if (!isEmpty(uri)) commands.add("/uri:" + uri);
-        if (enableDataBinding) commands.add("/enableDataBinding");
-        if (fields) commands.add("/fields");
-        if (order) commands.add("/order");
-        if (elements != null) {
-            for (String element : elements) {
-                commands.add("/element:" + element);
+        commands.add( new File( xsdFile.trim() ).getAbsolutePath() );
+        commands.add( "/o:" + outputDirectory );
+        commands.add( "/" + generate.trim() );
+        commands.add( "/language:" + language.trim() );
+        commands.add( "/namespace:" + namespace.trim() );
+        if ( !isEmpty( uri ) )
+        {
+            commands.add( "/uri:" + uri );
+        }
+        if ( enableDataBinding )
+        {
+            commands.add( "/enableDataBinding" );
+        }
+        if ( fields )
+        {
+            commands.add( "/fields" );
+        }
+        if ( order )
+        {
+            commands.add( "/order" );
+        }
+        if ( elements != null )
+        {
+            for ( String element : elements )
+            {
+                commands.add( "/element:" + element );
             }
         }
         // commands.add("/nologo");
         return commands;
     }
 
-    private boolean isEmpty(String value) {
-        return (value == null || value.trim().equals(""));
+    private boolean isEmpty( String value )
+    {
+        return ( value == null || value.trim().equals( "" ) );
     }
 }

@@ -20,7 +20,7 @@
           <execution>
             <goals>
               <goal>start-xsp</goal>
-              <goal>stop-xsp</goal>              
+              <goal>stop-xsp</goal>
             </goals>
           </execution>
         </executions>

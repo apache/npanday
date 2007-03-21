@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plexus>
+  <load-on-start>
+    <component>
+      <role>org.codehaus.xfire.plexus.config.ConfigurationService</role>
+    </component>
+  </load-on-start>
+</plexus>

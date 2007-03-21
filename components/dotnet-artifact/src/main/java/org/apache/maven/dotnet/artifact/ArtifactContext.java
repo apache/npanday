@@ -79,7 +79,7 @@ public interface ArtifactContext
      *         but not null.
      */
     List<Artifact> getArtifactsFor( String groupId, String artifactId, String version, String type );
-
+    
     /**
      * Returns an artifact installer used for installing NMaven artifacts into the local Maven repository.
      *

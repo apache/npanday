@@ -1,163 +1,163 @@
 <model>
-    <id>compiler-plugin</id>
-    <name>CompilerPlugin</name>
-    <description>A configuration file for compilers.</description>
-    <defaults>
-        <default>
-            <key>package</key>
-            <value>org.apache.maven.dotnet.model.compiler.plugins</value>
-        </default>
-    </defaults>
-    <classes>
-        <class rootElement="true">
-            <name>CompilerPluginsModel</name>
-            <fields>
-                <field>
-                    <name>compilerPlugins</name>
-                    <description>Plugin configurations.</description>
-                    <association>
-                        <type>CompilerPlugin</type>
-                        <multiplicity>*</multiplicity>
-                    </association>
-                </field>
-            </fields>
-        </class>
+  <id>compiler-plugin</id>
+  <name>CompilerPlugin</name>
+  <description>A configuration file for compilers.</description>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.apache.maven.dotnet.model.compiler.plugins</value>
+    </default>
+  </defaults>
+  <classes>
+    <class rootElement="true">
+      <name>CompilerPluginsModel</name>
+      <fields>
+        <field>
+          <name>compilerPlugins</name>
+          <description>Plugin configurations.</description>
+          <association>
+            <type>CompilerPlugin</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
 
-        <class xml.tagName="compilerPlugin">
-            <name>CompilerPlugin</name>
-            <fields>
-                <field>
-                    <name>identifier</name>
-                    <version>1.0.0</version>
-                    <type>String</type>
-                    <description>An id for the compiler. It should be (but is not required to be) unique.</description>
-                </field>
-                <field>
-                    <name>pluginClass</name>
-                    <version>1.0.0</version>
-                    <type>String</type>
-                    <description>
-                        Class name of the compiler. NMaven will pass an instance of this class to the
-                        requesting plugin.
-                    </description>
-                </field>
-                <field>
-                    <name>vendor</name>
-                    <version>1.0.0</version>
-                    <type>String</type>
-                    <description>Vendor of the compiler: MICROSOFT, MONO, DotGNU</description>
-                </field>
-                <field>
-                    <name>language</name>
-                    <version>1.0.0</version>
-                    <type>String</type>
-                    <description>The .NET language to use for compilation.</description>
-                </field>
-                <field>
-                    <name>profile</name>
-                    <version>1.0.0</version>
-                    <type>String</type>
-                    <description>Profile for the plugin.</description>
-                </field>
-                <field>
-                    <name>executable</name>
-                    <version>1.0.0</version>
-                    <type>String</type>
-                    <description>Executable, as run from the command line.</description>
-                </field>
-                <field>
-                    <name>frameworkVersions</name>
-                    <description>Supported framework version(s) of the compiler: 1.1.4322, 2.0.50727, 3.0</description>
-                    <association>
-                        <type>String</type>
-                        <multiplicity>*</multiplicity>
-                    </association>
-                </field>
-                <field>
-                    <name>defaultAssemblyPath</name>
-                    <description>
-                        Path (absolute or relative) of the assemblies given in the assembly fields. This field
-                        is used in conjunction with the profile and the assemblies fields.
-                    </description>
-                    <type>String</type>
-                </field>
-                <field>
-                    <name>assemblies</name>
-                    <description>
-                        Assemblies to reference from the command line. This is used to create custom profiles (such as
-                        .NET Compact) that use a different set of system assemblies. Only include the name of the
-                        assembly, not the .dll extension.
-                    </description>
-                    <association>
-                        <type>String</type>
-                        <multiplicity>*</multiplicity>
-                    </association>
-                </field>
-                <field>
-                    <name>platforms</name>
-                    <version>1.0.0</version>
-                    <description>Platform configuration capabilities.</description>
-                    <association>
-                        <type>Platform</type>
-                        <multiplicity>*</multiplicity>
-                    </association>
-                </field>
-                <field>
-                    <name>commandFilter</name>
-                    <version>1.0.0</version>
-                    <description>A filter for including/excluding user-passed commands options.</description>
-                    <association>
-                        <type>CommandFilter</type>
-                    </association>
-                </field>
-            </fields>
-        </class>
+    <class xml.tagName="compilerPlugin">
+      <name>CompilerPlugin</name>
+      <fields>
+        <field>
+          <name>identifier</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description>An id for the compiler. It should be (but is not required to be) unique.</description>
+        </field>
+        <field>
+          <name>pluginClass</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description>
+            Class name of the compiler. NMaven will pass an instance of this class to the
+            requesting plugin.
+          </description>
+        </field>
+        <field>
+          <name>vendor</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description>Vendor of the compiler: MICROSOFT, MONO, DotGNU</description>
+        </field>
+        <field>
+          <name>language</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description>The .NET language to use for compilation.</description>
+        </field>
+        <field>
+          <name>profile</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description>Profile for the plugin.</description>
+        </field>
+        <field>
+          <name>executable</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description>Executable, as run from the command line.</description>
+        </field>
+        <field>
+          <name>frameworkVersions</name>
+          <description>Supported framework version(s) of the compiler: 1.1.4322, 2.0.50727, 3.0</description>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>defaultAssemblyPath</name>
+          <description>
+            Path (absolute or relative) of the assemblies given in the assembly fields. This field
+            is used in conjunction with the profile and the assemblies fields.
+          </description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>assemblies</name>
+          <description>
+            Assemblies to reference from the command line. This is used to create custom profiles (such as
+            .NET Compact) that use a different set of system assemblies. Only include the name of the
+            assembly, not the .dll extension.
+          </description>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>platforms</name>
+          <version>1.0.0</version>
+          <description>Platform configuration capabilities.</description>
+          <association>
+            <type>Platform</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>commandFilter</name>
+          <version>1.0.0</version>
+          <description>A filter for including/excluding user-passed commands options.</description>
+          <association>
+            <type>CommandFilter</type>
+          </association>
+        </field>
+      </fields>
+    </class>
 
-        <class>
-            <name>CommandFilter</name>
-            <fields>
-                <field>
-                    <name>excludes</name>
-                    <version>1.0.0</version>
-                    <description>
-                        The command options to exclude from the user specified pass-through parameters (Currently unused)
-                    </description>
-                    <association>
-                        <type>String</type>
-                        <multiplicity>*</multiplicity>
-                    </association>
-                </field>
-                <field>
-                    <name>includes</name>
-                    <version>1.0.0</version>
-                    <description>
-                        The command options to allow from the user specified pass-through parameters.
-                    </description>
-                    <association>
-                        <type>String</type>
-                        <multiplicity>*</multiplicity>
-                    </association>
-                </field>
-            </fields>
-        </class>
+    <class>
+      <name>CommandFilter</name>
+      <fields>
+        <field>
+          <name>excludes</name>
+          <version>1.0.0</version>
+          <description>
+            The command options to exclude from the user specified pass-through parameters (Currently unused)
+          </description>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>includes</name>
+          <version>1.0.0</version>
+          <description>
+            The command options to allow from the user specified pass-through parameters.
+          </description>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
 
-        <class>
-            <name>Platform</name>
-            <fields>
-                <field>
-                    <name>operatingSystem</name>
-                    <version>1.0.0</version>
-                    <type>String</type>
-                    <description>The operating system that the compiler is capable of running on.</description>
-                </field>
-                <field>
-                    <name>architecture</name>
-                    <version>1.0.0</version>
-                    <type>String</type>
-                    <description>The architecture that the compiler is capable of running on (Currently
-                        unused).</description>
-                </field>
-            </fields>
-        </class>
-    </classes>
+    <class>
+      <name>Platform</name>
+      <fields>
+        <field>
+          <name>operatingSystem</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description>The operating system that the compiler is capable of running on.</description>
+        </field>
+        <field>
+          <name>architecture</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description>The architecture that the compiler is capable of running on (Currently
+            unused).</description>
+        </field>
+      </fields>
+    </class>
+  </classes>
 </model>

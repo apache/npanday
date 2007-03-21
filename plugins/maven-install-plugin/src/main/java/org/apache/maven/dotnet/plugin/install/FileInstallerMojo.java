@@ -33,7 +33,9 @@ import org.apache.maven.dotnet.artifact.ArtifactContext;
  * @requiresProject false
  */
 
-public class FileInstallerMojo extends AbstractMojo {
+public class FileInstallerMojo
+    extends AbstractMojo
+{
 
     /**
      * The maven project.
@@ -89,18 +91,17 @@ public class FileInstallerMojo extends AbstractMojo {
      */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
-    public void execute() throws MojoExecutionException {
-        try {
-            nmavenRegistry.createRepositoryRegistry();
-        } catch (IOException e) {
-            throw new MojoExecutionException("NMAVEN-1000-001: Failed to create the repository registry for this plugin", e);
+    public void execute()
+        throws MojoExecutionException
+    {
+        artifactContext.init( project, localRepository );
+        try
+        {
+            artifactContext.getArtifactInstaller().installFile( groupId, artifactId, version, packaging, pomFile );
         }
-
-        artifactContext.init(project, localRepository);
-        try {
-            artifactContext.getArtifactInstaller().installFile(groupId, artifactId, version, packaging, pomFile);
-        } catch (org.apache.maven.artifact.installer.ArtifactInstallationException e) {
-            throw new MojoExecutionException("NMAVEN-1000-000: Failed to install artifact file", e);
+        catch ( org.apache.maven.artifact.installer.ArtifactInstallationException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1000-000: Failed to install artifact file", e );
         }
     }
 }

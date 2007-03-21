@@ -34,14 +34,18 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
-import org.apache.maven.dotnet.artifact.impl.NetDependenciesRepository;
+import org.apache.maven.dotnet.artifact.NetDependenciesRepository;
+import org.apache.maven.dotnet.artifact.NetDependencyMatchPolicy;
+import org.apache.maven.dotnet.model.netdependency.NetDependency;
 
 /**
  * @author Shane Isbell
  * @goal resolve
  * @phase process-resources
  */
-public class NetDependencyResolverMojo extends AbstractMojo {
+public class NetDependencyResolverMojo
+    extends AbstractMojo
+{
     /**
      * The maven project.
      *
@@ -84,40 +88,90 @@ public class NetDependencyResolverMojo extends AbstractMojo {
      */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
-    public void execute() throws MojoExecutionException {
-        if(System.getProperty("bootstrap") != null)  return;
+    public void execute()
+        throws MojoExecutionException
+    {
+        if ( System.getProperty( "bootstrap" ) != null )
+        {
+            return;
+        }
+
+        String profile = System.getProperty( "dependencyProfile" );
 
         RepositoryRegistry repositoryRegistry;
-        try {
+        try
+        {
             repositoryRegistry = nmavenRegistry.createRepositoryRegistry();
-        } catch (IOException e) {
-            throw new MojoExecutionException("NMAVEN-1600-000: Failed to create the repository registry for this plugin", e);
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException(
+                "NMAVEN-1600-000: Failed to create the repository registry for this plugin", e );
         }
 
-        if (netDependencies == null) netDependencies = new NetDependency[0];
+        if ( netDependencies == null )
+        {
+            netDependencies = new NetDependency[0];
+        }
         List<Dependency> dependencies = new ArrayList<Dependency>();
-        for (NetDependency netDependency : netDependencies) {
+        for ( NetDependency netDependency : netDependencies )
+        {
             Dependency dependency = new Dependency();
-            dependency.setGroupId(netDependency.getGroupId());
-            dependency.setArtifactId(netDependency.getArtifactId());
-            dependency.setVersion(netDependency.getVersion());
-            dependency.setScope(Artifact.SCOPE_RUNTIME);
-            dependency.setType(netDependency.getType());
-            dependencies.add(dependency);
+            dependency.setGroupId( netDependency.getGroupId() );
+            dependency.setArtifactId( netDependency.getArtifactId() );
+            dependency.setVersion( netDependency.getVersion() );
+            dependency.setScope( Artifact.SCOPE_RUNTIME );
+            dependency.setType( netDependency.getType() );
+            dependencies.add( dependency );
         }
 
-        NetDependenciesRepository repository = (NetDependenciesRepository) repositoryRegistry.find("net-dependencies");
-        dependencies.addAll(repository.getDependencies());
-        getLog().info("NMAVEN-1600-001: Found net dependencies: Number = " + dependencies.size());
+        NetDependenciesRepository repository =
+            (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
+        List<NetDependencyMatchPolicy> matchPolicies = new ArrayList<NetDependencyMatchPolicy>();
+        matchPolicies.add( new ProfileMatchPolicy( profile ) );
+        dependencies.addAll( repository.getDependenciesFor( matchPolicies ) );
+        getLog().info( "NMAVEN-1600-001: Found net dependencies: Number = " + dependencies.size() );
 
-        try {
-            assemblyResolver.resolveTransitivelyFor(project, project.getArtifact(), dependencies,
-                    pomFile, localRepository, false);
-        } catch (ArtifactResolutionException e) {
-            throw new MojoExecutionException("NMAVEN-1600-002: Unable to resolve assemblies", e);
-        } catch (ArtifactNotFoundException e) {
-            throw new MojoExecutionException("NMAVEN-1600-003: Unable to resolve assemblies", e);
+        try
+        {
+            assemblyResolver.resolveTransitivelyFor( project, project.getArtifact(), dependencies, pomFile,
+                                                     localRepository, false );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1600-002: Unable to resolve assemblies", e );
+        }
+        catch ( ArtifactNotFoundException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
+        }
+    }
+
+    private class ProfileMatchPolicy
+        implements NetDependencyMatchPolicy
+    {
+
+        private String profile;
+
+        public ProfileMatchPolicy( String profile )
+        {
+            this.profile = profile;
         }
 
+        public boolean match( NetDependency netDependency )
+        {
+            //If no profile is specified in net-dependencies.xml, it matches
+            if ( netDependency.getProfile() == null || netDependency.getProfile().trim().equals( "" ) )
+            {
+                return true;
+            }
+
+            if ( profile == null )
+            {
+                return false;
+            }
+
+            return profile.equals( netDependency.getProfile() );
+        }
     }
 }

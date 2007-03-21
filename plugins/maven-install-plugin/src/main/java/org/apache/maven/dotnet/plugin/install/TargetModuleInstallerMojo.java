@@ -35,7 +35,9 @@ import java.io.IOException;
  * @phase process-classes
  */
 
-public class TargetModuleInstallerMojo extends AbstractMojo {
+public class TargetModuleInstallerMojo
+    extends AbstractMojo
+{
 
     /**
      * @component
@@ -62,18 +64,27 @@ public class TargetModuleInstallerMojo extends AbstractMojo {
      */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
-    public void execute() throws MojoExecutionException {
-        try {
+    public void execute()
+        throws MojoExecutionException
+    {
+        try
+        {
             nmavenRegistry.createRepositoryRegistry();
-        } catch (IOException e) {
-            throw new MojoExecutionException("NMAVEN-1002-001: Failed to create the repository registry for this plugin", e);
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException(
+                "NMAVEN-1002-001: Failed to create the repository registry for this plugin", e );
         }
 
-        artifactContext.init(project, localRepository);
-        try {
-            artifactContext.getArtifactInstaller().installNetModulesToTargetDirectory(project.getArtifact());
-        } catch (ArtifactInstallationException e) {
-            throw new MojoExecutionException("NMAVEN-1002-000: Failed to install artifacts into target directory", e);
+        artifactContext.init( project, localRepository );
+        try
+        {
+            artifactContext.getArtifactInstaller().installNetModulesToTargetDirectory( project.getArtifact() );
+        }
+        catch ( ArtifactInstallationException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1002-000: Failed to install artifacts into target directory", e );
         }
     }
 }

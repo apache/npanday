@@ -5,7 +5,6 @@
   <packaging>library</packaging>
   <version>1.0.0</version>
   <name>it0021</name>
-
   <build>
     <sourceDirectory>src/main/vb</sourceDirectory>
     <plugins>

@@ -26,6 +26,7 @@ import org.apache.maven.dotnet.executable.compiler.*;
 import org.apache.maven.dotnet.executable.compiler.InvalidArtifactException;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.apache.maven.dotnet.artifact.ArtifactException;
+import org.apache.maven.dotnet.artifact.ArtifactType;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
@@ -133,14 +134,25 @@ public final class CompilerContextImpl
         {
             artifacts.add( project.getArtifact() );
         }
+
+        if ( config.isTestCompile() &&
+            project.getArtifact().getType().equals( ArtifactType.MODULE.getArtifactTypeName() ) &&
+            project.getArtifact().getFile() != null && project.getArtifact().getFile().exists() )
+        {
+            artifacts.add( project.getArtifact() );
+        }
         return artifacts;
     }
 
-    public KeyInfo getKeyInfo() {
-        if((compilerRequirement.getVendor().equals( Vendor.MICROSOFT )
-            && compilerRequirement.getFrameworkVersion().equals("1.1.4322")) || config.getKeyInfo() == null) {
+    public KeyInfo getKeyInfo()
+    {
+        if ( ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) &&
+            compilerRequirement.getFrameworkVersion().equals( "1.1.4322" ) ) || config.getKeyInfo() == null )
+        {
             return KeyInfo.Factory.createDefaultKeyInfo();
-        } else {
+        }
+        else
+        {
             return config.getKeyInfo();
         }
     }
@@ -149,7 +161,7 @@ public final class CompilerContextImpl
     {
         if ( config.isTestCompile() && config.getArtifactType().equals( ArtifactType.LIBRARY ) &&
             project.getArtifact().getFile() != null && project.getArtifact().getFile().exists() &&
-            !libraries.contains( project.getArtifact() ) )
+            !libraries.contains( project.getArtifact() ) && !project.getArtifact().getType().equals( "module" ) )
         {
             libraries.add( project.getArtifact() );
         }
@@ -254,6 +266,41 @@ public final class CompilerContextImpl
             {
                 libraries.add( artifact );
             }
+            //Resolving here since the GAC path is vendor and framework aware
+            //TODO: Add support for 32/64 bit GACs
+            else if ( type.equals( "gac" ) )
+            {
+                String gacRoot = null;
+                if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) && (
+                    compilerRequirement.getFrameworkVersion().equals( "2.0.50727" ) ||
+                        compilerRequirement.getFrameworkVersion().equals( "3.0" ) ) )
+                {
+                    gacRoot = "C:\\WINDOWS\\assembly\\GAC_MSIL\\";
+                }
+                else if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) &&
+                    compilerRequirement.getFrameworkVersion().equals( "1.1.4322" ) )
+                {
+                    gacRoot = "C:\\WINDOWS\\assembly\\GAC\\";
+                }
+                else if ( compilerRequirement.getVendor().equals( Vendor.MONO ) )
+                {
+                    //TODO: MONO Support
+                }
+                if ( gacRoot != null )
+                {
+                    File gacFile = new File( gacRoot + artifact.getArtifactId() + File.separator +
+                        artifact.getVersion() + File.separator + artifact.getArtifactId() + ".dll" );
+                    if ( !gacFile.exists() )
+                    {
+                        throw new PlatformUnsupportedException(
+                            "NMAVEN-000-000: Could not find GAC dependency: File = " + gacFile.getAbsolutePath() );
+                    }
+                    artifact.setFile( gacFile );
+                    libraries.add( artifact );
+                }
+            }
+
+
         }
 
         compilerCapability = capabilityMatcher.matchCompilerCapabilityFor( compilerRequirement );

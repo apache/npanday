@@ -33,12 +33,13 @@ import org.apache.maven.dotnet.vendor.VendorFactory;
 import org.apache.maven.dotnet.vendor.VendorInfo;
 
 /**
- *
  * @author Shane Isbell
  * @goal generate-settings
  * @phase validate
  */
-public class SettingsGeneratorMojo extends AbstractMojo {
+public class SettingsGeneratorMojo
+    extends AbstractMojo
+{
 
     /**
      * @parameter expression="${settings.localRepository}"
@@ -54,7 +55,7 @@ public class SettingsGeneratorMojo extends AbstractMojo {
      */
     private MavenProject project;
 
-   /**
+    /**
      * The Vendor for the executable. Supports MONO and MICROSOFT: the default value is <code>MICROSOFT</code>. Not
      * case or white-space sensitive.
      *
@@ -82,38 +83,59 @@ public class SettingsGeneratorMojo extends AbstractMojo {
      */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
-    public void execute() throws MojoExecutionException {
+    public void execute()
+        throws MojoExecutionException
+    {
 
-        if(!System.getProperty("os.name").contains("Windows")) return;
-
-        if (System.getProperty("bootstrap") != null)
+        if ( !System.getProperty( "os.name" ).contains( "Windows" ) )
+        {
             return;
+        }
 
-        String nmavenSettings = System.getProperty("user.home") + File.separator + ".m2" + File.separator
-                + "nmaven-settings.xml";
-
-        if (new File(nmavenSettings).exists())
+        if ( System.getProperty( "bootstrap" ) != null )
+        {
             return;
+        }
 
-        try {
+        String nmavenSettings =
+            System.getProperty( "user.home" ) + File.separator + ".m2" + File.separator + "nmaven-settings.xml";
+
+        if ( new File( nmavenSettings ).exists() )
+        {
+            return;
+        }
+
+        try
+        {
             nmavenRegistry.createRepositoryRegistry();
-        } catch (IOException e) {
-            throw new MojoExecutionException("NMAVEN-aaa-003: Failed to create the repository registry for this plugin", e);
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException(
+                "NMAVEN-aaa-003: Failed to create the repository registry for this plugin", e );
         }
 
         List<String> commands = new ArrayList<String>();
-        commands.add(new File(nmavenSettings).getAbsolutePath());
-        try {
+        commands.add( new File( nmavenSettings ).getAbsolutePath() );
+        try
+        {
             VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-            if(vendor != null) vendorInfo.setVendor(VendorFactory.createVendorFromName(vendor));
-            vendorInfo.setFrameworkVersion(frameworkVersion);
-            vendorInfo.setVendorVersion(vendorVersion);
-            netExecutableFactory.getNetExecutableFromRepository("NMaven.Utility.Settings", "SettingsGenerator",
-                    vendorInfo, project, localRepository, commands).execute();
-        } catch (PlatformUnsupportedException e) {
-            throw new MojoExecutionException("", e);
-        } catch(ExecutionException e) {
-            throw new MojoExecutionException("", e);
+            if ( vendor != null )
+            {
+                vendorInfo.setVendor( VendorFactory.createVendorFromName( vendor ) );
+            }
+            vendorInfo.setFrameworkVersion( frameworkVersion );
+            vendorInfo.setVendorVersion( vendorVersion );
+            netExecutableFactory.getNetExecutableFromRepository( "NMaven.Plugin", "NMaven.Plugin.Settings", vendorInfo,
+                                                                 project, localRepository, commands ).execute();
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "", e );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "", e );
         }
     }
 }

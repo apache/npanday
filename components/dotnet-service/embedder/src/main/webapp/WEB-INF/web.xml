@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+  <display-name>Maven Embedder Service</display-name>
+  <listener>
+    <listener-class>org.codehaus.plexus.servlet.PlexusServletContextListener</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>XFire</servlet-name>
+    <display-name>XFire Servlet</display-name>
+    <servlet-class>
+      org.codehaus.xfire.plexus.PlexusXFireServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>XFire</servlet-name>
+    <url-pattern>/servlet/XFireServlet/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>XFire</servlet-name>
+    <url-pattern>/services/*</url-pattern>
+  </servlet-mapping>
+</web-app>

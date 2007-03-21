@@ -37,6 +37,7 @@ import org.codehaus.plexus.logging.Logger;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.io.File;
 
 /**
@@ -72,7 +73,7 @@ public class NetExecutableFactoryImpl
     }
 
     /**
-     * @see 
+     * @see
      */
     public CompilerExecutable getCompilerExecutableFor( CompilerRequirement compilerRequirement,
                                                         CompilerConfig compilerConfig, MavenProject project,
@@ -98,18 +99,33 @@ public class NetExecutableFactoryImpl
             throw new PlatformUnsupportedException( "NMAVEN-066-012: Vendor could not be found: " + vendorInfo );
         }
 
-        logger.info( "NMAVEN-066-012: Found Vendor = " + vendorInfo );
+        logger.info( "NMAVEN-066-013: Found Vendor = " + vendorInfo );
         compilerRequirement.setVendor( vendorInfo.getVendor() );
         compilerRequirement.setVendorVersion( vendorInfo.getVendorVersion() );
         compilerRequirement.setFrameworkVersion( vendorInfo.getFrameworkVersion() );
 
         if ( vendorInfoRepository != null && vendorInfoRepository.exists() )
         {
+            File sdkInstallRoot = null;
+            try
+            {
+                sdkInstallRoot = vendorInfoRepository.getSdkInstallRootFor( vendorInfo );
+            }
+            catch ( PlatformUnsupportedException e )
+            {
+                logger.debug( "NMAVEN-066-017: Did not find an SDK install root: " + vendorInfo, e);
+            }
             File installRoot = vendorInfoRepository.getInstallRootFor( vendorInfo );
+            List<String> executionPaths = new ArrayList<String>();
             if ( installRoot != null )
             {
-                compilerConfig.setExecutionPath( installRoot.getAbsolutePath() );
+                executionPaths.add( installRoot.getAbsolutePath() );
             }
+            if ( sdkInstallRoot != null )
+            {
+                executionPaths.add( sdkInstallRoot.getAbsolutePath() );
+            }
+            compilerConfig.setExecutionPaths( executionPaths );
         }
 
         compilerContext.init( compilerRequirement, compilerConfig, project, capabilityMatcher );
@@ -132,8 +148,10 @@ public class NetExecutableFactoryImpl
                                                          List<String> commands )
         throws PlatformUnsupportedException
     {
-
-        if(commands == null) commands = new ArrayList<String>();
+        if ( commands == null )
+        {
+            commands = new ArrayList<String>();
+        }
 
         try
         {
@@ -149,18 +167,29 @@ public class NetExecutableFactoryImpl
         AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
         File artifactPath = new File( localRepository + File.separator + layout.pathOf( artifact ) );
         List<String> modifiedCommands = new ArrayList<String>();
-        String exe;
+        String exe = null;
         if ( vendorInfo.getVendor().equals( Vendor.MONO ) )
         {
-            if ( vendorInfo.getExecutablePath() != null && !vendorInfo.getExecutablePath().exists() )
+            List<File> executablePaths = vendorInfo.getExecutablePaths();
+            if ( executablePaths != null )
+            {
+                for ( File executablePath : executablePaths )
+                {
+                    if ( new File( executablePath.getAbsolutePath() + File.separator + "mono.exe" ).exists() )
+                    {
+                        exe = new File( executablePath.getAbsolutePath() + File.separator + "mono" ).getAbsolutePath();
+                        break;
+                    }
+                }
+            }
+
+            if ( exe == null )
             {
                 logger.info(
                     "NMAVEN-066-005: Executable path for mono does not exist. Will attempt to execute MONO using" +
-                        " the main PATH variable: Bad Executable Path = " +
-                        vendorInfo.getExecutablePath().getAbsolutePath() );
+                        " the main PATH variable." );
+                exe = "mono";
             }
-            exe = ( vendorInfo.getExecutablePath() != null && vendorInfo.getExecutablePath().exists() ) ?
-                vendorInfo.getExecutablePath().getAbsolutePath() + File.separator + "mono" : "mono";
             modifiedCommands.add( artifactPath.getAbsolutePath() );
             for ( String command : commands )
             {
@@ -172,9 +201,10 @@ public class NetExecutableFactoryImpl
             exe = artifactPath.getAbsolutePath();
             modifiedCommands = commands;
         }
+        //TODO: DotGNU on Linux?
 
         ExecutableConfig executableConfig = ExecutableConfig.Factory.createDefaultExecutableConfig();
-        executableConfig.setExecutionPath( exe );
+        executableConfig.setExecutionPaths( Arrays.asList( exe) );
         executableConfig.setCommands( modifiedCommands );
 
         try
@@ -229,10 +259,29 @@ public class NetExecutableFactoryImpl
 
         ExecutableConfig executableConfig = ExecutableConfig.Factory.createDefaultExecutableConfig();
         executableConfig.setCommands( commands );
-        if ( netHome != null )
+
+        List<String> executablePaths = new ArrayList<String>();
+        if ( netHome != null && netHome.exists() )
         {
-            executableConfig.setExecutionPath( netHome.getAbsolutePath() );
+            logger.info( "NMAVEN-066-014: Found executable path: Path = " + netHome.getAbsolutePath() );
+            executablePaths.add( netHome.getAbsolutePath() );
         }
+        else if ( vendorInfo.getExecutablePaths() != null )
+        {
+            for ( File path : vendorInfo.getExecutablePaths() )
+            {
+                if ( path.exists() )
+                {
+                    logger.info( "NMAVEN-066-015: Found executable path: Path = " + path.getAbsolutePath() );
+                    executablePaths.add( path.getAbsolutePath() );
+                }
+            }
+        }
+        else
+        {
+            logger.info( "NMAVEN-066-016: Did not find executable path, will try system path" );
+        }
+        executableConfig.setExecutionPaths( executablePaths );
         executableContext.init( executableRequirement, executableConfig, project, capabilityMatcher );
 
         try

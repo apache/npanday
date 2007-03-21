@@ -33,27 +33,28 @@ import java.util.ArrayList;
  *
  * @author Shane Isbell
  */
-public interface PlatformDetector {
+public interface PlatformDetector
+{
     /**
      * Sets the results that are included in the standard output for Microsoft.
      *
      * @param microsoftContainsString
      */
-    void setMicrosoftContainsString(String microsoftContainsString);
+    void setMicrosoftContainsString( String microsoftContainsString );
 
     /**
      * Sets the results that are included in the standard output for Mono.
      *
      * @param monoContainsString
      */
-    void setMonoContainsString(String monoContainsString);
+    void setMonoContainsString( String monoContainsString );
 
     /**
      * Sets the results that are included in the standard output for DotGnu.
      *
      * @param gnuContainsString
      */
-    void setGnuContainsString(String gnuContainsString);
+    void setGnuContainsString( String gnuContainsString );
 
     /**
      * Returns a Vendor instance for the given command and/or netHomePath. If the command is specified, you may need to
@@ -63,16 +64,22 @@ public interface PlatformDetector {
      * @param command
      * @param netHomePath
      * @return a Vendor instance for the given command and/or netHomePath
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException if the vendor cannot be matched
+     * @throws org.apache.maven.dotnet.PlatformUnsupportedException
+     *          if the vendor cannot be matched
      */
-    Vendor getVendorFor(String command, File netHomePath) throws PlatformUnsupportedException;
+    Vendor getVendorFor( String command, File netHomePath )
+        throws PlatformUnsupportedException;
 
-    public static class Factory {
-        private Factory() {
+    public static class Factory
+    {
+        private Factory()
+        {
         }
 
-        public static PlatformDetector createDefaultPlatformDetector() {
-            return new PlatformDetector() {
+        public static PlatformDetector createDefaultPlatformDetector()
+        {
+            return new PlatformDetector()
+            {
 
                 /**
                  * String to be matched to standard output for Microsoft
@@ -89,38 +96,56 @@ public interface PlatformDetector {
                  */
                 private String gnuContainsString = "Southern Storm";
 
-                public void setMicrosoftContainsString(String microsoftContainsString) {
+                public void setMicrosoftContainsString( String microsoftContainsString )
+                {
                     this.microsoftContainsString = microsoftContainsString;
                 }
 
-                public void setMonoContainsString(String monoContainsString) {
+                public void setMonoContainsString( String monoContainsString )
+                {
                     this.monoContainsString = monoContainsString;
                 }
 
-                public void setGnuContainsString(String gnuContainsString) {
+                public void setGnuContainsString( String gnuContainsString )
+                {
                     this.gnuContainsString = gnuContainsString;
                 }
 
-                public Vendor getVendorFor(String command, File netHomePath) throws PlatformUnsupportedException {
-                    String netHome = (netHomePath == null) ? null : netHomePath.getAbsolutePath();
-                    if (isEmpty(command) && isEmpty(netHome)) {
-                        throw new PlatformUnsupportedException("NMAVEN-042-000: Both command and netHome params cannot be null or empty");
-                    } else if (!isEmpty(command) && isEmpty(netHome)) {
-                        return getVendorForCommand(command);
-                    } else if (isEmpty(command) && !isEmpty(netHome)) {
-                        return getVendorFromPath(netHome);
-                    } else if (!isEmpty(command) && !isEmpty(netHome)) {
-                        try {
-                            return getVendorFromPath(netHome);
-                        } catch (PlatformUnsupportedException e) {
+                public Vendor getVendorFor( String command, File netHomePath )
+                    throws PlatformUnsupportedException
+                {
+                    String netHome = ( netHomePath == null ) ? null : netHomePath.getAbsolutePath();
+                    if ( isEmpty( command ) && isEmpty( netHome ) )
+                    {
+                        throw new PlatformUnsupportedException(
+                            "NMAVEN-042-000: Both command and netHome params cannot be null or empty" );
+                    }
+                    else if ( !isEmpty( command ) && isEmpty( netHome ) )
+                    {
+                        return getVendorForCommand( command );
+                    }
+                    else if ( isEmpty( command ) && !isEmpty( netHome ) )
+                    {
+                        return getVendorFromPath( netHome );
+                    }
+                    else if ( !isEmpty( command ) && !isEmpty( netHome ) )
+                    {
+                        try
+                        {
+                            return getVendorFromPath( netHome );
+                        }
+                        catch ( PlatformUnsupportedException e )
+                        {
 
                             //log.debug(e);
                         }
-                        try {
-                            return getVendorForCommand(netHome + File.separator
-                                    + "bin" + File.separator + command);
-                        } catch (PlatformUnsupportedException e) {
-                            throw new PlatformUnsupportedException("");
+                        try
+                        {
+                            return getVendorForCommand( netHome + File.separator + "bin" + File.separator + command );
+                        }
+                        catch ( PlatformUnsupportedException e )
+                        {
+                            throw new PlatformUnsupportedException( "" );
                         }
                     }
                     return null;
@@ -131,28 +156,40 @@ public interface PlatformDetector {
                  *
                  * @param command
                  * @return vendor instance
-                 * @throws org.apache.maven.dotnet.PlatformUnsupportedException if the platform cannot be matched.
+                 * @throws org.apache.maven.dotnet.PlatformUnsupportedException
+                 *          if the platform cannot be matched.
                  */
-                private Vendor getVendorForCommand(String command) throws PlatformUnsupportedException {
+                private Vendor getVendorForCommand( String command )
+                    throws PlatformUnsupportedException
+                {
                     CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
                     //commandExecutor.setLogger(logger);
-                    try {
+                    try
+                    {
                         List<String> commands = new ArrayList<String>();
-                        commandExecutor.executeCommand(command, commands);
-                    } catch (ExecutionException e) {
-                        throw new PlatformUnsupportedException("", e);
+                        commandExecutor.executeCommand( command, commands );
+                    }
+                    catch ( ExecutionException e )
+                    {
+                        throw new PlatformUnsupportedException( "", e );
                     }
                     String results = commandExecutor.getStandardOut();
-                    if (results.contains(microsoftContainsString)) {
+                    if ( results.contains( microsoftContainsString ) )
+                    {
                         return Vendor.MICROSOFT;
-                    } else if (results.contains(monoContainsString)) {
+                    }
+                    else if ( results.contains( monoContainsString ) )
+                    {
                         return Vendor.MONO;
-                    } else if (results.contains(gnuContainsString) || results.contains("cscc"))
+                    }
+                    else if ( results.contains( gnuContainsString ) || results.contains( "cscc" ) )
                     {//cscc does not contain vendor name
                         return Vendor.DOTGNU;
-                    } else {
-                        throw new PlatformUnsupportedException("NMAVEN-042-001: Platform not supported: Results = "
-                                + results);
+                    }
+                    else
+                    {
+                        throw new PlatformUnsupportedException(
+                            "NMAVEN-042-001: Platform not supported: Results = " + results );
                     }
                 }
 
@@ -163,23 +200,33 @@ public interface PlatformDetector {
                  * @return vendor
                  * @throws PlatformUnsupportedException
                  */
-                private Vendor getVendorFromPath(String path) throws PlatformUnsupportedException {
-                    if (!new File(path).exists()) {
-                        throw new PlatformUnsupportedException("NMAVEN-042-002: Unable to locate path: Path = " + path);
+                private Vendor getVendorFromPath( String path )
+                    throws PlatformUnsupportedException
+                {
+                    if ( !new File( path ).exists() )
+                    {
+                        throw new PlatformUnsupportedException(
+                            "NMAVEN-042-002: Unable to locate path: Path = " + path );
                     }
 
-                    if (path.contains("Microsoft.NET")) {
+                    if ( path.contains( "Microsoft.NET" ) )
+                    {
                         return Vendor.MICROSOFT;
-                    } else if (path.contains("Mono")) {
+                    }
+                    else if ( path.contains( "Mono" ) )
+                    {
                         return Vendor.MONO;
-                    } else if (path.contains("Portable.NET")) {
+                    }
+                    else if ( path.contains( "Portable.NET" ) )
+                    {
                         return Vendor.DOTGNU;
                     }
-                    throw new PlatformUnsupportedException("NMAVEN-042-003: Platform not supported: Path " + path);
+                    throw new PlatformUnsupportedException( "NMAVEN-042-003: Platform not supported: Path " + path );
                 }
 
-                private boolean isEmpty(String value) {
-                    return (value == null || value.trim().equals(""));
+                private boolean isEmpty( String value )
+                {
+                    return ( value == null || value.trim().equals( "" ) );
                 }
             };
         }

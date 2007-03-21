@@ -29,7 +29,6 @@ import java.util.List;
 import java.io.File;
 
 /**
- *
  * @author Shane Isbell
  */
 public class DefaultRepositoryNetExecutable
@@ -50,6 +49,23 @@ public class DefaultRepositoryNetExecutable
 
     public File getExecutionPath()
     {
+        if ( executableContext == null )
+        {
+            logger.info( "NMAVEN-063-002: Executable has not been initialized with a context" );
+            return null;
+        }
+        List<String> executablePaths = executableContext.getExecutableConfig().getExecutionPaths();
+        if ( executablePaths != null )
+        {
+            for ( String executablePath : executablePaths )
+            {
+                File exe = new File( executablePath );
+                if ( exe.exists() )
+                {
+                    return new File( executablePath ).getParentFile();
+                }
+            }
+        }
         return null;
     }
 
@@ -59,20 +75,20 @@ public class DefaultRepositoryNetExecutable
         List<String> commands = getCommands();
 
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        File executable = new File( getExecutable() );
-        String exe = executable.getName();
         try
         {
             commandExecutor.setLogger( logger );
-            commandExecutor.executeCommand( exe, getCommands(), executable.getParentFile(), true );
+            commandExecutor.executeCommand( getExecutable(), getCommands(), getExecutionPath(), true );
         }
         catch ( ExecutionException e )
         {
-            throw new ExecutionException( "NMAVEN-063-000: Executable = " + exe + ", Command = " + commands, e );
+            throw new ExecutionException( "NMAVEN-063-000: Executable = " + getExecutable() + ", Command = " + commands,
+                                          e );
         }
         if ( commandExecutor.getStandardOut().contains( "error" ) )
         {
-            throw new ExecutionException( "NMAVEN-063-001: Executable = " + exe + ",Command = " + commands );
+            throw new ExecutionException(
+                "NMAVEN-063-001: Executable = " + getExecutable() + ",Command = " + commands );
         }
     }
 
@@ -85,12 +101,23 @@ public class DefaultRepositoryNetExecutable
             throw new ExecutionException( "NMAVEN-063-002: Executable has not been initialized with a context" );
         }
 
-        String executionPath = executableContext.getExecutableConfig().getExecutionPath();
-        if ( executionPath == null || executionPath.trim().equals( "" ) )
+        List<String> executablePaths = executableContext.getExecutableConfig().getExecutionPaths();
+        if ( executablePaths != null )
         {
-            throw new ExecutionException( "NMAVEN-063-002: Executable path has not been set" );
+            for ( String executablePath : executablePaths )
+            {
+                File exe = new File( executablePath );
+                if ( exe.exists() )
+                {
+                    return new File( executablePath ).getName();
+                }
+                else if(executablePath.equals( "mono"))
+                {
+                    return executablePath;    
+                }
+            }
         }
-        return executionPath;
+        throw new ExecutionException( "NMAVEN-063-003: Executable path has not been set" );
     }
 
 

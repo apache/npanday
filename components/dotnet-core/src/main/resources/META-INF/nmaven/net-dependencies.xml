@@ -1,14 +1,21 @@
 <netDependencies>
-    <netDependency>
-        <groupId>NMaven.Utility.ResX</groupId>
-        <artifactId>resx</artifactId>
-        <versionId>0.14</versionId>
-        <type>exe</type>
-    </netDependency>
-    <netDependency>
-        <groupId>NMaven.Utility.Settings</groupId>
-        <artifactId>SettingsGenerator</artifactId>
-        <versionId>0.14</versionId>
-       <type>exe</type>
-   </netDependency>
+  <netDependency>
+    <groupId>NMaven.Plugin</groupId>
+    <artifactId>NMaven.Plugin.Resx</artifactId>
+    <version>0.14</version>
+    <type>exe</type>
+  </netDependency>
+  <netDependency>
+    <groupId>NMaven.Plugin</groupId>
+    <artifactId>NMaven.Plugin.Settings</artifactId>
+    <version>0.14</version>
+    <type>exe</type>
+  </netDependency>
+  <netDependency>
+    <groupId>NMaven.Plugin</groupId>
+    <artifactId>NMaven.Plugin.Solution</artifactId>
+    <version>0.14</version>
+    <type>exe</type>
+    <profile>withIde</profile>
+  </netDependency>
 </netDependencies>

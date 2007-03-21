@@ -23,6 +23,7 @@ import org.apache.maven.dotnet.assembler.AssemblyInfo;
 import org.apache.maven.dotnet.assembler.AssemblyInfoMarshaller;
 import org.apache.maven.dotnet.assembler.AssemblyInfoException;
 import org.apache.maven.dotnet.InitializationException;
+import org.apache.maven.dotnet.PlatformUnsupportedException;
 import org.apache.maven.dotnet.model.assembly.plugins.AssemblyPlugin;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.model.Organization;
@@ -161,6 +162,21 @@ public final class AssemblerContextImpl
         }
 
         return marshaller;
+    }
+
+    /**
+     * @see AssemblerContext#getClassExtensionFor(String)
+     */
+    public String getClassExtensionFor(String language) throws PlatformUnsupportedException
+    {
+        try
+        {
+            return repository.getAssemblyPluginFor( language ).getExtension();
+        }
+        catch ( AssemblyInfoException e )
+        {
+            throw new PlatformUnsupportedException("NMAVEN-020-006: Language not supported: Language = " + language, e);
+        }
     }
 
     /**

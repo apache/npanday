@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <groupId>NMaven</groupId>
+    <version>0.14</version>
+    <artifactId>NMaven.Assemblies</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>NMaven.Plugin</groupId>
+  <artifactId>NMaven.Plugin.Resx</artifactId>
+  <packaging>exe</packaging>
+  <version>0.14</version>
+  <name>NMaven.Plugin.ResX</name>
+  <profiles>
+    <profile>
+      <activation>
+        <property>
+          <name>version</name>
+          <value>1.1</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.dotnet.plugins</groupId>
+            <artifactId>maven-compile-plugin</artifactId>
+            <extensions>true</extensions>
+            <configuration>
+              <frameworkVersion>1.1.4322</frameworkVersion>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

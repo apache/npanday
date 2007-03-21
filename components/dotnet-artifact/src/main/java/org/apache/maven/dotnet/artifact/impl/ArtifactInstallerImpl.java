@@ -22,6 +22,7 @@ import org.apache.maven.dotnet.artifact.ArtifactException;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout;
 import org.apache.maven.dotnet.artifact.ApplicationConfig;
+import org.apache.maven.dotnet.artifact.ArtifactType;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.metadata.ArtifactMetadata;
@@ -121,6 +122,28 @@ public class ArtifactInstallerImpl
         ApplicationConfig applicationConfig = artifactContext.getApplicationConfigFor( artifact );
         File configExeFile = new File( applicationConfig.getConfigDestinationPath() );
 
+        //TODO: Remove GAC dependencies before installing. This should be removed and replaced with solution in the core.
+        artifact.getMetadataList().clear();
+        try
+        {
+            List<Dependency> dependencies = project.getDependencies();
+            List<Dependency> newDependencies = new ArrayList<Dependency>();
+            for ( Dependency dependency : dependencies )
+            {
+                if ( !dependency.getType().equals( "gac" ) )
+                {
+                    newDependencies.add( dependency );
+                }
+            }
+            project.setDependencies( newDependencies );
+            artifact.addMetadata( createArtifactMetadataFor( artifact, pomFile, project.getDependencies() ) );
+        }
+        catch ( IOException e )
+        {
+            throw new ArtifactInstallationException( "NMAVEN-002-001: Unable to add metadata to artifact", e );
+        }
+        //End GAC HACK
+
         if ( configExeFile.exists() )
         {
             logger.info( "NMAVEN-002-000: Found config executable: File = " + configExeFile.getAbsolutePath() );
@@ -218,6 +241,79 @@ public class ArtifactInstallerImpl
                 artifact.getId() + ", File = " + artifact.getFile().getAbsolutePath(), e );
         }
 
+    }
+
+    public void installFileWithNoPom( String groupId, String artifactId, String version, File installFile )
+        throws ArtifactInstallationException
+    {
+        StringBuffer path = new StringBuffer();
+        path.append( localRepository.getAbsolutePath() ).append( File.separator );
+        for ( String id : groupId.split( "[.]" ) )
+        {
+            path.append( id ).append( File.separator );
+        }
+
+        path.append( artifactId ).append( File.separator )
+            .append( version ).append( File.separator );
+
+        logger.info( "NMAVEN-002-014: Installing File: From = " + installFile.getAbsolutePath() + ", To = " +
+            path.toString() + artifactId + ".dll" );
+        try
+        {
+            FileUtils.copyFileToDirectory( installFile, new File( path.toString() ) );
+        }
+        catch ( IOException e )
+        {
+            throw new ArtifactInstallationException( "NMAVEN-002-015: Failed to copy artifact to local repository", e );
+        }
+    }
+
+    public void installLibraryDependencies( Artifact projectArtifact, List<Dependency> dependencies )
+        throws ArtifactInstallationException
+    {
+        StringBuffer path = new StringBuffer();
+        path.append( localRepository.getAbsolutePath() ).append( File.separator );
+        for ( String id : projectArtifact.getGroupId().split( "[.]" ) )
+        {
+            path.append( id ).append( File.separator );
+        }
+
+        path.append( projectArtifact.getArtifactId() ).append( File.separator )
+            .append( projectArtifact.getBaseVersion() ).append( File.separator );
+
+        for ( Dependency dependency : dependencies )
+        {
+            if(!dependency.getType().equals( "library"))
+            {
+                continue;
+            }
+            StringBuffer depPath = new StringBuffer();
+            depPath.append( localRepository.getAbsolutePath() ).append( File.separator );
+            for ( String id : dependency.getGroupId().split( "[.]" ) )
+            {
+                depPath.append( id ).append( File.separator );
+            }
+
+            depPath.append( dependency.getArtifactId() ).append( File.separator )
+                .append( dependency.getVersion() ).append( File.separator );
+            String extension = ArtifactType.getArtifactTypeForName( dependency.getType() ).getExtension();
+            File file =
+                new File( depPath.toString() + dependency.getArtifactId() + "." + extension );
+
+            try
+            {
+                logger.info( "NMAVEN-002-016: Installing File: From = " + file.getAbsolutePath() + ", To = " +
+                    path.toString() + dependency.getArtifactId() + "." + extension );
+                FileUtils.copyFileToDirectory( file, new File( path.toString() ) );
+            }
+            catch ( IOException e )
+            {
+                throw new ArtifactInstallationException(
+                    "NMAVEN-002-017: Failed to install file into repo: File Name = " + file.getAbsolutePath() +
+                        ", Extension = " + extension + ", Type = " + dependency.getType(), e );
+            }
+
+        }
     }
 
     /**
@@ -343,10 +439,21 @@ public class ArtifactInstallerImpl
             e.printStackTrace();
             throw new IOException( "NMAVEN-002-013: Unable to read pom file" );
         }
+        List<Dependency> dest = new ArrayList<Dependency>();
+        dest.addAll( model.getDependencies() );
+        for ( Dependency dependency : dest )
+        {
+            model.removeDependency( dependency );
+        }
 
         for ( Dependency dependency : dependencies )
         {
-            model.addDependency( dependency );
+            //TODO: This condition is only here since transitive gac dependencies break the build. This needs to be fixed
+            //within the core.
+            if ( !dependency.getType().equals( "gac" ) )
+            {
+                model.addDependency( dependency );
+            }
         }
 
         File tempFile = File.createTempFile( "mvninstall", ".pom" );

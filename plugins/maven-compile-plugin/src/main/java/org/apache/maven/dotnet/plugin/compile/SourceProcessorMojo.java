@@ -20,11 +20,16 @@ package org.apache.maven.dotnet.plugin.compile;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.dotnet.assembler.AssemblerContext;
+import org.apache.maven.dotnet.PlatformUnsupportedException;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.DirectoryScanner;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Copies source files to target directory.
@@ -34,7 +39,9 @@ import java.io.IOException;
  * @phase process-sources
  */
 
-public class SourceProcessorMojo extends AbstractMojo {
+public class SourceProcessorMojo
+    extends AbstractMojo
+{
 
     /**
      * Source directory
@@ -62,26 +69,67 @@ public class SourceProcessorMojo extends AbstractMojo {
      */
     private String[] excludes;
 
-    public void execute() throws MojoExecutionException {
-        if (!new File(sourceDirectory).exists()) {
-            getLog().info("NMAVEN-904-001: No source files to copy");
+    /**
+     * .NET Language. The default value is <code>C_SHARP</code>. Not case or white-space sensitive.
+     *
+     * @parameter expression="${language}" default-value = "C_SHARP"
+     * @required
+     */
+    private String language;
+
+    /**
+     * @component
+     */
+    private AssemblerContext assemblerContext;
+
+    public void execute()
+        throws MojoExecutionException
+    {
+        if ( !new File( sourceDirectory ).exists() )
+        {
+            getLog().info( "NMAVEN-904-001: No source files to copy" );
             return;
         }
         DirectoryScanner directoryScanner = new DirectoryScanner();
-        directoryScanner.setBasedir(sourceDirectory);
+        directoryScanner.setBasedir( sourceDirectory );
 
-        if(includes != null && includes.length > 0 ) directoryScanner.setIncludes(includes);
-        if(excludes != null && excludes.length > 0) directoryScanner.setExcludes(excludes);
+        List<String> excludeList = new ArrayList<String>();
+        //target files
+        excludeList.add( "obj/**" );
+        excludeList.add( "bin/**" );
+        excludeList.add( "target/**" );
+        //Misc
+        excludeList.add( "Resources/**" );
+        excludeList.add( "Test/**" );
+
+        List<String> includeList = new ArrayList<String>();
+        try
+        {
+            includeList.add( "**/*." + assemblerContext.getClassExtensionFor( language ) );
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-904-003: Language is not supported: Language = " + language, e );
+        }
+
+        directoryScanner.setIncludes( includeList.toArray( includes ) );
+        directoryScanner.setExcludes( excludeList.toArray( excludes ) );
         directoryScanner.addDefaultExcludes();
+
         directoryScanner.scan();
         String[] files = directoryScanner.getIncludedFiles();
-        getLog().info("NMAVEN-904-002: Copying source files: From = " + sourceDirectory + ",  To = " + outputDirectory);
-        for (String file : files) {
-            try {
-                FileUtils.copyFile(new File(sourceDirectory + File.separator + file),
-                        new File(outputDirectory + File.separator + file));
-            } catch (IOException e) {
-                throw new MojoExecutionException("NMAVEN-904-000: Unable to process sources", e);
+        getLog().info( "NMAVEN-904-002: Copying source files: From = " + sourceDirectory + ",  To = " +
+            outputDirectory + ", File Count = " + files.length);
+        for ( String file : files )
+        {
+            try
+            {
+                FileUtils.copyFile( new File( sourceDirectory + File.separator + file ),
+                                    new File( outputDirectory + File.separator + file ) );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-904-000: Unable to process sources", e );
             }
         }
     }

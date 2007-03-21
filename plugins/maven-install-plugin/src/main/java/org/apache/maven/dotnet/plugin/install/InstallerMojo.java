@@ -23,14 +23,21 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
+import org.apache.maven.dotnet.artifact.ArtifactType;
+import org.apache.maven.model.Dependency;
+
 import java.io.File;
+import java.util.List;
 
 /**
  * @goal install
  * @phase install
  */
-public class InstallerMojo extends AbstractMojo {
+public class InstallerMojo
+    extends AbstractMojo
+{
 
     /**
      * The maven project.
@@ -63,11 +70,49 @@ public class InstallerMojo extends AbstractMojo {
      */
     private ArtifactContext artifactContext;
 
-    public void execute() throws MojoExecutionException {
-        try {
-            artifactContext.getArtifactInstaller().installArtifact(project.getArtifact(), pomFile);
-        } catch (ArtifactInstallationException e) {
-            throw new MojoExecutionException("NMAVEN-1001-000: Failed to install artifacts", e);
+    public void execute()
+        throws MojoExecutionException
+    {
+        Artifact artifact = project.getArtifact();
+        try
+        {
+            artifactContext.getArtifactInstaller().installArtifact( artifact, pomFile );
         }
+        catch ( ArtifactInstallationException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1001-000: Failed to install artifacts", e );
+        }
+
+        //To allow executables to be runnable from the repo
+        if ( artifact.getType().equals( ArtifactType.EXE.getArtifactTypeName() ) )
+        {
+            List<Dependency> dependencies = project.getDependencies();
+            try
+            {
+                artifactContext.getArtifactInstaller().installLibraryDependencies( artifact, dependencies );
+            }
+            catch ( ArtifactInstallationException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1001-002: Failed to install artifact file", e );
+            }
+        }
+
+        //For the IDE: If we see a dll with same name as netmodule, copy dll to the local repo.
+        File linkedFile =
+            new File( artifact.getFile().getParent() + File.separatorChar + artifact.getArtifactId() + ".dll" );
+        if ( linkedFile.exists() && artifact.getType().equals( ArtifactType.MODULE.getArtifactTypeName() ) )
+        {
+            try
+            {
+                artifactContext.getArtifactInstaller().installFileWithNoPom( artifact.getGroupId(),
+                                                                             artifact.getArtifactId(),
+                                                                             artifact.getVersion(), linkedFile );
+            }
+            catch ( org.apache.maven.artifact.installer.ArtifactInstallationException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1001-001: Failed to install artifact file", e );
+            }
+        }
+
     }
 }

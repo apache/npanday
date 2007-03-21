@@ -103,6 +103,7 @@ public class AssemblyResolverImpl
         sourceArtifact.addMetadata( meta );
 
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();
+        Set<Artifact> gacDependencies = new HashSet<Artifact>();
         for ( Dependency dependency : dependencies )
         {
             String scope = ( dependency.getScope() == null ) ? Artifact.SCOPE_COMPILE : dependency.getScope();
@@ -112,7 +113,14 @@ public class AssemblyResolverImpl
                                                                               dependency.getVersion() ),
                                                                           dependency.getType(),
                                                                           dependency.getClassifier(), scope, null );
-            artifactDependencies.add( artifact );
+            if ( artifact.getType().equals( "gac" ) )
+            {
+                gacDependencies.add( artifact );
+            }
+            else
+            {
+                artifactDependencies.add( artifact );
+            }
         }
 
         ArtifactRepository localArtifactRepository =
@@ -134,7 +142,9 @@ public class AssemblyResolverImpl
                                                                         localArtifactRepository, metadata );
         if ( addResolvedDependenciesToProject )
         {
-            project.setDependencyArtifacts( result.getArtifacts() );
+            Set<Artifact> resolvedDependencies = result.getArtifacts();
+            resolvedDependencies.addAll( gacDependencies );
+            project.setDependencyArtifacts( resolvedDependencies );
         }
 
     }

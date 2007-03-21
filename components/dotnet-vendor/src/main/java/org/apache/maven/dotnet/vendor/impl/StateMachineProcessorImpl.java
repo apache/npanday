@@ -80,7 +80,7 @@ public class StateMachineProcessorImpl
         transitionRules.put( VendorInfoState.MTF, factory.createVendorInfoSetterForMTF() );
         transitionRules.put( VendorInfoState.MFT, factory.createVendorInfoSetterForMFT() );
         transitionRules.put( VendorInfoState.NTT, factory.createVendorInfoSetterForNTT() );
-
+        transitionRules.put( VendorInfoState.POST_PROCESS, factory.createPostProcessRule() );
         try
         {
             factory.init( repositoryRegistry, vendorInfoRepository, logger );

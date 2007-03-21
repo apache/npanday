@@ -115,16 +115,16 @@
       </roles>
     </developer>
   </developers>
-      <reporting>
-      <plugins>
-        <plugin>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <configuration>
-            <aggregate>true</aggregate>
-          </configuration>
-        </plugin>
-      </plugins>
-    </reporting>
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
   <distributionManagement>
     <site>
       <id>nmaven-apache-site</id>

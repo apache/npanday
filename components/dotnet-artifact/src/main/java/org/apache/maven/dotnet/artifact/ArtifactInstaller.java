@@ -21,8 +21,10 @@ package org.apache.maven.dotnet.artifact;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.model.Dependency;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Provides services for installing artifacts.
@@ -42,7 +44,7 @@ public interface ArtifactInstaller
      * will also check whether an exe.config file is associated with the artifact and install the exe.config into
      * the local maven repository. This will allow installed artifacts, with their associated configuration information,
      * to be directly executed from the local maven repository.
-     *
+     * <p/>
      * Typically the artifact parameter will be obtained directly through the maven project:
      * <code>MavenProject.getArtifact</code>. In those cases where the MavenProject object is unavailable, then
      * you can use the <code>installFile</code> method from this interface.
@@ -66,6 +68,29 @@ public interface ArtifactInstaller
      * @throws ArtifactInstallationException if there is a problem installing the artifact
      */
     void installFile( String groupId, String artifactId, String version, String packaging, File pomFile )
+        throws ArtifactInstallationException;
+
+    /**
+     * Installs a file into the local maven repository, without generating a pom.xml. This is used for placing
+     * files and resources into the local repository, where there are no explicit dependencies (as given in the pom file).
+     *
+     * @param groupId     the group id of the file to install
+     * @param artifactId  the artifact id of the file to install
+     * @param version     the version of the file to install
+     * @param installFile the file to install
+     * @throws ArtifactInstallationException if there is a problem installing the artifact
+     */
+    void installFileWithNoPom( String groupId, String artifactId, String version, File installFile )
+        throws ArtifactInstallationException;
+
+    /**
+     * Installs the dependent libraries (or assemblies) of the specified artifact. 
+     *
+     * @param artifact the artifact associated with the specified dependencies
+     * @param dependencies a list of dependencies of the specified artifact
+     * @throws ArtifactInstallationException if there is a problem installing the artifact
+     */
+    void installLibraryDependencies( Artifact artifact, List<Dependency> dependencies )
         throws ArtifactInstallationException;
 
     /**

@@ -23,9 +23,12 @@ import org.apache.maven.plugin.AbstractMojo;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
+import org.apache.maven.dotnet.artifact.ArtifactType;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.vendor.VendorFactory;
 import org.apache.maven.dotnet.executable.compiler.*;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.artifact.Artifact;
 
 import java.util.ArrayList;
 import java.io.File;
@@ -75,12 +78,14 @@ public final class CompilerMojo
 
     /**
      * Specify a strong name key file.
+     *
      * @parameter expression = "${keyfile}"
      */
     private File keyfile;
 
     /**
      * Specifies a strong name key container. (not currently supported)
+     *
      * @parameter expression = "${keycontainer}"
      */
     private String keycontainer;
@@ -179,32 +184,13 @@ public final class CompilerMojo
             compilerConfig.setCommands( parameters );
         }
         String artifactTypeName = project.getArtifact().getType();
-
-        if ( artifactTypeName.equals( ArtifactType.MODULE.getArtifactTypeName() ) )
-        {
-            compilerConfig.setArtifactType( ArtifactType.MODULE );
-        }
-        else if ( artifactTypeName.equals( ArtifactType.LIBRARY.getArtifactTypeName() ) )
-        {
-            compilerConfig.setArtifactType( ArtifactType.LIBRARY );
-        }
-        else if ( artifactTypeName.equals( ArtifactType.EXE.getArtifactTypeName() ) )
-        {
-            compilerConfig.setArtifactType( ArtifactType.EXE );
-        }
-        else if ( artifactTypeName.equals( ArtifactType.WINEXE.getArtifactTypeName() ) )
-        {
-            compilerConfig.setArtifactType( ArtifactType.WINEXE );
-        }
-        else if ( artifactTypeName.equals( ArtifactType.NAR.getArtifactTypeName() ) )
-        {
-            compilerConfig.setArtifactType( ArtifactType.LIBRARY );
-        }
-        else
+        ArtifactType artifactType = ArtifactType.getArtifactTypeForName( artifactTypeName );
+        if ( artifactType.equals( ArtifactType.NULL ) )
         {
             throw new MojoExecutionException( "NMAVEN-900-001: Unrecognized artifact type: Language = " + language +
                 ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName );
         }
+        compilerConfig.setArtifactType( artifactType );
 
         if ( keyfile != null )
         {
@@ -235,13 +221,3 @@ public final class CompilerMojo
         }
     }
 }
-
-/*
-        if (compilerVendor.equals(Vendor.MICROSOFT)) {
-            File frameworkPath = new File("C:\\WINDOWS\\Microsoft.NET\\Framework\\v" + frameworkVersion);
-            if (!frameworkPath.exists())
-                throw new MojoExecutionException("NMAVEN-900-006: Could not find .NET framework: "
-                        + ", Path = " + frameworkPath.getAbsolutePath());
-            compilerConfig.setExecutionPath(frameworkPath.getAbsolutePath() + File.separator);
-        }
-*/

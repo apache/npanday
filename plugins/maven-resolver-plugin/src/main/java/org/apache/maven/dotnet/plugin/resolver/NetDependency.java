@@ -18,7 +18,8 @@
  */
 package org.apache.maven.dotnet.plugin.resolver;
 
-public class NetDependency {
+public class NetDependency
+{
 
     private String version;
 
@@ -28,58 +29,86 @@ public class NetDependency {
 
     private String type;
 
-    public String getVersion() {
+    public String getVersion()
+    {
         return version;
     }
 
-    public void setVersion(String version) {
+    public void setVersion( String version )
+    {
         this.version = version;
     }
 
-    public String getArtifactId() {
+    public String getArtifactId()
+    {
         return artifactId;
     }
 
-    public void setArtifactId(String artifactId) {
+    public void setArtifactId( String artifactId )
+    {
         this.artifactId = artifactId;
     }
 
-    public String getGroupId() {
+    public String getGroupId()
+    {
         return groupId;
     }
 
-    public void setGroupId(String groupId) {
+    public void setGroupId( String groupId )
+    {
         this.groupId = groupId;
     }
 
-    public String getType() {
+    public String getType()
+    {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType( String type )
+    {
         this.type = type;
     }
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() )
+        {
+            return false;
+        }
 
         final NetDependency that = (NetDependency) o;
 
-        if (!artifactId.equals(that.artifactId)) return false;
-        if (!groupId.equals(that.groupId)) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (!version.equals(that.version)) return false;
+        if ( !artifactId.equals( that.artifactId ) )
+        {
+            return false;
+        }
+        if ( !groupId.equals( that.groupId ) )
+        {
+            return false;
+        }
+        if ( type != null ? !type.equals( that.type ) : that.type != null )
+        {
+            return false;
+        }
+        if ( !version.equals( that.version ) )
+        {
+            return false;
+        }
 
         return true;
     }
 
-    public int hashCode() {
+    public int hashCode()
+    {
         int result;
         result = version.hashCode();
         result = 29 * result + artifactId.hashCode();
         result = 29 * result + groupId.hashCode();
-        result = 29 * result + (type != null ? type.hashCode() : 0);
+        result = 29 * result + ( type != null ? type.hashCode() : 0 );
         return result;
     }
 }

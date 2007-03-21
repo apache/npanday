@@ -87,6 +87,14 @@ public class VendorInfoRepositoryImpl
                                                      vendorInfo.getVendorVersion(), vendorInfo.getFrameworkVersion() );
     }
 
+    public File getSdkInstallRootFor( VendorInfo vendorInfo )
+        throws PlatformUnsupportedException
+    {
+        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "nmaven-settings" );
+        return settingsRepository.getSdkInstallRootFor( vendorInfo.getVendor().getVendorName(),
+                                                     vendorInfo.getVendorVersion(), vendorInfo.getFrameworkVersion() );
+    }
+
     /**
      * @see org.apache.maven.dotnet.vendor.VendorInfoRepository#getVendorInfos()
      */
@@ -159,7 +167,7 @@ public class VendorInfoRepositoryImpl
      * Returns true if the specified vendor info matches <i>all</i> of the specified match policies, otherwise returns
      * false.
      *
-     * @param vendorInfo the vendor info to match against the match policies
+     * @param vendorInfo    the vendor info to match against the match policies
      * @param matchPolicies the match policies
      * @return true if the specified vendor info matches <i>all</i> of the specified match policies, otherwise returns
      *         false

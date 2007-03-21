@@ -64,7 +64,8 @@ public final class ArtifactMetadataImpl
      */
     public String getRemoteFilename()
     {
-        return getArtifactId() + ".pom";
+        return super.getRemoteFilename();
+        //return getArtifactId() + ".pom";
     }
 
     /**
@@ -77,7 +78,8 @@ public final class ArtifactMetadataImpl
      */
     public String getLocalFilename( ArtifactRepository repository )
     {
-        return getArtifactId() + ".pom";
+        return super.getLocalFilename(repository);
+       // return getArtifactId() + ".pom";
     }
 
 

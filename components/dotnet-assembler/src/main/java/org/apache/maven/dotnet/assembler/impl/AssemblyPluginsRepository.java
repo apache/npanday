@@ -38,7 +38,7 @@ import org.apache.maven.dotnet.model.assembly.plugins.io.xpp3.AssemblyPluginXpp3
  *
  * @author Shane Isbell
  */
-public class AssemblyPluginsRepository
+public final class AssemblyPluginsRepository
     implements Repository
 {
 
@@ -87,6 +87,9 @@ public class AssemblyPluginsRepository
         }
     }
 
+    /**
+     * @see Repository#setRepositoryRegistry(org.apache.maven.dotnet.registry.RepositoryRegistry)
+     */
     public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
     {
     }
@@ -106,7 +109,7 @@ public class AssemblyPluginsRepository
      * Returns an assembly plugin for the specified programming language.
      *
      * @param language the programming language to use for matching an assembly plugin
-     * @return assembly plugin for the specified programming language
+     * @return assembly plugin for the specified programming language. May not be null.
      * @throws AssemblyInfoException if there is no plugin for the specified language
      */
     public AssemblyPlugin getAssemblyPluginFor( String language )

@@ -119,6 +119,7 @@ public class AssemblyInfoGeneratorMojo
     public void execute()
         throws MojoExecutionException
     {
+        
         if ( project.getArtifact().getType().equals( "module" ) )
         {
             return;
@@ -144,14 +145,7 @@ public class AssemblyInfoGeneratorMojo
         }
         getLog().info( "NMAVEN-902-000: Generating Assembly Info: Language = " + language.trim() );
 
-        try
-        {
-            assemblerContext.init( project );
-        }
-        catch ( InitializationException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-902-006: Failed to initialize the assembler context" );
-        }
+
 
         //TODO: Investigate the affect of not setting isDefault and profile. In the case of executables, this is
         //managed by the framework. I intended to keep vendor info and state machine processor out of the
@@ -184,7 +178,6 @@ public class AssemblyInfoGeneratorMojo
 
         if ( vendorInfo.getVendor().equals( Vendor.MICROSOFT ) && vendorInfo.getVendorVersion().equals( "1.1.4322" ) )
         {
-            System.out.println(keyfile + ":" + keycontainer);
             assemblyInfo.setKeyFile( keyfile );
             assemblyInfo.setKeyName( keycontainer );
         }

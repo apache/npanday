@@ -38,7 +38,9 @@ import org.apache.maven.dotnet.PlatformUnsupportedException;
  * @goal xml
  * @phase process-sources
  */
-public class XmlToXsdGeneratorMojo extends AbstractMojo {
+public class XmlToXsdGeneratorMojo
+    extends AbstractMojo
+{
 
     /**
      * The directory to place the generated binding classes.
@@ -99,34 +101,50 @@ public class XmlToXsdGeneratorMojo extends AbstractMojo {
      */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
-    public void execute() throws MojoExecutionException {
-        try {
+    public void execute()
+        throws MojoExecutionException
+    {
+        try
+        {
             nmavenRegistry.createRepositoryRegistry();
-        } catch (IOException e) {
-            throw new MojoExecutionException("NMAVEN-1401-003: Failed to create the repository registry for this plugin", e);
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException(
+                "NMAVEN-1401-003: Failed to create the repository registry for this plugin", e );
         }
 
-        FileUtils.mkdir(outputDirectory);
-        try {
-            netExecutableFactory.getNetExecutableFor(vendor, frameworkVersion, profile,
-                    project, getCommands(), netHome).execute();
-        } catch (ExecutionException e) {
-            throw new MojoExecutionException("NMAVEN-1401-000: Unable to execute xsd: Vendor " + vendor
-                    + ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile,  e);
-        } catch (PlatformUnsupportedException e) {
-            throw new MojoExecutionException("NMAVEN-1401-001: Platform Unsupported: Vendor " + vendor
-                    + ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e);
+        FileUtils.mkdir( outputDirectory );
+        try
+        {
+            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, project, getCommands(),
+                                                      netHome ).execute();
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1401-000: Unable to execute xsd: Vendor " + vendor +
+                ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1401-001: Platform Unsupported: Vendor " + vendor +
+                ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
     }
 
-    public List<String> getCommands() throws MojoExecutionException {
+    public List<String> getCommands()
+        throws MojoExecutionException
+    {
         List<String> commands = new ArrayList<String>();
-        for (String xmlFile : xmlFiles) {
-            if (!(new File(xmlFile)).exists())
-                throw new MojoExecutionException("NMAVEN-1401-002: XML File does not exist: FileName = " + xmlFile);
-            commands.add(xmlFile);
+        for ( String xmlFile : xmlFiles )
+        {
+            if ( !( new File( xmlFile ) ).exists() )
+            {
+                throw new MojoExecutionException( "NMAVEN-1401-002: XML File does not exist: FileName = " + xmlFile );
+            }
+            commands.add( xmlFile );
         }
-        commands.add("/o:" + outputDirectory);
+        commands.add( "/o:" + outputDirectory );
         return commands;
     }
 }
