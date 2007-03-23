@@ -19,19 +19,12 @@
 package org.apache.maven.dotnet.executable.compiler.impl;
 
 import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.NMavenContext;
-import org.apache.maven.dotnet.executable.CommandExecutor;
 import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
-import org.apache.maven.dotnet.executable.compiler.CompilerContext;
-import org.apache.maven.dotnet.executable.compiler.InvalidArtifactException;
-import org.apache.maven.dotnet.executable.compiler.CompilerExecutable;
 import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.logging.Logger;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.io.File;
 
 /**
  * Compiler for PHP (http://php4mono.sourceforge.net/)
@@ -39,82 +32,23 @@ import java.io.File;
  * @author Shane Isbell
  */
 public final class PhpCompiler
-    implements CompilerExecutable
+    extends BaseCompiler
 {
 
-    private CompilerContext compilerContext;
-
-    public void init( NMavenContext nmavenContext )
+    public boolean failOnErrorOutput()
     {
-        this.compilerContext = (CompilerContext) nmavenContext;
-    }
-
-    public File getExecutionPath()
-    {
-        String executable;
-        try
-        {
-            executable = getExecutable();
-        }
-        catch ( ExecutionException e )
-        {
-            return null;
-        }
-        List<String> executablePaths = compilerContext.getNetCompilerConfig().getExecutionPaths();
-        if ( executablePaths != null )
-        {
-            for ( String executablePath : executablePaths )
-            {
-                File exe = new File( executablePath + File.separator +  executable);
-                if ( exe.exists() )
-                {
-                    return new File(executablePath);
-                }
-            }
-        }
-        return null;
+        return true;
     }
 
     public List<String> getCommands()
         throws ExecutionException
     {
-        return null;
-    }
-
-    public String getExecutable()
-        throws ExecutionException
-    {
-        return null;
-    }
-
-    public File getCompiledArtifact()
-        throws InvalidArtifactException
-    {
-        File file = compilerContext.getArtifact();
-        if ( !file.exists() )
-        {
-            throw new InvalidArtifactException(
-                "NMAVEN-068-004: Artifact does not exist: Artifact = " + file.getAbsolutePath() );
-        }
-        return file;
-    }
-
-    public void execute()
-        throws ExecutionException
-    {
-        Logger logger = compilerContext.getLogger();
         CompilerConfig config = compilerContext.getNetCompilerConfig();
         List<Artifact> resources = compilerContext.getLibraryDependencies();
 
         String sourceDirectory = compilerContext.getSourceDirectoryName();
         String artifactFilePath = compilerContext.getArtifact().getAbsolutePath();
         String targetArtifactType = config.getArtifactType().getArtifactTypeName();
-
-        if ( !( new File( sourceDirectory ).exists() ) )
-        {
-            logger.info( "NMAVEN-080-000: No source files to compile." );
-            return;
-        }
 
         List<String> commands = new ArrayList<String>();
         commands.add( "/out:" + artifactFilePath );
@@ -133,10 +67,6 @@ public final class PhpCompiler
         {
             commands.add( file );
         }
-
-        logger.info( commands.toString() );
-        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        commandExecutor.setLogger( logger );
-        commandExecutor.executeCommand( compilerContext.getCompilerCapability().getExecutable(), commands );
+        return commands;
     }
 }

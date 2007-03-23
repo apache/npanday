@@ -26,6 +26,12 @@
       <name>NetDependency</name>
       <fields>
         <field>
+          <name>id</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description></description>
+        </field>
+        <field>
           <name>groupId</name>
           <version>1.0.0</version>
           <type>String</type>

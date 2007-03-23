@@ -169,6 +169,20 @@ public interface ExecutableCapability
     void setPluginClassName( String pluginClassName );
 
     /**
+     * Returns the net dependency id (within the net-dependencies.xml file).
+     *
+     * @return the net dependency id
+     */
+    String getNetDependencyId();
+
+    /**
+     * Sets the net dependency id.
+     *
+     * @param netDependencyId
+     */
+    void setNetDependencyId(String netDependencyId);
+
+    /**
      * Provides factory services for creating a default instance of the executable capability.
      */
     public static class Factory
@@ -215,6 +229,8 @@ public interface ExecutableCapability
                 private String profile;
 
                 private String assemblyPath;
+
+                private String netDependencyId;
 
                 public String getAssemblyPath()
                 {
@@ -346,6 +362,16 @@ public interface ExecutableCapability
                 public void setCommandCapability( CommandCapability commandCapability )
                 {
                     this.commandCapability = commandCapability;
+                }
+
+                public String getNetDependencyId()
+                {
+                    return netDependencyId;
+                }
+
+                public void setNetDependencyId( String executableLocation )
+                {
+                    this.netDependencyId = executableLocation;
                 }
 
                 public String toString()

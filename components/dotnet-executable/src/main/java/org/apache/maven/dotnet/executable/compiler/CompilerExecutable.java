@@ -41,4 +41,11 @@ public interface CompilerExecutable
     File getCompiledArtifact()
         throws InvalidArtifactException;
 
+    /**
+     * Returns true to fail the build if the compiler writes anything to the error stream, otherwise return false. 
+     *
+     * @return true to fail the build if the compiler writes anything to the error stream, otherwise return false
+     */
+    boolean failOnErrorOutput();
+
 }

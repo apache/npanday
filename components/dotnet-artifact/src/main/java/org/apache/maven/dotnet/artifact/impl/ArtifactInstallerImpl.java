@@ -198,12 +198,12 @@ public class ArtifactInstallerImpl
     /**
      * @see org.apache.maven.dotnet.artifact.ArtifactInstaller#installFile(String, String, String, String, java.io.File)
      */
-    public void installFile( String groupId, String artifactId, String version, String packaging, File pomFile )
+    public void installFile( String groupId, String artifactId, String version, String packaging, File artifactFile )
         throws ArtifactInstallationException
     {
         Artifact artifact =
             mavenArtifactFactory.createArtifactWithClassifier( groupId, artifactId, version, packaging, null );
-        artifact.setFile( pomFile );
+        artifact.setFile( artifactFile );
 
         FileWriter fileWriter = null;
         try

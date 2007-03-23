@@ -64,10 +64,10 @@ public interface ArtifactInstaller
      * @param artifactId the artifact id of the artifact to install
      * @param version    the version of the artifact to install
      * @param packaging  the packaging type of the artifact to install
-     * @param pomFile    the pom file of the artifact to install
+     * @param artifactFile    the artifact to install
      * @throws ArtifactInstallationException if there is a problem installing the artifact
      */
-    void installFile( String groupId, String artifactId, String version, String packaging, File pomFile )
+    void installFile( String groupId, String artifactId, String version, String packaging, File artifactFile )
         throws ArtifactInstallationException;
 
     /**

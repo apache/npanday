@@ -21,15 +21,10 @@ package org.apache.maven.dotnet.executable.compiler.impl;
 import org.apache.maven.dotnet.executable.NetExecutable;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.NMavenContext;
-import org.apache.maven.dotnet.executable.CommandExecutor;
 import org.apache.maven.dotnet.executable.compiler.CompilerContext;
-import org.apache.maven.dotnet.executable.compiler.InvalidArtifactException;
-import org.apache.maven.dotnet.executable.compiler.CompilerExecutable;
 
 import java.util.List;
 import java.io.File;
-
-import org.codehaus.plexus.logging.Logger;
 
 /**
  * A compiler to be used for compiling with .NET Profiles.
@@ -37,73 +32,21 @@ import org.codehaus.plexus.logging.Logger;
  * @author Shane Isbell
  */
 public final class CSharpCompilerForProfile
-    implements CompilerExecutable
+    extends BaseCompiler
 {
 
     private NetExecutable netCompiler;
 
     private CompilerContext compilerContext;
 
+    public boolean failOnErrorOutput()
+    {
+        return true;
+    }
+
     public CSharpCompilerForProfile()
     {
         netCompiler = new DefaultCompiler();
-    }
-
-    public File getCompiledArtifact()
-        throws InvalidArtifactException
-    {
-        File file = compilerContext.getArtifact();
-        if ( !file.exists() )
-        {
-            throw new InvalidArtifactException(
-                "NMAVEN-067-003: Artifact does not exist: Artifact = " + file.getAbsolutePath() );
-        }
-        return file;
-    }
-
-    public File getExecutionPath()
-    {
-        String executable;
-        try
-        {
-            executable = getExecutable();
-        }
-        catch ( ExecutionException e )
-        {
-            return null;
-        }
-        List<String> executablePaths = compilerContext.getNetCompilerConfig().getExecutionPaths();
-        if ( executablePaths != null )
-        {
-            for ( String executablePath : executablePaths )
-            {
-                File exe = new File( executablePath + File.separator +  executable);
-                if ( exe.exists() )
-                {
-                    return new File(executablePath);
-                }
-            }
-        }
-        return null;
-    }
-
-    public void execute()
-        throws ExecutionException
-    {
-        Logger logger = compilerContext.getLogger();
-        if ( !( new File( compilerContext.getSourceDirectoryName() ).exists() ) )
-        {
-            logger.info( "NMAVEN-067-000: No source files to compile." );
-            return;
-        }
-        logger.info( "NMAVEN-067-001: Compiling Artifact: Vendor = " +
-            compilerContext.getCompilerRequirement().getVendor() + ", Language = " +
-            compilerContext.getCompilerRequirement().getVendor() + ", Assembly Name = " +
-            compilerContext.getArtifact().getAbsolutePath() );
-
-        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        commandExecutor.setLogger( logger );
-        commandExecutor.executeCommand( getExecutable(), getCommands(), getExecutionPath(), true );
     }
 
     public List<String> getCommands()
@@ -126,15 +69,9 @@ public final class CSharpCompilerForProfile
         return commands;
     }
 
-
-    public String getExecutable()
-        throws ExecutionException
-    {
-        return netCompiler.getExecutable();
-    }
-
     public void init( NMavenContext nmavenContext )
     {
+        super.init( nmavenContext);
         netCompiler.init( nmavenContext );
         this.compilerContext = (CompilerContext) nmavenContext;
     }

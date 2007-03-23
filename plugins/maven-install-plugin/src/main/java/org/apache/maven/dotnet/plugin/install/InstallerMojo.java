@@ -98,6 +98,7 @@ public class InstallerMojo
         }
 
         //For the IDE: If we see a dll with same name as netmodule, copy dll to the local repo.
+        /*
         File linkedFile =
             new File( artifact.getFile().getParent() + File.separatorChar + artifact.getArtifactId() + ".dll" );
         if ( linkedFile.exists() && artifact.getType().equals( ArtifactType.MODULE.getArtifactTypeName() ) )
@@ -113,6 +114,7 @@ public class InstallerMojo
                 throw new MojoExecutionException( "NMAVEN-1001-001: Failed to install artifact file", e );
             }
         }
+        */
 
     }
 }

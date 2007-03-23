@@ -165,7 +165,6 @@ public final class CompilerContextImpl
         {
             libraries.add( project.getArtifact() );
         }
-
         return libraries;
     }
 
@@ -299,8 +298,6 @@ public final class CompilerContextImpl
                     libraries.add( artifact );
                 }
             }
-
-
         }
 
         compilerCapability = capabilityMatcher.matchCompilerCapabilityFor( compilerRequirement );

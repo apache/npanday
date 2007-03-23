@@ -79,6 +79,8 @@ public interface ArtifactContext
      *         but not null.
      */
     List<Artifact> getArtifactsFor( String groupId, String artifactId, String version, String type );
+
+    Artifact getArtifactByID( String id );
     
     /**
      * Returns an artifact installer used for installing NMaven artifacts into the local Maven repository.
@@ -97,6 +99,8 @@ public interface ArtifactContext
      * @throws NullPointerException if the artifact is null
      */
     ApplicationConfig getApplicationConfigFor( Artifact artifact );
+
+    File getLocalRepository();
 
     /**
      * Initializes this artifact context. Neither parameter value should be null.

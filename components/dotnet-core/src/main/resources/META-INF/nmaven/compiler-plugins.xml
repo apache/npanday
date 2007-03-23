@@ -50,7 +50,6 @@
       </includes>
     </commandFilter>
   </compilerPlugin>
-
   <compilerPlugin>
     <identifier>MS-CS-2.0</identifier>
     <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
@@ -181,7 +180,6 @@
       </includes>
     </commandFilter>
   </compilerPlugin>
-
   <compilerPlugin>
     <identifier>MS-VB</identifier>
     <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
@@ -224,7 +222,6 @@
       </includes>
     </commandFilter>
   </compilerPlugin>
-
   <compilerPlugin>
     <identifier>MONO-CS</identifier>
     <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
@@ -281,8 +278,6 @@
       </includes>
     </commandFilter>
   </compilerPlugin>
-
-
   <compilerPlugin>
     <identifier>MONO-CS-2</identifier>
     <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
@@ -339,7 +334,6 @@
       </includes>
     </commandFilter>
   </compilerPlugin>
-
   <compilerPlugin>
     <identifier>NEM</identifier>
     <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.NemerleCompiler</pluginClass>
@@ -415,4 +409,24 @@
       </platform>
     </platforms>
   </compilerPlugin>
+  <!--
+  <compilerPlugin>
+    <identifier>Ruby</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.RubyCompiler</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>RubyCompiler.exe</executable>
+    <netDependencyId>RubyCompiler</netDependencyId>
+    <language>RUBY</language>
+    <profile>FULL</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+        <architecture>x86</architecture>
+      </platform>
+    </platforms>
+  </compilerPlugin>
+  -->
 </compilerPlugins>

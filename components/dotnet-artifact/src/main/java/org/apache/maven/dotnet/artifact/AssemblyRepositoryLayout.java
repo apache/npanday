@@ -52,7 +52,7 @@ public class AssemblyRepositoryLayout
      */
     public String pathOf( Artifact artifact )
     {
-        if ( artifact.getType().equals( "pom" ) )//Use standard format for pom packaging
+        if ( artifact.getType() != null && artifact.getType().equals( "pom" ) )//Use standard format for pom packaging
         {
             ArtifactRepositoryLayout defaultLayout = new DefaultRepositoryLayout();
             return defaultLayout.pathOf( artifact );

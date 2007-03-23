@@ -19,12 +19,7 @@
 package org.apache.maven.dotnet.executable.compiler.impl;
 
 import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.NMavenContext;
-import org.apache.maven.dotnet.executable.CommandExecutor;
 import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
-import org.apache.maven.dotnet.executable.compiler.CompilerContext;
-import org.apache.maven.dotnet.executable.compiler.InvalidArtifactException;
-import org.apache.maven.dotnet.executable.compiler.CompilerExecutable;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -32,7 +27,6 @@ import java.util.Iterator;
 import java.io.File;
 
 import org.apache.maven.artifact.Artifact;
-import org.codehaus.plexus.logging.Logger;
 
 /**
  * Compiler for DotGNU.
@@ -40,55 +34,12 @@ import org.codehaus.plexus.logging.Logger;
  * @author Shane Isbell
  */
 public final class DotGNUCompiler
-    implements CompilerExecutable
+    extends BaseCompiler
 {
 
-    private CompilerContext compilerContext;
-
-    private Logger logger;
-
-    public void init( NMavenContext nmavenContext )
+    public boolean failOnErrorOutput()
     {
-        this.compilerContext = (CompilerContext) nmavenContext;
-        this.logger = nmavenContext.getLogger();
-    }
-
-    public File getCompiledArtifact()
-        throws InvalidArtifactException
-    {
-        File file = compilerContext.getArtifact();
-        if ( !file.exists() )
-        {
-            throw new InvalidArtifactException(
-                "NMAVEN-069-005: Artifact does not exist: Artifact = " + file.getAbsolutePath() );
-        }
-        return file;
-    }
-
-    public File getExecutionPath()
-    {
-        String executable;
-        try
-        {
-            executable = getExecutable();
-        }
-        catch ( ExecutionException e )
-        {
-            return null;
-        }
-        List<String> executablePaths = compilerContext.getNetCompilerConfig().getExecutionPaths();
-        if ( executablePaths != null )
-        {
-            for ( String executablePath : executablePaths )
-            {
-                File exe = new File( executablePath + File.separator +  executable);
-                if ( exe.exists() )
-                {
-                    return new File(executablePath);
-                }
-            }
-        }
-        return null;
+        return true;
     }
 
     public List<String> getCommands()
@@ -144,33 +95,4 @@ public final class DotGNUCompiler
         //TODO: Apply command filter
         return commands;
     }
-
-    public String getExecutable()
-        throws ExecutionException
-    {
-        if ( compilerContext == null )
-        {
-            throw new ExecutionException( "NMAVEN-069-001: Compiler has not been initialized with a context" );
-        }
-        return compilerContext.getCompilerCapability().getExecutable();
-    }
-
-    public void execute()
-        throws ExecutionException
-    {
-        logger.info( "NMAVEN-069-002: Compiling" );
-        if ( !( new File( compilerContext.getSourceDirectoryName() ).exists() ) )
-        {
-            logger.info( "NMAVEN-069-003: No source files to compile." );
-            return;
-        }
-        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        commandExecutor.setLogger( logger );
-        commandExecutor.executeCommand( getExecutable(), getCommands(), getExecutionPath(), true );
-        logger.info( "NMAVEN-069-004: Compiling Artifact: Vendor = " +
-            compilerContext.getCompilerRequirement().getVendor() + ", Language = " +
-            compilerContext.getCompilerRequirement().getVendor() + ", Assembly Name = " +
-            compilerContext.getArtifact().getAbsolutePath() );
-    }
-
 }

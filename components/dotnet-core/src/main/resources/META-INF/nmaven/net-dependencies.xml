@@ -11,6 +11,15 @@
     <version>0.14</version>
     <type>exe</type>
   </netDependency>
+<!--
+  <netDependency>
+    <id>RubyCompiler</id>
+    <groupId>QUT.RubyCompiler</groupId>
+    <artifactId>RubyCompiler</artifactId>
+    <version>1.0.0</version>
+    <type>exe</type>
+  </netDependency>
+  -->
   <netDependency>
     <groupId>NMaven.Plugin</groupId>
     <artifactId>NMaven.Plugin.Solution</artifactId>

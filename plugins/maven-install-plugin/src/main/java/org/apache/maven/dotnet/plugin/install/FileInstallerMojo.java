@@ -55,7 +55,7 @@ public class FileInstallerMojo
      * @parameter expression = "${file}
      * @required
      */
-    private File pomFile;
+    private File artifactFile;
 
     /**
      * @parameter expression = "${groupId}
@@ -82,6 +82,11 @@ public class FileInstallerMojo
     private String packaging;
 
     /**
+     * @parameter expression = "${generatePom} default-value = "true"
+     */
+    private boolean generatePom;
+
+    /**
      * @component
      */
     private ArtifactContext artifactContext;
@@ -95,13 +100,29 @@ public class FileInstallerMojo
         throws MojoExecutionException
     {
         artifactContext.init( project, localRepository );
-        try
+        if ( generatePom )
         {
-            artifactContext.getArtifactInstaller().installFile( groupId, artifactId, version, packaging, pomFile );
+            try
+            {
+                artifactContext.getArtifactInstaller().installFile( groupId, artifactId, version, packaging,
+                                                                    artifactFile );
+            }
+            catch ( org.apache.maven.artifact.installer.ArtifactInstallationException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1000-000: Failed to install artifact file", e );
+            }
         }
-        catch ( org.apache.maven.artifact.installer.ArtifactInstallationException e )
+        else
         {
-            throw new MojoExecutionException( "NMAVEN-1000-000: Failed to install artifact file", e );
+            try
+            {
+                artifactContext.getArtifactInstaller().installFileWithNoPom( groupId, artifactId, version,
+                                                                             artifactFile );
+            }
+            catch ( org.apache.maven.artifact.installer.ArtifactInstallationException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1000-001: Failed to install artifact file", e );
+            }
         }
     }
 }

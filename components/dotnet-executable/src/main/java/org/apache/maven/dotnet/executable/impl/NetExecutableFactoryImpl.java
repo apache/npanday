@@ -103,7 +103,8 @@ public class NetExecutableFactoryImpl
         compilerRequirement.setVendor( vendorInfo.getVendor() );
         compilerRequirement.setVendorVersion( vendorInfo.getVendorVersion() );
         compilerRequirement.setFrameworkVersion( vendorInfo.getFrameworkVersion() );
-
+        List<String> executionPaths = ( compilerConfig.getExecutionPaths() == null ) ? new ArrayList<String>()
+            : compilerConfig.getExecutionPaths();
         if ( vendorInfoRepository != null && vendorInfoRepository.exists() )
         {
             File sdkInstallRoot = null;
@@ -113,10 +114,10 @@ public class NetExecutableFactoryImpl
             }
             catch ( PlatformUnsupportedException e )
             {
-                logger.debug( "NMAVEN-066-017: Did not find an SDK install root: " + vendorInfo, e);
+                logger.debug( "NMAVEN-066-017: Did not find an SDK install root: " + vendorInfo, e );
             }
             File installRoot = vendorInfoRepository.getInstallRootFor( vendorInfo );
-            List<String> executionPaths = new ArrayList<String>();
+
             if ( installRoot != null )
             {
                 executionPaths.add( installRoot.getAbsolutePath() );
@@ -125,7 +126,6 @@ public class NetExecutableFactoryImpl
             {
                 executionPaths.add( sdkInstallRoot.getAbsolutePath() );
             }
-            compilerConfig.setExecutionPaths( executionPaths );
         }
 
         compilerContext.init( compilerRequirement, compilerConfig, project, capabilityMatcher );
@@ -133,6 +133,20 @@ public class NetExecutableFactoryImpl
         {
             compilerContext.getCompilerCapability().setAssemblyPath( assemblyPath.getAbsolutePath() );
         }
+
+        String netDependencyId = compilerContext.getCompilerCapability().getNetDependencyId();
+        if ( netDependencyId != null )
+        {
+            Artifact artifact = artifactContext.getArtifactByID( netDependencyId );
+            if ( artifact != null )
+            {
+                AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
+                File artifactPath = new File( compilerConfig.getLocalRepository().getAbsolutePath() + File.separator +
+                    layout.pathOf( artifact ) );
+                executionPaths.add( artifactPath.getParentFile().getAbsolutePath() );
+            }
+        }
+        compilerConfig.setExecutionPaths( executionPaths );
         try
         {
             return compilerContext.getCompilerExecutable();
@@ -202,9 +216,8 @@ public class NetExecutableFactoryImpl
             modifiedCommands = commands;
         }
         //TODO: DotGNU on Linux?
-
         ExecutableConfig executableConfig = ExecutableConfig.Factory.createDefaultExecutableConfig();
-        executableConfig.setExecutionPaths( Arrays.asList( exe) );
+        executableConfig.setExecutionPaths( Arrays.asList( exe ) );
         executableConfig.setCommands( modifiedCommands );
 
         try
@@ -260,7 +273,8 @@ public class NetExecutableFactoryImpl
         ExecutableConfig executableConfig = ExecutableConfig.Factory.createDefaultExecutableConfig();
         executableConfig.setCommands( commands );
 
-        List<String> executablePaths = new ArrayList<String>();
+        List<String> executablePaths = ( executableConfig.getExecutionPaths() == null ) ? new ArrayList<String>()
+            : executableConfig.getExecutionPaths();
         if ( netHome != null && netHome.exists() )
         {
             logger.info( "NMAVEN-066-014: Found executable path: Path = " + netHome.getAbsolutePath() );

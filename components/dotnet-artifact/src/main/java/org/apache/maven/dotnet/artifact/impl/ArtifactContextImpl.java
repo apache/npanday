@@ -106,6 +106,11 @@ public final class ArtifactContextImpl
         this.logger = logger;
     }
 
+    public File getLocalRepository()
+    {
+        return new File(localRepository);
+    }
+
     /**
      * @see ArtifactContext#getArtifactsFor(String, String, String, String)
      */
@@ -122,6 +127,14 @@ public final class ArtifactContextImpl
         }
         repository.init( artifactFactory );
         return repository.getArtifactsFor( groupId, artifactId, version, type );
+    }
+
+    public Artifact getArtifactByID( String id )
+    {
+        NetDependenciesRepositoryImpl repository =
+            (NetDependenciesRepositoryImpl) repositoryRegistry.find( "net-dependencies" );
+        repository.init( artifactFactory );
+        return repository.getArtifactByID( id );
     }
 
     /**

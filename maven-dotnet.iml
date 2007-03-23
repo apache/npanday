@@ -10,8 +10,6 @@
       <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Plugin.Resx/src/main/csharp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Plugin.Settings/src/main/csharp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Plugin.Solution/src/main/csharp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Service/Embedder/src/main/csharp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/assemblies/NMaven.Service/Embedder/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-artifact/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-artifact/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-assembler/src/main/java" isTestSource="false" />
@@ -27,11 +25,14 @@
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-executable/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-executable/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/assembly-plugins/src/site" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/assembly-plugins/target/generated-sources/modello" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/compiler-plugins/target/generated-sources/modello" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/netdependency/target/generated-sources/modello" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-model/settings/target/generated-sources/modello" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-registry/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-registry/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-vendor/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-vendor/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/components/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0001/src/main/csharp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0002/src/main/csharp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0003/src/main/csharp" isTestSource="false" />
@@ -53,9 +54,6 @@
       <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0021/src/main/vb" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0022/src/main/csharp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0025/it/test1/src/main/csharp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0026/src/main/csharp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0027" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/junk/maven-axis2-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-compile-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-compile-plugin/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-install-plugin/src/main/java" isTestSource="false" />
@@ -81,7 +79,6 @@
       <sourceFolder url="file://$MODULE_DIR$/sandbox/maven-csharp/plugins/maven-nunit-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/sandbox/maven-csharp/plugins/maven-vstudio-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/sandbox/prototype/maven-csharp-test/src/main/csharp" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/junk" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

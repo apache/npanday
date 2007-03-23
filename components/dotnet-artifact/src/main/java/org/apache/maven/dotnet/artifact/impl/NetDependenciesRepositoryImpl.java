@@ -107,7 +107,7 @@ public class NetDependenciesRepositoryImpl
      */
     public List<Dependency> getDependencies()
     {
-        return getDependenciesFor(null);
+        return getDependenciesFor( null );
     }
 
     /**
@@ -115,12 +115,18 @@ public class NetDependenciesRepositoryImpl
      */
     public List<Dependency> getDependenciesFor( List<NetDependencyMatchPolicy> matchPolicies )
     {
-        if(matchPolicies == null) matchPolicies = new ArrayList<NetDependencyMatchPolicy>();
+        if ( matchPolicies == null )
+        {
+            matchPolicies = new ArrayList<NetDependencyMatchPolicy>();
+        }
 
         List<Dependency> dependencies = new ArrayList<Dependency>();
         for ( NetDependency netDependency : netDependencies )
         {
-            if(isMatch(netDependency, matchPolicies)) dependencies.add( netDependencyToDependency( netDependency ) );
+            if ( isMatch( netDependency, matchPolicies ) )
+            {
+                dependencies.add( netDependencyToDependency( netDependency ) );
+            }
         }
         return dependencies;
     }
@@ -141,16 +147,20 @@ public class NetDependenciesRepositoryImpl
      *
      * @param netDependency the net dependency to match
      * @param matchPolicies the match policies to use in matching the net dependency
-     * @return  true is the specified net dependency matches ALL of the specified match policies, otherwise returns false
+     * @return true is the specified net dependency matches ALL of the specified match policies, otherwise returns false
      */
-    private boolean isMatch(NetDependency netDependency, List<NetDependencyMatchPolicy> matchPolicies)
+    private boolean isMatch( NetDependency netDependency, List<NetDependencyMatchPolicy> matchPolicies )
     {
-        for(NetDependencyMatchPolicy matchPolicy : matchPolicies)
+        for ( NetDependencyMatchPolicy matchPolicy : matchPolicies )
         {
-            if(!matchPolicy.match( netDependency)) return false;
+            if ( !matchPolicy.match( netDependency ) )
+            {
+                return false;
+            }
         }
         return true;
     }
+
     /**
      * Returns a list of artifacts that match the specified parameters. If the version or type parameters are null,
      * then the returned list will include all versions and types.
@@ -175,6 +185,18 @@ public class NetDependenciesRepositoryImpl
 
         }
         return artifacts;
+    }
+
+    Artifact getArtifactByID( String id )
+    {
+        for ( NetDependency netDependency : netDependencies )
+        {
+            if ( netDependency.getId() != null && netDependency.getId().equals( id ) )
+            {
+                return netDependencyToArtifact( netDependency );
+            }
+        }
+        return null;
     }
 
     /**
