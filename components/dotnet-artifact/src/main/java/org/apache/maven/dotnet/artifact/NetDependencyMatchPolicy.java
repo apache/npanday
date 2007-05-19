@@ -20,6 +20,11 @@ package org.apache.maven.dotnet.artifact;
 
 import org.apache.maven.dotnet.model.netdependency.NetDependency;
 
+/**
+ * Provides a way for a developer to implement custom match policies for a net dependency.
+ *
+ * @author Shane Isbell
+ */
 public interface NetDependencyMatchPolicy
 {
     /**

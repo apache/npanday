@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.InputStreamReader;
 
-
 /**
  * Provides methods for loading and reading the net dependency config file.
  *
@@ -187,6 +186,12 @@ public class NetDependenciesRepositoryImpl
         return artifacts;
     }
 
+    /**
+     * Returns the artifact associated with the specified id.
+     *
+     * @param id the artifact ID
+     * @return the artifact associated with the specified id
+     */
     Artifact getArtifactByID( String id )
     {
         for ( NetDependency netDependency : netDependencies )

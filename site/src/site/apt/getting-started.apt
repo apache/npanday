@@ -28,13 +28,23 @@ Sections
 
   [[1]] {{{ http://java.sun.com/javase/downloads/index_jdk5.jsp} JDK 5.0 Update x}}
 
-  [[2]] {{{http://msdn2.microsoft.com/en-us/netframework/default.aspx} Microsoft .NET Framework}} (1.1+)
-  OR {{{http://www.mono-project.com} Mono}} (1.1.13+ for Windows and 1.1.18+ for Linux)
+  [[2]] {{{http://msdn2.microsoft.com/en-us/netframework/default.aspx} Microsoft .NET Framework}} (2.0+)
+  OR {{{http://www.mono-project.com} Mono}} (1.1.13+ for Windows and 1.1.18+ for Linux). Note that the 2.0+ framework
+  (either MONO or Microsoft) is required to run NMaven but you can still target 1.1 for your builds provided that the 1.1 version
+  is installed.
 
   [[3]] Subversion client 1.3+ (although 1.4 will soon be required). Click here for
  {{{ http://subversion.tigris.org/servlets/ProjectDocumentView?documentID=35379&showInfo=true} Windows Subversion Client}}.
 
-  [[4]] {{{http://nunit.org/index.php?p=download} NUnit 2.2+}}
+  [[4]] {{{http://nunit.org/index.php?p=download} NUnit 2.2+}}.
+
+  [[5]] {{{http://maven.apache.org/download.html} Maven 2.0.5 or higher}}
+
+  [[]]
+
+  If you are planning on using NMaven with Visual Studio 2005 you will also need VS installed
+  prior to building NMaven. Since NMaven does not directly use any Sharp Develop APIs (yet), you do not need Sharp Develop
+  installed prior to a build.
 
 ** Bootstrap Build
 
@@ -54,13 +64,15 @@ Sections
    [[c]] If using Mono on Windows, both the csc executable and the nunit-console executable are located within the same path:
    typically something like "C:\Program Files\Mono-1.1.18\bin"
 
-  [[3]] Execute bootstrap-build.bat (or bootstrap-build.sh) from the nmaven directory.
+  [[3]] Execute bootstrap-build.bat (or bootstrap-build.sh) from the nmaven directory. If you want to compile with
+  Visual Studio 2005 support execute: bootstrap-build.bat -DVisualStudio2005
 
  During step (1), you may receive an error similar to the following:
 
 +----+
 
- svn: This client is too old to work with working copy 'nmaven-utility-resx\src\main\csharp'; please get a newer Subversion client
+ svn: This client is too old to work with working copy 'nmaven-utility-resx\src\main\csharp';
+ please get a newer Subversion client
 +----+
 
  In this case will need to upgrade to subversion 1.4 or higher.
@@ -120,11 +132,14 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
 *-------------------------+--------------------------------------------+
 
  Since the pom version is mapped to the assembly manifest, you MUST follow the 0.0.0.0 version convention specified by
- Microsoft (or the build will fail).
+ Microsoft (or the build will fail). You may, however, optionally add -SNAPSHOT to the version. Valid versions would include
+ 1.3.4 or 1.2-SNAPSHOT. 1.2-RC1 is invalid because NMaven would not recognize the RC1 identifier. The SNAPSHOT
+ within the version will not be included within the file name, but rather is contained both within the InformationalVersion attribute of the
+ AssemblyInfo class and within the pom.xml file.
 
 * {Unit Testing with NUnit}
 
- Add the org.nunit dependency to your pom.xml (as shown below). You
+ Add the NUnit dependency to your pom.xml (as shown below). You
  will only need to add the nmaven-test-plugin to the pom under the following circumstances:
 
   [[1]] If you do not add the nunit bin to your path;
@@ -146,19 +161,16 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
 	        <type>module</type>
             <version>2.0.0.0</version>
         </dependency>
-
         <dependency>
           <groupId>NUnit</groupId>
-          <artifactId>nunit.framework</artifactId>
+          <artifactId>NUnit.Framework</artifactId>
           <version>2.2.8.0</version>
           <type>library</type>
         </dependency>
     </dependencies>
-
     <build>
         <sourceDirectory>src/main/csharp</sourceDirectory>
         <testSourceDirectory>src/test/csharp</testSourceDirectory>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -218,17 +230,16 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
-            <language>C_SHARP</language>
-            <vendor>MONO</vendor>
             <frameworkVersion>1.1.4322</frameworkVersion>
-            <testLanguage>VB</testLanguage>
-            <testVendor>MICROSOFT</testVendor>
             <testFrameworkVersion>1.1.4322</testFrameworkVersion>
         </configuration>
     </plugin>
 </plugins>
 
 +----+
+
+ You also have the option of changing changing the framework version by modifying the default setup within the nmaven-settings.xml file. See
+ {{{getting-started.html#Using NMaven Settings File}Using NMaven Settings File}}.
 
  To disable the NUnit tests, add the system property -Dmaven.test.skip=true to the command line. You can also disable
  tests by adding \<skipTests>true\</skipTests> to the configuration above.

@@ -51,9 +51,8 @@ public interface RepositoryExecutableContext
      * Initializes this context.
      *
      * @param executableConfig the executable config for this context
-     * @param project the maven project
      * @throws org.apache.maven.dotnet.InitializationException if the context cannot be initialized
      */
-    void init( ExecutableConfig executableConfig, MavenProject project )
+    void init( ExecutableConfig executableConfig )
         throws InitializationException;
 }

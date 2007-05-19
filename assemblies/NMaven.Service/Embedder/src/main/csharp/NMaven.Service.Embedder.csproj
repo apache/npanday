@@ -1,0 +1,21 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{FD65FE0D-A9F2-4AD7-91C6-E94BE90A7E0F}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NMaven.Service</RootNameSpace>
+    <AssemblyName>NMaven.Service.Embedder</AssemblyName>
+    <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NMaven\Service\Embedder\MavenEmbedder.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

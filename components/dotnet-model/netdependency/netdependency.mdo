@@ -62,6 +62,18 @@
           <type>String</type>
           <description></description>
         </field>
+        <field>
+          <name>publicKeyToken</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description>The public key of the assembly.</description>
+        </field>
+        <field>
+          <name>isGacInstall</name>
+          <version>1.0.0</version>
+          <type>boolean</type>
+          <description>True if the framework should install the net dependency in the GAC, otherwise false.</description>
+        </field>
       </fields>
     </class>
   </classes>

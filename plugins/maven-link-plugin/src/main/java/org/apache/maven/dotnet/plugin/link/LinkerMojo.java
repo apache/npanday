@@ -77,7 +77,7 @@ public class LinkerMojo
 
         try
         {
-            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, project, getCommands(),
+            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, getCommands(),
                                                       null ).execute();
         }
         catch ( ExecutionException e )

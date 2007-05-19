@@ -1,30 +1,81 @@
 <netDependencies>
+  <!--Plugins-->
   <netDependency>
-    <groupId>NMaven.Plugin</groupId>
+    <groupId>NMaven.Plugins</groupId>
     <artifactId>NMaven.Plugin.Resx</artifactId>
-    <version>0.14</version>
+    <version>0.14-SNAPSHOT</version>
     <type>exe</type>
   </netDependency>
   <netDependency>
-    <groupId>NMaven.Plugin</groupId>
+    <groupId>NMaven.Plugins</groupId>
     <artifactId>NMaven.Plugin.Settings</artifactId>
-    <version>0.14</version>
-    <type>exe</type>
+    <version>0.14-SNAPSHOT</version>
+    <type>netplugin</type>
   </netDependency>
-<!--
   <netDependency>
-    <id>RubyCompiler</id>
-    <groupId>QUT.RubyCompiler</groupId>
-    <artifactId>RubyCompiler</artifactId>
-    <version>1.0.0</version>
-    <type>exe</type>
+    <groupId>NMaven.Plugins</groupId>
+    <artifactId>NMaven.Plugin.Solution</artifactId>
+    <version>0.14-SNAPSHOT</version>
+    <type>netplugin</type>
   </netDependency>
-  -->
+  <netDependency>
+    <groupId>NMaven.Plugins</groupId>
+    <artifactId>NMaven.Plugin.Devenv</artifactId>
+    <version>0.14-SNAPSHOT</version>
+    <type>netplugin</type>
+  </netDependency>
+  <netDependency>
+    <groupId>NMaven.Plugins</groupId>
+    <artifactId>NMaven.Plugin.Addin</artifactId>
+    <version>0.14-SNAPSHOT</version>
+    <type>netplugin</type>
+  </netDependency>
+
+  <!--IDE-->
+  <netDependency>
+    <groupId>NMaven.VisualStudio</groupId>
+    <artifactId>NMaven.VisualStudio.Addin</artifactId>
+    <version>0.14-SNAPSHOT</version>
+    <type>visual-studio-addin</type>
+    <profile>VisualStudio2005</profile>
+  </netDependency>
+  <netDependency>
+    <groupId>NMaven.VisualStudio</groupId>
+    <artifactId>NMaven.VisualStudio</artifactId>
+    <version>0.14-SNAPSHOT</version>
+    <type>library</type>
+    <profile>VisualStudio2005</profile>
+  </netDependency>
+
+  <!--Plugin Framework-->
   <netDependency>
     <groupId>NMaven.Plugin</groupId>
-    <artifactId>NMaven.Plugin.Solution</artifactId>
-    <version>0.14</version>
+    <artifactId>NMaven.Plugin</artifactId>
+    <version>0.14-SNAPSHOT</version>
+    <type>library</type>
+  </netDependency>
+  <netDependency>
+    <groupId>NMaven.Model</groupId>
+    <artifactId>NMaven.Model.Pom</artifactId>
+    <version>0.14-SNAPSHOT</version>
+    <type>library</type>
+  </netDependency>
+  <netDependency>
+    <groupId>NMaven.Plugin</groupId>
+    <artifactId>NMaven.Plugin.Runner</artifactId>
+    <version>0.14-SNAPSHOT</version>
     <type>exe</type>
-    <profile>withIde</profile>
+  </netDependency>
+  <netDependency>
+    <groupId>NMaven.Plugin</groupId>
+    <artifactId>NMaven.Plugin.Loader</artifactId>
+    <version>0.14-SNAPSHOT</version>
+    <type>exe</type>
+  </netDependency>
+  <netDependency>
+    <groupId>NMaven.Plugin</groupId>
+    <artifactId>NMaven.Plugin.MojoGenerator</artifactId>
+    <version>0.14-SNAPSHOT</version>
+    <type>exe</type>
   </netDependency>
 </netDependencies>

@@ -34,7 +34,6 @@ import java.io.File;
 public final class CSharpCompilerForProfile
     extends BaseCompiler
 {
-
     private NetExecutable netCompiler;
 
     private CompilerContext compilerContext;

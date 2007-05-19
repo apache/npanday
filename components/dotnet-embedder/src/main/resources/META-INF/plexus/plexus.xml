@@ -1,0 +1,14 @@
+<plexus>
+
+  <!-- Internal components org.apache.maven.dotnet.embedder.logger.SocketLoggerManager-->
+  <components>
+    <component>
+      <role>org.codehaus.plexus.logging.LoggerManager</role>
+      <implementation>org.apache.maven.dotnet.embedder.logger.SocketLoggerManager</implementation>
+      <lifecycle-handler>basic</lifecycle-handler>
+      <configuration>
+        <threshold>info</threshold>
+      </configuration>
+    </component>
+  </components>
+</plexus>

@@ -54,7 +54,7 @@ public class SourceProcessorMojo
     /**
      * Output directory
      *
-     * @parameter expression = "${outputDirectory}" default-value="${project.build.directory}${file.separator}build-sources"
+     * @parameter expression = "${outputDirectory}" default-value="${project.build.directory}/build-sources"
      * @required
      */
     private String outputDirectory;
@@ -85,6 +85,8 @@ public class SourceProcessorMojo
     public void execute()
         throws MojoExecutionException
     {
+        long startTime = System.currentTimeMillis();
+
         if ( !new File( sourceDirectory ).exists() )
         {
             getLog().info( "NMAVEN-904-001: No source files to copy" );
@@ -119,13 +121,21 @@ public class SourceProcessorMojo
         directoryScanner.scan();
         String[] files = directoryScanner.getIncludedFiles();
         getLog().info( "NMAVEN-904-002: Copying source files: From = " + sourceDirectory + ",  To = " +
-            outputDirectory + ", File Count = " + files.length);
+            outputDirectory + ", File Count = " + files.length );
+
+        super.getPluginContext().put( "SOURCE_FILES_UP_TO_DATE", Boolean.TRUE );
         for ( String file : files )
         {
             try
             {
-                FileUtils.copyFile( new File( sourceDirectory + File.separator + file ),
-                                    new File( outputDirectory + File.separator + file ) );
+                File sourceFile = new File( sourceDirectory + File.separator + file );
+                File targetFile = new File( outputDirectory + File.separator + file );
+                if ( sourceFile.lastModified() > targetFile.lastModified() )
+                {
+                    super.getPluginContext().put( "SOURCE_FILES_UP_TO_DATE", Boolean.FALSE );
+                    FileUtils.copyFile( sourceFile, targetFile );
+                    targetFile.setLastModified( System.currentTimeMillis() );
+                }
             }
             catch ( IOException e )
             {

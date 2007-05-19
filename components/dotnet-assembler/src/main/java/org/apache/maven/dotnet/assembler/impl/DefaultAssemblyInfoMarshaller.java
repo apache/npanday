@@ -31,7 +31,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Provides services for writing out the AssemblyInfo entries using the bracket convention [assembly:
@@ -66,24 +65,30 @@ final class DefaultAssemblyInfoMarshaller
             .append( createEntry( "Trademark", assemblyInfo.getTrademark() ) )
             .append( createEntry( "Culture", assemblyInfo.getCulture() ) )
             .append( createEntry( "Version", assemblyInfo.getVersion() ) )
+            .append( createEntry( "InformationalVersion", assemblyInfo.getInformationalVersion() ) )
             .append( createEntry( "Configuration", assemblyInfo.getConfiguration() ) );
-            if(assemblyInfo.getKeyName() != null) sb.append( createEntry( "KeyName", assemblyInfo.getKeyName() ) );
-            if(assemblyInfo.getKeyFile() != null)
-                sb.append(createEntry("KeyFile", assemblyInfo.getKeyFile().getAbsolutePath().replace( "\\", "\\\\")));
+        if ( assemblyInfo.getKeyName() != null )
+        {
+            sb.append( createEntry( "KeyName", assemblyInfo.getKeyName() ) );
+        }
+        if ( assemblyInfo.getKeyFile() != null )
+        {
+            sb.append( createEntry( "KeyFile", assemblyInfo.getKeyFile().getAbsolutePath().replace( "\\", "\\\\" ) ) );
+        }
         FileOutputStream man = null;
         try
         {
-            String groupIdAsDir = mavenProject.getGroupId().replace( ".", File.separator);
+            String groupIdAsDir = mavenProject.getGroupId().replace( ".", File.separator );
             File file = new File( src + "/META-INF/" + groupIdAsDir );
             file.mkdirs();
-            man = new FileOutputStream( src + "/META-INF/" + groupIdAsDir + File.separator +
-                "AssemblyInfo." + plugin.getExtension() );
+            man = new FileOutputStream(
+                src + "/META-INF/" + groupIdAsDir + File.separator + "AssemblyInfo." + plugin.getExtension() );
             man.write( sb.toString().getBytes() );
         }
         catch ( IOException e )
         {
             e.printStackTrace();
-            throw new IOException( "Failed to generate AssemblyInfo" );
+            throw new IOException( "NMAVEN-022-000: Failed to generate AssemblyInfo" );
         }
         finally
         {
@@ -102,48 +107,93 @@ final class DefaultAssemblyInfoMarshaller
         this.plugin = plugin;
     }
 
-    public AssemblyInfo unmarshall( InputStream inputStream) throws IOException {
+    /**
+     * @see AssemblyInfoMarshaller#unmarshall(java.io.InputStream)
+     */
+    public AssemblyInfo unmarshall( InputStream inputStream )
+        throws IOException
+    {
         AssemblyInfo assemblyInfo = new AssemblyInfo();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedReader reader = new BufferedReader( new InputStreamReader( inputStream ) );
         String line;
-        while ((line = reader.readLine()) != null) {
-            String[] tokens = line.split("[:]");
+        while ( ( line = reader.readLine() ) != null )
+        {
+            String[] tokens = line.split( "[:]" );
 
-            if (tokens.length == 2) {
-                String[] assemblyTokens = tokens[1].split("[(]");
+            if ( tokens.length == 2 )
+            {
+                String[] assemblyTokens = tokens[1].split( "[(]" );
                 String name = assemblyTokens[0].trim();
-                String value = assemblyTokens[1].trim().split("[\"]")[1].trim();
-                setAssemblyInfo(assemblyInfo, name, value);
+                String value = assemblyTokens[1].trim().split( "[\"]" )[1].trim();
+                setAssemblyInfo( assemblyInfo, name, value );
             }
         }
         return assemblyInfo;
     }
 
-    private void setAssemblyInfo(AssemblyInfo assemblyInfo, String name, String value) throws IOException {
-        if (!name.startsWith("Assembly"))
-            throw new IOException("NMAVEN-xxx-xxx: Invalid assembly info parameter: Name = " + name + ", Value = " + value);
-        if(name.equals("AssemblyDescription")) {
-            assemblyInfo.setDescription(value);
-        } else if(name.equals("AssemblyTitle")) {
-            assemblyInfo.setTitle(value);
-        } else if(name.equals("AssemblyCompany")) {
-            assemblyInfo.setCompany(value);
-        } else if(name.equals("AssemblyProduct")) {
-            assemblyInfo.setProduct(value);
-        } else if(name.equals("AssemblyCopyright")) {
-            assemblyInfo.setCopyright(value);
-        } else if(name.equals("AssemblyTrademark")) {
-            assemblyInfo.setTrademark(value);
-        } else if(name.equals("AssemblyCulture")) {
-            assemblyInfo.setCulture(value);
-        } else if(name.equals("AssemblyVersion")) {
-            assemblyInfo.setVersion(value);
-        } else if(name.equals("AssemblyConfiguration")) {
-            assemblyInfo.setConfiguration(value);
-        } else if(name.equals("AssemblyKeyFile")) {
-            assemblyInfo.setConfiguration(value);
-        } else if(name.equals("AssemblyKeyName")) {
-            assemblyInfo.setConfiguration(value);
+    /**
+     * Sets the specified value within the specified assembly info
+     *
+     * @param assemblyInfo the assembly info to set information on
+     * @param name the name of the assembly info field: AssemblyTitle, AssemblyDescription, ...
+     * @param value the value associated with the specified name
+     * @throws IOException if the assembly info is invalid
+     */
+    private void setAssemblyInfo( AssemblyInfo assemblyInfo, String name, String value )
+        throws IOException
+    {
+        if ( !name.startsWith( "Assembly" ) )
+        {
+            throw new IOException(
+                "NMAVEN-022-001: Invalid assembly info parameter: Name = " + name + ", Value = " + value );
+        }
+        if ( name.equals( "AssemblyDescription" ) )
+        {
+            assemblyInfo.setDescription( value );
+        }
+        else if ( name.equals( "AssemblyInformationalVersion" ) )
+        {
+            assemblyInfo.setInformationalVersion( value );
+        }
+        else if ( name.equals( "AssemblyTitle" ) )
+        {
+            assemblyInfo.setTitle( value );
+        }
+        else if ( name.equals( "AssemblyCompany" ) )
+        {
+            assemblyInfo.setCompany( value );
+        }
+        else if ( name.equals( "AssemblyProduct" ) )
+        {
+            assemblyInfo.setProduct( value );
+        }
+        else if ( name.equals( "AssemblyCopyright" ) )
+        {
+            assemblyInfo.setCopyright( value );
+        }
+        else if ( name.equals( "AssemblyTrademark" ) )
+        {
+            assemblyInfo.setTrademark( value );
+        }
+        else if ( name.equals( "AssemblyCulture" ) )
+        {
+            assemblyInfo.setCulture( value );
+        }
+        else if ( name.equals( "AssemblyVersion" ) )
+        {
+            assemblyInfo.setVersion( value );
+        }
+        else if ( name.equals( "AssemblyConfiguration" ) )
+        {
+            assemblyInfo.setConfiguration( value );
+        }
+        else if ( name.equals( "AssemblyKeyFile" ) )
+        {
+            assemblyInfo.setConfiguration( value );
+        }
+        else if ( name.equals( "AssemblyKeyName" ) )
+        {
+            assemblyInfo.setConfiguration( value );
         }
     }
 

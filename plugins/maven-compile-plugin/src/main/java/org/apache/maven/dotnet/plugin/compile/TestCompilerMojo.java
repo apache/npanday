@@ -45,7 +45,6 @@ public final class TestCompilerMojo
 
     /**
      * @parameter expression="${settings.localRepository}"
-     * @required
      */
     private File localRepository;
 
@@ -131,6 +130,8 @@ public final class TestCompilerMojo
     public void execute()
         throws MojoExecutionException
     {
+        long startTime = System.currentTimeMillis();
+
         String skipTests = System.getProperty( "maven.test.skip" );
         if ( ( skipTests != null && skipTests.equalsIgnoreCase( "true" ) ) || skipTestCompile )
         {
@@ -150,6 +151,11 @@ public final class TestCompilerMojo
         if ( testFrameworkVersion == null )
         {
             testFrameworkVersion = frameworkVersion;
+        }
+
+        if(localRepository == null)
+        {
+            localRepository = new File(System.getProperty("user.home"), ".m2/repository");
         }
 
         //Requirement
@@ -196,5 +202,7 @@ public final class TestCompilerMojo
             throw new MojoExecutionException(
                 "NMAVEN-903-002: Unable to Compile: Language = " + language + ", Vendor = " + vendor, e );
         }
+        long endTime = System.currentTimeMillis();
+        getLog().info( "Mojo Execution Time = " + (endTime - startTime));        
     }
 }

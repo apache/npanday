@@ -1,0 +1,27 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{36FCE4F7-53D7-48AC-9AF4-74CB0F6020F6}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NMaven.Logging</RootNameSpace>
+    <AssemblyName>NMaven.Logging</AssemblyName>
+    <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NMaven\Logging\ConsoleHandler.cs" />
+    <Compile Include="NMaven\Logging\IHandler.cs" />
+    <Compile Include="NMaven\Logging\Level.cs" />
+    <Compile Include="NMaven\Logging\Logger.cs" />
+    <Compile Include="NMaven\Logging\LogManager.cs" />
+    <Compile Include="NMaven\Logging\LogRecord.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

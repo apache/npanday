@@ -22,6 +22,7 @@ import org.apache.maven.dotnet.vendor.VendorInfoRepository;
 import org.apache.maven.dotnet.vendor.VendorInfo;
 import org.apache.maven.dotnet.vendor.VendorInfoMatchPolicy;
 import org.apache.maven.dotnet.vendor.InvalidVersionFormatException;
+import org.apache.maven.dotnet.vendor.Vendor;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
 
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.HashSet;
 import java.io.File;
 
 import org.codehaus.plexus.logging.LogEnabled;
@@ -92,7 +94,8 @@ public class VendorInfoRepositoryImpl
     {
         SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "nmaven-settings" );
         return settingsRepository.getSdkInstallRootFor( vendorInfo.getVendor().getVendorName(),
-                                                     vendorInfo.getVendorVersion(), vendorInfo.getFrameworkVersion() );
+                                                        vendorInfo.getVendorVersion(),
+                                                        vendorInfo.getFrameworkVersion() );
     }
 
     /**
@@ -182,5 +185,72 @@ public class VendorInfoRepositoryImpl
             }
         }
         return true;
+    }
+
+    public File getGlobalAssemblyCacheDirectoryFor( Vendor vendor, String frameworkVersion, String artifactType )
+        throws PlatformUnsupportedException
+    {
+        if ( artifactType.equals( "gac_generic" ) )
+        {
+            if ( vendor.equals( Vendor.MICROSOFT ) &&
+                ( frameworkVersion.equals( "2.0.50727" ) || frameworkVersion.equals( "3.0" ) ) )
+            {
+                return new File( "C:\\WINDOWS\\assembly\\GAC_MSIL\\" );
+            }
+            else if ( vendor.equals( Vendor.MICROSOFT ) && frameworkVersion.equals( "1.1.4322" ) )
+            {
+                return new File( "C:\\WINDOWS\\assembly\\GAC\\" );
+            }
+            else if ( vendor.equals( Vendor.MONO ) && exists() )
+            {
+                List<VendorInfo> vendorInfos =
+                    getVendorInfosFor( vendor.getVendorName(), null, frameworkVersion, true );
+                Set<String> vendorVersions = new HashSet<String>();
+                for ( VendorInfo vendorInfo : vendorInfos )
+                {
+                    vendorVersions.add( vendorInfo.getVendorVersion() );
+                }
+                String maxVersion;
+                try
+                {
+                    maxVersion = getMaxVersion( vendorVersions );
+                }
+                catch ( InvalidVersionFormatException e )
+                {
+                    throw new PlatformUnsupportedException( "NMAVEN-xxx-000: Invalid version format", e );
+                }
+
+                for ( VendorInfo vendorInfo : vendorInfos )
+                {
+                    if ( vendorInfo.getVendorVersion().equals( maxVersion ) )
+                    {
+                        File sdkInstallRoot = getSdkInstallRootFor( vendorInfo );
+                        File gacRoot = new File( sdkInstallRoot.getParentFile().getAbsolutePath() + "/lib/mono/gac" );
+                        if ( !gacRoot.exists() )
+                        {
+                            throw new PlatformUnsupportedException(
+                                "NMAVEN-xxx-000: The Mono GAC path does not exist: Path = " +
+                                    gacRoot.getAbsolutePath() );
+                        }
+                        return gacRoot;
+                    }
+                }
+                
+                //TODO: MONO Support for Linux (Separate file containg installs)
+            }
+        }
+        else if ( artifactType.equals( "gac" ) )
+        {
+            return new File( "C:\\WINDOWS\\assembly\\GAC\\" );
+        }
+        else if ( artifactType.equals( "gac_32" ) )
+        {
+            return new File( "C:\\WINDOWS\\assembly\\GAC_32\\" );
+        }
+        else if ( artifactType.equals( "gac_msil" ) )
+        {
+            return new File( "C:\\WINDOWS\\assembly\\GAC_MSIL\\" );
+        }
+        throw new PlatformUnsupportedException("NMAVEN-xxx-000: Could not locate a valid GAC");
     }
 }

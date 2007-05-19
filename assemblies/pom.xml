@@ -1,10 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven</groupId>
   <artifactId>NMaven.Assemblies</artifactId>
   <packaging>pom</packaging>
-  <version>0.14</version>
+  <version>0.14-SNAPSHOT</version>
   <name>NMaven.Assemblies</name>
   <url>http://incubator.apache.org/nmaven</url>
   <description>
@@ -115,8 +133,17 @@
     </developer>
   </developers>
   <modules>
-    <module>NMaven.Plugin.Resx</module>
-    <module>NMaven.Plugin.Settings</module>
+    <module>NMaven.Artifact</module>
+    <module>NMaven.Core</module>
+    <module>NMaven.IDE</module>
+    <module>NMaven.Logging</module>
+    <module>NMaven.Model/Pom</module>
+    <module>NMaven.Model/AutomationExtensibility</module>
+    <module>NMaven.Plugin</module>
+    <module>NMaven.Plugin.Loader</module>
+    <module>NMaven.Plugin.MojoGenerator</module>
+    <module>NMaven.Plugin.Runner</module>
+    <module>NMaven.Service/Embedder</module>
   </modules>
   <build>
     <sourceDirectory>src/main/csharp</sourceDirectory>
@@ -126,6 +153,9 @@
         <groupId>org.apache.maven.dotnet.plugins</groupId>
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
+        <configuration>
+          <frameworkVersion>2.0.50727</frameworkVersion>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -133,16 +163,35 @@
     <profile>
       <activation>
         <property>
-          <name>withIde</name>
+          <name>VisualStudio2005</name>
         </property>
       </activation>
       <modules>
-        <module>NMaven.Core</module>
-        <module>NMaven.Model/Pom</module>
-        <module>NMaven.Plugin.Resx</module>
-        <module>NMaven.Plugin.Settings</module>
-        <module>NMaven.Plugin.Solution</module>
+        <module>NMaven.VisualStudio</module>
+        <module>NMaven.VisualStudio.Addin</module>
       </modules>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.dotnet.plugins</groupId>
+            <artifactId>maven-compile-plugin</artifactId>
+            <extensions>true</extensions>
+            <configuration>
+              <vendor>MICROSOFT</vendor>
+              <frameworkVersion>2.0.50727</frameworkVersion>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
+  <distributionManagement>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>snapshot repo</id>
+      <name>snapshot repo</name>
+      <url>file://${deploy.directory}</url>
+      <layout>default</layout>
+    </snapshotRepository>
+  </distributionManagement>
 </project>

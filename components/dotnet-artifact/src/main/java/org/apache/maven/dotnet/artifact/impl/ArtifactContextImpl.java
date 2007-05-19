@@ -26,6 +26,8 @@ import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.handler.ArtifactHandler;
+import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -91,6 +93,10 @@ public final class ArtifactContextImpl
      */
     private Logger logger;
 
+    private List<ArtifactHandler> artifactHandlers;
+
+    private ArtifactHandlerManager artifactHandlerManager;
+
     /**
      * Constructor. This method is intended to by invoked by the plexus-container, not by the application developer.
      */
@@ -106,9 +112,12 @@ public final class ArtifactContextImpl
         this.logger = logger;
     }
 
+    /**
+     * @see org.apache.maven.dotnet.artifact.ArtifactContext#getLocalRepository()
+     */
     public File getLocalRepository()
     {
-        return new File(localRepository);
+        return new File( localRepository );
     }
 
     /**
@@ -126,9 +135,18 @@ public final class ArtifactContextImpl
             return new ArrayList<Artifact>();
         }
         repository.init( artifactFactory );
-        return repository.getArtifactsFor( groupId, artifactId, version, type );
+        List<Artifact> artifacts = repository.getArtifactsFor( groupId, artifactId, version, type );
+        AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
+        for ( Artifact artifact : artifacts )
+        {
+            artifact.setFile( new File( localRepository + File.separator + layout.pathOf( artifact ) ) );
+        }
+        return artifacts;
     }
 
+    /**
+     * @see ArtifactContext#getArtifactByID(String)
+     */
     public Artifact getArtifactByID( String id )
     {
         NetDependenciesRepositoryImpl repository =
@@ -150,7 +168,8 @@ public final class ArtifactContextImpl
      */
     public ApplicationConfig getApplicationConfigFor( Artifact artifact )
     {
-        return ApplicationConfig.Factory.createDefaultApplicationConfig( artifact, project );
+        return ApplicationConfig.Factory.createDefaultApplicationConfig( artifact, project.getBasedir(), new File(
+            project.getBuild().getDirectory() ) );
     }
 
     /**
@@ -160,11 +179,6 @@ public final class ArtifactContextImpl
     public List<Artifact> getDirectDependenciesFor( Artifact artifact, List<ArtifactMatchPolicy> matchPolicies )
         throws ArtifactException
     {
-        if ( project == null )
-        {
-            throw new ArtifactException( "NMAVEN-000-000: Artifact Context has not been initialized" );
-        }
-
         if ( artifact == null )
         {
             throw new ArtifactException( "NMAVEN-000-001: Cannot get dependenct artifacts of a null artifact" );
@@ -181,6 +195,7 @@ public final class ArtifactContextImpl
 
         Set depSet = new HashSet();
         List<Dependency> dep = project.getDependencies();
+
         for ( Dependency dependency : dep )
         {
             String scope = ( dependency.getScope() == null ) ? Artifact.SCOPE_COMPILE : dependency.getScope();
@@ -190,7 +205,10 @@ public final class ArtifactContextImpl
                                                                          dependency.getVersion() ),
                                                                      dependency.getType(), dependency.getClassifier(),
                                                                      scope, null );
-            if(!art.getType().equals( "gac")) depSet.add( art );
+            if ( !art.getType().startsWith( "gac" ) )
+            {
+                depSet.add( art );
+            }
         }
 
         try
@@ -246,20 +264,44 @@ public final class ArtifactContextImpl
         return getDirectDependenciesFor( artifact, matchPolicies );
     }
 
+    public List<Artifact> getAllNetArtifactsFromRepository( File repository )
+    {
+        return null;
+    }
+
     /**
-     * @see ArtifactContext#init(org.apache.maven.project.MavenProject, java.io.File)
+     * @see ArtifactContext#init(org.apache.maven.project.MavenProject,java.util.List, File
      */
-    public void init( MavenProject mavenProject, File localRepository )
+    public void init( MavenProject mavenProject, List<ArtifactRepository> remoteArtifactRepositories,
+                      File localRepository )
     {
         this.project = mavenProject;
         this.localRepository = localRepository.getAbsolutePath();
-        artifactInstaller.init( this, mavenProject, localRepository );
+        artifactInstaller.init( this, mavenProject, remoteArtifactRepositories, localRepository );
+        Map<String, ArtifactHandler> map = new HashMap<String, ArtifactHandler>();
+        for ( ArtifactHandler artifactHandler : artifactHandlers )
+        {
+            //If I add a handler that already exists, the runtime breaks.
+            if ( isDotNetHandler( artifactHandler ) )
+            {
+                map.put( artifactHandler.getPackaging(), artifactHandler );
+            }
+        }
+
+        artifactHandlerManager.addHandlers( map );
+    }
+
+    private boolean isDotNetHandler( ArtifactHandler artifactHandler )
+    {
+        String extension = artifactHandler.getExtension();
+        return extension.equals( "dll" ) || extension.equals( "nar" ) || extension.equals( "exe" ) ||
+            extension.equals( "exe.config" );
     }
 
     /**
      * Returns true if the artifact matches <i>all</i> match policies, otherwise returns false.
      *
-     * @param artifact the artifact to match against the match policies
+     * @param artifact      the artifact to match against the match policies
      * @param matchPolicies the match policies
      * @return true if the artifact matches <i>all</i> match policies, otherwise returns false
      */

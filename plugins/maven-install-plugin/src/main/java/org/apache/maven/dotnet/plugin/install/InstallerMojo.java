@@ -26,6 +26,7 @@ import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.apache.maven.dotnet.artifact.ArtifactType;
+import org.apache.maven.dotnet.plugin.compile.ComponentInitializerMojo;
 import org.apache.maven.model.Dependency;
 
 import java.io.File;
@@ -49,13 +50,11 @@ public class InstallerMojo
 
     /**
      * @parameter expression="${settings.localRepository}"
-     * @required
      */
     private File localRepository;
 
     /**
      * @parameter expression="${project.file}"
-     * @required
      * @readonly
      */
     private File pomFile;
@@ -73,7 +72,15 @@ public class InstallerMojo
     public void execute()
         throws MojoExecutionException
     {
-        Artifact artifact = project.getArtifact();
+        long startTime = System.currentTimeMillis();
+
+        if ( localRepository == null )
+        {
+            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
+        }
+        artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
+
+        Artifact artifact = project.getArtifact();       
         try
         {
             artifactContext.getArtifactInstaller().installArtifact( artifact, pomFile );
@@ -84,7 +91,10 @@ public class InstallerMojo
         }
 
         //To allow executables to be runnable from the repo
-        if ( artifact.getType().equals( ArtifactType.EXE.getArtifactTypeName() ) )
+        if ( artifact.getType().equals( ArtifactType.EXE.getPackagingType() ) ||
+            artifact.getType().equals( ArtifactType.NETPLUGIN.getPackagingType() ) ||
+            artifact.getType().equals( ArtifactType.VISUAL_STUDIO_ADDIN.getPackagingType() ) ||
+            artifact.getType().equals( ArtifactType.SHARP_DEVELOP_ADDIN.getPackagingType() ))
         {
             List<Dependency> dependencies = project.getDependencies();
             try
@@ -96,25 +106,7 @@ public class InstallerMojo
                 throw new MojoExecutionException( "NMAVEN-1001-002: Failed to install artifact file", e );
             }
         }
-
-        //For the IDE: If we see a dll with same name as netmodule, copy dll to the local repo.
-        /*
-        File linkedFile =
-            new File( artifact.getFile().getParent() + File.separatorChar + artifact.getArtifactId() + ".dll" );
-        if ( linkedFile.exists() && artifact.getType().equals( ArtifactType.MODULE.getArtifactTypeName() ) )
-        {
-            try
-            {
-                artifactContext.getArtifactInstaller().installFileWithNoPom( artifact.getGroupId(),
-                                                                             artifact.getArtifactId(),
-                                                                             artifact.getVersion(), linkedFile );
-            }
-            catch ( org.apache.maven.artifact.installer.ArtifactInstallationException e )
-            {
-                throw new MojoExecutionException( "NMAVEN-1001-001: Failed to install artifact file", e );
-            }
-        }
-        */
-
+        long endTime = System.currentTimeMillis();
+        getLog().info( "Mojo Execution Time = " + ( endTime - startTime ) );
     }
 }

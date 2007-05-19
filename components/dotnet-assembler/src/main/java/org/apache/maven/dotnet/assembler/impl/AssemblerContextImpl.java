@@ -18,6 +18,7 @@
  */
 package org.apache.maven.dotnet.assembler.impl;
 
+import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.dotnet.assembler.AssemblerContext;
 import org.apache.maven.dotnet.assembler.AssemblyInfo;
 import org.apache.maven.dotnet.assembler.AssemblyInfoMarshaller;
@@ -44,6 +45,8 @@ import java.io.*;
 public final class AssemblerContextImpl
     implements AssemblerContext, LogEnabled
 {
+    
+    private static final String SNAPSHOT_SUFFIX = "SNAPSHOT";
 
     /**
      * A registry component of repository (config) files
@@ -93,7 +96,10 @@ public final class AssemblerContextImpl
         String name = mavenProject.getName();
         Organization org = mavenProject.getOrganization();
         String company = ( org != null ) ? org.getName() : "";
-        String copyright = "";
+        String copyright = null;
+        String informationalVersion = "";
+        String configuration = "";
+        
         File file = new File( basedir + "/COPYRIGHT.txt" );
         if ( file.exists() )
         {
@@ -102,7 +108,7 @@ public final class AssemblerContextImpl
             try
             {
                 fis = new FileInputStream( file );
-                copyright = IOUtil.toString( fis ).replace( "\r", "" ).replace( "\n", "" ).replace( "\"", "\\" );
+                copyright = IOUtil.toString( fis ).replace( "\r", " " ).replace( "\n", " " ).replace( "\"", "'" );
             }
             catch ( IOException e )
             {
@@ -116,6 +122,14 @@ public final class AssemblerContextImpl
                 }
             }
         }
+        
+        // Check if the version if a snapshot, if so we need to mangle the version and configuration
+        if (ArtifactUtils.isSnapshot(version)) {
+            logger.debug( "NMAVEN-020-999: Detected SNAPSHOT version: " + version);
+            informationalVersion = version;
+            version = version.replace( "-" + SNAPSHOT_SUFFIX, "" );
+        }
+
 
         assemblyInfo.setCompany( company );
         assemblyInfo.setCopyright( copyright );
@@ -124,8 +138,9 @@ public final class AssemblerContextImpl
         assemblyInfo.setProduct( company + "-" + name );
         assemblyInfo.setTitle( name );
         assemblyInfo.setTrademark( "" );
+        assemblyInfo.setInformationalVersion( informationalVersion );
         assemblyInfo.setVersion( version );
-        assemblyInfo.setConfiguration( "" );
+        assemblyInfo.setConfiguration( configuration );
 
         return assemblyInfo;
     }

@@ -1,0 +1,107 @@
+Writing .NET Mojos
+
+ The first thing to do is to create an implementation of the NMaven.Plugin.AbstractMojo class. You will need to become
+ familiar with two attributes:
+
+   [[1]] ClassAttribute - provides the phase and goal info for the Mojo
+
+   [[2]] FieldAttribute - provides the Java fieldName, Java fieldType and Maven expression. The Expression parameter should
+ be the same as you would specify within a Java Mojo
+
+ It is important to note that the plugin framework currently only handles String types and the maven project types: it
+ also does not handle collections. Additional types will be added in future versions.
+
++----+
+ using System;
+ using NMaven.Plugin;
+
+ namespace NMaven.Plugins.Test
+ {
+ 	[ClassAttribute(Phase = "compile", Goal = "Hello")]
+ 	public sealed class MyMojo : AbstractMojo
+ 	{
+
+ 		[FieldAttribute("basedir", Expression = "${basedir}", Type = "java.lang.String")]
+ 		public String basedir;
+
+ 		[FieldAttribute("mavenProject", Expression = "${project}",
+ 		                                Type = "org.apache.maven.project.MavenProject")]
+ 		public NMaven.Model.Model mavenProject;
+
+ 		public override Type GetMojoImplementationType()
+ 		{
+ 			return this.GetType();//LEAVE THIS UNCHANGED
+ 		}
+
+ 		public override void Execute()
+ 		{
+ 		    Console.WriteLine("My  First Mojo"):
+            //DO SOMETHING HERE
+ 		}
+ 	}
+ }
+
++----+
+
+ After that, add a pom.xml file to your project. Notice that the packaging type must be "netplugin". You must also
+ add the NMaven.Plugin dependency, as that assembly contains the base AbstractMojo class and the attributes. The
+ NMaven.Model.Pom dependency is only needed if you are injecting the MavenProject into a field.
+
++----+
+
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>NMaven.Plugins</groupId>
+  <artifactId>NMaven.Plugins.Test</artifactId>
+  <packaging>netplugin</packaging>
+  <version>0.14-SNAPSHOT</version>
+  <name>NMaven.Plugins.Test</name>
+  <dependencies>
+    <dependency>
+      <groupId>NMaven.Plugin</groupId>
+      <artifactId>NMaven.Plugin</artifactId>
+      <type>library</type>
+      <version>0.14-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>NMaven.Model</groupId>
+      <artifactId>NMaven.Model.Pom</artifactId>
+      <type>library</type>
+      <version>0.14-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>
+
++----+
+
+ Now compile and install the module containing your plugin:
+
++----+
+ mvn install
++----+
+
+ Next generate the JavaBinding classes for the .NET Plugin.
+
++----+
+ mvn org.apache.maven.dotnet.plugins:maven-mojo-generator-plugin:generate-bindings
++----+
+
+ You will see that the maven-mojo-generator-plugin generates a Java class - containing an implementation of a Maven AbstractMojo - for
+ each corresponding .NET AbstractMojo class within your plugin. It also generates a pom-java.xml file. Type:
+
++----+
+ mvn intall -f pom-java.xml
++----+
+
+ This generates a traditional Maven plugin (in Java) that binds to your .NET version. Now type
+
++----+
+ mvn NMaven.Plugins:NMaven.Plugins.Test.JavaBinding:Hello
++----+
+
+ and on your screen, you will see
+
++----+
+ My First Mojo
++----+
+

@@ -1,0 +1,38 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.maven.it</groupId>
+  <artifactId>it0029</artifactId>
+  <packaging>library</packaging>
+  <version>1.0.0</version>
+  <name>it0029</name>
+  <build>
+    <sourceDirectory>src/main/csharp</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+  <distributionManagement>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>my fake snapshot</id>
+      <name>Fake Snapshot Repository</name>
+      <url>file://${basedir}/target/remoteSnapshotRepo/snapshots</url>
+      <layout>default</layout>
+    </snapshotRepository>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>regular repo</id>
+      <name>regular repo</name>
+      <url>file://${basedir}/target/remoteRepo</url>
+      <layout>default</layout>
+    </repository>
+  </distributionManagement>
+</project>

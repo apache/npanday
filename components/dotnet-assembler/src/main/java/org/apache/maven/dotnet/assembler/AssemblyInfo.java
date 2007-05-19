@@ -32,6 +32,11 @@ public class AssemblyInfo
      * Artifact version
      */
     private String version;
+    
+    /**
+     * Informational version (used for snapshot)
+     */
+    private String informationalVersion;
 
     /**
      * Artifact description
@@ -88,6 +93,7 @@ public class AssemblyInfo
     {
         StringBuffer sb = new StringBuffer();
         sb.append( "Version: " ).append( version )
+            .append( "\r\nInformationalVersion: " ).append( informationalVersion )
             .append( "\r\nDescription: " ).append( description )
             .append( "\r\nTitle: " ).append( title )
             .append( "\r\nCompany; " ).append( company )
@@ -99,6 +105,11 @@ public class AssemblyInfo
         return sb.toString();
     }
 
+    /**
+     * Returns the key name.
+     *
+     * @return the key name
+     */
     public String getKeyName()
     {
         return keyName;
@@ -128,6 +139,17 @@ public class AssemblyInfo
     {
         this.version = version;
     }
+    
+    public String getInformationalVersion()
+    {
+        return ( informationalVersion != null ) ? informationalVersion : "";
+    }
+
+    public void setInformationalVersion( String informationalVersion )
+    {
+        this.informationalVersion = informationalVersion;
+    }
+
 
     public String getDescription()
     {
@@ -267,6 +289,7 @@ public class AssemblyInfo
     {
         int result;
         result = ( version != null ? version.hashCode() : 0 );
+        result = 29 * result + ( informationalVersion != null ? informationalVersion.hashCode() : 0 );
         result = 29 * result + ( description != null ? description.hashCode() : 0 );
         result = 29 * result + ( title != null ? title.hashCode() : 0 );
         result = 29 * result + ( company != null ? company.hashCode() : 0 );

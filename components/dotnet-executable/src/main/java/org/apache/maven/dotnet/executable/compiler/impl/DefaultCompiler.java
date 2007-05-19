@@ -57,7 +57,7 @@ public final class DefaultCompiler
 
         String sourceDirectory = compilerContext.getSourceDirectoryName();
         String artifactFilePath = compilerContext.getArtifact().getAbsolutePath();
-        String targetArtifactType = config.getArtifactType().getArtifactTypeName();
+        String targetArtifactType = config.getArtifactType().getTargetCompileType();
 
         compilerContext.getCompilerRequirement().getFrameworkVersion();
 
@@ -144,6 +144,7 @@ public final class DefaultCompiler
         {
             commands.add( "/reference:System.Drawing" );
             commands.add( "/reference:System.Windows.Forms" );
+            commands.add( "/reference:System.Web.Services" );
         }
         CommandFilter filter = compilerContext.getCommandFilter();
         return filter.filter( commands );

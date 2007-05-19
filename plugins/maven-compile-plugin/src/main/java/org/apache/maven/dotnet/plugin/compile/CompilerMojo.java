@@ -27,11 +27,17 @@ import org.apache.maven.dotnet.artifact.ArtifactType;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.vendor.VendorFactory;
 import org.apache.maven.dotnet.executable.compiler.*;
-import org.apache.maven.model.Dependency;
 import org.apache.maven.artifact.Artifact;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.DirectoryScanner;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.Date;
+import java.util.Calendar;
 import java.io.File;
+import java.io.FilenameFilter;
 
 /**
  * Maven Mojo for compiling Class files to the .NET Intermediate Language.
@@ -49,13 +55,6 @@ import java.io.File;
 public final class CompilerMojo
     extends AbstractMojo
 {
-
-    /**
-     * @parameter expression="${settings.localRepository}"
-     * @required
-     */
-    private File localRepository;
-
     /**
      * The maven project.
      *
@@ -63,6 +62,11 @@ public final class CompilerMojo
      * @required
      */
     private MavenProject project;
+
+    /**
+     * @parameter expression="${settings.localRepository}"
+     */
+    private File localRepository;
 
     /**
      * Additional compiler commands
@@ -144,6 +148,14 @@ public final class CompilerMojo
     private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
 
     /**
+     * @parameter expression="${project.file}"
+     * @required
+     * @readonly
+     */
+    private File pomFile;
+
+
+    /**
      * Compiles the class files.
      *
      * @throws MojoExecutionException thrown if MOJO is unable to compile the class files or if the environment is not
@@ -152,10 +164,17 @@ public final class CompilerMojo
     public void execute()
         throws MojoExecutionException
     {
+        long startTime = System.currentTimeMillis();
+
         if ( profileAssemblyPath != null && !profileAssemblyPath.exists() )
         {
-            throw new MojoExecutionException( "NMAVEN-900-007: Profile Assembly Path does not exist: Path = " +
+            throw new MojoExecutionException( "NMAVEN-900-000: Profile Assembly Path does not exist: Path = " +
                 profileAssemblyPath.getAbsolutePath() );
+        }
+
+        if ( localRepository == null )
+        {
+            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
         }
 
         //Requirement
@@ -173,7 +192,7 @@ public final class CompilerMojo
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-900-000: Unknown Vendor: Vendor = " + vendor, e );
+            throw new MojoExecutionException( "NMAVEN-900-001: Unknown Vendor: Vendor = " + vendor, e );
         }
 
         //Config
@@ -184,10 +203,10 @@ public final class CompilerMojo
             compilerConfig.setCommands( parameters );
         }
         String artifactTypeName = project.getArtifact().getType();
-        ArtifactType artifactType = ArtifactType.getArtifactTypeForName( artifactTypeName );
+        ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifactTypeName );
         if ( artifactType.equals( ArtifactType.NULL ) )
         {
-            throw new MojoExecutionException( "NMAVEN-900-001: Unrecognized artifact type: Language = " + language +
+            throw new MojoExecutionException( "NMAVEN-900-002: Unrecognized artifact type: Language = " + language +
                 ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName );
         }
         compilerConfig.setArtifactType( artifactType );
@@ -205,19 +224,84 @@ public final class CompilerMojo
                                                                                                    compilerConfig,
                                                                                                    project,
                                                                                                    profileAssemblyPath );
+            Boolean sourceFilesUpToDate = (Boolean) super.getPluginContext().get( "SOURCE_FILES_UP_TO_DATE" );
+            if ( ( ( sourceFilesUpToDate == null ) || sourceFilesUpToDate ) &&
+                System.getProperty( "forceCompile" ) == null && compilerExecutable.getCompiledArtifact() != null &&
+                compilerExecutable.getCompiledArtifact().exists() )
+            {
+                if ( isUpToDateWithPomAndSettingsAndDependencies( compilerExecutable.getCompiledArtifact() ) )
+                {
+                    getLog().info( "NMAVEN-900-003: Nothing to compile - all classes are up-to-date" );
+                    project.getArtifact().setFile( compilerExecutable.getCompiledArtifact() );
+                    return;
+                }
+            }
+            long startTimeCompile = System.currentTimeMillis();
             compilerExecutable.execute();
+            long endTimeCompile = System.currentTimeMillis();
+
+            getLog().info( "NMAVEN-900-004: Compile Time = " + ( endTimeCompile - startTimeCompile ) + " ms" );
             project.getArtifact().setFile( compilerExecutable.getCompiledArtifact() );
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-900-003: Unsupported Platform: Language = " + language +
+            throw new MojoExecutionException( "NMAVEN-900-005: Unsupported Platform: Language = " + language +
                 ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName, e );
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NMAVEN-900-004: Unable to Compile: Language = " + language +
+            throw new MojoExecutionException( "NMAVEN-900-006: Unable to Compile: Language = " + language +
                 ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName + ", Source Directory = " +
                 project.getBuild().getSourceDirectory(), e );
         }
+        long endTime = System.currentTimeMillis();
+        getLog().info( "Mojo Execution Time = " + ( endTime - startTime ) );
+    }
+
+    private boolean isUpToDateWithPomAndSettingsAndDependencies( File targetFile )
+    {
+        File settingsFile = new File( localRepository, ".m2/nmaven-settings.xml" );
+        Artifact latestDependencyModification =
+            this.getLatestDependencyModification( project.getDependencyArtifacts() );
+
+        //TODO: Different parameters from the command line should also cause an update
+        //TODO: Change in resource should cause an update
+        if ( targetFile.lastModified() < pomFile.lastModified() )
+        {
+            getLog().info( "NMAVEN-900-007: Project pom has changed. Forcing a recompile." );
+            return false;
+        }
+        else if ( settingsFile.exists() && targetFile.lastModified() < settingsFile.lastModified() )
+        {
+            getLog().info( "NMAVEN-900-008:Project settings has changed. Forcing a recompile." );
+            return false;
+        }
+        else if ( latestDependencyModification != null &&
+            targetFile.lastModified() < latestDependencyModification.getFile().lastModified() )
+        {
+            getLog().info(
+                "NMAVEN-900-009: Detected change in module dependency. Forcing a recompile: Changed Artifact = " +
+                    latestDependencyModification );
+            return false;
+        }
+        return true;
+    }
+
+    private Artifact getLatestDependencyModification( Set<Artifact> artifacts )
+    {
+        Artifact lastModArtifact = null;
+        for ( Artifact artifact : artifacts )
+        {
+            if ( lastModArtifact == null && !artifact.getType().startsWith( "gac" ) )
+            {
+                lastModArtifact = artifact;
+            }
+            else if ( !artifact.getType().startsWith( "gac" ) &&
+                artifact.getFile().lastModified() > lastModArtifact.getFile().lastModified() )
+            {
+                lastModArtifact = artifact;
+            }
+        }
+        return lastModArtifact;
     }
 }

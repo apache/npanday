@@ -22,7 +22,7 @@ import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.executable.CommandExecutor;
 import org.apache.maven.dotnet.executable.*;
 import org.apache.maven.dotnet.NMavenContext;
-import org.apache.maven.project.MavenProject;
+import org.apache.maven.dotnet.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
 import java.util.List;
@@ -37,8 +37,9 @@ public class DefaultRepositoryNetExecutable
 
     private RepositoryExecutableContext executableContext;
 
-    private MavenProject project;
-
+    /**
+     * A logger for writing log messages
+     */
     private Logger logger;
 
     public List<String> getCommands()
@@ -82,8 +83,9 @@ public class DefaultRepositoryNetExecutable
         }
         catch ( ExecutionException e )
         {
-            throw new ExecutionException( "NMAVEN-063-000: Executable = " + getExecutable() + ", Command = " + commands,
-                                          e );
+            throw new ExecutionException( "NMAVEN-063-000: Execution Path = " +
+                ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Command = " +
+                commands, e );
         }
         if ( commandExecutor.getStandardOut().contains( "error" ) )
         {
@@ -107,24 +109,35 @@ public class DefaultRepositoryNetExecutable
             for ( String executablePath : executablePaths )
             {
                 File exe = new File( executablePath );
+                logger.debug("NMAVEN-063-004: Checking executable path = " + exe.getAbsolutePath());
                 if ( exe.exists() )
                 {
                     return new File( executablePath ).getName();
                 }
-                else if(executablePath.equals( "mono"))
+                else if ( executablePath.equals( "mono" ) )
                 {
-                    return executablePath;    
+                    return executablePath;
                 }
             }
         }
-        throw new ExecutionException( "NMAVEN-063-003: Executable path has not been set" );
+        throw new ExecutionException( "NMAVEN-063-003: Executable path has not been set or is invalid" );
     }
 
+    public Vendor getVendor()
+    {
+        try
+        {
+            return executableContext.getNetExecutable().getVendor();
+        }
+        catch ( ExecutionException e )
+        {
+            return Vendor.NULL;
+        }
+    }
 
     public void init( NMavenContext nmavenContext )
     {
         this.executableContext = (RepositoryExecutableContext) nmavenContext;
-        this.project = executableContext.getMavenProject();
         this.logger = executableContext.getLogger();
     }
 }

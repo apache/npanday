@@ -28,18 +28,19 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Dependency;
+
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
+
 import java.io.File;
 
 /**
@@ -95,15 +96,14 @@ public class AssemblyResolverImpl
      * @see AssemblyResolver#resolveTransitivelyFor
      */
     public void resolveTransitivelyFor( MavenProject project, Artifact sourceArtifact, List<Dependency> dependencies,
-                                        File pomFile, String localRepositoryPath,
+                                        List<ArtifactRepository> remoteArtifactRepositories,
+                                        ArtifactRepository localArtifactRepository,
                                         boolean addResolvedDependenciesToProject )
         throws ArtifactResolutionException, ArtifactNotFoundException
     {
-        ArtifactMetadataImpl meta = new ArtifactMetadataImpl( sourceArtifact, pomFile );
-        sourceArtifact.addMetadata( meta );
-
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();
         Set<Artifact> gacDependencies = new HashSet<Artifact>();
+        ArtifactFilter gacFilter = new GacFilter();
         for ( Dependency dependency : dependencies )
         {
             String scope = ( dependency.getScope() == null ) ? Artifact.SCOPE_COMPILE : dependency.getScope();
@@ -113,39 +113,50 @@ public class AssemblyResolverImpl
                                                                               dependency.getVersion() ),
                                                                           dependency.getType(),
                                                                           dependency.getClassifier(), scope, null );
-            if ( artifact.getType().equals( "gac" ) )
+            if ( artifact.getType().startsWith( "gac" ) )
             {
+                logger.debug(
+                    "NMAVEN-000-000: GAC Dependency = " + artifact.getType() + ", ID = " + artifact.getArtifactId() );
                 gacDependencies.add( artifact );
             }
             else
             {
+                logger.debug( "NMAVEN-000-000: Dependency: Type  = " + artifact.getType() + ", Artifact ID = " +
+                    artifact.getArtifactId() );
                 artifactDependencies.add( artifact );
             }
         }
 
-        ArtifactRepository localArtifactRepository =
-            new DefaultArtifactRepository( "local", "file://" + localRepositoryPath, new AssemblyRepositoryLayout() );
-
-        List<ArtifactRepository> newArtifactRepositories = new ArrayList<ArtifactRepository>();
-        List<ArtifactRepository> artifactRepositories = project.getRemoteArtifactRepositories();
-        for ( ArtifactRepository artifactRepository : artifactRepositories )
-        {
-            ArtifactRepository repo = artifactRepositoryFactory.createArtifactRepository( artifactRepository.getId(),
-                                                                                          artifactRepository.getUrl(),
-                                                                                          new AssemblyRepositoryLayout(),
-                                                                                          artifactRepository.getSnapshots(),
-                                                                                          artifactRepository.getReleases() );
-            newArtifactRepositories.add( repo );
-        }
         ArtifactResolutionResult result = resolver.resolveTransitively( artifactDependencies, sourceArtifact,
-                                                                        newArtifactRepositories,
-                                                                        localArtifactRepository, metadata );
+                                                                        localArtifactRepository,
+                                                                        remoteArtifactRepositories, metadata,
+                                                                        gacFilter );
+        Set<Artifact> resolvedDependencies = result.getArtifacts();
+        AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
+
         if ( addResolvedDependenciesToProject )
         {
-            Set<Artifact> resolvedDependencies = result.getArtifacts();
+            for ( Artifact artifact : resolvedDependencies )
+            {
+                File originalFileWithVersion = artifact.getFile();
+                File targetFileWithoutVersion = new File( localArtifactRepository + "/" + layout.pathOf( artifact ) );
+              //  logger.info( "Original = " + originalFileWithVersion.getAbsolutePath() + ", Target = " +
+              //      targetFileWithoutVersion.getAbsolutePath() );
+                originalFileWithVersion.renameTo( targetFileWithoutVersion );
+               // artifact.setFile( targetFileWithoutVersion.getAbsoluteFile() );
+            }
+
             resolvedDependencies.addAll( gacDependencies );
             project.setDependencyArtifacts( resolvedDependencies );
         }
+    }
 
+    private static class GacFilter
+        implements ArtifactFilter
+    {
+        public boolean include( org.apache.maven.artifact.Artifact artifact )
+        {
+            return !artifact.getType().startsWith( "gac" );
+        }
     }
 }

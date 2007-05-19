@@ -18,6 +18,11 @@
  */
 package org.apache.maven.dotnet.plugin.resolver;
 
+/**
+ * Provides access to net dependency information.
+ *
+ * @author Shane Isbell
+ */
 public class NetDependency
 {
 
@@ -28,6 +33,18 @@ public class NetDependency
     private String groupId;
 
     private String type;
+
+    private  boolean isGacInstall;
+
+    public boolean isGacInstall()
+    {
+        return isGacInstall;
+    }
+
+    public void setGacInstall( boolean gacInstall )
+    {
+        isGacInstall = gacInstall;
+    }
 
     public String getVersion()
     {

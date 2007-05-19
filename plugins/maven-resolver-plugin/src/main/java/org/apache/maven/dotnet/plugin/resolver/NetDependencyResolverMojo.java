@@ -23,9 +23,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.installer.ArtifactInstaller;
+import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 
 import java.io.File;
@@ -36,7 +37,11 @@ import java.util.ArrayList;
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
 import org.apache.maven.dotnet.artifact.NetDependenciesRepository;
 import org.apache.maven.dotnet.artifact.NetDependencyMatchPolicy;
+import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.apache.maven.dotnet.model.netdependency.NetDependency;
+import org.apache.maven.dotnet.executable.NetExecutable;
+import org.apache.maven.dotnet.executable.ExecutionException;
+import org.apache.maven.dotnet.PlatformUnsupportedException;
 
 /**
  * @author Shane Isbell
@@ -56,8 +61,6 @@ public class NetDependencyResolverMojo
 
     /**
      * @parameter expression="${settings.localRepository}"
-     * @required
-     * @readonly
      */
     private String localRepository;
 
@@ -74,6 +77,18 @@ public class NetDependencyResolverMojo
     private NetDependency[] netDependencies;
 
     /**
+     * The Vendor for the executable.
+     *
+     * @parameter expression="${vendor}"
+     */
+    private String vendor;
+
+    /**
+     * @parameter expression = "${frameworkVersion}"
+     */
+    private String frameworkVersion;
+
+    /**
      * @component
      */
     private AssemblyResolver assemblyResolver;
@@ -81,19 +96,36 @@ public class NetDependencyResolverMojo
     /**
      * @component
      */
-    private ArtifactFactory artifactFactory;
+    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
+    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+
+    /**
+     * @component
+     */
+    private ArtifactInstaller artifactInstaller;
+
+    /**
+     * @component
+     */
+    private ArtifactContext artifactContext;
 
     public void execute()
         throws MojoExecutionException
     {
+        long startTime = System.currentTimeMillis();
+
         if ( System.getProperty( "bootstrap" ) != null )
         {
             return;
+        }
+
+        if ( localRepository == null )
+        {
+            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" ).getAbsolutePath();
         }
 
         String profile = System.getProperty( "dependencyProfile" );
@@ -125,53 +157,91 @@ public class NetDependencyResolverMojo
             dependencies.add( dependency );
         }
 
-        NetDependenciesRepository repository =
-            (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
-        List<NetDependencyMatchPolicy> matchPolicies = new ArrayList<NetDependencyMatchPolicy>();
-        matchPolicies.add( new ProfileMatchPolicy( profile ) );
-        dependencies.addAll( repository.getDependenciesFor( matchPolicies ) );
-        getLog().info( "NMAVEN-1600-001: Found net dependencies: Number = " + dependencies.size() );
-
+        artifactContext.init( project, project.getRemoteArtifactRepositories(), new File( localRepository ) );
         try
         {
-            assemblyResolver.resolveTransitivelyFor( project, project.getArtifact(), dependencies, pomFile,
-                                                     localRepository, false );
+            artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( profile,
+                                                                                               new ArrayList<Dependency>() );
         }
         catch ( ArtifactResolutionException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1600-002: Unable to resolve assemblies", e );
+            throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
         }
         catch ( ArtifactNotFoundException e )
         {
             throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
         }
+        catch ( ArtifactInstallationException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
+        }
+
+        //Do GAC Install, if needed
+        //TODO: Add in the dependencies from the MOJO config
+        NetDependenciesRepository repository =
+            (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
+        getLog().info( "NMAVEN-1600-001: Found net dependencies: Number = " + dependencies.size() );
+
+        List<NetDependencyMatchPolicy> gacInstallPolicies = new ArrayList<NetDependencyMatchPolicy>();
+        gacInstallPolicies.add( new GacMatchPolicy( true ) );
+        List<Dependency> gacInstallDependencies = repository.getDependenciesFor( gacInstallPolicies );
+        for ( Dependency dependency : gacInstallDependencies )
+        {
+            List<Artifact> artifacts = artifactContext.getArtifactsFor( dependency.getGroupId(),
+                                                                        dependency.getArtifactId(),
+                                                                        dependency.getVersion(), dependency.getType() );
+            try
+            {
+                NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion,
+                                                                                        "GACUTIL",
+                                                                                        getGacInstallCommandsFor(
+                                                                                            artifacts.get( 0 ) ),
+                                                                                        null );
+                netExecutable.execute();
+                getLog().info( "NMAVEN-1600-004: Installed Assembly into GAC: Assembly = " +
+                    artifacts.get( 0 ).getFile().getAbsolutePath() + ",  Vendor = " +
+                    netExecutable.getVendor().getVendorName() );
+            }
+            catch ( ExecutionException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1600-005: Unable to execute gacutil: Vendor " + vendor +
+                    ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+            }
+            catch ( PlatformUnsupportedException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1600-006: Platform Unsupported: Vendor " + vendor +
+                    ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+            }
+        }
+
+        long endTime = System.currentTimeMillis();
+        getLog().info( "Mojo Execution Time = " + ( endTime - startTime ) );
     }
 
-    private class ProfileMatchPolicy
+    public List<String> getGacInstallCommandsFor( Artifact artifact )
+        throws MojoExecutionException
+    {
+        List<String> commands = new ArrayList<String>();
+        commands.add( "/nologo" );
+        commands.add( "/i" );
+        commands.add( artifact.getFile().getAbsolutePath() );
+        return commands;
+    }
+
+    private class GacMatchPolicy
         implements NetDependencyMatchPolicy
     {
 
-        private String profile;
+        private boolean isGacInstall;
 
-        public ProfileMatchPolicy( String profile )
+        public GacMatchPolicy( boolean isGacInstall )
         {
-            this.profile = profile;
+            this.isGacInstall = isGacInstall;
         }
 
         public boolean match( NetDependency netDependency )
         {
-            //If no profile is specified in net-dependencies.xml, it matches
-            if ( netDependency.getProfile() == null || netDependency.getProfile().trim().equals( "" ) )
-            {
-                return true;
-            }
-
-            if ( profile == null )
-            {
-                return false;
-            }
-
-            return profile.equals( netDependency.getProfile() );
+            return netDependency.isIsGacInstall() == isGacInstall;
         }
     }
 }

@@ -49,6 +49,9 @@ public class NetExecutableFactoryImpl
     implements NetExecutableFactory, LogEnabled
 {
 
+    /**
+     * The capability matcher
+     */
     private CapabilityMatcher capabilityMatcher;
 
     private ArtifactContext artifactContext;
@@ -65,15 +68,22 @@ public class NetExecutableFactoryImpl
 
     private StateMachineProcessor processor;
 
+    /**
+     * A logger for writing log messages
+     */
     private Logger logger;
 
+    /**
+     * @see LogEnabled#enableLogging(org.codehaus.plexus.logging.Logger)
+     */
     public void enableLogging( Logger logger )
     {
         this.logger = logger;
     }
 
     /**
-     * @see
+     * @see NetExecutableFactory#getCompilerExecutableFor(org.apache.maven.dotnet.executable.compiler.CompilerRequirement,
+     *      org.apache.maven.dotnet.executable.compiler.CompilerConfig, org.apache.maven.project.MavenProject, java.io.File)
      */
     public CompilerExecutable getCompilerExecutableFor( CompilerRequirement compilerRequirement,
                                                         CompilerConfig compilerConfig, MavenProject project,
@@ -94,9 +104,9 @@ public class NetExecutableFactoryImpl
             throw new PlatformUnsupportedException( "NMAVEN-066-011: Illegal State: Vendor Info = " + vendorInfo, e );
         }
 
-        if ( vendorInfo.getVendor() == null )
+        if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-012: Vendor could not be found: " + vendorInfo );
+            throw new PlatformUnsupportedException( "NMAVEN-066-012: Missing Vendor Information: " + vendorInfo );
         }
 
         logger.info( "NMAVEN-066-013: Found Vendor = " + vendorInfo );
@@ -141,8 +151,7 @@ public class NetExecutableFactoryImpl
             if ( artifact != null )
             {
                 AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-                File artifactPath = new File( compilerConfig.getLocalRepository().getAbsolutePath() + File.separator +
-                    layout.pathOf( artifact ) );
+                File artifactPath = new File( compilerConfig.getLocalRepository(), layout.pathOf( artifact ) );
                 executionPaths.add( artifactPath.getParentFile().getAbsolutePath() );
             }
         }
@@ -157,11 +166,82 @@ public class NetExecutableFactoryImpl
         }
     }
 
-    public NetExecutable getNetExecutableFromRepository( String groupId, String artifactId, VendorInfo vendorInfo,
-                                                         MavenProject project, String localRepository,
-                                                         List<String> commands )
+    /**
+     * @see NetExecutableFactory#getPluginLoaderFor(String,String,org.apache.maven.dotnet.vendor.VendorInfo,String,java.io.File,String)
+     */
+    public NetExecutable getPluginLoaderFor( String groupId, String artifactId, VendorInfo vendorInfo,
+                                             String localRepository, File parameterFile, String mojoName )
         throws PlatformUnsupportedException
     {
+        List<Artifact> artifacts = artifactContext.getArtifactsFor( groupId, artifactId, null, null );
+        if ( artifacts.size() == 0 )
+        {
+            throw new PlatformUnsupportedException(
+                "NMAVEN-066-023: Could not locate the plugin - missing entry in the net-dependencies.xml file: GroupId = " +
+                    groupId + ", ArtifactId = " + artifactId );
+        }
+
+        Artifact artifact = artifacts.get( 0 );
+        if ( artifact == null )
+        {
+            throw new PlatformUnsupportedException(
+                "NMAVEN-066-021: Could not locate the plugin: GroupId = " + groupId + ", ArtifactId = " + artifactId );
+        }
+
+        AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
+        File artifactPath = new File( localRepository + File.separator + layout.pathOf( artifact ) );
+        List<String> commands = new ArrayList<String>();
+        commands.add( "parameterFile=" + parameterFile.getAbsolutePath() );
+        commands.add( "assemblyFile=" + artifactPath.getAbsolutePath() );
+        commands.add( "mojoName=" + mojoName );//ArtifactId = namespace
+
+        Artifact pluginLoaderArtifact =
+            artifactContext.getArtifactsFor( "NMaven.Plugin", "NMaven.Plugin.Loader", null, null ).get( 0 );
+        artifactPath = new File( localRepository + File.separator + layout.pathOf( pluginLoaderArtifact ) );
+        commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
+
+        return getNetExecutableFromRepository( "NMaven.Plugin", "NMaven.Plugin.Runner", vendorInfo,
+                                               new File( localRepository ), commands, false );
+    }
+
+    /**
+     * @see NetExecutableFactory#getNetExecutableFromRepository(String, String, org.apache.maven.dotnet.vendor.VendorInfo, String, java.util.List<java.lang.String>, boolean)
+     */
+    public NetExecutable getNetExecutableFromRepository( String groupId, String artifactId, VendorInfo vendorInfo,
+                                                         File localRepository, List<String> commands,
+                                                         boolean isIsolatedAppDomain )
+        throws PlatformUnsupportedException
+    {
+        if ( isIsolatedAppDomain )
+        {
+            List<Artifact> artifacts = artifactContext.getArtifactsFor( groupId, artifactId, null, null );
+            if ( artifacts.size() == 0 )
+            {
+                throw new PlatformUnsupportedException(
+                    "NMAVEN-066-024: Could not locate the executable - missing entry in the net-dependencies.xml file: GroupId = " +
+                        groupId + ", ArtifactId = " + artifactId );
+            }
+
+            Artifact artifact = artifacts.get( 0 );
+            if ( artifact == null )
+            {
+                throw new PlatformUnsupportedException( "NMAVEN-066-025: Could not locate the executable: GroupId = " +
+                    groupId + ", ArtifactId = " + artifactId );
+            }
+
+            AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
+            File artifactPath = new File( localRepository + File.separator + layout.pathOf( artifact ) );
+            commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
+
+            String pluginArtifactPath = new File( localRepository + File.separator + layout.pathOf(
+                artifactContext.getArtifactsFor( "NMaven.Plugin", "NMaven.Plugin", null, null ).get(
+                    0 ) ) ).getAbsolutePath();
+
+            commands.add( "pluginArtifactPath=" + pluginArtifactPath );
+            return getNetExecutableFromRepository( "NMaven.Plugin", "NMaven.Plugin.Runner", vendorInfo, localRepository,
+                                                   commands, false );
+        }
+
         if ( commands == null )
         {
             commands = new ArrayList<String>();
@@ -175,7 +255,20 @@ public class NetExecutableFactoryImpl
         {
             throw new PlatformUnsupportedException( "NMAVEN-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
         }
-        Artifact artifact = artifactContext.getArtifactsFor( groupId, artifactId, null, null ).get( 0 );
+
+        if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null )
+        {
+            throw new PlatformUnsupportedException( "NMAVEN-066-020: Missing Vendor Information: " + vendorInfo );
+        }
+        List<Artifact> artifacts = artifactContext.getArtifactsFor( groupId, artifactId, null, null );
+        if ( artifacts.size() == 0 )
+        {
+            throw new PlatformUnsupportedException(
+                "NMAVEN-066-022: Could not locate the executable- missing entry in the net-dependencies.xml: GroupId = " +
+                    groupId + ", ArtifactId = " + artifactId );
+        }
+        Artifact artifact = artifacts.get( 0 );
+
         logger.debug( "NMAVEN-066-003: Found Vendor: " + vendorInfo );
 
         AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
@@ -189,9 +282,10 @@ public class NetExecutableFactoryImpl
             {
                 for ( File executablePath : executablePaths )
                 {
-                    if ( new File( executablePath.getAbsolutePath() + File.separator + "mono.exe" ).exists() )
+                    if ( new File( executablePath.getAbsolutePath(), "mono.exe" ).exists() )
                     {
-                        exe = new File( executablePath.getAbsolutePath() + File.separator + "mono" ).getAbsolutePath();
+                        exe = new File( executablePath.getAbsolutePath(), "mono.exe" ).getAbsolutePath();
+                        commands.add( "vendor=MONO");//if forked process, it needs to know.
                         break;
                     }
                 }
@@ -203,6 +297,7 @@ public class NetExecutableFactoryImpl
                     "NMAVEN-066-005: Executable path for mono does not exist. Will attempt to execute MONO using" +
                         " the main PATH variable." );
                 exe = "mono";
+                commands.add( "vendor=MONO");//if forked process, it needs to know.
             }
             modifiedCommands.add( artifactPath.getAbsolutePath() );
             for ( String command : commands )
@@ -222,7 +317,7 @@ public class NetExecutableFactoryImpl
 
         try
         {
-            repositoryExecutableContext.init( executableConfig, project );
+            repositoryExecutableContext.init( executableConfig );
         }
         catch ( InitializationException e )
         {
@@ -238,11 +333,60 @@ public class NetExecutableFactoryImpl
         {
             throw new PlatformUnsupportedException( "NMAVEN-066-004: Unable to find net executable", e );
         }
-
     }
 
+    public NetExecutable getJavaExecutableFromRepository( VendorInfo vendorInfo, List<String> commands )
+        throws PlatformUnsupportedException
+    {
+
+        if ( commands == null )
+        {
+            commands = new ArrayList<String>();
+        }
+
+        try
+        {
+            processor.process( vendorInfo );
+        }
+        catch ( IllegalStateException e )
+        {
+            throw new PlatformUnsupportedException( "NMAVEN-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
+        }
+
+        if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null ||
+            vendorInfo.getVendorVersion() == null )
+        {
+            throw new PlatformUnsupportedException( "NMAVEN-066-018: Missing Vendor Information: " + vendorInfo );
+        }
+
+        ExecutableRequirement executableRequirement =
+            ExecutableRequirement.Factory.createDefaultExecutableRequirement();
+        executableRequirement.setVendor( vendorInfo.getVendor() );
+        executableRequirement.setFrameworkVersion( vendorInfo.getFrameworkVersion() );
+        executableRequirement.setVendorVersion( vendorInfo.getVendorVersion() );
+        executableRequirement.setProfile( "dotnet-jetty:start" );//TODO: Remove hard-coded value
+
+        ExecutableConfig executableConfig = ExecutableConfig.Factory.createDefaultExecutableConfig();
+        executableConfig.setCommands( commands );
+
+        executableConfig.setExecutionPaths( new ArrayList<String>() );
+        executableContext.init( executableRequirement, executableConfig, capabilityMatcher );
+
+        try
+        {
+            return executableContext.getNetExecutable();
+        }
+        catch ( ExecutionException e )
+        {
+            throw new PlatformUnsupportedException( "NMAVEN-066-001: Unable to find net executable", e );
+        }
+    }
+
+    /**
+     * @see NetExecutableFactory
+     */
     public NetExecutable getNetExecutableFor( String vendor, String frameworkVersion, String profile,
-                                              MavenProject project, List<String> commands, File netHome )
+                                              List<String> commands, File netHome )
         throws PlatformUnsupportedException
     {
 
@@ -262,6 +406,12 @@ public class NetExecutableFactoryImpl
         {
             throw new PlatformUnsupportedException( "NMAVEN-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
         }
+
+        if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null )
+        {
+            throw new PlatformUnsupportedException( "NMAVEN-066-019: Missing Vendor Information: " + vendorInfo );
+        }
+
         logger.debug( "NMAVEN-066-003: Found Vendor: " + vendorInfo );
         ExecutableRequirement executableRequirement =
             ExecutableRequirement.Factory.createDefaultExecutableRequirement();
@@ -277,7 +427,7 @@ public class NetExecutableFactoryImpl
             : executableConfig.getExecutionPaths();
         if ( netHome != null && netHome.exists() )
         {
-            logger.info( "NMAVEN-066-014: Found executable path: Path = " + netHome.getAbsolutePath() );
+            logger.info( "NMAVEN-066-014: Found executable path from pom: Path = " + netHome.getAbsolutePath() );
             executablePaths.add( netHome.getAbsolutePath() );
         }
         else if ( vendorInfo.getExecutablePaths() != null )
@@ -286,7 +436,7 @@ public class NetExecutableFactoryImpl
             {
                 if ( path.exists() )
                 {
-                    logger.info( "NMAVEN-066-015: Found executable path: Path = " + path.getAbsolutePath() );
+                    logger.debug( "NMAVEN-066-015: Found executable path: Path = " + path.getAbsolutePath() );
                     executablePaths.add( path.getAbsolutePath() );
                 }
             }
@@ -296,7 +446,7 @@ public class NetExecutableFactoryImpl
             logger.info( "NMAVEN-066-016: Did not find executable path, will try system path" );
         }
         executableConfig.setExecutionPaths( executablePaths );
-        executableContext.init( executableRequirement, executableConfig, project, capabilityMatcher );
+        executableContext.init( executableRequirement, executableConfig, capabilityMatcher );
 
         try
         {

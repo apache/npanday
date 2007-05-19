@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.IDE", "C:\Documents and Settings\shane\nmaven-apache\SI_XPT\assemblies\NMaven.IDE\src\main\csharp\NMaven.IDE.csproj", "{97D20992-8D5D-49E6-B3E2-D39710FA436A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97D20992-8D5D-49E6-B3E2-D39710FA436A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97D20992-8D5D-49E6-B3E2-D39710FA436A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

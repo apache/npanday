@@ -50,7 +50,7 @@ public class TestSourceProcessorMojo
     /**
      * Output directory
      *
-     * @parameter expression = "${outputDirectory}" default-value="${project.build.directory}${file.separator}build-test-sources"
+     * @parameter expression = "${outputDirectory}" default-value="${project.build.directory}/build-test-sources"
      * @required
      */
     private String outputDirectory;
@@ -58,6 +58,8 @@ public class TestSourceProcessorMojo
     public void execute()
         throws MojoExecutionException
     {
+        long startTime = System.currentTimeMillis();
+
         if ( !new File( sourceDirectory ).exists() )
         {
             getLog().info( "NMAVEN-905-001: No test source files to copy" );
@@ -82,13 +84,19 @@ public class TestSourceProcessorMojo
         {
             try
             {
-                FileUtils.copyFile( new File( sourceDirectory + File.separator + file ),
-                                    new File( outputDirectory + File.separator + file ) );
+                File sourceFile = new File( sourceDirectory + File.separator + file );
+                File targetFile = new File( outputDirectory + File.separator + file );
+                if ( sourceFile.lastModified() > targetFile.lastModified() )
+                {
+                    FileUtils.copyFile( sourceFile, targetFile );
+                }
             }
             catch ( IOException e )
             {
                 throw new MojoExecutionException( "NMAVEN-905-000: Unable to process test sources", e );
             }
         }
+        long endTime = System.currentTimeMillis();
+        getLog().info( "Mojo Execution Time = " + (endTime - startTime));        
     }
 }

@@ -23,3 +23,6 @@ it0022: Signing of an assembly (verify manually by looking for the signature in 
 it0023: CS-MS: .NET 3.0 compiling
 it0024: CS-MS: .NET 3.0 NUnit
 it0027: Compiling CS with flat directory structure
+it0028: Deploys a snapshot dll to a remote repo
+it0029: Deploys a non-snapshot dll to a remote repo
+it0030: Pulls a snapshot dll and non-snapshot dll from a remote repo

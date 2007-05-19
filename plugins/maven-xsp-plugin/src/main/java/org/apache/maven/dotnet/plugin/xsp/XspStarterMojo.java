@@ -74,7 +74,7 @@ public class XspStarterMojo
         {
             Runnable executable = (Runnable) netExecutableFactory.getNetExecutableFor( Vendor.MONO.getVendorName(),
                                                                                        frameworkVersion, "XSP:START",
-                                                                                       project, new ArrayList<String>(),
+                                                                                       new ArrayList<String>(),
                                                                                        netHome );
             Thread thread = new Thread( executable );
             getPluginContext().put( "xspThread", thread);

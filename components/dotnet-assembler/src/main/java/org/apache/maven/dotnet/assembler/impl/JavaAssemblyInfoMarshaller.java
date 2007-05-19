@@ -86,11 +86,14 @@ final class JavaAssemblyInfoMarshaller
             }
         }
     }
-
+    
+    /**
+     * @see AssemblyInfoMarshaller#unmarshall(java.io.InputStream)
+     */
     public AssemblyInfo unmarshall( InputStream inputStream )
         throws IOException
     {
-        return null;
+        throw new IOException("This method is not implemented");
     }
 
     /**

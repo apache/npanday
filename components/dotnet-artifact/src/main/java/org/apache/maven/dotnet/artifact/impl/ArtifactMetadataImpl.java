@@ -45,10 +45,10 @@ public final class ArtifactMetadataImpl
     }
 
     /**
-     *  Constructor. This method is intended to by invoked by the plexus-container, not by the application developer.
+     * Constructor. This method is intended to by invoked by the plexus-container, not by the application developer.
      *
-     * @param artifact  the artifact associated with the artifact metadata
-     * @param file      the pom file of the artifact
+     * @param artifact the artifact associated with the artifact metadata
+     * @param file     the pom file of the artifact
      */
     public ArtifactMetadataImpl( Artifact artifact, File file )
     {
@@ -59,7 +59,7 @@ public final class ArtifactMetadataImpl
      * Returns the file name of the pom located on a remote repository. Unlike its parent class method, the pom
      * file name does not include version info.
      *
-     * @return  the file name of the pom located on a remote repository
+     * @return the file name of the pom located on a remote repository
      * @see org.apache.maven.project.artifact.ProjectArtifactMetadata#getRemoteFilename()
      */
     public String getRemoteFilename()
@@ -79,7 +79,7 @@ public final class ArtifactMetadataImpl
     public String getLocalFilename( ArtifactRepository repository )
     {
         return super.getLocalFilename(repository);
-       // return getArtifactId() + ".pom";
+        //return getArtifactId() + ".pom";
     }
 
 

@@ -15,7 +15,7 @@
           <validate>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
             org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
-            org.apache.maven.dotnet.plugins:maven-settings-plugin:generate-settings
+            NMaven.Plugins:NMaven.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
@@ -37,17 +37,18 @@
           </process-classes>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install
           </install>
           <package>org.apache.maven.dotnet.plugins:maven-webapp-plugin:package</package>
-          <deploy>org.apache.maven.dotnet.plugins:maven-webapp-plugin:deploy</deploy>
+          <deploy>
+            org.apache.maven.dotnet.plugins:maven-webapp-plugin:deploy
+          </deploy>
         </phases>
       </configuration>
     </component>
     <component>
       <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
       <role-hint>module</role-hint>
-
       <implementation>
         org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
       </implementation>
@@ -56,7 +57,7 @@
           <validate>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
             org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
-            org.apache.maven.dotnet.plugins:maven-settings-plugin:generate-settings
+            NMaven.Plugins:NMaven.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <process-sources>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
@@ -76,15 +77,17 @@
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <package>org.apache.maven.dotnet.plugins:maven-link-plugin:package</package>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install
           </install>
+          <deploy>
+            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+          </deploy>
         </phases>
       </configuration>
     </component>
     <component>
       <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
       <role-hint>library</role-hint>
-
       <implementation>
         org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
       </implementation>
@@ -93,7 +96,7 @@
           <validate>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
             org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve ,
-            org.apache.maven.dotnet.plugins:maven-settings-plugin:generate-settings
+            NMaven.Plugins:NMaven.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
@@ -116,14 +119,17 @@
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
             org.apache.maven.dotnet.plugins:maven-install-plugin:install,
+            org.apache.maven.dotnet.plugins:maven-install-plugin:gac-install
           </install>
+          <deploy>
+            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+          </deploy>
         </phases>
       </configuration>
     </component>
     <component>
       <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
       <role-hint>exe</role-hint>
-
       <implementation>
         org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
       </implementation>
@@ -132,7 +138,7 @@
           <validate>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
             org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
-            org.apache.maven.dotnet.plugins:maven-settings-plugin:generate-settings
+            NMaven.Plugins:NMaven.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
@@ -156,9 +162,154 @@
           <install>
             org.apache.maven.dotnet.plugins:maven-install-plugin:install,
           </install>
+          <deploy>
+            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+          </deploy>
         </phases>
       </configuration>
     </component>
+    <component>
+      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+      <role-hint>netplugin</role-hint>
+      <implementation>
+        org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
+      </implementation>
+      <configuration>
+        <phases>
+          <validate>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
+            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
+            NMaven.Plugins:NMaven.Plugin.Settings.JavaBinding:generate-settings
+          </validate>
+          <generate-sources>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
+          </generate-sources>
+          <process-sources>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources
+          </process-sources>
+          <process-resources>
+            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
+            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
+          </process-resources>
+          <compile>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+          </compile>
+          <deploy>org.apache.maven.dotnet.plugins:maven-mojo-generator-plugin:generate-bindings</deploy>
+          <process-classes>
+            org.apache.maven.dotnet.plugins:maven-install-plugin:target-install
+          </process-classes>
+          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
+          <install>
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install,
+            org.apache.maven.dotnet.plugins:maven-install-plugin:gac-install
+          </install>
+          <deploy>
+            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+          </deploy>
+        </phases>
+      </configuration>
+    </component>
+    <component>
+      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+      <role-hint>visual-studio-addin</role-hint>
+      <implementation>
+        org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
+      </implementation>
+      <configuration>
+        <phases>
+          <validate>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
+            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
+            NMaven.Plugins:NMaven.Plugin.Settings.JavaBinding:generate-settings
+          </validate>
+          <generate-sources>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
+          </generate-sources>
+          <process-sources>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources
+          </process-sources>
+          <process-resources>
+            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
+            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
+          </process-resources>
+          <compile>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+          </compile>
+          <process-classes>
+            org.apache.maven.dotnet.plugins:maven-install-plugin:target-install
+          </process-classes>
+          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
+          <install>
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install
+          </install>
+          <deploy>
+            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+          </deploy>
+        </phases>
+      </configuration>
+    </component>
+    <component>
+      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+      <role-hint>sharp-develop-addin</role-hint>
+      <implementation>
+        org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
+      </implementation>
+      <configuration>
+        <phases>
+          <validate>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
+            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
+            NMaven.Plugins:NMaven.Plugin.Settings.JavaBinding:generate-settings
+          </validate>
+          <generate-sources>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
+          </generate-sources>
+          <process-sources>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources
+          </process-sources>
+          <process-resources>
+            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
+            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
+          </process-resources>
+          <compile>
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
+            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+          </compile>
+          <process-classes>
+            org.apache.maven.dotnet.plugins:maven-install-plugin:target-install
+          </process-classes>
+          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
+          <install>
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install
+          </install>
+          <deploy>
+            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+          </deploy>               
+        </phases>
+      </configuration>
+    </component>
+     <component>
+      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+      <role-hint>exe.config</role-hint>
+      <implementation>
+        org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
+      </implementation>
+      <configuration>
+        <phases>
+          <install>
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install
+          </install>
+          <deploy>
+            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+          </deploy>
+        </phases>
+      </configuration>
+    </component>    
     <component>
       <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
       <role-hint>module</role-hint>
@@ -206,10 +357,55 @@
     </component>
     <component>
       <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>gac_generic</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <extension>dll</extension>
+        <type>gac_generic</type>
+      </configuration>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>gac_msil</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <extension>dll</extension>
+        <type>gac_msil</type>
+      </configuration>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>gac_32</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <extension>dll</extension>
+        <type>gac_32</type>
+      </configuration>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
       <role-hint>nar</role-hint>
       <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
       <configuration>
         <type>nar</type>
+      </configuration>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>netplugin</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <extension>dll</extension>
+        <type>netplugin</type>
+      </configuration>
+    </component>
+    <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>visual-studio-addin</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <extension>dll</extension>
+        <type>visual-studio-addin</type>
       </configuration>
     </component>
     <component>
@@ -242,5 +438,17 @@
         </requirement>
       </requirements>
     </component>
+    <component>
+      <role>org.apache.maven.dotnet.plugin.DotNetMojo</role>
+      <implementation>org.apache.maven.dotnet.plugin.AbstractMojo</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.dotnet.executable.NetExecutableFactory</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.dotnet.plugin.PluginContext</role>
+        </requirement>        
+      </requirements>
+    </component> 
   </components>
 </component-set>

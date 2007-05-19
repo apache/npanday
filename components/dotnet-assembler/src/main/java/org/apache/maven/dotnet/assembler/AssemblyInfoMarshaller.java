@@ -32,7 +32,6 @@ import org.apache.maven.dotnet.model.assembly.plugins.AssemblyPlugin;
  */
 public interface AssemblyInfoMarshaller
 {
-
     /**
      * Writes the assembly info to AssemblyInfo.[language-extension].
      *

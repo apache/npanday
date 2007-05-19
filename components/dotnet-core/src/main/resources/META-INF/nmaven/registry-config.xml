@@ -39,5 +39,10 @@
       <repository-class>org.apache.maven.dotnet.artifact.impl.NetDependenciesRepositoryImpl</repository-class>
       <repository-config>/META-INF/nmaven/net-dependencies.xml</repository-config>
     </repository>
+    <repository>
+      <repository-name>configuration-appenders</repository-name>
+      <repository-class>org.apache.maven.dotnet.plugin.impl.ConfigurationAppendersRepository</repository-class>
+      <repository-config>/META-INF/nmaven/configuration-appenders.xml</repository-config>
+    </repository>
   </repositories>
 </registry-config>

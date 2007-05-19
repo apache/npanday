@@ -1,0 +1,40 @@
+Visual Studio 2005
+
+* Installing
+
+ After following the build instructions here: {{{getting-started.html#Building NMaven}Building NMaven}}, you will need
+ to run:
+
+ +----+
+ mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install
+ +----+
+
+ This plugin will resolve (and download if needed) all of NMaven's dependencies and will create the Visual Studio
+ addin file in the user home directory: ${user.home}\My Documents\Visual Studio 2005\Addins.
+
+ Sample Addin file:
+
+ +----+
+<?xml version="1.0" encoding="utf-16"?>
+<Extensibility xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+xmlns="http://schemas.microsoft.com/AutomationExtensibility">
+  <HostApplication>
+    <Name>Microsoft Visual Studio</Name>
+    <Version>8.0</Version>
+  </HostApplication>
+  <Addin>
+    <Assembly>
+        C:\Documents and Settings\shane\.m2\repository\NMaven\VisualStudio\NMaven.VisualStudio.Addin\0.14-SNAPSHOT\NMaven.VisualStudio.Addin.dll
+    </Assembly>
+    <FullClassName>NMaven.VisualStudio.Addin.Connect</FullClassName>
+    <FriendlyName>NMaven.VisualStudio.Addin</FriendlyName>
+    <Description>NMaven provides Maven 2.x plugins to support building of .NET applications</Description>
+    <LoadBehavior>0</LoadBehavior>
+    <CommandLineSafe>0</CommandLineSafe>
+    <CommandPreload>1</CommandPreload>
+  </Addin>
+</Extensibility>
+ +----+
+
+Next startup Visual Studio 2005. 

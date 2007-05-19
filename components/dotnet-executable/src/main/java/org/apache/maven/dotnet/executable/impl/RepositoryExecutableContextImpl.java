@@ -24,11 +24,11 @@ import org.apache.maven.dotnet.RepositoryNotFoundException;
 import org.apache.maven.dotnet.InitializationException;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
-import org.apache.maven.project.MavenProject;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.registry.Repository;
 
 /**
+ * Provides an implementation of the repository executable context.
  *
  * @author Shane Isbell
  */
@@ -36,16 +36,20 @@ public class RepositoryExecutableContextImpl
     implements RepositoryExecutableContext, LogEnabled
 {
 
-    private MavenProject project;
-
     private RepositoryRegistry repositoryRegistry;
 
     private NetExecutable netExecutable;
 
     private ExecutableConfig executableConfig;
 
+    /**
+     * A logger for writing log messages
+     */
     private Logger logger;
 
+    /**
+     * @see LogEnabled#enableLogging(org.codehaus.plexus.logging.Logger)
+     */
     public void enableLogging( Logger logger )
     {
         this.logger = logger;
@@ -67,11 +71,6 @@ public class RepositoryExecutableContextImpl
         return netExecutable;
     }
 
-    public MavenProject getMavenProject()
-    {
-        return project;
-    }
-
     public Repository find( String repositoryName )
         throws RepositoryNotFoundException
     {
@@ -84,11 +83,10 @@ public class RepositoryExecutableContextImpl
         return repository;
     }
 
-    public void init( ExecutableConfig executableConfig, MavenProject project )
+    public void init( ExecutableConfig executableConfig )
         throws InitializationException
     {
         this.executableConfig = executableConfig;
-        this.project = project;
         netExecutable = new DefaultRepositoryNetExecutable();
         netExecutable.init( this );
     }

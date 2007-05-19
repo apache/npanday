@@ -1,0 +1,28 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{34c7738a-d98c-4cf8-bb48-9b41fee3774e}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NMaven.Plugin</RootNameSpace>
+    <AssemblyName>NMaven.Plugin.Settings</AssemblyName>
+    <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Exe</OutputType>
+    <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NMaven.Plugin" />
+    <Reference Include="NUnit.Framework" />
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Plugin\Settings\ExecutionException.cs" />
+    <Compile Include="Plugin\Settings\nmavenSettings.cs" />
+    <Compile Include="Plugin\Settings\SettingsGeneratorMojo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugin" />
+    <Folder Include="Plugin\Settings" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

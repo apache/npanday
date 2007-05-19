@@ -7,21 +7,27 @@ Adding Executables
  [[1]] An executable plugin that exists in a predetermined place on the file system. These are typically executables
  that are part of the .NET framework or part of some other 3rd party program.
 
- [[2]] An executable plugin that is resolved from a Maven repo. The NMaven .NET plugins, nmaven-utility-rex and nmaven-utility-settings
+ [[2]] An executable plugin that is resolved from a Maven repo. The NMaven .NET plugins NMaven.Plugin.Resx and NMaven.Plugin.Settings
  fall into this category.
 
  []
 
  How you handle each case is slightly different. In the first case, where the executable is already installed on the
  file system, you add support for the executable by adding an entry
- in the {{{components/dotnet-model/executable-plugins/executable-plugin.html}executable-plugins.xml}} file. Take the example below where XSD is part of the .NET framework.
+ in the {{{components/dotnet-model/executable-plugins/executable-plugin.html}executable-plugins.xml}} file. Take the
+ example below where XSD is part of the .NET framework.
  The MS:XSD:SCHEMA entry uses a standard DefaultNetExecutable implementation. The <<executable>>
  tag denotes the command as it is executed from the commandline, in this case xsd.  The <<commandFilter>> gives a list
  of command options that the plugin will accept from the invoking AbstractMojo implementation.
 
- NMaven will look at the <<vendor>> and <<framework>> to see if the xsd executable exists within the framework's install root.
- If it does, then it constructs the absolute path. If it does not find the file, it will execute without a path (so
+ NMaven will look at the <<vendor>> and <<frameworkVersion>> to see if the xsd executable exists within the framework's install
+ or SDK root for either Microsoft of Mono, depending on which vendor you are using to build. If the executable does exist in one of
+ these locations, then it constructs the absolute path. In the xsd case, on windows NMaven may find the xsd file at:
+ C:\Program Files\Microsoft.NET\SDK\v2.0\Bin or C:\Program Files\Mono-1.2.3.1\bin.
+ If NMaven does not find the file, it will execute without a path (so
  in this case you will need to make sure that the executable exists within the system path).
+
+ Sample executable plugins entry:
 
 +----+
 
@@ -78,6 +84,120 @@ Adding Executables
 
 +----+
 
+* Adding an executable plugin that exists in a predetermined place
+
+ To create an executable plugin that exists in a predetermined place, do the following:
+
+ [[1]] Create your module directory
+
+ [[2]] From the root of your module directory, type:
+
++----+
+mvn archetype:create
+  -DgroupId=[your project's group id]
+  -DartifactId=[your project's artifact id]
+  -DarchetypeArtifactId=maven-archetype-netexecutable
++----+
+
+ [[3]] Make sure to add an entry in the net-executables.xml file, located within the dotnet-core module. Replace each
+  param: ${vendor}, ${exe}, .. with the appropriate values.
+
++----+
+  <executablePlugin>
+    <identifier>${ID}</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>${vendor}</vendor>
+    <executable>${exe}</executable>
+    <profile>${profile}</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
++----+
+
+ [[4]]  Add profile <<ADD_PROFILE>> to the meta-data of the profile field of this class. This profile name should match
+  the ${profile} within the net-executables.xml.
+
+ [[5]] Add any special commands to the getCommands method.
+
+ [[6]]  Recompile the dotnet-core component.
+
+ [[7]]  Rename this class and install this Mojo component.
+
++----+
+public class NetExecutableMojo
+    extends AbstractMojo
+{
+    /**
+     * @component
+     */
+    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+
+    /**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
+     * @required
+     */
+    private MavenProject project;
+
+    /**
+     * The Vendor for the executable.
+     *
+     * @parameter expression="${vendor}"
+     */
+    private String vendor;
+
+    /**
+     * @parameter expression = "${frameworkVersion}"
+     */
+    private String frameworkVersion;
+
+    /**
+     * The profile that the executable should use.
+     *
+     * @parameter expression = "${profile}" default-value = "<<ADD_PROFILE>>"
+     */
+    private String profile;
+
+    public void execute()
+        throws MojoExecutionException
+    {
+        try
+        {
+            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion,
+                profile, getCommands(), null ).execute();
+        }
+        catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-xxx-000: Unable to execute: Vendor " + vendor +
+                ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-xxx-001: Platform Unsupported: Vendor " + vendor +
+                ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+        }
+    }
+
+    public List<String> getCommands()
+        throws MojoExecutionException
+    {
+        List<String> commands = new ArrayList<String>();
+        //<<ADD COMMANDS HERE>>
+        return commands;
+    }
+}
++----+
+
+* Creating an executable plugin that is resolved from a Maven repo
+
  In the second case, where the executable is not already installed, you add an entry within the net-dependencies.xml file.
  This file tells NMaven how to resolve the executable from a Maven repository.
 
@@ -106,8 +226,8 @@ Adding Executables
   you should use the NetExecutableFactory.getNetExecutableFor method within the Mojo's execute method.
 
 +----+
-             netExecutableFactory.getNetExecutableFor(vendor, frameworkVersion, profile,
-                    project, getCommands(), null).execute();
+  netExecutableFactory.getNetExecutableFor(vendor, frameworkVersion, profile,
+    project, getCommands(), null).execute();
 +----+
 
 
@@ -115,6 +235,8 @@ Adding Executables
   you should use the NetExecutableFactory.getNetExecutableFromRepository method within the Mojo's execute method.
 
 +----+
-              netExecutableFactory.getNetExecutableFromRepository("NMaven.Utility.ResX", "resx",
-                    vendorInfo, project, localRepository, commands).execute();
+  netExecutableFactory.getNetExecutableFromRepository("NMaven.Plugin.ResX", "resx",
+    vendorInfo, project, localRepository, commands).execute();
 +----+
+
+

@@ -35,7 +35,7 @@
     <url>https://svn.apache.org/repos/asf/incubator/nmaven/</url>
     <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</developerConnection>
+      scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/trunk</developerConnection>
     <tag>REL_0_14_SNAPSHOT</tag>
   </scm>
   <organization>
@@ -46,14 +46,12 @@
     <system>JIRA Bugtracking</system>
     <url>http://jira.codehaus.org/browse/NMAVEN</url>
   </issueManagement>
-
   <licenses>
     <license>
       <name>Apache 2.0</name>
       <url>LICENSE.txt</url>
     </license>
   </licenses>
-
   <developers>
     <developer>
       <name>Brett Porter</name>

@@ -25,24 +25,39 @@ package org.apache.maven.dotnet.artifact;
  */
 public enum ArtifactType
 {
-    MODULE( "module", "netmodule" ),
-    LIBRARY( "library", "dll" ),
-    EXE( "exe", "exe" ),
-    WINEXE( "winexe", "exe" ),
-    NAR( "nar", "nar" ),
-    EXECONFIG( "exe.config", "exe.config" ),
-    NULL( "null", "null" );
+    MODULE( "module", "module", "netmodule" ),
+    LIBRARY( "library", "library", "dll" ),
+    EXE( "exe", "exe", "exe" ),
+    WINEXE( "winexe", "winexe", "exe" ),
+    NAR( "nar", "null", "nar" ),
+    EXECONFIG( "exe.config", "null", "exe.config" ),
+    NETPLUGIN( "netplugin", "library", "dll" ),
+    VISUAL_STUDIO_ADDIN( "visual-studio-addin", "library", "dll" ),
+    SHARP_DEVELOP_ADDIN( "sharp-develop-addin", "library", "dll" ),
+    NULL( "null", "null", "null" );
 
+    /**
+     * The extension used for the artifact(netmodule, dll, exe)
+     */
     private String extension;
 
-    private String artifactTypeName;
+    /**
+     * The packaging type (as given in the package tag within the pom.xml) of the artifact.
+     */
+    private String packagingType;
+
+    /**
+     * The target types (module, library, winexe, exe) for the .NET platform.
+     */
+    private String targetCompileType;
 
     /**
      * Constructor
      */
-    ArtifactType( String artifactTypeName, String extension )
+    ArtifactType( String packagingType, String targetCompileType, String extension )
     {
-        this.artifactTypeName = artifactTypeName;
+        this.packagingType = packagingType;
+        this.targetCompileType = targetCompileType;
         this.extension = extension;
     }
 
@@ -57,73 +72,72 @@ public enum ArtifactType
     }
 
     /**
+     * Returns the packaging type (as given in the package tag within the pom.xml) of the artifact.
+     *
+     * @return the packaging type (as given in the package tag within the pom.xml) of the artifact.
+     */
+    public String getPackagingType()
+    {
+        return packagingType;
+    }
+
+    /**
      * Returns target types (module, library, winexe, exe) for the .NET platform.
      *
      * @return target types (module, library, winexe, exe) for the .NET platform.
      */
-    public String getArtifactTypeName()
+    public String getTargetCompileType()
     {
-        return artifactTypeName;
+        return targetCompileType;
     }
 
-    public static synchronized ArtifactType getArtifactTypeForName(String name)
+    /**
+     * Returns artifact type for the specified packaging name
+     *
+     * @param packagingName the package name (as given in the package tag within the pom.xml) of the artifact.
+     * @return the artifact type for the specified packaging name
+     */
+    public static synchronized ArtifactType getArtifactTypeForPackagingName( String packagingName )
     {
-        if ( name.equals( ArtifactType.MODULE.getArtifactTypeName() ) )
+        if ( packagingName.equals( ArtifactType.MODULE.getPackagingType() ) )
         {
             return ArtifactType.MODULE;
         }
-        else if ( name.equals( ArtifactType.LIBRARY.getArtifactTypeName() ) )
+        else if ( packagingName.equals( ArtifactType.LIBRARY.getPackagingType() ) )
         {
             return ArtifactType.LIBRARY;
         }
-        else if ( name.equals( ArtifactType.EXE.getArtifactTypeName() ) )
+        else if ( packagingName.equals( ArtifactType.EXE.getPackagingType() ) )
         {
             return ArtifactType.EXE;
         }
-        else if ( name.equals( ArtifactType.WINEXE.getArtifactTypeName() ) )
+        else if ( packagingName.equals( ArtifactType.WINEXE.getPackagingType() ) )
         {
             return ArtifactType.WINEXE;
         }
-        else if ( name.equals( ArtifactType.NAR.getArtifactTypeName() ) )
-        {
-           return ArtifactType.LIBRARY;
-        }
-        else if ( name.equals( ArtifactType.NAR.getArtifactTypeName() ) )
-        {
-           return ArtifactType.NAR;
-        }
-        else if ( name.equals( ArtifactType.EXECONFIG.getArtifactTypeName() ) )
-        {
-           return ArtifactType.EXECONFIG;
-        }
-        return ArtifactType.NULL;
-    }
-
-    public static synchronized ArtifactType getArtifactTypeForExtension(String extension)
-    {
-        if ( extension.equals( ArtifactType.MODULE.getExtension()) )
-        {
-            return ArtifactType.MODULE;
-        }
-        else if ( extension.equals( ArtifactType.LIBRARY.getExtension() ) )
+        else if ( packagingName.equals( ArtifactType.NAR.getPackagingType() ) )
         {
             return ArtifactType.LIBRARY;
         }
-        else if ( extension.equals( ArtifactType.EXE.getExtension() ) )
+        else if ( packagingName.equals( ArtifactType.NAR.getPackagingType() ) )
         {
-            return ArtifactType.EXE;
+            return ArtifactType.NAR;
         }
-        else if ( extension.equals( ArtifactType.WINEXE.getExtension() ) )
+        else if ( packagingName.equals( ArtifactType.EXECONFIG.getPackagingType() ) )
         {
-            return ArtifactType.WINEXE;
+            return ArtifactType.EXECONFIG;
         }
-        else if ( extension.equals( ArtifactType.NAR.getExtension() ) )
+        else if ( packagingName.equals( ArtifactType.NETPLUGIN.getPackagingType() ) )
         {
-           return ArtifactType.LIBRARY;
+            return ArtifactType.NETPLUGIN;
         }
-        else if ( extension.equals( ArtifactType.EXECONFIG.getExtension() ) )
+        else if ( packagingName.equals( ArtifactType.SHARP_DEVELOP_ADDIN.getPackagingType() ) )
         {
-           return ArtifactType.EXECONFIG;
+            return ArtifactType.SHARP_DEVELOP_ADDIN;
+        }
+        else if ( packagingName.equals( ArtifactType.VISUAL_STUDIO_ADDIN.getPackagingType() ) )
+        {
+            return ArtifactType.VISUAL_STUDIO_ADDIN;
         }
         return ArtifactType.NULL;
     }

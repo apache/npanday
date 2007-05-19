@@ -119,7 +119,8 @@ public class AssemblyInfoGeneratorMojo
     public void execute()
         throws MojoExecutionException
     {
-        
+        long startTime = System.currentTimeMillis();
+
         if ( project.getArtifact().getType().equals( "module" ) )
         {
             return;
@@ -144,8 +145,6 @@ public class AssemblyInfoGeneratorMojo
             }
         }
         getLog().info( "NMAVEN-902-000: Generating Assembly Info: Language = " + language.trim() );
-
-
 
         //TODO: Investigate the affect of not setting isDefault and profile. In the case of executables, this is
         //managed by the framework. I intended to keep vendor info and state machine processor out of the
@@ -195,5 +194,7 @@ public class AssemblyInfoGeneratorMojo
             throw new MojoExecutionException( "NMAVEN-902-005: Problem generating assembly info class", e );
         }
 
+        long endTime = System.currentTimeMillis();
+        getLog().info( "Mojo Execution Time = " + (endTime - startTime));
     }
 }

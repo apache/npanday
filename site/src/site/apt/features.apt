@@ -10,9 +10,9 @@ Features
 
  * NUnit support
 
- * Resource generation and embedding
+ * Writing Maven Plugins in .NET
 
- * Autmomatic Generation of AssemblyInfo.* based on language and contents of the pom.
+ * Resource generation and embedding
 
  * Web Application Packaging and Deployment
 

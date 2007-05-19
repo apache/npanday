@@ -1,5 +1,20 @@
 <executablePlugins>
   <executablePlugin>
+    <identifier>dotnet-jetty</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.ThreadedNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>java</executable>
+    <profile>dotnet-jetty:start</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
     <identifier>MONO:XSP</identifier>
     <pluginClass>org.apache.maven.dotnet.executable.impl.ThreadedNetExecutable</pluginClass>
     <vendor>MONO</vendor>
@@ -167,6 +182,50 @@
     <platforms>
       <platform>
         <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>MS:GACUTIL</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>gacutil</executable>
+    <profile>GACUTIL</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>MONO:GACUTIL</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MONO</vendor>
+    <executable>gacutil</executable>
+    <profile>GACUTIL</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Mac OS X</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Linux</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Solaris</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>FreeBSD</operatingSystem>
       </platform>
     </platforms>
   </executablePlugin>

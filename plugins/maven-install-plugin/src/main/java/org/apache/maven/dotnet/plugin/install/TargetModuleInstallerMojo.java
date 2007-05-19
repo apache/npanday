@@ -46,7 +46,6 @@ public class TargetModuleInstallerMojo
 
     /**
      * @parameter expression="${settings.localRepository}"
-     * @required
      */
     private File localRepository;
 
@@ -67,6 +66,13 @@ public class TargetModuleInstallerMojo
     public void execute()
         throws MojoExecutionException
     {
+        long startTime = System.currentTimeMillis();
+
+        if(localRepository == null)
+        {
+            localRepository = new File(System.getProperty("user.home"), ".m2/repository");
+        }
+
         try
         {
             nmavenRegistry.createRepositoryRegistry();
@@ -77,7 +83,7 @@ public class TargetModuleInstallerMojo
                 "NMAVEN-1002-001: Failed to create the repository registry for this plugin", e );
         }
 
-        artifactContext.init( project, localRepository );
+        artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
         try
         {
             artifactContext.getArtifactInstaller().installNetModulesToTargetDirectory( project.getArtifact() );
@@ -86,5 +92,7 @@ public class TargetModuleInstallerMojo
         {
             throw new MojoExecutionException( "NMAVEN-1002-000: Failed to install artifacts into target directory", e );
         }
+        long endTime = System.currentTimeMillis();
+        getLog().info( "Mojo Execution Time = " + (endTime - startTime));        
     }
 }

@@ -58,11 +58,4 @@ public interface NMavenContext
      */
     Logger getLogger();
 
-    /**
-     * Returns Maven Project
-     *
-     * @return the Maven Project
-     */
-    MavenProject getMavenProject();
-
 }

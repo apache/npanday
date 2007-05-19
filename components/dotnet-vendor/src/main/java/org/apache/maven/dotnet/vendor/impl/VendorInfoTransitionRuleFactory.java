@@ -41,13 +41,6 @@ import org.codehaus.plexus.logging.Logger;
 final class VendorInfoTransitionRuleFactory
 {
 
-    /**
-     * A registry component of repository (config) files
-     */
-    private RepositoryRegistry repositoryRegistry;
-
-    private SettingsRepository settingsRepository;
-
     private VendorInfoRepository vendorInfoRepository;
 
     /**
@@ -65,12 +58,15 @@ final class VendorInfoTransitionRuleFactory
      */
     private String defaultFrameworkVersion;
 
-    private List<VendorInfo> vendorInfos;
-
     /**
      * A logger for writing log messages
      */
     private Logger logger;
+
+    /**
+     * A version matcher
+     */
+    VersionMatcher versionMatcher;
 
     /**
      * Default constructor
@@ -90,7 +86,6 @@ final class VendorInfoTransitionRuleFactory
     void init( RepositoryRegistry repositoryRegistry, VendorInfoRepository vendorInfoRepository, Logger logger )
         throws InitializationException
     {
-        this.repositoryRegistry = repositoryRegistry;
         this.vendorInfoRepository = vendorInfoRepository;
         this.logger = logger;
         if ( repositoryRegistry == null )
@@ -98,12 +93,11 @@ final class VendorInfoTransitionRuleFactory
             throw new InitializationException( "NMAVEN-103-000: Unable to find the repository registry" );
         }
 
-        settingsRepository = (SettingsRepository) repositoryRegistry.find( "nmaven-settings" );
+        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "nmaven-settings" );
         if ( settingsRepository == null )
         {
             throw new InitializationException(
                 "NMAVEN-103-001: Settings Repository is null. Aborting initialization of VendorInfoTranstionRuleFactory" );
-
         }
 
         try
@@ -117,7 +111,7 @@ final class VendorInfoTransitionRuleFactory
         }
         defaultVendorVersion = settingsRepository.getDefaultSetup().getVendorVersion().trim();
         defaultFrameworkVersion = settingsRepository.getDefaultSetup().getFrameworkVersion().trim();
-        vendorInfos = settingsRepository.getVendorInfos();
+        this.versionMatcher = new VersionMatcher();
     }
 
     VendorInfoTransitionRule createPostProcessRule()
@@ -127,10 +121,11 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NMAVEN-103-034: Entering State = Post Process" );
-                if ( (vendorInfo.getExecutablePaths() == null ||
-                    vendorInfo.getExecutablePaths().size() == 0) && vendorInfoRepository.exists() )
+                if ( ( vendorInfo.getExecutablePaths() == null || vendorInfo.getExecutablePaths().size() == 0 ) &&
+                    vendorInfoRepository.exists() )
                 {
                     File sdkInstallRoot = null;
+                    List<File> executablePaths = new ArrayList<File>();
                     try
                     {
                         sdkInstallRoot = vendorInfoRepository.getSdkInstallRootFor( vendorInfo );
@@ -140,18 +135,20 @@ final class VendorInfoTransitionRuleFactory
                         logger.debug( "NMAVEN-103-36: Failed to resolve install sdk root." );
                     }
                     try
-                    {
-                        List<File> executablePaths = new ArrayList<File>();
+                    {                       
                         executablePaths.add( vendorInfoRepository.getInstallRootFor( vendorInfo ) );
-                        if ( sdkInstallRoot != null )
-                        {
-                            executablePaths.add( sdkInstallRoot );
-                        }
                         vendorInfo.setExecutablePaths( executablePaths );
                     }
                     catch ( PlatformUnsupportedException e )
                     {
                         logger.debug( "NMAVEN-103-35: Failed to resolve install root." );
+                    }
+                    finally
+                    {
+                        if ( sdkInstallRoot != null )
+                        {
+                            executablePaths.add( sdkInstallRoot );
+                        }
                     }
                 }
                 return VendorInfoState.EXIT;
@@ -256,10 +253,10 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NMAVEN-103-007: Entering State = NFT" );
-                if ( vendorInfo.getFrameworkVersion().equals( defaultFrameworkVersion ) )
+                if ( vendorInfo.getFrameworkVersion().equals( defaultFrameworkVersion ) &&
+                    vendorInfo.getVendor().equals( defaultVendor ) )
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
-                    vendorInfo.setVendor( defaultVendor );
                     return VendorInfoState.NTT;
                 }
                 else
@@ -267,28 +264,57 @@ final class VendorInfoTransitionRuleFactory
                     List<VendorInfo> v = vendorInfoRepository.getVendorInfosFor( vendorInfo, true );
                     if ( !v.isEmpty() )
                     {
+                        Set<String> vendorVersions = new HashSet<String>();
                         for ( VendorInfo vi : v )
                         {
                             if ( vi.getFrameworkVersion().equals( vendorInfo.getFrameworkVersion() ) )
                             {
-                                vendorInfo.setVendorVersion( vi.getVendorVersion() );
-                                vendorInfo.setVendor( vi.getVendor() );
-                                return VendorInfoState.NTT;
+                                vendorVersions.add( vi.getVendorVersion() );
                             }
                         }
-                        return createVendorInfoSetterForNFT_NoSettings().process( vendorInfo );
+
+                        if ( vendorVersions.size() > 0 )
+                        {
+                            try
+                            {
+                                vendorInfo.setVendorVersion( vendorInfoRepository.getMaxVersion( vendorVersions ) );
+                            }
+                            catch ( InvalidVersionFormatException e )
+                            {
+                                logger.warn( "NMAVEN-103-039: Bad nmaven-settings.xml file", e );
+                                return createVendorInfoSetterForNFT_NoSettings().process( vendorInfo );
+                            }
+                            return VendorInfoState.NTT;
+                        }
+                        else
+                        {
+                            return createVendorInfoSetterForNFT_NoSettings().process( vendorInfo );
+                        }
                     }
                     else
                     {
                         v = vendorInfoRepository.getVendorInfosFor( vendorInfo, false );
+                        Set<String> vendorVersions = new HashSet<String>();
                         for ( VendorInfo vi : v )
                         {
                             if ( vi.getFrameworkVersion().equals( vendorInfo.getFrameworkVersion() ) )
                             {
-                                vendorInfo.setVendorVersion( vi.getVendorVersion() );
-                                vendorInfo.setVendor( vi.getVendor() );
-                                return VendorInfoState.NTT;
+                                vendorVersions.add( vi.getVendorVersion() );
                             }
+                        }
+
+                        if ( vendorVersions.size() > 0 )
+                        {
+                            try
+                            {
+                                vendorInfo.setVendorVersion( vendorInfoRepository.getMaxVersion( vendorVersions ) );
+                            }
+                            catch ( InvalidVersionFormatException e )
+                            {
+                                logger.warn( "NMAVEN-103-040: Bad nmaven-settings.xml file", e );
+                                return createVendorInfoSetterForNFT_NoSettings().process( vendorInfo );
+                            }
+                            return VendorInfoState.NTT;
                         }
                         return createVendorInfoSetterForNFT_NoSettings().process( vendorInfo );
                     }
@@ -328,30 +354,64 @@ final class VendorInfoTransitionRuleFactory
                     List<VendorInfo> v = vendorInfoRepository.getVendorInfosFor( vendorInfo, true );
                     if ( !v.isEmpty() )
                     {
+                        Set<String> frameworkVersions = new HashSet<String>();
                         for ( VendorInfo vi : v )
                         {
                             if ( vi.getVendorVersion().equals( vendorInfo.getVendorVersion() ) )
                             {
-                                vendorInfo.setFrameworkVersion( vi.getFrameworkVersion() );
-                                vendorInfo.setVendor( vi.getVendor() );
-                                return VendorInfoState.NTT;
+                                frameworkVersions.add( vi.getFrameworkVersion() );
                             }
                         }
-                        return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
+
+                        if ( frameworkVersions.size() > 0 )
+                        {
+                            try
+                            {
+                                vendorInfo.setFrameworkVersion(
+                                    vendorInfoRepository.getMaxVersion( frameworkVersions ) );
+                            }
+                            catch ( InvalidVersionFormatException e )
+                            {
+                                logger.warn( "NMAVEN-103-037: Bad nmaven-settings.xml file", e );
+                                return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
+                            }
+                            return VendorInfoState.NTT;
+                        }
+                        else
+                        {
+                            return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
+                        }
                     }
                     else
                     {
                         v = vendorInfoRepository.getVendorInfosFor( vendorInfo, false );
+                        Set<String> frameworkVersions = new HashSet<String>();
                         for ( VendorInfo vi : v )
                         {
                             if ( vi.getVendorVersion().equals( vendorInfo.getVendorVersion() ) )
                             {
-                                vendorInfo.setFrameworkVersion( vi.getFrameworkVersion() );
-                                vendorInfo.setVendor( vi.getVendor() );
-                                return VendorInfoState.NTT;
+                                frameworkVersions.add( vi.getFrameworkVersion() );
                             }
                         }
-                        return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
+
+                        if ( frameworkVersions.size() > 0 )
+                        {
+                            try
+                            {
+                                vendorInfo.setFrameworkVersion(
+                                    vendorInfoRepository.getMaxVersion( frameworkVersions ) );
+                            }
+                            catch ( InvalidVersionFormatException e )
+                            {
+                                logger.warn( "NMAVEN-103-038: Bad nmaven-settings.xml file", e );
+                                return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
+                            }
+                            return VendorInfoState.NTT;
+                        }
+                        else
+                        {
+                            return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
+                        }
                     }
                 }
             }
@@ -539,7 +599,6 @@ final class VendorInfoTransitionRuleFactory
                         }
                     }
                     return createVendorInfoSetterForFFT_NoSettings().process( vendorInfo );
-
                 }
             }
         };
@@ -845,4 +904,5 @@ final class VendorInfoTransitionRuleFactory
             }
         };
     }
+    //TODO: add additional DotGNU states
 }

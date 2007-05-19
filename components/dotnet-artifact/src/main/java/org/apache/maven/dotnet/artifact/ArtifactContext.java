@@ -19,6 +19,8 @@
 package org.apache.maven.dotnet.artifact;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.handler.ArtifactHandler;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
 
 import java.util.List;
@@ -80,8 +82,14 @@ public interface ArtifactContext
      */
     List<Artifact> getArtifactsFor( String groupId, String artifactId, String version, String type );
 
+    /**
+     * Returns the artifact for the specified ID
+     *
+     * @param id the artifact ID, as given in the net-dependencies.xml file
+     * @return the artifact for the specified ID.
+     */
     Artifact getArtifactByID( String id );
-    
+
     /**
      * Returns an artifact installer used for installing NMaven artifacts into the local Maven repository.
      *
@@ -100,14 +108,31 @@ public interface ArtifactContext
      */
     ApplicationConfig getApplicationConfigFor( Artifact artifact );
 
+    /**
+     * Returns the directory containing the local Maven repository
+     *
+     * @return the directory containing the local Maven repository
+     */
     File getLocalRepository();
+
+    /**
+     * Returns a list of .NET artifacts that reside within the specified repository.
+     *
+     * @param repository the local repository directory. If value is null, the localRepository reference will default to
+     *                   the specified localRepository passed to the init method of the context.
+     * @return list of .NET artifacts that reside within the specified repository.
+     */
+    List<Artifact> getAllNetArtifactsFromRepository( File repository );
+
+ //   ArtifactHandler createArtifactHandler( String packagingType, String extension );
 
     /**
      * Initializes this artifact context. Neither parameter value should be null.
      *
-     * @param mavenProject    the maven project
-     * @param localRepository the file location of the local maven repository
+     * @param mavenProject               the maven project
+     * @param remoteArtifactRepositories
+     * @param localRepository            the file location of the local maven repository
      * @throws NullPointerException if localRepository parameter is null
      */
-    void init( MavenProject mavenProject, File localRepository );
+    void init( MavenProject mavenProject, List<ArtifactRepository> remoteArtifactRepositories, File localRepository );
 }

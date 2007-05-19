@@ -88,10 +88,18 @@ public interface VendorInfoRepository
      * @param vendorInfo the vendor info
      * @return file pointing to the .NET framework installation root used for compiling artifacts
      * @throws org.apache.maven.dotnet.PlatformUnsupportedException
+     *
      */
     File getInstallRootFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException;
 
+    /**
+     * Returns file pointing to the .NET SDK installation root used for compiling artifacts.
+     *
+     * @param vendorInfo the vendor info
+     * @return file pointing to the .NET SDK installation root used for compiling artifacts
+     * @throws PlatformUnsupportedException
+     */
     File getSdkInstallRootFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException;
 
@@ -101,5 +109,17 @@ public interface VendorInfoRepository
      * @return true if this repository exists (and can be used), otherwise returns false
      */
     boolean exists();
+
+    /**
+     *
+     * 
+     * @param vendor
+     * @param frameworkVersion
+     * @param artifactType
+     * @return
+     * @throws PlatformUnsupportedException
+     */
+    File getGlobalAssemblyCacheDirectoryFor( Vendor vendor, String frameworkVersion, String artifactType )
+        throws PlatformUnsupportedException;
 
 }

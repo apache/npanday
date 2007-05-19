@@ -41,12 +41,16 @@ import java.util.*;
 import java.io.File;
 
 /**
+ * Provides an implementation of the Compiler Context.
+ *
  * @author Shane Isbell
  */
 public final class CompilerContextImpl
     implements CompilerContext, LogEnabled
 {
-
+    /**
+     * The maven project
+     */
     private MavenProject project;
 
     private CompilerConfig config;
@@ -67,6 +71,9 @@ public final class CompilerContextImpl
 
     private RepositoryRegistry repositoryRegistry;
 
+    /**
+     * A logger for writing log messages
+     */
     private Logger logger;
 
     private List<File> linkedResources;
@@ -136,7 +143,7 @@ public final class CompilerContextImpl
         }
 
         if ( config.isTestCompile() &&
-            project.getArtifact().getType().equals( ArtifactType.MODULE.getArtifactTypeName() ) &&
+            project.getArtifact().getType().equals( ArtifactType.MODULE.getPackagingType() ) &&
             project.getArtifact().getFile() != null && project.getArtifact().getFile().exists() )
         {
             artifacts.add( project.getArtifact() );
@@ -159,9 +166,10 @@ public final class CompilerContextImpl
 
     public List<Artifact> getLibraryDependencies()
     {
-        if ( config.isTestCompile() && config.getArtifactType().equals( ArtifactType.LIBRARY ) &&
-            project.getArtifact().getFile() != null && project.getArtifact().getFile().exists() &&
-            !libraries.contains( project.getArtifact() ) && !project.getArtifact().getType().equals( "module" ) )
+        if ( config.isTestCompile() && ( config.getArtifactType().equals( ArtifactType.LIBRARY ) ||
+            config.getArtifactType().equals( ArtifactType.NETPLUGIN )) && project.getArtifact().getFile() != null &&
+                project.getArtifact().getFile().exists() && !libraries.contains( project.getArtifact() ) &&
+                !project.getArtifact().getType().equals( "module" ) )
         {
             libraries.add( project.getArtifact() );
         }
@@ -224,11 +232,6 @@ public final class CompilerContextImpl
     }
 
 
-    public MavenProject getMavenProject()
-    {
-        return project;
-    }
-
     public Repository find( String repositoryName )
         throws RepositoryNotFoundException
     {
@@ -241,6 +244,45 @@ public final class CompilerContextImpl
         return repository;
     }
 
+    private String getGacRootForMono()
+     throws PlatformUnsupportedException {
+        String path = System.getenv( "PATH");
+        if(path != null)
+        {
+            String[] tokens = path.split( System.getProperty( "path.separator") );
+            for(String token : tokens)
+            {
+                File gacRoot = new File(new File(token).getParentFile(), "lib/mono/gac/");
+                if(gacRoot.exists())
+                {
+                    return gacRoot.getAbsolutePath();
+                }
+            }
+        }
+        //check settings file
+
+
+        String monoRoot = System.getenv( "MONO_ROOT");
+        if(monoRoot != null && !new File(monoRoot).exists())
+        {
+            logger.warn( "MONO_ROOT has been incorrectly set. Trying /usr : MONO_ROOT = " + monoRoot);
+        }
+        else if(monoRoot != null)
+        {
+            return (!monoRoot.endsWith( File.separator)) ? monoRoot + File.separator : monoRoot;
+        }
+
+        if(new File("/usr/lib/mono/gac/").exists())
+        {
+            return new File("/usr/lib/mono/gac/").getAbsolutePath();
+        }
+        else
+        {
+            throw new PlatformUnsupportedException(
+                "NMAVEN-061-008: Could not locate Global Assembly Cache for Mono. Try setting the MONO_ROOT environmental variable.");
+        }
+    }
+
     public void init( CompilerRequirement compilerRequirement, CompilerConfig config, MavenProject project,
                       CapabilityMatcher capabilityMatcher )
         throws PlatformUnsupportedException
@@ -251,7 +293,7 @@ public final class CompilerContextImpl
         this.compilerRequirement = compilerRequirement;
         libraries = new ArrayList<Artifact>();
         modules = new ArrayList<Artifact>();
-        artifactContext.init( project, config.getLocalRepository() );
+        artifactContext.init( project, project.getRemoteArtifactRepositories(), config.getLocalRepository() );
 
         Set<Artifact> artifacts = project.getDependencyArtifacts();//Can add WFC deps prior
         for ( Artifact artifact : artifacts )
@@ -261,13 +303,12 @@ public final class CompilerContextImpl
             {
                 modules.add( artifact );
             }
-            else if ( type.equals( "library" ) )
+            else if ( type.equals( "library" ) || type.equals( "exe" ) )
             {
                 libraries.add( artifact );
             }
             //Resolving here since the GAC path is vendor and framework aware
-            //TODO: Add support for 32/64 bit GACs
-            else if ( type.equals( "gac" ) )
+            else if ( type.equals( "gac_generic" ) )
             {
                 String gacRoot = null;
                 if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) && (
@@ -283,20 +324,34 @@ public final class CompilerContextImpl
                 }
                 else if ( compilerRequirement.getVendor().equals( Vendor.MONO ) )
                 {
-                    //TODO: MONO Support
+                    gacRoot = getGacRootForMono();
                 }
                 if ( gacRoot != null )
                 {
-                    File gacFile = new File( gacRoot + artifact.getArtifactId() + File.separator +
-                        artifact.getVersion() + File.separator + artifact.getArtifactId() + ".dll" );
-                    if ( !gacFile.exists() )
-                    {
-                        throw new PlatformUnsupportedException(
-                            "NMAVEN-000-000: Could not find GAC dependency: File = " + gacFile.getAbsolutePath() );
-                    }
-                    artifact.setFile( gacFile );
+                    setArtifactGacFile( gacRoot, artifact );
                     libraries.add( artifact );
                 }
+            }
+            else if ( type.equals( "gac" ) )
+            {
+                String gacRoot = (compilerRequirement.getVendor().equals( Vendor.MONO )) ?
+                    getGacRootForMono() : "C:\\WINDOWS\\assembly\\GAC\\";
+                setArtifactGacFile( gacRoot, artifact );
+                libraries.add( artifact );
+            }
+            else if ( type.equals( "gac_32" ) )
+            {
+                String gacRoot = (compilerRequirement.getVendor().equals( Vendor.MONO )) ?
+                    getGacRootForMono() : "C:\\WINDOWS\\assembly\\GAC_32\\";
+                setArtifactGacFile( gacRoot, artifact );
+                libraries.add( artifact );
+            }
+            else if ( type.equals( "gac_msil" ) )
+            {
+                String gacRoot = (compilerRequirement.getVendor().equals( Vendor.MONO )) ?
+                    getGacRootForMono() : "C:\\WINDOWS\\assembly\\GAC_MSIL\\";
+                setArtifactGacFile( gacRoot, artifact );
+                libraries.add( artifact );
             }
         }
 
@@ -349,5 +404,18 @@ public final class CompilerContextImpl
                 win32icon = icons[0];
             }
         }
+    }
+
+    private void setArtifactGacFile( String gacRoot, Artifact artifact )
+        throws PlatformUnsupportedException
+    {
+        File gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + File
+            .separator + artifact.getArtifactId() + ".dll" );
+        if ( !gacFile.exists() )
+        {
+            throw new PlatformUnsupportedException(
+                "NMAVEN-000-000: Could not find GAC dependency: File = " + gacFile.getAbsolutePath() );
+        }
+        artifact.setFile( gacFile );
     }
 }

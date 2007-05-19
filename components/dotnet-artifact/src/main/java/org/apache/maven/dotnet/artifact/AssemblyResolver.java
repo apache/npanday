@@ -21,10 +21,10 @@ package org.apache.maven.dotnet.artifact;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -46,8 +46,8 @@ public interface AssemblyResolver
      * @param project             the maven project
      * @param sourceArtifact      the artifact to which the resolved dependencies belong
      * @param dependencies        the list of dependencies of the specified artifact
-     * @param pomFile             the pom file of the specified artifact
-     * @param localRepositoryPath the path of the local Maven repository
+     * @param remoteArtifactRepositories
+     * @param localArtifactRepository
      * @param addResolvedDependenciesToProject
      *                            true, if the resolved dependencies should be added the the specified
      *                            maven project, otherwise false. This value should be set to false if it is resolving
@@ -57,10 +57,8 @@ public interface AssemblyResolver
      * @throws ArtifactResolutionException
      * @throws ArtifactNotFoundException
      */
-
     void resolveTransitivelyFor( MavenProject project, Artifact sourceArtifact, List<Dependency> dependencies,
-                                 File pomFile, String localRepositoryPath, boolean addResolvedDependenciesToProject )
+                                 List<ArtifactRepository> remoteArtifactRepositories, ArtifactRepository localArtifactRepository,
+                                 boolean addResolvedDependenciesToProject )
         throws ArtifactResolutionException, ArtifactNotFoundException;
-
-
 }

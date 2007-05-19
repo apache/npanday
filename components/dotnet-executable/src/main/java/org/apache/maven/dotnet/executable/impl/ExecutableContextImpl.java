@@ -19,7 +19,6 @@
 package org.apache.maven.dotnet.executable.impl;
 
 import org.apache.maven.dotnet.executable.*;
-import org.apache.maven.project.MavenProject;
 import org.apache.maven.dotnet.registry.Repository;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
@@ -28,14 +27,13 @@ import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LogEnabled;
 
 /**
+ * Provides an implementation of the executable context.
  *
  * @author Shane Isbell
  */
 public class ExecutableContextImpl
     implements ExecutableContext, LogEnabled
 {
-
-    private MavenProject project;
 
     private ExecutableRequirement executableRequirement;
 
@@ -49,6 +47,9 @@ public class ExecutableContextImpl
 
     private ExecutableConfig executableConfig;
 
+    /**
+     * A logger for writing log messages
+     */
     private Logger logger;
 
     public void enableLogging( Logger logger )
@@ -82,11 +83,6 @@ public class ExecutableContextImpl
         return netExecutable;
     }
 
-    public MavenProject getMavenProject()
-    {
-        return project;
-    }
-
     public CommandFilter getCommandFilter()
     {
         return commandFilter;
@@ -105,11 +101,9 @@ public class ExecutableContextImpl
     }
 
     public void init( ExecutableRequirement executableRequirement, ExecutableConfig executableConfig,
-                      MavenProject project, CapabilityMatcher capabilityMatcher )
+                      CapabilityMatcher capabilityMatcher )
         throws PlatformUnsupportedException
     {
-
-        this.project = project;
         this.executableRequirement = executableRequirement;
         this.executableConfig = executableConfig;
 

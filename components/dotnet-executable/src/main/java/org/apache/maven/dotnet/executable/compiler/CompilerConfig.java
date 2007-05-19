@@ -45,7 +45,12 @@ public interface CompilerConfig
      * @return true if the compiler plugin should compile the test classes, otherwise returns false.
      */
     boolean isTestCompile();
-    
+
+    /**
+     * Returns key info used for signing assemblies.
+     *
+     * @return key info used for signing assemblies
+     */
     KeyInfo getKeyInfo();
 
     /**
@@ -76,6 +81,11 @@ public interface CompilerConfig
      */
     void setLocalRepository( File localRepository );
 
+    /**
+     * Sets key info used for signing assemblies.
+     *
+     * @param keyInfo key info used for signing assemblies
+     */
     void setKeyInfo(KeyInfo keyInfo);
 
 }

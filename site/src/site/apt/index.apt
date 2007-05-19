@@ -5,7 +5,7 @@ About NMaven
  leverages Maven (and its plugin architecture) for the build
  lifecycle, making it a small, compiler-plugin-framework on top of the larger Maven build-framework.
 
-RoadMap
+Road Map
 
  The primary goal of NMaven is to provide a common Maven build environment across .NET compilers (C#, VB),
  vendors (Microsoft, Novell, DotGNU) and platforms (Windows, Linux). Specific, near-term goals include:
@@ -17,8 +17,6 @@ RoadMap
  * Support for Classifiers
 
  * IDE Support: Visual Studio and SharpDevelop
-
- * .NET Plugin Support (for writing Maven plugins in .NET).
 
 Reporting Bugs/Requesting Features
 

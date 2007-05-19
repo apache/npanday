@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Extensibility xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/AutomationExtensibility">
+  <HostApplication>
+    <Name>Microsoft Visual Studio</Name>
+    <Version>8.0</Version>
+  </HostApplication>
+  <Addin>
+    <Assembly>${localRepository}\NMaven\VisualStudio\NMaven.VisualStudio.Addin\0.14-SNAPSHOT\NMaven.VisualStudio.Addin.dll</Assembly>
+    <FullClassName>NMaven.VisualStudio.Addin.Connect</FullClassName>
+    <FriendlyName>NMaven.VisualStudio.Addin</FriendlyName>
+    <Description>NMaven provides Maven 2.x plugins to support building of .NET applications</Description>
+    <LoadBehavior>0</LoadBehavior>
+    <CommandLineSafe>0</CommandLineSafe>
+    <CommandPreload>1</CommandPreload>    
+  </Addin>
+</Extensibility>

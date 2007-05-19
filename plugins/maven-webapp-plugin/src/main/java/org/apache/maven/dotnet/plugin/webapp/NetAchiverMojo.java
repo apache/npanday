@@ -80,8 +80,6 @@ public class NetAchiverMojo
      */
     protected ArtifactMetadataSource src;
 
-    private List excludes;
-
     public void execute()
         throws MojoExecutionException
     {

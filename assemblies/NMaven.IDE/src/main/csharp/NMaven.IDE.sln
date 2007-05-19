@@ -1,0 +1,13 @@
+﻿Microsoft Visual Studio Solution File, Format Version 9.00
+# SharpDevelop 2.0.0.1710
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.IDE", "NMaven.IDE.csproj", "{f6d6becb-cfa4-411d-a67c-789cdcdd728f}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F6D6BECB-CFA4-411D-A67C-789CDCDD728F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6D6BECB-CFA4-411D-A67C-789CDCDD728F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+	EndGlobalSection
+EndGlobal

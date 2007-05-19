@@ -19,6 +19,7 @@
 package org.apache.maven.dotnet.executable;
 
 import org.apache.maven.dotnet.NMavenContext;
+import org.apache.maven.dotnet.vendor.Vendor;
 
 import java.util.List;
 import java.io.File;
@@ -53,9 +54,9 @@ public interface NetExecutable
         throws ExecutionException;
 
     /**
-     * Returns the executable that this compiler will use to compile the application.
+     * Returns the executable file name that this compiler will use to compile the application.
      *
-     * @return the executable that this compiler will use to compile the application
+     * @return the executable file name that this compiler will use to compile the application
      * @throws org.apache.maven.dotnet.executable.ExecutionException
      *
      */
@@ -63,7 +64,9 @@ public interface NetExecutable
         throws ExecutionException;
 
     /**
-     * @return excution path
+     * Returns the parent directory of the executable.
+     *
+     * @return the parent directory of the executable
      */
     File getExecutionPath();
 
@@ -73,5 +76,12 @@ public interface NetExecutable
      * @param nmavenContext
      */
     void init( NMavenContext nmavenContext );
+
+    /**
+     * Returns vendor framework used to run executable.
+     *
+     * @return vendor vendor framework used to run executable
+     */
+    Vendor getVendor();
 
 }

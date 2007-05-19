@@ -9,6 +9,14 @@
       <implementation>org.apache.maven.dotnet.embedder.impl.MavenExecutionRequestImpl</implementation>
     </component>
     <component>
+      <role>org.apache.maven.dotnet.embedder.MavenProject</role>
+      <implementation>org.apache.maven.dotnet.embedder.impl.MavenProjectImpl</implementation>
+    </component>
+    <component>
+      <role>org.apache.maven.dotnet.embedder.Artifact</role>
+      <implementation>org.apache.maven.dotnet.embedder.impl.ArtifactImpl</implementation>
+    </component>
+    <component>
       <role>org.codehaus.xfire.plexus.config.ConfigurationService</role>
       <implementation>org.codehaus.xfire.plexus.config.DefaultConfigurationService</implementation>
       <configuration>

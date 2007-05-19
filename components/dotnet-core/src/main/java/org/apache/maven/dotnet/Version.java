@@ -18,9 +18,13 @@
  */
 package org.apache.maven.dotnet;
 
+/**
+ * Provides access to the major, minor, build and revision version information.
+ *
+ * @author Shane Isbell
+ */
 public class Version
 {
-
     private int major;
 
     private int minor;

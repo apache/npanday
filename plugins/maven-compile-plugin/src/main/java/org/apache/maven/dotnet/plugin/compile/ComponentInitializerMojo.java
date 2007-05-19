@@ -23,10 +23,13 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 
 import org.apache.maven.dotnet.InitializationException;
 import org.apache.maven.dotnet.assembler.AssemblerContext;
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
+import org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout;
 
 import java.io.File;
 
@@ -51,7 +54,6 @@ public class ComponentInitializerMojo
 
     /**
      * @parameter expression="${settings.localRepository}"
-     * @required
      * @readonly
      */
     private String localRepository;
@@ -86,10 +88,20 @@ public class ComponentInitializerMojo
     public void execute()
         throws MojoExecutionException
     {
+        long startTime = System.currentTimeMillis();
+
+        if ( localRepository == null )
+        {
+            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" ).getAbsolutePath();
+        }
+
+        ArtifactRepository localArtifactRepository =
+            new DefaultArtifactRepository( "local", "file://" + localRepository, new AssemblyRepositoryLayout() );
         try
         {
-            assemblyResolver.resolveTransitivelyFor( project, project.getArtifact(), project.getDependencies(), pomFile,
-                                                     localRepository, true );
+            assemblyResolver.resolveTransitivelyFor( project, project.getArtifact(), project.getDependencies(),
+                                                     project.getRemoteArtifactRepositories(), localArtifactRepository,
+                                                     true );
         }
         catch ( ArtifactResolutionException e )
         {
@@ -108,5 +120,8 @@ public class ComponentInitializerMojo
         {
             throw new MojoExecutionException( "NMAVEN-901-002: Failed to initialize the assembler context" );
         }
+
+        long endTime = System.currentTimeMillis();
+        getLog().info( "Mojo Execution Time = " + ( endTime - startTime ) );
     }
 }

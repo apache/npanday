@@ -42,7 +42,7 @@ import org.apache.maven.dotnet.vendor.VendorUnsupportedException;
  *
  * @author Shane Isbell
  */
-public class SettingsRepository
+public final class SettingsRepository
     implements Repository
 {
 
@@ -144,7 +144,7 @@ public class SettingsRepository
     {
         if ( vendor == null || vendorVersion == null || frameworkVersion == null )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-104-001: One of more of the parameters is null: Vendor = " +
+            throw new PlatformUnsupportedException( "NMAVEN-104-004: One of more of the parameters is null: Vendor = " +
                 vendor + ", Vendor Version = " + vendorVersion + ", Framework Version = " + frameworkVersion );
         }
         for ( Vendor v : vendors )
@@ -162,8 +162,7 @@ public class SettingsRepository
                 }
             }
         }
-        throw new PlatformUnsupportedException( "NMAVEN-104-003: Unable to find install root: Vendor = " + vendor +
-            ", Vendor Version = " + vendorVersion + ", Framework Version = " + frameworkVersion );
+        return null;
     }
 
     /**
@@ -176,7 +175,7 @@ public class SettingsRepository
      * @return the install root for the .NET framework
      * @throws org.apache.maven.dotnet.PlatformUnsupportedException if there is no install root found for the specified parameters
      */
-    File getInstallRootFor( String vendor, String vendorVersion, String frameworkVersion )
+    public File getInstallRootFor( String vendor, String vendorVersion, String frameworkVersion )
         throws PlatformUnsupportedException
     {
         if ( vendor == null || vendorVersion == null || frameworkVersion == null )
@@ -212,5 +211,4 @@ public class SettingsRepository
     {
         return defaultSetup;
     }
-
 }

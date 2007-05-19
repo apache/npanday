@@ -127,12 +127,32 @@ final class VersionMatcher
         while ( i.hasNext() )
         {
             String testValue = (String) i.next();
-            if ( isGreaterThan( testValue, maxVersion ) )
+            if ( isGreaterThan(maxVersion, testValue ) )
             {
                 maxVersion = testValue;
             }
         }
         return maxVersion;
+    }
+
+    String getMinVersion( Set<String> versions )
+        throws InvalidVersionFormatException
+    {
+        if ( versions.isEmpty() )
+        {
+            return null;
+        }
+        Iterator i = versions.iterator();
+        String minVersion = (String) i.next();
+        while ( i.hasNext() )
+        {
+            String testValue = (String) i.next();
+            if ( isGreaterThan( testValue, minVersion ) )
+            {
+                minVersion = testValue;
+            }
+        }
+        return minVersion;
     }
 
     /**

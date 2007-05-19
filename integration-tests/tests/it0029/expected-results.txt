@@ -1,0 +1,2 @@
+target/it0029.dll
+target/remoteRepo/org/apache/maven/it/it0029/1.0.0

@@ -132,14 +132,17 @@ namespace NMaven.Core.Impl
 		                                       string baseIntermediateOutputPath,
 		                                       List<IProjectReference> projectReferences)
 		{
-			if(model == null || sourceFileDirectory == null || projectGuid == null)
+			if(model == null || sourceFileDirectory == null)
 			{
 				throw new ExecutionException("NMAVEN-000-000: Missing required parameter.");
 			}
             Engine engine = new Engine(@"C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727");
             Project project = new Project(engine);
-            
-            
+
+            Console.WriteLine("ProjectGuid = " + projectGuid.ToString() + ", RootNameSpace = " +
+                model.groupId + ", AssemblyName = " + assemblyName + ", BaseIntPath = " +
+                baseIntermediateOutputPath + ", OutputType = " + GetOutputType(model.packaging) + 
+                ", Packaging = " + model.packaging);
             //Main Properties
             BuildPropertyGroup groupProject = project.AddNewPropertyGroup(false);
             groupProject.AddNewProperty("ProjectGuid", "{" + projectGuid.ToString() + "}");
@@ -296,7 +299,8 @@ namespace NMaven.Core.Impl
 		
 		private string GetOutputType(String type)
 		{
-			if (type.Equals("library")) return "Library";
+			if (type.Equals("library") || type.Equals("netplugin") || type.Equals("visual-studio-addin")
+                || type.Equals("sharp-develop-addin")) return "Library";
 			else if (type.Equals("exe")) return "Exe";
 			else if (type.Equals("winexe")) return "WinExe";
 			else if (type.Equals("module")) return "Module";
@@ -305,7 +309,7 @@ namespace NMaven.Core.Impl
 		
 		private string GetExtension(String type)
 		{
-			if (type.Equals("library")) return "dll";
+			if (type.Equals("library") || type.Equals("netplugin") ) return "dll";
 			else if (type.Equals("exe")) return "exe";
 			else if (type.Equals("winexe")) return "exe";
 			else if (type.Equals("module")) return "netmodule";
@@ -342,12 +346,9 @@ namespace NMaven.Core.Impl
 			        {
 			            Console.WriteLine(e.Message);
 			        }
-
 				}
-				
 				return dependencies;
-			}
-		
+			}		
 		}		
 	}
 }

@@ -1,0 +1,39 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.maven.it</groupId>
+  <artifactId>it0028</artifactId>
+  <packaging>library</packaging>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>it0028</name>
+  <build>
+    <sourceDirectory>src/main/csharp</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.it</groupId>
+      <artifactId>it0026</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <type>library</type>
+    </dependency>
+  </dependencies>
+  <distributionManagement>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>snapshot repo</id>
+      <name>snapshot repo</name>
+      <url>file://${basedir}/target/remoteSnapshotRepo/snapshots</url>
+      <layout>default</layout>
+    </snapshotRepository>
+  </distributionManagement>
+</project>

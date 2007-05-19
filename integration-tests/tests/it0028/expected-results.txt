@@ -1,0 +1,2 @@
+target/it0028.dll
+target/remoteSnapshotRepo/snapshots/org/apache/maven/it/it0028/1.0.0-SNAPSHOT

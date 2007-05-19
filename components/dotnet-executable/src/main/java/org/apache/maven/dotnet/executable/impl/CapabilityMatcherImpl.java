@@ -37,6 +37,9 @@ import org.apache.maven.dotnet.registry.RepositoryRegistry;
 public class CapabilityMatcherImpl
     implements CapabilityMatcher, LogEnabled
 {
+    /**
+     * A logger for writing log messages
+     */
     private Logger logger;
 
     private RepositoryRegistry repositoryRegistry;

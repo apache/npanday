@@ -67,7 +67,8 @@ public interface ApplicationConfig
          * @return the application config for the specified artifact
          */
         public static ApplicationConfig createDefaultApplicationConfig( final Artifact artifact,
-                                                                        final MavenProject project )
+                                                                        final File projectBaseDirectory,
+                                                                        final File projectBuildDirectory)
         {
             return new ApplicationConfig()
             {
@@ -75,13 +76,13 @@ public interface ApplicationConfig
                 public String getConfigSourcePath()
                 {
                     return new File(
-                        project.getBasedir() + "/src/main/config/" + artifact.getArtifactId() + ".exe.config" )
+                        projectBaseDirectory + "/src/main/config/" + artifact.getArtifactId() + ".exe.config" )
                         .getAbsolutePath();
                 }
 
                 public String getConfigDestinationPath()
                 {
-                    return project.getBuild().getDirectory() + File.separator + artifact.getArtifactId() +
+                    return projectBuildDirectory + File.separator + artifact.getArtifactId() +
                         ".exe.config";
                 }
             };

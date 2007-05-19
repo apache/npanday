@@ -1,0 +1,6 @@
+<archetype>
+  <id>maven-archetype-netexecutable</id>
+  <sources>
+    <source>src/main/java/NetExecutableMojo.java</source>
+  </sources>
+</archetype>

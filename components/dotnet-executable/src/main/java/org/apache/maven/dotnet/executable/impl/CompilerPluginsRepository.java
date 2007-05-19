@@ -38,7 +38,6 @@ import org.apache.maven.dotnet.model.compiler.plugins.CompilerPlugin;
 import org.apache.maven.dotnet.model.compiler.plugins.Platform;
 import org.apache.maven.dotnet.model.compiler.plugins.CommandFilter;
 
-
 /**
  * Repository for reading and providing access to the compiler-plugins.xml config file.
  *
@@ -47,9 +46,15 @@ import org.apache.maven.dotnet.model.compiler.plugins.CommandFilter;
 public final class CompilerPluginsRepository
     implements Repository
 {
-
+    /**
+     * List<org.apache.maven.dotnet.model.compiler.plugins.CompilerPlugin> of compiler plugins pulled from the 
+     * compiler-plugins.xml file.
+     */
     private List compilerPlugins;
 
+    /**
+     * @see Repository#load(java.io.InputStream, java.util.Hashtable)
+     */
     public void load( InputStream inputStream, Hashtable properties )
         throws IOException
     {
@@ -68,6 +73,9 @@ public final class CompilerPluginsRepository
         compilerPlugins = plugins.getCompilerPlugins();
     }
 
+    /**
+     * @see Repository#setRepositoryRegistry(org.apache.maven.dotnet.registry.RepositoryRegistry)
+     */
     public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
     {
     }

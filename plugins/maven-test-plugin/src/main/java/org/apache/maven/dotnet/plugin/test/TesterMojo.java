@@ -22,6 +22,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.util.ArrayList;
@@ -33,6 +37,8 @@ import java.io.File;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.vendor.Vendor;
 import org.apache.maven.dotnet.executable.CommandExecutor;
+import org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout;
+import org.apache.maven.dotnet.artifact.AssemblyResolver;
 
 
 /**
@@ -91,6 +97,17 @@ public class TesterMojo
      */
     private String testAssemblyPath;
 
+    /**
+     * @component
+     */
+    private AssemblyResolver assemblyResolver;
+
+    /**
+     * @parameter expression="${settings.localRepository}"
+     * @readonly
+     */
+    private String localRepository;
+
 
     public String getExecutableFor( Vendor vendor, String home )
     {
@@ -103,6 +120,11 @@ public class TesterMojo
     {
         String finalName = project.getBuild().getFinalName();
         List<String> commands = new ArrayList<String>();
+        if(testAssemblyPath.startsWith( "/"))//nunit-console thinks *nix file format /home/user/ is an option due to / and fails.
+        {
+            testAssemblyPath = "/" + testAssemblyPath;            
+        }
+
         commands.add( testAssemblyPath + File.separator + project.getArtifactId() + "-test.dll" );
         commands.add( "/xml:" + reportsDirectory + File.separator + "TEST-" + finalName + ".xml" );
 
@@ -135,10 +157,33 @@ public class TesterMojo
             return;
         }
 
+        ArtifactRepository localArtifactRepository =
+            new DefaultArtifactRepository( "local", "file://" + localRepository, new AssemblyRepositoryLayout() );
+        try
+        {
+            assemblyResolver.resolveTransitivelyFor( project, project.getArtifact(), project.getDependencies(),
+                                                     project.getRemoteArtifactRepositories(), localArtifactRepository,
+                                                     true );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-901-000: Unable to resolve assemblies", e );
+        }
+        catch ( ArtifactNotFoundException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-901-001: Unable to resolve assemblies", e );
+        }
+
         List<Artifact> nunitLibs = new ArrayList<Artifact>();
         Set<Artifact> artifacts = project.getDependencyArtifacts();
+
         for ( Artifact artifact : artifacts )
         {
+            if(artifact.getType().startsWith( "gac"))
+            {
+                continue;
+            }
+
             if ( artifact.getGroupId().equals( "NUnit" ) )
             {
                 nunitLibs.add( artifact );
@@ -151,7 +196,7 @@ public class TesterMojo
                 }
                 catch ( IOException e )
                 {
-                    throw new MojoExecutionException( "NMAVEN-1100-002", e );
+                    throw new MojoExecutionException( "NMAVEN-1100-002: Artifact = " + artifact.toString(), e );
                 }
             }
         }
@@ -206,7 +251,6 @@ public class TesterMojo
         List<String> commands = getCommandsFor( null );
         getLog().debug( "NMAVEN-1100-008: " + commands.toString() );
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        //commandExecutor.setLog(getLog());
         try
         {
             commandExecutor.executeCommand( getExecutableFor( null, null ), commands );

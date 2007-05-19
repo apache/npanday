@@ -21,23 +21,26 @@ package org.apache.maven.dotnet.executable.impl;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.executable.*;
 import org.apache.maven.dotnet.NMavenContext;
-import org.apache.maven.project.MavenProject;
+import org.apache.maven.dotnet.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
 import java.util.List;
 import java.io.File;
 
 /**
+ * Provides the default implementation of the net executable.
+ *
  * @author Shane Isbell
  */
 public class DefaultNetExecutable
     implements NetExecutable
 {
 
-    private ExecutableContext executableContext;
+    protected ExecutableContext executableContext;
 
-    private MavenProject project;
-
+    /**
+     * A logger for writing log messages
+     */
     private Logger logger;
 
     public List<String> getCommands()
@@ -63,10 +66,10 @@ public class DefaultNetExecutable
         {
             for ( String executablePath : executablePaths )
             {
-                File exe = new File( executablePath + File.separator +  executable);
+                File exe = new File( executablePath + File.separator + executable );
                 if ( exe.exists() )
                 {
-                    return new File(executablePath);
+                    return new File( executablePath );
                 }
             }
         }
@@ -86,11 +89,13 @@ public class DefaultNetExecutable
         }
         catch ( ExecutionException e )
         {
-            throw new ExecutionException( "NMAVEN-063-000: Command = " + commands, e );
+            throw new ExecutionException( "NMAVEN-070-000: Execution Path = " +
+                ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Command = " +
+                commands, e );
         }
         if ( commandExecutor.getStandardOut().contains( "error" ) )
         {
-            throw new ExecutionException( "NMAVEN-063-001: Command = " + commands );
+            throw new ExecutionException( "NMAVEN-070-001: Command = " + commands );
         }
     }
 
@@ -99,15 +104,19 @@ public class DefaultNetExecutable
     {
         if ( executableContext == null )
         {
-            throw new ExecutionException( "NMAVEN-063-002: Executable has not been initialized with a context" );
+            throw new ExecutionException( "NMAVEN-070-002: Executable has not been initialized with a context" );
         }
         return executableContext.getExecutableCapability().getExecutable();
+    }
+
+    public Vendor getVendor()
+    {
+        return executableContext.getExecutableCapability().getVendor();
     }
 
     public void init( NMavenContext nmavenContext )
     {
         this.executableContext = (ExecutableContext) nmavenContext;
-        this.project = executableContext.getMavenProject();
         this.logger = executableContext.getLogger();
     }
 }

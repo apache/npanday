@@ -19,6 +19,9 @@
 package org.apache.maven.dotnet.artifact;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.model.Dependency;
@@ -60,14 +63,15 @@ public interface ArtifactInstaller
      * Installs a non-maven artifact into the local maven repository so that the artifact can be used within
      * a Maven build process.
      *
-     * @param groupId    the group id of the artifact to install
-     * @param artifactId the artifact id of the artifact to install
-     * @param version    the version of the artifact to install
-     * @param packaging  the packaging type of the artifact to install
-     * @param artifactFile    the artifact to install
+     * @param groupId      the group id of the artifact to install
+     * @param artifactId   the artifact id of the artifact to install
+     * @param version      the version of the artifact to install
+     * @param packaging    the packaging type of the artifact to install
+     * @param artifactFile the artifact to install
      * @throws ArtifactInstallationException if there is a problem installing the artifact
      */
-    void installFile( String groupId, String artifactId, String version, String packaging, File artifactFile )
+    void installFileWithGeneratedPom( String groupId, String artifactId, String version, String packaging,
+                                      File artifactFile )
         throws ArtifactInstallationException;
 
     /**
@@ -84,14 +88,29 @@ public interface ArtifactInstaller
         throws ArtifactInstallationException;
 
     /**
-     * Installs the dependent libraries (or assemblies) of the specified artifact. 
+     * Installs the dependent libraries (or assemblies) of the specified artifact.
      *
-     * @param artifact the artifact associated with the specified dependencies
+     * @param artifact     the artifact associated with the specified dependencies
      * @param dependencies a list of dependencies of the specified artifact
      * @throws ArtifactInstallationException if there is a problem installing the artifact
      */
     void installLibraryDependencies( Artifact artifact, List<Dependency> dependencies )
         throws ArtifactInstallationException;
+
+    /**
+     * Resolves the specified artifact (and its dependencies) and installs the artifact's dependencies into the
+     * artifact's directory within the local repository. This method should be used for exe, winexe and
+     * netplugins.
+     *
+     * @param dependency the dependency to resolve
+     * @throws ArtifactInstallationException
+     * @throws ArtifactNotFoundException
+     */
+    void resolveAndInstallLibraryDependenciesFor( Dependency dependency )
+        throws ArtifactInstallationException , ArtifactNotFoundException;
+
+    void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> dependencies )
+        throws ArtifactResolutionException, ArtifactNotFoundException, ArtifactInstallationException;    
 
     /**
      * Copies .netmodules, that the project is dependenct upon, from the local repo to the project's target directory.
@@ -108,9 +127,15 @@ public interface ArtifactInstaller
      * Initializes the installer.
      *
      * @param artifactContext the artifact context associated with this installer
-     * @param mavenProject    the maven project associated with the invoking plugin
+
+
+     @param mavenProject    the maven project associated with the invoking plugin
+
+
+      * @param remoteArtifactRepositories
      * @param localRepository the location of the local maven repository
      */
-    void init( ArtifactContext artifactContext, MavenProject mavenProject, File localRepository );
+    void init( ArtifactContext artifactContext, MavenProject mavenProject,
+               List<ArtifactRepository> remoteArtifactRepositories, File localRepository );
 
 }

@@ -1,0 +1,42 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{B18F99C3-157F-431F-B10B-76162AB08C83}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NMaven.IDE</RootNameSpace>
+    <AssemblyName>NMaven.IDE</AssemblyName>
+    <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="NMaven.Logging">
+      <HintPath>C:\Documents and Settings\shane\.m2\repository\NMaven\Logging\NMaven.Logging\0.14\NMaven.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Service.Embedder">
+      <HintPath>C:\Documents and Settings\shane\.m2\repository\NMaven\Service\NMaven.Service.Embedder\0.14\NMaven.Service.Embedder.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NMaven\IDE\Commands\BuildCommand.cs" />
+    <Compile Include="NMaven\IDE\Controls\MavenBuildControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NMaven\IDE\Factory.cs" />
+    <Compile Include="NMaven\IDE\IIdeConfiguration.cs" />
+    <Compile Include="NMaven\IDE\IIdeContext.cs" />
+    <Compile Include="NMaven\IDE\Impl\IdeContextImpl.cs" />
+    <Compile Include="NMaven\IDE\View\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\IDE\View\MainForm.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

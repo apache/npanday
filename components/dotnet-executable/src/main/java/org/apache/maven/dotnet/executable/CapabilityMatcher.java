@@ -18,14 +18,11 @@
  */
 package org.apache.maven.dotnet.executable;
 
-import org.apache.maven.dotnet.InitializationException;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
 import org.apache.maven.dotnet.executable.compiler.CompilerRequirement;
 import org.apache.maven.dotnet.executable.compiler.CompilerCapability;
 
 import java.util.List;
-
-import org.apache.maven.project.MavenProject;
 
 /**
  * Provides factory services for creating capabilities (based on user-defined requirements) for compilers and executables.

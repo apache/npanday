@@ -1,0 +1,33 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{4A98C259-4EDA-46B1-B2A5-C6AD0B47D7B3}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NMaven.Artifact</RootNameSpace>
+    <AssemblyName>NMaven.Artifact</AssemblyName>
+    <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NMaven.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\.m2\repository\NMaven\Model\NMaven.Model.Pom\0.14\NMaven.Model.Pom.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NMaven\Artifact\Artifact.cs" />
+    <Compile Include="NMaven\Artifact\ArtifactContext.cs" />
+    <Compile Include="NMaven\Artifact\ArtifactRepositoryLayout.cs" />
+    <Compile Include="NMaven\Artifact\ArtifactScope.cs" />
+    <Compile Include="NMaven\Artifact\AssemblyRepositoryLayout.cs" />
+    <Compile Include="NMaven\Artifact\JavaRepositoryLayout.cs" />
+    <Compile Include="NMaven\Artifact\RepositoryType.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

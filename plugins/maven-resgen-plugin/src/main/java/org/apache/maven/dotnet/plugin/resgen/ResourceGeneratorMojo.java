@@ -46,9 +46,8 @@ public class ResourceGeneratorMojo
 
     /**
      * @parameter expression="${settings.localRepository}"
-     * @required
      */
-    private String localRepository;
+    private File localRepository;
 
     /**
      * The maven project.
@@ -107,8 +106,22 @@ public class ResourceGeneratorMojo
             return;
         }
 
-        File sourceDirectory = new File(
-            project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator + "resgen" );
+        if ( localRepository == null )
+        {
+            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
+        }
+
+        /*
+        * We should do this check at a lower level (to keep consistent behavior with the nmaven-settings.xml)
+        * but we do not currently support the execution of specific plugins based on vendor info.
+        */
+        if ( vendor != null && vendor.equals( "DotGNU" ) )
+        {
+            getLog().info( "NMAVEN-1501-005: Unsupported Plugin" );
+            return;
+        }
+
+        File sourceDirectory = new File( project.getBuild().getDirectory(), "/assembly-resources/resgen" );
         if ( !sourceDirectory.exists() )
         {
             return;
@@ -138,8 +151,8 @@ public class ResourceGeneratorMojo
             }
             vendorInfo.setFrameworkVersion( frameworkVersion );
             vendorInfo.setVendorVersion( vendorVersion );
-            netExecutableFactory.getNetExecutableFromRepository( "NMaven.Plugin", "NMaven.Plugin.Resx", vendorInfo,
-                                                                 project, localRepository, commands ).execute();
+            netExecutableFactory.getNetExecutableFromRepository( "NMaven.Plugins", "NMaven.Plugin.Resx", vendorInfo,
+                                                                 localRepository, commands, false ).execute();
         }
         catch ( PlatformUnsupportedException e )
         {
@@ -156,7 +169,7 @@ public class ResourceGeneratorMojo
 
         try
         {
-            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, "RESGEN", project, getCommands(),
+            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, "RESGEN", getCommands(),
                                                       netHome ).execute();
         }
         catch ( ExecutionException e )

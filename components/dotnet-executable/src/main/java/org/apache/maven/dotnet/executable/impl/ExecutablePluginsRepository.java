@@ -38,12 +38,17 @@ import org.apache.maven.dotnet.executable.CommandCapability;
 import org.apache.maven.dotnet.vendor.Vendor;
 
 /**
+ * Provides services for accessing the executable information within the executable-plugins.xml file.
+ *
  * @author Shane Isbell
  */
 public final class ExecutablePluginsRepository
     implements Repository
 {
 
+    /**
+     * A list of executable capabilities as specified within the executable-plugins.xml file
+     */
     private List<ExecutablePlugin> executablePlugins;
 
     /**
@@ -75,6 +80,11 @@ public final class ExecutablePluginsRepository
     {
     }
 
+    /**
+     * Returns a list of executable capabilities as specified within the executable-plugins.xml file.
+     *
+     * @return a list of executable capabilities as specified within the executable-plugins.xml file
+     */
     List<ExecutableCapability> getCapabilities()
     {
         List<ExecutableCapability> platformCapabilities = new ArrayList<ExecutableCapability>();

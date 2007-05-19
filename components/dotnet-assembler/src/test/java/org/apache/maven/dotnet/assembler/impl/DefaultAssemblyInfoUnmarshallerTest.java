@@ -19,7 +19,7 @@ public class DefaultAssemblyInfoUnmarshallerTest
         try
         {
             fis = new FileInputStream(
-                basedir + "/src/test/resources/AssemblyInfo.cs" );
+                "src/test/resources/AssemblyInfo.cs" );
         }
         catch ( FileNotFoundException e )
         {

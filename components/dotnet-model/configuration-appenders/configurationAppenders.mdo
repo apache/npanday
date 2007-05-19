@@ -1,0 +1,38 @@
+<model>
+  <id>configurationappenders</id>
+  <name>ConfigurationAppenders</name>
+  <description></description>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>org.apache.maven.dotnet.model.configurationappenders</value>
+    </default>
+  </defaults>
+  <classes>
+    <class rootElement="true">
+      <name>ConfigurationAppenderModel</name>
+      <fields>
+        <field>
+          <name>configurationAppenders</name>
+          <description></description>
+          <association>
+            <type>ConfigurationAppender</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class xml.tagName="configurationAppender">
+      <name>ConfigurationAppender</name>
+      <fields>
+        <field>
+          <name>name</name>
+          <version>1.0.0</version>
+          <type>String</type>
+          <description></description>
+        </field>
+      </fields>
+    </class>
+
+  </classes>
+</model>

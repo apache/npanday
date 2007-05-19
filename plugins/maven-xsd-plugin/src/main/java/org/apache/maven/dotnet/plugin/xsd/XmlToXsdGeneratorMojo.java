@@ -117,7 +117,7 @@ public class XmlToXsdGeneratorMojo
         FileUtils.mkdir( outputDirectory );
         try
         {
-            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, project, getCommands(),
+            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, getCommands(),
                                                       netHome ).execute();
         }
         catch ( ExecutionException e )

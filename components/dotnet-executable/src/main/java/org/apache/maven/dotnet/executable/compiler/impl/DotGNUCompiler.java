@@ -36,7 +36,6 @@ import org.apache.maven.artifact.Artifact;
 public final class DotGNUCompiler
     extends BaseCompiler
 {
-
     public boolean failOnErrorOutput()
     {
         return true;
@@ -55,7 +54,7 @@ public final class DotGNUCompiler
 
         String sourceDirectory = compilerContext.getSourceDirectoryName();
         String artifactFilePath = compilerContext.getArtifact().getAbsolutePath();
-        String targetArtifactType = config.getArtifactType().getArtifactTypeName();
+        String targetArtifactType = config.getArtifactType().getTargetCompileType();
 
         List<String> commands = new ArrayList<String>();
         commands.add( "/out:" + artifactFilePath );

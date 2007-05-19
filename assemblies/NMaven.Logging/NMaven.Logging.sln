@@ -1,0 +1,6 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+# SharpDevelop 2.1.0.2376
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.Logging", "C:\Documents and Settings\shane\nmaven-apache\SI_XPT\assemblies\NMaven.Logging\src\main\csharp\NMaven.Logging.csproj", "{23518384-4dea-4794-bfab-dfa89f4c42c0}"
+EndProject

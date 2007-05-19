@@ -35,7 +35,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
  *
  * @author Shane Isbell
  */
-public class StateMachineProcessorImpl
+public final class StateMachineProcessorImpl
     implements StateMachineProcessor, LogEnabled, Initializable
 {
 

@@ -20,7 +20,10 @@ package org.apache.maven.dotnet.executable;
 
 import org.apache.maven.dotnet.NMavenContext;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
+import org.apache.maven.dotnet.vendor.Vendor;
 import org.apache.maven.project.MavenProject;
+
+import java.io.File;
 
 /**
  * Provides services for executables.
@@ -75,12 +78,11 @@ public interface ExecutableContext
      *
      * @param executableRequirement
      * @param executableConfig
-     * @param project the maven project
      * @param capabilityMatcher
      * @throws org.apache.maven.dotnet.PlatformUnsupportedException
      *
      */
-    void init( ExecutableRequirement executableRequirement, ExecutableConfig executableConfig, MavenProject project,
+    void init( ExecutableRequirement executableRequirement, ExecutableConfig executableConfig,
                CapabilityMatcher capabilityMatcher )
         throws PlatformUnsupportedException;
 

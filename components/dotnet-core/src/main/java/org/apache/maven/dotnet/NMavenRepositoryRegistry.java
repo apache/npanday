@@ -22,7 +22,6 @@ import org.apache.maven.dotnet.registry.RepositoryRegistry;
 
 import java.io.IOException;
 
-
 /**
  * @author Shane Isbell
  */
