@@ -18,6 +18,11 @@ under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>org.apache.maven.dotnet</groupId>
+    <version>0.14-SNAPSHOT</version>
+    <artifactId>dotnet-project</artifactId>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>dotnet-project</artifactId>
@@ -25,30 +30,7 @@ under the License.
   <version>0.14-SNAPSHOT</version>
   <name>dotnet</name>
   <modules>
-    <module>components</module>
-    <module>plugins</module>
-    <module>archetypes</module>    
+    <module>maven-archetype-dotnet-simple</module>
+    <module>maven-archetype-netexecutable</module>     
   </modules>
-  <repositories>
-    <repository>
-      <id>apache.org</id>
-      <name>Maven Snapshots</name>
-      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-  <distributionManagement>
-    <snapshotRepository>
-      <uniqueVersion>true</uniqueVersion>
-      <id>snapshot repo</id>
-      <name>snapshot repo</name>
-      <url>file://${deploy.directory}</url>
-      <layout>default</layout>
-    </snapshotRepository>
-  </distributionManagement>
 </project>
