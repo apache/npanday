@@ -29,7 +29,7 @@ Sections
   [[1]] {{{ http://java.sun.com/javase/downloads/index_jdk5.jsp} JDK 5.0 Update x}}
 
   [[2]] {{{http://msdn2.microsoft.com/en-us/netframework/default.aspx} Microsoft .NET Framework}} (2.0+)
-  OR {{{http://www.mono-project.com} Mono}} (1.1.13+ for Windows and 1.1.18+ for Linux). Note that the 2.0+ framework
+  OR {{{http://www.mono-project.com} Mono}} (1.2.3.1+). Note that the 2.0+ framework
   (either MONO or Microsoft) is required to run NMaven but you can still target 1.1 for your builds provided that the 1.1 version
   is installed.
 
@@ -38,23 +38,47 @@ Sections
 
   [[4]] {{{http://nunit.org/index.php?p=download} NUnit 2.2+}}.
 
-  [[5]] {{{http://maven.apache.org/download.html} Maven 2.0.5 or higher}}
+  [[5]] {{{http://maven.apache.org/download.html} Maven 2.0.4 or higher}}
 
   [[]]
 
-  If you are planning on using NMaven with Visual Studio 2005 you will also need VS installed
-  prior to building NMaven. Since NMaven does not directly use any Sharp Develop APIs (yet), you do not need Sharp Develop
-  installed prior to a build.
+  If you are planning on using NMaven with Visual Studio 2005, you will also need VS installed
+  prior to building NMaven.
 
 ** Bootstrap Build
 
   To build NMaven:
 
-  [[1]] Do an SVN checkout: svn co https://svn.apache.org/repos/asf/incubator/nmaven/trunk nmaven.
+  [[1]] Do an SVN checkout
 
-  [[2]] If compiling on Windows:
+     [[a]] For the latest, unstable version:
 
-   [[a]] the csc executable directory should be located on the system path. This is only needed for the initial bootstrap build
++----+
+svn co https://svn.apache.org/repos/asf/incubator/nmaven/trunk nmaven
++----+
+
+     [[b]] For a stable version:
+
++----+
+svn ls https://svn.apache.org/repos/asf/incubator/nmaven/tags
++----+
+
+      You will see something like:
+
++----+
+STABLE-2007-05-18/
+STABLE-2007-05-20/
++----+
+
+      Choose the latest stable date, which in this case is:
+
++----+
+svn co https://svn.apache.org/repos/asf/incubator/nmaven/tags/STABLE-2007-05-20 nmaven
++----+
+
+  [[2]] If compiling on Windows with either Microsoft or Mono:
+
+   [[a]] the csc (or gmcs) executable directory should be located on the system path. This is only needed for the initial bootstrap build
    and may be removed afterwards.
 
    [[b]] the directory path containing nunit-console should also be located on the system path. After the bootstrap build, you should leave
@@ -62,10 +86,10 @@ Sections
    {{{getting-started.html#Unit Testing with NUnit}Unit Testing with NUnit}}
 
    [[c]] If using Mono on Windows, both the csc executable and the nunit-console executable are located within the same path:
-   typically something like "C:\Program Files\Mono-1.1.18\bin"
+   typically something like "C:\Program Files\Mono-1.2.3.1\bin"
 
   [[3]] Execute bootstrap-build.bat (or bootstrap-build.sh) from the nmaven directory. If you want to compile with
-  Visual Studio 2005 support execute: bootstrap-build.bat -DVisualStudio2005
+  Visual Studio 2005 support (Windows only) execute: bootstrap-build.bat -DVisualStudio2005
 
  During step (1), you may receive an error similar to the following:
 
@@ -107,10 +131,11 @@ Java(TM) 2 Runtime Environment, Standard Edition (build 1.5.0_09-b01)
 Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
 +----+
 
- On Linux, you also need Mono version 1.1.18 or higher. Type "mono -V" on the command line to see what version you
- are running. If it is below 1.1.18, then download the latest mono version, unzip and run rpm from the commandline.
+ On Linux, you also need Mono version 2.1.3.1 or higher. Type "mono -V" on the command line to see what version you
+ are running. If it is below 2.1.3.1, then download the latest mono version, unzip and run rpm from the commandline.
  Detailed instructions are located here:
- {{{ http://www.mono-project.com/Getting_Mono}Installing Mono}}
+ {{{ http://www.mono-project.com/Getting_Mono}Installing Mono}}. Make sure that su to root before installing with these
+ instructions!
 
 * {Assembly Info}
 
@@ -136,6 +161,8 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
  1.3.4 or 1.2-SNAPSHOT. 1.2-RC1 is invalid because NMaven would not recognize the RC1 identifier. The SNAPSHOT
  within the version will not be included within the file name, but rather is contained both within the InformationalVersion attribute of the
  AssemblyInfo class and within the pom.xml file.
+
+ Due to a bug, SNAPSHOTS are only supported for C#: {{{http://jira.codehaus.org/browse/NMAVEN-62} NMAVEN-62}}
 
 * {Unit Testing with NUnit}
 
@@ -238,7 +265,7 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
 
 +----+
 
- You also have the option of changing changing the framework version by modifying the default setup within the nmaven-settings.xml file. See
+ You also have the option of changing the framework version by modifying the default setup within the nmaven-settings.xml file. See
  {{{getting-started.html#Using NMaven Settings File}Using NMaven Settings File}}.
 
  To disable the NUnit tests, add the system property -Dmaven.test.skip=true to the command line. You can also disable
@@ -253,8 +280,8 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
  ASPX files.
 
  You will only need to add the nmaven-webapp-plugin to the pom if you are planning on deploying the web application. In
- that case, add the deployPath pom configuration as shown below. Type "mvn deploy" from the command line and NMaven will
- copy the web application to the deployPath location.
+ that case, add the <<deployPath>> pom configuration as shown below. Type "mvn deploy" from the command line and NMaven will
+ copy the web application to the <<deployPath>> location.
 
 +----+
 
@@ -273,7 +300,6 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
             <version>2.0.0</version>
         </dependency>
     </dependencies>
-
     <build>
         <sourceDirectory>src/main/csharp</sourceDirectory>
         <testSourceDirectory>src/test/csharp</testSourceDirectory>
@@ -331,7 +357,8 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
     </dependencies>
 +----+
 
- Note that there is no current support for the use of classifiers within NMaven.
+ Note that there is no current support for the use of classifiers within NMaven:
+ {{{http://jira.codehaus.org/browse/NMAVEN-2} NMAVEN-2}}
 
 * {Generating Resources}
 
@@ -384,6 +411,15 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
  NMaven in determining the capabilities of the build platform and in choosing the correct compiler and vendor for the
  build. By going into the defaultSetup tag, you can change which vendor and framework version that NMaven will use
  without needing to specify this information within the various pom.xml files.
+
+ The nmaven-settings default values will be ignored if they are specified either through the command line of the pom file.
+ The values that NMaven uses for building and testing, in order of priority, are
+
+  [[1]] commandline: -Dvendor, -DframeworkVersion, -DvendorVersion
+
+  [[2]] pom.xml file configuration of the compiler
+
+  [[3]] nmaven-settings.xml file
 
  In the case of Linux, there is no registry so the nmaven-settings.xml file is not automatically generated. You may,
  however, create one by hand, allowing you to specify the location of DotGNU and Mono implementations.

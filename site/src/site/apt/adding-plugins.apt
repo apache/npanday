@@ -11,7 +11,7 @@ Adding Compilers
 
  Of course, if your compiler does not work with the <<<org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler>>>, you will also need to
  create your own implementation of <<<org.apache.maven.dotnet.executable.compiler.CompilerExecutable>>> and add the
- fully-qualified class name implementation to the pluginClass tag.
+ fully-qualified class name implementation to the <<pluginClass>> tag.
 
 * compiler-plugins.xml
 

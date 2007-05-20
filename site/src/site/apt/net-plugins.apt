@@ -1,4 +1,4 @@
-Writing .NET Mojos
+Writing .NET Mojos (Microsoft Only)
 
  The first thing to do is to create an implementation of the NMaven.Plugin.AbstractMojo class. You will need to become
  familiar with two attributes:

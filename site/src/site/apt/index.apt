@@ -2,24 +2,28 @@ About NMaven
 
  NMaven provides Maven 2.x plugins to support building of .NET applications. NMaven is its own framework
  that provides the correct .NET compiler based on the environment (vendor/language/operating system).  This framework
- leverages Maven (and its plugin architecture) for the build
- lifecycle, making it a small, compiler-plugin-framework on top of the larger Maven build-framework.
+ leverages Maven for the build lifecycle, making it a small, compiler-plugin-framework on top of the larger Maven build-framework.
+
+ NMaven originally started as a project on Sourceforge in September 2006. Over the course of 2 months, it went 
+ through 13 small releases.
 
 Road Map
 
  The primary goal of NMaven is to provide a common Maven build environment across .NET compilers (C#, VB),
  vendors (Microsoft, Novell, DotGNU) and platforms (Windows, Linux). Specific, near-term goals include:
 
- * .NET Integration Test module
+ * Browse Maven repository and add/delete dependencies through IDE (VS2005/SharpDevelop)
 
- * Expanded Support for Assembly Signing
- 
- * Support for Classifiers
+ * Write .NET Maven plugins with Mono (Similar to the one for Microsoft)
 
- * IDE Support: Visual Studio and SharpDevelop
+ * Generate project templates through archetypes
+
+ []
+
+ Click here for a complete {{{http://docs.codehaus.org/display/MAVENUSER/Roadmap} Road Map }}
 
 Reporting Bugs/Requesting Features
 
  * {{{http://jira.codehaus.org/browse/NMAVEN} NMaven Issue Tracking}}
 
- * {{{mailto:nmaven-dev@incubator.apache.org} Post to Mailing List}} 
+ * {{{mailto:nmaven-dev@incubator.apache.org} Post to Mailing List}}

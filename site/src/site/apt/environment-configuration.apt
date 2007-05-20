@@ -163,6 +163,9 @@ Sections
 
  The <<<CompilerExecutable>>> is returned to the <<<CompilerMojo>>> (16, 17, 18), which then executes the Compiler (19).
 
+ For those curious enough, if you add the -X full debug output flag, say "mvn install -X", you will see NMaven write out the states it goes through
+ in choosing the vendor info.
+
 {Sample Configuration Files}
 
 * CSharp2.0:exe:Microsoft

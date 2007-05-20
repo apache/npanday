@@ -1,4 +1,6 @@
-Features
+Key Features
+
+* Platforms
 
  * Mono Support: C#, Nemerle, PHP
 
@@ -8,9 +10,13 @@ Features
 
  * Multiple Framework Version Support: 1.1, 2.0, 3.0
 
- * NUnit support
+ * Pluggable architecture for adding new compilers and executables.
 
- * Writing Maven Plugins in .NET
+ * nmaven-settings file for selecting the environment (MONO/MS/GNU, vendor/framework version, install location, etc)
+
+* Other
+
+ * NUnit support
 
  * Resource generation and embedding
 
@@ -18,8 +24,12 @@ Features
 
  * XSD and WSDL Generation
 
- * Pluggable architecture for adding new compilers and executables.
-
- * nmaven-settings file for selecting the environment (MONO/MS/GNU, vendor/framework version, install location, etc)
-
  * Assembly Signing
+ 
+* Cool New Features
+
+ * Writing Maven Plugins in .NET (Microsoft Only)
+
+ * Experimental IDE Support (VS2005, #develop)
+
+ * Deploying and Retrieving of .NET Artifacts from a Remote Repository
