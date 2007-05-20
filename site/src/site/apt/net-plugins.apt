@@ -74,6 +74,20 @@ Writing .NET Mojos (Microsoft Only)
 
 +----+
 
+For the example above, your project structure should look something like:
+
++------+
+.
+ |-- src
+ |   `-- main
+ |       `-- csharp
+ |           `-- NMaven
+ |               `-- Plugins
+ |                   `-- Test
+ |                       `-- MyMojo.cs
+  `-- pom.xml
++------+
+
  Now compile and install the module containing your plugin:
 
 +----+
@@ -85,6 +99,26 @@ Writing .NET Mojos (Microsoft Only)
 +----+
  mvn org.apache.maven.dotnet.plugins:maven-mojo-generator-plugin:generate-bindings
 +----+
+
+Your project strcuture will now look like this:
+
++------+
+.
+ |-- src
+ |   `-- main
+ |       |-- csharp
+ |       |   `-- NMaven
+ |       |       `-- Plugins
+ |       |            `-- Test
+ |       |                 `-- MyMojo.cs
+ |        `-- java
+ |           `-- NMaven
+ |               `-- Plugins
+ |                   `-- Test
+ |                     `-- MyMojo.java
+  `-- pom.xml
+  `-- pom-java.xml
++------+
 
  You will see that the maven-mojo-generator-plugin generates a Java class - containing an implementation of a Maven AbstractMojo - for
  each corresponding .NET AbstractMojo class within your plugin. It also generates a pom-java.xml file. Type:
