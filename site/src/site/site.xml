@@ -16,6 +16,7 @@
       <item name="About" href="index.html"/>
       <item name="Features" href="features.html"/>
       <item name="Getting Started" href="getting-started.html"/>
+      <item name="Conventions" href="conventions.html"/>      
       <item name="Plugins" href="/plugins/index.html"/>
       <item name="Configuration" href="environment-configuration.html"/>
     </menu>

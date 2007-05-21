@@ -27,3 +27,9 @@ Reporting Bugs/Requesting Features
  * {{{http://jira.codehaus.org/browse/NMAVEN} NMaven Issue Tracking}}
 
  * {{{mailto:nmaven-dev@incubator.apache.org} Post to Mailing List}}
+
+Site Info
+
+ All information contained within this web-site is based on the latest work at
+ the {{{https://svn.apache.org/repos/asf/incubator/nmaven/trunk} SVN trunk }}, so all features may not work with the
+  latest stable tag {{{https://svn.apache.org/repos/asf/incubator/nmaven/tags} SVN tags }}

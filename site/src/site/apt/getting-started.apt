@@ -4,6 +4,10 @@ Sections
 
  * {{{getting-started.html#Building NMaven}Building NMaven}}
 
+ * {{{getting-started.html#Creating a Simple Project}Creating a Simple Project}}
+
+ * {{{getting-started.html#Generating VS2005 Solution Files}Generating VS2005 Solution Files}}
+
  * {{{getting-started.html#Assembly Info}Assembly Info}}
 
  * {{{getting-started.html#Unit Testing with NUnit}Unit Testing with NUnit}}
@@ -19,6 +23,8 @@ Sections
  * {{{getting-started.html#Signing Assemblies}Signing Assemblies}}
 
  * {{{getting-started.html#Using NMaven Settings File}Using NMaven Settings File}}
+
+
 
 * {Building NMaven}
 
@@ -136,6 +142,50 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
  Detailed instructions are located here:
  {{{ http://www.mono-project.com/Getting_Mono}Installing Mono}}. Make sure that su to root before installing with these
  instructions!
+
+* {Creating a Simple Project}
+
+ To create a simple project:
+
++----+
+ mvn archetype:create -DgroupId=<<groupid>>                               \
+                      -DartifactId=<<artifactId>>                         \
+                      -DarchetypeArtifactId=maven-archetype-dotnet-simple \
+                      -DarchetypeGroupId=org.apache.maven.dotnet          \
+                      -DarchetypeVersion=0.14-SNAPSHOT
++----+
+
+ You will see the following project generated:
+
++----+
+.
+ |-- src
+ |   `-- main
+ |       `-- csharp
+ |           `-- Sample
+ |               `-- MyApp.cs
+  `-- pom.xml
++----+
+
+ Note that due to a limitation of the existing maven archetype plugin, the generated project does not follow the
+ recommended conventions. See here: {{{conventions.html}Conventions}}
+
+* {Generating VS2005 Solution Files}
+
+ To generate the solution and project files (csharp only) for a project with a prexisting pom, go to the directory
+  containing the pom and type
+
++----+
+mvn NMaven.Plugins:NMaven.Plugin.Solution.JavaBinding:Solution
++----+
+
+ This plugin generates a solution file and project file for each project that exists within the project.modules.module
+ tag of the pom (or just the parent pom if no project.modules.module entry exists). The solution generator will
+ add all of the dependencies that exist within pom into the cs project file. The generator will also look through the
+ class files, attempting to locate and add any references that exist within the gac.
+
+ The latest solution generator runs as a .NET Maven plugin. Unfortunately due to a bug in Mono, .NET Maven plugins
+ don't work with Mono. This is a high priority item, so expect a working solution to be offered in the near feature.
 
 * {Assembly Info}
 
@@ -506,3 +556,4 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
   </vendors>
 </nmavenSettings>
 +----+
+

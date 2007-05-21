@@ -74,7 +74,7 @@ Writing .NET Mojos (Microsoft Only)
 
 +----+
 
-For the example above, your project structure should look something like:
+ For the example above, your project structure should look something like:
 
 +------+
 .
@@ -100,7 +100,7 @@ For the example above, your project structure should look something like:
  mvn org.apache.maven.dotnet.plugins:maven-mojo-generator-plugin:generate-bindings
 +----+
 
-Your project strcuture will now look like this:
+ Your project structure will now look like this:
 
 +------+
 .
