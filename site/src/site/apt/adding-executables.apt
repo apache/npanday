@@ -88,18 +88,17 @@ Adding Executables
 
  To create an executable plugin that exists in a predetermined place, do the following:
 
- [[1]] Create your module directory
-
- [[2]] From the root of your module directory, type:
+ [[1]] From the root of your project directory, type:
 
 +----+
-mvn archetype:create
-  -DgroupId=[your project's group id]
-  -DartifactId=[your project's artifact id]
-  -DarchetypeArtifactId=maven-archetype-netexecutable
+ mvn archetype:create -DgroupId=<<myGroupid>>                               \
+                      -DartifactId=<<myArtifactId>>                         \
+                      -DarchetypeArtifactId=maven-archetype-netexecutable   \
+                      -DarchetypeGroupId=org.apache.maven.dotnet            \
+                      -DarchetypeVersion=0.14-SNAPSHOT
 +----+
 
- [[3]] Make sure to add an entry in the net-executables.xml file, located within the dotnet-core module. Replace each
+ [[2]] Make sure to add an entry in the net-executables.xml file, located within the dotnet-core module. Replace each
   param: ${vendor}, ${exe}, .. with the appropriate values.
 
 +----+
@@ -121,14 +120,14 @@ mvn archetype:create
   </executablePlugin>
 +----+
 
- [[4]]  Add profile <<ADD_PROFILE>> to the meta-data of the profile field of this class. This profile name should match
+ [[3]]  Add profile <<ADD_PROFILE>> to the meta-data of the profile field of this class. This profile name should match
   the ${profile} within the net-executables.xml.
 
- [[5]] Add any special commands to the getCommands method.
+ [[4]] Add any special commands to the getCommands method.
 
- [[6]]  Recompile the dotnet-core component.
+ [[5]]  Recompile the dotnet-core component.
 
- [[7]]  Rename this class and install this Mojo component.
+ [[6]]  Rename this class and install this Mojo component.
 
 +----+
 public class NetExecutableMojo

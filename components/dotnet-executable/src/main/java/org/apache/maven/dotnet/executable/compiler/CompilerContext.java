@@ -24,8 +24,6 @@ import org.apache.maven.project.MavenProject;
 import java.util.List;
 import java.io.File;
 
-import org.apache.maven.dotnet.executable.compiler.CompilerCapability;
-import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
 import org.apache.maven.dotnet.executable.*;
 import org.apache.maven.dotnet.NMavenContext;
 import org.apache.maven.dotnet.PlatformUnsupportedException;

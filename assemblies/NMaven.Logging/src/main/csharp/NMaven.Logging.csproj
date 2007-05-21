@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{36FCE4F7-53D7-48AC-9AF4-74CB0F6020F6}</ProjectGuid>
+    <ProjectGuid>{dacc064f-ab41-42e3-b011-b346dc53bf47}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <RootNameSpace>NMaven.Logging</RootNameSpace>
     <AssemblyName>NMaven.Logging</AssemblyName>
@@ -13,6 +13,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NMaven" />
+    <Folder Include="NMaven\Logging" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NMaven\Logging\ConsoleHandler.cs" />

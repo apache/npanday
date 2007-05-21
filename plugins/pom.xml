@@ -42,6 +42,7 @@ under the License.
     <module>maven-xsp-plugin</module>
     <module>maven-wsdl-plugin</module> 
     <module>maven-deploy-plugin</module>
+    <module>maven-fxcop-plugin</module>
   </modules>
   <dependencies>
     <dependency>

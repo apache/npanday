@@ -65,6 +65,7 @@
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-compile-plugin/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-deploy-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-embedder-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/maven-fxcop-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-install-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-link-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-mojo-generator-plugin/src/main/java" isTestSource="false" />

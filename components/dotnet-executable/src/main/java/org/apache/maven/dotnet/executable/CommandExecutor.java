@@ -23,6 +23,8 @@ import org.codehaus.plexus.util.cli.*;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.io.File;
 
 /**
@@ -171,16 +173,10 @@ public interface CommandExecutor
                     }
                     stdOut = new StreamConsumerImpl();
                     stdErr = new ErrorStreamConsumer();
-                    String[] c = new String[commands.size()];
-                    int j = 0;
-                    for ( String command : commands )
-                    {
-                        c[j++] = command;
-                    }
 
                     Commandline commandline = new Commandline();
                     commandline.setExecutable( executable );
-                    commandline.addArguments( c );
+                    commandline.addArguments( commands.toArray( new String[commands.size()]));
                     if ( workingDirectory != null && workingDirectory.exists() )
                     {
                         commandline.setWorkingDirectory( workingDirectory.getAbsolutePath() );

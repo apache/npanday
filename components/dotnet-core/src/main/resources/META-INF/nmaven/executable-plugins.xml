@@ -1,5 +1,20 @@
 <executablePlugins>
   <executablePlugin>
+    <identifier>fxcop</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>FxCopCmd</executable>
+    <profile>DEFAULT</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
     <identifier>dotnet-jetty</identifier>
     <pluginClass>org.apache.maven.dotnet.executable.impl.ThreadedNetExecutable</pluginClass>
     <vendor>MICROSOFT</vendor>
