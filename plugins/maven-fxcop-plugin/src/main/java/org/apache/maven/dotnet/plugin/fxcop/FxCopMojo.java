@@ -76,10 +76,25 @@ public class FxCopMojo
      */
     private File targetDirectory;
 
+    private File rootDir;
+
 
     public void execute()
         throws MojoExecutionException
     {
+        //For multi-module
+        if ( project.getPackaging().equals( "pom" ) )
+        {
+
+            if ( System.getProperty( "NMAVEN.ROOT_DIR" ) == null )
+            {
+                System.setProperty( "NMAVEN.ROOT_DIR", project.getBasedir().getAbsolutePath() );
+            }
+            return;
+        }
+
+        rootDir = ( System.getProperty( "NMAVEN.ROOT_DIR" ) != null ) ? new File(
+            System.getProperty( "NMAVEN.ROOT_DIR" ) ) : null;
 
         ArtifactRepository localArtifactRepository =
             new DefaultArtifactRepository( "local", "file://" + localRepository, new AssemblyRepositoryLayout() );
@@ -139,9 +154,20 @@ public class FxCopMojo
         throws MojoExecutionException
     {
         List<String> commands = new ArrayList<String>();
-        commands.add( "/f:target" + File.separator + project.getArtifactId() + "." +
-            ArtifactType.getArtifactTypeForPackagingName( project.getPackaging() ).getExtension() );
-        commands.add( "/o:target" + File.separator + "Output.xml" );
+
+        String targetPath = "target" + File.separator + project.getArtifactId() + "." +
+            ArtifactType.getArtifactTypeForPackagingName( project.getPackaging() ).getExtension();
+        String outputPath = "target" + File.separator + "Output.xml";
+
+        String relativePathToTargetFile =
+            ( rootDir != null ) ? new File( project.getBasedir(), targetPath ).getAbsolutePath().substring(
+                rootDir.getAbsolutePath().length() + 1 ) : targetPath;
+        String relativePathToOutputFile =
+            ( rootDir != null ) ? new File( project.getBasedir(), outputPath ).getAbsolutePath().substring(
+                rootDir.getAbsolutePath().length() + 1 ) : outputPath;
+
+        commands.add( "/f:" + relativePathToTargetFile );
+        commands.add( "/o:" + relativePathToOutputFile );
         return commands;
     }
 }
