@@ -148,8 +148,8 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
  To create a simple project:
 
 +----+
- mvn archetype:create -DgroupId=<<groupid>>                               \
-                      -DartifactId=<<artifactId>>                         \
+ mvn archetype:create -DgroupId=<<myGroupid>>                               \
+                      -DartifactId=<<myArtifactId>>                         \
                       -DarchetypeArtifactId=maven-archetype-dotnet-simple \
                       -DarchetypeGroupId=org.apache.maven.dotnet          \
                       -DarchetypeVersion=0.14-SNAPSHOT

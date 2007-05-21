@@ -1,20 +1,25 @@
 Visual Studio 2005
 
+* About
+
+ The current version of the Visual Studio plugin is experimental and is meant as a proof of concept demonstrating
+ that VS2005 can build .NET applications through Maven. It is being put out there to get early feedback on what developers
+ want to see. The plugin is not currently ready to use for any serious development.
+
 * Installing
 
- After following the build instructions here: {{{getting-started.html#Building NMaven}Building NMaven}}, you will need
- to run:
+ Follow the build instructions here: {{{../getting-started.html#Building NMaven}Building NMaven}} and then type:
 
- +----+
++----+
  mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install
- +----+
++----+
 
  This plugin will resolve (and download if needed) all of NMaven's dependencies and will create the Visual Studio
- addin file in the user home directory: ${user.home}\My Documents\Visual Studio 2005\Addins.
+ addin file in the user home directory: ~\My Documents\Visual Studio 2005\Addins\NMaven.VisualStudio.AddIn.
 
- Sample Addin file:
+ Sample Generated Addin file:
 
- +----+
++----+
 <?xml version="1.0" encoding="utf-16"?>
 <Extensibility xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -35,6 +40,62 @@ xmlns="http://schemas.microsoft.com/AutomationExtensibility">
     <CommandPreload>1</CommandPreload>
   </Addin>
 </Extensibility>
- +----+
++----+
 
-Next startup Visual Studio 2005. 
+* Setting up a project
+
+ If you do not have a .NET Maven project setup, create a simple project:
+
++----+
+ mvn archetype:create -DgroupId=<<myGroupid>>                               \
+                      -DartifactId=<<myArtifactId>>                         \
+                      -DarchetypeArtifactId=maven-archetype-dotnet-simple   \
+                      -DarchetypeGroupId=org.apache.maven.dotnet            \
+                      -DarchetypeVersion=0.14-SNAPSHOT
++----+
+
+  You will see the following project generated:
+
++----+
+ .
+  |-- src
+  |   `-- main
+  |       `-- csharp
+  |           `-- Sample
+  |               `-- MyApp.cs
+   `-- pom.xml
++----+
+
+  To generate the solution and project files (csharp only), go to the directory
+   containing the pom.xml and type
+
++----+
+ mvn NMaven.Plugins:NMaven.Plugin.Solution.JavaBinding:Solution
++----+
+
+* Using Visual Studio
+
+ * Startup Visual Studio 2005 by clicking on a generated solution file
+
+ * Click on a project file
+
+ * Start the NMaven addin [Tool/NMavenAddin]. The addin will start and make a connection to an embedder jetty server
+  hosting the maven embedder.
+
+ []
+
+[../images/VS2005-StartAddin.JPG]
+
+ * After a few moments you should see a frame appear containing a list of maven projects, by artifact ID. Right click
+ on one of the projects to do a build. You will see the output within the output pane.
+
+ []
+
+[../images/VS2005-Menu.JPG]
+
+ * After you are done, you will need to manually shut down the jetty server by killing the process.
+
+ []
+[../images/VS2005-SHUTDOWN.JPG]
+
+
