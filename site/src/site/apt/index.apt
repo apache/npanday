@@ -4,9 +4,6 @@ About NMaven
  that provides the correct .NET compiler based on the environment (vendor/language/operating system).  This framework
  leverages Maven for the build lifecycle, making it a small, compiler-plugin-framework on top of the larger Maven build-framework.
 
- NMaven originally started as a project on Sourceforge in September 2006. Over the course of 2 months, it went 
- through 13 small releases.
-
 Road Map
 
  The primary goal of NMaven is to provide a common Maven build environment across .NET compilers (C#, VB),
