@@ -33,3 +33,5 @@ Key Features
  * Experimental IDE Support (VS2005, #develop)
 
  * Deploying and Retrieving of .NET Artifacts from a Remote Repository
+
+ * FxCop Maven Plugin

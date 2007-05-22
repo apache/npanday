@@ -133,17 +133,19 @@ public class AssemblyResolverImpl
                                                                         gacFilter );
         Set<Artifact> resolvedDependencies = result.getArtifacts();
         AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-
         if ( addResolvedDependenciesToProject )
         {
             for ( Artifact artifact : resolvedDependencies )
             {
                 File originalFileWithVersion = artifact.getFile();
                 File targetFileWithoutVersion = new File( localArtifactRepository + "/" + layout.pathOf( artifact ) );
-              //  logger.info( "Original = " + originalFileWithVersion.getAbsolutePath() + ", Target = " +
-              //      targetFileWithoutVersion.getAbsolutePath() );
+                //  logger.info( "Original = " + originalFileWithVersion.getAbsolutePath() + ", Target = " +
+                //      targetFileWithoutVersion.getAbsolutePath() );
                 originalFileWithVersion.renameTo( targetFileWithoutVersion );
-               // artifact.setFile( targetFileWithoutVersion.getAbsoluteFile() );
+                if ( targetFileWithoutVersion.exists() )
+                {
+                    artifact.setFile( targetFileWithoutVersion.getAbsoluteFile() );
+                }
             }
 
             resolvedDependencies.addAll( gacDependencies );

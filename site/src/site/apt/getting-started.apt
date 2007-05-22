@@ -24,7 +24,7 @@ Sections
 
  * {{{getting-started.html#Using NMaven Settings File}Using NMaven Settings File}}
 
-
+ * {{{getting-started.html#FxCop Maven Plugin}FxCop Maven Plugin}}
 
 * {Building NMaven}
 
@@ -84,8 +84,9 @@ svn co https://svn.apache.org/repos/asf/incubator/nmaven/tags/STABLE-2007-05-20 
 
   [[2]] If compiling on Windows with either Microsoft or Mono:
 
-   [[a]] the csc (or gmcs) executable directory should be located on the system path. This is only needed for the initial bootstrap build
-   and may be removed afterwards.
+   [[a]] the csc (or gmcs) executable directory AND the .NET SDK install root (containing xsd, wsdl) should be located on the system path.
+    For Mono the executable directory and the SDK install root are the same. This configuration is only needed for the
+    initial bootstrap build and may be removed afterwards.
 
    [[b]] the directory path containing nunit-console should also be located on the system path. After the bootstrap build, you should leave
    the directory path containing the nunit-console executable within the system path. For other options, see:
@@ -557,3 +558,10 @@ mvn NMaven.Plugins:NMaven.Plugin.Solution.JavaBinding:Solution
 </nmavenSettings>
 +----+
 
+* {FxCop Maven Plugin}
+
+ Make sure that FxCopCmd is located within your path and then type:
+
++----+
+mvn org.apache.maven.dotnet.plugins:maven-fxcop-plugin:fxcop
++----+
