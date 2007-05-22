@@ -27,7 +27,7 @@ under the License.
   <modules>
     <module>components</module>
     <module>plugins</module>
-    <module>archetypes</module>    
+    <module>archetypes</module>
   </modules>
   <repositories>
     <repository>
@@ -40,6 +40,14 @@ under the License.
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
+    </repository>
+    <repository>
+      <id>codehaus-snapshot-repo</id>
+      <name>Codehaus Snapshot Repo</name>
+      <url>http://snapshots.repository.codehaus.org</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
     </repository>
   </repositories>
   <distributionManagement>
