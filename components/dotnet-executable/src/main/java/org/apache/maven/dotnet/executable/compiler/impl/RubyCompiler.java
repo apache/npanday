@@ -66,9 +66,11 @@ public final class RubyCompiler
                 commands.add( command );
             }
         }
-        // commands.add("-Cdirectory");
-        // commands.add();
-        //commands.addAll( config.getCommands() );
         return commands;
+    }
+
+    public void resetCommands( List<String> commands )
+    {
+        
     }
 }

@@ -69,4 +69,9 @@ public final class PhpCompiler
         }
         return commands;
     }
+
+    public void resetCommands( List<String> commands )
+    {
+        
+    }
 }

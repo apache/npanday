@@ -68,6 +68,11 @@ public final class CSharpCompilerForProfile
         return commands;
     }
 
+    public void resetCommands( List<String> commands )
+    {
+        
+    }
+
     public void init( NMavenContext nmavenContext )
     {
         super.init( nmavenContext);

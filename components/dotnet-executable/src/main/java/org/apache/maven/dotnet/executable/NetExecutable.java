@@ -34,14 +34,21 @@ public interface NetExecutable
 {
 
     /**
-     * Returns the commands that this compiler will use to compile the application. This is not a live list and any changes
-     * in it, will not be used by the compiler.
+     * Returns the commands that this compiler will use to compile the application. This list is unmodifiable.
      *
      * @return the commands that this compiler will use to compile the application
      * @throws ExecutionException
      */
     List<String> getCommands()
         throws ExecutionException;
+
+    /**
+     * Resets the commands to be used by the executable. This should only be used if the executable is being reused with
+     * different commands from the one that it was initialized with.
+     *
+     * @param commands
+     */
+    void resetCommands(List<String> commands);
 
     /**
      * Compiles class files.

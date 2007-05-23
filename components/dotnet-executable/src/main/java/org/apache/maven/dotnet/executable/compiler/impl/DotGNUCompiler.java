@@ -94,4 +94,9 @@ public final class DotGNUCompiler
         //TODO: Apply command filter
         return commands;
     }
+
+    public void resetCommands( List<String> commands )
+    {
+        
+    }
 }

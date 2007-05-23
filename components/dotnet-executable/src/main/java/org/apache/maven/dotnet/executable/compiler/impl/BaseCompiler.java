@@ -63,13 +63,7 @@ abstract class BaseCompiler implements CompilerExecutable
     public File getCompiledArtifact()
         throws InvalidArtifactException
     {
-        File file = compilerContext.getArtifact();
-  //      if ( !file.exists() )
-  //      {
-  //          throw new InvalidArtifactException(
-  //              "NMAVEN-068-004: Artifact does not exist: Artifact = " + file.getAbsolutePath() );
-  //      }
-        return file;
+        return compilerContext.getArtifact();
     }
 
     /**

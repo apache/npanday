@@ -149,4 +149,9 @@ public final class DefaultCompiler
         CommandFilter filter = compilerContext.getCommandFilter();
         return filter.filter( commands );
     }
+
+    public void resetCommands( List<String> commands )
+    {
+        
+    }
 }

@@ -83,4 +83,9 @@ public final class NemerleCompiler
         commands.addAll( config.getCommands() );
         return commands;
     }
+
+    public void resetCommands( List<String> commands )
+    {
+        
+    }
 }

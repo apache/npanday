@@ -71,6 +71,12 @@ public class ThreadedNetExecutable
         return filter.filter( executableContext.getExecutableConfig().getCommands() );
     }
 
+    public void resetCommands( List<String> commands )
+    {
+
+    }
+
+
     public File getExecutionPath()
     {
         String executable;

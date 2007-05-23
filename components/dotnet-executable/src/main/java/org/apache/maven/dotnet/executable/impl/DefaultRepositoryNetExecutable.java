@@ -26,6 +26,8 @@ import org.apache.maven.dotnet.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
 import java.util.List;
+import java.util.Collections;
+import java.util.ArrayList;
 import java.io.File;
 
 /**
@@ -42,10 +44,19 @@ public class DefaultRepositoryNetExecutable
      */
     private Logger logger;
 
+    private List<String> commands;
+
     public List<String> getCommands()
         throws ExecutionException
     {
-        return executableContext.getExecutableConfig().getCommands();
+        return commands;
+    }
+
+    public void resetCommands( List<String> commands )
+    {
+        List<String> tmp = new ArrayList<String>();
+        tmp.addAll(commands);
+        this.commands = Collections.unmodifiableList( tmp );
     }
 
     public File getExecutionPath()
@@ -109,7 +120,7 @@ public class DefaultRepositoryNetExecutable
             for ( String executablePath : executablePaths )
             {
                 File exe = new File( executablePath );
-                logger.debug("NMAVEN-063-004: Checking executable path = " + exe.getAbsolutePath());
+                logger.debug( "NMAVEN-063-004: Checking executable path = " + exe.getAbsolutePath() );
                 if ( exe.exists() )
                 {
                     return new File( executablePath ).getName();
@@ -139,5 +150,6 @@ public class DefaultRepositoryNetExecutable
     {
         this.executableContext = (RepositoryExecutableContext) nmavenContext;
         this.logger = executableContext.getLogger();
+        commands = Collections.unmodifiableList( executableContext.getExecutableConfig().getCommands() );
     }
 }

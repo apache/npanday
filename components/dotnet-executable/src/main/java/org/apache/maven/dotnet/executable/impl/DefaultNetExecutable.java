@@ -25,6 +25,8 @@ import org.apache.maven.dotnet.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
 import java.util.List;
+import java.util.Collections;
+import java.util.ArrayList;
 import java.io.File;
 
 /**
@@ -43,11 +45,19 @@ public class DefaultNetExecutable
      */
     private Logger logger;
 
+    private List<String> commands;
+
     public List<String> getCommands()
         throws ExecutionException
     {
         CommandFilter filter = executableContext.getCommandFilter();
-        return filter.filter( executableContext.getExecutableConfig().getCommands() );
+        return Collections.unmodifiableList(filter.filter( commands ));
+    }
+
+    public void resetCommands(List<String> commands)
+    {
+        this.commands = new ArrayList<String>();
+        this.commands.addAll(commands);//TODO: should be unmodifiable here: fail on filter?
     }
 
     public File getExecutionPath()
@@ -118,5 +128,6 @@ public class DefaultNetExecutable
     {
         this.executableContext = (ExecutableContext) nmavenContext;
         this.logger = executableContext.getLogger();
+        commands = executableContext.getExecutableConfig().getCommands();
     }
 }
