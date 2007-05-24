@@ -1,10 +1,70 @@
 <executablePlugins>
   <executablePlugin>
+    <identifier>ncover</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>NCover.Console</executable>
+    <profile>NCover:NCover.Console</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
     <identifier>fxcop</identifier>
     <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>FxCopCmd</executable>
-    <profile>DEFAULT</profile>
+    <profile>Microsoft:FxCop:FxCopCmd</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>BuildAssembler</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>BuildAssembler</executable>
+    <profile>Microsoft:SandCastle:BuildAssembler</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>XslTransform</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>XslTransform</executable>
+    <profile>Microsoft:SandCastle:XslTransform</profile>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>MRefBuilder</identifier>
+    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>MRefBuilder</executable>
+    <profile>Microsoft:SandCastle:MRefBuilder</profile>
     <frameworkVersions>
       <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>

@@ -9,6 +9,7 @@
   <artifactId>maven-fxcop-plugin</artifactId>
   <version>0.14-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
+  <name>maven-fxcop-plugin</name>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

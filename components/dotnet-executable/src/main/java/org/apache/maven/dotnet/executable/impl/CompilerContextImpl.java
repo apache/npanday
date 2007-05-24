@@ -197,6 +197,11 @@ public final class CompilerContextImpl
             : project.getBuild().getDirectory() + File.separator + "build-sources";
     }
 
+    public File getTargetDirectory()
+    {
+        return new File(project.getBuild().getDirectory());
+    }
+
     /**
      * This method will return a File where File.isExist() returns false, if NetCompile.compile has not been
      * invoked.

@@ -146,12 +146,18 @@ public final class DefaultCompiler
             commands.add( "/reference:System.Windows.Forms" );
             commands.add( "/reference:System.Web.Services" );
         }
+        if ( !compilerContext.getNetCompilerConfig().isTestCompile() )
+        {
+            commands.add(
+                "/doc:" + new File( compilerContext.getTargetDirectory(), "comments.xml" ).getAbsolutePath() );
+        }
+
         CommandFilter filter = compilerContext.getCommandFilter();
         return filter.filter( commands );
     }
 
     public void resetCommands( List<String> commands )
     {
-        
+
     }
 }

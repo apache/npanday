@@ -117,6 +117,8 @@ public interface CompilerContext
      * @return Returns the source directory (or test source directory) path of the class files.
      */
     String getSourceDirectoryName();
+    
+    File getTargetDirectory();
 
     /**
      * Returns an instance of the NetExecutable appropriate for given language/vendor/OS.

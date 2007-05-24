@@ -56,7 +56,7 @@ public class FxCopMojo
     /**
      * The profile that the executable should use.
      *
-     * @parameter expression = "${profile}" default-value = "DEFAULT"
+     * @parameter expression = "${profile}" default-value = "Microsoft:FxCop:FxCopCmd"
      */
     private String profile;
 

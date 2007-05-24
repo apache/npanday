@@ -98,7 +98,7 @@ Adding Executables
                       -DarchetypeVersion=0.14-SNAPSHOT
 +----+
 
- [[2]] Make sure to add an entry in the net-executables.xml file, located within the dotnet-core module. Replace each
+ [[2]] Make sure to add an entry in the executable-plugins.xml file, located within the dotnet-core module. Replace each
   param: ${vendor}, ${exe}, .. with the appropriate values.
 
 +----+
@@ -121,7 +121,7 @@ Adding Executables
 +----+
 
  [[3]]  Add profile <<ADD_PROFILE>> to the meta-data of the profile field of this class. This profile name should match
-  the ${profile} within the net-executables.xml.
+  the ${profile} within the executable-plugins.xml.
 
  [[4]] Add any special commands to the getCommands method.
 

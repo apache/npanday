@@ -17,7 +17,9 @@ namespace org.apache.maven.it.unit {
 		public void TestSample() {
 			new It0001();
 			new It0002();
-			Assert.AreEqual("hello", hello);	
+			Assert.AreEqual("hello", hello);
+			It0003 it = new It0003();
+			Assert.AreEqual("test", it.GetValue());
 		}
 		
 	}

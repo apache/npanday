@@ -69,8 +69,10 @@
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-install-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-link-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-mojo-generator-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/maven-ncover-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-resgen-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-resolver-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/maven-sandcastle-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-sdaddin-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-test-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-test-plugin/src/main/resources" isTestSource="false" />
