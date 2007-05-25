@@ -27,16 +27,39 @@ under the License.
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>dotnet-model</artifactId>
   <packaging>pom</packaging>
-  <version>0.14-SNAPSHOT</version>
   <name>dotnet-model</name>
-
   <modules>
     <module>assembly-plugins</module>
     <module>compiler-plugins</module>
     <module>executable-plugins</module>
     <module>netdependency</module>
-    <module>configuration-appenders</module>    
+    <module>configuration-appenders</module>
     <module>settings</module>
     <module>entries</module>
   </modules>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <workingDirectory>${project.build.directory}/site</workingDirectory>
+          <siteDirectory>${project.build.directory}/generated-site</siteDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <configuration>
+          <outputDirectory>${project.build.directory}/generated-site</outputDirectory>
+        </configuration>
+      </plugin>      
+    </plugins>
+  </build>
 </project>

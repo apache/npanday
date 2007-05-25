@@ -26,7 +26,6 @@ under the License.
   <groupId>org.apache.maven.dotnet.plugins</groupId>
   <artifactId>maven-dotnet-plugins</artifactId>
   <packaging>pom</packaging>
-  <version>0.14-SNAPSHOT</version>
   <name>maven-dotnet-plugins</name>
   <modules>
     <module>maven-compile-plugin</module>
@@ -80,14 +79,6 @@ under the License.
         <configuration>
           <descriptor>src/assembly/src.xml</descriptor>
           <outputDirectory>src/target</outputDirectory>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
         </configuration>
       </plugin>
       <plugin>

@@ -26,7 +26,6 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>dotnet-jetty</artifactId>
-  <version>0.14-SNAPSHOT</version>
   <name>dotnet-jetty</name>
   <description>
   </description>
@@ -34,7 +33,6 @@ under the License.
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
       <artifactId>jetty-embedded</artifactId>
-      <version>6.1.3</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
@@ -42,16 +40,4 @@ under the License.
       <version>0.14-SNAPSHOT</version>
     </dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

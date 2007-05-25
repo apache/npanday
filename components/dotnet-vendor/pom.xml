@@ -26,7 +26,6 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>dotnet-vendor</artifactId>
-  <version>0.14-SNAPSHOT</version>
   <name>dotnet-vendor</name>
   <description>
     NMaven

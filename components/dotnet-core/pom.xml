@@ -26,7 +26,6 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>dotnet-core</artifactId>
-  <version>0.14-SNAPSHOT</version>
   <name>dotnet-core</name>
   <description>
     NMaven
@@ -40,12 +39,10 @@ under the License.
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>2.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-project</artifactId>
-      <version>2.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

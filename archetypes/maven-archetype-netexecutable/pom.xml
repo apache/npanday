@@ -8,7 +8,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>maven-archetype-netexecutable</artifactId>
-  <version>0.14-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>  
   <name>Archetype - maven-archetype-netexecutable</name>
   <url>http://maven.apache.org</url>

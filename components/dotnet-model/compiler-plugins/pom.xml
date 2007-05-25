@@ -26,7 +26,6 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>dotnet-model-compiler-plugins</artifactId>
-  <version>0.14-SNAPSHOT</version>
   <name>dotnet-model-compiler-plugins</name>
   <description>
     Compiler Model
@@ -36,59 +35,13 @@ under the License.
       <plugin>
         <groupId>org.codehaus.modello</groupId>
         <artifactId>modello-maven-plugin</artifactId>
-        <version>1.0-alpha-10</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>xpp3-reader</goal>
-              <goal>java</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>site</id>
-            <phase>pre-site</phase>
-            <goals>
-              <goal>xdoc</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <model>compiler-plugins.mdo</model>
           <version>1.0.0</version>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <workingDirectory>${project.build.directory}/site</workingDirectory>
-          <siteDirectory>${project.build.directory}/generated-site</siteDirectory>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <configuration>
-          <outputDirectory>${project.build.directory}/generated-site</outputDirectory>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>1.0.4</version>
-    </dependency>
-  </dependencies>
   <distributionManagement>
     <site>
       <id>nmaven-apache-site</id>
