@@ -34,37 +34,12 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-core</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-model-settings</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <aggregate>true</aggregate>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptor>src/assembly/src.xml</descriptor>
-          <outputDirectory>src/target</outputDirectory>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

@@ -18,120 +18,21 @@ under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>NMaven.Project</groupId>
+    <version>0.14-SNAPSHOT</version>
+    <artifactId>NMaven.Project</artifactId>
+    <relativePath>../pom-dotnet.xml</relativePath>    
+  </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven</groupId>
   <artifactId>NMaven.Assemblies</artifactId>
   <packaging>pom</packaging>
-  <version>0.14-SNAPSHOT</version>
   <name>NMaven.Assemblies</name>
   <url>http://incubator.apache.org/nmaven</url>
   <description>
     NMaven provides Maven 2.x plugins to support building of .NET applications
   </description>
-  <mailingLists>
-    <mailingList>
-      <name>NMaven Dev List</name>
-      <subscribe>nmaven-dev-subscribe@incubator.apache.org</subscribe>
-      <unsubscribe>nmaven-dev-unsubscribe@incubator.apache.org</unsubscribe>
-      <post>nmaven-dev@incubator.apache.org</post>
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-nmaven-dev/</archive>
-      <otherArchives>
-        <otherArchive>http://www.nabble.com/nmaven-dev-f17655.html</otherArchive>
-      </otherArchives>
-    </mailingList>
-    <mailingList>
-      <name>NMaven Commits List</name>
-      <subscribe>nmaven-commits-subscribe@incubator.apache.org</subscribe>
-      <unsubscribe>nmaven-commits-unsubscribe@incubator.apache.org</unsubscribe>
-      <post>nmaven-commits@incubator.apache.org</post>
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-nmaven-commits/</archive>
-      <otherArchives>
-        <otherArchive>http://www.nabble.com/nmaven-commits-f17656.html</otherArchive>
-      </otherArchives>
-    </mailingList>
-  </mailingLists>
-  <scm>
-    <url>https://svn.apache.org/repos/asf/incubator/nmaven/</url>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</connection>
-    <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</developerConnection>
-    <tag>REL_0_14_SNAPSHOT</tag>
-  </scm>
-  <organization>
-    <name>NMaven</name>
-    <url>http://incubator.apache.org/nmaven</url>
-  </organization>
-  <issueManagement>
-    <system>JIRA Bugtracking</system>
-    <url>http://jira.codehaus.org/browse/NMAVEN</url>
-  </issueManagement>
-  <licenses>
-    <license>
-      <name>Apache 2.0</name>
-      <url>LICENSE.txt</url>
-    </license>
-  </licenses>
-  <developers>
-    <developer>
-      <name>Brett Porter</name>
-      <id>brett</id>
-      <email>brett@apache.org</email>
-      <roles>
-        <role>champion</role>
-        <role>mentor</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Jason van Zyl</name>
-      <id>jvanzyl</id>
-      <email>jvanzyl@apache.org</email>
-      <roles>
-        <role>champion</role>
-        <role>mentor</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Shane Isbell</name>
-      <id>sisbell</id>
-      <email>sisbell@apache.org</email>
-      <url>http://jroller.com/page/random7</url>
-      <roles>
-        <role>committer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Dan Fabulich</name>
-      <id>dfabulich</id>
-      <email>dfabulich@apache.org</email>
-      <roles>
-        <role>committer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Chris Stevenson</name>
-      <id>chrisjs</id>
-      <email>chrisjs@apache.org</email>
-      <roles>
-        <role>committer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Trygve Laugstol</name>
-      <id>trygvis</id>
-      <email>trygvis@apache.org</email>
-      <roles>
-        <role>committer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>James Strachan</name>
-      <id>jstrachan</id>
-      <email>jstrachan@apache.org</email>
-      <roles>
-        <role>committer</role>
-      </roles>
-    </developer>
-  </developers>
   <modules>
     <module>NMaven.Artifact</module>
     <module>NMaven.Core</module>
@@ -145,20 +46,6 @@ under the License.
     <module>NMaven.Plugin.Runner</module>
     <module>NMaven.Service/Embedder</module>
   </modules>
-  <build>
-    <sourceDirectory>src/main/csharp</sourceDirectory>
-    <testSourceDirectory>src/test/csharp</testSourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
-        <artifactId>maven-compile-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <frameworkVersion>2.0.50727</frameworkVersion>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
   <profiles>
     <profile>
       <activation>
@@ -185,13 +72,4 @@ under the License.
       </build>
     </profile>
   </profiles>
-  <distributionManagement>
-    <snapshotRepository>
-      <uniqueVersion>true</uniqueVersion>
-      <id>snapshot repo</id>
-      <name>snapshot repo</name>
-      <url>file://${deploy.directory}</url>
-      <layout>default</layout>
-    </snapshotRepository>
-  </distributionManagement>
 </project>

@@ -5,19 +5,6 @@ ECHO Executing Phase: %phase%
 call mvn %phase%
 IF errorlevel 1 GOTO END
 
-ECHO Building JavaBindings for the .NET Plugins
-call mvn -f ./plugins/NMaven.Plugin.Addin/pom-java.xml %phase%
-IF errorlevel 1 GOTO END
-
-call mvn -f ./plugins/NMaven.Plugin.Devenv/pom-java.xml %phase%
-IF errorlevel 1 GOTO END
-
-call mvn -f ./plugins/NMaven.Plugin.Settings/pom-java.xml %phase%
-IF errorlevel 1 GOTO END
-
-call mvn -f ./plugins/NMaven.Plugin.Solution/pom-java.xml %phase%
-IF errorlevel 1 GOTO END
-
 ECHO Installing 3rd Party Assemblies in the Local Repo
 call mvn org.apache.maven.dotnet.plugins:maven-install-plugin:install-file -Dfile=./thirdparty/NUnit/NUnit.Framework.dll -DgroupId=NUnit -DartifactId=NUnit.Framework -Dpackaging=dll -Dversion=2.2.8.0
 IF errorlevel 1 GOTO END

@@ -16,42 +16,40 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
-    <groupId>org.apache.maven.dotnet</groupId>
+    <groupId>NMaven.Plugins</groupId>
     <version>0.14-SNAPSHOT</version>
-    <artifactId>dotnet-components</artifactId>
-  </parent>
+    <artifactId>NMaven.Plugins</artifactId>
+  </parent>  
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.maven.dotnet</groupId>
-  <artifactId>dotnet-plugin</artifactId>
-  <name>dotnet-plugin</name>
-  <description>
-    NMaven
-  </description>
+  <groupId>NMaven.Plugins</groupId>
+  <artifactId>NMaven.Plugin.Solution</artifactId>
+  <packaging>netplugin</packaging>
+  <name>NMaven.Plugin.Solution</name>
   <dependencies>
     <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-plugin-api</artifactId>
+      <groupId>NUnit</groupId>
+      <artifactId>NUnit.Framework</artifactId>
+      <version>2.2.8.0</version>
+      <type>library</type>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-project</artifactId>
+      <groupId>NMaven.Core</groupId>
+      <artifactId>NMaven.Core</artifactId>
+      <version>${pom.version}</version>
+      <type>library</type>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
-      <artifactId>dotnet-executable</artifactId>
+      <groupId>NMaven.Model</groupId>
+      <artifactId>NMaven.Model.Pom</artifactId>
+      <type>library</type>
       <version>${pom.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
-      <artifactId>dotnet-vendor</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
-      <artifactId>dotnet-model-configuration-appenders</artifactId>
+      <groupId>NMaven.Plugin</groupId>
+      <artifactId>NMaven.Plugin</artifactId>
+      <type>library</type>
       <version>${pom.version}</version>
     </dependency>
   </dependencies>

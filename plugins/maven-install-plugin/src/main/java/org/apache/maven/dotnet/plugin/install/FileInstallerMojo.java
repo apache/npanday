@@ -29,8 +29,8 @@ import org.apache.maven.artifact.installer.ArtifactInstallationException;
 
 /**
  * @goal install-file
- * @phase install
  * @requiresProject false
+ * @requiresDirectInvocation true
  */
 
 public class FileInstallerMojo
@@ -75,7 +75,7 @@ public class FileInstallerMojo
     private String artifactId;
 
     /**
-     * @parameter expression = "${version}
+     * @parameter expression = "${artifactVersion}
      * @required
      */
     private String version;

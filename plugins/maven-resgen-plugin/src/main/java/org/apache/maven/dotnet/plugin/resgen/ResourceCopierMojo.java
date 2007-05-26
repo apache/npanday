@@ -72,7 +72,7 @@ public class ResourceCopierMojo
         }
         try
         {
-            FileUtils.copyDirectory( new File( project.getBasedir() + File.separator + "src/main/config" ),
+            FileUtils.copyDirectory( new File( project.getBasedir(), "src/main/config" ),
                                      new File( project.getBuild().getDirectory() ), "*.exe.config", null );
         }
         catch ( IOException e )
@@ -81,27 +81,27 @@ public class ResourceCopierMojo
         }
     }
 
-    private void copyResourceDirectory( String sourceDirectory, String outputDirectory, List includes, List excludes )
+    private void copyResourceDirectory( String sourceDirectory, String outputDirectory, List<String> includes,
+                                        List<String> excludes )
         throws MojoExecutionException
     {
         DirectoryScanner directoryScanner = new DirectoryScanner();
         directoryScanner.setBasedir( sourceDirectory );
         if ( !includes.isEmpty() )
         {
-            directoryScanner.setIncludes( listAsStringArray( includes ) );
+            directoryScanner.setIncludes( includes.toArray( new String[includes.size()] ) );
         }
         if ( !excludes.isEmpty() )
         {
-            directoryScanner.setExcludes( listAsStringArray( excludes ) );
+            directoryScanner.setExcludes( excludes.toArray( new String[excludes.size()] ) );
         }
         directoryScanner.addDefaultExcludes();
         directoryScanner.scan();
         String[] files = directoryScanner.getIncludedFiles();
         for ( String file : files )
         {
-            File sourceFile = new File( sourceDirectory + File.separator + file );
-            File destinationFile =
-                new File( outputDirectory + File.separator + "assembly-resources" + File.separator + file );
+            File sourceFile = new File( sourceDirectory, file );
+            File destinationFile = new File( outputDirectory, "assembly-resources" + File.separator + file );
             try
             {
                 FileUtils.copyFile( sourceFile, destinationFile );
@@ -117,20 +117,5 @@ public class ResourceCopierMojo
         getLog().info( "NMAVEN-1500-003: Copied resource directory: Number of Resources = " + files.length +
             ", Resource Directory = " + sourceDirectory + ", Destination Directory = " + outputDirectory + File
             .separator + "assembly-resources" );
-    }
-
-    private String[] listAsStringArray( List list )
-    {
-        if ( list == null )
-        {
-            return new String[0];
-        }
-        String[] target = new String[list.size()];
-        int j = 0;
-        for ( Iterator i = list.iterator(); i.hasNext(); j++ )
-        {
-            target[j] = (String) i.next();
-        }
-        return target;
     }
 }

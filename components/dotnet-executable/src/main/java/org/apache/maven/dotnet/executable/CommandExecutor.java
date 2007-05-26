@@ -162,7 +162,6 @@ public interface CommandExecutor
                     executeCommand( executable, commands, null, failsOnErrorOutput );
                 }
 
-
                 public void executeCommand( String executable, List<String> commands, File workingDirectory,
                                             boolean failsOnErrorOutput )
                     throws ExecutionException

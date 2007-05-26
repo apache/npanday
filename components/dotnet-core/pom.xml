@@ -34,7 +34,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-registry</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>

@@ -28,6 +28,10 @@ under the License.
   <packaging>pom</packaging>
   <name>maven-dotnet-plugins</name>
   <modules>
+    <module>netplugins/NMaven.Plugin.Addin/javabinding</module>
+    <module>netplugins/NMaven.Plugin.Devenv/javabinding</module>
+    <module>netplugins/NMaven.Plugin.Settings/javabinding</module>
+    <module>netplugins/NMaven.Plugin.Solution/javabinding</module>
     <module>maven-compile-plugin</module>
     <module>maven-install-plugin</module>
     <module>maven-link-plugin</module>
@@ -47,22 +51,22 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-assembler</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-executable</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-artifact</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-plugin</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
   </dependencies>
   <build>
@@ -74,13 +78,6 @@ under the License.
       </plugins>
     </pluginManagement>
     <plugins>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptor>src/assembly/src.xml</descriptor>
-          <outputDirectory>src/target</outputDirectory>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

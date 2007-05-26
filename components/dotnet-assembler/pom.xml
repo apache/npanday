@@ -42,17 +42,17 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-model-assembly-plugins</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-artifact</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-core</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
   </dependencies>
 </project>

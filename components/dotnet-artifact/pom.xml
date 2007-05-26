@@ -27,7 +27,7 @@ under the License.
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>dotnet-artifact</artifactId>
   <name>dotnet-artifact</name>
-  <description>  
+  <description>
   </description>
   <dependencies>
     <dependency>
@@ -41,12 +41,12 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-model-netdependency</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-core</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
   </dependencies>
 </project>

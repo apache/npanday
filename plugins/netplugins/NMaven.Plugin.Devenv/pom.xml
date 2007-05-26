@@ -16,29 +16,22 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
-    <groupId>org.apache.maven.dotnet</groupId>
+    <groupId>NMaven.Plugins</groupId>
     <version>0.14-SNAPSHOT</version>
-    <artifactId>dotnet-components</artifactId>
-    <relativePath>..\..\pom.xml</relativePath>
+    <artifactId>NMaven.Plugins</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.maven.dotnet</groupId>
-  <artifactId>dotnet-service-embedder</artifactId>
-  <packaging>war</packaging>
-  <name>dotnet-service-embedder</name>
-  <description>
-    NMaven
-  </description>
-  <build>
-    <finalName>dotnet-service-embedder</finalName>
-  </build>
+  <groupId>NMaven.Plugins</groupId>
+  <artifactId>NMaven.Plugin.Devenv</artifactId>
+  <packaging>netplugin</packaging>
+  <name>NMaven.Plugin.Devenv</name>
   <dependencies>
     <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
-      <artifactId>dotnet-embedder</artifactId>
+      <groupId>NMaven.Plugin</groupId>
+      <artifactId>NMaven.Plugin</artifactId>
+      <type>library</type>
       <version>${pom.version}</version>
     </dependency>
   </dependencies>
