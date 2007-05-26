@@ -89,6 +89,11 @@ public class NetDependencyResolverMojo
     private String frameworkVersion;
 
     /**
+     * @parameter expression = "${installGacDependencies}" default-value="false"
+     */
+    private boolean isGacInstall;
+
+    /**
      * @component
      */
     private AssemblyResolver assemblyResolver;
@@ -178,39 +183,43 @@ public class NetDependencyResolverMojo
 
         //Do GAC Install, if needed
         //TODO: Add in the dependencies from the MOJO config
-        NetDependenciesRepository repository =
-            (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
-        getLog().info( "NMAVEN-1600-001: Found net dependencies: Number = " + dependencies.size() );
-
-        List<NetDependencyMatchPolicy> gacInstallPolicies = new ArrayList<NetDependencyMatchPolicy>();
-        gacInstallPolicies.add( new GacMatchPolicy( true ) );
-        List<Dependency> gacInstallDependencies = repository.getDependenciesFor( gacInstallPolicies );
-        for ( Dependency dependency : gacInstallDependencies )
+        if ( isGacInstall )
         {
-            List<Artifact> artifacts = artifactContext.getArtifactsFor( dependency.getGroupId(),
-                                                                        dependency.getArtifactId(),
-                                                                        dependency.getVersion(), dependency.getType() );
-            try
+            NetDependenciesRepository repository =
+                (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
+            getLog().info( "NMAVEN-1600-001: Found net dependencies: Number = " + dependencies.size() );
+
+            List<NetDependencyMatchPolicy> gacInstallPolicies = new ArrayList<NetDependencyMatchPolicy>();
+            gacInstallPolicies.add( new GacMatchPolicy( true ) );
+            List<Dependency> gacInstallDependencies = repository.getDependenciesFor( gacInstallPolicies );
+            for ( Dependency dependency : gacInstallDependencies )
             {
-                NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion,
-                                                                                        "GACUTIL",
-                                                                                        getGacInstallCommandsFor(
-                                                                                            artifacts.get( 0 ) ),
-                                                                                        null );
-                netExecutable.execute();
-                getLog().info( "NMAVEN-1600-004: Installed Assembly into GAC: Assembly = " +
-                    artifacts.get( 0 ).getFile().getAbsolutePath() + ",  Vendor = " +
-                    netExecutable.getVendor().getVendorName() );
-            }
-            catch ( ExecutionException e )
-            {
-                throw new MojoExecutionException( "NMAVEN-1600-005: Unable to execute gacutil: Vendor " + vendor +
-                    ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
-            }
-            catch ( PlatformUnsupportedException e )
-            {
-                throw new MojoExecutionException( "NMAVEN-1600-006: Platform Unsupported: Vendor " + vendor +
-                    ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+                List<Artifact> artifacts = artifactContext.getArtifactsFor( dependency.getGroupId(),
+                                                                            dependency.getArtifactId(),
+                                                                            dependency.getVersion(),
+                                                                            dependency.getType() );
+                try
+                {
+                    NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion,
+                                                                                            "GACUTIL",
+                                                                                            getGacInstallCommandsFor(
+                                                                                                artifacts.get( 0 ) ),
+                                                                                            null );
+                    netExecutable.execute();
+                    getLog().info( "NMAVEN-1600-004: Installed Assembly into GAC: Assembly = " +
+                        artifacts.get( 0 ).getFile().getAbsolutePath() + ",  Vendor = " +
+                        netExecutable.getVendor().getVendorName() );
+                }
+                catch ( ExecutionException e )
+                {
+                    throw new MojoExecutionException( "NMAVEN-1600-005: Unable to execute gacutil: Vendor " + vendor +
+                        ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+                }
+                catch ( PlatformUnsupportedException e )
+                {
+                    throw new MojoExecutionException( "NMAVEN-1600-006: Platform Unsupported: Vendor " + vendor +
+                        ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+                }
             }
         }
 

@@ -53,12 +53,14 @@
     <artifactId>NMaven.Plugin</artifactId>
     <version>0.14-SNAPSHOT</version>
     <type>library</type>
+    <isGacInstall>true</isGacInstall>    
   </netDependency>
   <netDependency>
     <groupId>NMaven.Model</groupId>
     <artifactId>NMaven.Model.Pom</artifactId>
     <version>0.14-SNAPSHOT</version>
     <type>library</type>
+    <isGacInstall>true</isGacInstall>
   </netDependency>
   <netDependency>
     <groupId>NMaven.Plugin</groupId>

@@ -11,7 +11,16 @@ import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
+import org.apache.maven.dotnet.artifact.NetDependenciesRepository;
+import org.apache.maven.dotnet.artifact.NetDependencyMatchPolicy;
+import org.apache.maven.dotnet.executable.NetExecutable;
+import org.apache.maven.dotnet.executable.ExecutionException;
+import org.apache.maven.dotnet.PlatformUnsupportedException;
+import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import org.apache.maven.dotnet.vendor.Vendor;
+import org.apache.maven.dotnet.model.netdependency.NetDependency;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.IOUtil;
 
@@ -55,9 +64,31 @@ public class VsInstallerMojo
      */
     private ArtifactHandlerManager artifactHandlerManager;
 
+    /**
+     * @component
+     */
+    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
+
+    /**
+     * @component
+     */
+    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+
+        RepositoryRegistry repositoryRegistry;
+        try
+        {
+            repositoryRegistry = nmavenRegistry.createRepositoryRegistry();
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException(
+                "NMAVEN-1600-000: Failed to create the repository registry for this plugin", e );
+        }
+
         ArtifactRepository remoteArtifactRepository = new DefaultArtifactRepository( "nmaven",
                                                                                      "http://localhost:8080/repository",
                                                                                      new DefaultRepositoryLayout() );
@@ -83,11 +114,43 @@ public class VsInstallerMojo
             throw new MojoExecutionException( "NMAVEN-1600-005: Unable to resolve assemblies", e );
         }
 
+        //GAC Installs
+        NetDependenciesRepository repository =
+            (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
+
+        List<NetDependencyMatchPolicy> gacInstallPolicies = new ArrayList<NetDependencyMatchPolicy>();
+        gacInstallPolicies.add( new GacMatchPolicy( true ) );
+        List<Dependency> gacInstallDependencies = repository.getDependenciesFor( gacInstallPolicies );
+        for ( Dependency dependency : gacInstallDependencies )
+        {
+            List<Artifact> artifacts = artifactContext.getArtifactsFor( dependency.getGroupId(),
+                                                                        dependency.getArtifactId(),
+                                                                        dependency.getVersion(), dependency.getType() );
+            try
+            {
+                NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor(
+                    Vendor.MICROSOFT.getVendorName(), "2.0.50727", "GACUTIL",
+                    getGacInstallCommandsFor( artifacts.get( 0 ) ), null );
+                netExecutable.execute();
+                getLog().info( "NMAVEN-1600-004: Installed Assembly into GAC: Assembly = " +
+                    artifacts.get( 0 ).getFile().getAbsolutePath() + ",  Vendor = " +
+                    netExecutable.getVendor().getVendorName() );
+            }
+            catch ( ExecutionException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1600-005: Unable to execute gacutil:", e );
+            }
+            catch ( PlatformUnsupportedException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1600-006: Platform Unsupported:", e );
+            }
+        }
+
         OutputStreamWriter writer = null;
         try
         {
             String addin =
-                IOUtil.toString( VsInstallerMojo.class.getResourceAsStream( "/template/NMaven.VisualStudio.AddIn" ));
+                IOUtil.toString( VsInstallerMojo.class.getResourceAsStream( "/template/NMaven.VisualStudio.AddIn" ) );
             File outputFile = new File( System.getProperty( "user.home" ) +
                 "\\My Documents\\Visual Studio 2005\\Addins\\NMaven.VisualStudio.AddIn" );
 
@@ -118,6 +181,32 @@ public class VsInstallerMojo
                 e.printStackTrace();
             }
         }
+    }
 
+    public List<String> getGacInstallCommandsFor( Artifact artifact )
+        throws MojoExecutionException
+    {
+        List<String> commands = new ArrayList<String>();
+        commands.add( "/nologo" );
+        commands.add( "/i" );
+        commands.add( artifact.getFile().getAbsolutePath() );
+        return commands;
+    }
+
+    private class GacMatchPolicy
+        implements NetDependencyMatchPolicy
+    {
+
+        private boolean isGacInstall;
+
+        public GacMatchPolicy( boolean isGacInstall )
+        {
+            this.isGacInstall = isGacInstall;
+        }
+
+        public boolean match( NetDependency netDependency )
+        {
+            return netDependency.isIsGacInstall() == isGacInstall;
+        }
     }
 }

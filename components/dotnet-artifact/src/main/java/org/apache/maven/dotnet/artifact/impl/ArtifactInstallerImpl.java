@@ -455,7 +455,13 @@ public class ArtifactInstallerImpl
         try
         {
             result = resolver.resolveTransitively( artifactDependencies, sourceArtifact, localArtifactRepository,
-                                                   remoteArtifactRepositories, metadata, new GacFilter() );
+                                                   remoteArtifactRepositories, metadata, new ArtifactFilter()
+            {
+                public boolean include( org.apache.maven.artifact.Artifact artifact )
+                {
+                    return !artifact.getType().startsWith( "gac" );
+                }
+            } );
         }
         catch ( ArtifactResolutionException e )
         {
@@ -675,15 +681,6 @@ public class ArtifactInstallerImpl
             }
 
             return profile.equals( netDependency.getProfile() );
-        }
-    }
-
-    private static class GacFilter
-        implements ArtifactFilter
-    {
-        public boolean include( org.apache.maven.artifact.Artifact artifact )
-        {
-            return !artifact.getType().startsWith( "gac" );
         }
     }
 }
