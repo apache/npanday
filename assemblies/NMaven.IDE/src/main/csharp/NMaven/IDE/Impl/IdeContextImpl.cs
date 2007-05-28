@@ -43,23 +43,13 @@ namespace NMaven.IDE.Impl
             request.loggerPortSpecified = true;
 			
             MavenEmbedderService service = new MavenEmbedderService();
-			try {
-				service.execute(request);
-			}
-			catch(SoapHeaderException e)
-			{
-				Console.Error.WriteLine(", " + e.Code + ", " + e.SubCode + "," + e.StackTrace);
-				throw new Exception(e.StackTrace + "," + e.Code, null);
-			}				
+			service.execute(request);			
 		}
 		
 		public List<MavenProject> GetMavenProjectsFrom(DirectoryInfo buildDirectory)
 		{
 			MavenEmbedderService service = new MavenEmbedderService();
-			List<MavenProject> mavenProjects = new List<MavenProject>();
-           
-			mavenProjects.AddRange(service.getMavenProjectsFor(buildDirectory.FullName));
-			return mavenProjects;
+            return new List<MavenProject>(service.getMavenProjectsFor(buildDirectory.FullName));
 		}
 		
 		public void Init(IIdeConfiguration configuration)
@@ -98,16 +88,23 @@ namespace NMaven.IDE.Impl
 		                         
         private void WriteBuildResults()
         {
-                Socket client = socket.Accept();            
-                NetworkStream networkStream = new NetworkStream(client);                
+            try
+            {
+                Socket client = socket.Accept();
+                NetworkStream networkStream = new NetworkStream(client);
                 StreamReader streamReader = new StreamReader(new NetworkStream(client));
-                while(!streamReader.EndOfStream)
+                while (!streamReader.EndOfStream)
                 {
-                	logger.Log(Level.INFO, String.Concat(streamReader.ReadLine(), Environment.NewLine));
-                
+                    logger.Log(Level.INFO, String.Concat(streamReader.ReadLine(), Environment.NewLine));
+
                 }
                 streamReader.Close();
-                client.Close();       
+                client.Close();    
+            }
+            catch (IOException ex)
+            {
+                logger.Log(Level.INFO, "Problem reading socket logger: Message = " + ex.Message);
+            }   
         }		
 	}
 }

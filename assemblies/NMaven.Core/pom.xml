@@ -26,25 +26,22 @@ under the License.
   <groupId>NMaven.Core</groupId>
   <artifactId>NMaven.Core</artifactId>
   <packaging>library</packaging>
-  <version>0.14-SNAPSHOT</version>
   <name>NMaven.Core</name>
   <dependencies>
     <dependency>
       <groupId>NMaven.Model</groupId>
       <artifactId>NMaven.Model.Pom</artifactId>
       <type>library</type>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>Microsoft.Build.Engine</groupId>
       <artifactId>Microsoft.Build.Engine</artifactId>
       <type>gac_msil</type>
-      <version>2.0.0.0__b03f5f7f11d50a3a</version>
     </dependency>
     <dependency>
       <groupId>NUnit</groupId>
       <artifactId>NUnit.Framework</artifactId>
-      <version>2.2.8.0</version>
       <type>library</type>
     </dependency>
   </dependencies>

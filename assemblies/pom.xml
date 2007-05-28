@@ -22,7 +22,7 @@ under the License.
     <groupId>NMaven.Project</groupId>
     <version>0.14-SNAPSHOT</version>
     <artifactId>NMaven.Project</artifactId>
-    <relativePath>../pom-dotnet.xml</relativePath>    
+    <relativePath>../pom-dotnet.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven</groupId>
@@ -36,7 +36,6 @@ under the License.
   <modules>
     <module>NMaven.Artifact</module>
     <module>NMaven.Core</module>
-    <module>NMaven.IDE</module>
     <module>NMaven.Logging</module>
     <module>NMaven.Model/Pom</module>
     <module>NMaven.Model/AutomationExtensibility</module>
@@ -56,6 +55,7 @@ under the License.
       <modules>
         <module>NMaven.VisualStudio</module>
         <module>NMaven.VisualStudio.Addin</module>
+        <module>NMaven.IDE</module>
       </modules>
       <build>
         <plugins>

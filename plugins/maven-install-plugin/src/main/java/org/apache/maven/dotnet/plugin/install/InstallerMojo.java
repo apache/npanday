@@ -26,7 +26,6 @@ import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.apache.maven.dotnet.artifact.ArtifactType;
-import org.apache.maven.dotnet.plugin.compile.ComponentInitializerMojo;
 import org.apache.maven.model.Dependency;
 
 import java.io.File;

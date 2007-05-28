@@ -26,6 +26,5 @@ under the License.
   <groupId>NMaven.Plugin</groupId>
   <artifactId>NMaven.Plugin.Runner</artifactId>
   <packaging>exe</packaging>
-  <version>0.14-SNAPSHOT</version>
   <name>NMaven.Plugin.Runner</name>
 </project>

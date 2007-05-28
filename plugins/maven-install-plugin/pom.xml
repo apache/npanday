@@ -31,13 +31,6 @@ under the License.
   <description>
     Maven Plugin for .NET: Installs compiled artifacts into the local repository.
   </description>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
-      <artifactId>maven-compile-plugin</artifactId>
-      <version>0.14-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
   <distributionManagement>
     <site>
       <id>nmaven-apache-site</id>

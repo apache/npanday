@@ -1,6 +1,9 @@
 using System;
-using NMaven.Service;
+using System.Web.Services.Protocols;
+
 using NMaven.IDE;
+using NMaven.Logging;
+using NMaven.Service;
 
 namespace NMaven.IDE.Commands
 {
@@ -24,6 +27,7 @@ namespace NMaven.IDE.Commands
 		public void Init(IIdeContext ideContext)
 		{
 			this.ideContext = ideContext;
+            
 		}
 		
         public void Execute(object sender, EventArgs args)
@@ -33,7 +37,20 @@ namespace NMaven.IDE.Commands
         	request.pomFile = this.PomFile;
         	request.loggerPort = loggerPort;
         	request.loggerPortSpecified = true;
-        	ideContext.Build(request);
+            try
+            {
+                ideContext.Build(request);
+            }
+            catch (SoapException e)
+            {
+                ideContext.GetLogger().Log(Level.INFO, "NMaven: Error in build: " + e.Code + ", " + e.SubCode
+                    + "," + e.StackTrace);
+            }
+            catch (Exception e)
+            {
+                ideContext.GetLogger().Log(Level.INFO, "NMaven: Error in build: " + e.Message);
+            }
+        	
         }	
         
 			public int LoggerPort

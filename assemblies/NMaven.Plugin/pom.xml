@@ -26,14 +26,13 @@ under the License.
   <groupId>NMaven.Plugin</groupId>
   <artifactId>NMaven.Plugin</artifactId>
   <packaging>library</packaging>
-  <version>0.14-SNAPSHOT</version>
   <name>NMaven.Plugin</name>
   <dependencies>
     <dependency>
       <groupId>NMaven.Model</groupId>
       <artifactId>NMaven.Model.Pom</artifactId>
       <type>library</type>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
   </dependencies>
   <build>

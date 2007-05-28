@@ -143,6 +143,11 @@ public final class CompilerMojo
     private String vendorVersion;
 
     /**
+     * @parameter expression = "${isDebug}" default-value="false"
+     */
+    private boolean isDebug;
+
+    /**
      * @component
      */
     private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
@@ -198,10 +203,17 @@ public final class CompilerMojo
         //Config
         CompilerConfig compilerConfig = (CompilerConfig) CompilerConfig.Factory.createDefaultExecutableConfig();
         compilerConfig.setLocalRepository( localRepository );
-        if ( parameters != null )
+        if ( parameters == null )
         {
-            compilerConfig.setCommands( parameters );
+            parameters = new ArrayList<String>();
         }
+        if ( isDebug )
+        {
+            parameters.add( "/debug+" );
+        }
+
+        compilerConfig.setCommands( parameters );
+
         String artifactTypeName = project.getArtifact().getType();
         ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifactTypeName );
         if ( artifactType.equals( ArtifactType.NULL ) )

@@ -98,4 +98,21 @@ xmlns="http://schemas.microsoft.com/AutomationExtensibility">
  []
 [../images/VS2005-SHUTDOWN.JPG]
 
+* Debugging
+
+ When starting the adding, you may see an error message box:
+
++----+
+The Add-in supporting this command could not be loaded. Do you wish to remove this command?
++----+
+
+ To get proper log messages, shutdown your IDE and go to the C:\Program Files\Microsoft Visual Studio 8\Common7\IDE directory .
+ Type:
+
++----+
+devenv /Log C:\tmp\VS2005.log /ResetAddin NMaven.VisualStudion.Addin
++----+
+
+ Go back through the steps that caused the error. Now look at your log file. The most common error is: "Unable to connect to the remote server"
+ This means that the embedded server did not properly start up.
 

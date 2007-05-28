@@ -122,6 +122,11 @@ public final class TestCompilerMojo
     private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
 
     /**
+     * @parameter expression = "${isDebug}" default-value="false"
+     */
+    private boolean isDebug;    
+
+    /**
      * Compiles the class files.
      *
      * @throws MojoExecutionException thrown if MOJO is unable to compile the class files or if the environment is not
@@ -153,9 +158,9 @@ public final class TestCompilerMojo
             testFrameworkVersion = frameworkVersion;
         }
 
-        if(localRepository == null)
+        if ( localRepository == null )
         {
-            localRepository = new File(System.getProperty("user.home"), ".m2/repository");
+            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
         }
 
         //Requirement
@@ -178,10 +183,16 @@ public final class TestCompilerMojo
 
         //Config
         CompilerConfig compilerConfig = (CompilerConfig) CompilerConfig.Factory.createDefaultExecutableConfig();
-        if ( testParameters != null )
+        if ( testParameters == null )
         {
-            compilerConfig.setCommands( testParameters );
+            testParameters = new ArrayList<String>();
         }
+        if ( isDebug )
+        {
+            testParameters.add( "/debug+" );
+        }
+        compilerConfig.setCommands( testParameters );
+
         compilerConfig.setArtifactType( ArtifactType.LIBRARY );
         compilerConfig.setTestCompile( true );
         compilerConfig.setLocalRepository( localRepository );
@@ -203,6 +214,6 @@ public final class TestCompilerMojo
                 "NMAVEN-903-002: Unable to Compile: Language = " + language + ", Vendor = " + vendor, e );
         }
         long endTime = System.currentTimeMillis();
-        getLog().info( "Mojo Execution Time = " + (endTime - startTime));        
+        getLog().info( "Mojo Execution Time = " + ( endTime - startTime ) );
     }
 }

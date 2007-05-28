@@ -26,20 +26,35 @@ under the License.
   <groupId>NMaven.IDE</groupId>
   <artifactId>NMaven.IDE</artifactId>
   <packaging>library</packaging>
-  <version>0.14-SNAPSHOT</version>
   <name>NMaven.IDE</name>
   <dependencies>
     <dependency>
       <groupId>NMaven.Service</groupId>
       <artifactId>NMaven.Service.Embedder</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>NMaven.Logging</groupId>
       <artifactId>NMaven.Logging</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
       <type>library</type>
+    </dependency>
+    <dependency>
+      <groupId>NMaven.Artifact</groupId>
+      <artifactId>NMaven.Artifact</artifactId>
+      <version>${pom.version}</version>
+      <type>library</type>
+    </dependency>
+    <dependency>
+      <groupId>EnvDTE</groupId>
+      <artifactId>EnvDTE</artifactId>
+      <type>gac</type>
+    </dependency>
+    <dependency>
+      <groupId>EnvDTE80</groupId>
+      <artifactId>EnvDTE80</artifactId>
+      <type>gac</type>
     </dependency>
   </dependencies>
 </project>

@@ -26,69 +26,64 @@ under the License.
   <groupId>NMaven.VisualStudio</groupId>
   <artifactId>NMaven.VisualStudio.Addin</artifactId>
   <packaging>visual-studio-addin</packaging>
-  <version>0.14-SNAPSHOT</version>
   <name>NMaven.VisualStudio.Addin</name>
   <dependencies>
     <dependency>
       <groupId>NMaven.IDE</groupId>
       <artifactId>NMaven.IDE</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>NMaven.Plugin</groupId>
       <artifactId>NMaven.Plugin</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>NMaven.Logging</groupId>
       <artifactId>NMaven.Logging</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>NMaven.VisualStudio</groupId>
       <artifactId>NMaven.VisualStudio</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>NMaven.Service</groupId>
       <artifactId>NMaven.Service.Embedder</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
       <type>library</type>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>NMaven.Artifact</groupId>
       <artifactId>NMaven.Artifact</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>Microsoft.VisualStudio.CommandBars</groupId>
       <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>
-      <version>8.0.0.0__b03f5f7f11d50a3a</version>
       <type>gac</type>
     </dependency>
     <dependency>
       <groupId>EnvDTE</groupId>
       <artifactId>EnvDTE</artifactId>
       <type>gac</type>
-      <version>8.0.0.0__b03f5f7f11d50a3a</version>
     </dependency>
     <dependency>
       <groupId>EnvDTE80</groupId>
       <artifactId>EnvDTE80</artifactId>
       <type>gac</type>
-      <version>8.0.0.0__b03f5f7f11d50a3a</version>
     </dependency>
     <dependency>
       <groupId>Extensibility</groupId>
       <artifactId>Extensibility</artifactId>
       <type>gac</type>
-      <version>7.0.3300.0__b03f5f7f11d50a3a</version>
     </dependency>
   </dependencies>
   <profiles>

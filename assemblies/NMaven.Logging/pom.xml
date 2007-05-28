@@ -26,6 +26,5 @@ under the License.
   <groupId>NMaven.Logging</groupId>
   <artifactId>NMaven.Logging</artifactId>
   <packaging>library</packaging>
-  <version>0.14-SNAPSHOT</version>
   <name>NMaven.Library</name>  
 </project>

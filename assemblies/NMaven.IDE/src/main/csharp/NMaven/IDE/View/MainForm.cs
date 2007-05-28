@@ -38,7 +38,7 @@ namespace NMaven.IDE.View {
 			InitializeComponent();
 			MavenBuildControl mavenBuildControl = new MavenBuildControl();
 			mavenBuildControl.Size = size;
-			mavenBuildControl.Init(null, logger, 9099, size);
+			mavenBuildControl.Init(logger, 9099, size, null);
 			this.Controls.Add(mavenBuildControl);	
 			//MavenDependencyUserControl mpuc = new MavenDependencyUserControl();
 			//this.Controls.Add(mpuc);

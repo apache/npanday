@@ -26,14 +26,13 @@ under the License.
   <groupId>NMaven.Plugin</groupId>
   <artifactId>NMaven.Plugin.Loader</artifactId>
   <packaging>exe</packaging>
-  <version>0.14-SNAPSHOT</version>
   <name>NMaven.Plugin.Loader</name>
   <dependencies>
     <dependency>
       <groupId>NMaven.Plugin</groupId>
       <artifactId>NMaven.Plugin</artifactId>
       <type>library</type>
-      <version>0.14-SNAPSHOT</version>
+      <version>${pom.version}</version>
     </dependency>
   </dependencies>
 </project>

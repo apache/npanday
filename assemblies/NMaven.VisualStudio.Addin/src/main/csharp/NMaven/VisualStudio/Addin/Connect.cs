@@ -4,10 +4,12 @@ using EnvDTE80;
 
 using System;
 using System.IO;
+using System.Net;
 using System.Resources;
 using System.Reflection;
 using System.Globalization;
 using System.Drawing;
+using System.Threading;
 
 using Microsoft.VisualStudio.CommandBars;
 
@@ -85,7 +87,7 @@ namespace NMaven.VisualStudio.Addin
                 try
                 {
                     //Add a command to the Commands collection:
-                    Command command = commands.AddNamedCommand2(_addInInstance, "NMavenAddin", "NMavenAddin", "Executes the command for NMavenAddin", true, 59, ref contextGUIDS, (int)vsCommandStatus.vsCommandStatusSupported + (int)vsCommandStatus.vsCommandStatusEnabled, (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
+                    Command command = commands.AddNamedCommand2(_addInInstance, "NMavenAddin", "NMaven Build System", "Executes the command for NMavenAddin", true, 480, ref contextGUIDS, (int)vsCommandStatus.vsCommandStatusSupported + (int)vsCommandStatus.vsCommandStatusEnabled, (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
 
                     //Add a control for the command to the tools menu:
                     if ((command != null) && (toolsPopup != null))
@@ -99,38 +101,33 @@ namespace NMaven.VisualStudio.Addin
                     //  already exists. If so there is no need to recreate the command and we can
                     //  safely ignore the exception.
                 }
-
-                String localRepository = Environment.GetEnvironmentVariable("HOMEDRIVE")
-                    + Environment.GetEnvironmentVariable("HOMEPATH") + @"\.m2\repository\";
-
-                ArtifactContext artifactContext = new ArtifactContext();
-                NMaven.Artifact.Artifact artifactWar = artifactContext.CreateArtifact("org.apache.maven.dotnet", "dotnet-service-embedder", "0.14-SNAPSHOT", "war");
-                FileInfo warFileInfo = new FileInfo(localRepository + "/" + new JavaRepositoryLayout().pathOf(artifactWar) + "war");
-  
-			    ProcessStartInfo processStartInfo =
-                    new ProcessStartInfo("mvn", @"org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile=""" + warFileInfo.FullName + @"""");
-			    processStartInfo.UseShellExecute = true;
-                System.Diagnostics.Process.Start(processStartInfo);        
             }
             else if (connectMode == ext_ConnectMode.ext_cm_AfterStartup)
             {
                 Window win = _applicationObject.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);
                 OutputWindow outputWindow = (OutputWindow)win.Object;
-                outputWindowPane = outputWindow.OutputWindowPanes.Add("NMaven Addin Test");
+                outputWindowPane = outputWindow.OutputWindowPanes.Add("NMaven Build System");
 
                 OutputWindowPaneHandler handler = new OutputWindowPaneHandler();
                 handler.SetOutputWindowPaneHandler(outputWindowPane);
 
                 logger = NMaven.Logging.Logger.GetLogger("UC");
                 logger.AddHandler(handler);
-                logger.Log(Level.INFO, "NMaven Addin Test");
-                //logger.Log(Level.INFO, );
-                String localRepository = Environment.GetEnvironmentVariable("HOMEDRIVE")
+
+                  String localRepository = Environment.GetEnvironmentVariable("HOMEDRIVE")
                     + Environment.GetEnvironmentVariable("HOMEPATH") + @"\.m2\repository\";
                 ArtifactContext artifactContext = new ArtifactContext();
                 NMaven.Artifact.Artifact artifactWar = artifactContext.CreateArtifact("org.apache.maven.dotnet", "dotnet-service-embedder", "0.14-SNAPSHOT", "war");
                 FileInfo warFileInfo = new FileInfo(localRepository + "/" + new JavaRepositoryLayout().pathOf(artifactWar) + "war");
-                logger.Log(Level.INFO, @"org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile=""" + warFileInfo.FullName + @"""");
+                logger.Log(Level.INFO, "Executing external command plugin: " 
+                    + @"mvn org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile=""" 
+                    + warFileInfo.FullName + @"""");
+
+   			    ProcessStartInfo processStartInfo =
+                    new ProcessStartInfo("mvn", @"org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile=""" + warFileInfo.FullName + @"""");
+			    processStartInfo.UseShellExecute = true;
+                System.Diagnostics.Process.Start(processStartInfo);
+
                 MavenBuildControl mavenBuildControl = new MavenBuildControl();
                 object programmableObject = null;
 
@@ -141,9 +138,9 @@ namespace NMaven.VisualStudio.Addin
 
                 _windowToolWindow.Visible = true;
                 _applicationObject = (DTE2)application;
-                FileInfo fileInfo = new FileInfo(_applicationObject.Solution.FullName);               
+                
                 mavenBuildControl = (MavenBuildControl)_windowToolWindow.Object;
-                mavenBuildControl.Init(fileInfo.Directory, logger, 9099, new Size(400, 400));
+                mavenBuildControl.Init(logger, 9099, new Size(400, 400), _applicationObject);
                 mavenBuildControl.ClearOutputWindow += new EventHandler(ClearOutputWindowPane);
                 mavenBuildControl.FocusOutputWindow += new EventHandler(ActivateOutputWindowPane);
             }
@@ -165,6 +162,7 @@ namespace NMaven.VisualStudio.Addin
         /// <seealso class='IDTExtensibility2' />
         public void OnDisconnection(ext_DisconnectMode disconnectMode, ref Array custom)
         {
+
         }
 
         /// <summary>Implements the OnAddInsUpdate method of the IDTExtensibility2 interface. Receives notification when the collection of Add-ins has changed.</summary>
@@ -186,6 +184,8 @@ namespace NMaven.VisualStudio.Addin
         /// <seealso class='IDTExtensibility2' />
         public void OnBeginShutdown(ref Array custom)
         {
+            WebClient webClient = new WebClient();
+            webClient.DownloadData("http://localhost:8080?shutdown=true");
         }
 
         /// <summary>Implements the QueryStatus method of the IDTCommandTarget interface. This is called when the command's availability is updated</summary>
