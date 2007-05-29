@@ -50,6 +50,7 @@ namespace NMaven.VisualStudio.Addin
         {
             _applicationObject = (DTE2)application;
             _addInInstance = (AddIn)addInInst;
+            
             if (connectMode == ext_ConnectMode.ext_cm_UISetup)
             {
                 object[] contextGUIDS = new object[] { };
@@ -126,6 +127,7 @@ namespace NMaven.VisualStudio.Addin
    			    ProcessStartInfo processStartInfo =
                     new ProcessStartInfo("mvn", @"org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile=""" + warFileInfo.FullName + @"""");
 			    processStartInfo.UseShellExecute = true;
+                processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 System.Diagnostics.Process.Start(processStartInfo);
 
                 MavenBuildControl mavenBuildControl = new MavenBuildControl();

@@ -114,6 +114,11 @@ public class EmbedderStarterMojo
     private String frameworkVersion;
 
     /**
+     * @parameter expression = "${pom.version}"
+     */
+    private String pomVersion;
+
+    /**
      * File logger: needed for creating logs when the IDE starts because the console output and thrown exceptions are
      * not available
      */
@@ -201,8 +206,6 @@ public class EmbedderStarterMojo
         List<String> commands = new ArrayList<String>();
         commands.add( "-Dport=" + String.valueOf( port ) );
         commands.add( "-DwarFile=" + warFile.getAbsolutePath() );
-        //    commands.add( "-DwarFile=\"" + new File( localRepository,
-        //                                           "org\\apache\\maven\\dotnet\\dotnet-service-embedder\\0.14-SNAPSHOT\\dotnet-service-embedder-0.14-SNAPSHOT.war" ).getAbsolutePath() + "\"");
         commands.add( "-classpath" );
         commands.add( artifactsToClassPath( result.getArtifacts() ) );
         commands.add( "org.apache.maven.dotnet.jetty.JettyStarter" );
@@ -277,9 +280,9 @@ public class EmbedderStarterMojo
         {
             sb.append( "\"" ).append( artifact.getFile().getAbsolutePath() ).append( "\"" ).append( ";" );
         }
-        //TODO: Cleanup
-        File starterFile = new File( localRepository,
-                                     "org\\apache\\maven\\dotnet\\dotnet-jetty\\0.14-SNAPSHOT\\dotnet-jetty-0.14-SNAPSHOT.jar" );
+
+        File starterFile = new File( localRepository, "org\\apache\\maven\\dotnet\\dotnet-jetty\\" + pomVersion +
+            "\\dotnet-jetty-" + pomVersion + ".jar" );
         sb.append( "\"" ).append( starterFile.getAbsolutePath() ).append( "\"" );
         return sb.toString();
     }

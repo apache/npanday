@@ -6,7 +6,7 @@ call mvn %phase%
 IF errorlevel 1 GOTO END
 
 ECHO Installing 3rd Party Assemblies in the Local Repo
-call mvn org.apache.maven.dotnet.plugins:maven-install-plugin:install-file -Dfile=./thirdparty/NUnit/NUnit.Framework.dll -DgroupId=NUnit -DartifactId=NUnit.Framework -Dpackaging=dll -DartifactVersion=2.2.8.0
+call mvn org.apache.maven.dotnet.plugins:maven-install-plugin:install-file -Dfile=./thirdparty/NUnit/NUnit.Framework.dll -DgroupId=NUnit -DartifactId=NUnit.Framework -Dpackaging=library -DartifactVersion=2.2.8.0
 IF errorlevel 1 GOTO END
 
 if "%1" == "-DMicrosoft" (

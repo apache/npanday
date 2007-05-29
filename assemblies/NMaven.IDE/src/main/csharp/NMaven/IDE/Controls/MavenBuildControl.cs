@@ -298,6 +298,7 @@ namespace NMaven.IDE.Controls
             ProcessStartInfo processStartInfo =
                 new ProcessStartInfo("mvn", @"org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile=""" + warFileInfo.FullName + @"""");
             processStartInfo.UseShellExecute = true;
+            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             System.Diagnostics.Process.Start(processStartInfo);
         }
 
@@ -336,9 +337,7 @@ namespace NMaven.IDE.Controls
             List<MavenProject> mavenProjects = null;
             try
             {
-                logger.Log(Level.INFO, "CCCC");
                 mavenProjects = ideContext.GetMavenProjectsFrom(fileInfo.Directory);
-                logger.Log(Level.INFO, "DDDD");
             }
             catch (IOException ex)
             {
