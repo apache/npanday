@@ -55,6 +55,11 @@ public class VsInstallerMojo
     private String localRepository;
 
     /**
+     * @parameter expression="${remoteRepository}"
+     */
+    private String remoteRepository;
+
+    /**
      * @component
      */
     private ArtifactContext artifactContext;
@@ -88,12 +93,14 @@ public class VsInstallerMojo
             throw new MojoExecutionException(
                 "NMAVEN-1600-000: Failed to create the repository registry for this plugin", e );
         }
-
-        ArtifactRepository remoteArtifactRepository = new DefaultArtifactRepository( "nmaven",
-                                                                                     "http://localhost:8080/repository",
-                                                                                     new DefaultRepositoryLayout() );
         List<ArtifactRepository> remoteRepositories = new ArrayList<ArtifactRepository>();
-        remoteRepositories.add( remoteArtifactRepository );
+        if ( remoteRepository != null )
+        {
+            ArtifactRepository remoteArtifactRepository =
+                new DefaultArtifactRepository( "nmaven", remoteRepository, new DefaultRepositoryLayout() );
+            remoteRepositories.add( remoteArtifactRepository );
+        }
+
         artifactContext.init( project, remoteRepositories, new File( localRepository ) );
 
         try
