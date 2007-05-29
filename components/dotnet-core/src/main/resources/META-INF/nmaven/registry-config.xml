@@ -38,6 +38,10 @@
       <repository-name>net-dependencies</repository-name>
       <repository-class>org.apache.maven.dotnet.artifact.impl.NetDependenciesRepositoryImpl</repository-class>
       <repository-config>/META-INF/nmaven/net-dependencies.xml</repository-config>
+      <init-param>
+        <param-name>nmaven.version</param-name>
+        <param-value>0.14-SNAPSHOT</param-value>
+      </init-param>
     </repository>
     <repository>
       <repository-name>configuration-appenders</repository-name>

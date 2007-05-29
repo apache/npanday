@@ -3,31 +3,26 @@
   <netDependency>
     <groupId>NMaven.Plugins</groupId>
     <artifactId>NMaven.Plugin.Resx</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>exe</type>
   </netDependency>
   <netDependency>
     <groupId>NMaven.Plugins</groupId>
     <artifactId>NMaven.Plugin.Settings</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>netplugin</type>
   </netDependency>
   <netDependency>
     <groupId>NMaven.Plugins</groupId>
     <artifactId>NMaven.Plugin.Solution</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>netplugin</type>
   </netDependency>
   <netDependency>
     <groupId>NMaven.Plugins</groupId>
     <artifactId>NMaven.Plugin.Devenv</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>netplugin</type>
   </netDependency>
   <netDependency>
     <groupId>NMaven.Plugins</groupId>
     <artifactId>NMaven.Plugin.Addin</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>netplugin</type>
   </netDependency>
 
@@ -35,14 +30,12 @@
   <netDependency>
     <groupId>NMaven.VisualStudio</groupId>
     <artifactId>NMaven.VisualStudio.Addin</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>visual-studio-addin</type>
     <profile>VisualStudio2005</profile>
   </netDependency>
   <netDependency>
     <groupId>NMaven.VisualStudio</groupId>
     <artifactId>NMaven.VisualStudio</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>library</type>
     <profile>VisualStudio2005</profile>
   </netDependency>
@@ -51,33 +44,28 @@
   <netDependency>
     <groupId>NMaven.Plugin</groupId>
     <artifactId>NMaven.Plugin</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>library</type>
     <isGacInstall>true</isGacInstall>    
   </netDependency>
   <netDependency>
     <groupId>NMaven.Model</groupId>
     <artifactId>NMaven.Model.Pom</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>library</type>
     <isGacInstall>true</isGacInstall>
   </netDependency>
   <netDependency>
     <groupId>NMaven.Plugin</groupId>
     <artifactId>NMaven.Plugin.Runner</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>exe</type>
   </netDependency>
   <netDependency>
     <groupId>NMaven.Plugin</groupId>
     <artifactId>NMaven.Plugin.Loader</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>exe</type>
   </netDependency>
   <netDependency>
     <groupId>NMaven.Plugin</groupId>
     <artifactId>NMaven.Plugin.MojoGenerator</artifactId>
-    <version>0.14-SNAPSHOT</version>
     <type>exe</type>
   </netDependency>
 </netDependencies>

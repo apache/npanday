@@ -83,9 +83,17 @@ public class NetDependenciesRepositoryImpl
         catch ( XmlPullParserException e )
         {
             e.printStackTrace();
-            throw new IOException( "NMAVEN-062-000: Could not read plugins-compiler.xml" );
+            throw new IOException( "NMAVEN-062-000: Could not read net-dependencies.xml" );
         }
         netDependencies = model.getNetDependencies();
+        String nmavenVersion = (String) properties.get( "nmaven.version" );
+        for ( NetDependency dependency : netDependencies )
+        {
+            if ( dependency.getVersion() == null && dependency.getGroupId().startsWith( "NMaven" ) )
+            {
+                dependency.setVersion( nmavenVersion );
+            }
+        }
     }
 
 
