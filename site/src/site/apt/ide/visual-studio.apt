@@ -77,14 +77,22 @@ xmlns="http://schemas.microsoft.com/AutomationExtensibility">
 
  * Startup Visual Studio 2005 by clicking on a generated solution file
 
- * Click on a project file
-
- * Start the NMaven addin [Tool/NMavenAddin]. The addin will start and make a connection to an embedder jetty server
+ * Start the NMaven addin [Tool/NMaven Build System]. The addin will start and make a connection to an embedder jetty server
   hosting the maven embedder.
 
  []
 
 [../images/VS2005-StartAddin.JPG]
+
+ * After a few moments you should see a window appear. Dock the window.
+
+ * Click on a project file
+
+ * Under options, click "Load Solution"
+
+ []
+
+[../images/VS2005-LoadSolution.JPG]
 
  * After a few moments you should see a frame appear containing a list of maven projects, by artifact ID. Right click
  on one of the projects to do a build. You will see the output within the output pane.
@@ -92,11 +100,6 @@ xmlns="http://schemas.microsoft.com/AutomationExtensibility">
  []
 
 [../images/VS2005-Menu.JPG]
-
- * After you are done, you will need to manually shut down the jetty server by killing the process.
-
- []
-[../images/VS2005-SHUTDOWN.JPG]
 
 * Debugging
 

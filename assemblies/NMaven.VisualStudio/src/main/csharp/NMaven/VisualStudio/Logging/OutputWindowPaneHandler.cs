@@ -29,7 +29,7 @@ namespace NMaven.VisualStudio.Logging
 		{
 			if(record.GetLevel().GetValue() >= level.GetValue())
 			{
-				outputWindowPane.OutputString(record.GetMessage() + Environment.NewLine);
+				outputWindowPane.OutputString(record.GetMessage().Trim() + Environment.NewLine);
 			}
 		}
 		

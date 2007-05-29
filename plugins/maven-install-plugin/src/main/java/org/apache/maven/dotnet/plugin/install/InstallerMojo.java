@@ -78,7 +78,7 @@ public class InstallerMojo
             localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
         }
         artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
-
+        
         Artifact artifact = project.getArtifact();       
         try
         {

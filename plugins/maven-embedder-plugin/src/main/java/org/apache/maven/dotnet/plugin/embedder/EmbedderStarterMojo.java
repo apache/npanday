@@ -113,10 +113,7 @@ public class EmbedderStarterMojo
      */
     private String frameworkVersion;
 
-    /**
-     * @parameter expression = "${pom.version}"
-     */
-    private String pomVersion;
+    private String pomVersion = "0.14-SNAPSHOT";
 
     /**
      * File logger: needed for creating logs when the IDE starts because the console output and thrown exceptions are
@@ -134,7 +131,8 @@ public class EmbedderStarterMojo
     {
         try
         {
-            logger.addHandler( new FileHandler( "C:\\tmp\\nmaven-embedder-jetty.log" ) );
+            logger.addHandler(
+                new FileHandler( System.getProperty( "user.home" ) + "\\.m2\\nmaven-embedder-log.xml" ) );
         }
         catch ( IOException e )
         {

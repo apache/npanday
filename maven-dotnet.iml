@@ -70,6 +70,7 @@
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-link-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-mojo-generator-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-ncover-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/maven-release-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-resgen-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-resolver-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-sandcastle-plugin/src/main/java" isTestSource="false" />

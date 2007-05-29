@@ -42,6 +42,8 @@ namespace NMaven.IDE.Controls
 
         private DTE2 applicationObject;
 
+        private FileInfo warFileInfo;
+
         public event EventHandler ClearOutputWindow;
 
         public event EventHandler FocusOutputWindow;
@@ -50,12 +52,13 @@ namespace NMaven.IDE.Controls
 		{
 		}
 
-		public void Init(Logger logger, int loggerPort, Size treeSize,
+		public void Init(FileInfo warFileInfo, Logger logger, int loggerPort, Size treeSize,
             DTE2 applicationObject)
 		{
 			this.loggerPort = loggerPort;
             this.logger = logger;
             this.applicationObject = applicationObject;
+            this.warFileInfo = warFileInfo;
 
 			ideContext = new IdeContextImpl();
 			IIdeConfiguration configuration = Factory.CreateIdeConfiguration();
@@ -163,19 +166,19 @@ namespace NMaven.IDE.Controls
             this.treeView = new System.Windows.Forms.TreeView();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
-            //
+            // 
             // toolStrip1
-            //
+            // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripDropDownButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(380, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(319, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
-            //
+            // 
             // toolStripDropDownButton1
-            //
+            // 
             this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.serverToolStripMenuItem,
@@ -184,55 +187,55 @@ namespace NMaven.IDE.Controls
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
             this.toolStripDropDownButton1.Size = new System.Drawing.Size(70, 22);
             this.toolStripDropDownButton1.Text = "Options";
-            //
+            // 
             // serverToolStripMenuItem
-            //
+            // 
             this.serverToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startToolStripMenuItem,
             this.stopToolStripMenuItem});
             this.serverToolStripMenuItem.Name = "serverToolStripMenuItem";
-            this.serverToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.serverToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.serverToolStripMenuItem.Text = "Server";
-            //
+            // 
             // startToolStripMenuItem
-            //
+            // 
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
             this.startToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
-            //
+            // 
             // stopToolStripMenuItem
-            //
+            // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
             this.stopToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
-            //
+            // 
             // refreshSolutionToolStripMenuItem
-            //
+            // 
             this.refreshSolutionToolStripMenuItem.Name = "refreshSolutionToolStripMenuItem";
-            this.refreshSolutionToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.refreshSolutionToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.refreshSolutionToolStripMenuItem.Text = "Load Solution";
             this.refreshSolutionToolStripMenuItem.Click += new System.EventHandler(this.refreshSolutionToolStripMenuItem_Click);
-            //
+            // 
             // treeView
-            //
-            this.treeView.Location = new System.Drawing.Point(4, 29);
+            // 
+            this.treeView.Location = new System.Drawing.Point(0, 40);
             this.treeView.Name = "treeView";
             treeNode1.Name = "";
             treeNode1.Text = "No Solution Loaded";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
-            this.treeView.Size = new System.Drawing.Size(373, 169);
+            this.treeView.Size = new System.Drawing.Size(316, 316);
             this.treeView.TabIndex = 2;
             this.treeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.treeView_MouseUp);
-            //
+            // 
             // MavenBuildControl
-            //
+            // 
             this.Controls.Add(this.treeView);
             this.Controls.Add(this.toolStrip1);
             this.Name = "MavenBuildControl";
-            this.Size = new System.Drawing.Size(380, 201);
+            this.Size = new System.Drawing.Size(319, 359);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -288,11 +291,6 @@ namespace NMaven.IDE.Controls
                 logger.Log(Level.INFO, "Maven embedder already Started.");
                 return;
             }
-            String localRepository = Environment.GetEnvironmentVariable("HOMEDRIVE")
-              + Environment.GetEnvironmentVariable("HOMEPATH") + @"\.m2\repository\";
-            ArtifactContext artifactContext = new ArtifactContext();
-            NMaven.Artifact.Artifact artifactWar = artifactContext.CreateArtifact("org.apache.maven.dotnet", "dotnet-service-embedder", "0.14-SNAPSHOT", "war");
-            FileInfo warFileInfo = new FileInfo(localRepository + "/" + new JavaRepositoryLayout().pathOf(artifactWar) + "war");
             logger.Log(Level.INFO, "Executing external command plugin: Command = " + @"mvn org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile=""" + warFileInfo.FullName + @"""");
 
             ProcessStartInfo processStartInfo =
@@ -340,6 +338,12 @@ namespace NMaven.IDE.Controls
                 mavenProjects = ideContext.GetMavenProjectsFrom(fileInfo.Directory);
             }
             catch (IOException ex)
+            {
+                logger.Log(Level.INFO, "Unable to load solution. Try starting the server: Message = "
+                    + ex.Message);
+                return;
+            }
+            catch (WebException ex)
             {
                 logger.Log(Level.INFO, "Unable to load solution. Try starting the server: Message = "
                     + ex.Message);

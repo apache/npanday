@@ -20,7 +20,7 @@ public class JettyStarter
     {
         try
         {
-            logger.addHandler( new FileHandler( "C:\\tmp\\nmaven-jetty.log" ) );
+            logger.addHandler( new FileHandler(System.getProperty( "user.home" ) + "\\.m2\\jetty-log.xml" ) );
         }
         catch ( IOException e )
         {

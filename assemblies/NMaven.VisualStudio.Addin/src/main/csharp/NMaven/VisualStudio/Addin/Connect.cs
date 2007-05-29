@@ -142,7 +142,7 @@ namespace NMaven.VisualStudio.Addin
                 _applicationObject = (DTE2)application;
                 
                 mavenBuildControl = (MavenBuildControl)_windowToolWindow.Object;
-                mavenBuildControl.Init(logger, 9099, new Size(400, 400), _applicationObject);
+                mavenBuildControl.Init(warFileInfo, logger, 9099, new Size(400, 400), _applicationObject);
                 mavenBuildControl.ClearOutputWindow += new EventHandler(ClearOutputWindowPane);
                 mavenBuildControl.FocusOutputWindow += new EventHandler(ActivateOutputWindowPane);
             }
