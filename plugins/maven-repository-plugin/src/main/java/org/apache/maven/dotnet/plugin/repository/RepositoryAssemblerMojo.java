@@ -28,6 +28,8 @@ import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.codehaus.plexus.archiver.tar.TarArchiver;
+import org.codehaus.plexus.archiver.ArchiverException;
 
 import java.util.Set;
 import java.util.List;
@@ -137,7 +139,8 @@ public class RepositoryAssemblerMojo
         ArtifactRepository localArtifactRepository =
             new DefaultArtifactRepository( "local", "file://" + localRepository, layout );
         ArtifactRepository deploymentRepository = repositoryFactory.createDeploymentArtifactRepository( null,
-                                                                                                        "file://" + project.getBuild().getDirectory() +
+                                                                                                        "file://" +
+                                                                                                            project.getBuild().getDirectory() +
                                                                                                             "/archive-temp/releases",
                                                                                                         new DefaultRepositoryLayout(),
                                                                                                         true );
@@ -184,6 +187,34 @@ public class RepositoryAssemblerMojo
             {
                 throw new MojoExecutionException( "NMAVEN-DEPLOY: Deploy Failed", e );
             }
+        }
+
+        TarArchiver tarArchiver = new TarArchiver();
+        try
+        {
+            tarArchiver.addDirectory( new File( project.getBuild().getDirectory(), "/archive-temp/releases" ) );
+        }
+        catch ( ArchiverException e )
+        {
+            throw new MojoExecutionException( "", e );
+        }
+
+        TarArchiver.TarCompressionMethod tarCompressionMethod = new TarArchiver.TarCompressionMethod();
+        tarArchiver.setDestFile( new File( project.getBuild().getDirectory(), project.getArtifactId() + ".tar.gz" ) );
+        try
+        {
+            tarCompressionMethod.setValue( "gzip" );
+            tarArchiver.setCompression( tarCompressionMethod );
+            tarArchiver.setIncludeEmptyDirs( false );
+            tarArchiver.createArchive();
+        }
+        catch ( ArchiverException e )
+        {
+            throw new MojoExecutionException( "", e );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "", e );
         }
     }
 
