@@ -4,7 +4,7 @@ Visual Studio 2005
 
  The current version of the Visual Studio plugin is experimental and is meant as a proof of concept demonstrating
  that VS2005 can build .NET applications through Maven. It is being put out there to get early feedback on what developers
- want to see. The plugin is not currently ready to use for any serious development.
+ want to see. 
 
 * Installing
 
