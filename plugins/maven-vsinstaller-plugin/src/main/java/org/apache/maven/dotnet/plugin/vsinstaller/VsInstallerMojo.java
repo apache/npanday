@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Installs Visual Studio 2005 addin.
+ *
  * @author Shane Isbell
  * @goal install
  * @requiresProject false
@@ -50,16 +52,22 @@ public class VsInstallerMojo
     private MavenProject project;
 
     /**
+     * The the path to the local maven repository.
+     *
      * @parameter expression="${settings.localRepository}"
      */
     private String localRepository;
 
     /**
+     * The remote repository that contains the vsinstaller and NMaven artifacts.
+     *
      * @parameter expression="${remoteRepository}"
      */
     private String remoteRepository;
 
     /**
+     * Provides services for obtaining artifact information and dependencies
+     *
      * @component
      */
     private ArtifactContext artifactContext;
@@ -70,11 +78,15 @@ public class VsInstallerMojo
     private ArtifactHandlerManager artifactHandlerManager;
 
     /**
+     * Provides access to configuration information used by NMaven.
+     *
      * @component
      */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
     /**
+     * Provides services to obtain executables.
+     *
      * @component
      */
     private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
@@ -190,8 +202,7 @@ public class VsInstallerMojo
         }
     }
 
-    public List<String> getGacInstallCommandsFor( Artifact artifact )
-        throws MojoExecutionException
+    private List<String> getGacInstallCommandsFor( Artifact artifact )
     {
         List<String> commands = new ArrayList<String>();
         commands.add( "/nologo" );
