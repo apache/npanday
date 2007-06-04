@@ -1,0 +1,22 @@
+Usage
+
+ If you have built NMaven locally on your machine, you can just type:
+
++----+
+ mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install
++----+
+
+ If you are using a remote repository, first make sure that the repository containing your vsinstaller plugin and the
+  NMaven artifacts is located within your settings.xml file and then type:
+
++----+
+ mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install -DremoteRepository=<<scheme_name>>://<<authority>>
++----+
+
+ The remote repository may follow a number of schemes, including:
+
+ * http
+
+ * https
+
+ * file

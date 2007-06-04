@@ -1,0 +1,22 @@
+<project>
+  <body>
+    <links>
+      <item name="Project Site" href="http://incubator.apache.org/projects/nmaven.html"/>
+      <item name="NMaven" href="http://incubator.apache.org/nmaven"/>
+      <item name="NMaven SVN" href="http://svn.apache.org/repos/asf/incubator/nmaven/"/>
+      <item name="Maven" href="http://maven.apache.org/"/>
+      <item name="Mono Project" href="http://www.mono-project.com/"/>
+      <item name="DotGNU" href="http://dotgnu.org/"/>
+    </links>
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+      <item name="Goals" href="plugin-info.html"/>
+      <item name="Usage" href="usage.html"/>
+    </menu>
+    <menu name="Examples">
+      <item name="Install From File System" href="examples/install-from-file-system.html"/>
+      <item name="Install From Remote Repo" href="examples/install-from-remote-repo.html"/>      
+    </menu>
+    ${reports}
+  </body>
+</project>
