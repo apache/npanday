@@ -60,6 +60,12 @@ public class DeployFileMojo
     private String version;
 
     /**
+     * @parameter expression = "${repositoryId}
+     */
+    private String repositoryId;
+
+
+    /**
      * @parameter expression = "${packaging}
      * @required
      */
@@ -97,7 +103,7 @@ public class DeployFileMojo
         artifact.addMetadata( metadata );
 
         ArtifactRepository deploymentRepository =
-            repositoryFactory.createDeploymentArtifactRepository( null, url, new AssemblyRepositoryLayout(), true );
+            repositoryFactory.createDeploymentArtifactRepository( repositoryId, url, new AssemblyRepositoryLayout(), true );
 
         try
         {
