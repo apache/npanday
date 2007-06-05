@@ -40,7 +40,6 @@ import org.apache.maven.dotnet.executable.CommandExecutor;
 import org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout;
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
 
-
 /**
  * Runs NUnit tests
  *
@@ -109,14 +108,13 @@ public class TesterMojo
     private String localRepository;
 
 
-    public String getExecutableFor( Vendor vendor, String home )
+    private String getExecutableFor( Vendor vendor, String home )
     {
         return !( nunitHome == null || nunitHome.equals( "" ) ) ? nunitHome + File.separator + "bin" + File.separator +
             "nunit-console" : "nunit-console";
     }
 
-    public List<String> getCommandsFor( Vendor vendor )
-        throws MojoExecutionException
+    private List<String> getCommandsFor( Vendor vendor )
     {
         String finalName = project.getBuild().getFinalName();
         List<String> commands = new ArrayList<String>();
@@ -219,7 +217,7 @@ public class TesterMojo
         {
             throw new MojoExecutionException( "NMAVEN-1100-004: Unable to copy library to target directory: ", e );
         }
-
+        //TODO: Check timestamps
         //Copy Test Artifact
         try
         {
