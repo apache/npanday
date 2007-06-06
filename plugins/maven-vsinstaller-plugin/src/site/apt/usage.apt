@@ -1,5 +1,26 @@
 Usage
 
+* Prerequisites
+
+ Prior to using the Visual Studio installer plugin, make sure that you have the following installed on your system:
+
+  [[1]] {{{ http://java.sun.com/javase/downloads/index_jdk5.jsp} JDK 5.0 Update x}}
+
+  [[2]] Both {{{http://msdn2.microsoft.com/en-us/downloads/default.aspx} Microsoft .NET Framework}} (2.0+)
+     AND {{{http://msdn2.microsoft.com/en-us/downloads/default.aspx} NET Framework 2.0 SDK}}. Note that the 2.0+ framework
+     is required to run NMaven, but you can still target 1.1 for your builds provided that the 1.1 version
+     is also installed.
+
+  [[3]] {{{http://nunit.org/index.php?p=download} NUnit 2.2+}}.
+
+  [[4]] {{{http://maven.apache.org/download.html} Maven 2.0.4 or higher}}
+
+  [[2]]   Visual Studio 2005 Standard or higher is needed to use the NMaven Addin
+    (Visual Studio Express Edition will not work)  
+
+
+* Installing
+
  If you have built NMaven locally on your machine, you can just type:
 
 +----+

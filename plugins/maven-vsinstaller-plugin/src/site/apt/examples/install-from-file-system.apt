@@ -8,12 +8,12 @@ Install From File System
 <settings>
   <profiles>
     <profile>
-      <id>nmaven</id>
+      <id>nmaven.snapshots</id>
       <repositories>
         <repository>
           <id>local</id>
           <name>Maven Plugin Snapshots</name>
-          <url>http://C:\m2\repo</url>
+          <url>file://C:\m2\repo</url>
           <releases>
             <enabled>true</enabled>
           </releases>
@@ -26,7 +26,7 @@ Install From File System
         <pluginRepository>
           <id>local-plugin</id>
           <name>Maven Plugin Snapshots</name>
-          <url>http://C:\m2\repo</url>
+          <url>file://C:\m2\repo</url>
           <releases>
             <enabled>true</enabled>
           </releases>
@@ -44,6 +44,6 @@ Install From File System
 
 +----+
  mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install     \
-     -DremoteRepository=http://C:\m2\repo -Pnmaven
+     -DremoteRepository=http://C:\m2\repo -Pnmaven.snapshots
 +----+
 

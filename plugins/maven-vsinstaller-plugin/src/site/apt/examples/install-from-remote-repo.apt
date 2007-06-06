@@ -1,18 +1,18 @@
 Install From Remote Repo
 
- NMaven currently does not exist on a public repo. Assuming that you have set up one yourself, do the following.
- First, configure your settings.xml file to point to your repo.
+ First, configure your settings.xml file to point to your repo. You may choose to enter the public snapshot repo
+ below or to enter your own repo that hosts the NMaven VS installer.
 
 +----+
 <settings>
   <profiles>
     <profile>
-      <id>nmaven</id>
+      <id>nmaven.snapshots</id>
       <repositories>
         <repository>
           <id>local</id>
           <name>Maven Plugin Snapshots</name>
-          <url>http://mycompany.org/repo/m2-snapshot-repository</url>
+          <url>http://people.apache.org/repo/m2-snapshot-repository</url>
           <releases>
             <enabled>true</enabled>
           </releases>
@@ -25,7 +25,7 @@ Install From Remote Repo
         <pluginRepository>
           <id>local-plugin</id>
           <name>Maven Plugin Snapshots</name>
-          <url>http://mycompany.org/repo/m2-snapshot-repository</url>
+          <url>http://people.apache.org/repo/m2-snapshot-repository</url>
           <releases>
             <enabled>true</enabled>
           </releases>
@@ -43,5 +43,5 @@ Install From Remote Repo
 
 +----+
  mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install     \
-     -DremoteRepository=http://mycompany.org/repo/m2-snapshot-repository -Pnmaven
+     -DremoteRepository=http://mycompany.org/repo/m2-snapshot-repository -Pnmaven.snapshots
 +----+

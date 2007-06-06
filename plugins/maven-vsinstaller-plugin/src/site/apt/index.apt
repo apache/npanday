@@ -2,3 +2,5 @@ Maven Visual Studio 2005 Installer Plugin
 
  The VS2005 Installer plugin installs the dependent Java archives and .NET assemblies needed to run NMaven and creates
    a Visual Studio Addin file that Visual Studio will use to load the addin.
+
+   

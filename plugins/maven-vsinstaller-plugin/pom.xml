@@ -26,6 +26,7 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.dotnet.plugins</groupId>
   <artifactId>maven-vsinstaller-plugin</artifactId>
+  <version>0.14-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>maven-vsinstaller-plugin</name>
   <description>

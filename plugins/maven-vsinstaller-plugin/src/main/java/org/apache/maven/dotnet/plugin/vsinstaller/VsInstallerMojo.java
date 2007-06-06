@@ -22,6 +22,9 @@ import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.vendor.Vendor;
 import org.apache.maven.dotnet.model.netdependency.NetDependency;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.settings.Settings;
+import org.apache.maven.settings.Profile;
+import org.apache.maven.settings.Repository;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
@@ -91,6 +94,11 @@ public class VsInstallerMojo
      */
     private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
 
+    /**
+     * @parameter expression="${settings}"
+     */
+    private Settings settings;
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -106,13 +114,26 @@ public class VsInstallerMojo
                 "NMAVEN-1600-000: Failed to create the repository registry for this plugin", e );
         }
         List<ArtifactRepository> remoteRepositories = new ArrayList<ArtifactRepository>();
-        if ( remoteRepository != null )
+        //TODO: Only use active profiles
+        List<Profile> profiles = settings.getProfiles();
+        List<Repository> repositories = new ArrayList<Repository>();
+        for ( Profile profile : profiles )
         {
-            ArtifactRepository remoteArtifactRepository =
-                new DefaultArtifactRepository( "nmaven", remoteRepository, new DefaultRepositoryLayout() );
-            remoteRepositories.add( remoteArtifactRepository );
+            if ( profile.getRepositories() != null )
+            {
+                repositories.addAll( profile.getRepositories() );
+            }
+            if ( profile.getPluginRepositories() != null )
+            {
+                repositories.addAll( profile.getPluginRepositories() );
+            }
         }
 
+        for ( Repository repository : repositories )
+        {
+            remoteRepositories.add( new DefaultArtifactRepository( repository.getId(), repository.getUrl(),
+                                                                   new DefaultRepositoryLayout() ) );
+        }
         artifactContext.init( project, remoteRepositories, new File( localRepository ) );
 
         try
