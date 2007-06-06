@@ -43,6 +43,7 @@ import org.codehaus.plexus.util.FileUtils;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ArrayList;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,8 +106,24 @@ public class AssemblyResolverImpl
                                         boolean addResolvedDependenciesToProject )
         throws ArtifactResolutionException, ArtifactNotFoundException
     {
+        List<ArtifactRepository> releaseRepositories = new ArrayList<ArtifactRepository>();
+        List<ArtifactRepository> snapshotRepositories = new ArrayList<ArtifactRepository>();
+        for ( ArtifactRepository artifactRepository : remoteArtifactRepositories )
+        {
+            if ( artifactRepository.getSnapshots().isEnabled() )
+            {
+                snapshotRepositories.add( artifactRepository );
+            }
+            if ( artifactRepository.getReleases().isEnabled() )
+            {
+                releaseRepositories.add( artifactRepository );
+            }
+        }
+
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();
+        Set<Artifact> snapshotArtifactDependencies = new HashSet<Artifact>();
         Set<Artifact> gacDependencies = new HashSet<Artifact>();
+
         ArtifactFilter gacFilter = new GacFilter();
         for ( Dependency dependency : dependencies )
         {
@@ -123,6 +140,12 @@ public class AssemblyResolverImpl
                     "NMAVEN-000-000: GAC Dependency = " + artifact.getType() + ", ID = " + artifact.getArtifactId() );
                 gacDependencies.add( artifact );
             }
+            else if ( artifact.isSnapshot() )
+            {
+                logger.debug( "NMAVEN-000-000: Snapshot Dependency: Type  = " + artifact.getType() +
+                    ", Artifact ID = " + artifact.getArtifactId() );
+                snapshotArtifactDependencies.add( artifact );
+            }
             else
             {
                 logger.debug( "NMAVEN-000-000: Dependency: Type  = " + artifact.getType() + ", Artifact ID = " +
@@ -130,15 +153,23 @@ public class AssemblyResolverImpl
                 artifactDependencies.add( artifact );
             }
         }
+        //Releases
+        ArtifactResolutionResult result = resolver.resolveTransitively( artifactDependencies, sourceArtifact,
+                                                                        localArtifactRepository, releaseRepositories,
+                                                                        metadata, gacFilter );
+        Set<Artifact> resolvedReleaseDependencies = result.getArtifacts();
+
+        //Snapshots
         ArtifactRepository artifactRepository = new DefaultArtifactRepository( "local", "file://" +
             localArtifactRepository.getBasedir(), new DefaultRepositoryLayout() );
 
-        ArtifactResolutionResult result = resolver.resolveTransitively( artifactDependencies, sourceArtifact,
-                                                                        artifactRepository, remoteArtifactRepositories,
-                                                                        metadata, gacFilter );
-        Set<Artifact> resolvedDependencies = result.getArtifacts();
+        ArtifactResolutionResult snapshotResult = resolver.resolveTransitively( snapshotArtifactDependencies,
+                                                                                sourceArtifact, artifactRepository,
+                                                                                snapshotRepositories, metadata,
+                                                                                gacFilter );
+        Set<Artifact> resolvedSnapshotDependencies = snapshotResult.getArtifacts();
         AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-        for ( Artifact artifact : resolvedDependencies )
+        for ( Artifact artifact : resolvedSnapshotDependencies )
         {
             File originalFileWithVersion = artifact.getFile();
             if ( artifact.isSnapshot() )
@@ -160,13 +191,6 @@ public class AssemblyResolverImpl
                     e.printStackTrace();
                 }
             }
-
-            /*
-            if ( !originalFileWithVersion.renameTo( targetFileWithoutVersion ) )
-            {
-                throw new ArtifactResolutionException( "NMAVEN-000-000: Failed to rename artifact", artifact );
-            }
-            */
             if ( originalFileWithVersion.length() != 0 && targetFileWithoutVersion.length() == 0 )
             {
                 throw new ArtifactResolutionException( "NMAVEN-000-000: Artifact is corrupted:", artifact );
@@ -179,8 +203,9 @@ public class AssemblyResolverImpl
         }
         if ( addResolvedDependenciesToProject )
         {
-            resolvedDependencies.addAll( gacDependencies );
-            project.setDependencyArtifacts( resolvedDependencies );
+            resolvedReleaseDependencies.addAll( gacDependencies );
+            resolvedReleaseDependencies.addAll( resolvedSnapshotDependencies );
+            project.setDependencyArtifacts( resolvedReleaseDependencies );
         }
     }
 
