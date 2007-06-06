@@ -31,17 +31,21 @@ import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+import org.apache.maven.artifact.repository.DefaultArtifactRepository;
+import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Dependency;
 
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Provides a way to resolve transitive assemblies that do not have versions within their file name.
@@ -126,28 +130,55 @@ public class AssemblyResolverImpl
                 artifactDependencies.add( artifact );
             }
         }
+        ArtifactRepository artifactRepository = new DefaultArtifactRepository( "local", "file://" +
+            localArtifactRepository.getBasedir(), new DefaultRepositoryLayout() );
 
         ArtifactResolutionResult result = resolver.resolveTransitively( artifactDependencies, sourceArtifact,
-                                                                        localArtifactRepository,
-                                                                        remoteArtifactRepositories, metadata,
-                                                                        gacFilter );
+                                                                        artifactRepository, remoteArtifactRepositories,
+                                                                        metadata, gacFilter );
         Set<Artifact> resolvedDependencies = result.getArtifacts();
         AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-        if ( addResolvedDependenciesToProject )
+        for ( Artifact artifact : resolvedDependencies )
         {
-            for ( Artifact artifact : resolvedDependencies )
+            File originalFileWithVersion = artifact.getFile();
+            if ( artifact.isSnapshot() )
             {
-                File originalFileWithVersion = artifact.getFile();
-                File targetFileWithoutVersion = new File( localArtifactRepository + "/" + layout.pathOf( artifact ) );
-                //  logger.info( "Original = " + originalFileWithVersion.getAbsolutePath() + ", Target = " +
-                //      targetFileWithoutVersion.getAbsolutePath() );
-                originalFileWithVersion.renameTo( targetFileWithoutVersion );
-                if ( targetFileWithoutVersion.exists() )
+                artifact.setVersion( artifact.getBaseVersion() );
+            }
+            File targetFileWithoutVersion =
+                new File( localArtifactRepository.getBasedir() + "/" + layout.pathOf( artifact ) );
+            if ( originalFileWithVersion.lastModified() > targetFileWithoutVersion.lastModified() )
+            {
+                logger.debug( "Original = " + originalFileWithVersion.getAbsolutePath() + ", Target = " +
+                    targetFileWithoutVersion.getAbsolutePath() );
+                try
                 {
-                    artifact.setFile( targetFileWithoutVersion.getAbsoluteFile() );
+                    FileUtils.copyFile( originalFileWithVersion, targetFileWithoutVersion );
+                }
+                catch ( IOException e )
+                {
+                    e.printStackTrace();
                 }
             }
 
+            /*
+            if ( !originalFileWithVersion.renameTo( targetFileWithoutVersion ) )
+            {
+                throw new ArtifactResolutionException( "NMAVEN-000-000: Failed to rename artifact", artifact );
+            }
+            */
+            if ( originalFileWithVersion.length() != 0 && targetFileWithoutVersion.length() == 0 )
+            {
+                throw new ArtifactResolutionException( "NMAVEN-000-000: Artifact is corrupted:", artifact );
+            }
+
+            if ( targetFileWithoutVersion.exists() )
+            {
+                artifact.setFile( targetFileWithoutVersion.getAbsoluteFile() );
+            }
+        }
+        if ( addResolvedDependenciesToProject )
+        {
             resolvedDependencies.addAll( gacDependencies );
             project.setDependencyArtifacts( resolvedDependencies );
         }

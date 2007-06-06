@@ -287,7 +287,6 @@ public final class ArtifactContextImpl
                 map.put( artifactHandler.getPackaging(), artifactHandler );
             }
         }
-
         artifactHandlerManager.addHandlers( map );
     }
 
