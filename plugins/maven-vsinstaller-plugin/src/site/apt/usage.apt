@@ -11,13 +11,21 @@ Usage
      is required to run NMaven, but you can still target 1.1 for your builds provided that the 1.1 version
      is also installed.
 
-  [[3]] {{{http://nunit.org/index.php?p=download} NUnit 2.2+}}.
+  [[3]] {{{http://nunit.org/index.php?p=download} NUnit 2.2+ (only if using unit tests)}}.
 
   [[4]] {{{http://maven.apache.org/download.html} Maven 2.0.4 or higher}}
 
-  [[2]]   Visual Studio 2005 Standard or higher is needed to use the NMaven Addin
-    (Visual Studio Express Edition will not work)  
+  [[5]]   Visual Studio 2005 Standard or higher is needed to use the NMaven Addin
+    (Visual Studio Express Edition will not work)
 
+    []
+
+ For the install only, you will also need to make sure that you have both the SDK and the .NET framework locations within your path. Typical
+ locations include:
+
+ * install root: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727
+
+ * SDK root: C:\Program Files\Microsoft.NET\SDK\v2.0\
 
 * Installing
 
@@ -27,17 +35,6 @@ Usage
  mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install
 +----+
 
- If you are using a remote repository, first make sure that the repository containing your vsinstaller plugin and the
-  NMaven artifacts is located within your settings.xml file and then type:
+ If you have not built NMaven locally and are just looking to use the binary distribution, then check out the instructions here:
+ {{{examples/install-from-remote-repo.html} Install From Remote Repo}}
 
-+----+
- mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install -DremoteRepository=<<scheme_name>>://<<authority>>
-+----+
-
- The remote repository may follow a number of schemes, including:
-
- * http
-
- * https
-
- * file

@@ -1,0 +1,8 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.maven.dotnet</groupId>
+  <artifactId>vsinstaller</artifactId>
+  <packaging>library</packaging>
+  <version>1.0.0</version>
+  <name>vsinstaller</name>
+</project>

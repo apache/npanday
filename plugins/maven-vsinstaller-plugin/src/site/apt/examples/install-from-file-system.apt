@@ -24,11 +24,11 @@ Install From File System
       </repositories>
       <pluginRepositories>
         <pluginRepository>
-          <id>local-plugin</id>
+          <id>local</id>
           <name>Maven Plugin Snapshots</name>
           <url>file://C:\m2\repo</url>
           <releases>
-            <enabled>true</enabled>
+            <enabled>false</enabled>
           </releases>
           <snapshots>
             <enabled>true</enabled>
@@ -40,10 +40,12 @@ Install From File System
 </settings>
 +----+
 
- Then type the following from the command line:
+ Due to a bug in Maven, if you are remotely resolving a plugin that doesn't exist in central, you will need to install
+ from a directory containing a pom.xml file. So if you have a pom.xml handy, goto that directory from the command line.
+ If not, you will need to download one and goto to the download directory from the command line. Now type the following from
+ the command line:
 
 +----+
- mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install     \
-     -DremoteRepository=http://C:\m2\repo -Pnmaven.snapshots
+ mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install
 +----+
 

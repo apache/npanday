@@ -114,6 +114,7 @@ public class VsInstallerMojo
                 "NMAVEN-1600-000: Failed to create the repository registry for this plugin", e );
         }
         List<ArtifactRepository> remoteRepositories = new ArrayList<ArtifactRepository>();
+
         //TODO: Only use active profiles
         List<Profile> profiles = settings.getProfiles();
         List<Repository> repositories = new ArrayList<Repository>();
