@@ -247,7 +247,19 @@ public class ArtifactInstallerImpl
         {
             if ( artifact.getFile() != null && artifact.getFile().exists() )//maybe just a test compile and no install
             {
-                mavenInstaller.install( artifact.getFile(), artifact, artifactRepository );
+                File artifactFile = artifact.getFile();
+                mavenInstaller.install( artifactFile, artifact, artifactRepository );
+                try
+                {
+                    FileUtils.copyFile( artifactFile,
+                                        new File( localRepository, new DefaultRepositoryLayout().pathOf( artifact ) ) );
+                }
+                catch ( IOException e )
+                {
+                    throw new ArtifactInstallationException( "NMAVEN-002-003a: Failed to install artifact: ID = " +
+                        artifact.getId() + ", File = " +
+                        ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
+                }
             }
         }
         catch ( ArtifactInstallationException e )
