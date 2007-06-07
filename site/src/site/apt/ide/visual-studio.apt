@@ -70,6 +70,12 @@ xmlns="http://schemas.microsoft.com/AutomationExtensibility">
    `-- pom.xml
 +----+
 
+  Next install the solution:
+
++----+
+ mvn install
++----+
+
   To generate the solution and project files (csharp only), go to the directory
    containing the pom.xml and type
 
