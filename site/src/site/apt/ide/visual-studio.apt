@@ -8,7 +8,11 @@ Visual Studio 2005
 
 * Installing
 
- Follow the build instructions here: {{{../getting-started.html#Building NMaven}Building NMaven}} and then type:
+ Follow the build instructions here: {{{../getting-started.html#Building NMaven}Building NMaven}} or configure
+ your system to remotely download the
+ {{{../plugins/maven-vsinstaller-plugin/usage.html}Maven Visual Studio 2005 Installer Plugin}}
+
+ Now type
 
 +----+
  mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install

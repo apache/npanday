@@ -4,6 +4,8 @@ Sections
 
  * {{{getting-started.html#Building NMaven}Building NMaven}}
 
+ * {{{getting-started.html#Using NMaven Without Building}Using NMaven Without Building}} 
+
  * {{{getting-started.html#Creating a Simple Project}Creating a Simple Project}}
 
  * {{{getting-started.html#Generating VS2005 Solution Files}Generating VS2005 Solution Files}}
@@ -178,6 +180,85 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
  Detailed instructions are located here:
  {{{ http://www.mono-project.com/Getting_Mono}Installing Mono}}. Make sure that su to root before installing with these
  instructions!
+
+* {Using NMaven Without Building}
+
+** Prerequisites
+
+  [[1]] {{{ http://java.sun.com/javase/downloads/index_jdk5.jsp} JDK 5.0 Update x}}
+
+  [[2]] Both {{{http://msdn2.microsoft.com/en-us/downloads/default.aspx} Microsoft .NET Framework}} (2.0+)
+     AND {{{http://msdn2.microsoft.com/en-us/downloads/default.aspx} NET Framework 2.0 SDK}} or
+      {{{http://www.mono-project.com} Mono}} (1.2.3.1+).
+
+  [[3]] {{{http://nunit.org/index.php?p=download} NUnit 2.2+ (only if using unit tests)}}.
+
+  [[4]] {{{http://maven.apache.org/download.html} Maven 2.0.4 or higher}}
+
+    []
+
+ For the initial use only, you will also need to make sure that you have both the SDK and the .NET framework locations within your path.
+ On Linux distributions, this should already be in your path. Typical locations for Microsoft include:
+
+ * install root: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727
+
+ * SDK root: C:\Program Files\Microsoft.NET\SDK\v2.0\
+
+ []
+
+ On Windows, Mono looks something like:
+
+ * install/sdk path: C:\Program Files\Mono-1.1.13.8\bin
+
+
+** Usage
+
+ Configure your settings.xml file to point to the Maven snapshot repository.
+
++----+
+  <profiles>
+    <profile>
+      <id>apache.snapshots</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>org.apache</id>
+          <name>Maven Snapshots</name>
+          <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>org.apache</id>
+          <name>Maven Plugin Snapshots</name>
+          <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
++----+
+
+ Now {{{getting-started.html#Creating a Simple Project}Create a Simple Project}}. To build,
+
++----+
+mvn install -DinstallGacDependencies=true
++----+
+
+ You only need the  -DinstallGacDependencies=true option the first time you use NMaven. 
 
 * {Creating a Simple Project}
 
