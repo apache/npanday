@@ -40,7 +40,7 @@ namespace NMaven.Plugin.Settings
 
         public override void Execute()
         {
-        	string outputFile = Environment.GetEnvironmentVariable("HOMEPATH") + "/.m2/nmaven-settings.xml";
+        	string outputFile = Environment.GetEnvironmentVariable("SystemDrive") + "/.m2/nmaven-settings.xml";
             XmlSerializer serializer = new XmlSerializer(typeof(nmavenSettings));
 
             nmavenSettings  settings = new nmavenSettings();
