@@ -195,11 +195,11 @@ public class VendorInfoRepositoryImpl
             if ( vendor.equals( Vendor.MICROSOFT ) &&
                 ( frameworkVersion.equals( "2.0.50727" ) || frameworkVersion.equals( "3.0" ) ) )
             {
-                return new File( "C:\\WINDOWS\\assembly\\GAC_MSIL\\" );
+                return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
             }
             else if ( vendor.equals( Vendor.MICROSOFT ) && frameworkVersion.equals( "1.1.4322" ) )
             {
-                return new File( "C:\\WINDOWS\\assembly\\GAC\\" );
+                return new File( System.getenv("SystemRoot"), "\\assembly\\GAC\\" );
             }
             else if ( vendor.equals( Vendor.MONO ) && exists() )
             {
@@ -241,15 +241,15 @@ public class VendorInfoRepositoryImpl
         }
         else if ( artifactType.equals( "gac" ) )
         {
-            return new File( "C:\\WINDOWS\\assembly\\GAC\\" );
+            return new File( System.getenv("SystemRoot"), "\\assembly\\GAC\\" );
         }
         else if ( artifactType.equals( "gac_32" ) )
         {
-            return new File( "C:\\WINDOWS\\assembly\\GAC_32\\" );
+            return new File(System.getenv("SystemRoot"), "\\assembly\\GAC_32\\" );
         }
         else if ( artifactType.equals( "gac_msil" ) )
         {
-            return new File( "C:\\WINDOWS\\assembly\\GAC_MSIL\\" );
+            return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
         }
         throw new PlatformUnsupportedException("NMAVEN-xxx-000: Could not locate a valid GAC");
     }

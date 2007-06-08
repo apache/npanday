@@ -167,9 +167,9 @@ public final class CompilerContextImpl
     public List<Artifact> getLibraryDependencies()
     {
         if ( config.isTestCompile() && ( config.getArtifactType().equals( ArtifactType.LIBRARY ) ||
-            config.getArtifactType().equals( ArtifactType.NETPLUGIN )) && project.getArtifact().getFile() != null &&
-                project.getArtifact().getFile().exists() && !libraries.contains( project.getArtifact() ) &&
-                !project.getArtifact().getType().equals( "module" ) )
+            config.getArtifactType().equals( ArtifactType.NETPLUGIN ) ) && project.getArtifact().getFile() != null &&
+            project.getArtifact().getFile().exists() && !libraries.contains( project.getArtifact() ) &&
+            !project.getArtifact().getType().equals( "module" ) )
         {
             libraries.add( project.getArtifact() );
         }
@@ -199,7 +199,7 @@ public final class CompilerContextImpl
 
     public File getTargetDirectory()
     {
-        return new File(project.getBuild().getDirectory());
+        return new File( project.getBuild().getDirectory() );
     }
 
     /**
@@ -250,15 +250,16 @@ public final class CompilerContextImpl
     }
 
     private String getGacRootForMono()
-     throws PlatformUnsupportedException {
-        String path = System.getenv( "PATH");
-        if(path != null)
+        throws PlatformUnsupportedException
+    {
+        String path = System.getenv( "PATH" );
+        if ( path != null )
         {
-            String[] tokens = path.split( System.getProperty( "path.separator") );
-            for(String token : tokens)
+            String[] tokens = path.split( System.getProperty( "path.separator" ) );
+            for ( String token : tokens )
             {
-                File gacRoot = new File(new File(token).getParentFile(), "lib/mono/gac/");
-                if(gacRoot.exists())
+                File gacRoot = new File( new File( token ).getParentFile(), "lib/mono/gac/" );
+                if ( gacRoot.exists() )
                 {
                     return gacRoot.getAbsolutePath();
                 }
@@ -266,25 +267,24 @@ public final class CompilerContextImpl
         }
         //check settings file
 
-
-        String monoRoot = System.getenv( "MONO_ROOT");
-        if(monoRoot != null && !new File(monoRoot).exists())
+        String monoRoot = System.getenv( "MONO_ROOT" );
+        if ( monoRoot != null && !new File( monoRoot ).exists() )
         {
-            logger.warn( "MONO_ROOT has been incorrectly set. Trying /usr : MONO_ROOT = " + monoRoot);
+            logger.warn( "MONO_ROOT has been incorrectly set. Trying /usr : MONO_ROOT = " + monoRoot );
         }
-        else if(monoRoot != null)
+        else if ( monoRoot != null )
         {
-            return (!monoRoot.endsWith( File.separator)) ? monoRoot + File.separator : monoRoot;
+            return ( !monoRoot.endsWith( File.separator ) ) ? monoRoot + File.separator : monoRoot;
         }
 
-        if(new File("/usr/lib/mono/gac/").exists())
+        if ( new File( "/usr/lib/mono/gac/" ).exists() )
         {
-            return new File("/usr/lib/mono/gac/").getAbsolutePath();
+            return new File( "/usr/lib/mono/gac/" ).getAbsolutePath();
         }
         else
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-061-008: Could not locate Global Assembly Cache for Mono. Try setting the MONO_ROOT environmental variable.");
+                "NMAVEN-061-008: Could not locate Global Assembly Cache for Mono. Try setting the MONO_ROOT environmental variable." );
         }
     }
 
@@ -320,12 +320,12 @@ public final class CompilerContextImpl
                     compilerRequirement.getFrameworkVersion().equals( "2.0.50727" ) ||
                         compilerRequirement.getFrameworkVersion().equals( "3.0" ) ) )
                 {
-                    gacRoot = "C:\\WINDOWS\\assembly\\GAC_MSIL\\";
+                    gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
                 }
                 else if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) &&
                     compilerRequirement.getFrameworkVersion().equals( "1.1.4322" ) )
                 {
-                    gacRoot = "C:\\WINDOWS\\assembly\\GAC\\";
+                    gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC\\";
                 }
                 else if ( compilerRequirement.getVendor().equals( Vendor.MONO ) )
                 {
@@ -339,22 +339,22 @@ public final class CompilerContextImpl
             }
             else if ( type.equals( "gac" ) )
             {
-                String gacRoot = (compilerRequirement.getVendor().equals( Vendor.MONO )) ?
-                    getGacRootForMono() : "C:\\WINDOWS\\assembly\\GAC\\";
+                String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
+                    : System.getenv( "SystemRoot" ) + "\\assembly\\GAC\\";
                 setArtifactGacFile( gacRoot, artifact );
                 libraries.add( artifact );
             }
             else if ( type.equals( "gac_32" ) )
             {
-                String gacRoot = (compilerRequirement.getVendor().equals( Vendor.MONO )) ?
-                    getGacRootForMono() : "C:\\WINDOWS\\assembly\\GAC_32\\";
+                String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
+                    : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_32\\";
                 setArtifactGacFile( gacRoot, artifact );
                 libraries.add( artifact );
             }
             else if ( type.equals( "gac_msil" ) )
             {
-                String gacRoot = (compilerRequirement.getVendor().equals( Vendor.MONO )) ?
-                    getGacRootForMono() : "C:\\WINDOWS\\assembly\\GAC_MSIL\\";
+                String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
+                    : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
                 setArtifactGacFile( gacRoot, artifact );
                 libraries.add( artifact );
             }

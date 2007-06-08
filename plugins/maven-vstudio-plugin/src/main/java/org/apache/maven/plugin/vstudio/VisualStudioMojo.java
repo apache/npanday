@@ -88,7 +88,7 @@ public class VisualStudioMojo
      *
      * @parameter
      */
-    private String frameworkHome = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v1.1.4322";
+   private String frameworkHome = System.getenv("SystemRoot") + "\\Microsoft.NET\\Framework\\v1.1.4322";
 
     /**
      * This is all the stuff that can be set up about a vs project. It is a big object.

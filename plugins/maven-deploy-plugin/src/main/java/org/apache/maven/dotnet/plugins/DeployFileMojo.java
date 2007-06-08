@@ -7,6 +7,7 @@ import org.apache.maven.artifact.deployer.ArtifactDeploymentException;
 import org.apache.maven.artifact.deployer.ArtifactDeployer;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -103,7 +104,7 @@ public class DeployFileMojo
         artifact.addMetadata( metadata );
 
         ArtifactRepository deploymentRepository =
-            repositoryFactory.createDeploymentArtifactRepository( repositoryId, url, new AssemblyRepositoryLayout(), true );
+            repositoryFactory.createDeploymentArtifactRepository( repositoryId, url, new DefaultRepositoryLayout(), true );
 
         try
         {

@@ -16,7 +16,9 @@ software distributed under the License is distributed on an
 KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
---><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>org.apache.maven.dotnet</groupId>
     <version>0.14-SNAPSHOT</version>
@@ -25,6 +27,7 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.dotnet.plugins</groupId>
   <artifactId>maven-dotnet-plugins</artifactId>
+  <version>0.14-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>maven-dotnet-plugins</name>
   <modules>
@@ -43,14 +46,14 @@ under the License.
     <module>maven-repository-plugin</module>
     <module>maven-resolver-plugin</module>
     <module>maven-test-plugin</module>
-    <module>maven-vsinstaller-plugin</module>    
+    <module>maven-vsinstaller-plugin</module>
     <module>maven-webapp-plugin</module>
     <module>maven-xsd-plugin</module>
     <module>maven-xsp-plugin</module>
     <module>maven-wsdl-plugin</module>
   </modules>
   <dependencies>
-    <dependency>                                       
+    <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-assembler</artifactId>
       <version>${pom.version}</version>
@@ -92,23 +95,6 @@ under the License.
           <reportFormat>plain</reportFormat>
         </configuration>
       </plugin>
-
-      <!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <xdocDirectory>${basedir}/target/generated-site/xdoc</xdocDirectory>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-plugin-plugin</artifactId>
-        <configuration>
-          <outputDirectory>${basedir}/target/generated-site/xdoc</outputDirectory>
-        </configuration>
-      </plugin>
-      -->
     </plugins>
   </build>
   <reporting>
@@ -127,5 +113,5 @@ under the License.
         <artifactId>maven-javadoc-plugin</artifactId>
       </plugin>
     </plugins>
-  </reporting>  
+  </reporting>
 </project>

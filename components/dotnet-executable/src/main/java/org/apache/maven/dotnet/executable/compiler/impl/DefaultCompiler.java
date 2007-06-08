@@ -114,8 +114,8 @@ public final class DefaultCompiler
         if ( compilerContext.getCompilerRequirement().getVendor().equals( Vendor.MICROSOFT ) &&
             compilerContext.getCompilerRequirement().getFrameworkVersion().equals( "3.0" ) )
         {
-            String wcfRef =
-                "/reference:C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.0\\Windows Communication Foundation\\";
+            String wcfRef = "/reference:" + System.getenv( "SystemRoot" ) +
+                "\\Microsoft.NET\\Framework\\v3.0\\Windows Communication Foundation\\";
             //TODO: This is a hard-coded path: Don't have a registry value either.
             commands.add( wcfRef + "System.ServiceModel.dll" );
             commands.add( wcfRef + "Microsoft.Transactions.Bridge.dll" );

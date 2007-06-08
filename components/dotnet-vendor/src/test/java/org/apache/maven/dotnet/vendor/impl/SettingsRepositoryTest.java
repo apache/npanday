@@ -28,8 +28,8 @@ public class SettingsRepositoryTest
 
         Framework framework = new Framework();
         framework.setFrameworkVersion("2.0.50727");
-        framework.setInstallRoot("C:\\WINDOWS\\Microsoft.NET\\Framework\\v2.0.50727");
-        framework.setSdkInstallRoot("C:\\Program Files\\Microsoft.NET\\SDK\\v2.0");
+        framework.setInstallRoot(System.getenv("SystemRoot") + "\\Microsoft.NET\\Framework\\v2.0.50727");
+        framework.setSdkInstallRoot(System.getenv("SystemDrive") + "\\Program Files\\Microsoft.NET\\SDK\\v2.0");
         vendor.addFramework( framework );
 
         vendors.add( vendor );
@@ -38,7 +38,7 @@ public class SettingsRepositoryTest
         try
         {
             File installRoot = settingsRepository.getInstallRootFor(  "MICROSOFT", "2.0.50727", "2.0.50727");
-            assertEquals( new File("C:\\WINDOWS\\Microsoft.NET\\Framework\\v2.0.50727"), installRoot );
+            assertEquals( new File(System.getenv("SystemRoot") + "\\Microsoft.NET\\Framework\\v2.0.50727"), installRoot );
         }
         catch ( PlatformUnsupportedException e )
         {

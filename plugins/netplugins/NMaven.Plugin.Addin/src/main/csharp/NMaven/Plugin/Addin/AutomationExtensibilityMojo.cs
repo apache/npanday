@@ -110,7 +110,8 @@ namespace NMaven.Plugin.Addin
 
             //write XML
             XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Extensibility));
-            XmlTextWriter xmlWriter = new XmlTextWriter(@"c:\tmp\NMavenBuild.AddIn", System.Text.Encoding.Unicode);
+            XmlTextWriter xmlWriter = new XmlTextWriter(Environment.GetEnvironmentVariable("TMP")
+                  + @"\NMavenBuild.AddIn", System.Text.Encoding.Unicode);           
             xmlWriter.Formatting = Formatting.Indented;
             serializer.Serialize(xmlWriter, extensibility);
     	}

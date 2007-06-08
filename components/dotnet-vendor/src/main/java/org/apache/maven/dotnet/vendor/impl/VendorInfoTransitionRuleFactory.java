@@ -769,10 +769,12 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NMAVEN-103-021: Entering State = MFF" );
-                File v1 = new File( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v1.1.4322" );
-                File v2 = new File( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v2.0.50727" );
-                File v3 = new File( "C:\\Program Files\\Microsoft.NET\\SDK\\v1.1" );
-                File v4 = new File( "C:\\Program Files\\Microsoft.NET\\SDK\\v2.0" );
+                String systemRoot = System.getenv("SystemRoot");
+                String systemDrive = System.getenv("SystemDrive");
+                File v1 = new File( systemRoot, "\\Microsoft.NET\\Framework\\v1.1.4322" );
+                File v2 = new File( systemRoot, "\\Microsoft.NET\\Framework\\v2.0.50727" );
+                File v3 = new File( systemDrive, "\\Program Files\\Microsoft.NET\\SDK\\v1.1" );
+                File v4 = new File( systemDrive, "\\Program Files\\Microsoft.NET\\SDK\\v2.0" );
                 List<File> executablePaths = new ArrayList<File>();
 
                 if ( v2.exists() )
