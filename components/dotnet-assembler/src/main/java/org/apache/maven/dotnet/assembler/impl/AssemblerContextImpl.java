@@ -122,15 +122,11 @@ public final class AssemblerContextImpl
                 }
             }
         }
-        
-        // Check if the version if a snapshot, if so we need to mangle the version and configuration
-        if (ArtifactUtils.isSnapshot(version)) {
-            logger.debug( "NMAVEN-020-999: Detected SNAPSHOT version: " + version);
+        if ( version.contains( "-" ) )
+        {
             informationalVersion = version;
-            version = version.replace( "-" + SNAPSHOT_SUFFIX, "" );
+            version = version.split( "-" )[0];
         }
-
-
         assemblyInfo.setCompany( company );
         assemblyInfo.setCopyright( copyright );
         assemblyInfo.setCulture( "" );
