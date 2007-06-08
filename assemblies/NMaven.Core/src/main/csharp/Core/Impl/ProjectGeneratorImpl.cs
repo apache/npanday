@@ -105,7 +105,7 @@ namespace NMaven.Core.Impl
 		
 		private Project CreateProjectFor(string fileName) 
 		{
-            Engine engine = new Engine(@"C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727");
+            Engine engine = new Engine(Environment.GetEnvironmentVariable("SystemRoot") + @"\Microsoft.NET\Framework\v2.0.50727");
             Project project = new Project(engine);
             project.Load(@fileName);
             return project;
@@ -136,7 +136,7 @@ namespace NMaven.Core.Impl
 			{
 				throw new ExecutionException("NMAVEN-000-000: Missing required parameter.");
 			}
-            Engine engine = new Engine(@"C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727");
+            Engine engine = new Engine(Environment.GetEnvironmentVariable("SystemRoot") + @"\Microsoft.NET\Framework\v2.0.50727");
             Project project = new Project(engine);
 
             Console.WriteLine("ProjectGuid = " + projectGuid.ToString() + ", RootNameSpace = " +
@@ -273,7 +273,8 @@ namespace NMaven.Core.Impl
 		
 		private bool IsInGac(string assembly)
 		{
-			return new DirectoryInfo(@"C:\WINDOWS\assembly\GAC_MSIL\" + assembly).Exists;	
+			return new DirectoryInfo(Environment.GetEnvironmentVariable("SystemRoot")
+			    + @"\assembly\GAC_MSIL\" + assembly).Exists;		
 		}
 
         private string GetAssemblyFor(string dependency)
