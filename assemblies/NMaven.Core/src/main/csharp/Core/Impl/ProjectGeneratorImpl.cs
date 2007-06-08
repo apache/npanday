@@ -237,7 +237,7 @@ namespace NMaven.Core.Impl
 			{
 				foreach(Dependency dependency in model.dependencies) {
 					String artifactExtension = (dependency.type == "module") ? "dll" : GetExtension(dependency.type);
-					String repoPath = Environment.GetEnvironmentVariable("HOMEDRIVE") 
+					String repoPath = Environment.GetEnvironmentVariable("SystemDrive") 
 					    + Environment.GetEnvironmentVariable("HOMEPATH") 
 						+ @"\.m2\repository\" + dependency.groupId.Replace(".", "\\")
 						+ "\\" + dependency.artifactId + "\\" + dependency.version + "\\" + dependency.artifactId + "." 
