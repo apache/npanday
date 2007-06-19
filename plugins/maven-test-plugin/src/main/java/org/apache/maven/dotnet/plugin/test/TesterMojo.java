@@ -155,6 +155,11 @@ public class TesterMojo
             return;
         }
 
+        if ( localRepository == null )
+        {
+            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" ).getAbsolutePath();
+        }
+
         ArtifactRepository localArtifactRepository =
             new DefaultArtifactRepository( "local", "file://" + localRepository, new AssemblyRepositoryLayout() );
         try
