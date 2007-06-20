@@ -35,7 +35,7 @@ under the License.
   </description>
   <modules>
     <module>NMaven.Artifact</module>
-    <module>NMaven.Core</module>
+    <module>NMaven.Solution</module>
     <module>NMaven.Logging</module>
     <module>NMaven.Model/Pom</module>
     <module>NMaven.Model/AutomationExtensibility</module>

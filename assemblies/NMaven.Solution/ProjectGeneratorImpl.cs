@@ -18,38 +18,44 @@
 //
 
 using System;
-using NMaven.Core;
-using NMaven.Model;
-using System.IO;
-using Microsoft.Build.BuildEngine;
-using System.Xml.Serialization;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Xml.Serialization;
 
-namespace NMaven.Core.Impl
+using Microsoft.Build.BuildEngine;
+
+using NMaven.Solution;
+using NMaven.Model;
+
+namespace NMaven.Solution.Impl
 {
 	/// <summary>
 	/// Implementation of the IProjectGenerator.
 	/// </summary>
-	public class ProjectGeneratorImpl : IProjectGenerator
+	internal sealed class ProjectGeneratorImpl : IProjectGenerator
 	{
 		
         /// <summary>
         /// Constructor
         /// </summary>
-		public ProjectGeneratorImpl()
+		internal ProjectGeneratorImpl()
 		{
 		}
 		
 	    public IProjectReference GenerateProjectFor(NMaven.Model.Model model, 
 		                                  DirectoryInfo sourceFileDirectory,
-		                                  string projectFileName,
-		                                  List<IProjectReference> projectReferences)
+		                                  String projectFileName,
+		                                  ICollection<IProjectReference> projectReferences)
 	    {		
 			Guid projectGuid = Guid.NewGuid();
-			
-			if(projectReferences == null) projectReferences = new List<IProjectReference>();
+
+            if (projectReferences == null)
+            {
+                projectReferences = new List<IProjectReference>();
+            }
+
 			Project project = GetProjectFromPomModel(model, 
 			                                         sourceFileDirectory,
 			                                         projectFileName, 
@@ -58,16 +64,16 @@ namespace NMaven.Core.Impl
 			                                         @"..\..\..\target\obj\",
 			                                         projectReferences);
 			FileInfo fileInfo = new FileInfo(sourceFileDirectory.FullName + @"\" + projectFileName + ".csproj");
-		    project.Save(fileInfo.FullName);	
-		    
-		    IProjectReference projectReference = new ProjectReferenceImpl();
-		    projectReference.CsProjFile = fileInfo;
+		    project.Save(fileInfo.FullName);
+
+            IProjectReference projectReference = Factory.createDefaultProjectReference();
+		    projectReference.CSProjectFile = fileInfo;
 		    projectReference.ProjectGuid = projectGuid;
 		    projectReference.ProjectName = projectFileName;
 			return projectReference;	    	
 	    }
-		
-		public void GenerateSolutionFor(FileInfo fileInfo, List<IProjectReference> projectReferences)
+
+        public void GenerateSolutionFor(FileInfo fileInfo, ICollection<IProjectReference> projectReferences)
 		{
 			TextWriter writer = 
 				new StreamWriter(fileInfo.FullName, false, System.Text.Encoding.UTF8);
@@ -84,7 +90,7 @@ namespace NMaven.Core.Impl
 				writer.Write("}\") = \"");
 				writer.Write(projectReference.ProjectName);
 				writer.Write("\", \"");
-				writer.Write(projectReference.CsProjFile.FullName);
+				writer.Write(projectReference.CSProjectFile.FullName);
 				writer.Write("\", \"{");
 				writer.Write(projectReference.ProjectGuid.ToString());
 				writer.WriteLine("}\"");
@@ -96,22 +102,13 @@ namespace NMaven.Core.Impl
 			Console.WriteLine("NMAVEN-000-000: Generate solution file: File Name = " + fileInfo.FullName);
 		}
 					
-		public NMaven.Model.Model CreatePomModelFor(string fileName)
+		public NMaven.Model.Model CreatePomModelFor(String fileName)
 		{
 			TextReader reader = new StreamReader(fileName);
 		    XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Model));
 			return (NMaven.Model.Model) serializer.Deserialize(reader);	
 		}
 		
-		private Project CreateProjectFor(string fileName) 
-		{
-            Engine engine = new Engine(Environment.GetEnvironmentVariable("SystemRoot") + @"\Microsoft.NET\Framework\v2.0.50727");
-            Project project = new Project(engine);
-            project.Load(@fileName);
-            return project;
-		}
-		
-
         /// <summary>
         /// Returns a project binding (xmlns="http://schemas.microsoft.com/developer/msbuild/2003") from the given model 
         /// (pom.xml) file
@@ -126,11 +123,11 @@ namespace NMaven.Core.Impl
         /// <returns>Returns a project binding for the specified model</returns>
 		private Project GetProjectFromPomModel(NMaven.Model.Model model, 
 		                                       DirectoryInfo sourceFileDirectory,
-		                                       string assemblyName,
+		                                       String assemblyName,
 		                                       Guid projectGuid,
-		                                       string assemblyOutputPath,
-		                                       string baseIntermediateOutputPath,
-		                                       List<IProjectReference> projectReferences)
+		                                       String assemblyOutputPath,
+		                                       String baseIntermediateOutputPath,
+                                               ICollection<IProjectReference> projectReferences)
 		{
 			if(model == null || sourceFileDirectory == null)
 			{
@@ -178,19 +175,20 @@ namespace NMaven.Core.Impl
 			return project;
 			
 		}
-		
-		private void AddProjectReferences(Project project, string projectName, List<IProjectReference> projectReferences)
+
+        private void AddProjectReferences(Project project, String projectName, ICollection<IProjectReference> projectReferences)
 		{
 			BuildItemGroup itemGroup = project.AddNewItemGroup();
 			foreach(IProjectReference projectReference in projectReferences)
 			{
-				BuildItem buildItem = itemGroup.AddNewItem("ProjectReference", projectReference.CsProjFile.FullName);
+				BuildItem buildItem = itemGroup.AddNewItem("ProjectReference", projectReference.CSProjectFile.FullName);
 				buildItem.SetMetadata("Project", "{" + projectReference.ProjectGuid.ToString() + "}");
 				buildItem.SetMetadata("Name", projectName);		
 			}
 		}
 				
-		private void AddFoldersToProject(Project project, BuildItemGroup folderGroup, DirectoryInfo rootDirectory, DirectoryInfo sourceFileDirectory) 
+		private void AddFoldersToProject(Project project, BuildItemGroup folderGroup, DirectoryInfo rootDirectory, 
+            DirectoryInfo sourceFileDirectory) 
 		{
             DirectoryInfo[] directoryInfos = rootDirectory.GetDirectories();
             if(directoryInfos != null && directoryInfos.Length > 0)
@@ -207,17 +205,23 @@ namespace NMaven.Core.Impl
             }			
 		}
 		
-		private void AddClassFilesToProject(Project project, BuildItemGroup compileGroup, DirectoryInfo rootDirectory, DirectoryInfo sourceFileDirectory) 
+		private void AddClassFilesToProject(Project project, BuildItemGroup compileGroup, DirectoryInfo rootDirectory, 
+            DirectoryInfo sourceFileDirectory) 
 		{
 	        DirectoryInfo[] directoryInfos = rootDirectory.GetDirectories();
             if(directoryInfos != null && directoryInfos.Length > 0)
             {
-            	if(compileGroup == null) compileGroup = project.AddNewItemGroup();
+                if (compileGroup == null)
+                {
+                    compileGroup = project.AddNewItemGroup();
+                }
             	
             	foreach(DirectoryInfo di in directoryInfos) 
-            	{  
-              		if(di.FullName.Contains(".svn") || di.FullName.Contains("obj") || di.FullName.Contains("bin"))
-    					continue;       			
+            	{
+                    if (di.FullName.Contains(".svn") || di.FullName.Contains("obj") || di.FullName.Contains("bin"))
+                    {
+                        continue; 
+                    }					      			
 	            	foreach(FileInfo fileInfo in di.GetFiles()) 
 	            	{
 	            		BuildItem buildItem = 
@@ -245,8 +249,10 @@ namespace NMaven.Core.Impl
 					BuildItem buildItem = group.AddNewItem("Reference", dependency.artifactId);
 					//TODO: Fix this. Just because it is in the GAC on the system that builds the .csproj does not mean 
 					//it is in the GAC on another system. 
-					if(!dependency.GetType().Equals("gac") && !IsInGac(dependency.artifactId)) 
-						buildItem.SetMetadata("HintPath", repoPath, false);
+                    if (!dependency.GetType().Equals("gac") && !IsInGac(dependency.artifactId))
+                    {
+                        buildItem.SetMetadata("HintPath", repoPath, false);
+                    }
 				}				
 			}
 
@@ -255,11 +261,11 @@ namespace NMaven.Core.Impl
             ClassParser classParser = new ClassParser();
             List<FileInfo> fileInfos = new List<FileInfo>();
             AddFileInfosFromSourceDirectories(sourceFileDirectory, fileInfos);
-            List<string> dependencies = classParser.GetDependencies(fileInfos);
-            foreach(string dependency in dependencies)
+            List<String> dependencies = classParser.GetDependencies(fileInfos);
+            foreach(String dependency in dependencies)
             {
             	try {
-                    string assembly = GetAssemblyFor(dependency);
+                    String assembly = GetAssemblyFor(dependency);
                     if(IsInGac(assembly)) {
             			group.AddNewItem("Reference", assembly);	
             		} 
@@ -271,16 +277,15 @@ namespace NMaven.Core.Impl
             }
 		}
 		
-		private bool IsInGac(string assembly)
+		private bool IsInGac(String assembly)
 		{
 			return new DirectoryInfo(Environment.GetEnvironmentVariable("SystemRoot")
 			    + @"\assembly\GAC_MSIL\" + assembly).Exists;		
 		}
 
-        private string GetAssemblyFor(string dependency)
+        private String GetAssemblyFor(String dependency)
         {
-        if(dependency.Trim().Equals("System.Resources")) return "System.Windows.Forms";
-            return dependency;
+            return (dependency.Trim().Equals("System.Resources")) ? "System.Windows.Forms" : dependency;
         }
 		
 		private void AddFileInfosFromSourceDirectories(DirectoryInfo sourceFileDirectory, List<FileInfo> fileInfos ) 
@@ -289,16 +294,18 @@ namespace NMaven.Core.Impl
             if(directoryInfos != null && directoryInfos.Length > 0)
             {  	
             	foreach(DirectoryInfo di in directoryInfos) 
-            	{  
-              		if(di.FullName.Contains(".svn") || di.FullName.Contains("obj") || di.FullName.Contains("bin"))
-              			continue;
+            	{
+                    if (di.FullName.Contains(".svn") || di.FullName.Contains("obj") || di.FullName.Contains("bin"))
+                    {
+                        continue;
+                    }
               		fileInfos.AddRange(di.GetFiles());
               		AddFileInfosFromSourceDirectories(di, fileInfos);
             	}           	
             }
 		}
 		
-		private string GetOutputType(String type)
+		private String GetOutputType(String type)
 		{
 			if (type.Equals("library") || type.Equals("netplugin") || type.Equals("visual-studio-addin")
                 || type.Equals("sharp-develop-addin")) return "Library";
@@ -308,7 +315,7 @@ namespace NMaven.Core.Impl
 			return null;
 		}
 		
-		private string GetExtension(String type)
+		private String GetExtension(String type)
 		{
 			if (type.Equals("library") || type.Equals("netplugin") ) return "dll";
 			else if (type.Equals("exe")) return "exe";
@@ -319,9 +326,9 @@ namespace NMaven.Core.Impl
 		
 		private class ClassParser {
 			
-			public List<string> GetDependencies(List<FileInfo> fileInfos) 
+			public List<String> GetDependencies(List<FileInfo> fileInfos) 
 			{
-				List<string> dependencies = new List<string>();
+				List<String> dependencies = new List<String>();
 				foreach(FileInfo fileInfo in fileInfos) 
 				{
 					try 
@@ -334,7 +341,7 @@ namespace NMaven.Core.Impl
 			                	if (line.StartsWith("namespace")) break;
 			                	if (line.StartsWith("//")) continue;
 			                	if (line.StartsWith("using")) {
-			                		string[] tokens = line.Remove(line.Length - 1).Split(new char[1]{' '});
+			                		String[] tokens = line.Remove(line.Length - 1).Split(new char[1]{' '});
 			                		if(!dependencies.Contains(tokens[1]))
 			                		{
 			                			dependencies.Add(tokens[1]);

@@ -20,13 +20,15 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+
 using NMaven.Model;
 
-namespace NMaven.Core
+namespace NMaven.Solution
 {
 	/// <summary>
 	/// Provides services for generating .NET project and solution files.
 	/// </summary>
+    [CLSCompliantAttribute(false)]
 	public interface IProjectGenerator
 	{
 		
@@ -38,23 +40,26 @@ namespace NMaven.Core
         /// <param name="projectFileName">the name of the project: usually corresponds to the artifact id</param>
         /// <param name="projectReferences">references to other projects that this project is dependent upon</param>
         /// <returns></returns>
+        [CLSCompliantAttribute(false)]
 		IProjectReference GenerateProjectFor(NMaven.Model.Model model, 
 		                            DirectoryInfo sourceFileDirectory,
 		                            string projectFileName,
-		                            List<IProjectReference> projectReferences);
+                                    ICollection<IProjectReference> projectReferences);
 		
         /// <summary>
         /// Generates a solution file that references the specified projects.
         /// </summary>
         /// <param name="fileInfo">the solution file</param>
         /// <param name="projectReferences">csproj references</param>
-		void GenerateSolutionFor(FileInfo fileInfo, List<IProjectReference> projectReferences);
+        void GenerateSolutionFor(FileInfo fileInfo, ICollection<IProjectReference> projectReferences);
 		
         /// <summary>
         /// Creates a model from the pom.
         /// </summary>
         /// <param name="fileName">file name of the pom.xml file</param>
         /// <returns>a model binding of the pom file</returns>
+        /// 
+        [CLSCompliantAttribute(false)]
 		NMaven.Model.Model CreatePomModelFor(string fileName);
 		
 	}
