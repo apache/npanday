@@ -114,14 +114,14 @@ public class RepositoryAssemblerMojo
 
         for ( Dependency dependency : (List<Dependency>) project.getDependencies() )
         {
-            if ( !dependency.getType().equals( ArtifactType.LIBRARY.getTargetCompileType()) &&
+            if ( !dependency.getType().equals( ArtifactType.LIBRARY.getTargetCompileType() ) &&
                 !dependency.getType().equals( ArtifactType.NETPLUGIN.getPackagingType() ) &&
                 !dependency.getType().equals( ArtifactType.EXE.getTargetCompileType() ) &&
                 !dependency.getType().equals( ArtifactType.EXECONFIG.getTargetCompileType() ) &&
                 !dependency.getType().equals( ArtifactType.MODULE.getTargetCompileType() ) &&
                 !dependency.getType().equals( ArtifactType.NAR.getTargetCompileType() ) &&
                 !dependency.getType().equals( ArtifactType.VISUAL_STUDIO_ADDIN.getTargetCompileType() ) &&
-                !dependency.getType().equals( ArtifactType.WINEXE.getTargetCompileType() ))
+                !dependency.getType().equals( ArtifactType.WINEXE.getTargetCompileType() ) )
             {
                 javaDependencies.add( dependency );
             }
@@ -149,8 +149,7 @@ public class RepositoryAssemblerMojo
                                                                                                         "file://" +
                                                                                                             project.getBuild().getDirectory() +
                                                                                                             "/archive-temp/releases",
-                                                                                                        new DefaultRepositoryLayout(),
-                                                                                                        true );
+                                                                                                        layout, true );
 
         try
         {
