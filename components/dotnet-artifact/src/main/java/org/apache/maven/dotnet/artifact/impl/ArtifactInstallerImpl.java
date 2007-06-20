@@ -176,9 +176,9 @@ public class ArtifactInstallerImpl
     }
 
     /**
-     * @see org.apache.maven.dotnet.artifact.ArtifactInstaller#installArtifact(org.apache.maven.artifact.Artifact, java.io.File)
+     * @see org.apache.maven.dotnet.artifact.ArtifactInstaller#installArtifact(org.apache.maven.artifact.Artifact,java.io.File,boolean)
      */
-    public void installArtifact( Artifact artifact, File pomFile )
+    public void installArtifact( Artifact artifact, File pomFile, boolean modifyProjectMetadata )
         throws ArtifactInstallationException
     {
         installNetModules( artifact );
@@ -186,25 +186,28 @@ public class ArtifactInstallerImpl
         File configExeFile = new File( applicationConfig.getConfigDestinationPath() );
         //TODO: Remove GAC dependencies before installing. This should be removed and replaced with solution in the core.
         artifact.getMetadataList().clear();
-        try
+        if ( modifyProjectMetadata )
         {
-            List<Dependency> dependencies = project.getDependencies();
-            List<Dependency> newDependencies = new ArrayList<Dependency>();
-            for ( Dependency dependency : dependencies )
+            try
             {
-                if ( !dependency.getType().startsWith( "gac" ) )
+                List<Dependency> dependencies = project.getDependencies();
+                List<Dependency> newDependencies = new ArrayList<Dependency>();
+                for ( Dependency dependency : dependencies )
                 {
-                    newDependencies.add( dependency );
+                    if ( !dependency.getType().startsWith( "gac" ) )
+                    {
+                        newDependencies.add( dependency );
+                    }
                 }
+                project.setDependencies( newDependencies );
+                artifact.addMetadata( createArtifactMetadataFor( artifact, pomFile, project.getDependencies() ) );
             }
-            project.setDependencies( newDependencies );
-            artifact.addMetadata( createArtifactMetadataFor( artifact, pomFile, project.getDependencies() ) );
+            catch ( IOException e )
+            {
+                throw new ArtifactInstallationException( "NMAVEN-002-001: Unable to add metadata to artifact", e );
+            }
+            //End GAC HACK
         }
-        catch ( IOException e )
-        {
-            throw new ArtifactInstallationException( "NMAVEN-002-001: Unable to add metadata to artifact", e );
-        }
-        //End GAC HACK
 
         if ( configExeFile.exists() )
         {
@@ -247,7 +250,14 @@ public class ArtifactInstallerImpl
         {
             if ( artifact.getFile() != null && artifact.getFile().exists() )//maybe just a test compile and no install
             {
+                logger.info(
+                    "NMAVEN-002-018: Installing file into repository: File = " + artifact.getFile().getAbsolutePath() );
                 File artifactFile = artifact.getFile();
+                if(!modifyProjectMetadata)
+                {
+                    artifact.addMetadata( new ArtifactMetadataImpl( artifact, pomFile ) );
+                }
+                
                 mavenInstaller.install( artifactFile, artifact, artifactRepository );
                 try
                 {
@@ -260,6 +270,11 @@ public class ArtifactInstallerImpl
                         artifact.getId() + ", File = " +
                         ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
                 }
+            }
+            else
+            {
+                logger.info( "NMAVEN-002-019: Artifact does not exist. Nothing to install: Artifact = " +
+                    artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion() );
             }
         }
         catch ( ArtifactInstallationException e )

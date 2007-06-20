@@ -82,7 +82,7 @@ public class InstallerMojo
         Artifact artifact = project.getArtifact();       
         try
         {
-            artifactContext.getArtifactInstaller().installArtifact( artifact, pomFile );
+            artifactContext.getArtifactInstaller().installArtifact( artifact, pomFile, true );
         }
         catch ( ArtifactInstallationException e )
         {

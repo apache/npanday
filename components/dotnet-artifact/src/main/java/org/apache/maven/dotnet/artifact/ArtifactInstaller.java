@@ -54,9 +54,10 @@ public interface ArtifactInstaller
      *
      * @param artifact the artifact to install
      * @param pomFile  the pom file of the installed artifact
+     * @param modifyProjectMetadata
      * @throws ArtifactInstallationException if there is a problem installing the artifact
      */
-    void installArtifact( Artifact artifact, File pomFile )
+    void installArtifact( Artifact artifact, File pomFile, boolean modifyProjectMetadata )
         throws ArtifactInstallationException;
 
     /**

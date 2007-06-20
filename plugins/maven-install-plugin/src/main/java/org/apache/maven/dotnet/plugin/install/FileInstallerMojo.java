@@ -140,7 +140,7 @@ public class FileInstallerMojo
             this.getLog().info( "NMAVEN-xxx-000: Installing file with specified pom" );
             try
             {
-                artifactContext.getArtifactInstaller().installArtifact( sourceArtifact, pomFile );
+                artifactContext.getArtifactInstaller().installArtifact( sourceArtifact, pomFile, false );
             }
             catch ( ArtifactInstallationException e )
             {
