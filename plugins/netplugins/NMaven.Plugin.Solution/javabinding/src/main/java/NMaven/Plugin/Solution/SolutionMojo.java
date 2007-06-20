@@ -9,6 +9,13 @@ import org.apache.maven.dotnet.plugin.FieldAnnotation;
 public class SolutionMojo
     extends org.apache.maven.dotnet.plugin.AbstractMojo
 {
+
+       /**
+        * @parameter expression = "${settings.localRepository}"
+        */
+        @FieldAnnotation()
+        public java.lang.String localRep;
+
        /**
         * @parameter expression = "${basedir}"
         */

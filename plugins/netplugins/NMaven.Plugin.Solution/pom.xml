@@ -35,8 +35,8 @@ under the License.
       <type>library</type>
     </dependency>
     <dependency>
-      <groupId>NMaven.Core</groupId>
-      <artifactId>NMaven.Core</artifactId>
+      <groupId>NMaven</groupId>
+      <artifactId>NMaven.Solution</artifactId>
       <version>${pom.version}</version>
       <type>library</type>
     </dependency>

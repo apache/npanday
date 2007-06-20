@@ -23,8 +23,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-using NMaven.Core;
-using NMaven.Core.Impl;
+using NMaven.Solution;
 using NMaven.Plugin;
 
 namespace NMaven.Plugin.Solution
@@ -39,7 +38,10 @@ namespace NMaven.Plugin.Solution
 		public SolutionMojo()
 		{
 		}
-		
+
+	    [FieldAttribute("localRepo", Expression = "${settings.localRepository}", Type = "java.lang.String")]
+		public String localRepository;
+
 		[FieldAttribute("basedir", Expression = "${basedir}", Type = "java.lang.String")]
 		public String basedir;
 		
@@ -55,7 +57,7 @@ namespace NMaven.Plugin.Solution
 		
 		public override void Execute()
 		{
-			IProjectGenerator projectGenerator = new ProjectGeneratorImpl();
+			IProjectGenerator projectGenerator = Factory.createDefaultProjectGenerator();
             FileInfo pomFileInfo = new FileInfo(basedir + @"\pom.xml");
 			List<IProjectReference> projectReferences = Execute(new DirectoryInfo(pomFileInfo.DirectoryName),
 			                                                           mavenProject, profile);
@@ -85,7 +87,7 @@ namespace NMaven.Plugin.Solution
 			}
 			
 			List<IProjectReference> projectReferences = new List<IProjectReference>();
-			IProjectGenerator projectGenerator = new ProjectGeneratorImpl();
+			IProjectGenerator projectGenerator =Factory.createDefaultProjectGenerator();
 			if(model.packaging.Equals("pom"))
 			{
 				foreach(String module in GetModulesForProfile(profile, model))
@@ -105,7 +107,7 @@ namespace NMaven.Plugin.Solution
 			 	                                    new DirectoryInfo(currentDirectory.FullName + @"\src\main\csharp\"),
 			 	                                    model.artifactId, null);
 					Console.WriteLine("NMAVEN-000-000: Generated project: File Name = "
-					                  + mainProjectReference.CsProjFile.FullName);							
+					                  + mainProjectReference.CSProjectFile.FullName);
 					projectReferences.Add(mainProjectReference);
 				}
 				if(new DirectoryInfo( currentDirectory.FullName + @"\src\test\csharp\").Exists)
@@ -120,7 +122,7 @@ namespace NMaven.Plugin.Solution
 			 	                                    new DirectoryInfo(currentDirectory.FullName + @"\src\test\csharp\"),
 			 	                                    model.artifactId + "-Test", mainRef);
 					Console.WriteLine("NMAVEN-000-000: Generated test project: File Name = "
-					                  + projectReference.CsProjFile.FullName);					
+					                  + projectReference.CSProjectFile.FullName);
 					projectReferences.Add(projectReference);					
 				}
 			}	
