@@ -253,12 +253,14 @@ public class ArtifactInstallerImpl
                 logger.info(
                     "NMAVEN-002-018: Installing file into repository: File = " + artifact.getFile().getAbsolutePath() );
                 File artifactFile = artifact.getFile();
+
                 if(!modifyProjectMetadata)
                 {
                     artifact.addMetadata( new ArtifactMetadataImpl( artifact, pomFile ) );
                 }
-                
+
                 mavenInstaller.install( artifactFile, artifact, artifactRepository );
+               //This extra copy needed in using of SNAPSHOTS
                 try
                 {
                     FileUtils.copyFile( artifactFile,
@@ -270,6 +272,7 @@ public class ArtifactInstallerImpl
                         artifact.getId() + ", File = " +
                         ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
                 }
+
             }
             else
             {
