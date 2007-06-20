@@ -26,6 +26,8 @@ import java.io.File;
 
 import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 
 /**
  * @goal install-file
@@ -101,6 +103,13 @@ public class FileInstallerMojo
      */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
+    /**
+     * The artifact factory component, which is used for creating artifacts.
+     *
+     * @component
+     */
+    private ArtifactFactory artifactFactory;
+
     public void execute()
         throws MojoExecutionException
     {
@@ -110,11 +119,11 @@ public class FileInstallerMojo
             throw new MojoExecutionException(
                 "NMAVEN-1000-002: Pom  File is missing: File = " + pomFile.getAbsolutePath() );
         }
-        else if ( generatePom &&  pomFile == null  )
+        else if ( generatePom && pomFile == null )
         {
             try
             {
-
+                this.getLog().info( "NMAVEN-xxx-000: Installing file with generated pom" );
                 artifactContext.getArtifactInstaller().installFileWithGeneratedPom( groupId, artifactId, version,
                                                                                     packaging, artifactFile );
             }
@@ -123,21 +132,26 @@ public class FileInstallerMojo
                 throw new MojoExecutionException( "NMAVEN-1000-000: Failed to install artifact file", e );
             }
         }
-        else if(pomFile != null)
+        else if ( pomFile != null )
         {
+            Artifact sourceArtifact =
+                artifactFactory.createArtifact( groupId, artifactId, version, "compile", packaging );
+            sourceArtifact.setFile( artifactFile );
+            this.getLog().info( "NMAVEN-xxx-000: Installing file with specified pom" );
             try
             {
-                artifactContext.getArtifactInstaller().installArtifact( project.getArtifact(), pomFile);
+                artifactContext.getArtifactInstaller().installArtifact( sourceArtifact, pomFile );
             }
             catch ( ArtifactInstallationException e )
             {
-               throw new MojoExecutionException( "NMAVEN-1000-003: Failed to install artifact file", e );
+                throw new MojoExecutionException( "NMAVEN-1000-003: Failed to install artifact file", e );
             }
         }
         else
         {
             try
             {
+                this.getLog().info( "NMAVEN-xxx-000: Installing file with no pom" );
                 artifactContext.getArtifactInstaller().installFileWithNoPom( groupId, artifactId, version,
                                                                              artifactFile );
             }
