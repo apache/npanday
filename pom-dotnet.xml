@@ -19,12 +19,6 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.apache.maven</groupId>
-    <artifactId>maven-parent</artifactId>
-    <version>5</version>
-    <relativePath>pom/maven/pom.xml</relativePath>
-  </parent>
   <groupId>NMaven.Project</groupId>
   <artifactId>NMaven.Project</artifactId>
   <packaging>pom</packaging>
@@ -143,6 +137,13 @@ under the License.
     <module>plugins/netplugins</module>
   </modules>
   <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>1.0-beta-2</version>
+      </extension>
+    </extensions>
     <sourceDirectory>src/main/csharp</sourceDirectory>
     <testSourceDirectory>src/test/csharp</testSourceDirectory>
     <plugins>
@@ -183,6 +184,12 @@ under the License.
         <type>gac</type>
       </dependency>
       <dependency>
+        <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>
+        <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>
+        <version>8.0.0.0__b03f5f7f11d50a3a</version>
+        <type>gac_msil</type>
+      </dependency>
+      <dependency>
         <groupId>Extensibility</groupId>
         <artifactId>Extensibility</artifactId>
         <type>gac</type>
@@ -199,11 +206,9 @@ under the License.
   </dependencyManagement>
   <distributionManagement>
     <snapshotRepository>
-      <uniqueVersion>true</uniqueVersion>
-      <id>snapshot repo</id>
-      <name>snapshot repo</name>
-      <url>file://${deploy.directory}</url>
-      <layout>default</layout>
+      <id>nmaven</id>
+      <name>Apache Development Snapshot Repository</name>
+      <url>scpexe://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository</url>
     </snapshotRepository>
   </distributionManagement>
 </project>

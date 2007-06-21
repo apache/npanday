@@ -19,12 +19,6 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.apache.maven</groupId>
-    <artifactId>maven-parent</artifactId>
-    <version>5</version>
-    <relativePath>pom/maven/pom.xml</relativePath>
-  </parent>
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>dotnet-project</artifactId>
   <packaging>pom</packaging>
@@ -161,6 +155,13 @@ under the License.
     </repository>
   </repositories>
   <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>1.0-beta-2</version>
+      </extension>
+    </extensions>
     <plugins>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -297,13 +298,21 @@ under the License.
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <distributionManagement>
     <snapshotRepository>
-      <uniqueVersion>true</uniqueVersion>
-      <id>snapshot repo</id>
-      <name>snapshot repo</name>
-      <url>file://${deploy.directory}</url>
-      <layout>default</layout>
+      <id>nmaven</id>
+      <name>Apache Development Snapshot Repository</name>
+      <url>scpexe://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository</url>
     </snapshotRepository>
   </distributionManagement>
+
+  <!--
+ <distributionManagement>
+ <snapshotRepository>
+   <name>Apache Development Snapshot Repository</name>
+   <url>file://C:\arepo</url>
+ </snapshotRepository>
+</distributionManagement>
+  -->
 </project>
