@@ -148,7 +148,7 @@ public class RepositoryAssemblerMojo
         ArtifactRepository deploymentRepository = repositoryFactory.createDeploymentArtifactRepository( null,
                                                                                                         "file://" +
                                                                                                             project.getBuild().getDirectory() +
-                                                                                                            "/archive-temp/releases",
+                                                                                                            "/archive-tmp/repository/releases",
                                                                                                         layout, true );
 
         try
@@ -198,7 +198,7 @@ public class RepositoryAssemblerMojo
         TarArchiver tarArchiver = new TarArchiver();
         try
         {
-            tarArchiver.addDirectory( new File( project.getBuild().getDirectory(), "/archive-temp/releases" ) );
+            tarArchiver.addDirectory( new File( project.getBuild().getDirectory(), "/archive-tmp/repository/releases" ) );
         }
         catch ( ArchiverException e )
         {
