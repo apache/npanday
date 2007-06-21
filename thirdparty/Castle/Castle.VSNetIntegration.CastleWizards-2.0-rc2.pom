@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Castle</groupId>
+  <artifactId>Castle.VSNetIntegration.CastleWizards</artifactId>
+  <packaging>library</packaging>
+  <version>2.0-rc2</version>
+  <dependencies>
+      <dependency>
+        <groupId>EnvDTE</groupId>
+        <artifactId>EnvDTE</artifactId>
+        <type>gac</type>
+        <version>8.0.0.0__b03f5f7f11d50a3a</version>
+      </dependency>
+  </dependencies>
+</project>
