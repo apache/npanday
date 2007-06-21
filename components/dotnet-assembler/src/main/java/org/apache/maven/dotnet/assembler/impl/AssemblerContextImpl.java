@@ -45,7 +45,7 @@ import java.io.*;
 public final class AssemblerContextImpl
     implements AssemblerContext, LogEnabled
 {
-    
+
     private static final String SNAPSHOT_SUFFIX = "SNAPSHOT";
 
     /**
@@ -99,7 +99,7 @@ public final class AssemblerContextImpl
         String copyright = null;
         String informationalVersion = "";
         String configuration = "";
-        
+
         File file = new File( basedir + "/COPYRIGHT.txt" );
         if ( file.exists() )
         {
@@ -178,7 +178,8 @@ public final class AssemblerContextImpl
     /**
      * @see AssemblerContext#getClassExtensionFor(String)
      */
-    public String getClassExtensionFor(String language) throws PlatformUnsupportedException
+    public String getClassExtensionFor( String language )
+        throws PlatformUnsupportedException
     {
         try
         {
@@ -186,7 +187,8 @@ public final class AssemblerContextImpl
         }
         catch ( AssemblyInfoException e )
         {
-            throw new PlatformUnsupportedException("NMAVEN-020-006: Language not supported: Language = " + language, e);
+            throw new PlatformUnsupportedException( "NMAVEN-020-006: Language not supported: Language = " + language,
+                                                    e );
         }
     }
 
