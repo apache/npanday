@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{93484dfe-e867-42b2-b7ac-4aff7a12f65c}</ProjectGuid>
+    <ProjectGuid>{09887944-425A-45A0-870C-AE4C16DA63DF}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <RootNameSpace>NMaven.Plugin</RootNameSpace>
     <AssemblyName>NMaven.Plugin.MojoGenerator</AssemblyName>
@@ -17,11 +17,6 @@
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NMaven" />
-    <Folder Include="NMaven\Plugin" />
-    <Folder Include="NMaven\Plugin\MojoGenerator" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NMaven\Plugin\MojoGenerator\Generator.cs" />

@@ -3,6 +3,8 @@ using EnvDTE;
 using EnvDTE80;
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Resources;
@@ -10,18 +12,20 @@ using System.Reflection;
 using System.Globalization;
 using System.Drawing;
 using System.Threading;
+using System.Web.Services.Protocols;
 
 using Microsoft.VisualStudio.CommandBars;
 
 using NMaven.Artifact;
-using NMaven.IDE;
-using NMaven.IDE.Controls;
-using NMaven.IDE.Commands;
-using NMaven.IDE.Impl;
-using NMaven.IDE.View;
 using NMaven.Logging;
+using NMaven.Service;
 using NMaven.VisualStudio.Logging;
-using System.Diagnostics;
+
+using NMaven.IDE;
+using NMaven.IDE.Impl;
+
+using Castle.Windsor;
+using Castle.Windsor.Configuration.Interpreters;
 
 namespace NMaven.VisualStudio.Addin
 {
@@ -29,12 +33,6 @@ namespace NMaven.VisualStudio.Addin
     /// <seealso class='IDTExtensibility2' />
     public class Connect : IDTExtensibility2, IDTCommandTarget
     {
-        private Window _windowToolWindow;
-
-        private OutputWindowPane outputWindowPane;
-
-        private NMaven.Logging.Logger logger;
-
         /// <summary>Implements the constructor for the Add-in object. Place your initialization code within this method.</summary>
         public Connect()
         {
@@ -50,7 +48,7 @@ namespace NMaven.VisualStudio.Addin
         {
             _applicationObject = (DTE2)application;
             _addInInstance = (AddIn)addInInst;
-            
+            Command command = null;
             if (connectMode == ext_ConnectMode.ext_cm_UISetup)
             {
                 object[] contextGUIDS = new object[] { };
@@ -88,7 +86,11 @@ namespace NMaven.VisualStudio.Addin
                 try
                 {
                     //Add a command to the Commands collection:
-                    Command command = commands.AddNamedCommand2(_addInInstance, "NMavenAddin", "NMaven Build System", "Executes the command for NMavenAddin", true, 480, ref contextGUIDS, (int)vsCommandStatus.vsCommandStatusSupported + (int)vsCommandStatus.vsCommandStatusEnabled, (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
+                    command = commands.AddNamedCommand2(_addInInstance, "NMavenAddin", 
+                        "NMaven Build System", "Executes the command for NMavenAddin", true, 480, ref contextGUIDS, 
+                        (int)vsCommandStatus.vsCommandStatusSupported + (int)vsCommandStatus.vsCommandStatusEnabled, 
+                        (int)vsCommandStyle.vsCommandStylePictAndText, 
+                        vsCommandControlType.vsCommandControlTypeButton);
 
                     //Add a control for the command to the tools menu:
                     if ((command != null) && (toolsPopup != null))
@@ -117,11 +119,14 @@ namespace NMaven.VisualStudio.Addin
 
                   String localRepository = Environment.GetEnvironmentVariable("HOMEDRIVE")
                     + Environment.GetEnvironmentVariable("HOMEPATH") + @"\.m2\repository\";
-                ArtifactContext artifactContext = new ArtifactContext();
+
+                IWindsorContainer container = new WindsorContainer(new XmlInterpreter(@"C:\Documents and Settings\shane\nmaven-apache\trunk-fix\assemblies\NMaven.VisualStudio.Addin\src\main\resources\components.xml"));
+                ArtifactContext artifactContext = (ArtifactContext) container[typeof(ArtifactContext)];
+
                 NMaven.Artifact.Artifact artifactWar = artifactContext.CreateArtifact("org.apache.maven.dotnet", "dotnet-service-embedder", "0.14-SNAPSHOT", "war");
                 FileInfo warFileInfo = new FileInfo(localRepository + "/" + new JavaRepositoryLayout().pathOf(artifactWar) + "war");
-                logger.Log(Level.INFO, "Executing external command plugin: " 
-                    + @"mvn org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile=""" 
+                logger.Log(Level.INFO, "Executing external command plugin: "
+                    + @"mvn org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile="""
                     + warFileInfo.FullName + @"""");
 
    			    ProcessStartInfo processStartInfo =
@@ -130,21 +135,136 @@ namespace NMaven.VisualStudio.Addin
                 processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 System.Diagnostics.Process.Start(processStartInfo);
 
-                MavenBuildControl mavenBuildControl = new MavenBuildControl();
-                object programmableObject = null;
-
-                String guidstr = "{858C3FCD-8B39-4540-A592-F31C1520B174}";
                 EnvDTE80.Windows2 windows2 = (EnvDTE80.Windows2)_applicationObject.Windows;
-                System.Reflection.Assembly asm = System.Reflection.Assembly.GetAssembly(mavenBuildControl.GetType());
-                _windowToolWindow = windows2.CreateToolWindow2(_addInInstance, asm.Location, "NMaven.IDE.Controls.MavenBuildControl", "Maven Build Tool", guidstr, ref programmableObject);
-
-                _windowToolWindow.Visible = true;
                 _applicationObject = (DTE2)application;
+               
+                ideContext = new IdeContextImpl();
+               
+                IIdeConfiguration configuration = Factory.CreateIdeConfiguration();
+                configuration.Logger = logger;
+                configuration.SocketLoggerPort = 9099;
+                ideContext.Init(configuration);
                 
-                mavenBuildControl = (MavenBuildControl)_windowToolWindow.Object;
-                mavenBuildControl.Init(warFileInfo, logger, 9099, new Size(400, 400), _applicationObject);
-                mavenBuildControl.ClearOutputWindow += new EventHandler(ClearOutputWindowPane);
-                mavenBuildControl.FocusOutputWindow += new EventHandler(ActivateOutputWindowPane);
+                DTE2 dte2 = _applicationObject;
+                addReferenceControls = new List<CommandBarButton>();
+                buildControls = new List<CommandBarControl>();
+                foreach (CommandBar commandBar in (CommandBars) dte2.CommandBars)
+                {
+                    foreach (CommandBarControl control in commandBar.Controls)
+                    {
+                        if (control.Caption.Equals("Add &Reference..."))
+                        {
+                            outputWindowPane.OutputString("Adding control reference: " + commandBar.Name + Environment.NewLine);
+                            
+                            CommandBarButton ctl = (CommandBarButton)
+                                commandBar.Controls.Add(MsoControlType.msoControlButton,
+                                System.Type.Missing, System.Type.Missing, control.Index, true);
+                            ctl.Click += new _CommandBarButtonEvents_ClickEventHandler(cbShowAddArtifactsForm_Click);
+                            ctl.Caption = "Add Maven Artifact...";
+                            ctl.Visible = true;
+                            addReferenceControls.Add(ctl);
+                        }
+                        else if (control.Caption.Equals("Clea&n"))
+                        {
+                            CommandBarPopup ctl = (CommandBarPopup)
+                                commandBar.Controls.Add(MsoControlType.msoControlPopup,
+                                System.Type.Missing, System.Type.Missing, control.Index + 1, true);
+                            ctl.Caption = "Maven Phase";
+                            ctl.Visible = true;
+                            buildControls.Add(ctl);
+
+                            CommandBarButton cleanButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                                System.Type.Missing, System.Type.Missing, 1, true);
+                            cleanButton.Caption = "Clean";
+                            cleanButton.Visible = true;
+                            cleanButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbClean_Click);
+
+
+                            CommandBarButton testButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                                System.Type.Missing, System.Type.Missing, 1, true);
+                            testButton.Caption = "Test";
+                            testButton.Visible = true;
+                            testButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbTest_Click);
+
+                            CommandBarButton installButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                                System.Type.Missing, System.Type.Missing, 1, true);
+                            installButton.Caption = "Install";
+                            installButton.Visible = true;
+                            installButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstall_Click);
+
+                            CommandBarButton buildButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                                System.Type.Missing, System.Type.Missing, 1, true);
+                            buildButton.Caption = "Build";
+                            buildButton.Visible = true;
+                            buildButton.FaceId = 645;
+                            buildButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuild_Click);
+
+                            buildControls.Add(buildButton);
+                            buildControls.Add(installButton);
+                            buildControls.Add(cleanButton);
+                            buildControls.Add(testButton);
+                        }
+                    }
+                    
+                }
+
+
+                nunitControls = new List<CommandBarButton>();
+                Window solutionExplorerWindow = dte2.Windows.Item(Constants.vsWindowKindSolutionExplorer);
+                _selectionEvents = dte2.Events.SelectionEvents;
+                _selectionEvents.OnChange += new _dispSelectionEvents_OnChangeEventHandler(this.OnChange);                
+            }
+        }
+
+        public void OnChange()
+        {
+            foreach (SelectedItem item in _applicationObject.SelectedItems)
+            {
+                if (item.Name.EndsWith("Test.cs"))
+                {
+                    if (nunitControls.Count == 0)
+                    {
+                        DTE2 dte2 = _applicationObject;
+                        foreach (CommandBar commandBar in (CommandBars)dte2.CommandBars)
+                        {
+                            foreach (CommandBarControl control in commandBar.Controls)
+                            {
+                                if (control.Caption.Equals("View &Code"))
+                                {
+                                    CommandBarButton nunitControl = (CommandBarButton)
+                                        commandBar.Controls.Add(MsoControlType.msoControlButton,
+                                        System.Type.Missing, System.Type.Missing, control.Index, true);
+                                    nunitControl.Click += new _CommandBarButtonEvents_ClickEventHandler(cbRunUnitTest_Click);
+                                    nunitControl.Caption = "Run Unit Test";
+                                    nunitControl.Visible = true;
+                                    CommandBarButton nunitCompileAndRunControl = (CommandBarButton)
+                                        commandBar.Controls.Add(MsoControlType.msoControlButton,
+                                        System.Type.Missing, System.Type.Missing, control.Index, true);
+                                    nunitCompileAndRunControl.Click 
+                                        += new _CommandBarButtonEvents_ClickEventHandler(cbCompileAndRunUnitTest_Click);
+                                    nunitCompileAndRunControl.Caption = "Compile and Run Unit Test";
+                                    nunitCompileAndRunControl.Visible = true;
+                                    nunitControls.Add(nunitControl);
+                                    nunitControls.Add(nunitCompileAndRunControl);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (CommandBarButton button in nunitControls)
+                        {
+                            button.Visible = true;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (CommandBarButton button in nunitControls)
+                    {
+                        button.Visible = false;
+                    }
+                }
             }
         }
 
@@ -179,6 +299,86 @@ namespace NMaven.VisualStudio.Addin
         /// <seealso class='IDTExtensibility2' />
         public void OnStartupComplete(ref Array custom)
         {
+
+        }
+
+        private void executeBuildCommand(FileInfo pomFile, String goal)
+        {
+            MavenExecutionRequest request = new MavenExecutionRequest();
+            request.goal = goal;
+            request.pomFile = @pomFile.FullName;
+            request.loggerPort = 9099;
+            request.loggerPortSpecified = true;
+
+            try
+            {
+                ideContext.Build(request);
+            }
+            catch (SoapException e)
+            {
+                ideContext.GetLogger().Log(Level.INFO, "NMaven: Soap Error in build: " + e.Code + ", " + e.SubCode
+                    + "," + e.StackTrace);
+            }
+            catch (Exception e)
+            {
+                ideContext.GetLogger().Log(Level.INFO, "NMaven: Error in build: " + e.Message + ", Pom File = " + pomFile.FullName + 
+                    "," + e.StackTrace);
+            }
+        }
+
+        private FileInfo getPomFile()
+        {
+            FileInfo projectFileInfo = null;
+            //TODO: Fix to handle multiple projects: NMAVEN-80
+            foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
+            {
+                ideContext.GetLogger().Log(Level.INFO, "project.FileName = " + project.FileName);
+                projectFileInfo = new FileInfo(project.FileName);
+                break;
+            }
+            FileInfo pomFile = new FileInfo(projectFileInfo.DirectoryName + @"\pom.xml");
+            if (!pomFile.Exists)
+            {
+                pomFile = new FileInfo(projectFileInfo.Directory.Parent.Parent.Parent.FullName + @"\pom.xml");
+            }
+            return pomFile;
+        }
+
+        private void cbRunUnitTest_Click(CommandBarButton btn, ref bool Cancel)
+        {           
+            executeBuildCommand(getPomFile(), "org.apache.maven.dotnet.plugins:maven-test-plugin:test"); 
+        }
+
+        private void cbCompileAndRunUnitTest_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            executeBuildCommand(getPomFile(), "test");
+        }
+
+        private void cbInstall_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            executeBuildCommand(getPomFile(), "install");
+        }
+
+        private void cbClean_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            executeBuildCommand(getPomFile(), "clean");
+        }
+
+        private void cbBuild_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            executeBuildCommand(getPomFile(), "compile");
+        }
+
+        private void cbTest_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            executeBuildCommand(getPomFile(), "test");
+        }
+
+        private void cbShowAddArtifactsForm_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            outputWindowPane.OutputString("Show Artifacts.");
+            AddArtifactsForm form = new AddArtifactsForm();
+            form.Show();
         }
 
         /// <summary>Implements the OnBeginShutdown method of the IDTExtensibility2 interface. Receives notification that the host application is being unloaded.</summary>
@@ -217,6 +417,7 @@ namespace NMaven.VisualStudio.Addin
         /// <seealso class='Exec' />
         public void Exec(string commandName, vsCommandExecOption executeOption, ref object varIn, ref object varOut, ref bool handled)
         {
+            outputWindowPane.OutputString(commandName);
             handled = false;
             if (executeOption == vsCommandExecOption.vsCommandExecOptionDoDefault)
             {
@@ -225,9 +426,18 @@ namespace NMaven.VisualStudio.Addin
                 handled = true;
 
             }
-            _windowToolWindow.Visible = true;
         }
+
         private DTE2 _applicationObject;
         private AddIn _addInInstance;
+        private OutputWindowPane outputWindowPane;
+        private NMaven.Logging.Logger logger;
+        private List<CommandBarButton> addReferenceControls;
+        private List<CommandBarButton> nunitControls;
+        private List<CommandBarControl> buildControls;
+        private EnvDTE.SelectionEvents _selectionEvents;
+        private IIdeContext ideContext;
+        //private DirectoryInfo baseDirectoryInfo;
+   
     }
 }

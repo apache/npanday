@@ -3,7 +3,7 @@ using System.IO;
 
 namespace NMaven.Artifact
 {
-    public class Artifact
+    public sealed class Artifact
     {
         private string artifactId;
 

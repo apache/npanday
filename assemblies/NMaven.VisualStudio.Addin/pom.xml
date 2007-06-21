@@ -85,6 +85,30 @@ under the License.
       <artifactId>Extensibility</artifactId>
       <type>gac</type>
     </dependency>
+    <dependency>
+      <groupId>Castle</groupId>
+      <artifactId>Castle.Windsor</artifactId>
+      <type>library</type>
+      <version>2.0-rc2</version>
+    </dependency>
+    <dependency>
+      <groupId>Castle</groupId>
+      <artifactId>Castle.Core</artifactId>
+      <type>library</type>
+      <version>2.0-rc2</version>
+    </dependency>
+    <dependency>
+      <groupId>Castle</groupId>
+      <artifactId>Castle.MicroKernel</artifactId>
+      <type>library</type>
+      <version>2.0-rc2</version>
+    </dependency>
+    <dependency>
+      <groupId>Castle</groupId>
+      <artifactId>Castle.DynamicProxy</artifactId>
+      <type>library</type>
+      <version>2.0-rc2</version>
+    </dependency>
   </dependencies>
   <profiles>
     <profile>

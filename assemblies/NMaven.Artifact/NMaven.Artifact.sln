@@ -1,6 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-# SharpDevelop 2.1.0.2376
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.Artifact", "C:\Documents and Settings\shane\nmaven-apache\trunk-new\assemblies\NMaven.Artifact\src\main\csharp\NMaven.Artifact.csproj", "{b9da05df-af58-4063-8d51-b1bf17966e59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.Artifact", "C:\Documents and Settings\shane\nmaven-apache\trunk-fix\assemblies\NMaven.Artifact\src\main\csharp\NMaven.Artifact.csproj", "{819ACFA7-3FFC-4681-B169-1954486E7CB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.Artifact-Test", "C:\Documents and Settings\shane\nmaven-apache\trunk-fix\assemblies\NMaven.Artifact\src\test\csharp\NMaven.Artifact-Test.csproj", "{3C1CA733-CFC6-4256-A767-37FFE8CBD21A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{819ACFA7-3FFC-4681-B169-1954486E7CB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{819ACFA7-3FFC-4681-B169-1954486E7CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C1CA733-CFC6-4256-A767-37FFE8CBD21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C1CA733-CFC6-4256-A767-37FFE8CBD21A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

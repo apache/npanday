@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{65de94ba-7bd5-47bb-8b0a-4bb5b699c464}</ProjectGuid>
+    <ProjectGuid>{DF06BE45-AF6C-4DA4-8844-EA114F094C5F}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <RootNameSpace>NMaven.Service</RootNameSpace>
     <AssemblyName>NMaven.Service.Embedder</AssemblyName>
@@ -12,11 +12,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NMaven" />
-    <Folder Include="NMaven\Service" />
-    <Folder Include="NMaven\Service\Embedder" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NMaven\Service\Embedder\MavenEmbedder.cs" />

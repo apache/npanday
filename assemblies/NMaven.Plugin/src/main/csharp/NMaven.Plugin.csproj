@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{d7fc7c76-a5fc-4e0d-9a34-9525ed53654c}</ProjectGuid>
+    <ProjectGuid>{B760D54F-22AC-43E7-A0A6-DE313D4663AF}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <RootNameSpace>NMaven.Plugin</RootNameSpace>
     <AssemblyName>NMaven.Plugin</AssemblyName>
@@ -16,13 +16,6 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NMaven" />
-    <Folder Include="NMaven\Plugin" />
-    <Folder Include="NMaven\Plugin\Generator" />
-    <Folder Include="NMaven\Plugin\Injector" />
-    <Folder Include="NMaven\Plugin\Injector\Impl" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NMaven\Plugin\AbstractMojo.cs" />

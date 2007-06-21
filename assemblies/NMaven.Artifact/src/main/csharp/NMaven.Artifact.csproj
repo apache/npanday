@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{b9da05df-af58-4063-8d51-b1bf17966e59}</ProjectGuid>
+    <ProjectGuid>{819ACFA7-3FFC-4681-B169-1954486E7CB5}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <RootNameSpace>NMaven.Artifact</RootNameSpace>
     <AssemblyName>NMaven.Artifact</AssemblyName>
@@ -12,19 +12,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NMaven.Model.Pom" />
+    <Reference Include="NUnit.Framework, Version=2.2.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\.m2\repository\NUnit\NUnit.Framework\2.2.8.0\NUnit.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NMaven" />
-    <Folder Include="NMaven\Artifact" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NMaven\Artifact\Artifact.cs" />
     <Compile Include="NMaven\Artifact\ArtifactContext.cs" />
+    <Compile Include="NMaven\Artifact\ArtifactRepository.cs" />
     <Compile Include="NMaven\Artifact\ArtifactRepositoryLayout.cs" />
     <Compile Include="NMaven\Artifact\ArtifactScope.cs" />
     <Compile Include="NMaven\Artifact\AssemblyRepositoryLayout.cs" />
+    <Compile Include="NMaven\Artifact\IArtifactContext.cs" />
     <Compile Include="NMaven\Artifact\JavaRepositoryLayout.cs" />
     <Compile Include="NMaven\Artifact\RepositoryType.cs" />
   </ItemGroup>

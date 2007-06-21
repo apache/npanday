@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,8 +7,16 @@ using NMaven.Model;
 
 namespace NMaven.Artifact
 {
-    public class ArtifactContext
+    public sealed class ArtifactContext : IArtifactContext
     {
+
+        //public void Init(File
+        public ArtifactRepository GetArtifactRepository()
+        {
+            ArtifactRepository artifactRepository = new ArtifactRepository();
+            artifactRepository.Init(this, new DirectoryInfo(@"C:\Documents and Settings\shane\.m2\repository"));
+            return artifactRepository;
+        }
 
         public Artifact GetArtifactFor(NMaven.Model.Model model)
         {

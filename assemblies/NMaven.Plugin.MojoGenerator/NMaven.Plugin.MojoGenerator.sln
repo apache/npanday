@@ -2,5 +2,5 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 # SharpDevelop 2.1.0.2376
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.Plugin.MojoGenerator", "C:\Documents and Settings\shane\nmaven-apache\trunk-new\assemblies\NMaven.Plugin.MojoGenerator\src\main\csharp\NMaven.Plugin.MojoGenerator.csproj", "{93484dfe-e867-42b2-b7ac-4aff7a12f65c}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.Plugin.MojoGenerator", "C:\Documents and Settings\shane\nmaven-apache\trunk-fix\assemblies\NMaven.Plugin.MojoGenerator\src\main\csharp\NMaven.Plugin.MojoGenerator.csproj", "{c279f231-0d56-490a-8bec-e54199f93618}"
 EndProject

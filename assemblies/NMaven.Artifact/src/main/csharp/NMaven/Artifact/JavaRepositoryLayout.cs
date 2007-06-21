@@ -3,7 +3,7 @@ using System.Text;
 
 namespace NMaven.Artifact
 {
-    public class JavaRepositoryLayout : ArtifactRepositoryLayout
+    public sealed class JavaRepositoryLayout : ArtifactRepositoryLayout
     {
         public string pathOf(Artifact artifact)
         {

@@ -34,5 +34,11 @@ under the License.
       <type>library</type>
       <version>${pom.version}</version>
     </dependency>
+    <dependency>
+      <groupId>NUnit</groupId>
+      <artifactId>NUnit.Framework</artifactId>
+      <type>library</type>
+      <version>2.2.8.0</version>
+    </dependency>
   </dependencies>  
 </project>
