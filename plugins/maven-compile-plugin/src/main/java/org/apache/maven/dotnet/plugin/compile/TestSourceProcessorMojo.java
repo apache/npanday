@@ -55,6 +55,11 @@ public class TestSourceProcessorMojo
      */
     private String outputDirectory;
 
+    /**
+     * @parameter expression = "${testExcludes}"
+     */
+    private String[] testExcludes;
+
     public void execute()
         throws MojoExecutionException
     {
@@ -73,6 +78,10 @@ public class TestSourceProcessorMojo
         excludeList.add( "*.csproj" );
         excludeList.add( "*.sln" );
         excludeList.add( "obj/**" );
+        for (int i = 0; i < testExcludes.length; ++i)
+        {
+        	excludeList.add(testExcludes[i]);
+        }
         directoryScanner.setExcludes( excludeList.toArray( new String[excludeList.size()] ) );
 
         directoryScanner.addDefaultExcludes();

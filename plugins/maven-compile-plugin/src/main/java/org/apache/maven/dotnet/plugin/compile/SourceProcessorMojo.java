@@ -113,8 +113,15 @@ public class SourceProcessorMojo
         {
             throw new MojoExecutionException( "NMAVEN-904-003: Language is not supported: Language = " + language, e );
         }
-
+    	for (int i = 0; i < includes.length; ++i)
+    	{
+    		includeList.add(includes[i]);
+    	}
         directoryScanner.setIncludes( includeList.toArray( includes ) );
+        for (int i = 0; i < excludes.length; ++i)
+        {
+        	excludeList.add(excludes[i]);
+        }
         directoryScanner.setExcludes( excludeList.toArray( excludes ) );
         directoryScanner.addDefaultExcludes();
 

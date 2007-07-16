@@ -26,3 +26,4 @@ it0027: Compiling CS with flat directory structure
 it0028: Deploys a snapshot dll to a remote repo
 it0029: Deploys a non-snapshot dll to a remote repo
 it0030: Pulls a snapshot dll and non-snapshot dll from a remote repo
+it0032: Verifies that compile plugin processes excludes and testExcludes elements from the pom
