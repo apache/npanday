@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
     <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>NMaven.Assemblies</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven</groupId>
   <artifactId>NMaven.Solution</artifactId>
-  <version>0.14-SNAPSHOT</version>
+  <version>0.14</version>
   <packaging>library</packaging>
   <name>NMaven.Solution</name>
   <dependencies>
@@ -15,16 +15,25 @@
       <groupId>NMaven.Model</groupId>
       <artifactId>NMaven.Model.Pom</artifactId>
       <type>library</type>
-      <version>${pom.version}</version>
+      <version>0.14</version>
     </dependency>
     <dependency>
-      <groupId>Microsoft.Build.Engine</groupId>
-      <artifactId>Microsoft.Build.Engine</artifactId>
-      <type>gac_msil</type>
+      <groupId>NMaven.Artifact</groupId>
+      <artifactId>NMaven.Artifact</artifactId>
+      <type>library</type>
+      <version>0.14</version>
     </dependency>
+      <dependency>
+        <groupId>Microsoft.Build.Engine</groupId>
+        <artifactId>Microsoft.Build.Engine</artifactId>
+        <type>gac_msil</type>
+        <version>2.0.0.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
+      </dependency>
     <dependency>
       <groupId>NUnit</groupId>
       <artifactId>NUnit.Framework</artifactId>
+      <version>2.2.8.0</version>
       <type>library</type>
     </dependency>
   </dependencies>  

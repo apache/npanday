@@ -1,8 +1,17 @@
 <component-set>
-    <components>
-        <component>
-            <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
-            <implementation>org.apache.maven.dotnet.registry.impl.RepositoryRegistryImpl</implementation>
-        </component>
-    </components>
+  <components>
+    <component>
+      <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+      <implementation>org.apache.maven.dotnet.registry.impl.RepositoryRegistryImpl</implementation>
+    </component>
+    <component>
+      <role>org.apache.maven.dotnet.registry.DataAccessObjectRegistry</role>
+      <implementation>org.apache.maven.dotnet.registry.impl.DataAccessObjectRegistryImpl</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
 </component-set>

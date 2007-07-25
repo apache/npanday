@@ -134,7 +134,7 @@ public final class CompilerContextImpl
         catch ( ArtifactException e )
         {
             logger.error( "NMAVEN-061-000: Improper Initialization of the Net Modules", e );
-            return null;
+            return new ArrayList<Artifact>();
             //TODO: How to handle this: usually implies improper init of ArtifactContext
         }
         if ( config.isTestCompile() && config.getArtifactType().equals( ArtifactType.MODULE ) )
@@ -301,62 +301,65 @@ public final class CompilerContextImpl
         artifactContext.init( project, project.getRemoteArtifactRepositories(), config.getLocalRepository() );
 
         Set<Artifact> artifacts = project.getDependencyArtifacts();//Can add WFC deps prior
-        for ( Artifact artifact : artifacts )
+        if ( artifacts != null )
         {
-            String type = artifact.getType();
-            if ( type.equals( "module" ) )
+            for ( Artifact artifact : artifacts )
             {
-                modules.add( artifact );
-            }
-            else if ( type.equals( "library" ) || type.equals( "exe" ) )
-            {
-                libraries.add( artifact );
-            }
-            //Resolving here since the GAC path is vendor and framework aware
-            else if ( type.equals( "gac_generic" ) )
-            {
-                String gacRoot = null;
-                if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) && (
-                    compilerRequirement.getFrameworkVersion().equals( "2.0.50727" ) ||
-                        compilerRequirement.getFrameworkVersion().equals( "3.0" ) ) )
+                String type = artifact.getType();
+                if ( type.equals( "module" ) )
                 {
-                    gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
+                    modules.add( artifact );
                 }
-                else if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) &&
-                    compilerRequirement.getFrameworkVersion().equals( "1.1.4322" ) )
+                else if ( type.equals( "library" ) || type.equals( "exe" ) )
                 {
-                    gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC\\";
+                    libraries.add( artifact );
                 }
-                else if ( compilerRequirement.getVendor().equals( Vendor.MONO ) )
+                //Resolving here since the GAC path is vendor and framework aware
+                else if ( type.equals( "gac_generic" ) )
                 {
-                    gacRoot = getGacRootForMono();
+                    String gacRoot = null;
+                    if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) && (
+                        compilerRequirement.getFrameworkVersion().equals( "2.0.50727" ) ||
+                            compilerRequirement.getFrameworkVersion().equals( "3.0" ) ) )
+                    {
+                        gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
+                    }
+                    else if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) &&
+                        compilerRequirement.getFrameworkVersion().equals( "1.1.4322" ) )
+                    {
+                        gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC\\";
+                    }
+                    else if ( compilerRequirement.getVendor().equals( Vendor.MONO ) )
+                    {
+                        gacRoot = getGacRootForMono();
+                    }
+                    if ( gacRoot != null )
+                    {
+                        setArtifactGacFile( gacRoot, artifact );
+                        libraries.add( artifact );
+                    }
                 }
-                if ( gacRoot != null )
+                else if ( type.equals( "gac" ) )
                 {
+                    String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
+                        : System.getenv( "SystemRoot" ) + "\\assembly\\GAC\\";
                     setArtifactGacFile( gacRoot, artifact );
                     libraries.add( artifact );
                 }
-            }
-            else if ( type.equals( "gac" ) )
-            {
-                String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
-                    : System.getenv( "SystemRoot" ) + "\\assembly\\GAC\\";
-                setArtifactGacFile( gacRoot, artifact );
-                libraries.add( artifact );
-            }
-            else if ( type.equals( "gac_32" ) )
-            {
-                String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
-                    : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_32\\";
-                setArtifactGacFile( gacRoot, artifact );
-                libraries.add( artifact );
-            }
-            else if ( type.equals( "gac_msil" ) )
-            {
-                String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
-                    : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
-                setArtifactGacFile( gacRoot, artifact );
-                libraries.add( artifact );
+                else if ( type.equals( "gac_32" ) )
+                {
+                    String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
+                        : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_32\\";
+                    setArtifactGacFile( gacRoot, artifact );
+                    libraries.add( artifact );
+                }
+                else if ( type.equals( "gac_msil" ) )
+                {
+                    String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
+                        : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
+                    setArtifactGacFile( gacRoot, artifact );
+                    libraries.add( artifact );
+                }
             }
         }
 
@@ -414,8 +417,8 @@ public final class CompilerContextImpl
     private void setArtifactGacFile( String gacRoot, Artifact artifact )
         throws PlatformUnsupportedException
     {
-        File gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + File
-            .separator + artifact.getArtifactId() + ".dll" );
+        File gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
+            artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
         if ( !gacFile.exists() )
         {
             throw new PlatformUnsupportedException(

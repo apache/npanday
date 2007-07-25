@@ -54,20 +54,20 @@ Writing .NET Mojos (Microsoft Only)
   <groupId>NMaven.Plugins</groupId>
   <artifactId>NMaven.Plugins.Test</artifactId>
   <packaging>netplugin</packaging>
-  <version>0.14-SNAPSHOT</version>
+  <version>0.14</version>
   <name>NMaven.Plugins.Test</name>
   <dependencies>
     <dependency>
       <groupId>NMaven.Plugin</groupId>
       <artifactId>NMaven.Plugin</artifactId>
       <type>library</type>
-      <version>0.14-SNAPSHOT</version>
+      <version>0.14</version>
     </dependency>
     <dependency>
       <groupId>NMaven.Model</groupId>
       <artifactId>NMaven.Model.Pom</artifactId>
       <type>library</type>
-      <version>0.14-SNAPSHOT</version>
+      <version>0.14</version>
     </dependency>
   </dependencies>
 </project>

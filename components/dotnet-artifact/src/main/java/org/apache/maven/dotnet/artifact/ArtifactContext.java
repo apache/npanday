@@ -40,19 +40,6 @@ public interface ArtifactContext
     String ROLE = ArtifactContext.class.getName();
 
     /**
-     * Returns the dependencies that exist directly within the pom (no transitive dependencies) for the specified artifact.
-     *
-     * @param artifact      the artifact from which to get the direct dependencies. This value should not be null.
-     * @param matchPolicies the list of policies for matching artifacts. This list may be null or empty, in which case
-     *                      this method matches all dependencies for the given artifact.
-     * @return the list of dependencies that exist directly within the pom (no transitive dependencies)
-     *         for the given artifact and match policies. This list may not be null.
-     * @throws ArtifactException if there is a problem in matching the dependencies of the specified artifact
-     */
-    List<Artifact> getDirectDependenciesFor( Artifact artifact, List<ArtifactMatchPolicy> matchPolicies )
-        throws ArtifactException;
-
-    /**
      * Returns the list of .NET module dependency artifacts that exist directly within the pom for the specified artifact
      * (no transitive dependencies). This is a convenience method that has the same behavior as
      * <code>getDirectDependenciesFor</code> but adds a .netmodule match policy. To get net modules, with additional match policies,

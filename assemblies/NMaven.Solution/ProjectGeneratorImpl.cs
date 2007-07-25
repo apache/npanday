@@ -26,6 +26,7 @@ using System.Xml.Serialization;
 
 using Microsoft.Build.BuildEngine;
 
+using NMaven.Artifact;
 using NMaven.Solution;
 using NMaven.Model;
 
@@ -47,7 +48,8 @@ namespace NMaven.Solution.Impl
 	    public IProjectReference GenerateProjectFor(NMaven.Model.Model model, 
 		                                  DirectoryInfo sourceFileDirectory,
 		                                  String projectFileName,
-		                                  ICollection<IProjectReference> projectReferences)
+		                                  ICollection<IProjectReference> projectReferences,
+		                                  DirectoryInfo localRepository)
 	    {		
 			Guid projectGuid = Guid.NewGuid();
 
@@ -62,7 +64,8 @@ namespace NMaven.Solution.Impl
 			                                         projectGuid,
 			                                         @"..\..\..\target\bin\Debug\", 
 			                                         @"..\..\..\target\obj\",
-			                                         projectReferences);
+			                                         projectReferences,
+			                                         localRepository);
 			FileInfo fileInfo = new FileInfo(sourceFileDirectory.FullName + @"\" + projectFileName + ".csproj");
 		    project.Save(fileInfo.FullName);
 
@@ -127,7 +130,8 @@ namespace NMaven.Solution.Impl
 		                                       Guid projectGuid,
 		                                       String assemblyOutputPath,
 		                                       String baseIntermediateOutputPath,
-                                               ICollection<IProjectReference> projectReferences)
+                                               ICollection<IProjectReference> projectReferences,
+                                               DirectoryInfo localRepository)
 		{
 			if(model == null || sourceFileDirectory == null)
 			{
@@ -168,7 +172,7 @@ namespace NMaven.Solution.Impl
             		}
             	}
             }
-            AddProjectDependencies(project, model, sourceFileDirectory);
+            AddProjectDependencies(project, model, sourceFileDirectory, localRepository);
             AddFoldersToProject(project, null, sourceFileDirectory, sourceFileDirectory);
             AddClassFilesToProject(project, null, sourceFileDirectory, sourceFileDirectory);
             AddProjectReferences(project, assemblyName, projectReferences);
@@ -233,19 +237,21 @@ namespace NMaven.Solution.Impl
             }				
 		}
 		
-		private void AddProjectDependencies(Project project, NMaven.Model.Model model, DirectoryInfo sourceFileDirectory) 
+		private void AddProjectDependencies(Project project, NMaven.Model.Model model, DirectoryInfo sourceFileDirectory,
+		    DirectoryInfo localRepository)
 		{
 			BuildItemGroup group = project.AddNewItemGroup();
 			group.AddNewItem("Reference", "System.Xml");
 			if(model.dependencies != null) 
 			{
-				foreach(Dependency dependency in model.dependencies) {
-					String artifactExtension = (dependency.type == "module") ? "dll" : GetExtension(dependency.type);
-					String repoPath = Environment.GetEnvironmentVariable("SystemDrive") 
-					    + Environment.GetEnvironmentVariable("HOMEPATH") 
-						+ @"\.m2\repository\" + dependency.groupId.Replace(".", "\\")
-						+ "\\" + dependency.artifactId + "\\" + dependency.version + "\\" + dependency.artifactId + "." 
-						+ artifactExtension;
+			    ArtifactContext artifactContext = new ArtifactContext();
+				foreach(Dependency dependency in model.dependencies)
+				{
+					//String artifactExtension = (dependency.type == "module") ? "dll" : GetExtension(dependency.type);
+					NMaven.Artifact.Artifact dependencyArtifact = artifactContext.CreateArtifact(dependency.groupId,
+					    dependency.artifactId, dependency.version, dependency.type);
+
+					String repoPath = PathUtil.GetUserAssemblyCacheFileFor(dependencyArtifact, localRepository).FullName;
 					BuildItem buildItem = group.AddNewItem("Reference", dependency.artifactId);
 					//TODO: Fix this. Just because it is in the GAC on the system that builds the .csproj does not mean 
 					//it is in the GAC on another system. 

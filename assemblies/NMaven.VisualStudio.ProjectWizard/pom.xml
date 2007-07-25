@@ -19,7 +19,7 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
     <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>NMaven.Assemblies</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -37,17 +37,23 @@ under the License.
       <groupId>EnvDTE</groupId>
       <artifactId>EnvDTE</artifactId>
       <type>gac</type>
+      <version>8.0.0.0</version>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
     <dependency>
       <groupId>EnvDTE80</groupId>
       <artifactId>EnvDTE80</artifactId>
       <type>gac</type>
+      <version>8.0.0.0</version>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
     <!--remmove-->
     <dependency>
       <groupId>Microsoft.VisualStudio.CommandBars</groupId>
       <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>
       <type>gac</type>
+      <version>8.0.0.0</version>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
   </dependencies>
   <build>
@@ -69,6 +75,6 @@ under the License.
           <isGacInstall>true</isGacInstall>
         </configuration>
       </plugin>
-    </plugins>    
+    </plugins>
   </build>
 </project>

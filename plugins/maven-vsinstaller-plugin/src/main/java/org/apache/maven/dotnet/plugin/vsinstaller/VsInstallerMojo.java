@@ -21,7 +21,6 @@ import org.apache.maven.dotnet.PlatformUnsupportedException;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.vendor.Vendor;
 import org.apache.maven.dotnet.model.netdependency.NetDependency;
-import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
 import org.apache.maven.settings.Profile;
 import org.apache.maven.settings.Repository;
@@ -45,14 +44,6 @@ import java.util.List;
 public class VsInstallerMojo
     extends AbstractMojo
 {
-
-    /**
-     * The maven project.
-     *
-     * @parameter expression="${project}"
-     * @required
-     */
-    private MavenProject project;
 
     /**
      * The the path to the local maven repository.
@@ -135,7 +126,7 @@ public class VsInstallerMojo
             remoteRepositories.add( new DefaultArtifactRepository( repository.getId(), repository.getUrl(),
                                                                    new DefaultRepositoryLayout() ) );
         }
-        artifactContext.init( project, remoteRepositories, new File( localRepository ) );
+        artifactContext.init( null, remoteRepositories, new File( localRepository ) );
 
         try
         {
@@ -200,8 +191,9 @@ public class VsInstallerMojo
                 outputFile.getParentFile().mkdir();
             }
             writer = new OutputStreamWriter( new FileOutputStream( outputFile ), "Unicode" );
+            String pab = new File(localRepository).getParent() + "\\pab";
             writer.write(
-                addin.replaceAll( "\\$\\{localRepository\\}", localRepository.replaceAll( "\\\\", "\\\\\\\\" ) ) );
+                addin.replaceAll( "\\$\\{localRepository\\}", pab.replaceAll( "\\\\", "\\\\\\\\" ) ) );
 
         }
         catch ( IOException e )

@@ -15,13 +15,13 @@
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="NMaven.Artifact, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\.m2\repository\NMaven\Artifact\NMaven.Artifact\0.14-SNAPSHOT\NMaven.Artifact.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\.m2\repository\NMaven\Artifact\NMaven.Artifact\0.14\NMaven.Artifact.dll</HintPath>
     </Reference>
     <Reference Include="NMaven.Logging">
-      <HintPath>C:\Documents and Settings\shane\.m2\repository\NMaven\Logging\NMaven.Logging\0.14-SNAPSHOT\NMaven.Logging.dll</HintPath>
+      <HintPath>C:\Documents and Settings\shane\.m2\repository\NMaven\Logging\NMaven.Logging\0.14\NMaven.Logging.dll</HintPath>
     </Reference>
     <Reference Include="NMaven.Service.Embedder">
-      <HintPath>C:\Documents and Settings\shane\.m2\repository\NMaven\Service\NMaven.Service.Embedder\0.14-SNAPSHOT\NMaven.Service.Embedder.dll</HintPath>
+      <HintPath>C:\Documents and Settings\shane\.m2\repository\NMaven\Service\NMaven.Service.Embedder\0.14\NMaven.Service.Embedder.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />

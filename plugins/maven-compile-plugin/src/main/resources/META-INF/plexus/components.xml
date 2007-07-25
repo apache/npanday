@@ -1,10 +1,6 @@
 <component-set>
   <components>
     <component>
-      <role>org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout</role>
-      <implementation>org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout</implementation>
-    </component>
-    <component>
       <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
       <role-hint>nar</role-hint>
       <implementation>
@@ -32,13 +28,7 @@
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
             org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
           </compile>
-          <process-classes>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:target-install
-          </process-classes>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
-          <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install
-          </install>
           <package>org.apache.maven.dotnet.plugins:maven-webapp-plugin:package</package>
           <deploy>
             org.apache.maven.dotnet.plugins:maven-webapp-plugin:deploy
@@ -71,9 +61,6 @@
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
             org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
           </compile>
-          <process-classes>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:target-install
-          </process-classes>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <package>org.apache.maven.dotnet.plugins:maven-link-plugin:package</package>
           <install>
@@ -113,13 +100,9 @@
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
             org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
           </compile>
-          <process-classes>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:target-install
-          </process-classes>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,
-            org.apache.maven.dotnet.plugins:maven-install-plugin:gac-install
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install
           </install>
           <deploy>
             org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
@@ -155,9 +138,6 @@
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
             org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
           </compile>
-          <process-classes>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:target-install
-          </process-classes>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
             org.apache.maven.dotnet.plugins:maven-install-plugin:install,
@@ -197,13 +177,9 @@
             org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
           </compile>
           <deploy>org.apache.maven.dotnet.plugins:maven-mojo-generator-plugin:generate-bindings</deploy>
-          <process-classes>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:target-install
-          </process-classes>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,
-            org.apache.maven.dotnet.plugins:maven-install-plugin:gac-install
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install
           </install>
           <deploy>
             org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
@@ -239,9 +215,6 @@
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
             org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
           </compile>
-          <process-classes>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:target-install
-          </process-classes>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
             org.apache.maven.dotnet.plugins:maven-install-plugin:install
@@ -280,9 +253,6 @@
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
             org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
           </compile>
-          <process-classes>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:target-install
-          </process-classes>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
             org.apache.maven.dotnet.plugins:maven-install-plugin:install

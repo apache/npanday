@@ -65,7 +65,7 @@ public final class DefaultCompiler
         commands.add( "/out:" + artifactFilePath );
         commands.add( "/target:" + targetArtifactType );
         commands.add( "/recurse:" + sourceDirectory + File.separator + "**" );
-        if ( !modules.isEmpty() )
+        if ( modules != null && !modules.isEmpty() )
         {
             StringBuffer sb = new StringBuffer();
             for ( Iterator i = modules.iterator(); i.hasNext(); )

@@ -22,7 +22,7 @@ under the License.
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>dotnet-project</artifactId>
   <packaging>pom</packaging>
-  <version>0.14-SNAPSHOT</version>
+  <version>0.14</version>
   <name>dotnet</name>
   <mailingLists>
     <mailingList>
@@ -226,7 +226,7 @@ under the License.
   </dependencies>
   <properties>
     <mavenVersion>2.1-SNAPSHOT</mavenVersion>
-    <jettyVersion>6.1.3</jettyVersion>
+    <jettyVersion>6.1.5</jettyVersion>
     <xfireVersion>1.2.5</xfireVersion>
   </properties>
   <dependencyManagement>

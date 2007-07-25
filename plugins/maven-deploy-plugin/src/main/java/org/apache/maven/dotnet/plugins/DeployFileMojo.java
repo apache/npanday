@@ -12,7 +12,6 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.project.artifact.ProjectArtifactMetadata;
-import org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout;
 
 import java.io.File;
 

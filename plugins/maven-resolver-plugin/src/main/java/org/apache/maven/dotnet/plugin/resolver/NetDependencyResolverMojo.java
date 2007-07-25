@@ -31,6 +31,8 @@ import org.apache.maven.dotnet.registry.RepositoryRegistry;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -42,6 +44,7 @@ import org.apache.maven.dotnet.model.netdependency.NetDependency;
 import org.apache.maven.dotnet.executable.NetExecutable;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author Shane Isbell
@@ -163,22 +166,54 @@ public class NetDependencyResolverMojo
         }
 
         artifactContext.init( project, project.getRemoteArtifactRepositories(), new File( localRepository ) );
-        try
+        if ( !new File( localRepository, "nmaven.artifacts.resolved" ).exists() ) //performance optimization
         {
-            artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( profile,
-                                                                                               new ArrayList<Dependency>() );
-        }
-        catch ( ArtifactResolutionException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
-        }
-        catch ( ArtifactInstallationException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
+            try
+            {
+                artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( profile,
+                                                                                                   dependencies );
+            }
+            catch ( ArtifactResolutionException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
+            }
+            catch ( ArtifactNotFoundException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
+            }
+            catch ( ArtifactInstallationException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
+            }
+
+            new File( localRepository, "nmaven.artifacts.resolved" ).mkdir();
+            /*
+            FileOutputStream fos = null;
+            try
+            {
+                new File( localRepository, "nmaven.artifacts.resolved" ).mkdir();
+                //fos = new FileOutputStream( new File( localRepository, "nmaven.artifacts.resolved" ) );
+                //fos.write( 0 );
+            }
+            catch ( IOException e )
+            {
+
+            }
+            finally
+            {
+                if ( fos != null )
+                {
+                    try
+                    {
+                        fos.close();
+                    }
+                    catch ( IOException e )
+                    {
+
+                    }
+                }
+            }
+            */
         }
 
         //Do GAC Install, if needed

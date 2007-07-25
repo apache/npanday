@@ -95,7 +95,7 @@ Adding Executables
                       -DartifactId=<<myArtifactId>>                         \
                       -DarchetypeArtifactId=maven-archetype-netexecutable   \
                       -DarchetypeGroupId=org.apache.maven.dotnet            \
-                      -DarchetypeVersion=0.14-SNAPSHOT
+                      -DarchetypeVersion=0.14
 +----+
 
  [[2]] Make sure to add an entry in the executable-plugins.xml file, located within the dotnet-core module. Replace each

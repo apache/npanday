@@ -113,7 +113,7 @@ public class EmbedderStarterMojo
      */
     private String frameworkVersion;
 
-    private String pomVersion = "0.14-SNAPSHOT";
+    private String pomVersion = "0.14";
 
     /**
      * File logger: needed for creating logs when the IDE starts because the console output and thrown exceptions are
@@ -132,7 +132,7 @@ public class EmbedderStarterMojo
         try
         {
             logger.addHandler(
-                new FileHandler( System.getProperty( "user.home" ) + "\\.m2\\nmaven-embedder-log.xml" ) );
+                new FileHandler( System.getProperty( "user.home" ) + "\\.m2\\embedder-logs\\nmaven-embedder-log.xml" ) );
         }
         catch ( IOException e )
         {
@@ -178,7 +178,7 @@ public class EmbedderStarterMojo
 
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();
         Artifact artifact = artifactFactory.createDependencyArtifact( "org.mortbay.jetty", "jetty-embedded",
-                                                                      VersionRange.createFromVersion( "6.1.3" ), "jar",
+                                                                      VersionRange.createFromVersion( "6.1.5" ), "jar",
                                                                       null, "runtime", null );
         logger.info( "NMAVEN-000-000: Dependency: Type  = " + artifact.getType() + ", Artifact ID = " +
             artifact.getArtifactId() );

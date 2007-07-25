@@ -14,7 +14,7 @@ public class SolutionMojo
         * @parameter expression = "${settings.localRepository}"
         */
         @FieldAnnotation()
-        public java.lang.String localRep;
+        public java.lang.String localRepo;
 
        /**
         * @parameter expression = "${basedir}"

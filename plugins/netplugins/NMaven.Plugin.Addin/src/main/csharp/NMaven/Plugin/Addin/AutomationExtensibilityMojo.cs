@@ -52,11 +52,11 @@ namespace NMaven.Plugin.Addin
 		}
 
 		public override void Execute()
-		{
-            ArtifactRepositoryLayout layout = new AssemblyRepositoryLayout();
+        {
             ArtifactContext artifactContext = new ArtifactContext();
-            NMaven.Artifact.Artifact artifact = artifactContext.GetArtifactFor(mavenProject);
-            FileInfo artifactFileInfo = new FileInfo(localRepository + @"\" + layout.pathOf(artifact));
+            FileInfo artifactFileInfo = PathUtil.GetPrivateApplicationBaseFileFor(artifactContext.GetArtifactFor(mavenProject), 
+                new FileInfo(localRepository).Directory); 
+            
             Console.WriteLine("Artifact Path = " + artifactFileInfo.FullName);
 
             object[] extensibilityItems = new object[2];

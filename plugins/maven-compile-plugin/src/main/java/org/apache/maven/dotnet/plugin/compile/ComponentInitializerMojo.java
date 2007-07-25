@@ -23,13 +23,11 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 
 import org.apache.maven.dotnet.InitializationException;
 import org.apache.maven.dotnet.assembler.AssemblerContext;
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
-import org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout;
+
 
 import java.io.File;
 
@@ -56,7 +54,7 @@ public class ComponentInitializerMojo
      * @parameter expression="${settings.localRepository}"
      * @readonly
      */
-    private String localRepository;
+    private File localRepository;
 
     /**
      * @parameter expression="${project.file}"
@@ -83,6 +81,11 @@ public class ComponentInitializerMojo
     /**
      * @component
      */
+    private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
+
+    /**
+     * @component
+     */
     private AssemblerContext assemblerContext;
 
     public void execute()
@@ -92,15 +95,29 @@ public class ComponentInitializerMojo
 
         if ( localRepository == null )
         {
-            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" ).getAbsolutePath();
+            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
         }
+/*
+        for(String id : daoRegistry.getDaoIds())
+        {
+            System.out.println("ID = " + id);
+        }
+ */
+        /*
+        ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project");
+        Project p = dao.getProjectFor( "NMaven.Model", "NMaven.Pom.Model", "1.1");
+        Set<ProjectDependency> ps = p.getProjectDependencies();
+        System.out.println("Size PS = " + ps.size());
+        for(ProjectDependency p1 : ps)
+        {
+            System.out.println(p1.getArtifactId());
+        }
+*/
 
-        ArtifactRepository localArtifactRepository =
-            new DefaultArtifactRepository( "local", "file://" + localRepository, new AssemblyRepositoryLayout() );
         try
         {
-            assemblyResolver.resolveTransitivelyFor( project, project.getArtifact(), project.getDependencies(),
-                                                     project.getRemoteArtifactRepositories(), localArtifactRepository,
+            assemblyResolver.resolveTransitivelyFor( project, project.getDependencies(),
+                                                     project.getRemoteArtifactRepositories(), localRepository,
                                                      true );
         }
         catch ( ArtifactResolutionException e )

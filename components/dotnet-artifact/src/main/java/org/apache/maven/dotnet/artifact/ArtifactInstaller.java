@@ -52,12 +52,12 @@ public interface ArtifactInstaller
      * <code>MavenProject.getArtifact</code>. In those cases where the MavenProject object is unavailable, then
      * you can use the <code>installFile</code> method from this interface.
      *
-     * @param artifact the artifact to install
-     * @param pomFile  the pom file of the installed artifact
+     * @param artifact              the artifact to install
+     * @param pomFile               the pom file of the installed artifact
      * @param modifyProjectMetadata
      * @throws ArtifactInstallationException if there is a problem installing the artifact
      */
-    void installArtifact( Artifact artifact, File pomFile, boolean modifyProjectMetadata )
+    void installArtifactWithPom( Artifact artifact, File pomFile, boolean modifyProjectMetadata )
         throws ArtifactInstallationException;
 
     /**
@@ -71,72 +71,24 @@ public interface ArtifactInstaller
      * @param artifactFile the artifact to install
      * @throws ArtifactInstallationException if there is a problem installing the artifact
      */
-    void installFileWithGeneratedPom( String groupId, String artifactId, String version, String packaging,
-                                      File artifactFile )
+    void installFileWithoutPom( String groupId, String artifactId, String version, String packaging, File artifactFile )
         throws ArtifactInstallationException;
-
-    /**
-     * Installs a file into the local maven repository, without generating a pom.xml. This is used for placing
-     * files and resources into the local repository, where there are no explicit dependencies (as given in the pom file).
-     *
-     * @param groupId     the group id of the file to install
-     * @param artifactId  the artifact id of the file to install
-     * @param version     the version of the file to install
-     * @param installFile the file to install
-     * @throws ArtifactInstallationException if there is a problem installing the artifact
-     */
-    void installFileWithNoPom( String groupId, String artifactId, String version, File installFile )
-        throws ArtifactInstallationException;
-
-    /**
-     * Installs the dependent libraries (or assemblies) of the specified artifact.
-     *
-     * @param artifact     the artifact associated with the specified dependencies
-     * @param dependencies a list of dependencies of the specified artifact
-     * @throws ArtifactInstallationException if there is a problem installing the artifact
-     */
-    void installLibraryDependencies( Artifact artifact, List<Dependency> dependencies )
-        throws ArtifactInstallationException;
-
-    /**
-     * Resolves the specified artifact (and its dependencies) and installs the artifact's dependencies into the
-     * artifact's directory within the local repository. This method should be used for exe, winexe and
-     * netplugins.
-     *
-     * @param dependency the dependency to resolve
-     * @throws ArtifactInstallationException
-     * @throws ArtifactNotFoundException
-     */
-    void resolveAndInstallLibraryDependenciesFor( Dependency dependency )
-        throws ArtifactInstallationException , ArtifactNotFoundException;
 
     void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> dependencies )
-        throws ArtifactResolutionException, ArtifactNotFoundException, ArtifactInstallationException;    
+        throws ArtifactResolutionException, ArtifactNotFoundException, ArtifactInstallationException;
 
-    /**
-     * Copies .netmodules, that the project is dependenct upon, from the local repo to the project's target directory.
-     * This method handles placing all the .netmodules in the same directory as the compiled project artifact for use
-     * in unit testing and/or packaging.
-     *
-     * @param projectArtifact the artifact that has .netmodule dependencies
-     * @throws ArtifactInstallationException if there is a problem installing the net module artifact(s)
-     */
-    void installNetModulesToTargetDirectory( Artifact projectArtifact )
+    void installArtifactAndDependenciesIntoPrivateApplicationBase( File applicationBase, Artifact artifact,
+                                                                   List<Dependency> dependencies )
         throws ArtifactInstallationException;
 
     /**
      * Initializes the installer.
      *
-     * @param artifactContext the artifact context associated with this installer
-
-
-     @param mavenProject    the maven project associated with the invoking plugin
-
-
-      * @param remoteArtifactRepositories
-     * @param localRepository the location of the local maven repository
+     * @param artifactContext            the artifact context associated with this installer
+     * @param remoteArtifactRepositories
+     * @param localRepository            the location of the local maven repository
      */
-    void init( ArtifactContext artifactContext, MavenProject mavenProject,
-               List<ArtifactRepository> remoteArtifactRepositories, File localRepository );
+    void init( ArtifactContext artifactContext, List<ArtifactRepository> remoteArtifactRepositories,
+               File localRepository );
 
 }

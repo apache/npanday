@@ -25,7 +25,7 @@
   &lt;groupId&gt;NMaven.Artifact&lt;/groupId&gt;
   &lt;artifactId&gt;<font size = "+1"><b>NMaven.Artifact</b></font>&lt;artifactId&gt;
   &lt;packaging&gt;library&lt;/packaging&gt;
-  &lt;version&gt;0.14-SNAPSHOT&lt;/version&gt;
+  &lt;version&gt;0.14&lt;/version&gt;
   &lt;name&gt;NMaven.Artifact&lt;/name&gt;
 &lt;/project&gt;
 </pre>
@@ -40,7 +40,7 @@
   &lt;groupId&gt;<font size = "+1"><b>NMaven.Artifact</b></font>&lt;/groupId&gt;
   &lt;artifactId&gt;<font size = "+1"><b>NMaven.Artifact</b></font>&lt;artifactId&gt;
   &lt;packaging&gt;library&lt;/packaging&gt;
-  &lt;version&gt;0.14-SNAPSHOT&lt;/version&gt;
+  &lt;version&gt;0.14&lt;/version&gt;
   &lt;name&gt;NMaven.Artifact&lt;/name&gt;
 &lt;/project&gt;
 </pre>
@@ -75,7 +75,7 @@
   &lt;groupId&gt;NMaven.Artifact&lt;/groupId&gt;
   &lt;artifactId&gt;<font size = "+1"><b>NMaven.Artifact</b></font>&lt;artifactId&gt;
   &lt;packaging&gt;library&lt;/packaging&gt;
-  &lt;version&gt;0.14-SNAPSHOT&lt;/version&gt;
+  &lt;version&gt;0.14&lt;/version&gt;
   &lt;name&gt;NMaven.Artifact&lt;/name&gt;
 &lt;/project&gt;
 </pre>
@@ -89,7 +89,7 @@
   &lt;groupId&gt;NMaven.Plugins&lt;/groupId&gt;
   &lt;artifactId&gt;NMaven.Plugins&lt;/artifactId&gt;
   &lt;packaging&gt;pom&lt;/packaging&gt;
-  &lt;version&gt;0.14-SNAPSHOT&lt;/version&gt;
+  &lt;version&gt;0.14&lt;/version&gt;
   &lt;name&gt;NMaven.Plugins&lt;/name&gt;
   &lt;build&gt;
     &lt;sourceDirectory&gt;src/main/csharp&lt;/sourceDirectory&gt;

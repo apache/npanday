@@ -21,7 +21,7 @@ under the License.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
     <groupId>NMaven.Project</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>NMaven.Project</artifactId>
     <relativePath>../../pom-dotnet.xml</relativePath>
   </parent>
@@ -29,6 +29,7 @@ under the License.
   <groupId>NMaven.Plugins</groupId>
   <artifactId>NMaven.Plugins</artifactId>
   <packaging>pom</packaging>
+  <version>0.14</version>
   <name>NMaven.Plugins</name>
   <modules>
     <module>NMaven.Plugin.Addin</module>

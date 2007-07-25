@@ -2,7 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
     <groupId>org.apache.maven.dotnet.plugins</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>maven-dotnet-plugins</artifactId>
     <relativePath>../../../pom.xml</relativePath>
   </parent>

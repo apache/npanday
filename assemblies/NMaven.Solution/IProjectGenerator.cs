@@ -44,7 +44,8 @@ namespace NMaven.Solution
 		IProjectReference GenerateProjectFor(NMaven.Model.Model model, 
 		                            DirectoryInfo sourceFileDirectory,
 		                            string projectFileName,
-                                    ICollection<IProjectReference> projectReferences);
+                                    ICollection<IProjectReference> projectReferences,
+                                    DirectoryInfo localRepository);
 		
         /// <summary>
         /// Generates a solution file that references the specified projects.

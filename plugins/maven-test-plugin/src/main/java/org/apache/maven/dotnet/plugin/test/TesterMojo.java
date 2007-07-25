@@ -24,8 +24,6 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.util.ArrayList;
@@ -37,7 +35,6 @@ import java.io.File;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.vendor.Vendor;
 import org.apache.maven.dotnet.executable.CommandExecutor;
-import org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout;
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
 
 /**
@@ -105,7 +102,7 @@ public class TesterMojo
      * @parameter expression="${settings.localRepository}"
      * @readonly
      */
-    private String localRepository;
+    private File localRepository;
 
 
     private String getExecutableFor( Vendor vendor, String home )
@@ -118,9 +115,10 @@ public class TesterMojo
     {
         String finalName = project.getBuild().getFinalName();
         List<String> commands = new ArrayList<String>();
-        if(testAssemblyPath.startsWith( "/"))//nunit-console thinks *nix file format /home/user/ is an option due to / and fails.
+        if ( testAssemblyPath.startsWith(
+            "/" ) )//nunit-console thinks *nix file format /home/user/ is an option due to / and fails.
         {
-            testAssemblyPath = "/" + testAssemblyPath;            
+            testAssemblyPath = "/" + testAssemblyPath;
         }
 
         commands.add( testAssemblyPath + File.separator + project.getArtifactId() + "-test.dll" );
@@ -157,16 +155,13 @@ public class TesterMojo
 
         if ( localRepository == null )
         {
-            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" ).getAbsolutePath();
+            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
         }
 
-        ArtifactRepository localArtifactRepository =
-            new DefaultArtifactRepository( "local", "file://" + localRepository, new AssemblyRepositoryLayout() );
         try
         {
-            assemblyResolver.resolveTransitivelyFor( project, project.getArtifact(), project.getDependencies(),
-                                                     project.getRemoteArtifactRepositories(), localArtifactRepository,
-                                                     true );
+            assemblyResolver.resolveTransitivelyFor( project, project.getDependencies(),
+                                                     project.getRemoteArtifactRepositories(), localRepository, true );
         }
         catch ( ArtifactResolutionException e )
         {
@@ -182,7 +177,7 @@ public class TesterMojo
 
         for ( Artifact artifact : artifacts )
         {
-            if(artifact.getType().startsWith( "gac"))
+            if ( artifact.getType().startsWith( "gac" ) )
             {
                 continue;
             }

@@ -1,0 +1,16 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.apache.maven.dotnet.dao.ProjectDao</role>
+      <implementation>org.apache.maven.dotnet.dao.impl.ProjectDaoImpl</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.manager.WagonManager</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</component-set>

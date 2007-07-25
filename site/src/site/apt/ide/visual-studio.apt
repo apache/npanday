@@ -34,7 +34,7 @@ xmlns="http://schemas.microsoft.com/AutomationExtensibility">
   </HostApplication>
   <Addin>
     <Assembly>
-        C:\Documents and Settings\shane\.m2\repository\NMaven\VisualStudio\NMaven.VisualStudio.Addin\0.14-SNAPSHOT\NMaven.VisualStudio.Addin.dll
+        C:\Documents and Settings\shane\.m2\repository\NMaven\VisualStudio\NMaven.VisualStudio.Addin\0.14\NMaven.VisualStudio.Addin.dll
     </Assembly>
     <FullClassName>NMaven.VisualStudio.Addin.Connect</FullClassName>
     <FriendlyName>NMaven.VisualStudio.Addin</FriendlyName>
@@ -55,7 +55,7 @@ xmlns="http://schemas.microsoft.com/AutomationExtensibility">
                       -DartifactId=<<myArtifactId>>                         \
                       -DarchetypeArtifactId=maven-archetype-dotnet-simple   \
                       -DarchetypeGroupId=org.apache.maven.dotnet            \
-                      -DarchetypeVersion=0.14-SNAPSHOT
+                      -DarchetypeVersion=0.14
 +----+
 
   You will see the following project generated:

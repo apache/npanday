@@ -20,7 +20,7 @@ under the License.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>org.apache.maven.dotnet.plugins</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>maven-dotnet-plugins</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -31,6 +31,12 @@ under the License.
   <description>
     Maven Plugin for .NET: Installs compiled artifacts into the local repository.
   </description>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact</artifactId>
+    </dependency>
+  </dependencies>
   <distributionManagement>
     <site>
       <id>nmaven-apache-site</id>

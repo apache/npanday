@@ -55,25 +55,6 @@ public class NetAchiverMojo
     /**
      * Used to look up Artifacts in the remote repository.
      *
-     * @parameter expression="${component.org.apache.maven.artifact.resolver.ArtifactResolver}"
-     * @required
-     * @readonly
-     */
-    protected org.apache.maven.artifact.resolver.ArtifactResolver resolver;
-
-    /**
-     * Used to look up Artifacts in the remote repository.
-     *
-     * @parameter expression="${component.org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout}"
-     * @role-hint default
-     * @required
-     * @readonly
-     */
-    protected org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout layout;
-
-    /**
-     * Used to look up Artifacts in the remote repository.
-     *
      * @parameter expression="${component.org.apache.maven.artifact.metadata.ArtifactMetadataSource}"
      * @required
      * @readonly

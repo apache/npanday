@@ -19,71 +19,80 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
     <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>NMaven.Assemblies</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven.VisualStudio</groupId>
   <artifactId>NMaven.VisualStudio.Addin</artifactId>
+  <version>0.14</version>
   <packaging>visual-studio-addin</packaging>
   <name>NMaven.VisualStudio.Addin</name>
   <dependencies>
     <dependency>
       <groupId>NMaven.IDE</groupId>
       <artifactId>NMaven.IDE</artifactId>
-      <version>${pom.version}</version>
+      <version>0.14</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>NMaven.Plugin</groupId>
       <artifactId>NMaven.Plugin</artifactId>
-      <version>${pom.version}</version>
+      <version>0.14</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>NMaven.Logging</groupId>
       <artifactId>NMaven.Logging</artifactId>
-      <version>${pom.version}</version>
+      <version>0.14</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>NMaven.VisualStudio</groupId>
       <artifactId>NMaven.VisualStudio</artifactId>
-      <version>${pom.version}</version>
+      <version>0.14</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>NMaven.Service</groupId>
       <artifactId>NMaven.Service.Embedder</artifactId>
-      <version>${pom.version}</version>
+      <version>0.14</version>
       <type>library</type>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>NMaven.Artifact</groupId>
       <artifactId>NMaven.Artifact</artifactId>
-      <version>${pom.version}</version>
+      <version>0.14</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>Microsoft.VisualStudio.CommandBars</groupId>
       <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>
       <type>gac</type>
+      <version>8.0.0.0</version>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
     <dependency>
       <groupId>EnvDTE</groupId>
       <artifactId>EnvDTE</artifactId>
       <type>gac</type>
+      <version>8.0.0.0</version>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
     <dependency>
       <groupId>EnvDTE80</groupId>
       <artifactId>EnvDTE80</artifactId>
       <type>gac</type>
+      <version>8.0.0.0</version>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
     <dependency>
       <groupId>Extensibility</groupId>
       <artifactId>Extensibility</artifactId>
       <type>gac</type>
+      <version>7.0.3300.0</version>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
     <dependency>
       <groupId>Castle</groupId>

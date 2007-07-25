@@ -22,6 +22,7 @@ import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.registry.RepositoryLoader;
 import org.apache.maven.dotnet.registry.RegistryLoader;
 import org.apache.maven.dotnet.registry.Repository;
+import org.apache.maven.dotnet.registry.DataAccessObjectRegistry;
 
 import java.util.Hashtable;
 import java.util.Properties;
@@ -47,8 +48,9 @@ public class RepositoryRegistryImpl
 
     private RegistryLoader registryLoader;
 
+
     /**
-     * @see org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable#initialize() 
+     * @see org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable#initialize()
      */
     public void initialize()
         throws InitializationException

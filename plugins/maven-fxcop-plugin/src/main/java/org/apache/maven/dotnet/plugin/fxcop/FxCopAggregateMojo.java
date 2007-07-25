@@ -4,12 +4,9 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
-import org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout;
 import org.apache.maven.dotnet.artifact.ArtifactType;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.Artifact;
@@ -26,7 +23,6 @@ import java.io.FileReader;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * @author Shane Isbell
@@ -77,7 +73,7 @@ public class FxCopAggregateMojo
      * @parameter expression="${settings.localRepository}"
      * @readonly
      */
-    private String localRepository;
+    private File localRepository;
 
     /**
      * @parameter expression = "${project.build.directory}"
@@ -107,14 +103,10 @@ public class FxCopAggregateMojo
             throw new MojoExecutionException("NMAVEN-000-000:");
         }
 
-
-        ArtifactRepository localArtifactRepository =
-            new DefaultArtifactRepository( "local", "file://" + localRepository, new AssemblyRepositoryLayout() );
-
         try
         {
-            assemblyResolver.resolveTransitivelyFor( project, project.getArtifact(), aggregateDependencies,
-                                                     project.getRemoteArtifactRepositories(), localArtifactRepository,
+            assemblyResolver.resolveTransitivelyFor( project, aggregateDependencies,
+                                                     project.getRemoteArtifactRepositories(), localRepository,
                                                      true );
         }
         catch ( ArtifactResolutionException e )

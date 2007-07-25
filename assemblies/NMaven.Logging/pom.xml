@@ -19,12 +19,13 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
     <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>NMaven.Assemblies</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven.Logging</groupId>
   <artifactId>NMaven.Logging</artifactId>
+  <version>0.14</version>
   <packaging>library</packaging>
-  <name>NMaven.Library</name>  
+  <name>NMaven.Library</name>
 </project>

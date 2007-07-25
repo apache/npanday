@@ -111,6 +111,7 @@ public class ResourceGeneratorMojo
             localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
         }
 
+        artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
         /*
         * We should do this check at a lower level (to keep consistent behavior with the nmaven-settings.xml)
         * but we do not currently support the execution of specific plugins based on vendor info.

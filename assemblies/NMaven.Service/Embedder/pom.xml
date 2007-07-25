@@ -19,13 +19,14 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
     <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>NMaven.Assemblies</artifactId>
-    <relativePath>..\..\pom.xml</relativePath>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven.Service</groupId>
   <artifactId>NMaven.Service.Embedder</artifactId>
+  <version>0.14</version>
   <packaging>library</packaging>
   <name>NMaven.Service.Embedder</name>
   <build>
@@ -37,24 +38,24 @@ under the License.
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
       </plugin>
-<!--
-      <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
-        <artifactId>maven-wsdl-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>wsdl</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <paths>
-            <path>src/main/resources/MavenEmbedder.wsdl</path>
-          </paths>
-        </configuration>
-      </plugin>
- -->
+      <!--
+           <plugin>
+             <groupId>org.apache.maven.dotnet.plugins</groupId>
+             <artifactId>maven-wsdl-plugin</artifactId>
+             <executions>
+               <execution>
+                 <goals>
+                   <goal>wsdl</goal>
+                 </goals>
+               </execution>
+             </executions>
+             <configuration>
+               <paths>
+                 <path>src/main/resources/MavenEmbedder.wsdl</path>
+               </paths>
+             </configuration>
+           </plugin>
+      -->
     </plugins>
   </build>
 </project>

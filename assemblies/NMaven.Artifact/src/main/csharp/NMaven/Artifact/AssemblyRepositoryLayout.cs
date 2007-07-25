@@ -5,7 +5,7 @@ namespace NMaven.Artifact
 {
     public sealed class AssemblyRepositoryLayout : ArtifactRepositoryLayout 
     {
-        public string pathOf(Artifact artifact)
+        public String pathOf(Artifact artifact)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(artifact.GroupId.Replace('.', '\\')).Append(@"\");

@@ -19,25 +19,28 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
     <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>NMaven.Assemblies</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven.VisualStudio</groupId>
   <artifactId>NMaven.VisualStudio</artifactId>
+  <version>0.14</version>
   <packaging>library</packaging>
   <name>NMaven.VisualStudio</name>
   <dependencies>
     <dependency>
       <groupId>NMaven.Logging</groupId>
       <artifactId>NMaven.Logging</artifactId>
-      <version>${pom.version}</version>
+      <version>0.14</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>EnvDTE</groupId>
       <artifactId>EnvDTE</artifactId>
       <type>gac</type>
+      <version>8.0.0.0</version>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
   </dependencies>
 </project>

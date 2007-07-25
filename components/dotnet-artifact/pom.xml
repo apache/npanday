@@ -20,7 +20,7 @@ under the License.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>org.apache.maven.dotnet</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>dotnet-components</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -40,6 +40,11 @@ under the License.
     </dependency>
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
+      <artifactId>dotnet-dao-project</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-model-netdependency</artifactId>
       <version>${pom.version}</version>
     </dependency>
@@ -49,4 +54,12 @@ under the License.
       <version>${pom.version}</version>
     </dependency>
   </dependencies>
+  <build>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources/uac</directory>
+        <targetPath>../test-repo/uac</targetPath>
+      </testResource>
+    </testResources>
+  </build>
 </project>

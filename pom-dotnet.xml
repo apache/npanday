@@ -22,7 +22,7 @@ under the License.
   <groupId>NMaven.Project</groupId>
   <artifactId>NMaven.Project</artifactId>
   <packaging>pom</packaging>
-  <version>0.14-SNAPSHOT</version>
+  <version>0.14</version>
   <name>NMaven.Project</name>
   <url>http://incubator.apache.org/nmaven</url>
   <description>
@@ -163,37 +163,43 @@ under the License.
         <groupId>Microsoft.Build.Engine</groupId>
         <artifactId>Microsoft.Build.Engine</artifactId>
         <type>gac_msil</type>
-        <version>2.0.0.0__b03f5f7f11d50a3a</version>
+        <version>2.0.0.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
       </dependency>
       <dependency>
         <groupId>EnvDTE</groupId>
         <artifactId>EnvDTE</artifactId>
         <type>gac</type>
-        <version>8.0.0.0__b03f5f7f11d50a3a</version>
+        <version>8.0.0.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
       </dependency>
       <dependency>
         <groupId>EnvDTE80</groupId>
         <artifactId>EnvDTE80</artifactId>
         <type>gac</type>
-        <version>8.0.0.0__b03f5f7f11d50a3a</version>
+        <version>8.0.0.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
       </dependency>
       <dependency>
         <groupId>Microsoft.VisualStudio.CommandBars</groupId>
         <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>
-        <version>8.0.0.0__b03f5f7f11d50a3a</version>
+        <version>8.0.0.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
         <type>gac</type>
       </dependency>
       <dependency>
         <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>
         <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>
-        <version>8.0.0.0__b03f5f7f11d50a3a</version>
+        <version>8.0.0.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
         <type>gac_msil</type>
       </dependency>
       <dependency>
         <groupId>Extensibility</groupId>
         <artifactId>Extensibility</artifactId>
         <type>gac</type>
-        <version>7.0.3300.0__b03f5f7f11d50a3a</version>
+        <version>7.0.3300.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
       </dependency>
       <dependency>
         <groupId>NUnit</groupId>

@@ -123,7 +123,7 @@ namespace NMaven.VisualStudio.Addin
                 IWindsorContainer container = new WindsorContainer(new XmlInterpreter(@"C:\Documents and Settings\shane\nmaven-apache\trunk-fix\assemblies\NMaven.VisualStudio.Addin\src\main\resources\components.xml"));
                 ArtifactContext artifactContext = (ArtifactContext) container[typeof(ArtifactContext)];
 
-                NMaven.Artifact.Artifact artifactWar = artifactContext.CreateArtifact("org.apache.maven.dotnet", "dotnet-service-embedder", "0.14-SNAPSHOT", "war");
+                NMaven.Artifact.Artifact artifactWar = artifactContext.CreateArtifact("org.apache.maven.dotnet", "dotnet-service-embedder", "0.14", "war");
                 FileInfo warFileInfo = new FileInfo(localRepository + "/" + new JavaRepositoryLayout().pathOf(artifactWar) + "war");
                 logger.Log(Level.INFO, "Executing external command plugin: "
                     + @"mvn org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile="""

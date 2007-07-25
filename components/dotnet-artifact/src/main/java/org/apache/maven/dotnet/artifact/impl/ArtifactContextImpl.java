@@ -29,14 +29,9 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
-import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-import org.apache.maven.artifact.resolver.*;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.model.Dependency;
 
 /**
  * Provides an implemenation of the <code>ArtifactContext</code> interface.
@@ -46,11 +41,6 @@ import org.apache.maven.model.Dependency;
 public final class ArtifactContextImpl
     implements ArtifactContext, LogEnabled
 {
-
-    /**
-     * A layout component used in the creation of a .NET artifact repository.
-     */
-    private ArtifactRepositoryLayout layout;
 
     /**
      * Metadata component used by the <code>ArtifactResolver</code>.
@@ -71,12 +61,6 @@ public final class ArtifactContextImpl
      * A registry component of repository (config) files
      */
     private RepositoryRegistry repositoryRegistry;
-
-    /**
-     * An artifact resolver component for locating artifacts and pulling them into the local repo if they do not
-     * already exist.
-     */
-    private ArtifactResolver artifactResolver;
 
     /**
      * The maven project
@@ -117,7 +101,8 @@ public final class ArtifactContextImpl
      */
     public File getLocalRepository()
     {
-        return new File( localRepository );
+        return ( localRepository != null ) ? new File( localRepository )
+            : new File( System.getProperty( "user.home" ), "/.m2/repository" );
     }
 
     /**
@@ -136,10 +121,9 @@ public final class ArtifactContextImpl
         }
         repository.init( artifactFactory );
         List<Artifact> artifacts = repository.getArtifactsFor( groupId, artifactId, version, type );
-        AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
         for ( Artifact artifact : artifacts )
         {
-            artifact.setFile( new File( localRepository + File.separator + layout.pathOf( artifact ) ) );
+            artifact.setFile( PathUtil.getUserAssemblyCacheFileFor( artifact, getLocalRepository() ) );
         }
         return artifacts;
     }
@@ -173,85 +157,9 @@ public final class ArtifactContextImpl
     }
 
     /**
-     * @see ArtifactContext#getDirectDependenciesFor(org.apache.maven.artifact.Artifact,
-     *      java.util.List<org.apache.maven.dotnet.artifact.ArtifactMatchPolicy>)
-     */
-    public List<Artifact> getDirectDependenciesFor( Artifact artifact, List<ArtifactMatchPolicy> matchPolicies )
-        throws ArtifactException
-    {
-        if ( artifact == null )
-        {
-            throw new ArtifactException( "NMAVEN-000-001: Cannot get dependenct artifacts of a null artifact" );
-        }
-
-        if ( matchPolicies == null )
-        {
-            matchPolicies = new ArrayList<ArtifactMatchPolicy>();
-        }
-
-        List<Artifact> dependencies = new ArrayList<Artifact>();
-        ArtifactResolutionResult result;
-        ArtifactRepository ar = new DefaultArtifactRepository( "local", "file://" + localRepository, layout );
-
-        Set depSet = new HashSet();
-        List<Dependency> dep = project.getDependencies();
-
-        for ( Dependency dependency : dep )
-        {
-            String scope = ( dependency.getScope() == null ) ? Artifact.SCOPE_COMPILE : dependency.getScope();
-            Artifact art = artifactFactory.createDependencyArtifact( dependency.getGroupId(),
-                                                                     dependency.getArtifactId(),
-                                                                     VersionRange.createFromVersion(
-                                                                         dependency.getVersion() ),
-                                                                     dependency.getType(), dependency.getClassifier(),
-                                                                     scope, null );
-            if ( !art.getType().startsWith( "gac" ) )
-            {
-                depSet.add( art );
-            }
-        }
-
-        try
-        {
-            result = artifactResolver.resolveTransitively( depSet, project.getArtifact(),
-                                                           project.getRemoteArtifactRepositories(), ar, metadata );
-        }
-        catch ( ArtifactResolutionException e )
-        {
-            throw new ArtifactException( "NMAVEN-000-002: Failed to Resolve Artifact: File = " + artifact.getFile() +
-                ", Local Repository = " + localRepository, e );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            throw new ArtifactException( "NMAVEN-000-003: Artifact Not Found: File = " + artifact.getFile() +
-                ", Local Repository = " + localRepository, e );
-        }
-        Set<ResolutionNode> nodes = result.getArtifactResolutionNodes();
-        if ( nodes.size() == 0 )
-        {
-            logger.debug(
-                "NMAVEN-000-004: Project has no direct or transitive dependencies. " + project.getArtifacts().size() );
-        }
-
-        for ( ResolutionNode node : nodes )
-        {
-            Artifact nodeArtifact = node.getArtifact();
-            boolean isMatched = matchArtifacts( nodeArtifact, matchPolicies );
-            logger.debug( "NMAVEN-000-005: Artifact = " + nodeArtifact.getFile().getAbsolutePath() + ", Depth = " +
-                node.getDepth() + ", Matches Policies = " + isMatched );
-            if ( isMatched && node.getDepth() == 1 )
-            {
-                dependencies.add( nodeArtifact );
-            }
-        }
-
-        logger.debug( "NMAVEN-000-006: Resolved Artifact Dependencies: Count = " + dependencies.size() );
-        return dependencies;
-    }
-
-    /**
      * @see ArtifactContext#getNetModulesFor(org.apache.maven.artifact.Artifact)
      */
+    //TODO: support temporarily removed
     public List<Artifact> getNetModulesFor( Artifact artifact )
         throws ArtifactException
     {
@@ -261,7 +169,8 @@ public final class ArtifactContextImpl
         }
         List<ArtifactMatchPolicy> matchPolicies = new ArrayList<ArtifactMatchPolicy>();
         matchPolicies.add( new NetModuleMatchPolicy() );
-        return getDirectDependenciesFor( artifact, matchPolicies );
+        return null;
+        //return getDirectDependenciesFor( artifact, matchPolicies );
     }
 
     public List<Artifact> getAllNetArtifactsFromRepository( File repository )
@@ -277,7 +186,7 @@ public final class ArtifactContextImpl
     {
         this.project = mavenProject;
         this.localRepository = localRepository.getAbsolutePath();
-        artifactInstaller.init( this, mavenProject, remoteArtifactRepositories, localRepository );
+        artifactInstaller.init( this, remoteArtifactRepositories, localRepository );
         Map<String, ArtifactHandler> map = new HashMap<String, ArtifactHandler>();
         for ( ArtifactHandler artifactHandler : artifactHandlers )
         {

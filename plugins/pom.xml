@@ -21,13 +21,13 @@ under the License.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>org.apache.maven.dotnet</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>dotnet-project</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.dotnet.plugins</groupId>
   <artifactId>maven-dotnet-plugins</artifactId>
-  <version>0.14-SNAPSHOT</version>
+  <version>0.14</version>
   <packaging>pom</packaging>
   <name>maven-dotnet-plugins</name>
   <modules>
@@ -43,7 +43,6 @@ under the License.
     <module>maven-link-plugin</module>
     <module>maven-mojo-generator-plugin</module>
     <module>maven-resgen-plugin</module>
-    <module>maven-repository-plugin</module>
     <module>maven-resolver-plugin</module>
     <module>maven-test-plugin</module>
     <module>maven-vsinstaller-plugin</module>
@@ -56,6 +55,11 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-assembler</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.dotnet</groupId>
+      <artifactId>dotnet-dao-project</artifactId>
       <version>${pom.version}</version>
     </dependency>
     <dependency>
@@ -77,7 +81,7 @@ under the License.
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-jetty</artifactId>
       <version>${pom.version}</version>
-    </dependency>
+    </dependency>  
   </dependencies>
   <build>
     <pluginManagement>

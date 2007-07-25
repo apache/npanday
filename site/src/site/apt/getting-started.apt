@@ -269,7 +269,7 @@ mvn install -DinstallGacDependencies=true
                       -DartifactId=<<myArtifactId>>                         \
                       -DarchetypeArtifactId=maven-archetype-dotnet-simple \
                       -DarchetypeGroupId=org.apache.maven.dotnet          \
-                      -DarchetypeVersion=0.14-SNAPSHOT
+                      -DarchetypeVersion=0.14
 +----+
 
  You will see the following project generated:

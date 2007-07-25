@@ -24,7 +24,6 @@ import org.apache.maven.artifact.Artifact;
  * Provides a way for a developer to implement custom match policies for an artifact.
  *
  * @author Shane Isbell
- * @see ArtifactContext#getDirectDependenciesFor
  */
 public interface ArtifactMatchPolicy
 {

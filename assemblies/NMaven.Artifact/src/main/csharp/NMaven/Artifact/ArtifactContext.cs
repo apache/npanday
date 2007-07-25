@@ -10,7 +10,6 @@ namespace NMaven.Artifact
     public sealed class ArtifactContext : IArtifactContext
     {
 
-        //public void Init(File
         public ArtifactRepository GetArtifactRepository()
         {
             ArtifactRepository artifactRepository = new ArtifactRepository();
@@ -38,7 +37,7 @@ namespace NMaven.Artifact
             return artifact;
         }
 
-        private string GetExtensionFor(string packaging)
+        public String GetExtensionFor(String packaging)
         {
             if (packaging.Equals("library") || packaging.Equals("netplugin")
                 || packaging.Equals("visual-studio-addin") || packaging.Equals("sharp-develop-addin"))

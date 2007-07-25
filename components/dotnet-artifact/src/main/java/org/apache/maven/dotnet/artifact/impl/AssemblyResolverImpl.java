@@ -19,34 +19,25 @@
 package org.apache.maven.dotnet.artifact.impl;
 
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
-import org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout;
+import org.apache.maven.dotnet.dao.ProjectDao;
+import org.apache.maven.dotnet.repository.Project;
+import org.apache.maven.dotnet.repository.ProjectDependency;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
-import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
-import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Dependency;
 
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.FileUtils;
 
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
-
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Provides a way to resolve transitive assemblies that do not have versions within their file name.
@@ -56,17 +47,6 @@ import java.io.IOException;
 public class AssemblyResolverImpl
     implements AssemblyResolver, LogEnabled
 {
-    /**
-     * An artifact resolver component for locating artifacts and pulling them into the local repo if they do not
-     * already exist.
-     */
-    private ArtifactResolver resolver;
-
-    /**
-     * Metadata component used by the <code>ArtifactResolver</code>.
-     */
-    private ArtifactMetadataSource metadata;
-
     /**
      * The artifact factory component, which is used for creating artifacts.
      */
@@ -81,6 +61,10 @@ public class AssemblyResolverImpl
      * A logger for writing log messages
      */
     private Logger logger;
+
+    private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
+
+    private org.apache.maven.artifact.manager.WagonManager wagonManager;
 
     /**
      * Constructor. This method is intended to by invoked by the plexus-container, not by the application developer.
@@ -97,124 +81,154 @@ public class AssemblyResolverImpl
         this.logger = logger;
     }
 
+    private Set<ProjectDependency> subtractProjectDependencies( List<Dependency> b, Set<ProjectDependency> a )
+    {
+        Set<Dependency> d = new HashSet<Dependency>( b );
+
+        for ( Dependency dependency : b )
+        {
+            if ( containsDependency( a, dependency ) )
+            {
+                d.remove( dependency );
+            }
+        }
+        Set<ProjectDependency> projectDependencies = new HashSet<ProjectDependency>();
+        for ( Dependency dependency : d )
+        {
+            ProjectDependency projectDependency = new ProjectDependency();
+            projectDependency.setGroupId( dependency.getGroupId() );
+            projectDependency.setArtifactId( dependency.getArtifactId() );
+            projectDependency.setVersion( dependency.getVersion() );
+            projectDependencies.add( projectDependency );
+        }
+        return projectDependencies;
+    }
+
+    private Set<ProjectDependency> substractDependencies( Set<ProjectDependency> a, List<Dependency> b )
+    {
+        Set<ProjectDependency> pd = new HashSet<ProjectDependency>( a );
+        for ( ProjectDependency projectDependency : a )
+        {
+            if ( containsProjectDependency( b, projectDependency ) )
+            {
+                pd.remove( projectDependency );
+            }
+        }
+        return pd;
+    }
+
+    private boolean containsProjectDependency( List<Dependency> dependencies, ProjectDependency projectDependency )
+    {
+        for ( Dependency dependency : dependencies )
+        {
+            if ( isEqual( projectDependency, dependency ) )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean containsDependency( Set<ProjectDependency> projectDependencies, Dependency dependency )
+    {
+        for ( ProjectDependency projectDependency : projectDependencies )
+        {
+            if ( isEqual( projectDependency, dependency ) )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isEqual( ProjectDependency projectDependency, Dependency dependency )
+    {
+        return ( projectDependency.getArtifactId().equals( dependency.getArtifactId() ) &&
+            projectDependency.getGroupId().equals( dependency.getGroupId() ) &&
+            projectDependency.getVersion().equals( dependency.getVersion() ) );
+    }
+
     /**
      * @see AssemblyResolver#resolveTransitivelyFor
      */
-    public void resolveTransitivelyFor( MavenProject project, Artifact sourceArtifact, List<Dependency> dependencies,
+    public void resolveTransitivelyFor( MavenProject mavenProject, List<Dependency> dependencies,
                                         List<ArtifactRepository> remoteArtifactRepositories,
-                                        ArtifactRepository localArtifactRepository,
-                                        boolean addResolvedDependenciesToProject )
+                                        File localArtifactRepository, boolean addResolvedDependenciesToProject )
         throws ArtifactResolutionException, ArtifactNotFoundException
     {
-        List<ArtifactRepository> releaseRepositories = new ArrayList<ArtifactRepository>();
-        List<ArtifactRepository> snapshotRepositories = new ArrayList<ArtifactRepository>();
-        for ( ArtifactRepository artifactRepository : remoteArtifactRepositories )
-        {
-            if ( artifactRepository.getSnapshots().isEnabled() )
-            {
-                snapshotRepositories.add( artifactRepository );
-            }
-            if ( artifactRepository.getReleases().isEnabled() )
-            {
-                releaseRepositories.add( artifactRepository );
-            }
-        }
+        //Check that the list of dependencies matches the first level RDF Repo
+        //If not, resolve missing dependencies and add to repo or delete additional dependencies from repo
 
-        Set<Artifact> artifactDependencies = new HashSet<Artifact>();
-        Set<Artifact> snapshotArtifactDependencies = new HashSet<Artifact>();
-        Set<Artifact> gacDependencies = new HashSet<Artifact>();
 
-        ArtifactFilter gacFilter = new GacFilter();
+        Project project = new Project();
+        project.setGroupId( mavenProject.getGroupId() );
+        project.setArtifactId( mavenProject.getArtifactId() );
+        project.setVersion( mavenProject.getVersion() );
+        project.setArtifactType(
+            ( mavenProject.getArtifact() != null ) ? mavenProject.getArtifact().getType() : "library" );
+
+        project.setPublicKeyTokenId(
+            ( mavenProject.getArtifact() != null ) ? mavenProject.getArtifact().getClassifier() : null );
+
         for ( Dependency dependency : dependencies )
         {
-            String scope = ( dependency.getScope() == null ) ? Artifact.SCOPE_COMPILE : dependency.getScope();
-            Artifact artifact = artifactFactory.createDependencyArtifact( dependency.getGroupId(),
-                                                                          dependency.getArtifactId(),
-                                                                          VersionRange.createFromVersion(
-                                                                              dependency.getVersion() ),
-                                                                          dependency.getType(),
-                                                                          dependency.getClassifier(), scope, null );
-            if ( artifact.getType().startsWith( "gac" ) )
-            {
-                logger.debug(
-                    "NMAVEN-000-000: GAC Dependency = " + artifact.getType() + ", ID = " + artifact.getArtifactId() );
-                gacDependencies.add( artifact );
-            }
-            else if ( artifact.isSnapshot() )
-            {
-                logger.debug( "NMAVEN-000-000: Snapshot Dependency: Type  = " + artifact.getType() +
-                    ", Artifact ID = " + artifact.getArtifactId() );
-                snapshotArtifactDependencies.add( artifact );
-            }
-            else
-            {
-                logger.debug( "NMAVEN-000-000: Dependency: Type  = " + artifact.getType() + ", Artifact ID = " +
-                    artifact.getArtifactId() );
-                artifactDependencies.add( artifact );
-            }
+            ProjectDependency projectDependency = new ProjectDependency();
+            projectDependency.setGroupId( dependency.getGroupId() );
+            projectDependency.setArtifactId( dependency.getArtifactId() );
+            projectDependency.setVersion( dependency.getVersion() );
+            projectDependency.setPublicKeyTokenId( dependency.getClassifier() );
+            projectDependency.setArtifactType( dependency.getType() );
+            project.addProjectDependency( projectDependency );
         }
-        //Releases
-        ArtifactResolutionResult result = resolver.resolveTransitively( artifactDependencies, sourceArtifact,
-                                                                        localArtifactRepository, releaseRepositories,
-                                                                        metadata, gacFilter );
-        Set<Artifact> resolvedReleaseDependencies = result.getArtifacts();
 
-        //Snapshots
-        ArtifactRepository artifactRepository = new DefaultArtifactRepository( "local", "file://" +
-            localArtifactRepository.getBasedir(), new DefaultRepositoryLayout() );
-
-        ArtifactResolutionResult snapshotResult = resolver.resolveTransitively( snapshotArtifactDependencies,
-                                                                                sourceArtifact, artifactRepository,
-                                                                                snapshotRepositories, metadata,
-                                                                                gacFilter );
-        Set<Artifact> resolvedSnapshotDependencies = snapshotResult.getArtifacts();
-        AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-        for ( Artifact artifact : resolvedSnapshotDependencies )
-        {
-            File originalFileWithVersion = artifact.getFile();
-            if ( artifact.isSnapshot() )
-            {
-                artifact.setVersion( artifact.getBaseVersion() );
-            }
-            File targetFileWithoutVersion =
-                new File( localArtifactRepository.getBasedir() + "/" + layout.pathOf( artifact ) );
-            if ( originalFileWithVersion.lastModified() > targetFileWithoutVersion.lastModified() )
-            {
-                logger.debug( "Original = " + originalFileWithVersion.getAbsolutePath() + ", Target = " +
-                    targetFileWithoutVersion.getAbsolutePath() );
+        /*
                 try
                 {
-                    FileUtils.copyFile( originalFileWithVersion, targetFileWithoutVersion );
+                    project = dao.getProjectFor( mavenProject );
                 }
-                catch ( IOException e )
+                catch ( java.io.IOException e )
                 {
                     e.printStackTrace();
                 }
-            }
-            if ( originalFileWithVersion.length() != 0 && targetFileWithoutVersion.length() == 0 )
-            {
-                throw new ArtifactResolutionException( "NMAVEN-000-000: Artifact is corrupted:", artifact );
-            }
+        */
 
-            if ( targetFileWithoutVersion.exists() )
-            {
-                artifact.setFile( targetFileWithoutVersion.getAbsoluteFile() );
-            }
+        //Set<ProjectDependency> projectDependencies = project.getProjectDependencies();
+
+        /*
+                Set<ProjectDependency> pd = new HashSet<ProjectDependency>( CollectionUtils.subtract( projectDependencies,
+                                                                                                      substractDependencies(
+                                                                                                          projectDependencies,
+                                                                                                          dependencies ) ) );
+                pd.addAll( subtractProjectDependencies( dependencies, projectDependencies ) );
+        */
+        ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
+        dao.init( artifactFactory, wagonManager );
+        dao.openConnection();
+
+        Set<Artifact> artifactDependencies = new HashSet<Artifact>();
+        try
+        {
+            artifactDependencies =
+                dao.storeProjectAndResolveDependencies( project, localArtifactRepository, remoteArtifactRepositories );
         }
+        catch ( java.io.IOException e )
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            dao.closeConnection();
+        }
+
+        //Resolve content
+
+        //Resolve and store pom
+
+        //Add rdf info to mavenProject
+        System.out.println( "Dependencies = " + artifactDependencies.size() );
         if ( addResolvedDependenciesToProject )
         {
-            resolvedReleaseDependencies.addAll( gacDependencies );
-            resolvedReleaseDependencies.addAll( resolvedSnapshotDependencies );
-            project.setDependencyArtifacts( resolvedReleaseDependencies );
-        }
-    }
-
-    private static class GacFilter
-        implements ArtifactFilter
-    {
-        public boolean include( org.apache.maven.artifact.Artifact artifact )
-        {
-            return !artifact.getType().startsWith( "gac" );
+            mavenProject.setDependencyArtifacts( artifactDependencies );
         }
     }
 }

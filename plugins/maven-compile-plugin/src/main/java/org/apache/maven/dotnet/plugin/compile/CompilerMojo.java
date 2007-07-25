@@ -301,6 +301,10 @@ public final class CompilerMojo
 
     private Artifact getLatestDependencyModification( Set<Artifact> artifacts )
     {
+        if ( artifacts == null )
+        {
+            return null;
+        }
         Artifact lastModArtifact = null;
         for ( Artifact artifact : artifacts )
         {

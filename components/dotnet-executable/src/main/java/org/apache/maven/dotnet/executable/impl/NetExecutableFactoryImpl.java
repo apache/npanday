@@ -27,7 +27,7 @@ import org.apache.maven.dotnet.vendor.*;
 import org.apache.maven.dotnet.vendor.IllegalStateException;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout;
+import org.apache.maven.dotnet.artifact.PathUtil;
 import org.apache.maven.dotnet.InitializationException;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
 import org.apache.maven.project.MavenProject;
@@ -150,8 +150,8 @@ public class NetExecutableFactoryImpl
             Artifact artifact = artifactContext.getArtifactByID( netDependencyId );
             if ( artifact != null )
             {
-                AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-                File artifactPath = new File( compilerConfig.getLocalRepository(), layout.pathOf( artifact ) );
+                File artifactPath =
+                    PathUtil.getPrivateApplicationBaseFileFor( artifact, compilerConfig.getLocalRepository() );
                 executionPaths.add( artifactPath.getParentFile().getAbsolutePath() );
             }
         }
@@ -188,8 +188,9 @@ public class NetExecutableFactoryImpl
                 "NMAVEN-066-021: Could not locate the plugin: GroupId = " + groupId + ", ArtifactId = " + artifactId );
         }
 
-        AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-        File artifactPath = new File( localRepository + File.separator + layout.pathOf( artifact ) );
+        //AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
+        File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, new File( localRepository ) );
+
         List<String> commands = new ArrayList<String>();
         commands.add( "parameterFile=" + parameterFile.getAbsolutePath() );
         commands.add( "assemblyFile=" + artifactPath.getAbsolutePath() );
@@ -197,16 +198,13 @@ public class NetExecutableFactoryImpl
 
         Artifact pluginLoaderArtifact =
             artifactContext.getArtifactsFor( "NMaven.Plugin", "NMaven.Plugin.Loader", null, null ).get( 0 );
-        artifactPath = new File( localRepository + File.separator + layout.pathOf( pluginLoaderArtifact ) );
+        artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ) );
         commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
 
         return getNetExecutableFromRepository( "NMaven.Plugin", "NMaven.Plugin.Runner", vendorInfo,
                                                new File( localRepository ), commands, false );
     }
 
-    /**
-     * @see NetExecutableFactory#getNetExecutableFromRepository(String, String, org.apache.maven.dotnet.vendor.VendorInfo, String, java.util.List<java.lang.String>, boolean)
-     */
     public NetExecutable getNetExecutableFromRepository( String groupId, String artifactId, VendorInfo vendorInfo,
                                                          File localRepository, List<String> commands,
                                                          boolean isIsolatedAppDomain )
@@ -229,13 +227,12 @@ public class NetExecutableFactoryImpl
                     groupId + ", ArtifactId = " + artifactId );
             }
 
-            AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-            File artifactPath = new File( localRepository + File.separator + layout.pathOf( artifact ) );
+            File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository );
             commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
-
-            String pluginArtifactPath = new File( localRepository + File.separator + layout.pathOf(
-                artifactContext.getArtifactsFor( "NMaven.Plugin", "NMaven.Plugin", null, null ).get(
-                    0 ) ) ).getAbsolutePath();
+            //TODO: Replace
+            String pluginArtifactPath = PathUtil.getPrivateApplicationBaseFileFor(
+                artifactContext.getArtifactsFor( "NMaven.Plugin", "NMaven.Plugin", null, null ).get( 0 ),
+                localRepository ).getAbsolutePath();
 
             commands.add( "pluginArtifactPath=" + pluginArtifactPath );
             return getNetExecutableFromRepository( "NMaven.Plugin", "NMaven.Plugin.Runner", vendorInfo, localRepository,
@@ -271,8 +268,7 @@ public class NetExecutableFactoryImpl
 
         logger.debug( "NMAVEN-066-003: Found Vendor: " + vendorInfo );
 
-        AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-        File artifactPath = new File( localRepository + File.separator + layout.pathOf( artifact ) );
+        File artifactPath =  PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository );
         List<String> modifiedCommands = new ArrayList<String>();
         String exe = null;
         if ( vendorInfo.getVendor().equals( Vendor.MONO ) )
@@ -285,7 +281,7 @@ public class NetExecutableFactoryImpl
                     if ( new File( executablePath.getAbsolutePath(), "mono.exe" ).exists() )
                     {
                         exe = new File( executablePath.getAbsolutePath(), "mono.exe" ).getAbsolutePath();
-                        commands.add( "vendor=MONO");//if forked process, it needs to know.
+                        commands.add( "vendor=MONO" );//if forked process, it needs to know.
                         break;
                     }
                 }
@@ -297,7 +293,7 @@ public class NetExecutableFactoryImpl
                     "NMAVEN-066-005: Executable path for mono does not exist. Will attempt to execute MONO using" +
                         " the main PATH variable." );
                 exe = "mono";
-                commands.add( "vendor=MONO");//if forked process, it needs to know.
+                commands.add( "vendor=MONO" );//if forked process, it needs to know.
             }
             modifiedCommands.add( artifactPath.getAbsolutePath() );
             for ( String command : commands )

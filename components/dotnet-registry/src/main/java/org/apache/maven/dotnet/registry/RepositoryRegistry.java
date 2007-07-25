@@ -107,7 +107,7 @@ public interface RepositoryRegistry
      *
      * @return unmodifiable set of repository names
      */
-    Set getRepositoryNames();
+    Set<String> getRepositoryNames();
 
     /**
      * Empties all of the repositories from the registry.

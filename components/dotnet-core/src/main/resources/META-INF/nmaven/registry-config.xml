@@ -40,7 +40,16 @@
       <repository-config>/META-INF/nmaven/net-dependencies.xml</repository-config>
       <init-param>
         <param-name>nmaven.version</param-name>
-        <param-value>0.14-SNAPSHOT</param-value>
+        <param-value>0.14</param-value>
+      </init-param>
+    </repository>
+    <repository>
+      <repository-name>connections</repository-name>
+      <repository-class>org.apache.maven.dotnet.registry.ConnectionsRepository</repository-class>
+      <repository-config>/META-INF/nmaven/null.properties</repository-config>
+      <init-param>
+        <param-name>dao:project</param-name>
+        <param-value>org.apache.maven.dotnet.dao.impl.ProjectDaoImpl</param-value>
       </init-param>
     </repository>
     <repository>

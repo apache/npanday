@@ -20,7 +20,7 @@ under the License.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>org.apache.maven.dotnet</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>dotnet-project</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -33,16 +33,24 @@ under the License.
     NMaven provides Maven 2.x plugins to support building of .NET applications
   </description>
   <modules>
-    <module>dotnet-core</module>
-    <module>dotnet-model</module>
     <module>dotnet-artifact</module>
     <module>dotnet-assembler</module>
+    <module>dotnet-core</module>
+    <module>dotnet-dao/project</module>
     <module>dotnet-embedder</module>
     <module>dotnet-executable</module>
     <module>dotnet-jetty</module>
+    <module>dotnet-model</module>
     <module>dotnet-plugin</module>
     <module>dotnet-registry</module>
+    <module>dotnet-repository</module>    
     <module>dotnet-service/embedder</module>
     <module>dotnet-vendor</module>
   </modules>
+  <repositories>
+    <repository>
+      <id>aduna.org</id>
+      <url>http://repository.aduna-software.org/maven2</url>
+    </repository>
+  </repositories>
 </project>

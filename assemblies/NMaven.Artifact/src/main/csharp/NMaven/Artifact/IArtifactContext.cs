@@ -11,5 +11,7 @@ namespace NMaven.Artifact
         Artifact GetArtifactFor(NMaven.Model.Model model);
 
         Artifact CreateArtifact(String groupId, String artifactId, String version, String packaging);
+
+        String GetExtensionFor(String packaging);
     }
 }

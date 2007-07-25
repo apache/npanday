@@ -87,7 +87,7 @@ namespace NMaven.Plugin.Solution
 			}
 			
 			List<IProjectReference> projectReferences = new List<IProjectReference>();
-			IProjectGenerator projectGenerator =Factory.createDefaultProjectGenerator();
+			IProjectGenerator projectGenerator = Factory.createDefaultProjectGenerator();
 			if(model.packaging.Equals("pom"))
 			{
 				foreach(String module in GetModulesForProfile(profile, model))
@@ -105,7 +105,7 @@ namespace NMaven.Plugin.Solution
 					mainProjectReference = 
 			 			projectGenerator.GenerateProjectFor(model,
 			 	                                    new DirectoryInfo(currentDirectory.FullName + @"\src\main\csharp\"),
-			 	                                    model.artifactId, null);
+			 	                                    model.artifactId, null, new DirectoryInfo(localRepository));
 					Console.WriteLine("NMAVEN-000-000: Generated project: File Name = "
 					                  + mainProjectReference.CSProjectFile.FullName);
 					projectReferences.Add(mainProjectReference);
@@ -120,7 +120,7 @@ namespace NMaven.Plugin.Solution
 					IProjectReference projectReference = 
 			 			projectGenerator.GenerateProjectFor(model,
 			 	                                    new DirectoryInfo(currentDirectory.FullName + @"\src\test\csharp\"),
-			 	                                    model.artifactId + "-Test", mainRef);
+			 	                                    model.artifactId + "-Test", mainRef, new DirectoryInfo(localRepository));
 					Console.WriteLine("NMAVEN-000-000: Generated test project: File Name = "
 					                  + projectReference.CSProjectFile.FullName);
 					projectReferences.Add(projectReference);					
