@@ -23,7 +23,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.artifact.ArtifactType;
+import org.apache.maven.dotnet.ArtifactType;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.vendor.VendorFactory;
 import org.apache.maven.dotnet.executable.compiler.*;

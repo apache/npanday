@@ -1,6 +1,7 @@
 package org.apache.maven.dotnet.artifact;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.dotnet.ArtifactType;
 
 import java.io.File;
 

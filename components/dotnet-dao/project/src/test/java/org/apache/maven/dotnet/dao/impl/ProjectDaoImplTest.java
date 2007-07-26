@@ -13,9 +13,9 @@ import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.sail.memory.MemoryStore;
 import org.openrdf.sail.memory.MemoryStoreRDFSInferencer;
-import org.apache.maven.dotnet.repository.Project;
-import org.apache.maven.dotnet.repository.ProjectDependency;
-import org.apache.maven.dotnet.repository.Requirement;
+import org.apache.maven.dotnet.dao.Project;
+import org.apache.maven.dotnet.dao.ProjectDependency;
+import org.apache.maven.dotnet.dao.Requirement;
 import org.apache.maven.dotnet.dao.ProjectDao;
 import org.apache.maven.dotnet.dao.ProjectUri;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -26,6 +26,52 @@ public class ProjectDaoImplTest
 {
 
     private static File basedir = new File( System.getProperty( "basedir" ) );
+
+    public void testGetAllProjects()
+    {
+        ProjectDao dao = this.createProjectDao();
+
+        Project project = new Project();
+        project.setGroupId( "NMaven" );
+        project.setArtifactId( "NMaven.Test5" );
+        project.setVersion( "1.0.0" );
+
+        //ProjectDependency test2 = createProjectDependency( "NMaven", "NMaven.Test5", "1.0.0" );
+        //project.addProjectDependency( test2 );
+
+        try
+        {
+            dao.storeProjectAndResolveDependencies( project, null, new ArrayList<ArtifactRepository>() );
+        }
+        catch ( java.io.IOException e )
+        {
+            e.printStackTrace();
+            fail( "Could not store the project: " + e.getMessage() );
+        }
+
+        Set<Project> projects = null;
+        try
+        {
+             projects = dao.getAllProjects();
+        }
+        catch ( IOException e )
+        {
+            e.printStackTrace();
+            fail( "Could not retrieve the project: " + e.getMessage() );
+        }
+        /*
+        assertEquals("Incorrect Number of Projects", 3, projects.size());
+
+        for(Project proj : projects)
+        {
+            if(proj.getArtifactId().equals( "NMaven.Test5"))
+            {
+                assertEquals("Incorrect number of dependencies", 2, proj.getProjectDependencies().size());
+            }
+        }
+        */
+        dao.closeConnection();
+    }
 
     public void testStore_WithRequirements()
     {

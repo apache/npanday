@@ -2,9 +2,10 @@ package org.apache.maven.dotnet.dao.impl;
 
 import org.apache.maven.dotnet.dao.ProjectDao;
 import org.apache.maven.dotnet.dao.ProjectUri;
-import org.apache.maven.dotnet.repository.Project;
-import org.apache.maven.dotnet.repository.ProjectDependency;
-import org.apache.maven.dotnet.repository.Requirement;
+import org.apache.maven.dotnet.dao.ProjectFactory;
+import org.apache.maven.dotnet.dao.Project;
+import org.apache.maven.dotnet.dao.ProjectDependency;
+import org.apache.maven.dotnet.dao.Requirement;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -24,7 +25,11 @@ import org.openrdf.model.vocabulary.RDF;
 
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.Repository;
 import org.openrdf.OpenRDFException;
+import org.openrdf.rio.RDFHandler;
+import org.openrdf.rio.RDFHandlerException;
+import org.openrdf.rio.rdfxml.RDFXMLWriter;
 import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.MalformedQueryException;
@@ -102,6 +107,75 @@ public final class ProjectDaoImpl
         projectQuery = "SELECT * FROM " + this.constructQueryFragmentFor( "{x}", projectUris );
     }
 
+    public Set<Project> getAllProjects()
+        throws IOException
+    {
+        ValueFactory valueFactory = rdfRepository.getValueFactory();
+
+        Set<Project> projects = new HashSet<Project>();
+        TupleQueryResult result = null;
+        try
+        {
+            TupleQuery tupleQuery = repositoryConnection.prepareTupleQuery( QueryLanguage.SERQL, projectQuery );
+            //tupleQuery.setBinding( RDF.TYPE.toString(), valueFactory.createURI( ProjectUri.ARTIFACT.getPredicate() ));
+            result = tupleQuery.evaluate();
+            while ( result.hasNext() )
+            {
+                BindingSet set = result.next();
+
+                String groupId = set.getBinding( ProjectUri.GROUP_ID.getObjectBinding() ).getValue().toString();
+                String version = set.getBinding( ProjectUri.VERSION.getObjectBinding() ).getValue().toString();
+                String artifactId = set.getBinding( ProjectUri.ARTIFACT_ID.getObjectBinding() ).getValue().toString();
+                String artifactType =
+                    set.getBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding() ).getValue().toString();
+                Project project = getProjectFor( groupId, artifactId, version, artifactType, null );
+
+                System.out.println( "A: " + project.getArtifactId() + ":" + project.getProjectDependencies().size() );
+                /*
+                for ( Iterator<Binding> i = set.iterator(); i.hasNext(); )
+                {
+                    Binding b = i.next();
+                    System.out.println( b.getName() + ":" + b.getValue() );
+                }
+               */
+                projects.add( getProjectFor( groupId, artifactId, version, artifactType, null ) );
+            }
+        }
+        catch ( RepositoryException e )
+        {
+            throw new IOException( e.getMessage() );
+        }
+        catch ( MalformedQueryException e )
+        {
+            throw new IOException( e.getMessage() );
+        }
+        catch ( QueryEvaluationException e )
+        {
+            throw new IOException( e.getMessage() );
+        }
+        finally
+        {
+            if ( result != null )
+            {
+                try
+                {
+                    result.close();
+                }
+                catch ( QueryEvaluationException e )
+                {
+
+                }
+            }
+        }
+
+        return projects;
+    }
+
+    public void setRdfRepository( Repository repository )
+    {
+        this.rdfRepository = repository;
+    }
+
     public boolean openConnection()
     {
         try
@@ -113,11 +187,13 @@ public final class ProjectDaoImpl
         {
             return false;
         }
+
         return true;
     }
 
     public boolean closeConnection()
     {
+
         if ( repositoryConnection != null )
         {
             try
@@ -129,6 +205,7 @@ public final class ProjectDaoImpl
                 return false;
             }
         }
+
         return true;
     }
 
@@ -156,6 +233,12 @@ public final class ProjectDaoImpl
             tupleQuery.setBinding( ProjectUri.ARTIFACT_ID.getObjectBinding(),
                                    valueFactory.createLiteral( artifactId ) );
             tupleQuery.setBinding( ProjectUri.VERSION.getObjectBinding(), valueFactory.createLiteral( version ) );
+            if ( artifactType != null )
+            {
+                tupleQuery.setBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding(),
+                                       valueFactory.createLiteral( artifactType ) );
+            }
+
             result = tupleQuery.evaluate();
 
             if ( !result.hasNext() )
@@ -220,15 +303,15 @@ public final class ProjectDaoImpl
         }
         catch ( QueryEvaluationException e )
         {
-            e.printStackTrace();
+            throw new IOException( e.getMessage() );
         }
         catch ( RepositoryException e )
         {
-            e.printStackTrace();
+            throw new IOException( e.getMessage() );
         }
         catch ( MalformedQueryException e )
         {
-            e.printStackTrace();
+            throw new IOException( e.getMessage() );
         }
         finally
         {
@@ -510,7 +593,7 @@ public final class ProjectDaoImpl
                                     ArtifactFactory artifactFactory )
     {
         this.init( dataStoreObject, id, className );
-        init(artifactFactory, wagonManager);
+        init( artifactFactory, wagonManager );
     }
 
 
@@ -551,7 +634,7 @@ public final class ProjectDaoImpl
                                            Value dependencyUri )
         throws RepositoryException, MalformedQueryException, QueryEvaluationException
     {
-        Set<ProjectDependency> projectDependencies = new HashSet<ProjectDependency>();
+        //Set<ProjectDependency> projectDependencies = new HashSet<ProjectDependency>();
         TupleQuery tq = repositoryConnection.prepareTupleQuery( QueryLanguage.SERQL, dependencyQuery );
         tq.setBinding( "x", dependencyUri );
 
@@ -568,15 +651,17 @@ public final class ProjectDaoImpl
                     bs.getBinding( ProjectUri.ARTIFACT_ID.getObjectBinding() ).getValue().toString() );
                 projectDependency.setVersion(
                     bs.getBinding( ProjectUri.VERSION.getObjectBinding() ).getValue().toString() );
-
-                projectDependencies.add( projectDependency );
+                projectDependency.setArtifactType(
+                    bs.getBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding() ).getValue().toString() );
+                project.addProjectDependency( projectDependency );
+                //projectDependencies.add( projectDependency );
                 if ( bs.hasBinding( ProjectUri.DEPENDENCY.getObjectBinding() ) )
                 {
                     addDependenciesToProject( projectDependency, repositoryConnection,
                                               bs.getValue( ProjectUri.DEPENDENCY.getObjectBinding() ) );
                 }
             }
-            project.setProjectDependencies( projectDependencies );
+            //project.setProjectDependencies( projectDependencies );
         }
         finally
         {
@@ -591,6 +676,8 @@ public final class ProjectDaoImpl
 
         StringBuffer buffer = new StringBuffer();
         buffer.append( subject );
+        //buffer.append( "<" ).append( RDF.TYPE.toString() ).append( ">" ).append( " " ).append(
+        //    ProjectUri.ARTIFACT.getPredicate() ).append( ";" );
         for ( Iterator<ProjectUri> i = projectUris.iterator(); i.hasNext(); )
         {
             ProjectUri projectUri = i.next();

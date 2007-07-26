@@ -19,7 +19,7 @@
 package org.apache.maven.dotnet.executable;
 
 import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
-import org.apache.maven.dotnet.artifact.ArtifactType;
+import org.apache.maven.dotnet.ArtifactType;
 import org.apache.maven.dotnet.executable.compiler.KeyInfo;
 
 import java.util.List;

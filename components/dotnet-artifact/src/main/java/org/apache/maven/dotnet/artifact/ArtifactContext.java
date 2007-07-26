@@ -19,7 +19,6 @@
 package org.apache.maven.dotnet.artifact;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
 
@@ -110,8 +109,6 @@ public interface ArtifactContext
      * @return list of .NET artifacts that reside within the specified repository.
      */
     List<Artifact> getAllNetArtifactsFromRepository( File repository );
-
- //   ArtifactHandler createArtifactHandler( String packagingType, String extension );
 
     /**
      * Initializes this artifact context. Neither parameter value should be null.

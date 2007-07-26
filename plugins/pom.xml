@@ -43,6 +43,7 @@ under the License.
     <module>maven-link-plugin</module>
     <module>maven-mojo-generator-plugin</module>
     <module>maven-resgen-plugin</module>
+    <module>maven-repository-plugin</module>    
     <module>maven-resolver-plugin</module>
     <module>maven-test-plugin</module>
     <module>maven-vsinstaller-plugin</module>

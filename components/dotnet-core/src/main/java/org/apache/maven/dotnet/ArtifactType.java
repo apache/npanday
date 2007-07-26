@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.artifact;
+package org.apache.maven.dotnet;
 
 /**
  * Enumeration of all the valid target types (module, library, winexe, exe, nar) for the .NET platform.

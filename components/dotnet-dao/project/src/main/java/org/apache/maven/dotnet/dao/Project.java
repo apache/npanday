@@ -1,4 +1,4 @@
-package org.apache.maven.dotnet.repository;
+package org.apache.maven.dotnet.dao;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -154,12 +154,6 @@ public class Project
 
     public int hashCode()
     {
-        //This problem cropping up during refactoring: Remove this check afterwards.
-        if(version == null)
-        {
-            System.out.println("Missing Version for: Group ID = " + groupId + ", Artifact ID = " + artifactId);            
-        }
-
         int result;
         result = groupId.hashCode();
         result = 29 * result + artifactId.hashCode();

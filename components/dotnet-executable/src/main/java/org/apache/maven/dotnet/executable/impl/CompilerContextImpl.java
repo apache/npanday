@@ -26,7 +26,7 @@ import org.apache.maven.dotnet.executable.compiler.*;
 import org.apache.maven.dotnet.executable.compiler.InvalidArtifactException;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.apache.maven.dotnet.artifact.ArtifactException;
-import org.apache.maven.dotnet.artifact.ArtifactType;
+import org.apache.maven.dotnet.ArtifactType;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;

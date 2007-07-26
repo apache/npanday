@@ -25,8 +25,32 @@ under the License.
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.dotnet</groupId>
-  <artifactId>dotnet-jdo</artifactId>
-  <name>dotnet-jdo</name>
+  <artifactId>dotnet-repository</artifactId>
+  <name>dotnet-repository</name>
   <description>
   </description>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.dotnet</groupId>
+      <artifactId>dotnet-dao-project</artifactId>
+      <version>0.14</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.dotnet</groupId>
+      <artifactId>dotnet-artifact</artifactId>
+      <version>0.14</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources/uac</directory>
+        <targetPath>../test-repo/uac</targetPath>
+      </testResource>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <targetPath>../test-repo</targetPath>
+      </testResource>
+    </testResources>
+  </build>
 </project>

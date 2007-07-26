@@ -23,21 +23,15 @@ import org.apache.maven.plugin.AbstractMojo;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.artifact.ArtifactType;
+import org.apache.maven.dotnet.ArtifactType;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.vendor.VendorFactory;
 import org.apache.maven.dotnet.executable.compiler.*;
 import org.apache.maven.artifact.Artifact;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.DirectoryScanner;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
-import java.util.Date;
-import java.util.Calendar;
 import java.io.File;
-import java.io.FilenameFilter;
 
 /**
  * Maven Mojo for compiling Class files to the .NET Intermediate Language.

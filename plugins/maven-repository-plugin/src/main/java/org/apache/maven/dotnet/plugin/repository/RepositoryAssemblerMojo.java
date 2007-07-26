@@ -3,37 +3,25 @@ package org.apache.maven.dotnet.plugin.repository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
-import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.metadata.ArtifactMetadata;
-import org.apache.maven.artifact.deployer.ArtifactDeploymentException;
 import org.apache.maven.artifact.deployer.ArtifactDeployer;
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
-import org.apache.maven.dotnet.artifact.ArtifactType;
-import org.apache.maven.dotnet.artifact.AssemblyRepositoryLayout;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import org.apache.maven.dotnet.repository.RepositoryConverter;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.artifact.ProjectArtifactMetadata;
-import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.codehaus.plexus.archiver.tar.TarArchiver;
-import org.codehaus.plexus.archiver.ArchiverException;
+import org.openrdf.repository.sail.SailRepository;
+import org.openrdf.repository.RepositoryException;
+import org.openrdf.sail.memory.MemoryStore;
 
 import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +47,7 @@ public class RepositoryAssemblerMojo
      * @parameter expression="${settings.localRepository}"
      * @readonly
      */
-    private String localRepository;
+    private File localRepository;
 
     /**
      * @component
@@ -93,135 +81,164 @@ public class RepositoryAssemblerMojo
      */
     private ArtifactContext artifactContext;
 
+
+    /**
+     * @component
+     */
+    private RepositoryConverter repositoryConverter;
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        RepositoryRegistry repositoryRegistry;
+        File dataDir = new File( localRepository.getParentFile(), "/uac/rdfRepository" );
+        org.openrdf.repository.Repository rdfRepository = new SailRepository( new MemoryStore( dataDir ) );
         try
         {
-            repositoryRegistry = nmavenRegistry.createRepositoryRegistry();
+            rdfRepository.initialize();
+        }
+        catch ( RepositoryException e )
+        {
+
+        }
+
+        try
+        {
+            repositoryConverter.convert( rdfRepository, localRepository );
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException(
-                "NMAVEN-1600-000: Failed to create the repository registry for this plugin", e );
+            e.printStackTrace();
         }
+/*
+RepositoryRegistry repositoryRegistry;
+try
+{
+    repositoryRegistry = nmavenRegistry.createRepositoryRegistry();
+}
+catch ( IOException e )
+{
+    throw new MojoExecutionException(
+        "NMAVEN-1600-000: Failed to create the repository registry for this plugin", e );
+}
 
-        artifactContext.init( project, project.getRemoteArtifactRepositories(), new File( localRepository ) );
+artifactContext.init( project, project.getRemoteArtifactRepositories(), new File( localRepository ) );
 
-        List<Dependency> javaDependencies = new ArrayList<Dependency>();
-        List<Dependency> netDependencies = new ArrayList<Dependency>();
 
-        for ( Dependency dependency : (List<Dependency>) project.getDependencies() )
-        {
-            if ( !dependency.getType().equals( ArtifactType.LIBRARY.getTargetCompileType() ) &&
-                !dependency.getType().equals( ArtifactType.NETPLUGIN.getPackagingType() ) &&
-                !dependency.getType().equals( ArtifactType.EXE.getTargetCompileType() ) &&
-                !dependency.getType().equals( ArtifactType.EXECONFIG.getTargetCompileType() ) &&
-                !dependency.getType().equals( ArtifactType.MODULE.getTargetCompileType() ) &&
-                !dependency.getType().equals( ArtifactType.NAR.getTargetCompileType() ) &&
-                !dependency.getType().equals( ArtifactType.VISUAL_STUDIO_ADDIN.getTargetCompileType() ) &&
-                !dependency.getType().equals( ArtifactType.WINEXE.getTargetCompileType() ) )
-            {
-                javaDependencies.add( dependency );
-            }
-            else
-            {
-                netDependencies.add( dependency );
-            }
-        }
 
-        assemblyRepository( javaDependencies, new DefaultRepositoryLayout() );
-        assemblyRepository( netDependencies, new AssemblyRepositoryLayout() );
+List<Dependency> javaDependencies = new ArrayList<Dependency>();
+List<Dependency> netDependencies = new ArrayList<Dependency>();
+
+for ( Dependency dependency : (List<Dependency>) project.getDependencies() )
+{
+    if ( !dependency.getType().equals( ArtifactType.LIBRARY.getTargetCompileType() ) &&
+        !dependency.getType().equals( ArtifactType.NETPLUGIN.getPackagingType() ) &&
+        !dependency.getType().equals( ArtifactType.EXE.getTargetCompileType() ) &&
+        !dependency.getType().equals( ArtifactType.EXECONFIG.getTargetCompileType() ) &&
+        !dependency.getType().equals( ArtifactType.MODULE.getTargetCompileType() ) &&
+        !dependency.getType().equals( ArtifactType.NAR.getTargetCompileType() ) &&
+        !dependency.getType().equals( ArtifactType.VISUAL_STUDIO_ADDIN.getTargetCompileType() ) &&
+        !dependency.getType().equals( ArtifactType.WINEXE.getTargetCompileType() ) )
+    {
+        javaDependencies.add( dependency );
+    }
+    else
+    {
+        netDependencies.add( dependency );
+    }
+}
+
+assemblyRepository( javaDependencies, new DefaultRepositoryLayout() );
+assemblyRepository( netDependencies, new AssemblyRepositoryLayout() );
+}
+
+public void assemblyRepository( List<Dependency> dependencies, ArtifactRepositoryLayout layout )
+throws MojoExecutionException, MojoFailureException
+{
+if ( dependencies.size() == 0 )
+{
+    return;
+}
+
+ArtifactRepository localArtifactRepository =
+    new DefaultArtifactRepository( "local", "file://" + localRepository, layout );
+ArtifactRepository deploymentRepository = repositoryFactory.createDeploymentArtifactRepository( null,
+                                                                                                "file://" +
+                                                                                                    project.getBuild().getDirectory() +
+                                                                                                    "/archive-tmp/repository/releases",
+                                                                                                layout, true );
+
+try
+{
+    assemblyResolver.resolveTransitivelyFor( project, project.getArtifact(), dependencies,
+                                             project.getRemoteArtifactRepositories(), localArtifactRepository,
+                                             true );
+}
+catch ( ArtifactResolutionException e )
+{
+    throw new MojoExecutionException( "NMAVEN-901-000: Unable to resolve assemblies", e );
+}
+catch ( ArtifactNotFoundException e )
+{
+    throw new MojoExecutionException( "NMAVEN-901-001: Unable to resolve assemblies", e );
+}
+
+for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )
+{
+    Set<Artifact> pomParentArtifacts = getPomArtifactsFor( artifact.getGroupId(), artifact.getArtifactId(),
+                                                           artifact.getVersion(), layout, true );
+    Set<Artifact> pomArtifacts = getPomArtifactsFor( artifact.getGroupId(), artifact.getArtifactId(),
+                                                     artifact.getVersion(), layout, false );
+    if ( pomArtifacts.size() == 1 )
+    {
+        ArtifactMetadata metadata =
+            new ProjectArtifactMetadata( artifact, pomArtifacts.toArray( new Artifact[1] )[0].getFile() );
+        artifact.addMetadata( metadata );
     }
 
-    public void assemblyRepository( List<Dependency> dependencies, ArtifactRepositoryLayout layout )
-        throws MojoExecutionException, MojoFailureException
+    try
     {
-        if ( dependencies.size() == 0 )
+        artifactDeployer.deploy( artifact.getFile(), artifact, deploymentRepository, localArtifactRepository );
+        //Deploy parent poms
+        for ( Artifact pomArtifact : pomParentArtifacts )
         {
-            return;
+            artifactDeployer.deploy( pomArtifact.getFile(), pomArtifact, deploymentRepository,
+                                     localArtifactRepository );
         }
+    }
+    catch ( ArtifactDeploymentException e )
+    {
+        throw new MojoExecutionException( "NMAVEN-DEPLOY: Deploy Failed", e );
+    }
+}
 
-        ArtifactRepository localArtifactRepository =
-            new DefaultArtifactRepository( "local", "file://" + localRepository, layout );
-        ArtifactRepository deploymentRepository = repositoryFactory.createDeploymentArtifactRepository( null,
-                                                                                                        "file://" +
-                                                                                                            project.getBuild().getDirectory() +
-                                                                                                            "/archive-tmp/repository/releases",
-                                                                                                        layout, true );
+TarArchiver tarArchiver = new TarArchiver();
+try
+{
+    tarArchiver.addDirectory( new File( project.getBuild().getDirectory(), "/archive-tmp/repository/releases" ) );
+}
+catch ( ArchiverException e )
+{
+    throw new MojoExecutionException( "", e );
+}
 
-        try
-        {
-            assemblyResolver.resolveTransitivelyFor( project, project.getArtifact(), dependencies,
-                                                     project.getRemoteArtifactRepositories(), localArtifactRepository,
-                                                     true );
-        }
-        catch ( ArtifactResolutionException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-901-000: Unable to resolve assemblies", e );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-901-001: Unable to resolve assemblies", e );
-        }
-
-        for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )
-        {
-            Set<Artifact> pomParentArtifacts = getPomArtifactsFor( artifact.getGroupId(), artifact.getArtifactId(),
-                                                                   artifact.getVersion(), layout, true );
-            Set<Artifact> pomArtifacts = getPomArtifactsFor( artifact.getGroupId(), artifact.getArtifactId(),
-                                                             artifact.getVersion(), layout, false );
-            if ( pomArtifacts.size() == 1 )
-            {
-                ArtifactMetadata metadata =
-                    new ProjectArtifactMetadata( artifact, pomArtifacts.toArray( new Artifact[1] )[0].getFile() );
-                artifact.addMetadata( metadata );
-            }
-
-            try
-            {
-                artifactDeployer.deploy( artifact.getFile(), artifact, deploymentRepository, localArtifactRepository );
-                //Deploy parent poms
-                for ( Artifact pomArtifact : pomParentArtifacts )
-                {
-                    artifactDeployer.deploy( pomArtifact.getFile(), pomArtifact, deploymentRepository,
-                                             localArtifactRepository );
-                }
-            }
-            catch ( ArtifactDeploymentException e )
-            {
-                throw new MojoExecutionException( "NMAVEN-DEPLOY: Deploy Failed", e );
-            }
-        }
-
-        TarArchiver tarArchiver = new TarArchiver();
-        try
-        {
-            tarArchiver.addDirectory( new File( project.getBuild().getDirectory(), "/archive-tmp/repository/releases" ) );
-        }
-        catch ( ArchiverException e )
-        {
-            throw new MojoExecutionException( "", e );
-        }
-
-        TarArchiver.TarCompressionMethod tarCompressionMethod = new TarArchiver.TarCompressionMethod();
-        tarArchiver.setDestFile( new File( project.getBuild().getDirectory(), project.getArtifactId() + ".tar.gz" ) );
-        try
-        {
-            tarCompressionMethod.setValue( "gzip" );
-            tarArchiver.setCompression( tarCompressionMethod );
-            tarArchiver.setIncludeEmptyDirs( false );
-            tarArchiver.createArchive();
-        }
-        catch ( ArchiverException e )
-        {
-            throw new MojoExecutionException( "", e );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "", e );
-        }
+TarArchiver.TarCompressionMethod tarCompressionMethod = new TarArchiver.TarCompressionMethod();
+tarArchiver.setDestFile( new File( project.getBuild().getDirectory(), project.getArtifactId() + ".tar.gz" ) );
+try
+{
+    tarCompressionMethod.setValue( "gzip" );
+    tarArchiver.setCompression( tarCompressionMethod );
+    tarArchiver.setIncludeEmptyDirs( false );
+    tarArchiver.createArchive();
+}
+catch ( ArchiverException e )
+{
+    throw new MojoExecutionException( "", e );
+}
+catch ( IOException e )
+{
+    throw new MojoExecutionException( "", e );
+}
+*/
     }
 
     private Set<Artifact> getPomArtifactsFor( String groupId, String artifactId, String version,

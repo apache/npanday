@@ -27,14 +27,14 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.artifact.ArtifactType;
+import org.apache.maven.dotnet.ArtifactType;
 import org.apache.maven.dotnet.artifact.PathUtil;
 import org.apache.maven.dotnet.artifact.ApplicationConfig;
 import org.apache.maven.dotnet.executable.NetExecutable;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.repository.Project;
-import org.apache.maven.dotnet.repository.ProjectDependency;
+import org.apache.maven.dotnet.dao.Project;
+import org.apache.maven.dotnet.dao.ProjectDependency;
 import org.apache.maven.dotnet.dao.ProjectDao;
 import org.apache.maven.model.Dependency;
 

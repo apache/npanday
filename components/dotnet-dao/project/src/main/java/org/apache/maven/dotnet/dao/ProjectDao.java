@@ -1,6 +1,5 @@
 package org.apache.maven.dotnet.dao;
 
-import org.apache.maven.dotnet.repository.Project;
 import org.apache.maven.dotnet.registry.DataAccessObject;
 
 import org.apache.maven.project.MavenProject;
@@ -9,6 +8,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.model.Model;
+import org.openrdf.repository.Repository;
 
 import java.util.Set;
 import java.util.List;
@@ -43,8 +43,13 @@ public interface ProjectDao
 
     void init( ArtifactFactory artifactFactory, WagonManager wagonManager );
 
+    Set<Project> getAllProjects()
+        throws IOException;
+
+    void setRdfRepository( Repository repository );
+
     boolean openConnection();
 
-    boolean closeConnection(); 
+    boolean closeConnection();
 
 }

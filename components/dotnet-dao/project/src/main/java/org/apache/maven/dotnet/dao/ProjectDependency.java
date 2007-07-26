@@ -1,4 +1,6 @@
-package org.apache.maven.dotnet.repository;
+package org.apache.maven.dotnet.dao;
+
+import org.apache.maven.dotnet.dao.Project;
 
 public class ProjectDependency extends Project
 {

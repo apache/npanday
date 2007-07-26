@@ -74,6 +74,7 @@
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-mojo-generator-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-ncover-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-release-plugin/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/maven-repository-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-resgen-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-resolver-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/maven-sandcastle-plugin/src/main/java" isTestSource="false" />
@@ -701,6 +702,24 @@
       <library>
         <CLASSES>
           <root url="jar://$localRepository$/info/aduna/aduna-iteration/1.1/aduna-iteration-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/openrdf/openrdf-rio-api/2.0-beta5/openrdf-rio-api-2.0-beta5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$localRepository$/org/openrdf/openrdf-rio-rdfxml/2.0-beta5/openrdf-rio-rdfxml-2.0-beta5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

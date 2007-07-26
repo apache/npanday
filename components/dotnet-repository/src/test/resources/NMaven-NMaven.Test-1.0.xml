@@ -18,29 +18,9 @@ under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <groupId>org.apache.maven.dotnet.plugins</groupId>
-    <version>0.14</version>
-    <artifactId>maven-dotnet-plugins</artifactId>
-  </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.maven.dotnet.plugins</groupId>
-  <artifactId>maven-repository-plugin</artifactId>
-  <packaging>maven-plugin</packaging>
-  <name>maven-repository-plugin</name>
-  <description>
-    Maven Plugin for .NET
-  </description>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-archiver</artifactId>
-      <version>1.0-alpha-3</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
-      <artifactId>dotnet-repository</artifactId>
-      <version>0.14</version>
-    </dependency>
-  </dependencies>
+  <groupId>NMaven</groupId>
+  <artifactId>NMaven.Test</artifactId>
+  <version>1.0</version>
+  <name>NMaven.Test</name>
 </project>

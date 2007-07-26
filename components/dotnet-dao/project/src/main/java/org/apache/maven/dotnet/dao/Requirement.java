@@ -1,4 +1,4 @@
-package org.apache.maven.dotnet.repository;
+package org.apache.maven.dotnet.dao;
 
 import java.net.URI;
 

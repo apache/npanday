@@ -20,7 +20,7 @@ package org.apache.maven.dotnet.artifact.impl;
 
 import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.apache.maven.dotnet.artifact.ApplicationConfig;
-import org.apache.maven.dotnet.artifact.ArtifactType;
+import org.apache.maven.dotnet.ArtifactType;
 import org.apache.maven.dotnet.artifact.NetDependencyMatchPolicy;
 import org.apache.maven.dotnet.artifact.NetDependenciesRepository;
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
@@ -220,7 +220,7 @@ public class ArtifactInstallerImpl
         {
             artifactDependencies.add( artifact );
         }
-        System.out.println( "Copying into PAB. Count = " + artifactDependencies.size() );
+
         for ( Artifact artifactDependency : artifactDependencies )
         {
             if ( !artifactDependency.getType().startsWith( "gac" ) )
@@ -336,7 +336,7 @@ public class ArtifactInstallerImpl
         {
             dao.closeConnection();
         }
-        
+
     }
 
     /**

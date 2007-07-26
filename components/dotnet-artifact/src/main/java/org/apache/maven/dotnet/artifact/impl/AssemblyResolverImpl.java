@@ -20,8 +20,8 @@ package org.apache.maven.dotnet.artifact.impl;
 
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
 import org.apache.maven.dotnet.dao.ProjectDao;
-import org.apache.maven.dotnet.repository.Project;
-import org.apache.maven.dotnet.repository.ProjectDependency;
+import org.apache.maven.dotnet.dao.Project;
+import org.apache.maven.dotnet.dao.ProjectDependency;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -225,7 +225,7 @@ public class AssemblyResolverImpl
         //Resolve and store pom
 
         //Add rdf info to mavenProject
-        System.out.println( "Dependencies = " + artifactDependencies.size() );
+
         if ( addResolvedDependenciesToProject )
         {
             mavenProject.setDependencyArtifacts( artifactDependencies );
