@@ -5,6 +5,7 @@ import org.apache.maven.artifact.manager.WagonConfigurationException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.wagon.Wagon;
 import org.apache.maven.wagon.UnsupportedProtocolException;
 import org.apache.maven.wagon.TransferFailedException;
@@ -50,13 +51,11 @@ public class WagonManagerTestStub
     {
         if ( artifact.getType().equals( "pom" ) )
         {
-            File pomFile = artifact.getFile();
             try
             {
-                FileOutputStream fos = new FileOutputStream( pomFile );
-                FileInputStream fis = new FileInputStream( new File( basedir, "target/test-classes/" +
-                    artifact.getGroupId() + "-" + artifact.getArtifactId() + "-" + artifact.getVersion() + ".xml" ) );
-                IOUtil.copy( fis, fos );
+                FileUtils.copyFile(
+                    new File( basedir, "target/remote-test-repo/" + new DefaultRepositoryLayout().pathOf( artifact ) ),
+                    artifact.getFile() );
             }
             catch ( IOException e )
             {

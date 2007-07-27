@@ -181,17 +181,6 @@ public class AssemblyResolverImpl
             project.addProjectDependency( projectDependency );
         }
 
-        /*
-                try
-                {
-                    project = dao.getProjectFor( mavenProject );
-                }
-                catch ( java.io.IOException e )
-                {
-                    e.printStackTrace();
-                }
-        */
-
         //Set<ProjectDependency> projectDependencies = project.getProjectDependencies();
 
         /*
@@ -213,7 +202,7 @@ public class AssemblyResolverImpl
         }
         catch ( java.io.IOException e )
         {
-            e.printStackTrace();
+            throw new ArtifactResolutionException(e.getMessage(), null);
         }
         finally
         {

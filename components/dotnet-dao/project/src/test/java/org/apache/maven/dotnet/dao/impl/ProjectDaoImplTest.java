@@ -27,6 +27,8 @@ public class ProjectDaoImplTest
 
     private static File basedir = new File( System.getProperty( "basedir" ) );
 
+    private static File localRepository = new File( System.getProperty( "basedir" ), "/target/local-test-repo" );
+
     public void testGetAllProjects()
     {
         ProjectDao dao = this.createProjectDao();
@@ -41,7 +43,7 @@ public class ProjectDaoImplTest
 
         try
         {
-            dao.storeProjectAndResolveDependencies( project, null, new ArrayList<ArtifactRepository>() );
+            dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
         }
         catch ( java.io.IOException e )
         {
@@ -52,7 +54,7 @@ public class ProjectDaoImplTest
         Set<Project> projects = null;
         try
         {
-             projects = dao.getAllProjects();
+            projects = dao.getAllProjects();
         }
         catch ( IOException e )
         {
@@ -81,6 +83,7 @@ public class ProjectDaoImplTest
         project.setGroupId( "NMaven.Model" );
         project.setArtifactId( "NMaven.Model.Pom" );
         project.setVersion( "0.14.0.0" );
+        project.setPublicKeyTokenId( "b03f5f7f11d50a3a");
         Set<Requirement> requirements = new HashSet<Requirement>();
         try
         {
@@ -98,7 +101,8 @@ public class ProjectDaoImplTest
         Set<Artifact> artifacts = null;
         try
         {
-            artifacts = dao.storeProjectAndResolveDependencies( project, null, new ArrayList<ArtifactRepository>() );
+            artifacts =
+                dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
         }
         catch ( java.io.IOException e )
         {
@@ -168,7 +172,8 @@ public class ProjectDaoImplTest
         Set<Artifact> artifacts = null;
         try
         {
-            artifacts = dao.storeProjectAndResolveDependencies( project1, null, new ArrayList<ArtifactRepository>() );
+            artifacts = dao.storeProjectAndResolveDependencies( project1, localRepository,
+                                                                new ArrayList<ArtifactRepository>() );
         }
         catch ( java.io.IOException e )
         {
@@ -218,7 +223,8 @@ public class ProjectDaoImplTest
 
         try
         {
-            artifacts = dao.storeProjectAndResolveDependencies( project, null, new ArrayList<ArtifactRepository>() );
+            artifacts =
+                dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
         }
         catch ( java.io.IOException e )
         {
@@ -260,7 +266,8 @@ public class ProjectDaoImplTest
         Set<Artifact> artifacts = null;
         try
         {
-            artifacts = dao.storeProjectAndResolveDependencies( project, null, new ArrayList<ArtifactRepository>() );
+            artifacts =
+                dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
         }
         catch ( java.io.IOException e )
         {
@@ -297,7 +304,7 @@ public class ProjectDaoImplTest
         project.setVersion( "0.14.0.0" );
         try
         {
-            dao.storeProjectAndResolveDependencies( project, null, new ArrayList<ArtifactRepository>() );
+            dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
 
         }
         catch ( java.io.IOException e )
@@ -318,86 +325,6 @@ public class ProjectDaoImplTest
         dao.closeConnection();
         fail( "Found project when none should exist." );
     }
-/*
-    public void testAAA()
-    {
-
-        ProjectDao dao = this.createProjectDao();
-        Project project = new Project();
-        project.setArtifactId( "NMaven.Model.Pom" );
-        project.setGroupId( "NMaven.Model" );
-        project.setVersion( "0.14.0.0" );
-
-        Set<ProjectDependency> projectDependencies = new HashSet<ProjectDependency>();
-        projectDependencies.add( this.createProjectDependency( "NMaven", "NMaven.Test", "1.0.0" ) );
-        ProjectDependency pj2 = this.createProjectDependency( "NMaven", "NMaven.Test2", "1.0.0" );
-        pj2.addProjectDependency( this.createProjectDependency( "NMaven", "NMaven.Test3", "1.0.0" ) );
-        projectDependencies.add( pj2 );
-        project.setProjectDependencies( projectDependencies );
-
-        Set<Project> projects = new HashSet<Project>();
-        projects.add( project );
-
-        try
-        {
-            dao.storeProjectsAndResolveDependencies( projects, new ArrayList<ArtifactRepository>() );
-        }
-        catch ( java.io.IOException e )
-        {
-            e.printStackTrace();
-            fail( e.getMessage() );
-        }
-    }
-/*
-    public void testStore()
-    {
-        long start = System.currentTimeMillis();
-        File dataDir = new File( "c:\\tmp\\myRepository\\" );
-        org.openrdf.repository.Repository rdfRepository = new SailRepository( new MemoryStore( dataDir ) );
-        try
-        {
-            rdfRepository.initialize();
-        }
-        catch ( RepositoryException e )
-        {
-            e.printStackTrace();
-        }
-        System.out.println( "Time = " + ( System.currentTimeMillis() - start ) );
-        ProjectDaoImpl dao = new ProjectDaoImpl();
-        dao.init( rdfRepository, "", "" );
-
-        Project project = new Project();
-        project.setArtifactId( "NMaven.Model.Pom" );
-        project.setGroupId( "NMaven.Model" );
-        project.setVersion( "0.14.0.0" );
-
-        Set<ProjectDependency> projectDependencies = new HashSet<ProjectDependency>();
-        projectDependencies.add( this.createProjectDependency( "NMaven", "NMaven.Test", "1.0.0" ) );
-        ProjectDependency pj = this.createProjectDependency( "NMaven", "NMaven.Test2", "1.0.0" );
-        pj.addProjectDependency( this.createProjectDependency( "NMaven", "NMaven.Test3", "1.0.0" ));
-        projectDependencies.add( pj);
-        project.setProjectDependencies( projectDependencies );
-
-        Set<Project> projects = new HashSet<Project>();
-        projects.add( project );
-
-        dao.storeProjectsAndResolveDependencies( projects, new ArrayList<ArtifactRepository>() );
-
-        Project queriedProject = dao.getProjectFor( "", "", "" );
-        // queriedProject.setProjectDependencies( projectDependencies );
-
-        System.out.println( "Artifact ID = " + project.getArtifactId() );
-        for ( ProjectDependency projectDependency : project.getProjectDependencies() )
-        {
-            System.out.println( "PJ-1 = " + projectDependency.getArtifactId() );
-            for ( ProjectDependency dep : projectDependency.getProjectDependencies() )
-            {
-                System.out.println( "PJ-2 = " + dep.getArtifactId() );
-            }
-        }
-
-    }
-*/
 
     private ProjectDependency createProjectDependency( String groupId, String artifactId, String version )
     {
@@ -421,7 +348,7 @@ public class ProjectDaoImplTest
         {
             return null;
         }
-        ProjectDaoImpl dao = new ProjectDaoImpl();        
+        ProjectDaoImpl dao = new ProjectDaoImpl();
         WagonManagerTestStub stub = new WagonManagerTestStub();
         stub.setBaseDir( basedir );
         dao.initForUnitTest( rdfRepository, "", "", stub, new ArtifactFactoryTestStub() );

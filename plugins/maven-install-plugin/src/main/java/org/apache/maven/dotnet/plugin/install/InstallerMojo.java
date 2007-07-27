@@ -28,7 +28,7 @@ import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.apache.maven.dotnet.ArtifactType;
-import org.apache.maven.dotnet.artifact.PathUtil;
+import org.apache.maven.dotnet.PathUtil;
 import org.apache.maven.dotnet.artifact.ApplicationConfig;
 import org.apache.maven.dotnet.executable.NetExecutable;
 import org.apache.maven.dotnet.executable.ExecutionException;
@@ -259,7 +259,7 @@ public class InstallerMojo
 
         try
         {
-            dao.storeProjectAndResolveDependencies( proj, null, new ArrayList<ArtifactRepository>() );
+            dao.storeProjectAndResolveDependencies( proj, localRepository, new ArrayList<ArtifactRepository>() );
         }
         catch ( java.io.IOException e )
         {

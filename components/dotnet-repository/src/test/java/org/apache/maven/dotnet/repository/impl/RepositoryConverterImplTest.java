@@ -42,7 +42,7 @@ public class RepositoryConverterImplTest
 
         try
         {
-            dao.storeProjectAndResolveDependencies( project, null, new ArrayList<ArtifactRepository>() );
+            dao.storeProjectAndResolveDependencies( project, testRepo, new ArrayList<ArtifactRepository>() );
         }
         catch ( java.io.IOException e )
         {

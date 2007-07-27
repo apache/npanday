@@ -7,6 +7,7 @@ import org.apache.maven.dotnet.dao.Project;
 import org.apache.maven.dotnet.dao.ProjectDependency;
 import org.apache.maven.dotnet.dao.Requirement;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import org.apache.maven.dotnet.PathUtil;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.Artifact;
@@ -27,9 +28,6 @@ import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.Repository;
 import org.openrdf.OpenRDFException;
-import org.openrdf.rio.RDFHandler;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.rdfxml.RDFXMLWriter;
 import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.MalformedQueryException;
@@ -110,8 +108,6 @@ public final class ProjectDaoImpl
     public Set<Project> getAllProjects()
         throws IOException
     {
-        ValueFactory valueFactory = rdfRepository.getValueFactory();
-
         Set<Project> projects = new HashSet<Project>();
         TupleQueryResult result = null;
         try
@@ -264,11 +260,13 @@ public final class ProjectDaoImpl
             while ( result.hasNext() )
             {
                 BindingSet set = result.next();
+                System.out.println( "BBB: " + project.getArtifactId() + ":" +
+                    set.getBinding( ProjectUri.IS_RESOLVED.getObjectBinding() ).getValue().toString() );
                 /*
                 for ( Iterator<Binding> i = set.iterator(); i.hasNext(); )
                 {
                     Binding b = i.next();
-                    //System.out.println( b.getName() + ":" + b.getValue() );
+                    System.out.println( b.getName() + ":" + b.getValue() );
                 }
                 */
                 if ( set.getBinding( ProjectUri.IS_RESOLVED.getObjectBinding() ).getValue().toString().equalsIgnoreCase(
@@ -391,16 +389,19 @@ public final class ProjectDaoImpl
             repositoryConnection.add( id, artifactId, valueFactory.createLiteral( project.getArtifactId() ) );
             repositoryConnection.add( id, version, valueFactory.createLiteral( project.getVersion() ) );
             repositoryConnection.add( id, artifactType, valueFactory.createLiteral( project.getArtifactType() ) );
-
-            BNode classifierNode = valueFactory.createBNode();
-            for ( Requirement requirement : project.getRequirements() )
+            if ( project.getPublicKeyTokenId() != null )
             {
-                //System.out.println( "Add requirement: " + requirement.getUri() );
-                URI uri = valueFactory.createURI( requirement.getUri().toString() );
-                repositoryConnection.add( classifierNode, uri, valueFactory.createLiteral( requirement.getValue() ) );
-            }
+                URI classifierNode = valueFactory.createURI( project.getPublicKeyTokenId() + ":" );
+                for ( Requirement requirement : project.getRequirements() )
+                {
+                    //System.out.println( "Add requirement: " + requirement.getUri() );
+                    URI uri = valueFactory.createURI( requirement.getUri().toString() );
+                    repositoryConnection.add( classifierNode, uri,
+                                              valueFactory.createLiteral( requirement.getValue() ) );
+                }
 
-            repositoryConnection.add( id, classifier, classifierNode );
+                repositoryConnection.add( id, classifier, classifierNode );
+            }
 
             if ( project.getParentProject() != null )
             {
@@ -414,7 +415,7 @@ public final class ProjectDaoImpl
 
             for ( ProjectDependency projectDependency : project.getProjectDependencies() )
             {
-                logger.finest( "Project Dependency: Artifact ID = " + projectDependency.getArtifactId() +
+                logger.info( "Project Dependency: Artifact ID = " + projectDependency.getArtifactId() +
                     ", Group ID = " + projectDependency.getGroupId() + ", Version = " + projectDependency.getVersion() +
                     ", Artifact Type = " + projectDependency.getArtifactType() );
                 if ( !projectDependency.isResolved() )
@@ -440,8 +441,6 @@ public final class ProjectDaoImpl
                                 Artifact assembly =
                                     ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
                                 artifactDependencies.add( assembly );
-
-                                //repositoryConnection.commit();
                                 artifactDependencies.addAll( this.storeProjectAndResolveDependencies( projectDependency,
                                                                                                       null,
                                                                                                       artifactRepositories ) );
@@ -462,15 +461,15 @@ public final class ProjectDaoImpl
                     Artifact pomArtifact = artifactFactory.createProjectArtifact( projectDependency.getGroupId(),
                                                                                   projectDependency.getArtifactId(),
                                                                                   projectDependency.getVersion() );
-
-                    pomArtifact.setFile( File.createTempFile( "pomFile", "pom.xml" ) );
+                    File tmpFile = File.createTempFile( "pomFile", "pom.xml" );
+                    tmpFile.deleteOnExit();
+                    pomArtifact.setFile( tmpFile );
 
                     try
                     {
                         logger.info( "NMAVEN-000-000: Retrieving artifact: Artifact ID  = " +
                             projectDependency.getArtifactId() );
                         wagonManager.getArtifact( pomArtifact, artifactRepositories );
-                        wagonManager.getArtifact( assembly, artifactRepositories );
                     }
                     catch ( TransferFailedException e )
                     {
@@ -485,8 +484,31 @@ public final class ProjectDaoImpl
                                 assembly.getArtifactId() + ", Message = " + e.getMessage() );
                     }
 
-                    File pomArtifactFile = pomArtifact.getFile();
-                    FileReader fileReader = new FileReader( pomArtifactFile );
+                    assembly.setFile( PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository ) );
+                    if ( !assembly.getFile().exists() )
+                    {
+                        try
+                        {
+                            logger.info( "NMAVEN-000-000: Retrieving artifact: Artifact ID  = " +
+                                projectDependency.getArtifactId() );
+                            wagonManager.getArtifact( assembly, artifactRepositories );
+                        }
+                        catch ( TransferFailedException e )
+                        {
+                            throw new IOException(
+                                "NMAVEN-000-000: Problem in resolving artifact: Assembly Artifact Id = " +
+                                    assembly.getArtifactId() + ", Message = " + e.getMessage() );
+                        }
+                        catch ( ResourceDoesNotExistException e )
+                        {
+                            throw new IOException(
+                                "NMAVEN-000-000: Problem in resolving artifact: Assembly Artifact Id = " +
+                                    assembly.getArtifactId() + ", Message = " + e.getMessage() );
+                        }
+
+                    }
+
+                    FileReader fileReader = new FileReader( pomArtifact.getFile() );
 
                     MavenXpp3Reader reader = new MavenXpp3Reader();
                     Model model;
@@ -654,14 +676,12 @@ public final class ProjectDaoImpl
                 projectDependency.setArtifactType(
                     bs.getBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding() ).getValue().toString() );
                 project.addProjectDependency( projectDependency );
-                //projectDependencies.add( projectDependency );
                 if ( bs.hasBinding( ProjectUri.DEPENDENCY.getObjectBinding() ) )
                 {
                     addDependenciesToProject( projectDependency, repositoryConnection,
                                               bs.getValue( ProjectUri.DEPENDENCY.getObjectBinding() ) );
                 }
             }
-            //project.setProjectDependencies( projectDependencies );
         }
         finally
         {

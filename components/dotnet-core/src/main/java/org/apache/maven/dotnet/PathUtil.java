@@ -1,4 +1,4 @@
-package org.apache.maven.dotnet.artifact;
+package org.apache.maven.dotnet;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.dotnet.ArtifactType;

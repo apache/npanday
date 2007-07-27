@@ -23,6 +23,7 @@ import java.io.File;
 
 import org.apache.maven.dotnet.artifact.*;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import org.apache.maven.dotnet.PathUtil;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.apache.maven.artifact.Artifact;

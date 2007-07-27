@@ -27,7 +27,7 @@ import org.apache.maven.dotnet.vendor.*;
 import org.apache.maven.dotnet.vendor.IllegalStateException;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.artifact.PathUtil;
+import org.apache.maven.dotnet.PathUtil;
 import org.apache.maven.dotnet.InitializationException;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
 import org.apache.maven.project.MavenProject;
