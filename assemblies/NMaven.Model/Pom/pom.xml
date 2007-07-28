@@ -63,4 +63,22 @@ under the License.
       </plugin>
     </plugins>
   </build>
+  <repositories>
+    <repository>
+      <id>test.repo</id>
+      <url>file://C:\tmp\remote-test-repo</url>
+    </repository>
+  </repositories>
+ <distributionManagement>
+ <snapshotRepository>
+   <name>Apache Development Snapshot Repository</name>
+   <id>maven1</id>
+   <url>file://C:\tmp\remote-test-repo</url>
+ </snapshotRepository>
+ <repository>
+   <id>nmaven1</id>
+   <name>Apache Development Snapshot Repository</name>
+   <url>file://C:\tmp\remote-test-repo</url>
+ </repository>
+</distributionManagement>
 </project>

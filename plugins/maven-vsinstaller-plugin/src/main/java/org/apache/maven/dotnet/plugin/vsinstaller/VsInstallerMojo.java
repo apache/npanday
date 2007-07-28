@@ -4,9 +4,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.model.Dependency;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.DefaultArtifactRepository;
@@ -133,17 +130,9 @@ public class VsInstallerMojo
             artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( "VisualStudio2005",
                                                                                                new ArrayList<Dependency>() );
         }
-        catch ( ArtifactResolutionException e )
+        catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-1600-004: Unable to resolve assemblies", e );
-        }
-        catch ( ArtifactInstallationException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-1600-005: Unable to resolve assemblies", e );
+            throw new MojoExecutionException( e.getMessage() );
         }
 
         //GAC Installs
@@ -191,9 +180,8 @@ public class VsInstallerMojo
                 outputFile.getParentFile().mkdir();
             }
             writer = new OutputStreamWriter( new FileOutputStream( outputFile ), "Unicode" );
-            String pab = new File(localRepository).getParent() + "\\pab";
-            writer.write(
-                addin.replaceAll( "\\$\\{localRepository\\}", pab.replaceAll( "\\\\", "\\\\\\\\" ) ) );
+            String pab = new File( localRepository ).getParent() + "\\pab";
+            writer.write( addin.replaceAll( "\\$\\{localRepository\\}", pab.replaceAll( "\\\\", "\\\\\\\\" ) ) );
 
         }
         catch ( IOException e )

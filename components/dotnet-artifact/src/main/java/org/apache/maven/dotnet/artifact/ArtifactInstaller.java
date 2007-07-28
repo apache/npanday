@@ -27,6 +27,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.model.Dependency;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -75,11 +76,11 @@ public interface ArtifactInstaller
         throws ArtifactInstallationException;
 
     void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> dependencies )
-        throws ArtifactResolutionException, ArtifactNotFoundException, ArtifactInstallationException;
+        throws IOException;
 
     void installArtifactAndDependenciesIntoPrivateApplicationBase( File applicationBase, Artifact artifact,
                                                                    List<Dependency> dependencies )
-        throws ArtifactInstallationException;
+        throws IOException;
 
     /**
      * Initializes the installer.

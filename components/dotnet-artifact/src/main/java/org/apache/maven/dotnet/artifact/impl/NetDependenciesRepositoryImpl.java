@@ -229,6 +229,7 @@ public class NetDependenciesRepositoryImpl
         dependency.setType( netDependency.getType() );
         dependency.setScope( Artifact.SCOPE_RUNTIME );
         dependency.setVersion( netDependency.getVersion() );
+        dependency.setClassifier( netDependency.getPublicKeyToken() );
         return dependency;
     }
 
@@ -244,6 +245,7 @@ public class NetDependenciesRepositoryImpl
     {
         return artifactFactory.createDependencyArtifact( dependency.getGroupId(), dependency.getArtifactId(),
                                                          VersionRange.createFromVersion( dependency.getVersion() ),
-                                                         dependency.getType(), null, Artifact.SCOPE_RUNTIME, null );
+                                                         dependency.getType(), dependency.getPublicKeyToken(),
+                                                         Artifact.SCOPE_RUNTIME, null );
     }
 }

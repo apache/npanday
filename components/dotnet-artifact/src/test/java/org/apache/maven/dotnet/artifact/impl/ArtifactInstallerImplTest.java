@@ -9,7 +9,6 @@ import java.io.File;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.model.Dependency;
 
 public class ArtifactInstallerImplTest
@@ -36,16 +35,17 @@ public class ArtifactInstallerImplTest
         dependencies.add( dependency );
         try
         {
-            artifactInstaller.installArtifactAndDependenciesIntoPrivateApplicationBase(
-                new File( testRepo.getParentFile(), "pab" ), artifact, dependencies );
+            artifactInstaller.installArtifactAndDependenciesIntoPrivateApplicationBase( testRepo, artifact,
+                                                                                        dependencies );
         }
-        catch ( ArtifactInstallationException e )
+        catch ( java.io.IOException e )
         {
-            e.printStackTrace();
-            fail("Unable to install artifact");
+            fail(e.getMessage());
         }
 
-        assertTrue("Could not find main artifact", new File("target/test-repo/pab/NMaven.Model.Pom.dll").exists());
-        assertTrue("Could not find dependent artifact", new File("target/test-repo/pab/NMaven.Test.dll").exists());
+        assertTrue( "Could not find main artifact", new File(
+            "target/test-repo/pab/gac_msil/NMaven.Model.Pom/1.0__NMaven.Model/NMaven.Model.Pom.dll" ).exists() );
+        assertTrue( "Could not find dependent artifact", new File(
+            "target/test-repo/pab/gac_msil/NMaven.Model.Pom/1.0__NMaven.Model/NMaven.Test.dll" ).exists() );
     }
 }

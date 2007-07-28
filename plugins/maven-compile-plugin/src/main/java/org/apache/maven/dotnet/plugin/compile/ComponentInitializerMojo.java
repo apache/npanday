@@ -21,8 +21,6 @@ package org.apache.maven.dotnet.plugin.compile;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 
 import org.apache.maven.dotnet.InitializationException;
 import org.apache.maven.dotnet.assembler.AssemblerContext;
@@ -104,13 +102,9 @@ public class ComponentInitializerMojo
                                                      project.getRemoteArtifactRepositories(), localRepository,
                                                      true );
         }
-        catch ( ArtifactResolutionException e )
+        catch ( java.io.IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-901-000: Unable to resolve assemblies", e );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-901-001: Unable to resolve assemblies", e );
+            throw new MojoExecutionException(e.getMessage());
         }
 
         try

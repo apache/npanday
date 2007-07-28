@@ -27,6 +27,7 @@ import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 
 import java.util.List;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Provides services for resolving .NET assembly artifacts.
@@ -60,5 +61,5 @@ public interface AssemblyResolver
     void resolveTransitivelyFor( MavenProject mavenProject, List<Dependency> dependencies,
                                  List<ArtifactRepository> remoteArtifactRepositories, File localArtifactRepository,
                                  boolean addResolvedDependenciesToProject )
-        throws ArtifactResolutionException, ArtifactNotFoundException;
+        throws IOException;
 }

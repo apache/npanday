@@ -12,7 +12,6 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.versioning.VersionRange;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
@@ -160,20 +159,9 @@ public class EmbedderStarterMojo
             artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( "VisualStudio2005",
                                                                                                new ArrayList<Dependency>() );
         }
-        catch ( ArtifactResolutionException e )
+        catch ( IOException e )
         {
-            logger.severe( "NMAVEN-1600-003: Unable to resolve net dependencies: " + e.getMessage() );
-            throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve net dependencies:", e );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            logger.severe( "NMAVEN-1600-004: Unable to resolve net dependencies: " + e.getMessage() );
-            throw new MojoExecutionException( "NMAVEN-1600-004: Unable to resolve net dependencies:", e );
-        }
-        catch ( ArtifactInstallationException e )
-        {
-            logger.severe( "NMAVEN-1600-005: Unable to resolve net dependencies: " + e.getMessage() );
-            throw new MojoExecutionException( "NMAVEN-1600-005: Unable to resolve net dependencies:", e );
+            throw new MojoExecutionException(e.getMessage());
         }
 
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();

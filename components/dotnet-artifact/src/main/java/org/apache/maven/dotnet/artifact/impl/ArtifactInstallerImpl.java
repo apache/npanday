@@ -28,6 +28,9 @@ import org.apache.maven.dotnet.artifact.AssemblyResolver;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.model.netdependency.NetDependency;
 import org.apache.maven.dotnet.dao.ProjectDao;
+import org.apache.maven.dotnet.dao.Project;
+import org.apache.maven.dotnet.dao.ProjectFactory;
+import org.apache.maven.dotnet.dao.ProjectDependency;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.versioning.VersionRange;
@@ -143,7 +146,7 @@ public class ArtifactInstallerImpl
     }
 
     public void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> dependencies )
-        throws ArtifactResolutionException, ArtifactNotFoundException, ArtifactInstallationException
+        throws IOException
     {
         if ( dependencies == null )
         {
@@ -186,19 +189,39 @@ public class ArtifactInstallerImpl
                 }
                 catch ( ArtifactResolutionException e )
                 {
-                    throw new ArtifactNotFoundException( "", sourceArtifact );
+                    throw new IOException( e.getMessage() );
+                }
+                catch ( ArtifactNotFoundException e )
+                {
+                    throw new IOException( e.getMessage() );
                 }
             }
         }
 
-        installArtifactAndDependenciesIntoPrivateApplicationBase( new File( localRepository.getParentFile(), "pab" ),
-                                                                  null,
-                                                                  repository.getDependenciesFor( matchPolicies ) );
+        ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
+        dao.openConnection();
+        for ( Dependency dependency : repository.getDependenciesFor( matchPolicies ) )
+        {
+            Project project = dao.getProjectFor( dependency.getGroupId(), dependency.getArtifactId(),
+                                                 dependency.getVersion(), dependency.getType(),
+                                                 dependency.getClassifier() );
+
+            Artifact sourceArtifact = ProjectFactory.createArtifactFrom( project, artifactFactory, localRepository );
+
+            List<Dependency> sourceArtifactDependencies = new ArrayList<Dependency>();
+            for ( ProjectDependency projectDependency : project.getProjectDependencies() )
+            {
+                sourceArtifactDependencies.add( ProjectFactory.createDependencyFrom( projectDependency ) );
+            }
+            installArtifactAndDependenciesIntoPrivateApplicationBase( localRepository, sourceArtifact,
+                                                                      sourceArtifactDependencies );
+        }
+        dao.closeConnection();
     }
 
-    public void installArtifactAndDependenciesIntoPrivateApplicationBase( File applicationBase, Artifact artifact,
+    public void installArtifactAndDependenciesIntoPrivateApplicationBase( File localRepository, Artifact artifact,
                                                                           List<Dependency> dependencies )
-        throws ArtifactInstallationException
+        throws IOException
     {
 
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();
@@ -212,7 +235,22 @@ public class ArtifactInstallerImpl
                                                                                     dependency.getType(),
                                                                                     dependency.getClassifier(), scope,
                                                                                     null );
-            artifactDependency.setFile( PathUtil.getUserAssemblyCacheFileFor( artifactDependency, localRepository ) );
+
+            File artifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( artifactDependency, localRepository );
+            if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
+            {
+                artifactDependencyFile = PathUtil.getGlobalAssemblyCacheFileFor( artifactDependency, new File(
+                    System.getProperty( "SystemDrive" ), "\\Windows\\assembly" ) );
+            }
+
+            if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
+            {
+                throw new IOException( "NMAVEN-000-000: Could not find artifact dependency: Artifact ID = " +
+                    artifactDependency.getArtifactId() + ", Path = " + (
+                    ( artifactDependencyFile != null && !artifactDependencyFile.exists() )
+                        ? artifactDependencyFile.getAbsolutePath() : null ) );
+            }
+            artifactDependency.setFile( artifactDependencyFile );
             artifactDependencies.add( artifactDependency );
         }
 
@@ -220,32 +258,14 @@ public class ArtifactInstallerImpl
         {
             artifactDependencies.add( artifact );
         }
-
+        File installDirectory = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository ).getParentFile();
         for ( Artifact artifactDependency : artifactDependencies )
         {
             if ( !artifactDependency.getType().startsWith( "gac" ) )
             {
-                try
-                {
-                    logger.info( "NMAVEN-002-018: Installing file into repository: File = " +
-                        artifactDependency.getFile().getAbsolutePath() );
-                    try
-                    {
-                        FileUtils.copyFileToDirectory( artifactDependency.getFile(), applicationBase );
-                    }
-                    catch ( IOException e )
-                    {
-                        throw new ArtifactInstallationException( "NMAVEN-002-003a: Failed to install artifact: ID = " +
-                            artifactDependency.getId() + ", File = " + ( ( artifactDependency.getFile() != null )
-                            ? artifactDependency.getFile().getAbsolutePath() : "" ), e );
-                    }
-                }
-                catch ( ArtifactInstallationException e )
-                {
-                    throw new ArtifactInstallationException( "NMAVEN-002-003: Failed to install artifact: ID = " +
-                        artifactDependency.getId() + ", File = " + ( ( artifactDependency.getFile() != null )
-                        ? artifactDependency.getFile().getAbsolutePath() : "" ), e );
-                }
+                logger.info( "NMAVEN-002-018c: Installing file into repository: File = " +
+                    artifactDependency.getFile().getAbsolutePath() );
+                FileUtils.copyFileToDirectory( artifactDependency.getFile(), installDirectory );
             }
         }
     }

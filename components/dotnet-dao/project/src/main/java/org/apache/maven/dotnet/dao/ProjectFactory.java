@@ -97,6 +97,17 @@ public class ProjectFactory
         return projectDependency;
     }
 
+    public static Dependency createDependencyFrom(ProjectDependency projectDependency)
+    {
+        Dependency dependency = new Dependency();
+        dependency.setGroupId( projectDependency.getGroupId());
+        dependency.setArtifactId( projectDependency.getArtifactId());
+        dependency.setVersion( projectDependency.getVersion());
+        dependency.setType( projectDependency.getArtifactType());
+        dependency.setClassifier( projectDependency.getPublicKeyTokenId());
+        return dependency;
+    }
+
     public static Artifact createArtifactFrom( Project project, ArtifactFactory artifactFactory, File localRepository )
     {
         Artifact assembly = artifactFactory.createArtifact( project.getGroupId(), project.getArtifactId(),

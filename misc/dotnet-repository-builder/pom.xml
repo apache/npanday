@@ -169,6 +169,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <artifactId>maven-xsd-plugin</artifactId>
+      <version>${nmavenVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.dotnet.plugins</groupId>
       <artifactId>maven-xsp-plugin</artifactId>
       <version>${nmavenVersion}</version>
     </dependency>

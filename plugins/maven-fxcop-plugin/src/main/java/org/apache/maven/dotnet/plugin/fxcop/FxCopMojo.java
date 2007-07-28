@@ -7,8 +7,6 @@ import org.apache.maven.dotnet.PlatformUnsupportedException;
 import org.apache.maven.dotnet.ArtifactType;
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -99,13 +97,9 @@ public class FxCopMojo
                                                      project.getRemoteArtifactRepositories(), localRepository,
                                                      true );
         }
-        catch ( ArtifactResolutionException e )
+        catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-901-000: Unable to resolve assemblies", e );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-901-001: Unable to resolve assemblies", e );
+            throw new MojoExecutionException(e.getMessage());
         }
 
         Set<Artifact> artifacts = project.getDependencyArtifacts();

@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileReader;
+import java.io.EOFException;
 import java.net.URISyntaxException;
 
 public final class ProjectDaoImpl
@@ -89,6 +90,7 @@ public final class ProjectDaoImpl
         projectUris.add( ProjectUri.ARTIFACT_TYPE );
         projectUris.add( ProjectUri.IS_RESOLVED );
         projectUris.add( ProjectUri.DEPENDENCY );
+        projectUris.add( ProjectUri.CLASSIFIER );
 
         dependencyQuery = "SELECT * FROM " + this.constructQueryFragmentFor( "{x}", projectUris );
 
@@ -124,9 +126,7 @@ public final class ProjectDaoImpl
                 String artifactId = set.getBinding( ProjectUri.ARTIFACT_ID.getObjectBinding() ).getValue().toString();
                 String artifactType =
                     set.getBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding() ).getValue().toString();
-                Project project = getProjectFor( groupId, artifactId, version, artifactType, null );
-
-                System.out.println( "A: " + project.getArtifactId() + ":" + project.getProjectDependencies().size() );
+                // Project project = getProjectFor( groupId, artifactId, version, artifactType, null );
                 /*
                 for ( Iterator<Binding> i = set.iterator(); i.hasNext(); )
                 {
@@ -194,6 +194,7 @@ public final class ProjectDaoImpl
         {
             try
             {
+                repositoryConnection.commit();
                 repositoryConnection.close();
             }
             catch ( RepositoryException e )
@@ -234,6 +235,12 @@ public final class ProjectDaoImpl
                 tupleQuery.setBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding(),
                                        valueFactory.createLiteral( artifactType ) );
             }
+            if ( publicKeyTokenId != null )
+            {
+                tupleQuery.setBinding( ProjectUri.CLASSIFIER.getObjectBinding(),
+                                       valueFactory.createLiteral( publicKeyTokenId ) );
+                project.setPublicKeyTokenId( publicKeyTokenId.replace( ":", "" ) );
+            }
 
             result = tupleQuery.evaluate();
 
@@ -260,8 +267,6 @@ public final class ProjectDaoImpl
             while ( result.hasNext() )
             {
                 BindingSet set = result.next();
-                System.out.println( "BBB: " + project.getArtifactId() + ":" +
-                    set.getBinding( ProjectUri.IS_RESOLVED.getObjectBinding() ).getValue().toString() );
                 /*
                 for ( Iterator<Binding> i = set.iterator(); i.hasNext(); )
                 {
@@ -461,7 +466,9 @@ public final class ProjectDaoImpl
                     Artifact pomArtifact = artifactFactory.createProjectArtifact( projectDependency.getGroupId(),
                                                                                   projectDependency.getArtifactId(),
                                                                                   projectDependency.getVersion() );
-                    File tmpFile = File.createTempFile( "pomFile", "pom.xml" );
+                    //File tmpFile = File.createTempFile( "pomFile", "pom.xml" );
+                    // tmpFile.deleteOnExit();
+                    File tmpFile = new File( localRepository, "pom-." + System.currentTimeMillis() + ".xml" );
                     tmpFile.deleteOnExit();
                     pomArtifact.setFile( tmpFile );
 
@@ -518,14 +525,25 @@ public final class ProjectDaoImpl
                     }
                     catch ( XmlPullParserException e )
                     {
-                        throw new IOException( "NMAVEN-000-000: Unable to read model: Message = " + e.getMessage() );
+                        throw new IOException( "NMAVEN-000-000: Unable to read model: Message = " + e.getMessage() +
+                            ", Path = " + pomArtifact.getFile().getAbsolutePath() );
 
                     }
+                    catch ( EOFException e )
+                    {
+                        throw new IOException( "NMAVEN-000-000: Unable to read model: Message = " + e.getMessage() +
+                            ", Path = " + pomArtifact.getFile().getAbsolutePath() );
+                    }
+
                     if ( !( model.getGroupId().equals( projectDependency.getGroupId() ) &&
                         model.getArtifactId().equals( projectDependency.getArtifactId() ) &&
                         model.getVersion().equals( projectDependency.getVersion() ) ) )
                     {
-                        throw new IOException( "Model parameters do not match project dependencies parameters" );
+                        throw new IOException(
+                            "Model parameters do not match project dependencies parameters: Model: " +
+                                model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() +
+                                ", Project: " + projectDependency.getGroupId() + ":" +
+                                projectDependency.getArtifactId() + ":" + projectDependency.getVersion() );
                     }
                     modelDependencies.add( model );
                     artifactDependencies.add( assembly );
@@ -624,7 +642,6 @@ public final class ProjectDaoImpl
         throws RepositoryException, MalformedQueryException, QueryEvaluationException
     {
         String query = "SELECT * FROM {x} p {y}";
-        //System.out.println( query );
         TupleQuery tq = repositoryConnection.prepareTupleQuery( QueryLanguage.SERQL, query );
         tq.setBinding( "x", classifierUri );
         TupleQueryResult result = tq.evaluate();
@@ -635,7 +652,6 @@ public final class ProjectDaoImpl
             for ( Iterator<Binding> i = set.iterator(); i.hasNext(); )
             {
                 Binding binding = i.next();
-                // System.out.println( "-" + binding.getName() + ":" + binding.getValue() );
                 if ( binding.getValue().toString().startsWith( "http://maven.apache.org/artifact/requirement" ) )
                 {
                     try
@@ -675,6 +691,12 @@ public final class ProjectDaoImpl
                     bs.getBinding( ProjectUri.VERSION.getObjectBinding() ).getValue().toString() );
                 projectDependency.setArtifactType(
                     bs.getBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding() ).getValue().toString() );
+                Binding classifierBinding = bs.getBinding( ProjectUri.CLASSIFIER.getObjectBinding() );
+                if ( classifierBinding != null )
+                {
+                    projectDependency.setPublicKeyTokenId( classifierBinding.getValue().toString().replace( ":", "" ) );
+                }
+
                 project.addProjectDependency( projectDependency );
                 if ( bs.hasBinding( ProjectUri.DEPENDENCY.getObjectBinding() ) )
                 {

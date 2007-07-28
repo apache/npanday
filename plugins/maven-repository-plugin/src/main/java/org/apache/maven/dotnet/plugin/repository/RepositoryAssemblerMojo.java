@@ -9,8 +9,6 @@ import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.deployer.ArtifactDeployer;
@@ -156,13 +154,9 @@ public class RepositoryAssemblerMojo
             assemblyResolver.resolveTransitivelyFor( project, dependencies, project.getRemoteArtifactRepositories(),
                                                      localRepository, true );
         }
-        catch ( ArtifactResolutionException e )
+        catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-901-000: Unable to resolve assemblies", e );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-901-001: Unable to resolve assemblies", e );
+            throw new MojoExecutionException(e.getMessage());
         }
 
         for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )

@@ -212,12 +212,12 @@ public class InstallerMojo
             try
             {
                 artifactContext.getArtifactInstaller()
-                    .installArtifactAndDependenciesIntoPrivateApplicationBase( pab.getParentFile(), artifact,
+                    .installArtifactAndDependenciesIntoPrivateApplicationBase( localRepository, artifact,
                                                                                dependencies );
             }
-            catch ( ArtifactInstallationException e )
+            catch ( java.io.IOException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1001-002: Failed to install artifact file", e );
+                throw new MojoExecutionException( e.getMessage() );
             }
         }
 

@@ -58,7 +58,8 @@ public class RepositoryConverterImpl
         Set<Project> projects = dao.getAllProjects();
         for ( Project project : projects )
         {
-            System.out.println(project.getArtifactId() + ":" + project.getProjectDependencies().size());
+            logger.info( "NMAVEN-000-000: Converting Project: Artifact ID = " + project.getArtifactId() +
+                ", Dependency Count =" + project.getProjectDependencies().size() );
             Artifact artifact = ProjectFactory.createArtifactFrom( project, artifactFactory, mavenRepository );
             Model model = ProjectFactory.createModelFrom( project );
 
@@ -75,7 +76,7 @@ public class RepositoryConverterImpl
                 }
                 else
                 {
-                    logger.info("NMAVEN-000-000: Could not find file: " + artifact.getFile().getAbsolutePath());
+                    logger.info( "NMAVEN-000-000: Could not find file: " + artifact.getFile().getAbsolutePath() );
                     continue;
                 }
             }

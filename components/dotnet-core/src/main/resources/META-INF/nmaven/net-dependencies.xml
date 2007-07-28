@@ -45,13 +45,15 @@
     <groupId>NMaven.Plugin</groupId>
     <artifactId>NMaven.Plugin</artifactId>
     <type>library</type>
-    <isGacInstall>true</isGacInstall>    
+    <isGacInstall>true</isGacInstall>
+    <publicKeyToken>4b435f4d76e2f0e6</publicKeyToken>
   </netDependency>
   <netDependency>
     <groupId>NMaven.Model</groupId>
     <artifactId>NMaven.Model.Pom</artifactId>
     <type>library</type>
     <isGacInstall>true</isGacInstall>
+    <publicKeyToken>4b435f4d76e2f0e6</publicKeyToken>
   </netDependency>
   <netDependency>
     <groupId>NMaven.Plugin</groupId>

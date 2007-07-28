@@ -22,8 +22,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.util.ArrayList;
@@ -163,13 +161,9 @@ public class TesterMojo
             assemblyResolver.resolveTransitivelyFor( project, project.getDependencies(),
                                                      project.getRemoteArtifactRepositories(), localRepository, true );
         }
-        catch ( ArtifactResolutionException e )
+        catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-901-000: Unable to resolve assemblies", e );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            throw new MojoExecutionException( "NMAVEN-901-001: Unable to resolve assemblies", e );
+            throw new MojoExecutionException(e.getMessage());
         }
 
         List<Artifact> nunitLibs = new ArrayList<Artifact>();

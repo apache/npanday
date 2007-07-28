@@ -24,9 +24,9 @@ import org.apache.maven.dotnet.dao.Project;
 import org.apache.maven.dotnet.dao.ProjectDependency;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.model.Dependency;
@@ -38,6 +38,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Provides a way to resolve transitive assemblies that do not have versions within their file name.
@@ -154,7 +155,7 @@ public class AssemblyResolverImpl
     public void resolveTransitivelyFor( MavenProject mavenProject, List<Dependency> dependencies,
                                         List<ArtifactRepository> remoteArtifactRepositories,
                                         File localArtifactRepository, boolean addResolvedDependenciesToProject )
-        throws ArtifactResolutionException, ArtifactNotFoundException
+        throws IOException
     {
         //Check that the list of dependencies matches the first level RDF Repo
         //If not, resolve missing dependencies and add to repo or delete additional dependencies from repo
@@ -199,10 +200,6 @@ public class AssemblyResolverImpl
         {
             artifactDependencies =
                 dao.storeProjectAndResolveDependencies( project, localArtifactRepository, remoteArtifactRepositories );
-        }
-        catch ( java.io.IOException e )
-        {
-            throw new ArtifactResolutionException(e.getMessage(), null);
         }
         finally
         {

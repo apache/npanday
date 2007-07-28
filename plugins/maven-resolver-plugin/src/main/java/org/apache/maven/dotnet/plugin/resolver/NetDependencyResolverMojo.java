@@ -24,15 +24,10 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -44,7 +39,6 @@ import org.apache.maven.dotnet.model.netdependency.NetDependency;
 import org.apache.maven.dotnet.executable.NetExecutable;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author Shane Isbell
@@ -65,7 +59,7 @@ public class NetDependencyResolverMojo
     /**
      * @parameter expression="${settings.localRepository}"
      */
-    private String localRepository;
+    private File localRepository;
 
     /**
      * @parameter expression="${project.file}"
@@ -133,7 +127,7 @@ public class NetDependencyResolverMojo
 
         if ( localRepository == null )
         {
-            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" ).getAbsolutePath();
+            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
         }
 
         String profile = System.getProperty( "dependencyProfile" );
@@ -165,7 +159,7 @@ public class NetDependencyResolverMojo
             dependencies.add( dependency );
         }
 
-        artifactContext.init( project, project.getRemoteArtifactRepositories(), new File( localRepository ) );
+        artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
         if ( !new File( localRepository, "nmaven.artifacts.resolved" ).exists() ) //performance optimization
         {
             try
@@ -173,47 +167,13 @@ public class NetDependencyResolverMojo
                 artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( profile,
                                                                                                    dependencies );
             }
-            catch ( ArtifactResolutionException e )
+            catch ( IOException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
-            }
-            catch ( ArtifactNotFoundException e )
-            {
-                throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
-            }
-            catch ( ArtifactInstallationException e )
-            {
-                throw new MojoExecutionException( "NMAVEN-1600-003: Unable to resolve assemblies", e );
+                e.printStackTrace();
+                throw new MojoExecutionException( e.getMessage() );
             }
 
             new File( localRepository, "nmaven.artifacts.resolved" ).mkdir();
-            /*
-            FileOutputStream fos = null;
-            try
-            {
-                new File( localRepository, "nmaven.artifacts.resolved" ).mkdir();
-                //fos = new FileOutputStream( new File( localRepository, "nmaven.artifacts.resolved" ) );
-                //fos.write( 0 );
-            }
-            catch ( IOException e )
-            {
-
-            }
-            finally
-            {
-                if ( fos != null )
-                {
-                    try
-                    {
-                        fos.close();
-                    }
-                    catch ( IOException e )
-                    {
-
-                    }
-                }
-            }
-            */
         }
 
         //Do GAC Install, if needed
