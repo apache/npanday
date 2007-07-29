@@ -225,4 +225,25 @@ public final class ArtifactContextImpl
         }
         return true;
     }
+
+    /*
+    * Matches .NET module artifacts.
+    *
+    * @author Shane Isbell
+    */
+    private static class NetModuleMatchPolicy
+        implements ArtifactMatchPolicy
+    {
+
+        /**
+         * Matches artifacts of type module
+         *
+         * @param artifact the artifact to match
+         * @return true if artifact is of type module, otherwise returns false.
+         */
+        public boolean match( Artifact artifact )
+        {
+            return artifact.getType().equals( "module" );
+        }
+    }
 }

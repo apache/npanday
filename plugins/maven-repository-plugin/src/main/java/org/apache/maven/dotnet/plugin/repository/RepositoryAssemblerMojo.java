@@ -85,13 +85,7 @@ public class RepositoryAssemblerMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
-
-    /**
-     * @component
-     */
     private ArtifactContext artifactContext;
-
 
     /**
      * @component

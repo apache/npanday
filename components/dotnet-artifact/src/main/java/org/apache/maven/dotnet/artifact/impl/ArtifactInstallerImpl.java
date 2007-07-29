@@ -325,38 +325,48 @@ public class ArtifactInstallerImpl
                 ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
         }
 
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        Model model;
-        try
+        if ( !artifact.getType().equals( "exe.config" ) )//TODO: Generalize for any attached artifact
         {
-            model = reader.read( new FileReader( pomFile ) );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new ArtifactInstallationException( "NMAVEN-002-013: Unable to read pom file" );
-        }
-        catch ( IOException e )
-        {
-            throw new ArtifactInstallationException( "NMAVEN-002-013: Unable to read pom file" );
-        }
-        //TODO: Add this back in: since this is already done in the resolve phase, don't redo it for perf reasons.
+            MavenXpp3Reader reader = new MavenXpp3Reader();
+            Model model;
+            try
+            {
+                model = reader.read( new FileReader( pomFile ) );
+                if ( configExeFile.exists() )
+                {
+                    Dependency dependency = new Dependency();
+                    dependency.setGroupId( artifact.getGroupId() );
+                    dependency.setArtifactId( artifact.getArtifactId() );
+                    dependency.setVersion( artifact.getVersion() );
+                    dependency.setType( ArtifactType.EXECONFIG.getPackagingType() );
+                    model.addDependency( dependency );
+                }
+            }
+            catch ( XmlPullParserException e )
+            {
+                throw new ArtifactInstallationException( "NMAVEN-002-013: Unable to read pom file" );
+            }
+            catch ( IOException e )
+            {
+                throw new ArtifactInstallationException( "NMAVEN-002-013: Unable to read pom file" );
+            }
 
-        ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.openConnection();
-        try
-        {
-            dao.storeModelAndResolveDependencies( model, pomFile.getParentFile(), null,
-                                                  new ArrayList<ArtifactRepository>() );
+            ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
+            dao.openConnection();
+            try
+            {
+                dao.storeModelAndResolveDependencies( model, pomFile.getParentFile(), localRepository,
+                                                      new ArrayList<ArtifactRepository>() );
+            }
+            catch ( java.io.IOException e )
+            {
+                throw new ArtifactInstallationException( e.getMessage() );
+            }
+            finally
+            {
+                dao.closeConnection();
+            }
         }
-        catch ( java.io.IOException e )
-        {
-            throw new ArtifactInstallationException( e.getMessage() );
-        }
-        finally
-        {
-            dao.closeConnection();
-        }
-
     }
 
     /**

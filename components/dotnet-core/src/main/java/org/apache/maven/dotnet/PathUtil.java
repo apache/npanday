@@ -8,9 +8,9 @@ import java.util.logging.Logger;
 
 public class PathUtil
 {
-    private static Logger logger = Logger.getAnonymousLogger();
+    private static final Logger logger = Logger.getAnonymousLogger();
 
-    public static synchronized File getGlobalAssemblyCacheFileFor( Artifact artifact, File gacRepository )
+    public static File getGlobalAssemblyCacheFileFor( Artifact artifact, File gacRepository )
     {
         if ( artifact == null )
         {
@@ -32,12 +32,13 @@ public class PathUtil
         {
             version = version + ".0";
         }
-        return new File( gacRepository, "\\gac_msil\\" + artifact.getArtifactId() + "\\" + version + "__" +
-            artifact.getClassifier() + "\\" + artifact.getArtifactId() + "." +
-            ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
+        //TODO: gac_generic
+        //String processArchitecture = ( artifact.getType().equals( "gac_generic" ) );
+        return new File( gacRepository, "\\" + artifact.getType() + "\\" + artifact.getArtifactId() + "\\" + version +
+            "__" + artifact.getClassifier() + "\\" + artifact.getArtifactId() + ".dll" );
     }
 
-    public static synchronized File getPrivateApplicationBaseFileFor( Artifact artifact, File localRepository )
+    public static File getPrivateApplicationBaseFileFor( Artifact artifact, File localRepository )
     {
         if ( artifact == null )
         {
@@ -54,7 +55,7 @@ public class PathUtil
             ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
     }
 
-    public static synchronized File getUserAssemblyCacheFileFor( Artifact artifact, File localRepository )
+    public static File getUserAssemblyCacheFileFor( Artifact artifact, File localRepository )
     {
         if ( artifact == null )
         {
@@ -70,6 +71,4 @@ public class PathUtil
             artifact.getVersion() + "__" + artifact.getGroupId() + "\\" + artifact.getArtifactId() + "." +
             ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
     }
-
-
 }

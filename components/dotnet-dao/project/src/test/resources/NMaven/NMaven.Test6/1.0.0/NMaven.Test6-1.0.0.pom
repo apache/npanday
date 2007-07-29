@@ -5,6 +5,7 @@
   <artifactId>NMaven.Test6</artifactId>
   <version>1.0.0</version>
   <name>NMaven.Test6</name>
+  <packaging>library</packaging>  
   <description>
   </description>
 </project>

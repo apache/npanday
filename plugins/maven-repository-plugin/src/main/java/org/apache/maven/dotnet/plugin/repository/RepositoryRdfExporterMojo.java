@@ -13,7 +13,6 @@ import org.openrdf.sail.memory.MemoryStore;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**

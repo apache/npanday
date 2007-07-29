@@ -22,6 +22,7 @@ under the License.
   <groupId>NMaven</groupId>
   <artifactId>NMaven.Test3</artifactId>
   <version>1.0.0</version>
+  <packaging>library</packaging>  
   <name>NMaven.Test</name>
   <description>
   </description>

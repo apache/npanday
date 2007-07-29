@@ -12,7 +12,7 @@ public enum ProjectUri
 
     CLASSIFIER( "http://maven.apache.org/artifact/classifier", "classifier", true ),
 
-    IS_RESOLVED( "http://maven.apache.org/artifact/dependency/isResolved", "isResolved", false ),
+    IS_RESOLVED( "http://maven.apache.org/artifact/dependency/isResolved", "isResolved", true ),
 
     ARTIFACT( "http://maven.apache.org/Artifact", "artifact", false ),
 

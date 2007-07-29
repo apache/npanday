@@ -4,6 +4,7 @@
   <groupId>NMaven</groupId>
   <artifactId>NMaven.Test5</artifactId>
   <version>1.0.0</version>
+  <packaging>library</packaging>  
   <name>NMaven.Test5</name>
   <description>
   </description>

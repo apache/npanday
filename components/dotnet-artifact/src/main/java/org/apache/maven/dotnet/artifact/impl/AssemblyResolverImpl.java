@@ -160,7 +160,6 @@ public class AssemblyResolverImpl
         //Check that the list of dependencies matches the first level RDF Repo
         //If not, resolve missing dependencies and add to repo or delete additional dependencies from repo
 
-
         Project project = new Project();
         project.setGroupId( mavenProject.getGroupId() );
         project.setArtifactId( mavenProject.getArtifactId() );
@@ -205,12 +204,6 @@ public class AssemblyResolverImpl
         {
             dao.closeConnection();
         }
-
-        //Resolve content
-
-        //Resolve and store pom
-
-        //Add rdf info to mavenProject
 
         if ( addResolvedDependenciesToProject )
         {

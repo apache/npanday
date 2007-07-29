@@ -29,15 +29,16 @@ public class RepositoryConverterImplTest
         testRepo.mkdir();
 
         Repository repository = this.createRepository();
-        ProjectDao dao = this.createProjectDao(repository);
+        ProjectDao dao = this.createProjectDao( repository );
 
         Project project = new Project();
         project.setGroupId( "NMaven.Model" );
         project.setArtifactId( "NMaven.Model.Pom" );
         project.setVersion( "1.0" );
+        project.setArtifactType( "library" );
 
         ProjectDependency test2 = createProjectDependency( "NMaven", "NMaven.Test", "1.0" );
-        test2.setArtifactType( "library");
+        test2.setArtifactType( "library" );
         project.addProjectDependency( test2 );
 
         try
@@ -62,10 +63,10 @@ public class RepositoryConverterImplTest
             fail( "Could not convert the repository: " + e.getMessage() );
         }
 
-        assertTrue(new File(testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0.dll").exists());
-        assertTrue(new File(testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0.pom").exists());
-        assertTrue(new File(testRepo, "/NMaven/NMaven.Test/1.0/NMaven.Test-1.0.dll").exists());
-        assertTrue(new File(testRepo, "/NMaven/NMaven.Test/1.0/NMaven.Test-1.0.pom").exists());
+        assertTrue( new File( testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0.dll" ).exists() );
+        assertTrue( new File( testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0.pom" ).exists() );
+        assertTrue( new File( testRepo, "/NMaven/NMaven.Test/1.0/NMaven.Test-1.0.dll" ).exists() );
+        assertTrue( new File( testRepo, "/NMaven/NMaven.Test/1.0/NMaven.Test-1.0.pom" ).exists() );
     }
 
     private ProjectDependency createProjectDependency( String groupId, String artifactId, String version )
@@ -93,7 +94,7 @@ public class RepositoryConverterImplTest
         return rdfRepository;
     }
 
-    private ProjectDao createProjectDao(Repository rdfRepository)
+    private ProjectDao createProjectDao( Repository rdfRepository )
     {
         ProjectDaoImpl dao = new ProjectDaoImpl();
         WagonManagerTestStub stub = new WagonManagerTestStub();

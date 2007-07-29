@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.FileOutputStream;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
@@ -11,8 +12,12 @@ import java.net.URI;
 
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.sail.memory.MemoryStore;
 import org.openrdf.sail.memory.MemoryStoreRDFSInferencer;
+import org.openrdf.rio.RDFHandler;
+import org.openrdf.rio.RDFHandlerException;
+import org.openrdf.rio.rdfxml.RDFXMLWriter;
 import org.apache.maven.dotnet.dao.Project;
 import org.apache.maven.dotnet.dao.ProjectDependency;
 import org.apache.maven.dotnet.dao.Requirement;
@@ -29,6 +34,10 @@ public class ProjectDaoImplTest
 
     private static File localRepository = new File( System.getProperty( "basedir" ), "/target/local-test-repo" );
 
+    private org.openrdf.repository.Repository rdfRepository;
+
+    private File dataDir;
+
     public void testGetAllProjects()
     {
         ProjectDao dao = this.createProjectDao();
@@ -37,7 +46,7 @@ public class ProjectDaoImplTest
         project.setGroupId( "NMaven" );
         project.setArtifactId( "NMaven.Test5" );
         project.setVersion( "1.0.0" );
-
+        project.setArtifactType( "library" );
         //ProjectDependency test2 = createProjectDependency( "NMaven", "NMaven.Test5", "1.0.0" );
         //project.addProjectDependency( test2 );
 
@@ -83,7 +92,8 @@ public class ProjectDaoImplTest
         project.setGroupId( "NMaven.Model" );
         project.setArtifactId( "NMaven.Model.Pom" );
         project.setVersion( "0.14.0.0" );
-        project.setPublicKeyTokenId( "b03f5f7f11d50a3a");
+        project.setPublicKeyTokenId( "b03f5f7f11d50a3a" );
+        project.setArtifactType( "library" );
         Set<Requirement> requirements = new HashSet<Requirement>();
         try
         {
@@ -113,7 +123,7 @@ public class ProjectDaoImplTest
         Project proj = null;
         try
         {
-            proj = dao.getProjectFor( "NMaven.Model", "NMaven.Model.Pom", "0.14.0.0", null, null );
+            proj = dao.getProjectFor( "NMaven.Model", "NMaven.Model.Pom", "0.14.0.0", "library", null );
         }
         catch ( java.io.IOException e )
         {
@@ -166,7 +176,7 @@ public class ProjectDaoImplTest
         project1.setGroupId( "NMaven" );
         project1.setArtifactId( "NMaven.Plugin" );
         project1.setVersion( "0.14.0.0" );
-
+        project1.setArtifactType( "library" );
         project1.addProjectDependency( this.createProjectDependency( "NMaven", "NMaven.Test4", "1.0.0" ) );
 
         Set<Artifact> artifacts = null;
@@ -191,13 +201,15 @@ public class ProjectDaoImplTest
         Project testProject = null;
         try
         {
-            testProject = dao.getProjectFor( "NMaven", "NMaven.Plugin", "0.14.0.0", null, null );
+            testProject = dao.getProjectFor( "NMaven", "NMaven.Plugin", "0.14.0.0", "library", null );
         }
         catch ( IOException e )
         {
             e.printStackTrace();
             fail( "Could not retrieve the project: " + e.getMessage() );
         }
+
+        this.exportRepositoryToRdf( "testDependency-rdf.xml" );
 
         Set<ProjectDependency> projectDependencies = testProject.getProjectDependencies();
         assertEquals( "Incorrect number of dependencies", 1, projectDependencies.size() );
@@ -216,7 +228,7 @@ public class ProjectDaoImplTest
         project.setGroupId( "NMaven" );
         project.setArtifactId( "NMaven.Test" );
         project.setVersion( "1.0.0" );
-
+        project.setArtifactType( "library" );
         ProjectDependency test2 = createProjectDependency( "NMaven", "NMaven.Test2", "1.0.0" );
         project.addProjectDependency( test2 );
         Set<Artifact> artifacts = null;
@@ -233,10 +245,12 @@ public class ProjectDaoImplTest
         }
         assertEquals( "Incorrect number of returned artifacts", 3, artifacts.size() );
 
+        this.exportRepositoryToRdf( "testStoreTransitiveDependency-rdf.xml" );
+
         Project testProject = null;
         try
         {
-            testProject = dao.getProjectFor( "NMaven", "NMaven.Test", "1.0.0", null, null );
+            testProject = dao.getProjectFor( "NMaven", "NMaven.Test", "1.0.0", "library", null );
         }
         catch ( IOException e )
         {
@@ -263,6 +277,7 @@ public class ProjectDaoImplTest
         project.setGroupId( "NMaven.Model" );
         project.setArtifactId( "NMaven.Model.Pom" );
         project.setVersion( "0.14.0.0" );
+        project.setArtifactType( "library" );
         Set<Artifact> artifacts = null;
         try
         {
@@ -278,7 +293,7 @@ public class ProjectDaoImplTest
         Project proj = null;
         try
         {
-            proj = dao.getProjectFor( "NMaven.Model", "NMaven.Model.Pom", "0.14.0.0", null, null );
+            proj = dao.getProjectFor( "NMaven.Model", "NMaven.Model.Pom", "0.14.0.0", "library", null );
         }
         catch ( java.io.IOException e )
         {
@@ -302,6 +317,8 @@ public class ProjectDaoImplTest
         project.setGroupId( "NMaven.Model" );
         project.setArtifactId( "NMaven.Model.Pom" );
         project.setVersion( "0.14.0.0" );
+        project.setArtifactType( "library" );
+
         try
         {
             dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
@@ -315,7 +332,7 @@ public class ProjectDaoImplTest
 
         try
         {
-            Project proj = dao.getProjectFor( "NMaven.Model", "NMaven.Model.Pom", "0.15.0.0", null, null );
+            dao.getProjectFor( "NMaven.Model", "NMaven.Model.Pom", "0.15.0.0", "library", null );
         }
         catch ( java.io.IOException e )
         {
@@ -332,14 +349,14 @@ public class ProjectDaoImplTest
         projectDependency.setGroupId( groupId );
         projectDependency.setArtifactId( artifactId );
         projectDependency.setVersion( version );
+        projectDependency.setArtifactType( "library" );
         return projectDependency;
     }
 
     private ProjectDao createProjectDao()
     {
-        File dataDir = new File( basedir, ( "/target/rdf-repos/rdf-repo-" + System.currentTimeMillis() ) );
-        org.openrdf.repository.Repository rdfRepository =
-            new SailRepository( new MemoryStoreRDFSInferencer( new MemoryStore( dataDir ) ) );
+        dataDir = new File( basedir, ( "/target/rdf-repos/rdf-repo-" + System.currentTimeMillis() ) );
+        rdfRepository = new SailRepository( new MemoryStoreRDFSInferencer( new MemoryStore( dataDir ) ) );
         try
         {
             rdfRepository.initialize();
@@ -354,5 +371,34 @@ public class ProjectDaoImplTest
         dao.initForUnitTest( rdfRepository, "", "", stub, new ArtifactFactoryTestStub() );
         dao.openConnection();
         return dao;
+    }
+
+    private void exportRepositoryToRdf( String fileName )
+    {
+        RDFHandler rdfxmlWriter;
+        try
+        {
+            File exportFile = new File( localRepository.getParentFile(), fileName );
+            rdfxmlWriter = new RDFXMLWriter( new FileOutputStream( exportFile ) );
+        }
+        catch ( IOException e )
+        {
+            //fail( e.getMessage() );
+            return;
+        }
+
+        try
+        {
+            RepositoryConnection repositoryConnection = rdfRepository.getConnection();
+            repositoryConnection.export( rdfxmlWriter );
+        }
+        catch ( RepositoryException e )
+        {
+            e.printStackTrace();
+        }
+        catch ( RDFHandlerException e )
+        {
+            e.printStackTrace();
+        }
     }
 }

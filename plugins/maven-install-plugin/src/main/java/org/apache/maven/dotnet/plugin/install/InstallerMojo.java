@@ -65,14 +65,8 @@ public class InstallerMojo
 
     /**
      * @parameter expression="${project.file}"
-     * @readonly
      */
     private File pomFile;
-
-    /**
-     * @component
-     */
-    private ArtifactInstaller artifactInstaller;
 
     /**
      * @component
@@ -183,8 +177,6 @@ public class InstallerMojo
             }
         }
 
-        //Use Private Application Base
-
         // To allow executables to be runnable from the repo
         Artifact artifact = project.getArtifact();
 
@@ -193,12 +185,12 @@ public class InstallerMojo
             artifact.getType().equals( ArtifactType.VISUAL_STUDIO_ADDIN.getPackagingType() ) ||
             artifact.getType().equals( ArtifactType.SHARP_DEVELOP_ADDIN.getPackagingType() ) )
         {
-            File pab = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository );
             List<Dependency> dependencies = project.getDependencies();
             if ( artifact.getType().equals( ArtifactType.EXE.getPackagingType() ) )
             {
                 ApplicationConfig applicationConfig = artifactContext.getApplicationConfigFor( artifact );
-                File configExeFile = new File( applicationConfig.getConfigDestinationPath() );
+              //  File configExeFile = new File( applicationConfig.getConfigDestinationPath() );
+                /*
                 if ( configExeFile.exists() )
                 {
                     Dependency dependency = new Dependency();
@@ -208,6 +200,7 @@ public class InstallerMojo
                     dependency.setType( ArtifactType.EXECONFIG.getPackagingType() );
                     dependencies.add( dependency );
                 }
+                */
             }
             try
             {
