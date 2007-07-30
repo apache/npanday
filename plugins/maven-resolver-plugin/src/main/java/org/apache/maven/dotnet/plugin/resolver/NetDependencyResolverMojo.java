@@ -165,7 +165,7 @@ public class NetDependencyResolverMojo
             try
             {
                 artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( profile,
-                                                                                                   dependencies );
+                                                                                                   dependencies, null );
             }
             catch ( IOException e )
             {

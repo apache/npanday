@@ -145,21 +145,27 @@ public class ArtifactInstallerImpl
         this.logger = logger;
     }
 
-    public void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> dependencies )
+    public void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> netDependencies,
+                                                            List<Dependency> javaDependencies )
         throws IOException
     {
-        if ( dependencies == null )
+        if ( netDependencies == null )
         {
-            dependencies = new ArrayList<Dependency>();
+            netDependencies = new ArrayList<Dependency>();
+        }
+
+        if ( javaDependencies == null )
+        {
+            javaDependencies = new ArrayList<Dependency>();
         }
 
         NetDependenciesRepository repository =
             (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
         List<NetDependencyMatchPolicy> matchPolicies = new ArrayList<NetDependencyMatchPolicy>();
         matchPolicies.add( new ProfileMatchPolicy( profile ) );
-        dependencies.addAll( repository.getDependenciesFor( matchPolicies ) );
+        netDependencies.addAll( repository.getDependenciesFor( matchPolicies ) );
 
-        assemblyResolver.resolveTransitivelyFor( new MavenProject(), dependencies, remoteArtifactRepositories,
+        assemblyResolver.resolveTransitivelyFor( new MavenProject(), netDependencies, remoteArtifactRepositories,
                                                  localRepository, false );
 
         //Do Library Installs for Net Dependencies
@@ -167,15 +173,16 @@ public class ArtifactInstallerImpl
         matchPolicies.add( new ProfileMatchPolicy( profile ) );
         matchPolicies.add( new ExecutableAndNetPluginAndAddinMatchPolicy() );
 
-        for ( Dependency dependency : dependencies )
+        ArtifactRepository localArtifactRepo =
+            new DefaultArtifactRepository( "local", "file://" + localRepository, new DefaultRepositoryLayout() );
+
+        for ( Dependency dependency : netDependencies )
         {
             Artifact sourceArtifact = artifactFactory.createBuildArtifact( dependency.getGroupId(),
                                                                            dependency.getArtifactId(),
                                                                            dependency.getVersion(),
                                                                            dependency.getType() );
             //Resolve the JavaBinding for the .NET plugin
-            ArtifactRepository localArtifactRepo =
-                new DefaultArtifactRepository( "local", "file://" + localRepository, new DefaultRepositoryLayout() );
             if ( sourceArtifact.getType().equals( ArtifactType.NETPLUGIN.getPackagingType() ) )
             {
                 Artifact javaBindingArtifact = artifactFactory.createBuildArtifact( sourceArtifact.getGroupId(),
@@ -195,6 +202,26 @@ public class ArtifactInstallerImpl
                 {
                     throw new IOException( e.getMessage() );
                 }
+            }
+        }
+
+        for ( Dependency dependency : javaDependencies )
+        {
+            Artifact javaArtifact = artifactFactory.createBuildArtifact( dependency.getGroupId(),
+                                                                         dependency.getArtifactId(),
+                                                                         dependency.getVersion(),
+                                                                         dependency.getType() );
+            try
+            {
+                resolver.resolve( javaArtifact, remoteArtifactRepositories, localArtifactRepo );
+            }
+            catch ( ArtifactResolutionException e )
+            {
+                throw new IOException( e.getMessage() );
+            }
+            catch ( ArtifactNotFoundException e )
+            {
+                throw new IOException( e.getMessage() );
             }
         }
 

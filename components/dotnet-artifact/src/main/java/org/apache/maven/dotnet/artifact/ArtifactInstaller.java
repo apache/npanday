@@ -75,7 +75,8 @@ public interface ArtifactInstaller
     void installFileWithoutPom( String groupId, String artifactId, String version, String packaging, File artifactFile )
         throws ArtifactInstallationException;
 
-    void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> dependencies )
+    void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> dependencies,
+                                                     List<Dependency> javaDependencies )
         throws IOException;
 
     void installArtifactAndDependenciesIntoPrivateApplicationBase( File applicationBase, Artifact artifact,

@@ -31,6 +31,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.io.File;
 import java.io.IOException;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.net.URLConnection;
@@ -130,8 +131,8 @@ public class EmbedderStarterMojo
     {
         try
         {
-            logger.addHandler(
-                new FileHandler( System.getProperty( "user.home" ) + "\\.m2\\embedder-logs\\nmaven-embedder-log.xml" ) );
+            logger.addHandler( new FileHandler(
+                System.getProperty( "user.home" ) + "\\.m2\\embedder-logs\\nmaven-embedder-log.xml" ) );
         }
         catch ( IOException e )
         {
@@ -152,18 +153,20 @@ public class EmbedderStarterMojo
         ArtifactRepository localArtifactRepository =
             new DefaultArtifactRepository( "local", "file://" + localRepository, new DefaultRepositoryLayout() );
 
+        /*
         artifactContext.init( project, remoteRepositories, localRepository );
 
         try
         {
             artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( "VisualStudio2005",
-                                                                                               new ArrayList<Dependency>() );
+                                                                                               new ArrayList<Dependency>(),
+                                                                                               null );
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException(e.getMessage());
+            throw new MojoExecutionException( e.getMessage() );
         }
-
+        */
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();
         Artifact artifact = artifactFactory.createDependencyArtifact( "org.mortbay.jetty", "jetty-embedded",
                                                                       VersionRange.createFromVersion( "6.1.5" ), "jar",
@@ -189,13 +192,44 @@ public class EmbedderStarterMojo
             throw new MojoExecutionException( "", e );
         }
 
+        String classPath = artifactsToClassPath( result.getArtifacts() );
+
         List<String> commands = new ArrayList<String>();
         commands.add( "-Dport=" + String.valueOf( port ) );
         commands.add( "-DwarFile=" + warFile.getAbsolutePath() );
         commands.add( "-classpath" );
-        commands.add( artifactsToClassPath( result.getArtifacts() ) );
+        commands.add( classPath );
         commands.add( "org.apache.maven.dotnet.jetty.JettyStarter" );
         logger.info( commands.toString() );
+        FileOutputStream commandFile = null;
+        try
+        {
+            //For logging purposes
+            commandFile =
+                new FileOutputStream( System.getProperty( "user.home" ) + "\\.m2\\embedder-logs\\command.txt" );
+            String command = "java  -classpath " + classPath + " -Dport=" +
+                port + " -DwarFile=\"" + warFile.getAbsolutePath() + "\" org.apache.maven.dotnet.jetty.JettyStarter";
+            commandFile.write( command.getBytes() );
+        }
+        catch ( IOException e )
+        {
+
+        }
+        finally
+        {
+            if ( commandFile != null )
+            {
+                try
+                {
+                    commandFile.close();
+                }
+                catch ( IOException e )
+                {
+
+                }
+            }
+        }
+
         VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
         if ( vendor != null )
         {

@@ -50,23 +50,11 @@ public class VsInstallerMojo
     private String localRepository;
 
     /**
-     * The remote repository that contains the vsinstaller and NMaven artifacts.
-     *
-     * @parameter expression="${remoteRepository}"
-     */
-    private String remoteRepository;
-
-    /**
      * Provides services for obtaining artifact information and dependencies
      *
      * @component
      */
     private ArtifactContext artifactContext;
-
-    /**
-     * @component
-     */
-    private ArtifactHandlerManager artifactHandlerManager;
 
     /**
      * Provides access to configuration information used by NMaven.
@@ -90,6 +78,12 @@ public class VsInstallerMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+
+        File logs = new File( localRepository, "embedder-logs" );
+        if ( !logs.exists() )
+        {
+            logs.mkdir();
+        }
 
         RepositoryRegistry repositoryRegistry;
         try
@@ -124,11 +118,18 @@ public class VsInstallerMojo
                                                                    new DefaultRepositoryLayout() ) );
         }
         artifactContext.init( null, remoteRepositories, new File( localRepository ) );
+        List<Dependency> javaDependencies = new ArrayList<Dependency>();
+        Dependency warFile = new Dependency();
+        warFile.setGroupId( "org.apache.maven.dotnet" );
+        warFile.setArtifactId( "dotnet-service-embedder" );
+        warFile.setVersion( "0.14" );
+        warFile.setType( "war" );
+        javaDependencies.add( warFile );
 
         try
         {
-            artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( "VisualStudio2005",
-                                                                                               new ArrayList<Dependency>() );
+            artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( "VisualStudio2005", null,
+                                                                                               javaDependencies );
         }
         catch ( IOException e )
         {
