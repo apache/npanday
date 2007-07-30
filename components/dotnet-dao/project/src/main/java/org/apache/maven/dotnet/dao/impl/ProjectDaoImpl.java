@@ -444,7 +444,7 @@ public final class ProjectDaoImpl
                                     ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
                                 artifactDependencies.add( assembly );
                                 artifactDependencies.addAll( this.storeProjectAndResolveDependencies( projectDependency,
-                                                                                                      null,
+                                                                                                      localRepository,
                                                                                                       artifactRepositories ) );
                             }
                         }
@@ -478,50 +478,52 @@ public final class ProjectDaoImpl
                         }
                         catch ( TransferFailedException e )
                         {
-                            throw new IOException(
-                                "NMAVEN-000-000a: Problem in resolving artifact: Assembly Artifact Id = " +
-                                    assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Message = " +
-                                    e.getMessage() );
+                            logger.info( "NMAVEN-000-000a: Problem in resolving artifact: Assembly Artifact Id = " +
+                                assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Message = " +
+                                e.getMessage() );
                         }
                         catch ( ResourceDoesNotExistException e )
                         {
-                            throw new IOException(
-                                "NMAVEN-000-000b: Problem in resolving artifact: Assembly Artifact Id = " +
-                                    assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Message = " +
-                                    e.getMessage() );
+                            logger.info( "NMAVEN-000-000b: Problem in resolving artifact: Assembly Artifact Id = " +
+                                assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Message = " +
+                                e.getMessage() );
                         }
 
-                        FileReader fileReader = new FileReader( pomArtifact.getFile() );
+                        if ( pomArtifact.getFile() != null && pomArtifact.getFile().exists() )
+                        {
+                            FileReader fileReader = new FileReader( pomArtifact.getFile() );
 
-                        MavenXpp3Reader reader = new MavenXpp3Reader();
-                        Model model;
-                        try
-                        {
-                            model = reader.read( fileReader );
-                        }
-                        catch ( XmlPullParserException e )
-                        {
-                            throw new IOException( "NMAVEN-000-000: Unable to read model: Message = " + e.getMessage() +
-                                ", Path = " + pomArtifact.getFile().getAbsolutePath() );
+                            MavenXpp3Reader reader = new MavenXpp3Reader();
+                            Model model;
+                            try
+                            {
+                                model = reader.read( fileReader );
+                            }
+                            catch ( XmlPullParserException e )
+                            {
+                                throw new IOException( "NMAVEN-000-000: Unable to read model: Message = " +
+                                    e.getMessage() + ", Path = " + pomArtifact.getFile().getAbsolutePath() );
 
-                        }
-                        catch ( EOFException e )
-                        {
-                            throw new IOException( "NMAVEN-000-000: Unable to read model: Message = " + e.getMessage() +
-                                ", Path = " + pomArtifact.getFile().getAbsolutePath() );
+                            }
+                            catch ( EOFException e )
+                            {
+                                throw new IOException( "NMAVEN-000-000: Unable to read model: Message = " +
+                                    e.getMessage() + ", Path = " + pomArtifact.getFile().getAbsolutePath() );
+                            }
+
+                            if ( !( model.getGroupId().equals( projectDependency.getGroupId() ) &&
+                                model.getArtifactId().equals( projectDependency.getArtifactId() ) &&
+                                model.getVersion().equals( projectDependency.getVersion() ) ) )
+                            {
+                                throw new IOException(
+                                    "Model parameters do not match project dependencies parameters: Model: " +
+                                        model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() +
+                                        ", Project: " + projectDependency.getGroupId() + ":" +
+                                        projectDependency.getArtifactId() + ":" + projectDependency.getVersion() );
+                            }
+                            modelDependencies.add( model );
                         }
 
-                        if ( !( model.getGroupId().equals( projectDependency.getGroupId() ) &&
-                            model.getArtifactId().equals( projectDependency.getArtifactId() ) &&
-                            model.getVersion().equals( projectDependency.getVersion() ) ) )
-                        {
-                            throw new IOException(
-                                "Model parameters do not match project dependencies parameters: Model: " +
-                                    model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() +
-                                    ", Project: " + projectDependency.getGroupId() + ":" +
-                                    projectDependency.getArtifactId() + ":" + projectDependency.getVersion() );
-                        }
-                        modelDependencies.add( model );
                     }
 
                     assembly.setFile( PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository ) );
