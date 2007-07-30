@@ -61,6 +61,11 @@ public class RepositoryAssemblerMojo
     private File localRepository;
 
     /**
+     * @parameter expression="${withGac}"
+     */
+    private boolean withGac = false;
+
+    /**
      * @component
      */
     private AssemblyResolver assemblyResolver;
@@ -150,7 +155,7 @@ public class RepositoryAssemblerMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException(e.getMessage());
+            throw new MojoExecutionException( e.getMessage() );
         }
 
         for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )
@@ -168,7 +173,11 @@ public class RepositoryAssemblerMojo
 
             try
             {
-                artifactDeployer.deploy( artifact.getFile(), artifact, deploymentRepository, localArtifactRepository );
+                if ( withGac || !artifact.getType().startsWith( "gac" ) )
+                {
+                    artifactDeployer.deploy( artifact.getFile(), artifact, deploymentRepository,
+                                             localArtifactRepository );
+                }
                 //Deploy parent poms
                 for ( Artifact pomArtifact : pomParentArtifacts )
                 {
