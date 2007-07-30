@@ -31,6 +31,7 @@
       <artifactId>NMaven.Model.Pom</artifactId>
       <version>${pom.version}</version>
       <type>library</type>
+      <classifier>4b435f4d76e2f0e6</classifier>
     </dependency>
     <dependency>
       <groupId>NMaven.Model</groupId>
@@ -43,6 +44,7 @@
       <artifactId>NMaven.Plugin</artifactId>
       <version>${pom.version}</version>
       <type>library</type>
+      <classifier>4b435f4d76e2f0e6</classifier>
     </dependency>
     <dependency>
       <groupId>NMaven.Plugin</groupId>

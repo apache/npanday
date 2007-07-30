@@ -71,7 +71,7 @@ public class RepositoryConverterImpl
             if ( !project.getArtifactType().equals( "pom" ) )
             {
                 if ( artifact.getFile().exists() )
-                {
+                {  
                     FileUtils.copyFile( artifact.getFile(), new File( mavenRepository, layout.pathOf( artifact ) ) );
                 }
                 else

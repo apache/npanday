@@ -97,22 +97,23 @@ public class ProjectFactory
         return projectDependency;
     }
 
-    public static Dependency createDependencyFrom(ProjectDependency projectDependency)
+    public static Dependency createDependencyFrom( ProjectDependency projectDependency )
     {
         Dependency dependency = new Dependency();
-        dependency.setGroupId( projectDependency.getGroupId());
-        dependency.setArtifactId( projectDependency.getArtifactId());
-        dependency.setVersion( projectDependency.getVersion());
-        dependency.setType( projectDependency.getArtifactType());
-        dependency.setClassifier( projectDependency.getPublicKeyTokenId());
+        dependency.setGroupId( projectDependency.getGroupId() );
+        dependency.setArtifactId( projectDependency.getArtifactId() );
+        dependency.setVersion( projectDependency.getVersion() );
+        dependency.setType( projectDependency.getArtifactType() );
+        dependency.setClassifier( projectDependency.getPublicKeyTokenId() );
         return dependency;
     }
 
     public static Artifact createArtifactFrom( Project project, ArtifactFactory artifactFactory, File localRepository )
     {
-        Artifact assembly = artifactFactory.createArtifact( project.getGroupId(), project.getArtifactId(),
-                                                            project.getVersion(), "compile",
-                                                            project.getArtifactType() );
+        Artifact assembly = artifactFactory.createArtifactWithClassifier( project.getGroupId(), project.getArtifactId(),
+                                                                          project.getVersion(),
+                                                                          project.getArtifactType(),
+                                                                          project.getPublicKeyTokenId() );
 
         File artifactFile = ( ( project.getArtifactType().startsWith( "gac" ) ) ) ? new File(
             "C:\\WINDOWS\\assembly\\" + project.getArtifactType() + "\\" + project.getArtifactId() + "\\" +
@@ -135,7 +136,7 @@ public class ProjectFactory
                                                                       projectDependency.getArtifactType(),
                                                                       projectDependency.getPublicKeyTokenId(), scope,
                                                                       null );
-
+        //System.out.println("Scope = " + assembly.getScope() + ", Type = " + assembly.getType() + ", Classifier = " + assembly.getClassifier());
         File artifactFile = ( ( projectDependency.getArtifactType().startsWith( "gac" ) ) ) ? new File(
             "C:\\WINDOWS\\assembly\\" + projectDependency.getArtifactType() + "\\" + projectDependency.getArtifactId() +
                 "\\" + projectDependency.getVersion() + "__" + projectDependency.getPublicKeyTokenId() + "\\" +

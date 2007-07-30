@@ -124,6 +124,12 @@ public final class ProjectDaoImpl
                 String artifactId = set.getBinding( ProjectUri.ARTIFACT_ID.getObjectBinding() ).getValue().toString();
                 String artifactType =
                     set.getBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding() ).getValue().toString();
+                String classifier = null;
+                if ( set.hasBinding( ProjectUri.CLASSIFIER.getObjectBinding() ) )
+                {
+                    classifier = set.getBinding( ProjectUri.CLASSIFIER.getObjectBinding() ).getValue().toString();
+                }
+
                 // Project project = getProjectFor( groupId, artifactId, version, artifactType, null );
                 /*
                 for ( Iterator<Binding> i = set.iterator(); i.hasNext(); )
@@ -132,7 +138,7 @@ public final class ProjectDaoImpl
                     System.out.println( b.getName() + ":" + b.getValue() );
                 }
                */
-                projects.add( getProjectFor( groupId, artifactId, version, artifactType, null ) );
+                projects.add( getProjectFor( groupId, artifactId, version, artifactType, classifier ) );
             }
         }
         catch ( RepositoryException e )

@@ -8,12 +8,17 @@ import org.apache.maven.dotnet.dao.ProjectDependency;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.sail.memory.MemoryStoreRDFSInferencer;
 import org.openrdf.sail.memory.MemoryStore;
+import org.openrdf.rio.RDFHandler;
+import org.openrdf.rio.RDFHandlerException;
+import org.openrdf.rio.rdfxml.RDFXMLWriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 
@@ -22,6 +27,8 @@ public class RepositoryConverterImplTest
 {
 
     private static File basedir = new File( System.getProperty( "basedir" ) );
+
+    private org.openrdf.repository.Repository rdfRepository;
 
     public void testConvert()
     {
@@ -36,6 +43,7 @@ public class RepositoryConverterImplTest
         project.setArtifactId( "NMaven.Model.Pom" );
         project.setVersion( "1.0" );
         project.setArtifactType( "library" );
+        project.setPublicKeyTokenId( "abc" );
 
         ProjectDependency test2 = createProjectDependency( "NMaven", "NMaven.Test", "1.0" );
         test2.setArtifactType( "library" );
@@ -62,9 +70,10 @@ public class RepositoryConverterImplTest
         {
             fail( "Could not convert the repository: " + e.getMessage() );
         }
+        this.exportRepositoryToRdf( "testConvert-rdf.xml", testRepo, repository );
 
-        assertTrue( new File( testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0.dll" ).exists() );
-        assertTrue( new File( testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0.pom" ).exists() );
+        assertTrue( new File( testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0-abc.dll" ).exists() );
+        assertTrue( new File( testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0-abc.pom" ).exists() );
         assertTrue( new File( testRepo, "/NMaven/NMaven.Test/1.0/NMaven.Test-1.0.dll" ).exists() );
         assertTrue( new File( testRepo, "/NMaven/NMaven.Test/1.0/NMaven.Test-1.0.pom" ).exists() );
     }
@@ -103,5 +112,33 @@ public class RepositoryConverterImplTest
         dao.setRdfRepository( rdfRepository );
         dao.openConnection();
         return dao;
+    }
+
+    private void exportRepositoryToRdf( String fileName, File localRepository, Repository rdfRepository )
+    {
+        RDFHandler rdfxmlWriter;
+        try
+        {
+            File exportFile = new File( localRepository.getParentFile(), fileName );
+            rdfxmlWriter = new RDFXMLWriter( new FileOutputStream( exportFile ) );
+        }
+        catch ( IOException e )
+        {
+            return;
+        }
+
+        try
+        {
+            RepositoryConnection repositoryConnection = rdfRepository.getConnection();
+            repositoryConnection.export( rdfxmlWriter );
+        }
+        catch ( RepositoryException e )
+        {
+            e.printStackTrace();
+        }
+        catch ( RDFHandlerException e )
+        {
+            e.printStackTrace();
+        }
     }
 }
