@@ -562,6 +562,11 @@ public final class ProjectDaoImpl
                 repositoryConnection.add( did, version, valueFactory.createLiteral( projectDependency.getVersion() ) );
                 repositoryConnection.add( did, artifactType,
                                           valueFactory.createLiteral( projectDependency.getArtifactType() ) );
+                if ( projectDependency.getPublicKeyTokenId() != null )
+                {
+                    repositoryConnection.add( did, classifier, valueFactory.createLiteral(
+                        projectDependency.getPublicKeyTokenId() + ":" ) );
+                }
                 repositoryConnection.add( id, dependency, did );
 
             }//end for

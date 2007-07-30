@@ -55,31 +55,9 @@ public class ComponentInitializerMojo
     private File localRepository;
 
     /**
-     * @parameter expression="${project.file}"
-     * @required
-     * @readonly
-     */
-    private File pomFile;
-
-    /**
      * @component
      */
     private AssemblyResolver assemblyResolver;
-
-    /**
-     * @component
-     */
-    private org.apache.maven.dotnet.executable.CapabilityMatcher capabilityMatcher;
-
-    /**
-     * @component
-     */
-    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
-
-    /**
-     * @component
-     */
-    private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
 
     /**
      * @component
