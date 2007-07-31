@@ -136,6 +136,18 @@ public class EmbedderStarterMojo
         }
         catch ( IOException e )
         {
+            FileOutputStream errorStream;
+            try
+            {
+            errorStream =
+                new FileOutputStream( System.getProperty( "user.home" ) + "\\.m2\\embedder-logs\\error.txt" );
+                String command = e.getMessage();
+                errorStream.write( command.getBytes() );
+            }
+            catch ( IOException ex )
+            {
+
+            }
             e.printStackTrace();
         }
 

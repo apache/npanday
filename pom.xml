@@ -131,7 +131,7 @@ under the License.
   <modules>
     <module>components</module>
     <module>archetypes</module>
-    <module>plugins</module>
+    <module>plugins</module> 
   </modules>
   <repositories>
     <repository>
@@ -299,7 +299,7 @@ under the License.
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
-        <version>1.0.4</version>
+        <version>1.1</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>

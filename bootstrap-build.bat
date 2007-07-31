@@ -6,6 +6,7 @@ call mvn %phase% %*
 IF errorlevel 1 GOTO END
 
 ECHO Installing 3rd Party Assemblies in the Local Repo
+rem call mvn install:install-file -Dfile=./thirdparty/org.apache.ws/XmlSchema-1.1.jar -DpomFile=./thirdparty/org.apache.ws/XmlSchema-1.1.pom -DgroupId=org.apache.ws.commons -DartifactId=XmlSchema -Dversion=1.1
 call mvn org.apache.maven.dotnet.plugins:maven-install-plugin:install-file -Dfile=./thirdparty/NUnit/NUnit.Framework.dll -DgroupId=NUnit -DartifactId=NUnit.Framework -Dpackaging=library -DartifactVersion=2.2.8.0
 call mvn org.apache.maven.dotnet.plugins:maven-install-plugin:install-file -Dfile=./thirdparty/Castle/Castle.Core.dll -DpomFile=./thirdparty/Castle/Castle.Core-2.0-rc2.pom -DgroupId=Castle -DartifactId=Castle.Core -Dpackaging=library -DartifactVersion=2.0-rc2
 call mvn org.apache.maven.dotnet.plugins:maven-install-plugin:install-file -Dfile=./thirdparty/Castle/Castle.DynamicProxy.dll -DpomFile=./thirdparty/Castle/Castle.DynamicProxy-2.0-rc2.pom -DgroupId=Castle -DartifactId=Castle.DynamicProxy -Dpackaging=library -DartifactVersion=2.0-rc2

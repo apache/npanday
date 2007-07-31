@@ -73,7 +73,7 @@ public class RepositoryConverterImplTest
         this.exportRepositoryToRdf( "testConvert-rdf.xml", testRepo, repository );
 
         assertTrue( new File( testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0-abc.dll" ).exists() );
-        assertTrue( new File( testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0-abc.pom" ).exists() );
+        assertTrue( new File( testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0.pom" ).exists() );
         assertTrue( new File( testRepo, "/NMaven/NMaven.Test/1.0/NMaven.Test-1.0.dll" ).exists() );
         assertTrue( new File( testRepo, "/NMaven/NMaven.Test/1.0/NMaven.Test-1.0.pom" ).exists() );
     }

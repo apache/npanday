@@ -10,11 +10,15 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.handler.DefaultArtifactHandler;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.project.artifact.ProjectArtifactMetadata;
 import org.openrdf.repository.Repository;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.FileUtils;
@@ -71,7 +75,7 @@ public class RepositoryConverterImpl
             if ( !project.getArtifactType().equals( "pom" ) )
             {
                 if ( artifact.getFile().exists() )
-                {  
+                {
                     FileUtils.copyFile( artifact.getFile(), new File( mavenRepository, layout.pathOf( artifact ) ) );
                 }
                 else
@@ -84,11 +88,25 @@ public class RepositoryConverterImpl
             handler = new DefaultArtifactHandler( "pom" );
             artifact.setArtifactHandler( handler );
 
-            File pomFile = new File( mavenRepository, layout.pathOf( artifact ) );
+            File pomFile = new File( mavenRepository, pathOfPom( artifact ) );
             FileWriter fileWriter = new FileWriter( pomFile );
             new MavenXpp3Writer().write( fileWriter, model );
             IOUtil.close( fileWriter );
         }
         dao.closeConnection();
+    }
+
+    private String pathOfPom( Artifact artifact )
+    {
+        StringBuffer artifactPath = new StringBuffer();
+        for ( String groupId : artifact.getGroupId().split( "[.]" ) )
+        {
+            artifactPath.append( groupId ).append( File.separator );
+        }
+
+        artifactPath.append( artifact.getArtifactId() ).append( File.separator ).append( artifact.getBaseVersion() ).
+            append( File.separator ).append( artifact.getArtifactId() ).append( "-" ).append(
+            artifact.getBaseVersion() ).append(".").append( ( artifact.getArtifactHandler() ).getExtension() );
+        return artifactPath.toString();
     }
 }
