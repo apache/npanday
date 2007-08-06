@@ -14,11 +14,12 @@
     </links>
     <menu name="General Info">
       <item name="About" href="index.html"/>
+      <item name="Configuration" href="environment-configuration.html"/>
+      <item name="Conventions" href="conventions.html"/>
       <item name="Features" href="features.html"/>
       <item name="Getting Started" href="getting-started.html"/>
-      <item name="Conventions" href="conventions.html"/>      
       <item name="Plugins" href="/plugins/index.html"/>
-      <item name="Configuration" href="environment-configuration.html"/>
+      <item name="RDF Repository" href="rdf-repository.html"/>
     </menu>
     <menu name="IDE Integration">
       <item name="Visual Studio" href="/ide/visual-studio.html"/>

@@ -1,0 +1,190 @@
+RDF Repository
+
+* The Structure
+
+ The local repository for .NET artifacts is divided into a user assembly cache (uac) and a private application base (pab). The
+ user assembly cache includes resolved artifacts, while the private application base is used for running executables and
+ .NET plugins, which require (in most cases) that their dependencies be in the same directory as the executables for
+ loading purposes.
+
++----+
+|--.m2
+|   `--uac
+|      `--gac_msil
+|          `--NMaven.Model.Pom
+|              `--0.14.0.0__NMaven.Model
+|                  `--NMaven.Model.Pom.dll
+|                  `--NMaven.Model.Pom.pom
+|          `--NMaven.Executable
+|               `--0.14.0.0__NMaven.Executables
+|                   `--NMaven.Executable.exe
+|                   `--NMaven.Executable.pom
+|      `--rdfRepository/memorystore.data
+|   `--pab
+|      `--NMaven.Executable
+|          `--0.14.0.0__NMaven.Executables
+|              `--NMaven.Executable.exe
+|              `--NMaven.Model.Pom.dll
++----+
+
+ The uac and pab follow a similar structure to the Microsoft specified global assembly cache. More
+ generally the structure looks like:
+
++----+
+|--.m2
+|   `--uac
+|      `--[processor_architecture]
+|          `--[artifact_id]
+|              `--[version]__[group_id]
+|                  `--[artifact_id].[extension]
+|   `--pab
+|      `--[processor_architecture]
+|          `--[artifact_id]
+|              `--[version]__[group_id]
+|                  `--[artifact_id].[extension]
+|                  `--[artifact_id_dependency].[extension]
++----+
+
+* The Metadata
+
+ NMaven does not store poms within the local repository, but uses an RDF store (.m2/uac/rdfRepository/memorystore.data)
+ to hold the artifact information. To export this memory store to RDF/XML, type:
+
++----+
+ mvn org.apache.maven.dotnet.plugins:maven-repository-plugin:export-rdf
++----+
+
+ You will see an rdf-repository-export.xml file appear under the rdfRepository directory.
+
++----+
+ <?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+[...]
+<rdf:Description rdf:about="Castle:Castle.Core:2.0-rc2:library">
+	<isResolved xmlns="http://maven.apache.org/artifact/dependency/"
+	            rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isResolved>
+</rdf:Description>
+
+<rdf:Description rdf:about="Castle:Castle.Windsor:2.0-rc2:library">
+	<dependency xmlns="http://maven.apache.org/artifact/"
+	            rdf:resource="Castle:Castle.Core:2.0-rc2:library"/>
+	<dependency xmlns="http://maven.apache.org/artifact/"
+	            rdf:resource="Castle:Castle.DynamicProxy:2.0-rc2:library"/>
+	<dependency xmlns="http://maven.apache.org/artifact/"
+	            rdf:resource="Castle:Castle.MicroKernel:2.0-rc2:library"/>
+	<isResolved xmlns="http://maven.apache.org/artifact/dependency/"
+	            rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isResolved>
+</rdf:Description>
+
+<rdf:Description rdf:about="NMaven.Model:NMaven.Model.Pom:0.14:library">
+	<rdf:type rdf:resource="http://maven.apache.org/Artifact"/>
+	<groupId xmlns="http://maven.apache.org/artifact/">NMaven.Model</groupId>
+	<artifactId xmlns="http://maven.apache.org/artifact/">NMaven.Model.Pom</artifactId>
+	<version xmlns="http://maven.apache.org/artifact/">0.14</version>
+	<artifactType xmlns="http://maven.apache.org/artifact/">library</artifactType>
+	<isResolved xmlns="http://maven.apache.org/artifact/dependency/"
+	            rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isResolved>
+	<parent xmlns="http://maven.apache.org/artifact/"
+	        rdf:resource="NMaven:NMaven.Assemblies:0.14:library"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="NMaven:NMaven.Assemblies:0.14:pom">
+	<rdf:type rdf:resource="http://maven.apache.org/Artifact"/>
+	<groupId xmlns="http://maven.apache.org/artifact/">NMaven</groupId>
+	<artifactId xmlns="http://maven.apache.org/artifact/">NMaven.Assemblies</artifactId>
+	<version xmlns="http://maven.apache.org/artifact/">0.14</version>
+	<artifactType xmlns="http://maven.apache.org/artifact/">pom</artifactType>
+	<parent xmlns="http://maven.apache.org/artifact/"
+	        rdf:resource="NMaven.Project:NMaven.Project:0.14:pom"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="NMaven.Project:NMaven.Project:0.14:pom">
+	<rdf:type rdf:resource="http://maven.apache.org/Artifact"/>
+	<groupId xmlns="http://maven.apache.org/artifact/">NMaven.Project</groupId>
+	<artifactId xmlns="http://maven.apache.org/artifact/">NMaven.Project</artifactId>
+	<version xmlns="http://maven.apache.org/artifact/">0.14</version>
+	<artifactType xmlns="http://maven.apache.org/artifact/">pom</artifactType>
+	<isResolved xmlns="http://maven.apache.org/artifact/dependency/"
+	            rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isResolved>
+</rdf:Description>
+
+<rdf:Description rdf:about="NMaven:NMaven.Assemblies:0.14:pom">
+	<isResolved xmlns="http://maven.apache.org/artifact/dependency/"
+	            rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isResolved>
+</rdf:Description>
+
+<rdf:Description rdf:about="NMaven.Artifact:NMaven.Artifact:0.14:library">
+	<rdf:type rdf:resource="http://maven.apache.org/Artifact"/>
+	<groupId xmlns="http://maven.apache.org/artifact/">NMaven.Artifact</groupId>
+	<artifactId xmlns="http://maven.apache.org/artifact/">NMaven.Artifact</artifactId>
+	<version xmlns="http://maven.apache.org/artifact/">0.14</version>
+	<artifactType xmlns="http://maven.apache.org/artifact/">library</artifactType>
+	<parent xmlns="http://maven.apache.org/artifact/"
+	        rdf:resource="NMaven:NMaven.Assemblies:0.14:library"/>
+	<dependency xmlns="http://maven.apache.org/artifact/"
+	            rdf:resource="NMaven.Model:NMaven.Model.Pom:0.14:library"/>
+	<dependency xmlns="http://maven.apache.org/artifact/"
+	            rdf:resource="NUnit:NUnit.Framework:2.2.8.0:library"/>
+	<isResolved xmlns="http://maven.apache.org/artifact/dependency/"
+	            rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isResolved>
+</rdf:Description>
+
+<rdf:Description rdf:about="NMaven.Plugins:NMaven.Plugin.Resx:0.14:exe">
+	<rdf:type rdf:resource="http://maven.apache.org/Artifact"/>
+	<groupId xmlns="http://maven.apache.org/artifact/">NMaven.Plugins</groupId>
+	<artifactId xmlns="http://maven.apache.org/artifact/">NMaven.Plugin.Resx</artifactId>
+	<version xmlns="http://maven.apache.org/artifact/">0.14</version>
+	<artifactType xmlns="http://maven.apache.org/artifact/">exe</artifactType>
+	<parent xmlns="http://maven.apache.org/artifact/"
+	        rdf:resource="NMaven.Plugins:NMaven.Plugins:0.14:exe"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="NMaven.Plugins:NMaven.Plugin.Resx:0.14:exe.config">
+	<rdf:type rdf:resource="http://maven.apache.org/Artifact"/>
+	<groupId xmlns="http://maven.apache.org/artifact/">NMaven.Plugins</groupId>
+	<artifactId xmlns="http://maven.apache.org/artifact/">NMaven.Plugin.Resx</artifactId>
+	<version xmlns="http://maven.apache.org/artifact/">0.14</version>
+	<artifactType xmlns="http://maven.apache.org/artifact/">exe.config</artifactType>
+</rdf:Description>
+
+<rdf:Description rdf:about="NMaven.Plugins:NMaven.Plugin.Resx:0.14:exe">
+	<dependency xmlns="http://maven.apache.org/artifact/"
+	            rdf:resource="NMaven.Plugins:NMaven.Plugin.Resx:0.14:exe.config"/>
+	<isResolved xmlns="http://maven.apache.org/artifact/dependency/"
+	            rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isResolved>
+</rdf:Description>
+
+</rdf:RDF>
++----+
+
+ The Predicates are:
+
+*-----------------------------------------------------------------------------------+----------------------------------+
+| <<Predicate>>                                       | <<Description>>
+*-----------------------------------------------------------------------------------+----------------------------------+
+| http://maven.apache.org/artifact/artifactType       | The type of artifact: library, executable, net-plugin, netmodule
+*-----------------------------------------------------------------------------------+----------------------------------+
+| http://maven.apache.org/artifact/groupId       | The group Id
+*-----------------------------------------------------------------------------------+----------------------------------+
+| http://maven.apache.org/artifact/artifactId       | The artifact id
+*-----------------------------------------------------------------------------------+----------------------------------+
+| http://maven.apache.org/artifact/version     | The artifact version
+*-----------------------------------------------------------------------------------+----------------------------------+
+| http://maven.apache.org/artifact/classifier     | The classifier URI (Public Key Token ID)
+*-----------------------------------------------------------------------------------+----------------------------------+
+| http://maven.apache.org/artifact/dependency/isResolved             | Has the artifact been resolved
+*-----------------------------------------------------------------------------------+----------------------------------+
+| http://maven.apache.org/Artifact | The RDF type
+*-----------------------------------------------------------------------------------+----------------------------------+
+| http://maven.apache.org/artifact/dependency        | A dependency URI
+*-----------------------------------------------------------------------------------+----------------------------------+
+| http://maven.apache.org/artifact/parent             | The Parent URI
+*-----------------------------------------------------------------------------------+----------------------------------+
+| http://maven.apache.org/artifact/requirement/vendor              | The required artifact vendor: Microsoft, Mono
+*-----------------------------------------------------------------------------------+----------------------------------+
+| http://maven.apache.org/artifact/requirement/frameworkVersion    | The required artifact framework version: 1.1, 2.0, 3.0
+*-----------------------------------------------------------------------------------+----------------------------------+
+
+
