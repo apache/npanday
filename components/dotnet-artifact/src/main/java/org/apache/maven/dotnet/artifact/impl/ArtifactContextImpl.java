@@ -31,7 +31,6 @@ import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.project.MavenProject;
 
 /**
@@ -42,11 +41,6 @@ import org.apache.maven.project.MavenProject;
 public final class ArtifactContextImpl
     implements ArtifactContext, LogEnabled
 {
-
-    /**
-     * Metadata component used by the <code>ArtifactResolver</code>.
-     */
-    private ArtifactMetadataSource metadata;
 
     /**
      * A factory component for creating artifacts
@@ -116,7 +110,7 @@ public final class ArtifactContextImpl
         if ( repository == null )
         {
             logger.warn(
-                "NMAVEN-000-009: Could not locate artifact (net dependencies repository not found): Group ID = " +
+                "NMAVEN-000-001: Could not locate artifact (net dependencies repository not found): Group ID = " +
                     groupId + ", Artifact ID = " + artifactId + ", Version = " + version + ", Type = " + type );
             return new ArrayList<Artifact>();
         }
@@ -166,7 +160,7 @@ public final class ArtifactContextImpl
     {
         if ( artifact == null )
         {
-            throw new ArtifactException( "NMAVEN-000-007: Cannot get .NET modules dependencies of a null artifact" );
+            throw new ArtifactException( "NMAVEN-000-002: Cannot get .NET modules dependencies of a null artifact" );
         }
         List<ArtifactMatchPolicy> matchPolicies = new ArrayList<ArtifactMatchPolicy>();
         matchPolicies.add( new NetModuleMatchPolicy() );
@@ -200,6 +194,12 @@ public final class ArtifactContextImpl
         artifactHandlerManager.addHandlers( map );
     }
 
+    /**
+     * Returns true if the artifact handler can handle the dotnet types, otherwise returns false
+     *
+     * @param artifactHandler the artifact handler to check
+     * @return true if the artifact handler can handle the dotnet types, otherwise returns false
+     */
     private boolean isDotNetHandler( ArtifactHandler artifactHandler )
     {
         String extension = artifactHandler.getExtension();
@@ -228,8 +228,6 @@ public final class ArtifactContextImpl
 
     /*
     * Matches .NET module artifacts.
-    *
-    * @author Shane Isbell
     */
     private static class NetModuleMatchPolicy
         implements ArtifactMatchPolicy

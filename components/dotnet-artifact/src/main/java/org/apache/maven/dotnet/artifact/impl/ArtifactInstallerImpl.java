@@ -37,7 +37,6 @@ import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -72,11 +71,6 @@ public class ArtifactInstallerImpl
 {
 
     /**
-     * An installer component for installing artifacts into a local Maven repository.
-     */
-    private org.apache.maven.artifact.installer.ArtifactInstaller mavenInstaller;
-
-    /**
      * Root path of the local Maven repository
      */
     private File localRepository;
@@ -86,11 +80,6 @@ public class ArtifactInstallerImpl
      * application configs and artifact dependencies that may need to be attached to the installed artifacts.
      */
     private ArtifactContext artifactContext;
-
-    /**
-     * An artifact repository that handles .NET artifacts
-     */
-    private ArtifactRepository artifactRepository;
 
     /**
      * A logger for writing log messages
@@ -104,24 +93,29 @@ public class ArtifactInstallerImpl
     private ArtifactResolver resolver;
 
     /**
-     * Metadata component used by the <code>ArtifactResolver</code>.
-     */
-    private ArtifactMetadataSource metadata;
-
-    /**
      * The artifact factory component, which is used for creating artifacts.
      */
     private ArtifactFactory artifactFactory;
 
+    /**
+     * The assembler resolver for resolving .NET artifacts
+     */
     private AssemblyResolver assemblyResolver;
 
+    /**
+     * Registry for finding repositories of configuration information
+     */
     private RepositoryRegistry repositoryRegistry;
 
+    /**
+     * List of remote artifact repositories to use in resolving artifacts
+     */
     private List<ArtifactRepository> remoteArtifactRepositories;
 
+    /**
+     * Registry used for finding DAOs
+     */
     private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
-
-    private org.apache.maven.artifact.manager.WagonManager wagonManager;
 
 
     /**
@@ -145,6 +139,9 @@ public class ArtifactInstallerImpl
         this.logger = logger;
     }
 
+    /**
+     * @see org.apache.maven.dotnet.artifact.ArtifactInstaller#resolveAndInstallNetDependenciesForProfile(String, java.util.List<org.apache.maven.model.Dependency>, java.util.List<org.apache.maven.model.Dependency>)
+     */
     public void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> netDependencies,
                                                             List<Dependency> javaDependencies )
         throws IOException
@@ -196,11 +193,13 @@ public class ArtifactInstallerImpl
                 }
                 catch ( ArtifactResolutionException e )
                 {
-                    throw new IOException( e.getMessage() );
+                    throw new IOException(
+                        "NMAVEN-001-000: Problem resolving artifact for java binding: Message = " + e.getMessage() );
                 }
                 catch ( ArtifactNotFoundException e )
                 {
-                    throw new IOException( e.getMessage() );
+                    throw new IOException(
+                        "NMAVEN-001-001: Could not find artifact for java binding: Message =" + e.getMessage() );
                 }
             }
         }
@@ -217,11 +216,13 @@ public class ArtifactInstallerImpl
             }
             catch ( ArtifactResolutionException e )
             {
-                throw new IOException( e.getMessage() );
+                throw new IOException(
+                    "NMAVEN-001-002: Problem resolving java dependency artifact: Message = " + e.getMessage() );
             }
             catch ( ArtifactNotFoundException e )
             {
-                throw new IOException( e.getMessage() );
+                throw new IOException(
+                    "NMAVEN-001-003: Could not find java dependency artifact: Message = " + e.getMessage() );
             }
         }
 
@@ -246,6 +247,9 @@ public class ArtifactInstallerImpl
         dao.closeConnection();
     }
 
+    /**
+     * @see org.apache.maven.dotnet.artifact.ArtifactInstaller#installArtifactAndDependenciesIntoPrivateApplicationBase(java.io.File, org.apache.maven.artifact.Artifact, java.util.List<org.apache.maven.model.Dependency>)
+     */
     public void installArtifactAndDependenciesIntoPrivateApplicationBase( File localRepository, Artifact artifact,
                                                                           List<Dependency> dependencies )
         throws IOException
@@ -272,7 +276,7 @@ public class ArtifactInstallerImpl
 
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
-                throw new IOException( "NMAVEN-000-000: Could not find artifact dependency: Artifact ID = " +
+                throw new IOException( "NMAVEN-001-004: Could not find artifact dependency: Artifact ID = " +
                     artifactDependency.getArtifactId() + ", Path = " + (
                     ( artifactDependencyFile != null && !artifactDependencyFile.exists() )
                         ? artifactDependencyFile.getAbsolutePath() : null ) );
@@ -290,7 +294,7 @@ public class ArtifactInstallerImpl
         {
             if ( !artifactDependency.getType().startsWith( "gac" ) )
             {
-                logger.info( "NMAVEN-002-018c: Installing file into repository: File = " +
+                logger.info( "NMAVEN-001-005: Installing file into repository: File = " +
                     artifactDependency.getFile().getAbsolutePath() );
                 FileUtils.copyFileToDirectory( artifactDependency.getFile(), installDirectory );
             }
@@ -314,7 +318,7 @@ public class ArtifactInstallerImpl
             }
             catch ( IOException e )
             {
-                throw new ArtifactInstallationException( "NMAVEN-002-003b: Failed to install artifact: ID = " +
+                throw new ArtifactInstallationException( "NMAVEN-001-006: Failed to install artifact: ID = " +
                     artifact.getId() + ", File = " +
                     ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
             }
@@ -325,7 +329,7 @@ public class ArtifactInstallerImpl
             if ( artifact.getFile() != null && artifact.getFile().exists() )//maybe just a test compile and no install
             {
                 logger.info(
-                    "NMAVEN-002-018: Installing file into repository: File = " + artifact.getFile().getAbsolutePath() );
+                    "NMAVEN-001-007: Installing file into repository: File = " + artifact.getFile().getAbsolutePath() );
                 File artifactFile = artifact.getFile();
                 try
                 {
@@ -334,20 +338,20 @@ public class ArtifactInstallerImpl
                 }
                 catch ( IOException e )
                 {
-                    throw new ArtifactInstallationException( "NMAVEN-002-003a: Failed to install artifact: ID = " +
+                    throw new ArtifactInstallationException( "NMAVEN-001-008: Failed to install artifact: ID = " +
                         artifact.getId() + ", File = " +
                         ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
                 }
             }
             else
             {
-                logger.info( "NMAVEN-002-019: Artifact does not exist. Nothing to install: Artifact = " +
+                logger.info( "NMAVEN-001-010: Artifact does not exist. Nothing to install: Artifact = " +
                     artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion() );
             }
         }
         catch ( ArtifactInstallationException e )
         {
-            throw new ArtifactInstallationException( "NMAVEN-002-003: Failed to install artifact: ID = " +
+            throw new ArtifactInstallationException( "NMAVEN-001-011: Failed to install artifact: ID = " +
                 artifact.getId() + ", File = " +
                 ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
         }
@@ -371,11 +375,11 @@ public class ArtifactInstallerImpl
             }
             catch ( XmlPullParserException e )
             {
-                throw new ArtifactInstallationException( "NMAVEN-002-013: Unable to read pom file" );
+                throw new ArtifactInstallationException( "NMAVEN-001-012: Unable to read pom file" );
             }
             catch ( IOException e )
             {
-                throw new ArtifactInstallationException( "NMAVEN-002-013: Unable to read pom file" );
+                throw new ArtifactInstallationException( "NMAVEN-001-013: Unable to read pom file" );
             }
 
             ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
@@ -387,7 +391,8 @@ public class ArtifactInstallerImpl
             }
             catch ( java.io.IOException e )
             {
-                throw new ArtifactInstallationException( e.getMessage() );
+                throw new ArtifactInstallationException(
+                    "NMAVEN-001-014: Unable to store model: Message = " + e.getMessage() );
             }
             finally
             {
@@ -422,12 +427,16 @@ public class ArtifactInstallerImpl
         }
         catch ( IOException e )
         {
-            throw new ArtifactInstallationException( e.getMessage() );
+            throw new ArtifactInstallationException(
+                "NMAVEN-001-015: Unable to read model: Message =" + e.getMessage() );
         }
         IOUtil.close( fileWriter );
         installArtifactWithPom( artifact, tempFile, false );
     }
 
+    /**
+     * @see org.apache.maven.dotnet.artifact.ArtifactInstaller#init(org.apache.maven.dotnet.artifact.ArtifactContext, java.util.List<org.apache.maven.artifact.repository.ArtifactRepository>, java.io.File)
+     */
     public void init( ArtifactContext artifactContext, List<ArtifactRepository> remoteArtifactRepositories,
                       File localRepository )
     {

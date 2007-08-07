@@ -20,10 +20,7 @@ package org.apache.maven.dotnet.artifact;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.model.Dependency;
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 
 import java.util.List;
 import java.io.File;
@@ -45,18 +42,17 @@ public interface AssemblyResolver
     /**
      * Resolves transitive dependencies for the project.
      *
-     * @param mavenProject
-     * @param dependencies        the list of dependencies of the specified artifact
-     * @param remoteArtifactRepositories
-     * @param localArtifactRepository
+     * @param mavenProject                the maven project
+     * @param dependencies                the list of dependencies of the specified artifact
+     * @param remoteArtifactRepositories  the list of remote artifact repositories to use in resolving
+     * @param localArtifactRepository     the local artifact repository to use in resolving
      * @param addResolvedDependenciesToProject
      *                            true, if the resolved dependencies should be added the the specified
      *                            maven project, otherwise false. This value should be set to false if it is resolving
      *                            .NET executables that are intended to be executed as an external process. If it is
      *                            resolving assemblies that the source artifact needs to compile against, this value
      *                            should be set to true.
-     * @throws ArtifactResolutionException
-     * @throws ArtifactNotFoundException
+     * @throws IOException
      */
     void resolveTransitivelyFor( MavenProject mavenProject, List<Dependency> dependencies,
                                  List<ArtifactRepository> remoteArtifactRepositories, File localArtifactRepository,

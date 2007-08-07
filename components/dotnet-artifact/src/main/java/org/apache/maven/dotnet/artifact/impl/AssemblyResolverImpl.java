@@ -24,9 +24,7 @@ import org.apache.maven.dotnet.dao.Project;
 import org.apache.maven.dotnet.dao.ProjectDependency;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.model.Dependency;
@@ -63,8 +61,14 @@ public class AssemblyResolverImpl
      */
     private Logger logger;
 
+    /**
+     * Registry used for finding DAOs
+     */
     private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
 
+    /**
+     * Manager used to download artifacts.
+     */
     private org.apache.maven.artifact.manager.WagonManager wagonManager;
 
     /**
@@ -82,75 +86,8 @@ public class AssemblyResolverImpl
         this.logger = logger;
     }
 
-    private Set<ProjectDependency> subtractProjectDependencies( List<Dependency> b, Set<ProjectDependency> a )
-    {
-        Set<Dependency> d = new HashSet<Dependency>( b );
-
-        for ( Dependency dependency : b )
-        {
-            if ( containsDependency( a, dependency ) )
-            {
-                d.remove( dependency );
-            }
-        }
-        Set<ProjectDependency> projectDependencies = new HashSet<ProjectDependency>();
-        for ( Dependency dependency : d )
-        {
-            ProjectDependency projectDependency = new ProjectDependency();
-            projectDependency.setGroupId( dependency.getGroupId() );
-            projectDependency.setArtifactId( dependency.getArtifactId() );
-            projectDependency.setVersion( dependency.getVersion() );
-            projectDependencies.add( projectDependency );
-        }
-        return projectDependencies;
-    }
-
-    private Set<ProjectDependency> substractDependencies( Set<ProjectDependency> a, List<Dependency> b )
-    {
-        Set<ProjectDependency> pd = new HashSet<ProjectDependency>( a );
-        for ( ProjectDependency projectDependency : a )
-        {
-            if ( containsProjectDependency( b, projectDependency ) )
-            {
-                pd.remove( projectDependency );
-            }
-        }
-        return pd;
-    }
-
-    private boolean containsProjectDependency( List<Dependency> dependencies, ProjectDependency projectDependency )
-    {
-        for ( Dependency dependency : dependencies )
-        {
-            if ( isEqual( projectDependency, dependency ) )
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean containsDependency( Set<ProjectDependency> projectDependencies, Dependency dependency )
-    {
-        for ( ProjectDependency projectDependency : projectDependencies )
-        {
-            if ( isEqual( projectDependency, dependency ) )
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isEqual( ProjectDependency projectDependency, Dependency dependency )
-    {
-        return ( projectDependency.getArtifactId().equals( dependency.getArtifactId() ) &&
-            projectDependency.getGroupId().equals( dependency.getGroupId() ) &&
-            projectDependency.getVersion().equals( dependency.getVersion() ) );
-    }
-
     /**
-     * @see AssemblyResolver#resolveTransitivelyFor
+     * @see AssemblyResolver#resolveTransitivelyFor(org.apache.maven.project.MavenProject, java.util.List<org.apache.maven.model.Dependency>, java.util.List<org.apache.maven.artifact.repository.ArtifactRepository>, java.io.File, boolean)
      */
     public void resolveTransitivelyFor( MavenProject mavenProject, List<Dependency> dependencies,
                                         List<ArtifactRepository> remoteArtifactRepositories,
@@ -181,15 +118,6 @@ public class AssemblyResolverImpl
             project.addProjectDependency( projectDependency );
         }
 
-        //Set<ProjectDependency> projectDependencies = project.getProjectDependencies();
-
-        /*
-                Set<ProjectDependency> pd = new HashSet<ProjectDependency>( CollectionUtils.subtract( projectDependencies,
-                                                                                                      substractDependencies(
-                                                                                                          projectDependencies,
-                                                                                                          dependencies ) ) );
-                pd.addAll( subtractProjectDependencies( dependencies, projectDependencies ) );
-        */
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
         dao.init( artifactFactory, wagonManager );
         dao.openConnection();

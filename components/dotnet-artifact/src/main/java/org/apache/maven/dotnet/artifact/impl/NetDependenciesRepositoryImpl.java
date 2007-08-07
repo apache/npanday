@@ -83,7 +83,7 @@ public class NetDependenciesRepositoryImpl
         catch ( XmlPullParserException e )
         {
             e.printStackTrace();
-            throw new IOException( "NMAVEN-062-000: Could not read net-dependencies.xml" );
+            throw new IOException( "NMAVEN-003-000: Could not read net-dependencies.xml" );
         }
         netDependencies = model.getNetDependencies();
         String nmavenVersion = (String) properties.get( "nmaven.version" );

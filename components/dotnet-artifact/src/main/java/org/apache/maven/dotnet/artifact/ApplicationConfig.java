@@ -20,7 +20,6 @@
 package org.apache.maven.dotnet.artifact;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 
@@ -63,7 +62,8 @@ public interface ApplicationConfig
          * exe.config is located within the project's src/main/config directory. Neither parameter value may be null.
          *
          * @param artifact the executable artifact to which the exe.config file is associated
-         * @param project  the maven project
+         * @param projectBaseDirectory the base directory of the build (which contains the pom.xml file)
+         * @param projectBuildDirectory the target directory of the build
          * @return the application config for the specified artifact
          */
         public static ApplicationConfig createDefaultApplicationConfig( final Artifact artifact,

@@ -20,10 +20,7 @@ package org.apache.maven.dotnet.artifact;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
-import org.apache.maven.project.MavenProject;
 import org.apache.maven.model.Dependency;
 
 import java.io.File;
@@ -75,10 +72,29 @@ public interface ArtifactInstaller
     void installFileWithoutPom( String groupId, String artifactId, String version, String packaging, File artifactFile )
         throws ArtifactInstallationException;
 
-    void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> dependencies,
+    /**
+     * Resolves and installs the .NET artifacts (as given in the net-dependencies.xml file) and the
+     * specified .NET and java dependencies. If a profile is specified, this method will includes dependencies
+     * with that profile.
+     *
+     * @param profile          the specified profile to resolve. This value may be null.
+     * @param netDependencies  additional .NET artifacts to resolve and install.
+     * @param javaDependencies the Java Dependencies to resolve. Typically these should be the java bindings for the
+     *                         .NET plugins.
+     * @throws IOException if there is a problem with installation
+     */
+    void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> netDependencies,
                                                      List<Dependency> javaDependencies )
         throws IOException;
 
+    /**
+     * Installs both the artifact and all of its dependencies into the private application base.
+     *
+     * @param applicationBase the root directory of the private application base
+     * @param artifact        the artifact to install
+     * @param dependencies    the dependencies to install
+     * @throws IOException if there is a problem installing any of the artifacts into the private application base
+     */
     void installArtifactAndDependenciesIntoPrivateApplicationBase( File applicationBase, Artifact artifact,
                                                                    List<Dependency> dependencies )
         throws IOException;
@@ -87,7 +103,7 @@ public interface ArtifactInstaller
      * Initializes the installer.
      *
      * @param artifactContext            the artifact context associated with this installer
-     * @param remoteArtifactRepositories
+     * @param remoteArtifactRepositories the list of remote artifact repositories
      * @param localRepository            the location of the local maven repository
      */
     void init( ArtifactContext artifactContext, List<ArtifactRepository> remoteArtifactRepositories,

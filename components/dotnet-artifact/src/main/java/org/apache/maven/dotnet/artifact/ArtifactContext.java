@@ -114,7 +114,7 @@ public interface ArtifactContext
      * Initializes this artifact context. Neither parameter value should be null.
      *
      * @param mavenProject               the maven project
-     * @param remoteArtifactRepositories
+     * @param remoteArtifactRepositories the remote artifact repositories
      * @param localRepository            the file location of the local maven repository
      * @throws NullPointerException if localRepository parameter is null
      */
