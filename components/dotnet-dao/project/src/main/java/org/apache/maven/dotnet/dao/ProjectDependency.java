@@ -18,15 +18,32 @@
  */
 package org.apache.maven.dotnet.dao;
 
-public class ProjectDependency extends Project
+/**
+ * Class for accessing information about project dependencies.
+ */
+public class ProjectDependency
+    extends Project
 {
+    /**
+     * The scope: runtime, compile, test
+     */
     private String scope;
 
+    /**
+     * Returns the scope:  runtime, compile, test
+     *
+     * @return the scope:  runtime, compile, test
+     */
     public String getScope()
     {
         return scope;
     }
 
+    /**
+     * Sets the scope:  runtime, compile, test
+     *
+     * @param scope the scope that the artifact is used in
+     */
     public void setScope( String scope )
     {
         this.scope = scope;

@@ -161,15 +161,15 @@ public final class ProjectDaoImpl
         }
         catch ( RepositoryException e )
         {
-            throw new IOException( e.getMessage() );
+            throw new IOException( "NMAVEN-180-000: Message = " + e.getMessage() );
         }
         catch ( MalformedQueryException e )
         {
-            throw new IOException( e.getMessage() );
+            throw new IOException( "NMAVEN-180-001: Message = " + e.getMessage() );
         }
         catch ( QueryEvaluationException e )
         {
-            throw new IOException( e.getMessage() );
+            throw new IOException( "NMAVEN-180-002: Message = " + e.getMessage() );
         }
         finally
         {
@@ -272,7 +272,7 @@ public final class ProjectDaoImpl
                         ProjectFactory.createArtifactFrom( (ProjectDependency) project, artifactFactory );
                     if ( !artifact.getFile().exists() )
                     {
-                        throw new IOException( "Could not find GAC assembly: Group ID = " + groupId +
+                        throw new IOException( "NMAVEN-180-003: Could not find GAC assembly: Group ID = " + groupId +
                             ", Artifact ID = " + artifactId + ", Version = " + version + ", Artifact Type = " +
                             artifactType + ", File Path = " + artifact.getFile().getAbsolutePath() );
                     }
@@ -280,7 +280,7 @@ public final class ProjectDaoImpl
                     return project;
                 }
 
-                throw new IOException( "NMAVEN-000-000: Could not find the project: Group ID = " + groupId +
+                throw new IOException( "NMAVEN-180-004: Could not find the project: Group ID = " + groupId +
                     ", Artifact ID = " + artifactId + ", Version = " + version + ", Artifact Type = " + artifactType );
             }
 
@@ -327,15 +327,15 @@ public final class ProjectDaoImpl
         }
         catch ( QueryEvaluationException e )
         {
-            throw new IOException( e.getMessage() );
+            throw new IOException( "NMAVEN-180-005: Message = " + e.getMessage() );
         }
         catch ( RepositoryException e )
         {
-            throw new IOException( e.getMessage() );
+            throw new IOException( "NMAVEN-180-006: Message = " + e.getMessage() );
         }
         catch ( MalformedQueryException e )
         {
-            throw new IOException( e.getMessage() );
+            throw new IOException( "NMAVEN-180-007: Message = " + e.getMessage() );
         }
         finally
         {
@@ -353,8 +353,8 @@ public final class ProjectDaoImpl
         }
 
         //TODO: If has parent, then need to modify dependencies, etc of returned project
-        logger.finest( "ProjectDao.GetProjectFor - Artifact Id = " + project.getArtifactId() + ", Time = " +
-            ( System.currentTimeMillis() - startTime ) + ",  Count = " + getProjectForCounter++ );
+        logger.finest( "NMAVEN-180-008: ProjectDao.GetProjectFor - Artifact Id = " + project.getArtifactId() +
+            ", Time = " + ( System.currentTimeMillis() - startTime ) + ",  Count = " + getProjectForCounter++ );
         return project;
     }
 
@@ -380,12 +380,12 @@ public final class ProjectDaoImpl
 
         if ( project == null )
         {
-            throw new IllegalArgumentException( "NMAVEN-000-000: Project is null" );
+            throw new IllegalArgumentException( "NMAVEN-180-009: Project is null" );
         }
 
         if ( project.getGroupId() == null || project.getArtifactId() == null || project.getVersion() == null )
         {
-            throw new IllegalArgumentException( "NMAVEN-000-000: Project value is null: Group Id =" +
+            throw new IllegalArgumentException( "NMAVEN-180-010: Project value is null: Group Id =" +
                 project.getGroupId() + ", Artifact Id = " + project.getArtifactId() + ", Version = " +
                 project.getVersion() );
         }
@@ -440,7 +440,7 @@ public final class ProjectDaoImpl
 
             for ( ProjectDependency projectDependency : project.getProjectDependencies() )
             {
-                logger.finest( "Project Dependency: Artifact ID = " + projectDependency.getArtifactId() +
+                logger.finest( "NMAVEN-180-011: Project Dependency: Artifact ID = " + projectDependency.getArtifactId() +
                     ", Group ID = " + projectDependency.getGroupId() + ", Version = " + projectDependency.getVersion() +
                     ", Artifact Type = " + projectDependency.getArtifactType() );
                 if ( !projectDependency.isResolved() )
@@ -494,19 +494,19 @@ public final class ProjectDaoImpl
 
                         try
                         {
-                            logger.info( "NMAVEN-000-000: Retrieving artifact: Artifact ID  = " +
+                            logger.info( "NMAVEN-180-012: Retrieving artifact: Artifact ID  = " +
                                 projectDependency.getArtifactId() );
                             wagonManager.getArtifact( pomArtifact, artifactRepositories );
                         }
                         catch ( TransferFailedException e )
                         {
-                            logger.info( "NMAVEN-000-000a: Problem in resolving artifact: Assembly Artifact Id = " +
+                            logger.info( "NMAVEN-180-013: Problem in resolving artifact: Assembly Artifact Id = " +
                                 assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Message = " +
                                 e.getMessage() );
                         }
                         catch ( ResourceDoesNotExistException e )
                         {
-                            logger.info( "NMAVEN-000-000b: Problem in resolving artifact: Assembly Artifact Id = " +
+                            logger.info( "NMAVEN-180-014: Problem in resolving artifact: Assembly Artifact Id = " +
                                 assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Message = " +
                                 e.getMessage() );
                         }
@@ -523,13 +523,13 @@ public final class ProjectDaoImpl
                             }
                             catch ( XmlPullParserException e )
                             {
-                                throw new IOException( "NMAVEN-000-000: Unable to read model: Message = " +
+                                throw new IOException( "NMAVEN-180-015: Unable to read model: Message = " +
                                     e.getMessage() + ", Path = " + pomArtifact.getFile().getAbsolutePath() );
 
                             }
                             catch ( EOFException e )
                             {
-                                throw new IOException( "NMAVEN-000-000: Unable to read model: Message = " +
+                                throw new IOException( "NMAVEN-180-016: Unable to read model: Message = " +
                                     e.getMessage() + ", Path = " + pomArtifact.getFile().getAbsolutePath() );
                             }
 
@@ -538,7 +538,7 @@ public final class ProjectDaoImpl
                                 model.getVersion().equals( projectDependency.getVersion() ) ) )
                             {
                                 throw new IOException(
-                                    "Model parameters do not match project dependencies parameters: Model: " +
+                                    "NMAVEN-180-017: Model parameters do not match project dependencies parameters: Model: " +
                                         model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() +
                                         ", Project: " + projectDependency.getGroupId() + ":" +
                                         projectDependency.getArtifactId() + ":" + projectDependency.getVersion() );
@@ -553,21 +553,21 @@ public final class ProjectDaoImpl
                     {
                         try
                         {
-                            logger.info( "NMAVEN-000-000: Retrieving artifact: Artifact ID  = " +
+                            logger.info( "NMAVEN-180-018: Retrieving artifact: Artifact ID  = " +
                                 projectDependency.getArtifactId() );
                             wagonManager.getArtifact( assembly, artifactRepositories );
                         }
                         catch ( TransferFailedException e )
                         {
                             throw new IOException(
-                                "NMAVEN-000-000c: Problem in resolving artifact: Assembly Artifact Id = " +
+                                "NMAVEN-180-019: Problem in resolving artifact: Assembly Artifact Id = " +
                                     assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Message = " +
                                     e.getMessage() );
                         }
                         catch ( ResourceDoesNotExistException e )
                         {
                             throw new IOException(
-                                "NMAVEN-000-000d: Problem in resolving artifact: Assembly Artifact Id = " +
+                                "NMAVEN-180-020: Problem in resolving artifact: Assembly Artifact Id = " +
                                     assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Message = " +
                                     e.getMessage() );
                         }
@@ -608,7 +608,7 @@ public final class ProjectDaoImpl
 
                 }
             }
-            throw new IOException( "NMAVEN-000-000: Could not open RDF Repository: Message =" + e.getMessage() );
+            throw new IOException( "NMAVEN-180-021: Could not open RDF Repository: Message =" + e.getMessage() );
         }
 
         for ( Model model : modelDependencies )
@@ -617,7 +617,7 @@ public final class ProjectDaoImpl
             artifactDependencies.addAll( storeProjectAndResolveDependencies(
                 ProjectFactory.createProjectFrom( model, null ), localRepository, artifactRepositories ) );
         }
-        logger.finest( "ProjectDao.storeProjectAndResolveDependencies - Artifact Id = " + project.getArtifactId() +
+        logger.finest( "NMAVEN-180-022: ProjectDao.storeProjectAndResolveDependencies - Artifact Id = " + project.getArtifactId() +
             ", Time = " + ( System.currentTimeMillis() - startTime ) + ", Count = " + storeCounter++ );
         return artifactDependencies;
     }
@@ -647,7 +647,7 @@ public final class ProjectDaoImpl
         if ( dataStoreObject == null || !( dataStoreObject instanceof org.openrdf.repository.Repository ) )
         {
             throw new IllegalArgumentException(
-                "NMAVEN: Must initialize with an instance of org.openrdf.repository.Repository" );
+                "NMAVEN-180-023: Must initialize with an instance of org.openrdf.repository.Repository" );
         }
 
         this.id = id;

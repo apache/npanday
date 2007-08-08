@@ -76,7 +76,7 @@ public final class ProjectFactory
     }
 
     /**
-     * Creates a project from the specified model
+     * Creates a project using information from the specified model
      *
      * @param model            the project object model used to create the project.
      * @param pomFileDirectory the directory containing the pom.xml (model).
@@ -122,6 +122,12 @@ public final class ProjectFactory
         return project;
     }
 
+    /**
+     * Creates a project dependency using information from the specified dependency.
+     *
+     * @param dependency a dependency to use as the source of the returned project dependency
+     * @return a project dependency
+     */
     public static ProjectDependency createProjectDependencyFrom( Dependency dependency )
     {
         ProjectDependency projectDependency = new ProjectDependency();
@@ -131,14 +137,20 @@ public final class ProjectFactory
         projectDependency.setPublicKeyTokenId( dependency.getClassifier() );
         projectDependency.setArtifactType( dependency.getType() );
 
-        logAndVerifyProjectParameters(projectDependency);
+        logAndVerifyProjectParameters( projectDependency );
 
         return projectDependency;
     }
 
+    /**
+     * Creates a dependency using information from the specified project dependency.
+     *
+     * @param projectDependency a project dependency to use as the source of the returned dependency
+     * @return a dependency created using information from the specified project dependency
+     */
     public static Dependency createDependencyFrom( ProjectDependency projectDependency )
     {
-        logAndVerifyProjectParameters(projectDependency);
+        logAndVerifyProjectParameters( projectDependency );
 
         Dependency dependency = new Dependency();
         dependency.setGroupId( projectDependency.getGroupId() );
@@ -149,9 +161,17 @@ public final class ProjectFactory
         return dependency;
     }
 
+    /**
+     * Creates an artifact using information from the specified project.
+     *
+     * @param project         a project to use as the source of the returned artifact
+     * @param artifactFactory artifact factory used to create the artifact
+     * @param localRepository the local repository
+     * @return an artifact using information from the specified project
+     */
     public static Artifact createArtifactFrom( Project project, ArtifactFactory artifactFactory, File localRepository )
     {
-        logAndVerifyProjectParameters(project);
+        logAndVerifyProjectParameters( project );
 
         Artifact assembly = artifactFactory.createArtifactWithClassifier( project.getGroupId(), project.getArtifactId(),
                                                                           project.getVersion(),
@@ -169,10 +189,17 @@ public final class ProjectFactory
         return assembly;
     }
 
+    /**
+     * Creates an artifact using information from the specified project dependency.
+     *
+     * @param projectDependency a project dependency to use as the source of the returned artifact
+     * @param artifactFactory   artifact factory used to create the artifact
+     * @return an artifact using information from the specified project dependency
+     */
     public static Artifact createArtifactFrom( ProjectDependency projectDependency, ArtifactFactory artifactFactory )
     {
-        logAndVerifyProjectParameters(projectDependency);
-        
+        logAndVerifyProjectParameters( projectDependency );
+
         String scope = ( projectDependency.getScope() == null ) ? Artifact.SCOPE_COMPILE : projectDependency.getScope();
         Artifact assembly = artifactFactory.createDependencyArtifact( projectDependency.getGroupId(),
                                                                       projectDependency.getArtifactId(),
@@ -198,6 +225,13 @@ public final class ProjectFactory
         return assembly;
     }
 
+    /**
+     * Logs missing value if specified project in invalid and returns true if the specified project is valid, otherwise
+     * returns false.
+     *
+     * @param project the project to check
+     * @return true if the project is valid, otherwise returns false
+     */
     private static boolean logAndVerifyProjectParameters( Project project )
     {
         if ( project.getGroupId() == null )
@@ -207,21 +241,19 @@ public final class ProjectFactory
         }
         if ( project.getArtifactId() == null )
         {
-            logger.warning(
-                "NMAVEN-180-002: Project Artifact ID is missing: Group Id = " + project.getGroupId() );
+            logger.warning( "NMAVEN-180-002: Project Artifact ID is missing: Group Id = " + project.getGroupId() );
             return false;
         }
         if ( project.getVersion() == null )
         {
-            logger.warning( "NMAVEN-180-003: Project Version is missing: Group Id = " +
-                project.getGroupId() + ", Artifact Id = " + project.getArtifactId() );
+            logger.warning( "NMAVEN-180-003: Project Version is missing: Group Id = " + project.getGroupId() +
+                ", Artifact Id = " + project.getArtifactId() );
             return false;
         }
         if ( project.getArtifactType() == null )
         {
-            logger.warning( "NMAVEN-180-004: Project Artifact Type is missing: Group Id" +
-                project.getGroupId() + ", Artifact Id = " + project.getArtifactId() +
-                ", Version = " + project.getVersion() );
+            logger.warning( "NMAVEN-180-004: Project Artifact Type is missing: Group Id" + project.getGroupId() +
+                ", Artifact Id = " + project.getArtifactId() + ", Version = " + project.getVersion() );
             return false;
         }
         return true;

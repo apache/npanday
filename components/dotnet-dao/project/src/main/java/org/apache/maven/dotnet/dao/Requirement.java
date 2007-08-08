@@ -20,6 +20,9 @@ package org.apache.maven.dotnet.dao;
 
 import java.net.URI;
 
+/**
+ * 
+ */
 public interface Requirement
 {
     URI getUri();

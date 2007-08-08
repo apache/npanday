@@ -28,7 +28,6 @@ import org.apache.maven.dotnet.executable.compiler.CompilerRequirement;
 import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
 import org.apache.maven.dotnet.executable.compiler.CompilerExecutable;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.artifact.Artifact;
 
 /**
  * Provides services to obtain executables. This interface is intended to be used by <code>AbstractMojo</code>
@@ -81,6 +80,13 @@ public interface NetExecutableFactory
                                                   boolean isIsolatedAppDomain )
         throws PlatformUnsupportedException;
 
+    /**
+     * 
+     * @param vendorInfo
+     * @param commands
+     * @return
+     * @throws PlatformUnsupportedException
+     */
     NetExecutable getJavaExecutableFromRepository( VendorInfo vendorInfo, List<String> commands )
         throws PlatformUnsupportedException;
 

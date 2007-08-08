@@ -47,7 +47,7 @@ public class Project
     private String publicKeyTokenId;
 
     /**
-     * Have the project artifacts been resolved
+     * Has the project artifact been resolved
      */
     private boolean isResolved = false;
 
@@ -104,7 +104,7 @@ public class Project
     /**
      * Returns the set of requirements for the project.
      *
-     * @return he set of requirements for the project
+     * @return the set of requirements for the project
      */
     public Set<Requirement> getRequirements()
     {
@@ -121,81 +121,168 @@ public class Project
         this.requirements = requirements;
     }
 
+    /**
+     * Returns the public key token id (classifier) of the project. This is the id from creating a strong name for an
+     * assembly.
+     *
+     * @return the public key token id (classifier) of the project
+     */
     public String getPublicKeyTokenId()
     {
         return publicKeyTokenId;
     }
 
+    /**
+     * Sets the public key token id (classifier) of the project.
+     *
+     * @param publicKeyTokenId the public key token id (classifier) of the project
+     */
     public void setPublicKeyTokenId( String publicKeyTokenId )
     {
         this.publicKeyTokenId = publicKeyTokenId;
     }
 
+    /**
+     * Returns true is the project artifact been resolved, otherwise false. An artifact is considered resolved if the
+     * assembly exists either within the user assembly cache or the global assembly cache and if the meta-data for
+     * the assembly has been persisted.
+     *
+     * @return true is the project artifact been resolved, otherwise false
+     */
     public boolean isResolved()
     {
         return isResolved;
     }
 
+    /**
+     * Set if the artifact has been resolved.
+     *
+     * @param resolved has the artifact been resolved
+     */
     public void setResolved( boolean resolved )
     {
         isResolved = resolved;
     }
 
+    /**
+     * Returns the type of artifact: library, exe, winexe, netmodule.
+     *
+     * @return the type of artifact: library, exe, winexe, netmodule
+     */
     public String getArtifactType()
     {
         return artifactType;
     }
 
+    /**
+     * Sets the type of artifact: library, exe, winexe, netmodule.
+     *
+     * @param artifactType the type of artifact: library, exe, winexe, netmodule
+     */
     public void setArtifactType( String artifactType )
     {
         this.artifactType = artifactType;
     }
 
+    /**
+     * Returns the set of project dependencies for this project.
+     *
+     * @return the set of project dependencies for this project
+     */
     public Set<ProjectDependency> getProjectDependencies()
     {
         return projectDependencies;
     }
 
+    /**
+     * Adds a project dependency for this project.
+     *
+     * @param projectDependency a project dependency for this project
+     */
     public void addProjectDependency( ProjectDependency projectDependency )
     {
         projectDependencies.add( projectDependency );
     }
 
+    /**
+     * Sets the set of project dependencies for this project. This will override any dependencies added through
+     * Project#addProjectDependency.
+     *
+     * @param projectDependencies the set of project dependencies for this project
+     */
     public void setProjectDependencies( Set<ProjectDependency> projectDependencies )
     {
         this.projectDependencies = projectDependencies;
     }
 
+    /**
+     * Returns the group id of the project.
+     *
+     * @return the group id of the project
+     */
     public String getGroupId()
     {
         return groupId;
     }
 
+    /**
+     * Sets the group id of the project.
+     *
+     * @param groupId the group id of the project
+     */
     public void setGroupId( String groupId )
     {
         this.groupId = groupId;
     }
 
+    /**
+     * Returns the artifact id of the project.
+     *
+     * @return the artifact id of the project
+     */
     public String getArtifactId()
     {
         return artifactId;
     }
 
+    /**
+     * Sets the artifact id of the project.
+     *
+     * @param artifactId the artifact id of the project
+     */
     public void setArtifactId( String artifactId )
     {
         this.artifactId = artifactId;
     }
 
+    /**
+     * Returns the version of the project.
+     *
+     * @return the version of the project
+     */
     public String getVersion()
     {
         return version;
     }
 
+    /**
+     * Sets the version of the project.
+     *
+     * @param version the version of the project
+     */
     public void setVersion( String version )
     {
         this.version = version;
     }
 
+    /**
+     * Returns true if the artifact id, artifact type, group id, version and public key token (optional) match, otherwise
+     * returns false.
+     *
+     * @param o object to compare
+     * @return true if the artifact id, artifact type, group id, version and public key token (optional) match, otherwise
+     *         returns false.
+     */
     public boolean equals( Object o )
     {
         if ( this == o )
@@ -213,7 +300,16 @@ public class Project
         {
             return false;
         }
+        if ( !artifactType.equals( project.artifactType ) )
+        {
+            return false;
+        }
         if ( !groupId.equals( project.groupId ) )
+        {
+            return false;
+        }
+        if ( publicKeyTokenId != null ? !publicKeyTokenId.equals( project.publicKeyTokenId )
+            : project.publicKeyTokenId != null )
         {
             return false;
         }
@@ -231,6 +327,8 @@ public class Project
         result = groupId.hashCode();
         result = 29 * result + artifactId.hashCode();
         result = 29 * result + version.hashCode();
+        result = 29 * result + ( publicKeyTokenId != null ? publicKeyTokenId.hashCode() : 0 );
+        result = 29 * result + artifactType.hashCode();
         return result;
     }
 }

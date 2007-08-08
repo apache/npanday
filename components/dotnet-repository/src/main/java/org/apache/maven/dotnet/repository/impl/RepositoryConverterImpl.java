@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.dotnet.repository.impl;
 
 import org.apache.maven.dotnet.repository.RepositoryConverter;
@@ -10,15 +28,11 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.handler.DefaultArtifactHandler;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.project.artifact.ProjectArtifactMetadata;
 import org.openrdf.repository.Repository;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.FileUtils;
@@ -29,10 +43,16 @@ import java.io.FileWriter;
 import java.util.logging.Logger;
 import java.util.Set;
 
+/**
+ * Implementation of the RepositoryConverter.
+ */
 public class RepositoryConverterImpl
     implements RepositoryConverter
 {
 
+    /**
+     * The manager used to download artifacts.
+     */
     private org.apache.maven.artifact.manager.WagonManager wagonManager;
 
     /**
@@ -40,10 +60,20 @@ public class RepositoryConverterImpl
      */
     private org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
 
+    /**
+     * The data access object registry used for finding DAO objects
+     */
     private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
 
     private static Logger logger = Logger.getAnonymousLogger();
 
+    /**
+     * Used my unit tests to initialize the objects that plexus injects
+     *
+     * @param daoRegistry     the data access object registry used for finding DAO objects
+     * @param artifactFactory the artifact factory used to create artifacts
+     * @param wagonManager    the manager used to download artifacts
+     */
     protected void initTest( DataAccessObjectRegistry daoRegistry, ArtifactFactory artifactFactory,
                              WagonManager wagonManager )
     {
@@ -52,6 +82,9 @@ public class RepositoryConverterImpl
         this.wagonManager = wagonManager;
     }
 
+    /**
+     * @see RepositoryConverter#convert(org.openrdf.repository.Repository, java.io.File)
+     */
     public void convert( Repository repository, File mavenRepository )
         throws IOException
     {
@@ -62,7 +95,7 @@ public class RepositoryConverterImpl
         Set<Project> projects = dao.getAllProjects();
         for ( Project project : projects )
         {
-            logger.info( "NMAVEN-000-000: Converting Project: Artifact ID = " + project.getArtifactId() +
+            logger.info( "NMAVEN-190-000: Converting Project: Artifact ID = " + project.getArtifactId() +
                 ", Dependency Count =" + project.getProjectDependencies().size() );
             Artifact artifact = ProjectFactory.createArtifactFrom( project, artifactFactory, mavenRepository );
             Model model = ProjectFactory.createModelFrom( project );
@@ -80,7 +113,7 @@ public class RepositoryConverterImpl
                 }
                 else
                 {
-                    logger.info( "NMAVEN-000-000: Could not find file: " + artifact.getFile().getAbsolutePath() );
+                    logger.info( "NMAVEN-190-001: Could not find file: " + artifact.getFile().getAbsolutePath() );
                     continue;
                 }
             }
@@ -96,6 +129,12 @@ public class RepositoryConverterImpl
         dao.closeConnection();
     }
 
+    /**
+     * Returns the path of the the specified artifact's pom file.
+     *
+     * @param artifact the artifact
+     * @return the path of the the specified artifact's pom file
+     */
     private String pathOfPom( Artifact artifact )
     {
         StringBuffer artifactPath = new StringBuffer();
@@ -106,7 +145,7 @@ public class RepositoryConverterImpl
 
         artifactPath.append( artifact.getArtifactId() ).append( File.separator ).append( artifact.getBaseVersion() ).
             append( File.separator ).append( artifact.getArtifactId() ).append( "-" ).append(
-            artifact.getBaseVersion() ).append(".").append( ( artifact.getArtifactHandler() ).getExtension() );
+            artifact.getBaseVersion() ).append( "." ).append( ( artifact.getArtifactHandler() ).getExtension() );
         return artifactPath.toString();
     }
 }

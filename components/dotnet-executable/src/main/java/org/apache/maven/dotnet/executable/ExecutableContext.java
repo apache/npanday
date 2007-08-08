@@ -20,10 +20,6 @@ package org.apache.maven.dotnet.executable;
 
 import org.apache.maven.dotnet.NMavenContext;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.vendor.Vendor;
-import org.apache.maven.project.MavenProject;
-
-import java.io.File;
 
 /**
  * Provides services for executables.

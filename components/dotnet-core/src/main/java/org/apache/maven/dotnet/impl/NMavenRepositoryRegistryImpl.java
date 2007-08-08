@@ -23,13 +23,22 @@ import org.apache.maven.dotnet.NMavenRepositoryRegistry;
 
 import java.io.IOException;
 
-public class NMavenRepositoryRegistryImpl
+/**
+ * Implementation of NMavenRepositoryRegistry
+ */
+public final class NMavenRepositoryRegistryImpl
     implements NMavenRepositoryRegistry
 {
 
     private RepositoryRegistry repositoryRegistry;
 
-    public RepositoryRegistry createRepositoryRegistry()
+    /**
+     * Returns an instance of the repository registry.
+     *
+     * @return an instance of the repository registry
+     * @throws IOException
+     */
+    public synchronized RepositoryRegistry createRepositoryRegistry()
         throws IOException
     {
         if ( repositoryRegistry.isEmpty() )

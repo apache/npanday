@@ -18,6 +18,9 @@
  */
 package org.apache.maven.dotnet.dao;
 
+/**
+ * Enumeration of the project uri predicates.
+ */
 public enum ProjectUri
 {
     GROUP_ID( "http://maven.apache.org/artifact/groupId", "groupId", false ),
