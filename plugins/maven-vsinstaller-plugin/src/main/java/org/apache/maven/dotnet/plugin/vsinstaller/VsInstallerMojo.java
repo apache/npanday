@@ -122,7 +122,7 @@ public class VsInstallerMojo
         Dependency warFile = new Dependency();
         warFile.setGroupId( "org.apache.maven.dotnet" );
         warFile.setArtifactId( "dotnet-service-embedder" );
-        warFile.setVersion( "0.14" );
+        warFile.setVersion( "0.14-SNAPSHOT" );
         warFile.setType( "war" );
         javaDependencies.add( warFile );
 

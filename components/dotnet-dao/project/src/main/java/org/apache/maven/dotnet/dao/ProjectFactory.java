@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.dotnet.dao;
 
 import org.apache.maven.model.Model;
@@ -13,13 +31,25 @@ import org.codehaus.plexus.util.FileUtils;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.File;
 
-
-public class ProjectFactory
+/**
+ * Class for creating Project/ProjectDependency objects.
+ */
+public final class ProjectFactory
 {
+    private static final Logger logger = Logger.getAnonymousLogger();
+
+    /**
+     * Creates model from the specified project.
+     *
+     * @param project the project to create the model from.
+     * @return model created from the specified project
+     * @throws IOException if there was a problem creating the model
+     */
     public static Model createModelFrom( Project project )
         throws IOException
     {
@@ -45,6 +75,14 @@ public class ProjectFactory
 
     }
 
+    /**
+     * Creates a project from the specified model
+     *
+     * @param model            the project object model used to create the project.
+     * @param pomFileDirectory the directory containing the pom.xml (model).
+     * @return a project created from the specified model
+     * @throws IOException if there was a problem creating the project
+     */
     public static Project createProjectFrom( Model model, File pomFileDirectory )
         throws IOException
     {
@@ -68,11 +106,9 @@ public class ProjectFactory
             }
             catch ( XmlPullParserException e )
             {
-                throw new IOException( "NMAVEN-000-000: Unable to read model: Message = " + e.getMessage() );
+                throw new IOException( "NMAVEN-180-000: Unable to read model: Message = " + e.getMessage() );
 
             }
-            //System.out.println( "Pom File: " + pomFileDirectory.getAbsolutePath() );
-            //System.out.println( "Parent: " + parentPomFile.getParentFile().getAbsolutePath() );
             Project parentProject = createProjectFrom( parentModel, parentPomFile.getParentFile() );
             project.setParentProject( parentProject );
         }
@@ -94,11 +130,16 @@ public class ProjectFactory
         projectDependency.setVersion( dependency.getVersion() );
         projectDependency.setPublicKeyTokenId( dependency.getClassifier() );
         projectDependency.setArtifactType( dependency.getType() );
+
+        logAndVerifyProjectParameters(projectDependency);
+
         return projectDependency;
     }
 
     public static Dependency createDependencyFrom( ProjectDependency projectDependency )
     {
+        logAndVerifyProjectParameters(projectDependency);
+
         Dependency dependency = new Dependency();
         dependency.setGroupId( projectDependency.getGroupId() );
         dependency.setArtifactId( projectDependency.getArtifactId() );
@@ -110,6 +151,8 @@ public class ProjectFactory
 
     public static Artifact createArtifactFrom( Project project, ArtifactFactory artifactFactory, File localRepository )
     {
+        logAndVerifyProjectParameters(project);
+
         Artifact assembly = artifactFactory.createArtifactWithClassifier( project.getGroupId(), project.getArtifactId(),
                                                                           project.getVersion(),
                                                                           project.getArtifactType(),
@@ -128,6 +171,8 @@ public class ProjectFactory
 
     public static Artifact createArtifactFrom( ProjectDependency projectDependency, ArtifactFactory artifactFactory )
     {
+        logAndVerifyProjectParameters(projectDependency);
+        
         String scope = ( projectDependency.getScope() == null ) ? Artifact.SCOPE_COMPILE : projectDependency.getScope();
         Artifact assembly = artifactFactory.createDependencyArtifact( projectDependency.getGroupId(),
                                                                       projectDependency.getArtifactId(),
@@ -151,5 +196,34 @@ public class ProjectFactory
 
         assembly.setFile( artifactFile );
         return assembly;
+    }
+
+    private static boolean logAndVerifyProjectParameters( Project project )
+    {
+        if ( project.getGroupId() == null )
+        {
+            logger.warning( "NMAVEN-180-001: Project Group ID is missing" );
+            return false;
+        }
+        if ( project.getArtifactId() == null )
+        {
+            logger.warning(
+                "NMAVEN-180-002: Project Artifact ID is missing: Group Id = " + project.getGroupId() );
+            return false;
+        }
+        if ( project.getVersion() == null )
+        {
+            logger.warning( "NMAVEN-180-003: Project Version is missing: Group Id = " +
+                project.getGroupId() + ", Artifact Id = " + project.getArtifactId() );
+            return false;
+        }
+        if ( project.getArtifactType() == null )
+        {
+            logger.warning( "NMAVEN-180-004: Project Artifact Type is missing: Group Id" +
+                project.getGroupId() + ", Artifact Id = " + project.getArtifactId() +
+                ", Version = " + project.getVersion() );
+            return false;
+        }
+        return true;
     }
 }

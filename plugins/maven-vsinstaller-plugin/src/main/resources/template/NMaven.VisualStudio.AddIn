@@ -5,7 +5,7 @@
     <Version>8.0</Version>
   </HostApplication>
   <Addin>
-    <Assembly>${localRepository}\gac_msil\NMaven.VisualStudio.Addin\0.14__NMaven.VisualStudio\NMaven.VisualStudio.Addin.dll</Assembly>
+    <Assembly>${localRepository}\gac_msil\NMaven.VisualStudio.Addin\0.14-SNAPSHOT__NMaven.VisualStudio\NMaven.VisualStudio.Addin.dll</Assembly>
     <FullClassName>NMaven.VisualStudio.Addin.Connect</FullClassName>
     <FriendlyName>NMaven.VisualStudio.Addin</FriendlyName>
     <Description>NMaven provides Maven 2.x plugins to support building of .NET applications</Description>

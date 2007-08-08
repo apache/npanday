@@ -74,5 +74,15 @@ namespace WindowsApplication2
             artifactIdTextBox.Text = this.ArtifactId;
             versionTextBox.Text = this.Version;
         }
+
+        private void listBoxArtifactType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

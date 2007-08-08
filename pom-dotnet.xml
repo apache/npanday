@@ -22,7 +22,7 @@ under the License.
   <groupId>NMaven.Project</groupId>
   <artifactId>NMaven.Project</artifactId>
   <packaging>pom</packaging>
-  <version>0.14</version>
+  <version>0.14-SNAPSHOT</version>
   <name>NMaven.Project</name>
   <url>http://incubator.apache.org/nmaven</url>
   <description>

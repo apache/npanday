@@ -49,3 +49,10 @@ Setting up the Visual Studio 2005 Addin:
 
  A small box will appear showing a tree view of all the projects. Right click to build the project. You will see
   the build results within the output window.
+
+ Places to change the versions in the code:
+ Connect.cs
+ EmbedderStarterMojo.java
+ VsInstallerMojo.java
+ registry-config.xml
+ template under the maven-vsinstaller-plugin  

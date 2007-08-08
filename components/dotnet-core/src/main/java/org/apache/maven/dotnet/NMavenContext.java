@@ -18,8 +18,6 @@
  */
 package org.apache.maven.dotnet;
 
-import org.apache.maven.project.MavenProject;
-
 import org.apache.maven.dotnet.registry.Repository;
 import org.codehaus.plexus.logging.Logger;
 
@@ -31,7 +29,6 @@ import org.codehaus.plexus.logging.Logger;
 
 public interface NMavenContext
 {
-
     /**
      * Role used to register component implementations with the container.
      */

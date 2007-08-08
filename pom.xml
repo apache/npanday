@@ -22,7 +22,7 @@ under the License.
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>dotnet-project</artifactId>
   <packaging>pom</packaging>
-  <version>0.14</version>
+  <version>0.14-SNAPSHOT</version>
   <name>dotnet</name>
   <mailingLists>
     <mailingList>

@@ -19,18 +19,21 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
     <groupId>NMaven</groupId>
-    <version>0.14</version>
+    <version>0.14-SNAPSHOT</version>
     <artifactId>NMaven.Assemblies</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven.VisualStudio</groupId>
   <artifactId>NMaven.VisualStudio.ProjectWizard</artifactId>
+  <version>0.14-SNAPSHOT</version>
   <packaging>library</packaging>
   <name>NMaven.VisualStudio.ProjectWizard</name>
   <dependencies>
     <dependency>
       <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>
       <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>
+      <version>8.0.0.0</version>
+      <classifier>b03f5f7f11d50a3a</classifier>
       <type>gac_msil</type>
     </dependency>
     <dependency>

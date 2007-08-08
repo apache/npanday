@@ -14,7 +14,7 @@ namespace NMaven.VisualStudio.Addin
     {
         public AddArtifactsForm()
         {
-            InitializeComponent();
+            InitializeForm();
             localListView.View = View.Details;
          //   IWindsorContainer container = new WindsorContainer(new XmlInterpreter(@"C:\Documents and Settings\shane\nmaven-apache\trunk-fix\assemblies\NMaven.VisualStudio.Addin\src\main\resources\components.xml"));
          //   ArtifactContext artifactContext = (ArtifactContext) container[typeof(ArtifactContext)];
@@ -38,6 +38,24 @@ namespace NMaven.VisualStudio.Addin
           //  item.SubItems.Add("1.2.3.4");
            // localListView.Items.Add(item);
            
+        }
+
+        private void InitializeForm()
+        {
+            this.SuspendLayout();
+            // 
+            // AddArtifactsForm
+            // 
+            this.ClientSize = new System.Drawing.Size(292, 260);
+            this.Name = "AddArtifactsForm";
+            this.Load += new System.EventHandler(this.AddArtifactsForm_Load);
+            this.ResumeLayout(false);
+
+        }
+
+        private void AddArtifactsForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

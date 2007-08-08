@@ -113,7 +113,7 @@ public class EmbedderStarterMojo
      */
     private String frameworkVersion;
 
-    private String pomVersion = "0.14";
+    private String pomVersion = "0.14-SNAPSHOT";
 
     /**
      * File logger: needed for creating logs when the IDE starts because the console output and thrown exceptions are
@@ -157,28 +157,10 @@ public class EmbedderStarterMojo
         }
         logger.info( "NMAVEN: Found local repository: Path =  " + localRepository );
 
-        List<ArtifactRepository> remoteRepositories = new ArrayList<ArtifactRepository>();
-        //   ArtifactRepository remoteArtifactRepository = new DefaultArtifactRepository( "nmaven", "http://localhost:" +
-        //       port + "/repository", new DefaultRepositoryLayout() );
-        // remoteRepositories.add( remoteArtifactRepository );
-
         ArtifactRepository localArtifactRepository =
             new DefaultArtifactRepository( "local", "file://" + localRepository, new DefaultRepositoryLayout() );
 
-        /*
-        artifactContext.init( project, remoteRepositories, localRepository );
 
-        try
-        {
-            artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( "VisualStudio2005",
-                                                                                               new ArrayList<Dependency>(),
-                                                                                               null );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( e.getMessage() );
-        }
-        */
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();
         Artifact artifact = artifactFactory.createDependencyArtifact( "org.mortbay.jetty", "jetty-embedded",
                                                                       VersionRange.createFromVersion( "6.1.5" ), "jar",

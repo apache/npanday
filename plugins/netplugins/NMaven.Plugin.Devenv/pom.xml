@@ -19,21 +19,21 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
     <groupId>NMaven.Plugins</groupId>
-    <version>0.14</version>
+    <version>0.14-SNAPSHOT</version>
     <artifactId>NMaven.Plugins</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven.Plugins</groupId>
   <artifactId>NMaven.Plugin.Devenv</artifactId>
   <packaging>netplugin</packaging>
-  <version>0.14</version>
+  <version>0.14-SNAPSHOT</version>
   <name>NMaven.Plugin.Devenv</name>
   <dependencies>
     <dependency>
       <groupId>NMaven.Plugin</groupId>
       <artifactId>NMaven.Plugin</artifactId>
       <type>library</type>
-      <version>0.14</version>
+      <version>0.14-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

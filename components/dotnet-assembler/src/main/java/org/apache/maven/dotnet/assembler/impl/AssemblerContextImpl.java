@@ -18,7 +18,6 @@
  */
 package org.apache.maven.dotnet.assembler.impl;
 
-import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.dotnet.assembler.AssemblerContext;
 import org.apache.maven.dotnet.assembler.AssemblyInfo;
 import org.apache.maven.dotnet.assembler.AssemblyInfoMarshaller;
@@ -35,7 +34,6 @@ import org.codehaus.plexus.logging.Logger;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 
 import java.io.*;
-
 
 /**
  * Provides an implementation of the <code>AssemblerContext</code>.

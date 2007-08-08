@@ -1,48 +1,121 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.maven.dotnet.dao;
 
 import java.util.Set;
 import java.util.HashSet;
 
+/**
+ * Class for accessing information about a project.
+ */
 public class Project
 {
+    /**
+     * The group id of the project
+     */
     private String groupId;
 
+    /**
+     * The artifact id of the project
+     */
     private String artifactId;
 
+    /**
+     * The version of the project
+     */
     private String version;
 
+    /**
+     * The public key token id (classifier) of the project
+     */
     private String publicKeyTokenId;
 
+    /**
+     * Have the project artifacts been resolved
+     */
     private boolean isResolved = false;
 
+    /**
+     * The type of artifact: library, exe, winexe, netmodule
+     */
     private String artifactType = "library";
 
+    /**
+     * The set of project dependencies for this project
+     */
     private Set<ProjectDependency> projectDependencies = new HashSet<ProjectDependency>();
 
+    /**
+     * The set of requirements for this project
+     */
     private Set<Requirement> requirements = new HashSet<Requirement>();
 
+    /**
+     * The parent project
+     */
     private Project parentProject;
 
+    /**
+     * Returns the parent project
+     *
+     * @return the parent project
+     */
     public Project getParentProject()
     {
         return parentProject;
     }
 
+    /**
+     * Sets the parent project
+     *
+     * @param parentProject the parent project
+     */
     public void setParentProject( Project parentProject )
     {
         this.parentProject = parentProject;
     }
 
+    /**
+     * Adds a requirement to the project.
+     *
+     * @param requirement a requirement needed for the artifact to run
+     */
     public void addRequirement( Requirement requirement )
     {
         requirements.add( requirement );
     }
 
+    /**
+     * Returns the set of requirements for the project.
+     *
+     * @return he set of requirements for the project
+     */
     public Set<Requirement> getRequirements()
     {
         return requirements;
     }
 
+    /**
+     * Sets all requirements for the project. This will override any requirements added through Project#addRequirement
+     *
+     * @param requirements the project requirements
+     */
     public void setRequirements( Set<Requirement> requirements )
     {
         this.requirements = requirements;

@@ -20,14 +20,14 @@ under the License.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>NMaven.Project</groupId>
-    <version>0.14</version>
+    <version>0.14-SNAPSHOT</version>
     <artifactId>NMaven.Project</artifactId>
     <relativePath>../pom-dotnet.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven</groupId>
   <artifactId>NMaven.Assemblies</artifactId>
-  <version>0.14</version>
+  <version>0.14-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>NMaven.Assemblies</name>
   <url>http://incubator.apache.org/nmaven</url>
@@ -57,6 +57,7 @@ under the License.
         <module>NMaven.VisualStudio</module>
         <module>NMaven.VisualStudio.Addin</module>
         <module>NMaven.IDE</module>
+        <module>NMaven.VisualStudio.ProjectWizard</module>        
       </modules>
       <build>
         <plugins>

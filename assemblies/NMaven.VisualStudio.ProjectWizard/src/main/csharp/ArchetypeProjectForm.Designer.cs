@@ -36,25 +36,27 @@ namespace WindowsApplication2
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.listBoxArtifactType = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // groupIdTextBox
             // 
-            this.groupIdTextBox.Location = new System.Drawing.Point(117, 54);
+            this.groupIdTextBox.Location = new System.Drawing.Point(121, 54);
             this.groupIdTextBox.Name = "groupIdTextBox";
             this.groupIdTextBox.Size = new System.Drawing.Size(246, 22);
             this.groupIdTextBox.TabIndex = 0;
             // 
             // artifactIdTextBox
             // 
-            this.artifactIdTextBox.Location = new System.Drawing.Point(117, 98);
+            this.artifactIdTextBox.Location = new System.Drawing.Point(121, 98);
             this.artifactIdTextBox.Name = "artifactIdTextBox";
             this.artifactIdTextBox.Size = new System.Drawing.Size(246, 22);
             this.artifactIdTextBox.TabIndex = 1;
             // 
             // versionTextBox
             // 
-            this.versionTextBox.Location = new System.Drawing.Point(117, 147);
+            this.versionTextBox.Location = new System.Drawing.Point(121, 137);
             this.versionTextBox.Name = "versionTextBox";
             this.versionTextBox.Size = new System.Drawing.Size(246, 22);
             this.versionTextBox.TabIndex = 2;
@@ -80,7 +82,7 @@ namespace WindowsApplication2
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(26, 147);
+            this.label3.Location = new System.Drawing.Point(26, 137);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(56, 17);
             this.label3.TabIndex = 5;
@@ -98,7 +100,7 @@ namespace WindowsApplication2
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(303, 211);
+            this.button1.Location = new System.Drawing.Point(303, 233);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
@@ -106,11 +108,34 @@ namespace WindowsApplication2
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(26, 178);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(88, 17);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Artifact Type";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
+            // 
+            // listBoxArtifactType
+            // 
+            this.listBoxArtifactType.AllowDrop = true;
+            this.listBoxArtifactType.FormattingEnabled = true;
+            this.listBoxArtifactType.ItemHeight = 16;
+            this.listBoxArtifactType.Location = new System.Drawing.Point(121, 178);
+            this.listBoxArtifactType.Name = "listBoxArtifactType";
+            this.listBoxArtifactType.Size = new System.Drawing.Size(134, 20);
+            this.listBoxArtifactType.TabIndex = 10;
+            this.listBoxArtifactType.SelectedIndexChanged += new System.EventHandler(this.listBoxArtifactType_SelectedIndexChanged);
+            // 
             // ArchetypeProjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(402, 279);
+            this.Controls.Add(this.listBoxArtifactType);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -137,6 +162,8 @@ namespace WindowsApplication2
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ListBox listBoxArtifactType;
     }
 }
 
