@@ -21,29 +21,40 @@ package org.apache.maven.dotnet.plugin.repository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.openrdf.rio.RDFHandler;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.rdfxml.RDFXMLWriter;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryConnection;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.dotnet.repository.RepositoryConverter;
+import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.openrdf.repository.sail.SailRepository;
+import org.openrdf.repository.RepositoryException;
 import org.openrdf.sail.memory.MemoryStore;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * @goal export-rdf
+ * @goal convert-artifact
  */
-public class RepositoryRdfExporterMojo
+public class RepositoryConverterForArtifactMojo
     extends AbstractMojo
 {
+    /**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
+     * @required
+     */
+    private MavenProject project;
+
     /**
      * @parameter expression="${settings.localRepository}"
      * @readonly
      */
     private File localRepository;
+
+    /**
+     * @component
+     */
+    private RepositoryConverter repositoryConverter;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -59,27 +70,11 @@ public class RepositoryRdfExporterMojo
             throw new MojoExecutionException( e.getMessage() );
         }
 
-        RDFHandler rdfxmlWriter;
         try
         {
-            File exportFile = new File( localRepository.getParentFile(), "/uac/rdfRepository/rdf-repository-export.xml" );
-            rdfxmlWriter = new RDFXMLWriter( new FileOutputStream( exportFile ) );
+            repositoryConverter.convertRepositoryFormatFor( project.getArtifact(), rdfRepository, localRepository );
         }
         catch ( IOException e )
-        {
-            throw new MojoExecutionException( e.getMessage() );
-        }
-
-        try
-        {
-            RepositoryConnection repositoryConnection = rdfRepository.getConnection();
-            repositoryConnection.export( rdfxmlWriter );
-        }
-        catch ( RepositoryException e )
-        {
-            throw new MojoExecutionException( e.getMessage() );
-        }
-        catch ( RDFHandlerException e )
         {
             throw new MojoExecutionException( e.getMessage() );
         }

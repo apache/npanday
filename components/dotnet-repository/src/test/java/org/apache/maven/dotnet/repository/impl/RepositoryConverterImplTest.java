@@ -6,6 +6,8 @@ import org.apache.maven.dotnet.dao.ProjectDao;
 import org.apache.maven.dotnet.dao.Project;
 import org.apache.maven.dotnet.dao.ProjectDependency;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.Artifact;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryConnection;
@@ -28,7 +30,63 @@ public class RepositoryConverterImplTest
 
     private static File basedir = new File( System.getProperty( "basedir" ) );
 
-    private org.openrdf.repository.Repository rdfRepository;
+
+    public void testConvertArtifact()
+    {
+        File testRepo = new File( System.getProperty( "basedir" ), "target/test-repo/repository-1" );
+        testRepo.mkdir();
+
+        Repository repository = this.createRepository();
+        ProjectDao dao = this.createProjectDao( repository );
+
+        Project project = new Project();
+        project.setGroupId( "NMaven.Model" );
+        project.setArtifactId( "NMaven.Model.Pom" );
+        project.setVersion( "1.0" );
+        project.setArtifactType( "library" );
+        project.setPublicKeyTokenId( "abc" );
+
+        ProjectDependency test2 = createProjectDependency( "NMaven", "NMaven.Test", "1.0" );
+        test2.setArtifactType( "library" );
+        project.addProjectDependency( test2 );
+
+        try
+        {
+            dao.storeProjectAndResolveDependencies( project, testRepo, new ArrayList<ArtifactRepository>() );
+        }
+        catch ( java.io.IOException e )
+        {
+            e.printStackTrace();
+            fail( "Could not store the project: " + e.getMessage() );
+        }
+
+        RepositoryConverterImpl repositoryConverter = new RepositoryConverterImpl();
+        repositoryConverter.initTest( new DataAccessObjectRegistryStub(), new ArtifactFactoryTestStub(),
+                                      new WagonManagerTestStub() );
+
+        ArtifactFactory artifactFactory = new ArtifactFactoryTestStub();
+        Artifact artifact = artifactFactory.createArtifactWithClassifier( project.getGroupId(), project.getArtifactId(),
+                                                                          project.getVersion(),
+                                                                          project.getArtifactType(), "abc" );
+        File artifactFile = new File( testRepo.getParentFile(),
+                                      "/uac/gac_msil/NMaven.Model.Pom/1.0__NMaven.Model/NMaven.Model.Pom.dll" );
+
+        artifact.setFile( artifactFile );
+        try
+        {
+            repositoryConverter.convertRepositoryFormatFor( artifact, repository, testRepo );
+        }
+        catch ( IOException e )
+        {
+            fail( "Could not convert the repository: " + e.getMessage() );
+        }
+        this.exportRepositoryToRdf( "testConvertArtifact-rdf.xml", testRepo, repository );
+
+        assertTrue( new File( testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0-abc.dll" ).exists() );
+        assertTrue( new File( testRepo, "/NMaven/Model/NMaven.Model.Pom/1.0/NMaven.Model.Pom-1.0.pom" ).exists() );
+        assertFalse( new File( testRepo, "/NMaven/NMaven.Test/1.0/NMaven.Test-1.0.dll" ).exists() );
+        assertFalse( new File( testRepo, "/NMaven/NMaven.Test/1.0/NMaven.Test-1.0.pom" ).exists() );
+    }
 
     public void testConvert()
     {
@@ -64,7 +122,7 @@ public class RepositoryConverterImplTest
                                       new WagonManagerTestStub() );
         try
         {
-            repositoryConverter.convert( repository, testRepo );
+            repositoryConverter.convertRepositoryFormat( repository, testRepo );
         }
         catch ( IOException e )
         {

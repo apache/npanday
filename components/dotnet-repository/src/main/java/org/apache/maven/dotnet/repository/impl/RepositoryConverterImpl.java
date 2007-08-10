@@ -83,9 +83,9 @@ public class RepositoryConverterImpl
     }
 
     /**
-     * @see RepositoryConverter#convert(org.openrdf.repository.Repository, java.io.File)
+     * @see RepositoryConverter#convertRepositoryFormat(org.openrdf.repository.Repository, java.io.File)
      */
-    public void convert( Repository repository, File mavenRepository )
+    public void convertRepositoryFormat( Repository repository, File mavenRepository )
         throws IOException
     {
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
@@ -117,15 +117,65 @@ public class RepositoryConverterImpl
                     continue;
                 }
             }
+            if ( !artifact.getType().equals( "exe.config" ) )//This is attached
+            {
+                handler = new DefaultArtifactHandler( "pom" );
+                artifact.setArtifactHandler( handler );
 
-            handler = new DefaultArtifactHandler( "pom" );
-            artifact.setArtifactHandler( handler );
+                File pomFile = new File( mavenRepository, pathOfPom( artifact ) );
+                FileWriter fileWriter = new FileWriter( pomFile );
+                new MavenXpp3Writer().write( fileWriter, model );
+                IOUtil.close( fileWriter );
+            }
+        }
+        dao.closeConnection();
+    }
+
+    public void convertRepositoryFormatFor( Artifact artifact, Repository repository, File mavenRepository )
+        throws IOException
+    {
+        ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
+        dao.init( artifactFactory, wagonManager );
+        dao.setRdfRepository( repository );
+        dao.openConnection();
+        Project project = dao.getProjectFor( artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
+                                             artifact.getType(), artifact.getClassifier() );
+
+        logger.info( "NMAVEN-190-001: Converting Project: Artifact ID = " + project.getArtifactId() +
+            ", Dependency Count =" + project.getProjectDependencies().size() );
+        Model model = ProjectFactory.createModelFrom( project );
+
+        ArtifactHandler handler = new DefaultArtifactHandler(
+            ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
+        artifact.setArtifactHandler( handler );
+
+        ArtifactRepositoryLayout layout = new DefaultRepositoryLayout();
+        if ( !project.getArtifactType().equals( "pom" ) )
+        {
+            if ( artifact.getFile().exists() )
+            {
+                FileUtils.copyFile( artifact.getFile(), new File( mavenRepository, layout.pathOf( artifact ) ) );
+            }
+            else
+            {
+                logger.info( "NMAVEN-190-001: Could not find file: " + artifact.getFile().getAbsolutePath() );
+                return;
+            }
+        }
+
+        if ( !artifact.getType().equals( "exe.config" ) )//This is attached
+        {
+            ArtifactHandler pomhandler = new DefaultArtifactHandler( "pom" );
+            artifact.setArtifactHandler( pomhandler );
 
             File pomFile = new File( mavenRepository, pathOfPom( artifact ) );
             FileWriter fileWriter = new FileWriter( pomFile );
             new MavenXpp3Writer().write( fileWriter, model );
             IOUtil.close( fileWriter );
         }
+        
+        artifact.setArtifactHandler( handler );
+
         dao.closeConnection();
     }
 

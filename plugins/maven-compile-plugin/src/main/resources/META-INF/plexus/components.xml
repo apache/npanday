@@ -67,7 +67,8 @@
             org.apache.maven.dotnet.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>
       </configuration>
@@ -105,7 +106,8 @@
             org.apache.maven.dotnet.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>
       </configuration>
@@ -143,7 +145,8 @@
             org.apache.maven.dotnet.plugins:maven-install-plugin:install,
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>
       </configuration>
@@ -182,7 +185,8 @@
             org.apache.maven.dotnet.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>
       </configuration>
@@ -220,7 +224,8 @@
             org.apache.maven.dotnet.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>
       </configuration>
@@ -258,7 +263,8 @@
             org.apache.maven.dotnet.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>               
         </phases>
       </configuration>
@@ -275,7 +281,8 @@
             org.apache.maven.dotnet.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-dotnet
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>
       </configuration>

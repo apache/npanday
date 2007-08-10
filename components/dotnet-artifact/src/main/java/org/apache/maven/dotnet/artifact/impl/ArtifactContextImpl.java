@@ -183,6 +183,7 @@ public final class ArtifactContextImpl
         this.localRepository = localRepository.getAbsolutePath();
         artifactInstaller.init( this, remoteArtifactRepositories, localRepository );
         Map<String, ArtifactHandler> map = new HashMap<String, ArtifactHandler>();
+
         for ( ArtifactHandler artifactHandler : artifactHandlers )
         {
             //If I add a handler that already exists, the runtime breaks.
