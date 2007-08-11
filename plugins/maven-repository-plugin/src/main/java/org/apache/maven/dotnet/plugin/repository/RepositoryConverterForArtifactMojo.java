@@ -23,7 +23,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.dotnet.repository.RepositoryConverter;
-import org.apache.maven.dotnet.artifact.ArtifactContext;
+import org.apache.maven.dotnet.artifact.ApplicationConfig;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.sail.memory.MemoryStore;
@@ -56,6 +56,7 @@ public class RepositoryConverterForArtifactMojo
      */
     private RepositoryConverter repositoryConverter;
 
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -70,9 +71,14 @@ public class RepositoryConverterForArtifactMojo
             throw new MojoExecutionException( e.getMessage() );
         }
 
+        ApplicationConfig config = ApplicationConfig.Factory.createDefaultApplicationConfig( project.getArtifact(),
+                                                                                             project.getBasedir(),
+                                                                                             new File(
+                                                                                                 project.getBuild().getDirectory() ) );
         try
         {
-            repositoryConverter.convertRepositoryFormatFor( project.getArtifact(), rdfRepository, localRepository );
+            repositoryConverter.convertRepositoryFormatFor( project.getArtifact(), config, rdfRepository,
+                                                            localRepository );
         }
         catch ( IOException e )
         {

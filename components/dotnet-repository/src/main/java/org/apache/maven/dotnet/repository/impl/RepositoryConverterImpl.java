@@ -24,6 +24,7 @@ import org.apache.maven.dotnet.dao.ProjectDao;
 import org.apache.maven.dotnet.dao.ProjectFactory;
 import org.apache.maven.dotnet.registry.DataAccessObjectRegistry;
 import org.apache.maven.dotnet.ArtifactType;
+import org.apache.maven.dotnet.artifact.ApplicationConfig;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
@@ -117,21 +118,24 @@ public class RepositoryConverterImpl
                     continue;
                 }
             }
+
             if ( !artifact.getType().equals( "exe.config" ) )//This is attached
             {
-                handler = new DefaultArtifactHandler( "pom" );
-                artifact.setArtifactHandler( handler );
+                ArtifactHandler pomhandler = new DefaultArtifactHandler( "pom" );
+                artifact.setArtifactHandler( pomhandler );
 
                 File pomFile = new File( mavenRepository, pathOfPom( artifact ) );
                 FileWriter fileWriter = new FileWriter( pomFile );
                 new MavenXpp3Writer().write( fileWriter, model );
                 IOUtil.close( fileWriter );
             }
+            artifact.setArtifactHandler( handler );
         }
         dao.closeConnection();
     }
 
-    public void convertRepositoryFormatFor( Artifact artifact, Repository repository, File mavenRepository )
+    public void convertRepositoryFormatFor( Artifact artifact, ApplicationConfig applicationConfig,
+                                            Repository repository, File mavenRepository )
         throws IOException
     {
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
@@ -163,6 +167,15 @@ public class RepositoryConverterImpl
             }
         }
 
+        if ( applicationConfig != null )
+        {
+            File destPath = applicationConfig.getConfigBuildPath();
+            if ( destPath.exists() )
+            {
+                FileUtils.copyFile( destPath, applicationConfig.getRepositoryPath( mavenRepository ) );
+            }
+        }
+
         if ( !artifact.getType().equals( "exe.config" ) )//This is attached
         {
             ArtifactHandler pomhandler = new DefaultArtifactHandler( "pom" );
@@ -173,7 +186,7 @@ public class RepositoryConverterImpl
             new MavenXpp3Writer().write( fileWriter, model );
             IOUtil.close( fileWriter );
         }
-        
+
         artifact.setArtifactHandler( handler );
 
         dao.closeConnection();

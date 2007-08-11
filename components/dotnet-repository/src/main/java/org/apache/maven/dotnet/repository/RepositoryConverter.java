@@ -20,6 +20,7 @@ package org.apache.maven.dotnet.repository;
 
 import org.openrdf.repository.Repository;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.dotnet.artifact.ApplicationConfig;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +46,7 @@ public interface RepositoryConverter
     void convertRepositoryFormat( Repository repository, File mavenRepository )
         throws IOException;
 
-    void convertRepositoryFormatFor( Artifact artifact, Repository repository, File mavenRepository)
+    void convertRepositoryFormatFor( Artifact artifact, ApplicationConfig applicationConfig, Repository repository,
+                                     File mavenRepository )
         throws IOException;
 }

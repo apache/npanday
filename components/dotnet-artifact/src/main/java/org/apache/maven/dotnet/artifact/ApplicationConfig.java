@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.maven.dotnet.artifact;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.dotnet.PathUtil;
 
 import java.io.File;
 
@@ -32,18 +32,26 @@ public interface ApplicationConfig
 {
 
     /**
+     * Returns the Maven repository path of the exe.config file.
+     *
+     * @param localRepository the local maven repository
+     * @return the Maven repository path of the exe.config file
+     */
+    File getRepositoryPath( File localRepository );
+
+    /**
      * Returns the source path of the (original) *.exe.config file
      *
      * @return the source path of the (original) *.exe.config file
      */
-    String getConfigSourcePath();
+    File getConfigSourcePath();
 
     /**
      * Returns the target path of the (copied) *.exe.config file
      *
      * @return the target path of the (copied) *.exe.config file
      */
-    String getConfigDestinationPath();
+    File getConfigBuildPath();
 
     /**
      * Factory class for generating default executable configs.
@@ -61,29 +69,41 @@ public interface ApplicationConfig
          * Creates the the application config for the specified artifact. By default, the config source path for the
          * exe.config is located within the project's src/main/config directory. Neither parameter value may be null.
          *
-         * @param artifact the executable artifact to which the exe.config file is associated
-         * @param projectBaseDirectory the base directory of the build (which contains the pom.xml file)
+         * @param artifact              the executable artifact to which the exe.config file is associated
+         * @param projectBaseDirectory  the base directory of the build (which contains the pom.xml file)
          * @param projectBuildDirectory the target directory of the build
          * @return the application config for the specified artifact
          */
         public static ApplicationConfig createDefaultApplicationConfig( final Artifact artifact,
                                                                         final File projectBaseDirectory,
-                                                                        final File projectBuildDirectory)
+                                                                        final File projectBuildDirectory )
         {
             return new ApplicationConfig()
             {
 
-                public String getConfigSourcePath()
+                public File getRepositoryPath( File localRepository )
                 {
-                    return new File(
-                        projectBaseDirectory + "/src/main/config/" + artifact.getArtifactId() + ".exe.config" )
-                        .getAbsolutePath();
+                    File basedir = PathUtil.getMavenLocalRepositoryFileFor( artifact, localRepository ).getParentFile();
+                    StringBuffer buffer = new StringBuffer();
+                    buffer.append( artifact.getArtifactId() ).append( "-" ).append( artifact.getVersion() );
+                    if ( artifact.getClassifier() != null )
+                    {
+                        buffer.append( "-" ).append( artifact.getClassifier() );
+                    }
+                    buffer.append( ".exe.config" );
+
+                    return new File( basedir, buffer.toString() );
                 }
 
-                public String getConfigDestinationPath()
+                public File getConfigSourcePath()
                 {
-                    return projectBuildDirectory + File.separator + artifact.getArtifactId() +
-                        ".exe.config";
+                    return new File( projectBaseDirectory,
+                                     "/src/main/config/" + artifact.getArtifactId() + ".exe.config" );
+                }
+
+                public File getConfigBuildPath()
+                {
+                    return new File( projectBuildDirectory, artifact.getArtifactId() + ".exe.config" );
                 }
             };
         }

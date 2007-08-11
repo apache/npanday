@@ -19,6 +19,7 @@
 package org.apache.maven.dotnet;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -65,6 +66,29 @@ public final class PathUtil
         //String processArchitecture = ( artifact.getType().equals( "gac_generic" ) );
         return new File( gacRepository, "\\" + artifact.getType() + "\\" + artifact.getArtifactId() + "\\" + version +
             "__" + artifact.getClassifier() + "\\" + artifact.getArtifactId() + ".dll" );
+    }
+
+    /**
+     * Returns the path of the artifact within the local repository using the default repository layout.
+     *
+     * @param artifact        the artifact to find the path of.  This value should not be null.
+     * @param localRepository the local repository.  This value should not be null.
+     * @return the path of the artifact within the local maven repository or null if either of the specified
+     *         parameters is null
+     */
+    public static File getMavenLocalRepositoryFileFor( Artifact artifact, File localRepository )
+    {
+        if ( artifact == null )
+        {
+            logger.warning( "NMAVEN-040-007: Artifact is null - Cannot get repository file." );
+            return null;
+        }
+        if ( localRepository == null )
+        {
+            logger.warning( "NMAVEN-040-008: Local Repository is null - Cannot get repository file." );
+            return null;
+        }
+        return new File( localRepository, new DefaultRepositoryLayout().pathOf( artifact ) );
     }
 
     /**

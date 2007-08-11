@@ -308,7 +308,7 @@ public class ArtifactInstallerImpl
         throws ArtifactInstallationException
     {
         ApplicationConfig applicationConfig = artifactContext.getApplicationConfigFor( artifact );
-        File configExeFile = new File( applicationConfig.getConfigDestinationPath() );
+        File configExeFile = applicationConfig.getConfigBuildPath();
         if ( configExeFile.exists() )
         {
             try

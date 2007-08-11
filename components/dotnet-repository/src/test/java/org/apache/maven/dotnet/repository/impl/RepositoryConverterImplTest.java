@@ -74,7 +74,7 @@ public class RepositoryConverterImplTest
         artifact.setFile( artifactFile );
         try
         {
-            repositoryConverter.convertRepositoryFormatFor( artifact, repository, testRepo );
+            repositoryConverter.convertRepositoryFormatFor( artifact, null, repository, testRepo );
         }
         catch ( IOException e )
         {

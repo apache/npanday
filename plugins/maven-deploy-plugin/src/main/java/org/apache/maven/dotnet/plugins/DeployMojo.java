@@ -3,16 +3,18 @@ package org.apache.maven.dotnet.plugins;
 import org.apache.maven.artifact.deployer.ArtifactDeployer;
 import org.apache.maven.artifact.deployer.ArtifactDeploymentException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.artifact.ProjectArtifactMetadata;
-import org.apache.maven.dotnet.artifact.ArtifactContext;
+import org.apache.maven.dotnet.artifact.ApplicationConfig;
 
 import java.io.File;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Deploy's dlls
@@ -55,21 +57,43 @@ public class DeployMojo
     /**
      * @component
      */
-    private ArtifactContext artifactContext;
+    private ArtifactFactory artifactFactory;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        Artifact artifact = project.getArtifact();
+        Artifact projectArtifact = project.getArtifact();
+        deployArtifacts.add( projectArtifact );
 
         if ( ! "pom".equals( packaging ) )
         {
-            artifact.addMetadata( new ProjectArtifactMetadata( artifact, project.getFile() ) );
+            projectArtifact.addMetadata( new ProjectArtifactMetadata( projectArtifact, project.getFile() ) );
         }
-        
+
+        ApplicationConfig config = ApplicationConfig.Factory.createDefaultApplicationConfig( project.getArtifact(),
+                                                                                             project.getBasedir(),
+                                                                                             new File(
+                                                                                                 project.getBuild().getDirectory() ) );
+        File exePath = config.getRepositoryPath( new File( localRepo.getBasedir() ) );
+        if ( exePath.exists() )
+        {
+            Artifact attachedArtifact = artifactFactory.createArtifact( projectArtifact.getGroupId(),
+                                                                        projectArtifact.getArtifactId(),
+                                                                        project.getVersion(), packaging, "exe.config" );
+            try
+            {
+                artifactDeployer.deploy( exePath, attachedArtifact,
+                                         project.getDistributionManagementArtifactRepository(), localRepo );
+            }
+            catch ( ArtifactDeploymentException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-DEPLOY: Deploy Failed", e );
+            }
+        }
+
         try
         {
-            artifactDeployer.deploy( project.getArtifact().getFile(), artifact,
+            artifactDeployer.deploy( project.getArtifact().getFile(), projectArtifact,
                                      project.getDistributionManagementArtifactRepository(), localRepo );
         }
         catch ( ArtifactDeploymentException e )
