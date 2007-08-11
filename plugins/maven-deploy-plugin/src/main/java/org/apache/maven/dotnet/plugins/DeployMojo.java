@@ -63,7 +63,6 @@ public class DeployMojo
         throws MojoExecutionException, MojoFailureException
     {
         Artifact projectArtifact = project.getArtifact();
-        deployArtifacts.add( projectArtifact );
 
         if ( ! "pom".equals( packaging ) )
         {
