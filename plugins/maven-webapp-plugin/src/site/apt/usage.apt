@@ -1,0 +1,50 @@
+How to Use
+
+* Building & Deploying Web Applications
+
+ To enable building of the Web application, specify the packaging as "nar" - .NET Archive. NMaven will compile
+ classes in the source and test directories and then proceed to place the newly generated artifacts and its dependencies into
+ the target/$\{project.build.finalname\}/bin directory. NMaven will also copy any files from the src/main/webapp directory
+ into the target/$\{project.build.finalname\} directory, allowing you to add any additional resources such as Web.Config and
+ ASPX files.
+
+ You will only need to add the nmaven-webapp-plugin to the pom if you are planning on deploying the web application. In
+ that case, add the <<deployPath>> pom configuration as shown below. Type "mvn deploy" from the command line and NMaven will
+ copy the web application to the <<deployPath>> location.
+
++----+
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.maven.sample</groupId>
+    <artifactId>webapp</artifactId>
+    <packaging>nar</packaging>
+    <version>2.0.0</version>
+    <name>nar</name>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven.sample</groupId>
+            <artifactId>csc2</artifactId>
+            <type>library</type>
+            <version>2.0.0</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <sourceDirectory>src/main/csharp</sourceDirectory>
+        <testSourceDirectory>src/test/csharp</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compile-plugin</artifactId>
+     	        <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-webapp-plugin</artifactId>
+                <configuration>
+                    <deployPath>${MYAPP_HOME}/apps</deployPath>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

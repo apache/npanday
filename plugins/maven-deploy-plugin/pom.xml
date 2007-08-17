@@ -29,6 +29,13 @@ under the License.
   <packaging>maven-plugin</packaging>
   <name>maven-deploy-plugin</name>
   <description>
-    Maven Plugin for .NET
+    Maven Plugin for .NET: Deploys .NET assemblies to a remote repository
   </description>
+    <distributionManagement>
+    <site>
+      <id>nmaven-apache-site</id>
+      <name>NMaven Site</name>
+      <url>file://${basedir}/../../../www/plugins/maven-deploy-plugin</url>
+    </site>
+  </distributionManagement>
 </project>

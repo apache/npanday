@@ -26,13 +26,13 @@ import org.codehaus.plexus.util.FileUtils;
 import java.io.File;
 import java.io.IOException;
 
-
 /**
  * Deploys a .NET Web Archive
  *
  * @author Shane Isbell
  * @goal deploy
  * @phase deploy
+ * @description Deploys a .NET Web Archive
  */
 public class NetArchiveDeployerMojo
     extends AbstractMojo

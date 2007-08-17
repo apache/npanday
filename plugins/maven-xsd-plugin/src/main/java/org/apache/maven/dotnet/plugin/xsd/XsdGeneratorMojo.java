@@ -37,6 +37,7 @@ import org.apache.maven.dotnet.PlatformUnsupportedException;
  * @author Shane Isbell
  * @goal xsd
  * @phase process-sources
+ * @description Generates XSD class
  */
 
 public class XsdGeneratorMojo

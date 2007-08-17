@@ -34,12 +34,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
+ * Exports the RDF repository into the RDF/XML format
+ *
  * @goal export-rdf
+ * @description Exports the RDF repository into the RDF/XML format.
  */
 public class RepositoryRdfExporterMojo
     extends AbstractMojo
 {
     /**
+     * The local Maven repository.
+     *
      * @parameter expression="${settings.localRepository}"
      * @readonly
      */

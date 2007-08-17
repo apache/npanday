@@ -44,7 +44,7 @@ import java.io.File;
  * @author Shane Isbell
  * @goal compile
  * @phase compile
- * @description Maven Mojo for compiling Class files to the .NET Intermediate Language
+ * @description Maven Mojo for compiling class files to the .NET Intermediate Language
  */
 public final class CompilerMojo
     extends AbstractMojo
@@ -58,6 +58,8 @@ public final class CompilerMojo
     private MavenProject project;
 
     /**
+     * The location of the local Maven repository.
+     *
      * @parameter expression="${settings.localRepository}"
      */
     private File localRepository;
@@ -96,6 +98,8 @@ public final class CompilerMojo
     private String platform;
 
     /**
+     * The framework version to compile under: 1.1, 2.0, 3.0
+     *
      * @parameter expression = "${frameworkVersion}"
      */
     private String frameworkVersion;

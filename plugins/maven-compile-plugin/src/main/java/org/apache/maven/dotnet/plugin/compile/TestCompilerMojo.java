@@ -37,13 +37,15 @@ import java.io.File;
  * @author Shane Isbell
  * @goal testCompile
  * @phase test-compile
- * @description Maven Mojo for compiling Test Class files to the .NET Intermediate Language
+ * @description Maven Mojo for compiling test class files
  */
 public final class TestCompilerMojo
     extends AbstractMojo
 {
 
     /**
+     * The location of the local Maven repository.
+     *
      * @parameter expression="${settings.localRepository}"
      */
     private File localRepository;
@@ -71,11 +73,15 @@ public final class TestCompilerMojo
     private boolean skipTestCompile;
 
     /**
+     * The framework version to compile the test classes: 1.1, 2.0, 3.0
+     *
      * @parameter expression = "${testFrameworkVersion}"
      */
     private String testFrameworkVersion;
 
     /**
+     * The framework version to compile under: 1.1, 2.0, 3.0
+     *
      * @parameter expression = "${frameworkVersion}"
      */
     private String frameworkVersion;
@@ -122,9 +128,11 @@ public final class TestCompilerMojo
     private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
 
     /**
+     * Include debug output.
+     *
      * @parameter expression = "${isDebug}" default-value="false"
      */
-    private boolean isDebug;    
+    private boolean isDebug;
 
     /**
      * Compiles the class files.

@@ -38,6 +38,7 @@ import java.io.File;
  * @author Shane Isbell
  * @goal package
  * @phase package
+ * @description Generates a .NET Archive
  */
 public class NetAchiverMojo
     extends AbstractMojo

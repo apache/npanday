@@ -32,7 +32,10 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * Converts the project's RDF artifact repository format into the default Maven repository format.
+ *
  * @goal convert-artifact
+ * @description Converts the project's RDF artifact repository format into the default Maven repository format. 
  */
 public class RepositoryConverterForArtifactMojo
     extends AbstractMojo
@@ -46,6 +49,8 @@ public class RepositoryConverterForArtifactMojo
     private MavenProject project;
 
     /**
+     * The local Maven repository.
+     *
      * @parameter expression="${settings.localRepository}"
      * @readonly
      */

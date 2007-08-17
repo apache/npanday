@@ -30,7 +30,7 @@ under the License.
   <packaging>maven-plugin</packaging>
   <name>maven-vsinstaller-plugin</name>
   <description>
-    Maven Plugin for .NET
+    Maven Plugin for .NET: Installs the Visual Studio 2005 Addin
   </description>
   <distributionManagement>
     <site>

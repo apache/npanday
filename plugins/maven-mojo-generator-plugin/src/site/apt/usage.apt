@@ -1,0 +1,49 @@
+How to Use
+
+ Your project structure should look something like:
+
++------+
+.
+ |-- src
+ |   `-- main
+ |       `-- csharp
+ |           `-- NMaven
+ |               `-- Plugins
+ |                   `-- Test
+ |                       `-- MyMojo.cs
+  `-- pom.xml
++------+
+
+ Now compile and install the module containing your plugin:
+
++----+
+ mvn install
++----+
+
+ Next generate the JavaBinding classes for the .NET Plugin.
+
++----+
+ mvn org.apache.maven.dotnet.plugins:maven-mojo-generator-plugin:generate-bindings
++----+
+
+ Your project structure will now look like this:
+
++------+
+.
+ |-- src
+ |   `-- main
+ |       |-- csharp
+ |       |   `-- NMaven
+ |       |       `-- Plugins
+ |       |            `-- Test
+ |       |                 `-- MyMojo.cs
+ |        `-- java
+ |           `-- NMaven
+ |               `-- Plugins
+ |                   `-- Test
+ |                     `-- MyMojo.java
+  `-- pom.xml
+  `-- pom-java.xml
++------+
+
+ For more information on how to create plugins in .NET see: {{{../net-plugins.html} .NET Plugins}}

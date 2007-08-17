@@ -27,7 +27,6 @@ import org.codehaus.plexus.util.DirectoryScanner;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -37,6 +36,7 @@ import java.util.ArrayList;
  * @author Shane Isbell
  * @goal process-sources
  * @phase process-sources
+ * @description Copies source files to target directory.
  */
 
 public class SourceProcessorMojo
@@ -44,7 +44,7 @@ public class SourceProcessorMojo
 {
 
     /**
-     * Source directory
+     * Source directory containing the copied class files.
      *
      * @parameter expression = "${sourceDirectory}" default-value="${project.build.sourceDirectory}"
      * @required

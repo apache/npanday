@@ -1,0 +1,12 @@
+How to Use
+
+ Typically, the Maven Embedder is just used by the IDE and will be started automatically. If you need to manually start
+ the server, type the following.
+
++----+
+ mvn org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile="<<localRepository>>\org\apache\maven\dotnet\dotnet-service-embedder\0.14-SNAPSHOT\dotnet-service-embedder-0.14-SNAPSHOT.war"
++----+
+
+ The WSDL is found here:
+
+{{{https://svn.apache.org/repos/asf/incubator/nmaven/trunk/assemblies/NMaven.Service/Embedder/wsdl.xml}wsdl.xml}

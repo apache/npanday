@@ -1,0 +1,25 @@
+How to Use
+
+ Make sure that FxCopCmd is installed and located within your path.
+
+ Then:
+
+ [[1]] Go to your directory containing the pom (it may be a parent pom containing multiple modules).
+
+ [[2]] Install the project: mvn install
+
+ [[3]] Type one of the following commands
+
+[]
+
+  For a single module install or a multi-module, non-aggregated reports, type:
+
++----+
+mvn org.apache.maven.dotnet.plugins:maven-fxcop-plugin:fxcop
++----+
+
+ For a mult-module, aggregated report, type:
+
++----+
+mvn org.apache.maven.dotnet.plugins:maven-fxcop-plugin:aggregate
++----+

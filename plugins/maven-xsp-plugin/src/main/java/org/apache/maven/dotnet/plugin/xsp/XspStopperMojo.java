@@ -18,46 +18,21 @@
  */
 package org.apache.maven.dotnet.plugin.xsp;
 
-import org.apache.maven.project.MavenProject;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 
-import java.io.File;
 
 /**
+ * Stops the XSP Server.
+ *
  * @author Shane Isbell
  * @goal stop-xsp
  * @phase post-integration-test
+ * @description Stops the XSP Server
  */
 public class XspStopperMojo
     extends AbstractMojo
 {
-    /**
-     * The maven project.
-     *
-     * @parameter expression="${project}"
-     * @required
-     */
-    private MavenProject project;
-
-    /**
-     * The home directory of your .NET SDK.
-     *
-     * @parameter expression="${netHome}"
-     */
-    private File netHome;
-
-    /**
-     * @parameter expression = "${frameworkVersion}"
-     */
-    private String frameworkVersion;
-
-    /**
-     * The profile that the executable should use.
-     *
-     * @parameter expression = "${profile}" default-value = "XSD:SCHEMA"
-     */
-    private String profile;
 
     /**
      * @component

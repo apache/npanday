@@ -32,19 +32,26 @@ import org.apache.maven.dotnet.vendor.VendorFactory;
 import org.apache.maven.dotnet.vendor.VendorInfo;
 
 /**
+ * Generates Java Bindings for .NET Mojos.
+ *
  * @author Shane Isbell
  * @goal generate-bindings
  * @phase deploy
+ * @description Generates Java Bindings for .NET Mojos
  */
 public class MojoGeneratorMojo
     extends AbstractMojo
 {
     /**
+     * The base directory of the project.
+     *
      * @parameter expression="${basedir}"
      */
     public String basedir;
 
     /**
+     * The local Maven repository.
+     *
      * @parameter expression="${settings.localRepository}"
      */
     private File localRepository;
@@ -66,11 +73,15 @@ public class MojoGeneratorMojo
     private String vendor;
 
     /**
+     * The vendor version to compile under. For Microsoft, this will be the same as the framework version.
+     *
      * @parameter expression = "${vendorVersion}"
      */
     private String vendorVersion;
 
     /**
+     * The framework version to compile under: 1.1, 2.0, 3.0
+     *
      * @parameter expression = "${frameworkVersion}"
      */
     private String frameworkVersion;

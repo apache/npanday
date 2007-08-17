@@ -11,7 +11,7 @@
   <packaging>maven-plugin</packaging>
   <name>maven-webapp-plugin</name>
   <description>
-    Maven Plugin for .NET
+    Maven Plugin for .NET: Packages and deploys web applications
   </description>
   <dependencies>
     <dependency>

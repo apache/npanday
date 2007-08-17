@@ -29,6 +29,13 @@ under the License.
   <packaging>maven-plugin</packaging>
   <name>maven-mojo-generator-plugin</name>
   <description>
-    Maven Plugin for .NET
+    Maven Plugin for .NET: Generates Java Bindings for .NET Mojo
   </description>
+    <distributionManagement>
+    <site>
+      <id>nmaven-apache-site</id>
+      <name>NMaven Site</name>
+      <url>file://${basedir}/../../../www/plugins/maven-mojo-generator-plugin</url>
+    </site>
+  </distributionManagement>
 </project>

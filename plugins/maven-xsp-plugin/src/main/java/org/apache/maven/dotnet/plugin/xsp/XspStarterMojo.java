@@ -22,27 +22,21 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
 import org.apache.maven.dotnet.vendor.Vendor;
-import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.util.ArrayList;
 
 /**
+ * Starts the XSP server.
+ *
  * @author Shane Isbell
  * @goal start-xsp
  * @phase pre-integration-test
+ * @description Starts the XSP server.
  */
 public class XspStarterMojo
     extends AbstractMojo
 {
-    /**
-     * The maven project.
-     *
-     * @parameter expression="${project}"
-     * @required
-     */
-    private MavenProject project;
-
     /**
      * The home directory of your .NET SDK.
      *
@@ -54,13 +48,6 @@ public class XspStarterMojo
      * @parameter expression = "${frameworkVersion}"
      */
     private String frameworkVersion;
-
-    /**
-     * The profile that the executable should use.
-     *
-     * @parameter expression = "${profile}" default-value = "XSD:SCHEMA"
-     */
-    private String profile;
 
     /**
      * @component
@@ -77,14 +64,13 @@ public class XspStarterMojo
                                                                                        new ArrayList<String>(),
                                                                                        netHome );
             Thread thread = new Thread( executable );
-            getPluginContext().put( "xspThread", thread);
+            getPluginContext().put( "xspThread", thread );
             thread.start();
 
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1400-001: Platform Unsupported: Vendor " +
-                ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+            throw new MojoExecutionException( "NMAVEN-1400-001: Platform Unsupported:", e );
         }
     }
 }

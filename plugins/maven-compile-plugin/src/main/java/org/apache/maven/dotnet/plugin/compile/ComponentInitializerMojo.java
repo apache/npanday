@@ -35,6 +35,7 @@ import java.io.File;
  * @author Shane Isbell
  * @goal initialize
  * @phase compile
+ * @description Initializes and validates the setup.
  */
 public class ComponentInitializerMojo
     extends AbstractMojo

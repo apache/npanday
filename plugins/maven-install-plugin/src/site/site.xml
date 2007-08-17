@@ -1,16 +1,18 @@
 <project name="NMaven">
-    <body>
-        <links>
-            <item name="Project Site" href="http://incubator.apache.org/projects/nmaven.html"/>
-            <item name="NMaven" href="http://incubator.apache.org/nmaven"/>
-            <item name="NMaven SVN" href="http://svn.apache.org/repos/asf/incubator/nmaven/"/>
-            <item name="Maven" href="http://maven.apache.org/"/>
-            <item name="Mono Project" href="http://www.mono-project.com/"/>
-            <item name="DotGNU" href="http://dotgnu.org/"/>
-        </links>
-        <menu name="General Info">
-            <item name="About" href="index.html"/>
-        </menu>
-        ${reports}
-    </body>
+  <body>
+    <links>
+      <item name="Project Site" href="http://incubator.apache.org/projects/nmaven.html"/>
+      <item name="NMaven" href="http://incubator.apache.org/nmaven"/>
+      <item name="NMaven SVN" href="http://svn.apache.org/repos/asf/incubator/nmaven/"/>
+      <item name="Maven" href="http://maven.apache.org/"/>
+      <item name="Mono Project" href="http://www.mono-project.com/"/>
+      <item name="DotGNU" href="http://dotgnu.org/"/>
+    </links>
+    <menu name="General Info">
+      <item name="About" href="index.html"/>
+      <item name="Goals" href="plugin-info.html"/>
+      <item name="Usage" href="usage.html"/>
+    </menu>
+    ${reports}
+  </body>
 </project>

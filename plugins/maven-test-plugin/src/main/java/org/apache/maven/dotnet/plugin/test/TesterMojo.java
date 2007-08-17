@@ -41,6 +41,7 @@ import org.apache.maven.dotnet.artifact.AssemblyResolver;
  * @author Shane Isbell
  * @goal test
  * @phase test
+ * @description Runs NUnit tests
  */
 public class TesterMojo
     extends AbstractMojo
@@ -97,6 +98,8 @@ public class TesterMojo
     private AssemblyResolver assemblyResolver;
 
     /**
+     * The local Maven repository.
+     *
      * @parameter expression="${settings.localRepository}"
      * @readonly
      */

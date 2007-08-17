@@ -21,14 +21,12 @@ package org.apache.maven.dotnet.plugin.install;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.apache.maven.dotnet.ArtifactType;
-import org.apache.maven.dotnet.PathUtil;
 import org.apache.maven.dotnet.artifact.ApplicationConfig;
 import org.apache.maven.dotnet.executable.NetExecutable;
 import org.apache.maven.dotnet.executable.ExecutionException;
@@ -43,8 +41,11 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
+ * Installs assembly into the local repository
+ *
  * @goal install
  * @phase install
+ * @description Installs assembly into the local repository
  */
 public class InstallerMojo
     extends AbstractMojo

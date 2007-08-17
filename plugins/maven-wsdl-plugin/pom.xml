@@ -29,7 +29,7 @@ under the License.
   <packaging>maven-plugin</packaging>
   <name>maven-wsdl-plugin</name>
   <description>
-    Maven Plugin for .NET
+    Maven Plugin for .NET: Generates WSDLs
   </description>
   <distributionManagement>
     <site>

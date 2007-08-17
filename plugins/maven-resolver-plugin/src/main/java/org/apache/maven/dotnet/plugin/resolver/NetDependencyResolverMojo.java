@@ -44,6 +44,7 @@ import org.apache.maven.dotnet.PlatformUnsupportedException;
  * @author Shane Isbell
  * @goal resolve
  * @phase process-resources
+ * @description Resolves the .NET assemblies that NMaven needs to run.
  */
 public class NetDependencyResolverMojo
     extends AbstractMojo
@@ -57,6 +58,8 @@ public class NetDependencyResolverMojo
     private MavenProject project;
 
     /**
+     * The local Maven repository.
+     *
      * @parameter expression="${settings.localRepository}"
      */
     private File localRepository;
@@ -93,22 +96,12 @@ public class NetDependencyResolverMojo
     /**
      * @component
      */
-    private AssemblyResolver assemblyResolver;
-
-    /**
-     * @component
-     */
     private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
     /**
      * @component
      */
     private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
-
-    /**
-     * @component
-     */
-    private ArtifactInstaller artifactInstaller;
 
     /**
      * @component

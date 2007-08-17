@@ -1,0 +1,14 @@
+How to Use
+
+ To deploy an artifact:
+
++----+
+ mvn org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy-file
+        -Dfile=../imports/nunit-2.0/nunit.framework.dll
+        -DpomFile=../imports/nunit-2.0/pom.xml
+        -DgroupId=org.nunit
+        -DartifactId=nunit.framework
+        -Dversion=2.2.8.0
+        -Dpackaging=dll
+        -Durl=http://somesite.org/maven2
++----+

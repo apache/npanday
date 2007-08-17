@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Link modules into assemblies
+ * Link modules into assemblies. 
  *
  * @author Shane Isbell
  * @goal package
  * @phase package
+ * @description Links the specified netmodules to the project's assembly
  */
 public class LinkerMojo
     extends AbstractMojo

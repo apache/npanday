@@ -29,7 +29,7 @@ under the License.
   <packaging>maven-plugin</packaging>
   <name>maven-embedder-plugin</name>
   <description>
-    Maven Plugin for .NET
+    Maven Plugin for .NET: Starts the Maven Embedder SOAP service
   </description>
   <dependencies>
     <dependency>
@@ -47,4 +47,11 @@ under the License.
       <version>${pom.version}</version>
     </dependency>
   </dependencies>
+    <distributionManagement>
+    <site>
+      <id>nmaven-apache-site</id>
+      <name>NMaven Site</name>
+      <url>file://${basedir}/../../../www/plugins/maven-embedder-plugin</url>
+    </site>
+  </distributionManagement>
 </project>

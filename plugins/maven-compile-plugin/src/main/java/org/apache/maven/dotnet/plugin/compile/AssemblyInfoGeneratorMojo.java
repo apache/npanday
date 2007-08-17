@@ -40,6 +40,7 @@ import org.apache.maven.dotnet.assembler.AssemblyInfo;
  * @author Shane Isbell
  * @goal generate-assembly-info
  * @phase generate-sources
+ * @description Generates an AssemblyInfo.* class based on information within the pom file.
  */
 public class AssemblyInfoGeneratorMojo
     extends AbstractMojo
@@ -55,11 +56,15 @@ public class AssemblyInfoGeneratorMojo
     private MavenProject project;
 
     /**
+     * The framework version to compile under: 1.1, 2.0, 3.0
+     *
      * @parameter expression = "${frameworkVersion}"
      */
     private String frameworkVersion;
 
     /**
+     * The vendor version to compile under. For Microsoft, this will be the same as the framework version.
+     *
      * @parameter expression = "${vendorVersion}"
      */
     private String vendorVersion;
@@ -73,7 +78,7 @@ public class AssemblyInfoGeneratorMojo
     private String language;
 
     /**
-     * The Vendor for the Compiler. Not case or white-space sensitive.
+     * The vendor for the compiler: MICROSOFT, MONO, DOTGNU. Not case or white-space sensitive.
      *
      * @parameter expression="${vendor}"
      */
@@ -94,6 +99,14 @@ public class AssemblyInfoGeneratorMojo
     private String keycontainer;
 
     /**
+     * Source directory containing the copied class files.
+     *
+     * @parameter expression = "${sourceDirectory}" default-value="${project.build.sourceDirectory}"
+     * @required
+     */
+    private String sourceDirectory;
+
+    /**
      * @component
      */
     private AssemblerContext assemblerContext;
@@ -103,13 +116,6 @@ public class AssemblyInfoGeneratorMojo
      */
     private org.apache.maven.dotnet.vendor.StateMachineProcessor stateMachineProcessor;
 
-    /**
-     * Source directory
-     *
-     * @parameter expression = "${sourceDirectory}" default-value="${project.build.sourceDirectory}"
-     * @required
-     */
-    private String sourceDirectory;
 
     /**
      * If an AssemblyInfo file exists in the source directory, then this method will not generate an AssemblyInfo.

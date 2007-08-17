@@ -60,6 +60,7 @@ import java.io.FileNotFoundException;
 /**
  * @author Shane Isbell
  * @goal package
+ * @description Converts and assembles all artifacts within the RDF repository into the default Maven repository format.
  */
 public class RepositoryAssemblerMojo
     extends AbstractMojo
@@ -73,12 +74,16 @@ public class RepositoryAssemblerMojo
     private MavenProject project;
 
     /**
+     * The local Maven repository.
+     *
      * @parameter expression="${settings.localRepository}"
      * @readonly
      */
     private File localRepository;
 
     /**
+     * Pull in assemblies from the global assembly cache.
+     *
      * @parameter expression="${withGac}"
      */
     private boolean withGac = false;

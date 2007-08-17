@@ -29,18 +29,19 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Copies source files to target directory.
+ * Copies test source files to target directory.
  *
  * @author Shane Isbell
  * @goal process-test-sources
  * @phase process-sources
+ * @description Copies test source files to target directory.
  */
 public class TestSourceProcessorMojo
     extends AbstractMojo
 {
 
     /**
-     * Source directory
+     * Source directory containing the copied test class files.
      *
      * @parameter expression = "${sourceDirectory}" default-value="${project.build.testSourceDirectory}"
      * @required
@@ -48,7 +49,7 @@ public class TestSourceProcessorMojo
     private String sourceDirectory;
 
     /**
-     * Output directory
+     * Output directory for the test sources.
      *
      * @parameter expression = "${outputDirectory}" default-value="${project.build.directory}/build-test-sources"
      * @required
@@ -78,9 +79,9 @@ public class TestSourceProcessorMojo
         excludeList.add( "*.csproj" );
         excludeList.add( "*.sln" );
         excludeList.add( "obj/**" );
-        for (int i = 0; i < testExcludes.length; ++i)
+        for ( int i = 0; i < testExcludes.length; ++i )
         {
-        	excludeList.add(testExcludes[i]);
+            excludeList.add( testExcludes[i] );
         }
         directoryScanner.setExcludes( excludeList.toArray( new String[excludeList.size()] ) );
 
@@ -106,6 +107,6 @@ public class TestSourceProcessorMojo
             }
         }
         long endTime = System.currentTimeMillis();
-        getLog().info( "Mojo Execution Time = " + (endTime - startTime));        
+        getLog().info( "Mojo Execution Time = " + ( endTime - startTime ) );
     }
 }

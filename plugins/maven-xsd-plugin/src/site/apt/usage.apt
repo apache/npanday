@@ -1,0 +1,112 @@
+How to Use
+
+* Generate a class binding/dataset from a schema
+
+ If you already have a schema, then use the xsd goal by adding its execution in the pom.xml file. The xsdFile should
+ point to the xsd.
+
++----+
+ <project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.maven.it</groupId>
+  <artifactId>it0006</artifactId>
+  <packaging>library</packaging>
+  <version>1.0.0</version>
+  <name>it0006</name>
+  <build>
+    <sourceDirectory>src/main/csharp</sourceDirectory>
+    <testSourceDirectory>src/test/csharp</testSourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-xsd-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>xsd</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <xsdFile>StockingHandlers_1_0.xsd</xsdFile>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++----+
+
+ To generate a dataset instead of classes, change the plugin configuation:
+
++----+
+ <project>
+  [...]
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-xsd-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>xsd</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <xsdFile>StockingHandlers_1_0.xsd</xsdFile>
+          <generate>dataset</generate>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++----+
+
+* Generate a schema from an XML instance and then create a class binding from the generated schema
+
+ You can also generate the schema from a sample XML file prior to generating the bindings. The xmlFiles tag allows
+ you to specify one or more xml files.
+ 
++----+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.maven.it</groupId>
+  <artifactId>it0007</artifactId>
+  <packaging>library</packaging>
+  <version>1.0.0</version>
+  <name>it0007</name>
+  <build>
+    <sourceDirectory>src/main/csharp</sourceDirectory>
+    <testSourceDirectory>src/test/csharp</testSourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-xsd-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>xml</goal>
+              <goal>xsd</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <xmlFiles>
+            <xmlFile>${basedir}/registry-config.xml</xmlFile>
+          </xmlFiles>
+          <xsdFile>${project.build.directory}/generated-resources/registry-config.xsd</xsdFile>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++----+

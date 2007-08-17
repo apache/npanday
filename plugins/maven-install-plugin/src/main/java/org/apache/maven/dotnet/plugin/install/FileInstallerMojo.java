@@ -31,9 +31,12 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 
 /**
+ * Installs assembly file into the local repository
+ *
  * @goal install-file
  * @requiresProject false
  * @requiresDirectInvocation true
+ * @description Installs assembly file into the local repository
  */
 
 public class FileInstallerMojo

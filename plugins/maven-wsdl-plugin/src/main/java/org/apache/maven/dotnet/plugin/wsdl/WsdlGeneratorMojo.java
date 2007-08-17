@@ -42,6 +42,7 @@ import java.net.MalformedURLException;
  * @author Shane Isbell
  * @goal wsdl
  * @phase process-sources
+ * @description Generates WSDL class
  */
 public class WsdlGeneratorMojo
     extends AbstractMojo
