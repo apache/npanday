@@ -25,13 +25,13 @@ Key Features
  * XSD and WSDL Generation
 
  * Assembly Signing
+
+ * FxCop Support
+
+ * Writing Plugins in .NET
  
 * Cool New Features
 
- * Writing Maven Plugins in .NET (Microsoft Only)
-
  * Experimental IDE Support (VS2005, #develop)
 
- * Deploying and Retrieving of .NET Artifacts from a Remote Repository
-
- * FxCop Maven Plugin
+ * New artifact resolver that uses RDF

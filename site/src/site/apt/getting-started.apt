@@ -183,6 +183,8 @@ Java HotSpot(TM) Client VM (build 1.5.0_09-b01, mixed mode, sharing)
 
 * {Using NMaven Without Building}
 
+ NOTE: Remote downloading is not currently working with snapshots. You will need to build NMaven.
+
 ** Prerequisites
 
   [[1]] {{{ http://java.sun.com/javase/downloads/index_jdk5.jsp} JDK 5.0 Update x}}
@@ -269,7 +271,7 @@ mvn install -DinstallGacDependencies=true
                       -DartifactId=<<myArtifactId>>                         \
                       -DarchetypeArtifactId=maven-archetype-dotnet-simple \
                       -DarchetypeGroupId=org.apache.maven.dotnet          \
-                      -DarchetypeVersion=0.14
+                      -DarchetypeVersion=0.14-SNAPSHOT
 +----+
 
  You will see the following project generated:
@@ -503,12 +505,12 @@ mvn NMaven.Plugins:NMaven.Plugin.Solution.JavaBinding:Solution
  (directly or through a script) using the maven-install-plugin:
 
 +----+
- mvn org.apache.maven.plugins:maven-install-plugin:install-file
+ mvn org.apache.maven.dotnet.plugins:maven-install-plugin:install-file
         -Dfile=../imports/nunit-2.0/nunit.framework.dll
-        -DgroupId=org.nunit
-        -DartifactId=nunit.framework
-        -Dpackaging=dll
-        -Dversion=2.2.8.0
+        -DgroupId=NUnit
+        -DartifactId=NUnit.Framework
+        -Dpackaging=library
+        -DartifactVersion=2.2.8.0
 +----+
 
  After that, include the dependency in your pom.xml file and you are ready to go.
@@ -523,9 +525,6 @@ mvn NMaven.Plugins:NMaven.Plugin.Solution.JavaBinding:Solution
         </dependency>
     </dependencies>
 +----+
-
- Note that there is no current support for the use of classifiers within NMaven:
- {{{http://jira.codehaus.org/browse/NMAVEN-2} NMAVEN-2}}
 
 * {Generating Resources}
 
