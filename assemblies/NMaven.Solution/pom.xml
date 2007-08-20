@@ -1,13 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>NMaven.Assemblies</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven</groupId>
   <artifactId>NMaven.Solution</artifactId>
-  <version>0.14-SNAPSHOT</version>
+  <version>0.14</version>
   <packaging>library</packaging>
   <name>NMaven.Solution</name>
   <dependencies>
@@ -15,13 +15,13 @@
       <groupId>NMaven.Model</groupId>
       <artifactId>NMaven.Model.Pom</artifactId>
       <type>library</type>
-      <version>0.14-SNAPSHOT</version>
+      <version>0.14</version>
     </dependency>
     <dependency>
       <groupId>NMaven.Artifact</groupId>
       <artifactId>NMaven.Artifact</artifactId>
       <type>library</type>
-      <version>0.14-SNAPSHOT</version>
+      <version>0.14</version>
     </dependency>
       <dependency>
         <groupId>Microsoft.Build.Engine</groupId>
