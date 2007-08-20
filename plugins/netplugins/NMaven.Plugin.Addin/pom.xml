@@ -16,36 +16,36 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>NMaven.Plugins</groupId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
     <artifactId>NMaven.Plugins</artifactId>
   </parent>  
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven.Plugins</groupId>
   <artifactId>NMaven.Plugin.Addin</artifactId>
   <packaging>netplugin</packaging>
-  <version>0.14-SNAPSHOT</version>
+  <version>0.14</version>
   <name>NMaven.Plugin.Addin</name>
   <dependencies>
     <dependency>
       <groupId>NMaven.Artifact</groupId>
       <artifactId>NMaven.Artifact</artifactId>
-      <version>0.14-SNAPSHOT</version>
+      <version>0.14</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>NMaven.Model</groupId>
       <artifactId>NMaven.Model.AutomationExtensibility</artifactId>
       <type>library</type>
-      <version>0.14-SNAPSHOT</version>
+      <version>0.14</version>
     </dependency>
     <dependency>
       <groupId>NMaven.Plugin</groupId>
       <artifactId>NMaven.Plugin</artifactId>
       <type>library</type>
-      <version>0.14-SNAPSHOT</version>
+      <version>0.14</version>
     </dependency>
   </dependencies>
 </project>
