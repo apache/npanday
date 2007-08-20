@@ -16,16 +16,16 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
     <groupId>NMaven</groupId>
-    <version>0.14</version>
+    <version>0.14-SNAPSHOT</version>
     <artifactId>NMaven.Assemblies</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven.Plugin</groupId>
   <artifactId>NMaven.Plugin.Loader</artifactId>
-  <version>0.14</version>
+  <version>0.14-SNAPSHOT</version>
   <packaging>exe</packaging>
   <name>NMaven.Plugin.Loader</name>
   <dependencies>
@@ -33,7 +33,7 @@ under the License.
       <groupId>NMaven.Plugin</groupId>
       <artifactId>NMaven.Plugin</artifactId>
       <type>library</type>
-      <version>0.14</version>
+      <version>0.14-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

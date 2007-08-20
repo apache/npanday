@@ -16,12 +16,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven.Project</groupId>
   <artifactId>NMaven.Project</artifactId>
   <packaging>pom</packaging>
-  <version>0.14</version>
+  <version>0.14-SNAPSHOT</version>
   <name>NMaven.Project</name>
   <url>http://incubator.apache.org/nmaven</url>
   <description>
@@ -50,9 +51,10 @@ under the License.
     </mailingList>
   </mailingLists>
   <scm>
-    <url>http://svn.apache.org/repos/asf/incubator/nmaven/tags/NMaven.Project-0.14</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/incubator/nmaven/tags/NMaven.Project-0.14</connection>
-    <developerConnection>scm:svn:http://svn.apache.org/repos/asf/incubator/nmaven/tags/NMaven.Project-0.14</developerConnection>
+    <url>https://svn.apache.org/repos/asf/incubator/nmaven/</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</connection>
+    <developerConnection>
+      scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</developerConnection>
     <tag>REL_0_14_SNAPSHOT</tag>
   </scm>
   <organization>
