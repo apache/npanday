@@ -98,7 +98,7 @@ abstract class BaseCompiler implements CompilerExecutable
         {
             for ( String executablePath : executablePaths )
             {
-                File exe = new File( executablePath + File.separator +  executable);
+                File exe = new File( executablePath + File.separator +  executable + ".exe");
                 if ( exe.exists() )
                 {
                     return new File(executablePath);
