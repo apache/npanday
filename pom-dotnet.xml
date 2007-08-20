@@ -154,14 +154,7 @@ under the License.
         <configuration>
           <frameworkVersion>2.0.50727</frameworkVersion>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <tagBase>https://svn.apache.org/repos/asf/incubator/nmaven/tags</tagBase>
-        </configuration>
-      </plugin>      
+      </plugin>     
     </plugins>
   </build>
   <dependencyManagement>
