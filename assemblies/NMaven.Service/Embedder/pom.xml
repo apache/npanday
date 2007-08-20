@@ -19,14 +19,14 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>NMaven</groupId>
-    <version>0.14</version>
+    <version>0.15-SNAPSHOT</version>
     <artifactId>NMaven.Assemblies</artifactId>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>NMaven.Service</groupId>
   <artifactId>NMaven.Service.Embedder</artifactId>
-  <version>0.14</version>
+  <version>0.15-SNAPSHOT</version>
   <packaging>library</packaging>
   <name>NMaven.Service.Embedder</name>
   <build>
