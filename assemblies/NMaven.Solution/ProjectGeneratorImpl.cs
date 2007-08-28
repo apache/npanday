@@ -314,7 +314,7 @@ namespace NMaven.Solution.Impl
 		private String GetOutputType(String type)
 		{
 			if (type.Equals("library") || type.Equals("netplugin") || type.Equals("visual-studio-addin")
-                || type.Equals("sharp-develop-addin")) return "Library";
+                || type.Equals("sharp-develop-addin") || type.Equals("nar")) return "Library";
 			else if (type.Equals("exe")) return "Exe";
 			else if (type.Equals("winexe")) return "WinExe";
 			else if (type.Equals("module")) return "Module";
