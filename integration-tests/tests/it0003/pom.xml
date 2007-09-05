@@ -1,36 +1,33 @@
 <project>
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.apache.maven.it</groupId>
-    <artifactId>it0003</artifactId>
-    <packaging>library</packaging>
-    <version>1.0.0</version>
-    <name>it0003</name>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.maven.it</groupId>
-            <artifactId>it0002</artifactId>
-	        <type>library</type>
-            <version>1.0.0</version>
-        </dependency>
-    </dependencies>
-    <build>	
-	<sourceDirectory>src/main/csharp</sourceDirectory>
-	<testSourceDirectory>src/test/csharp</testSourceDirectory>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.dotnet.plugins</groupId>
-                <artifactId>maven-compile-plugin</artifactId>
-     	        <extensions>true</extensions>
-              <configuration>
-                
-              </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.dotnet.plugins</groupId>
-                <artifactId>maven-test-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.maven.it</groupId>
+  <artifactId>it0003</artifactId>
+  <packaging>library</packaging>
+  <version>1.0.0</version>
+  <name>it0003</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.it</groupId>
+      <artifactId>it0002</artifactId>
+      <type>library</type>
+      <version>1.0.0</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <sourceDirectory>src/main/csharp</sourceDirectory>
+    <testSourceDirectory>src/test/csharp</testSourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-test-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>
