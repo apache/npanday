@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-using NMaven.Model;
+using NMaven.Model.Setting;
 
 namespace NMaven.Artifact
 {
@@ -13,11 +13,11 @@ namespace NMaven.Artifact
         public ArtifactRepository GetArtifactRepository()
         {
             ArtifactRepository artifactRepository = new ArtifactRepository();
-            artifactRepository.Init(this, new DirectoryInfo(@"C:\Documents and Settings\shane\.m2\repository"));
+            artifactRepository.Init(this, new FileInfo(SettingsUtil.GetLocalRepositoryPath()).Directory);
             return artifactRepository;
         }
 
-        public Artifact GetArtifactFor(NMaven.Model.Model model)
+        public Artifact GetArtifactFor(NMaven.Model.Pom.Model model)
         {
             Artifact artifact = new Artifact();
             artifact.ArtifactId = model.artifactId;

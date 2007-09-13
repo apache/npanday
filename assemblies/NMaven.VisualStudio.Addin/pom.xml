@@ -67,6 +67,12 @@ under the License.
       <type>library</type>
     </dependency>
     <dependency>
+      <groupId>NMaven.Model</groupId>
+      <artifactId>NMaven.Model.Settings</artifactId>
+      <type>library</type>
+      <version>0.14-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>Microsoft.VisualStudio.CommandBars</groupId>
       <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>
       <type>gac</type>
@@ -90,6 +96,13 @@ under the License.
     <dependency>
       <groupId>Extensibility</groupId>
       <artifactId>Extensibility</artifactId>
+      <type>gac</type>
+      <version>7.0.3300.0</version>
+      <classifier>b03f5f7f11d50a3a</classifier>
+    </dependency>
+    <dependency>
+      <groupId>VSLangProj</groupId>
+      <artifactId>VSLangProj</artifactId>
       <type>gac</type>
       <version>7.0.3300.0</version>
       <classifier>b03f5f7f11d50a3a</classifier>

@@ -228,6 +228,21 @@ public final class ProjectDaoImpl
         return true;
     }
 
+    public void removeProjectFor( String groupId, String artifactId, String version, String artifactType )
+        throws IOException
+    {
+        ValueFactory valueFactory = rdfRepository.getValueFactory();
+        URI id = valueFactory.createURI( groupId + ":" + artifactId + ":" + version + ":" + artifactType );
+        try
+        {
+            repositoryConnection.remove( repositoryConnection.getStatements( id, null, null, true ) );
+        }
+        catch ( RepositoryException e )
+        {
+            throw new IOException( e.getMessage() );
+        }
+    }
+
     public Project getProjectFor( String groupId, String artifactId, String version, String artifactType,
                                   String publicKeyTokenId )
         throws IOException
@@ -440,9 +455,23 @@ public final class ProjectDaoImpl
 
             for ( ProjectDependency projectDependency : project.getProjectDependencies() )
             {
-                logger.finest( "NMAVEN-180-011: Project Dependency: Artifact ID = " + projectDependency.getArtifactId() +
-                    ", Group ID = " + projectDependency.getGroupId() + ", Version = " + projectDependency.getVersion() +
-                    ", Artifact Type = " + projectDependency.getArtifactType() );
+                logger.finest( "NMAVEN-180-011: Project Dependency: Artifact ID = " +
+                    projectDependency.getArtifactId() + ", Group ID = " + projectDependency.getGroupId() +
+                    ", Version = " + projectDependency.getVersion() + ", Artifact Type = " +
+                    projectDependency.getArtifactType() );
+
+                //If artifact has been deleted, then re-resolve
+                if ( projectDependency.isResolved() && !projectDependency.getArtifactType().startsWith( "gac" ) )
+                {
+                    Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
+
+                    File dependencyFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
+                    if ( !dependencyFile.exists() )
+                    {
+                        projectDependency.setResolved( false );
+                    }
+                }
+
                 if ( !projectDependency.isResolved() )
                 {
                     if ( projectDependency.getArtifactType().startsWith( "gac" ) )
@@ -617,8 +646,9 @@ public final class ProjectDaoImpl
             artifactDependencies.addAll( storeProjectAndResolveDependencies(
                 ProjectFactory.createProjectFrom( model, null ), localRepository, artifactRepositories ) );
         }
-        logger.finest( "NMAVEN-180-022: ProjectDao.storeProjectAndResolveDependencies - Artifact Id = " + project.getArtifactId() +
-            ", Time = " + ( System.currentTimeMillis() - startTime ) + ", Count = " + storeCounter++ );
+        logger.finest( "NMAVEN-180-022: ProjectDao.storeProjectAndResolveDependencies - Artifact Id = " +
+            project.getArtifactId() + ", Time = " + ( System.currentTimeMillis() - startTime ) + ", Count = " +
+            storeCounter++ );
         return artifactDependencies;
     }
 

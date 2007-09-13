@@ -38,7 +38,6 @@ namespace WindowsApplication2
 
         private void cbShowAddArtifactsForm_Click(CommandBarButton btn, ref bool Cancel)
         {
-            MessageBox.Show("It Works");
             outputWindowPane.OutputString("It Works");
         }
 

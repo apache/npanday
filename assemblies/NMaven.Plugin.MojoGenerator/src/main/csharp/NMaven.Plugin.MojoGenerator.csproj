@@ -11,6 +11,10 @@
     <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NMaven.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\.m2\uac\gac_msil\NMaven.Model.Pom\0.14-SNAPSHOT__NMaven.Model\NMaven.Model.Pom.dll</HintPath>
+    </Reference>
     <Reference Include="NMaven.Plugin" />
     <Reference Include="NMaven.Plugin" />
     <Reference Include="System" />

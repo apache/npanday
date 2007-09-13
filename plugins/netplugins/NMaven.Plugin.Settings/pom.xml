@@ -36,6 +36,7 @@ under the License.
       <version>0.14-SNAPSHOT</version>
     </dependency>
   </dependencies>
+  <!--
   <profiles>
     <profile>
       <activation>
@@ -73,4 +74,5 @@ under the License.
       </build>
     </profile>
   </profiles>
+  -->
 </project>

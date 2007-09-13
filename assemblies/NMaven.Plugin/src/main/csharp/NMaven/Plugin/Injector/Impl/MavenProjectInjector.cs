@@ -31,7 +31,7 @@ namespace NMaven.Plugin.Injector.Impl
 	/// <summary>
 	/// Provides methods for injecting maven project models values into fields.
 	/// </summary>
-	[FieldInjectorAttribute("NMaven.Model.Model")]
+	[FieldInjectorAttribute("NMaven.Model.Pom.Model")]
 	public sealed class MavenProjectInjector : IFieldInjector 
 	{
 		public MavenProjectInjector()
@@ -59,11 +59,11 @@ namespace NMaven.Plugin.Injector.Impl
 		/// </summary>
 		/// <param name="fileName">The fully qualified file name of the project file</param>
 		/// <returns>A model from the specified project file</returns>
-   		private NMaven.Model.Model CreatePomModelFor(string fileName)
+   		private NMaven.Model.Pom.Model CreatePomModelFor(string fileName)
 		{
 			TextReader reader = new StreamReader(fileName);
-		    XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Model));
-			return (NMaven.Model.Model) serializer.Deserialize(reader);	
+		    XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Pom.Model));
+			return (NMaven.Model.Pom.Model) serializer.Deserialize(reader);	
 		}  
 	}
 }

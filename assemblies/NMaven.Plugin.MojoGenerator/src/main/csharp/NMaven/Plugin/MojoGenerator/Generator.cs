@@ -104,8 +104,8 @@ namespace NMaven.Plugin.MojoGenerator
 			                                                      Assembly.GetExecutingAssembly());
 			String pomXml = (String) resourceManager.GetObject("pom-java.xml");
 			TextReader reader = new StringReader(pomXml);
-		    XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Model));
-			NMaven.Model.Model model = (NMaven.Model.Model) serializer.Deserialize(reader);	
+		    XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Pom.Model));
+			NMaven.Model.Pom.Model model = (NMaven.Model.Pom.Model) serializer.Deserialize(reader);	
 			model.artifactId = artifactId + ".JavaBinding";
 			model.groupId = groupId;
 			model.version = version;

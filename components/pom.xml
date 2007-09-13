@@ -53,4 +53,11 @@ under the License.
       <url>http://repository.aduna-software.org/maven2</url>
     </repository>
   </repositories>
+  <distributionManagement>
+    <site>
+      <id>nmaven-apache-site</id>
+      <name>NMaven Site</name>
+      <url>file://${basedir}/../../www</url>
+    </site>
+  </distributionManagement>  
 </project>

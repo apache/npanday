@@ -294,22 +294,27 @@ under the License.
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-archiver</artifactId>
-        <version>1.0-alpha-3</version>
+        <version>1.0-alpha-9</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
-        <version>1.1</version>
+        <version>1.4.5</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-container-default</artifactId>
-        <version>1.0-alpha-25</version>
+        <version>1.0-alpha-32</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-api</artifactId>
-        <version>1.0-alpha-25</version>
+        <version>1.0-alpha-32</version>
+      </dependency>
+       <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-classworlds</artifactId>
+        <version>1.2-alpha-10</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -322,7 +327,7 @@ under the License.
     </snapshotRepository>
   </distributionManagement>
 -->
-
+<!--
  <distributionManagement>
  <snapshotRepository>
    <id>test</id>
@@ -330,5 +335,5 @@ under the License.
    <url>file://C:\arepo</url>
  </snapshotRepository>
 </distributionManagement>
-
+-->
 </project>

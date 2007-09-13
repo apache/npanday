@@ -46,7 +46,7 @@ namespace NMaven.Plugin.Solution
 		public String basedir;
 		
 		[FieldAttribute("mavenProject", Expression = "${project}", Type = "org.apache.maven.project.MavenProject")]
-		public NMaven.Model.Model mavenProject;		
+		public NMaven.Model.Pom.Model mavenProject;
 		
 		private String profile = null;
 		
@@ -68,7 +68,7 @@ namespace NMaven.Plugin.Solution
 			
 		}
 
-		public List<IProjectReference> Execute(DirectoryInfo currentDirectory, NMaven.Model.Model model, string profile)
+		public List<IProjectReference> Execute(DirectoryInfo currentDirectory, NMaven.Model.Pom.Model model, string profile)
 		{	
 			
 			if(model == null)
@@ -93,7 +93,7 @@ namespace NMaven.Plugin.Solution
 				foreach(String module in GetModulesForProfile(profile, model))
 				{
 					DirectoryInfo newDir = new DirectoryInfo(currentDirectory.FullName + @"\" + module );
-					NMaven.Model.Model m = projectGenerator.CreatePomModelFor(newDir.FullName + @"\pom.xml");
+					NMaven.Model.Pom.Model m = projectGenerator.CreatePomModelFor(newDir.FullName + @"\pom.xml");
 					projectReferences.AddRange(Execute(newDir, m, profile));
 				}					   	
 			} 
@@ -141,13 +141,13 @@ namespace NMaven.Plugin.Solution
 		}
 
 
-		private string[] GetModulesForProfile(string profile,  NMaven.Model.Model model)
+		private string[] GetModulesForProfile(string profile,  NMaven.Model.Pom.Model model)
 		{
-			NMaven.Model.Profile[] profiles = model.profiles;
+			NMaven.Model.Pom.Profile[] profiles = model.profiles;
 			if(profiles == null)
 				return model.modules;
 
-			foreach(NMaven.Model.Profile p in profiles)
+			foreach(NMaven.Model.Pom.Profile p in profiles)
 			{
 				if(p.activation.property.name.Equals(profile))
 				{

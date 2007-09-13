@@ -24,6 +24,7 @@ using System.Xml;
 using System.Xml.Serialization;
 
 using NMaven.Plugin;
+using NMaven.Model.Pom;
 using NMaven.Model;
 using NMaven.Artifact;
 
@@ -43,7 +44,7 @@ namespace NMaven.Plugin.Addin
 		public String localRepository;
 
 		[FieldAttribute("mavenProject", Expression = "${project}", Type = "org.apache.maven.project.MavenProject")]
-		public NMaven.Model.Model mavenProject;
+		public NMaven.Model.Pom.Model mavenProject;
 
 
 		public override Type GetMojoImplementationType()

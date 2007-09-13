@@ -44,6 +44,7 @@ public interface ProjectDao
      */
     String ROLE = ProjectDao.class.getName();
 
+    void removeProjectFor( String groupId, String artifactId, String version, String artifactType ) throws IOException;
     /**
      * Returns a project that matches the specified parameters.
      *

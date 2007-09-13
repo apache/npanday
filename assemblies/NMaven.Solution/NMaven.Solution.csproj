@@ -49,6 +49,12 @@
     <Compile Include="ProjectGeneratorImpl.cs" />
     <Compile Include="ProjectReferenceImpl.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NMaven.Artifact\src\main\csharp\NMaven.Artifact.csproj">
+      <Project>{701803D4-90F5-44D7-919D-4844FEB7F936}</Project>
+      <Name>NMaven.Artifact</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -28,7 +28,7 @@ using Microsoft.Build.BuildEngine;
 
 using NMaven.Artifact;
 using NMaven.Solution;
-using NMaven.Model;
+using NMaven.Model.Pom;
 
 namespace NMaven.Solution.Impl
 {
@@ -45,7 +45,7 @@ namespace NMaven.Solution.Impl
 		{
 		}
 		
-	    public IProjectReference GenerateProjectFor(NMaven.Model.Model model, 
+	    public IProjectReference GenerateProjectFor(NMaven.Model.Pom.Model model, 
 		                                  DirectoryInfo sourceFileDirectory,
 		                                  String projectFileName,
 		                                  ICollection<IProjectReference> projectReferences,
@@ -105,11 +105,11 @@ namespace NMaven.Solution.Impl
 			Console.WriteLine("NMAVEN-000-000: Generate solution file: File Name = " + fileInfo.FullName);
 		}
 					
-		public NMaven.Model.Model CreatePomModelFor(String fileName)
+		public NMaven.Model.Pom.Model CreatePomModelFor(String fileName)
 		{
 			TextReader reader = new StreamReader(fileName);
-		    XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Model));
-			return (NMaven.Model.Model) serializer.Deserialize(reader);	
+		    XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Pom.Model));
+			return (NMaven.Model.Pom.Model) serializer.Deserialize(reader);	
 		}
 		
         /// <summary>
@@ -124,7 +124,7 @@ namespace NMaven.Solution.Impl
         /// <param name="baseIntermediateOutputPath">directory where the IDE output files are placed</param>
         /// <param name="projectReferences">references to other projects that this project is dependent upon</param>
         /// <returns>Returns a project binding for the specified model</returns>
-		private Project GetProjectFromPomModel(NMaven.Model.Model model, 
+		private Project GetProjectFromPomModel(NMaven.Model.Pom.Model model, 
 		                                       DirectoryInfo sourceFileDirectory,
 		                                       String assemblyName,
 		                                       Guid projectGuid,
@@ -237,7 +237,7 @@ namespace NMaven.Solution.Impl
             }				
 		}
 		
-		private void AddProjectDependencies(Project project, NMaven.Model.Model model, DirectoryInfo sourceFileDirectory,
+		private void AddProjectDependencies(Project project, NMaven.Model.Pom.Model model, DirectoryInfo sourceFileDirectory,
 		    DirectoryInfo localRepository)
 		{
 			BuildItemGroup group = project.AddNewItemGroup();

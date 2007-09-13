@@ -95,7 +95,7 @@ public class XsdGeneratorMojo
     /**
      * Runtime namespace for the generated types.
      *
-     * @parameter expression="${namespace}" default-value="${project.groupId}"
+     * @parameter expression="${namespace}" default-value="${project.artifactId}"
      */
     private String namespace;
 

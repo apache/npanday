@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using NMaven.Model.Pom;
 
 namespace NMaven.Artifact
 {
@@ -8,7 +9,7 @@ namespace NMaven.Artifact
     {
         ArtifactRepository GetArtifactRepository();
 
-        Artifact GetArtifactFor(NMaven.Model.Model model);
+        Artifact GetArtifactFor(NMaven.Model.Pom.Model model);
 
         Artifact CreateArtifact(String groupId, String artifactId, String version, String packaging);
 

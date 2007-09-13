@@ -143,6 +143,11 @@ under the License.
         <artifactId>wagon-ssh-external</artifactId>
         <version>1.0-beta-2</version>
       </extension>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav</artifactId>
+        <version>1.0-beta-2</version>
+      </extension>
     </extensions>
     <sourceDirectory>src/main/csharp</sourceDirectory>
     <testSourceDirectory>src/test/csharp</testSourceDirectory>
@@ -153,6 +158,13 @@ under the License.
         <extensions>true</extensions>
         <configuration>
           <frameworkVersion>2.0.50727</frameworkVersion>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagBase>https://svn.apache.org/repos/asf/incubator/nmaven/tags</tagBase>
         </configuration>
       </plugin>
     </plugins>
@@ -210,6 +222,13 @@ under the License.
       </dependency>
     </dependencies>
   </dependencyManagement>
+    <distributionManagement>
+    <snapshotRepository>
+      <id>deployment.webdav</id>
+      <name>Test Web Dav</name>
+      <url>dav:http://localhost:8080/archiva/repository/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
   <!--
   <distributionManagement>
     <snapshotRepository>
@@ -219,6 +238,7 @@ under the License.
     </snapshotRepository>
   </distributionManagement>
   -->
+  <!--
    <distributionManagement>
  <snapshotRepository>
    <id>test</id>
@@ -226,4 +246,5 @@ under the License.
    <url>file://C:\arepo</url>
  </snapshotRepository>
 </distributionManagement>
+-->
 </project>

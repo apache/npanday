@@ -109,8 +109,8 @@ public final class ProjectFactory
                 throw new IOException( "NMAVEN-180-000: Unable to read model: Message = " + e.getMessage() );
 
             }
-            Project parentProject = createProjectFrom( parentModel, parentPomFile.getParentFile() );
-            project.setParentProject( parentProject );
+            //Project parentProject = createProjectFrom( parentModel, parentPomFile.getParentFile() );
+            //project.setParentProject( parentProject );
         }
 
         //TODO: publickey/classifier

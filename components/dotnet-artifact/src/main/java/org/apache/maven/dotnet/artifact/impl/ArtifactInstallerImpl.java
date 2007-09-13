@@ -287,6 +287,13 @@ public class ArtifactInstallerImpl
 
         if ( artifact != null )
         {
+            File artifactFile = artifact.getFile();
+            if ( artifactFile == null || !artifactFile.exists() )
+            {
+                throw new IOException( "NMAVEN-001-016: Could not find artifact: Artifact ID = " +
+                    artifact.getArtifactId() + ", Path = " +
+                    ( ( artifactFile != null ) ? artifactFile.getAbsolutePath() : null ) );
+            }
             artifactDependencies.add( artifact );
         }
         File installDirectory = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository ).getParentFile();

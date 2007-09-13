@@ -9,9 +9,57 @@ namespace NMaven.Artifact
 {
     public sealed class ArtifactRepository
     {
-        public List<Artifact> GetArtifactsFor()
+        public Artifact GetArtifactFor(String uri)
         {
-            return (GetArtifactsFromDirectories(localRepository.GetDirectories()));
+            DirectoryInfo uac = new DirectoryInfo(localRepository.FullName + @"\uac\gac_msil\");
+
+            String[] tokens = uri.Split("/".ToCharArray());
+            int size = tokens.Length;
+            if (size < 3)
+            {
+                throw new IOException("Invalid Artifact Path = " + uri);
+            }
+            Artifact artifact = new Artifact();
+            artifact.ArtifactId = tokens[size - 3];
+            StringBuilder buffer = new StringBuilder();
+            for (int i = 0; i < size - 3; i++)
+            {
+                buffer.Append(tokens[i]);
+                if (i != size - 4)
+                {
+                    buffer.Append(".");
+                }
+            }
+            artifact.GroupId = buffer.ToString();
+            artifact.Version = tokens[size - 2];
+            artifact.Extension = tokens[size - 1].Split(".".ToCharArray())[1];
+            artifact.FileInfo = new FileInfo(uac.FullName + artifact.ArtifactId + @"\" +
+                artifact.Version + "__" + artifact.GroupId + @"\" + artifact.ArtifactId + ".dll" );
+            return artifact;
+        }
+
+        public List<Artifact> GetArtifacts()
+        {
+            List<Artifact> artifacts = new List<Artifact>();
+            DirectoryInfo uac = new DirectoryInfo(localRepository.FullName + @"\uac\gac_msil\");
+            int directoryStartPosition = uac.FullName.Length;
+
+            List<FileInfo> fileInfos = GetArtifactsFromDirectory(uac);
+
+            foreach (FileInfo fileInfo in fileInfos)
+            {
+                Artifact artifact = new Artifact();
+                String relativePath = fileInfo.FullName.Substring(directoryStartPosition,
+                    (fileInfo.FullName.Length - directoryStartPosition));
+                String[] tokens = relativePath.Split(new char[1] { '\\' });
+                artifact.ArtifactId = tokens[0];
+                String[] tokens2 = tokens[1].Split(new char[2]{'_', '_'});
+                artifact.Version = tokens2[0];
+                artifact.GroupId = tokens2[2];
+                artifact.FileInfo = fileInfo;
+                artifacts.Add(artifact);
+            }
+            return artifacts;
         }
 
         public void Init(ArtifactContext artifactContext, DirectoryInfo localRepository)
@@ -20,31 +68,19 @@ namespace NMaven.Artifact
             this.localRepository = localRepository;
         }
 
-        private List<Artifact> GetArtifactsFromDirectories(DirectoryInfo[] directories)
+        private List<FileInfo> GetArtifactsFromDirectory(DirectoryInfo baseDirectoryInfo)
         {
-            List<Artifact> artifacts = new List<Artifact>();
+            DirectoryInfo[] directories = baseDirectoryInfo.GetDirectories();
+            List<FileInfo> fileInfos = new List<FileInfo>();
             foreach (DirectoryInfo directoryInfo in directories)
             {
-                foreach(FileInfo fileInfo in directoryInfo.GetFiles())
+                foreach (FileInfo fileInfo in directoryInfo.GetFiles())
                 {
-                    if (fileInfo.Name.EndsWith("pom"))
-                    {
-                        XmlReader reader = XmlReader.Create(fileInfo.FullName);
-		                XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Model));
-                        if (serializer.CanDeserialize(reader))
-                        {
-                            Artifact artifact = artifactContext.GetArtifactFor(
-                                (NMaven.Model.Model)serializer.Deserialize(reader));
-                            if (artifact.Extension.Equals("dll"))
-                            {
-                                artifacts.Add(artifact);
-                            }                           
-                        }
-                    }
+                    fileInfos.Add(fileInfo);                 
                 }
-                artifacts.AddRange(GetArtifactsFromDirectories(directoryInfo.GetDirectories()));
+                fileInfos.AddRange(GetArtifactsFromDirectory(directoryInfo));
             }
-            return artifacts;
+            return fileInfos;
         }
 
         private ArtifactContext artifactContext;

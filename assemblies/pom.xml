@@ -39,6 +39,7 @@ under the License.
     <module>NMaven.Solution</module>
     <module>NMaven.Logging</module>
     <module>NMaven.Model/Pom</module>
+    <module>NMaven.Model/Settings</module>
     <module>NMaven.Model/AutomationExtensibility</module>
     <module>NMaven.Plugin</module>
     <module>NMaven.Plugin.Loader</module>

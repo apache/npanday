@@ -17,6 +17,14 @@ namespace NMaven.Artifact
 
         private string extension;
 
+        private String remotePath;
+
+        public String RemotePath
+        {
+            get { return remotePath; }
+            set { this.remotePath = value; }
+        }
+
         public string Extension
         {
             get { return extension; }

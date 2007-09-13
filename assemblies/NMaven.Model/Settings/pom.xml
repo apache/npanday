@@ -21,31 +21,33 @@ under the License.
     <groupId>NMaven</groupId>
     <version>0.14-SNAPSHOT</version>
     <artifactId>NMaven.Assemblies</artifactId>
+    <relativePath>..\..\pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>NMaven.Artifact</groupId>
-  <artifactId>NMaven.Artifact</artifactId>
-  <version>0.14-SNAPSHOT</version>
+  <groupId>NMaven.Model</groupId>
+  <artifactId>NMaven.Model.Settings</artifactId>
   <packaging>library</packaging>
-  <name>NMaven.Artifact</name>
-  <dependencies>
-    <dependency>
-      <groupId>NMaven.Model</groupId>
-      <artifactId>NMaven.Model.Pom</artifactId>
-      <type>library</type>
-      <version>0.14-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>NMaven.Model</groupId>
-      <artifactId>NMaven.Model.Settings</artifactId>
-      <type>library</type>
-      <version>0.14-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>NUnit</groupId>
-      <artifactId>NUnit.Framework</artifactId>
-      <type>library</type>
-      <version>2.2.8.0</version>
-    </dependency>
-  </dependencies>
+  <version>0.14-SNAPSHOT</version>
+  <name>NMaven.Model.Settings</name>
+  <build>
+    <sourceDirectory>src/main/csharp</sourceDirectory>
+    <plugins>
+      <!--
+       <plugin>
+         <groupId>org.apache.maven.dotnet.plugins</groupId>
+         <artifactId>maven-xsd-plugin</artifactId>
+         <executions>
+           <execution>
+             <goals>
+               <goal>xsd</goal>
+             </goals>
+           </execution>
+         </executions>
+         <configuration>
+           <xsdFile>${basedir}/src/main/xsd/Settings.xsd</xsdFile>
+         </configuration>
+       </plugin>
+     -->
+    </plugins>
+  </build>
 </project>

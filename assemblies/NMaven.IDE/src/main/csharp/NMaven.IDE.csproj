@@ -1,4 +1,4 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{31C18EC5-6876-4306-BF4E-A85A308C502E}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,16 +13,6 @@
   <ItemGroup>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="NMaven.Artifact, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\.m2\repository\NMaven\Artifact\NMaven.Artifact\0.14\NMaven.Artifact.dll</HintPath>
-    </Reference>
-    <Reference Include="NMaven.Logging">
-      <HintPath>C:\Documents and Settings\shane\.m2\repository\NMaven\Logging\NMaven.Logging\0.14\NMaven.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="NMaven.Service.Embedder">
-      <HintPath>C:\Documents and Settings\shane\.m2\repository\NMaven\Service\NMaven.Service.Embedder\0.14\NMaven.Service.Embedder.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Services" />
@@ -42,23 +32,21 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NMaven\IDE\View\MainForm.Designer.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="NMaven\IDE\Controls\MavenBuildControl.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MavenBuildControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\..\..\..\NMaven.Artifact\src\main\csharp\NMaven.Artifact.csproj">
+      <Project>{701803D4-90F5-44D7-919D-4844FEB7F936}</Project>
+      <Name>NMaven.Artifact</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NMaven.Logging\src\main\csharp\NMaven.Logging.csproj">
+      <Project>{C511B03B-8AB7-4E61-9F6E-5E6F9F65E8CE}</Project>
+      <Name>NMaven.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NMaven.Service\Embedder\src\main\csharp\NMaven.Service.Embedder.csproj">
+      <Project>{DF06BE45-AF6C-4DA4-8844-EA114F094C5F}</Project>
+      <Name>NMaven.Service.Embedder</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

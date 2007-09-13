@@ -41,7 +41,7 @@ namespace NMaven.Solution
         /// <param name="projectReferences">references to other projects that this project is dependent upon</param>
         /// <returns></returns>
         [CLSCompliantAttribute(false)]
-		IProjectReference GenerateProjectFor(NMaven.Model.Model model, 
+		IProjectReference GenerateProjectFor(NMaven.Model.Pom.Model model, 
 		                            DirectoryInfo sourceFileDirectory,
 		                            string projectFileName,
                                     ICollection<IProjectReference> projectReferences,
@@ -61,7 +61,7 @@ namespace NMaven.Solution
         /// <returns>a model binding of the pom file</returns>
         /// 
         [CLSCompliantAttribute(false)]
-		NMaven.Model.Model CreatePomModelFor(string fileName);
+		NMaven.Model.Pom.Model CreatePomModelFor(string fileName);
 		
 	}
 }
