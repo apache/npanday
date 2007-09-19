@@ -47,8 +47,11 @@ Setting up the Visual Studio 2005 Addin:
  * Click on an NMaven project
  * Click on Tools/NMaven Addin
 
- A small box will appear showing a tree view of all the projects. Right click to build the project. You will see
-  the build results within the output window.
+Changing NMaven's Version:
+ If you need to either update (or change) NMaven's project version, run the following:
+   modify-versions.bat <<new_version>>
+ This changes all of the versions within the pom.xml files.
 
- Places to change the versions in the code:
-  pom.xml
+ If you also need to override the maven version (it is currently set to maven-2.1-snapshot)
+  bootstrap-build.bat -DmavenVersion=<<new_version>>
+

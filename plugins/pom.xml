@@ -98,7 +98,7 @@ under the License.
         <configuration> 
           <reportFormat>plain</reportFormat> 
         </configuration> 
-      </plugin>  
+      </plugin> 
     </plugins> 
   </build>  
   <reporting> 
