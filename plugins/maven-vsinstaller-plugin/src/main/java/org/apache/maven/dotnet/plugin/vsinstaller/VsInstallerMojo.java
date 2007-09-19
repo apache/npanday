@@ -75,6 +75,11 @@ public class VsInstallerMojo
      */
     private Settings settings;
 
+    /**
+     * @parameter expression = "${pom.version}"
+     */
+    private String pomVersion;
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -122,7 +127,7 @@ public class VsInstallerMojo
         Dependency warFile = new Dependency();
         warFile.setGroupId( "org.apache.maven.dotnet" );
         warFile.setArtifactId( "dotnet-service-embedder" );
-        warFile.setVersion( "0.14-SNAPSHOT" );
+        warFile.setVersion( pomVersion );
         warFile.setType( "war" );
         javaDependencies.add( warFile );
 
@@ -183,7 +188,6 @@ public class VsInstallerMojo
             writer = new OutputStreamWriter( new FileOutputStream( outputFile ), "Unicode" );
             String pab = new File( localRepository ).getParent() + "\\pab";
             writer.write( addin.replaceAll( "\\$\\{localRepository\\}", pab.replaceAll( "\\\\", "\\\\\\\\" ) ) );
-
         }
         catch ( IOException e )
         {

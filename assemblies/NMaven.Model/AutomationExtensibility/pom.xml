@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -16,19 +18,19 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0">
-  <parent>
-    <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
-    <artifactId>NMaven.Assemblies</artifactId>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>NMaven.Model</groupId>
-  <artifactId>NMaven.Model.AutomationExtensibility</artifactId>
-  <version>0.14-SNAPSHOT</version>
-  <packaging>library</packaging>
-  <name>NMaven.Model.AutomationExtensibility</name>
+<project> 
+  <parent> 
+    <groupId>NMaven</groupId>  
+    <version>0.14-SNAPSHOT</version>  
+    <artifactId>NMaven.Assemblies</artifactId>  
+    <relativePath>../../pom.xml</relativePath> 
+  </parent>  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>NMaven.Model</groupId>  
+  <artifactId>NMaven.Model.AutomationExtensibility</artifactId>  
+  <version>0.14-SNAPSHOT</version>  
+  <packaging>library</packaging>  
+  <name>NMaven.Model.AutomationExtensibility</name>  
   <!--
   <build>
     <plugins>
@@ -48,5 +50,5 @@ under the License.
       </plugin>
     </plugins>
   </build>
-  -->
+  --> 
 </project>

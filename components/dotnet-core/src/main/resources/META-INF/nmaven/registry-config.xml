@@ -40,7 +40,7 @@
       <repository-config>/META-INF/nmaven/net-dependencies.xml</repository-config>
       <init-param>
         <param-name>nmaven.version</param-name>
-        <param-value>0.14-SNAPSHOT</param-value>
+        <param-value>${pom.version}</param-value>
       </init-param>
     </repository>
     <repository>

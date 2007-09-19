@@ -149,14 +149,20 @@ using NMaven.Model.Pom;
   
                 container = new WindsorContainer(new XmlInterpreter(new Castle.Core.Resource.StaticContentResource(contents)));
                 ArtifactContext artifactContext = (ArtifactContext)container[typeof(ArtifactContext)];
-                NMaven.Artifact.Artifact artifactWar = artifactContext.CreateArtifact("org.apache.maven.dotnet", "dotnet-service-embedder", "0.14-SNAPSHOT", "war");
+                object[] attributes = Assembly.GetExecutingAssembly()
+                    .GetCustomAttributes(typeof(System.Reflection.AssemblyInformationalVersionAttribute), true);
+                String version = ((AssemblyInformationalVersionAttribute) attributes[0]).InformationalVersion;
+
+                NMaven.Artifact.Artifact artifactWar = artifactContext.CreateArtifact("org.apache.maven.dotnet",
+                    "dotnet-service-embedder", version, "war");
                 FileInfo warFileInfo = new FileInfo(localRepository + "/" + new JavaRepositoryLayout().pathOf(artifactWar) + "war");
                 logger.Log(Level.INFO, "Executing external command plugin: "
                     + @"mvn org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile="""
                     + warFileInfo.FullName + @"""");
 
                 ProcessStartInfo processStartInfo =
-                    new ProcessStartInfo("mvn", @"org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile=""" + warFileInfo.FullName + @"""");
+                    new ProcessStartInfo("mvn", @"org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile="""
+                     + warFileInfo.FullName + @"""");
                 processStartInfo.UseShellExecute = true;
                 processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 System.Diagnostics.Process.Start(processStartInfo);
@@ -510,9 +516,11 @@ using NMaven.Model.Pom;
         #region cbShowAddArtifactsForm_Click(CommandBarButton,bool)
         private void cbShowAddArtifactsForm_Click(CommandBarButton btn, ref bool Cancel)
         {
+            MessageBox.Show("Click Add Form");
             //First selected project
             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
             {
+                MessageBox.Show("Initi");
                 AddArtifactsForm form = new AddArtifactsForm(project, container);
                 form.Show();
                 break;

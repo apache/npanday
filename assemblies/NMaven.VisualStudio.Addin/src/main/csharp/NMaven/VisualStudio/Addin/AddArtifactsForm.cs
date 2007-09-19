@@ -42,7 +42,7 @@ namespace NMaven.VisualStudio.Addin
             InitializeForm();
             InitializeComponent();
             localListView.View = View.Details;
-            artifactContext = (ArtifactContext) container[typeof(ArtifactContext)];         
+            artifactContext = (ArtifactContext) container[typeof(ArtifactContext)];       
         }
 
         private void InitializeForm()

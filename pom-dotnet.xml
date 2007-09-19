@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -16,219 +18,215 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>NMaven.Project</groupId>
-  <artifactId>NMaven.Project</artifactId>
-  <packaging>pom</packaging>
-  <version>0.14-SNAPSHOT</version>
-  <name>NMaven.Project</name>
-  <url>http://incubator.apache.org/nmaven</url>
-  <description>
-    NMaven provides Maven 2.x plugins to support building of .NET applications
-  </description>
-  <mailingLists>
-    <mailingList>
-      <name>NMaven Dev List</name>
-      <subscribe>nmaven-dev-subscribe@incubator.apache.org</subscribe>
-      <unsubscribe>nmaven-dev-unsubscribe@incubator.apache.org</unsubscribe>
-      <post>nmaven-dev@incubator.apache.org</post>
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-nmaven-dev/</archive>
-      <otherArchives>
-        <otherArchive>http://www.nabble.com/nmaven-dev-f17655.html</otherArchive>
-      </otherArchives>
-    </mailingList>
-    <mailingList>
-      <name>NMaven Commits List</name>
-      <subscribe>nmaven-commits-subscribe@incubator.apache.org</subscribe>
-      <unsubscribe>nmaven-commits-unsubscribe@incubator.apache.org</unsubscribe>
-      <post>nmaven-commits@incubator.apache.org</post>
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-nmaven-commits/</archive>
-      <otherArchives>
-        <otherArchive>http://www.nabble.com/nmaven-commits-f17656.html</otherArchive>
-      </otherArchives>
-    </mailingList>
-  </mailingLists>
-  <scm>
-    <url>https://svn.apache.org/repos/asf/incubator/nmaven/</url>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</connection>
-    <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</developerConnection>
-    <tag>REL_0_14_SNAPSHOT</tag>
-  </scm>
-  <organization>
-    <name>NMaven</name>
-    <url>http://incubator.apache.org/nmaven</url>
-  </organization>
-  <issueManagement>
-    <system>JIRA Bugtracking</system>
-    <url>http://jira.codehaus.org/browse/NMAVEN</url>
-  </issueManagement>
-  <licenses>
-    <license>
-      <name>Apache 2.0</name>
-      <url>LICENSE.txt</url>
-    </license>
-  </licenses>
-  <developers>
-    <developer>
-      <name>Brett Porter</name>
-      <id>brett</id>
-      <email>brett@apache.org</email>
-      <roles>
-        <role>champion</role>
-        <role>mentor</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Jason van Zyl</name>
-      <id>jvanzyl</id>
-      <email>jvanzyl@apache.org</email>
-      <roles>
-        <role>champion</role>
-        <role>mentor</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Shane Isbell</name>
-      <id>sisbell</id>
-      <email>sisbell@apache.org</email>
-      <url>http://jroller.com/page/random7</url>
-      <roles>
-        <role>committer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Dan Fabulich</name>
-      <id>dfabulich</id>
-      <email>dfabulich@apache.org</email>
-      <roles>
-        <role>committer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Chris Stevenson</name>
-      <id>chrisjs</id>
-      <email>chrisjs@apache.org</email>
-      <roles>
-        <role>committer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Trygve Laugstol</name>
-      <id>trygvis</id>
-      <email>trygvis@apache.org</email>
-      <roles>
-        <role>committer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>James Strachan</name>
-      <id>jstrachan</id>
-      <email>jstrachan@apache.org</email>
-      <roles>
-        <role>committer</role>
-      </roles>
-    </developer>
-  </developers>
-  <modules>
-    <module>assemblies</module>
-    <module>plugins/netplugins</module>
-  </modules>
-  <build>
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ssh-external</artifactId>
-        <version>1.0-beta-2</version>
-      </extension>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav</artifactId>
-        <version>1.0-beta-2</version>
-      </extension>
-    </extensions>
-    <sourceDirectory>src/main/csharp</sourceDirectory>
-    <testSourceDirectory>src/test/csharp</testSourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
-        <artifactId>maven-compile-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <frameworkVersion>2.0.50727</frameworkVersion>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <tagBase>https://svn.apache.org/repos/asf/incubator/nmaven/tags</tagBase>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>Microsoft.Build.Engine</groupId>
-        <artifactId>Microsoft.Build.Engine</artifactId>
-        <type>gac_msil</type>
-        <version>2.0.0.0</version>
-        <classifier>b03f5f7f11d50a3a</classifier>
-      </dependency>
-      <dependency>
-        <groupId>EnvDTE</groupId>
-        <artifactId>EnvDTE</artifactId>
-        <type>gac</type>
-        <version>8.0.0.0</version>
-        <classifier>b03f5f7f11d50a3a</classifier>
-      </dependency>
-      <dependency>
-        <groupId>EnvDTE80</groupId>
-        <artifactId>EnvDTE80</artifactId>
-        <type>gac</type>
-        <version>8.0.0.0</version>
-        <classifier>b03f5f7f11d50a3a</classifier>
-      </dependency>
-      <dependency>
-        <groupId>Microsoft.VisualStudio.CommandBars</groupId>
-        <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>
-        <version>8.0.0.0</version>
-        <classifier>b03f5f7f11d50a3a</classifier>
-        <type>gac</type>
-      </dependency>
-      <dependency>
-        <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>
-        <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>
-        <version>8.0.0.0</version>
-        <classifier>b03f5f7f11d50a3a</classifier>
-        <type>gac_msil</type>
-      </dependency>
-      <dependency>
-        <groupId>Extensibility</groupId>
-        <artifactId>Extensibility</artifactId>
-        <type>gac</type>
-        <version>7.0.3300.0</version>
-        <classifier>b03f5f7f11d50a3a</classifier>
-      </dependency>
-      <dependency>
-        <groupId>NUnit</groupId>
-        <artifactId>NUnit.Framework</artifactId>
-        <version>2.2.8.0</version>
-        <type>library</type>
-        <scope>test</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-    <distributionManagement>
-    <snapshotRepository>
-      <id>deployment.webdav</id>
-      <name>Test Web Dav</name>
-      <url>dav:http://localhost:8080/archiva/repository/snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>NMaven.Project</groupId>  
+  <artifactId>NMaven.Project</artifactId>  
+  <packaging>pom</packaging>  
+  <version>0.14-SNAPSHOT</version>  
+  <name>NMaven.Project</name>  
+  <url>http://incubator.apache.org/nmaven</url>  
+  <description>NMaven provides Maven 2.x plugins to support building of .NET applications</description>  
+  <mailingLists> 
+    <mailingList> 
+      <name>NMaven Dev List</name>  
+      <subscribe>nmaven-dev-subscribe@incubator.apache.org</subscribe>  
+      <unsubscribe>nmaven-dev-unsubscribe@incubator.apache.org</unsubscribe>  
+      <post>nmaven-dev@incubator.apache.org</post>  
+      <archive>http://mail-archives.apache.org/mod_mbox/incubator-nmaven-dev/</archive>  
+      <otherArchives> 
+        <otherArchive>http://www.nabble.com/nmaven-dev-f17655.html</otherArchive> 
+      </otherArchives> 
+    </mailingList>  
+    <mailingList> 
+      <name>NMaven Commits List</name>  
+      <subscribe>nmaven-commits-subscribe@incubator.apache.org</subscribe>  
+      <unsubscribe>nmaven-commits-unsubscribe@incubator.apache.org</unsubscribe>  
+      <post>nmaven-commits@incubator.apache.org</post>  
+      <archive>http://mail-archives.apache.org/mod_mbox/incubator-nmaven-commits/</archive>  
+      <otherArchives> 
+        <otherArchive>http://www.nabble.com/nmaven-commits-f17656.html</otherArchive> 
+      </otherArchives> 
+    </mailingList> 
+  </mailingLists>  
+  <scm> 
+    <url>https://svn.apache.org/repos/asf/incubator/nmaven/</url>  
+    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</connection>  
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</developerConnection>  
+    <tag>REL_0_14_SNAPSHOT</tag> 
+  </scm>  
+  <organization> 
+    <name>NMaven</name>  
+    <url>http://incubator.apache.org/nmaven</url> 
+  </organization>  
+  <issueManagement> 
+    <system>JIRA Bugtracking</system>  
+    <url>http://jira.codehaus.org/browse/NMAVEN</url> 
+  </issueManagement>  
+  <licenses> 
+    <license> 
+      <name>Apache 2.0</name>  
+      <url>LICENSE.txt</url> 
+    </license> 
+  </licenses>  
+  <developers> 
+    <developer> 
+      <name>Brett Porter</name>  
+      <id>brett</id>  
+      <email>brett@apache.org</email>  
+      <roles> 
+        <role>champion</role>  
+        <role>mentor</role> 
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Jason van Zyl</name>  
+      <id>jvanzyl</id>  
+      <email>jvanzyl@apache.org</email>  
+      <roles> 
+        <role>champion</role>  
+        <role>mentor</role> 
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Shane Isbell</name>  
+      <id>sisbell</id>  
+      <email>sisbell@apache.org</email>  
+      <url>http://jroller.com/page/random7</url>  
+      <roles> 
+        <role>committer</role> 
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Dan Fabulich</name>  
+      <id>dfabulich</id>  
+      <email>dfabulich@apache.org</email>  
+      <roles> 
+        <role>committer</role> 
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Chris Stevenson</name>  
+      <id>chrisjs</id>  
+      <email>chrisjs@apache.org</email>  
+      <roles> 
+        <role>committer</role> 
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Trygve Laugstol</name>  
+      <id>trygvis</id>  
+      <email>trygvis@apache.org</email>  
+      <roles> 
+        <role>committer</role> 
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>James Strachan</name>  
+      <id>jstrachan</id>  
+      <email>jstrachan@apache.org</email>  
+      <roles> 
+        <role>committer</role> 
+      </roles> 
+    </developer> 
+  </developers>  
+  <modules> 
+    <module>assemblies</module>  
+    <module>plugins/netplugins</module> 
+  </modules>  
+  <build> 
+    <extensions> 
+      <extension> 
+        <groupId>org.apache.maven.wagon</groupId>  
+        <artifactId>wagon-ssh-external</artifactId>  
+        <version>1.0-beta-2</version> 
+      </extension>  
+      <extension> 
+        <groupId>org.apache.maven.wagon</groupId>  
+        <artifactId>wagon-webdav</artifactId>  
+        <version>1.0-beta-2</version> 
+      </extension> 
+    </extensions>  
+    <sourceDirectory>src/main/csharp</sourceDirectory>  
+    <testSourceDirectory>src/test/csharp</testSourceDirectory>  
+    <plugins> 
+      <plugin> 
+        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <artifactId>maven-compile-plugin</artifactId>  
+        <extensions>true</extensions>  
+        <configuration> 
+          <frameworkVersion>2.0.50727</frameworkVersion> 
+        </configuration> 
+      </plugin>  
+      <plugin> 
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-release-plugin</artifactId>  
+        <configuration> 
+          <tagBase>https://svn.apache.org/repos/asf/incubator/nmaven/tags</tagBase> 
+        </configuration> 
+      </plugin> 
+    </plugins> 
+  </build>  
+  <dependencyManagement> 
+    <dependencies> 
+      <dependency> 
+        <groupId>Microsoft.Build.Engine</groupId>  
+        <artifactId>Microsoft.Build.Engine</artifactId>  
+        <type>gac_msil</type>  
+        <version>2.0.0.0</version>  
+        <classifier>b03f5f7f11d50a3a</classifier> 
+      </dependency>  
+      <dependency> 
+        <groupId>EnvDTE</groupId>  
+        <artifactId>EnvDTE</artifactId>  
+        <type>gac</type>  
+        <version>8.0.0.0</version>  
+        <classifier>b03f5f7f11d50a3a</classifier> 
+      </dependency>  
+      <dependency> 
+        <groupId>EnvDTE80</groupId>  
+        <artifactId>EnvDTE80</artifactId>  
+        <type>gac</type>  
+        <version>8.0.0.0</version>  
+        <classifier>b03f5f7f11d50a3a</classifier> 
+      </dependency>  
+      <dependency> 
+        <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
+        <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
+        <version>8.0.0.0</version>  
+        <classifier>b03f5f7f11d50a3a</classifier>  
+        <type>gac</type> 
+      </dependency>  
+      <dependency> 
+        <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>  
+        <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>  
+        <version>8.0.0.0</version>  
+        <classifier>b03f5f7f11d50a3a</classifier>  
+        <type>gac_msil</type> 
+      </dependency>  
+      <dependency> 
+        <groupId>Extensibility</groupId>  
+        <artifactId>Extensibility</artifactId>  
+        <type>gac</type>  
+        <version>7.0.3300.0</version>  
+        <classifier>b03f5f7f11d50a3a</classifier> 
+      </dependency>  
+      <dependency> 
+        <groupId>NUnit</groupId>  
+        <artifactId>NUnit.Framework</artifactId>  
+        <version>2.2.8.0</version>  
+        <type>library</type>  
+        <scope>test</scope> 
+      </dependency> 
+    </dependencies> 
+  </dependencyManagement>  
+  <distributionManagement> 
+    <snapshotRepository> 
+      <id>deployment.webdav</id>  
+      <name>Test Web Dav</name>  
+      <url>dav:http://localhost:8080/archiva/repository/snapshots/</url> 
+    </snapshotRepository> 
+  </distributionManagement>  
   <!--
   <distributionManagement>
     <snapshotRepository>
@@ -237,7 +235,7 @@ under the License.
       <url>scpexe://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository</url>
     </snapshotRepository>
   </distributionManagement>
-  -->
+  -->  
   <!--
    <distributionManagement>
  <snapshotRepository>
@@ -246,5 +244,5 @@ under the License.
    <url>file://C:\arepo</url>
  </snapshotRepository>
 </distributionManagement>
--->
+--> 
 </project>

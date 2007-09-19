@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><project>
-  <parent>
-    <artifactId>maven-archetype-bundles</artifactId>
-    <groupId>org.apache.maven.archetype</groupId>
-    <version>1-SNAPSHOT</version>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.maven.archetypes</groupId>
-  <artifactId>maven-archetype-dotnetexe</artifactId>
-  <packaging>maven-plugin</packaging>
-  <name>Maven Dotnet Executable Archetype</name>
-  <version>1.0-SNAPSHOT</version>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project> 
+  <parent> 
+    <artifactId>maven-archetype-bundles</artifactId>  
+    <groupId>org.apache.maven.archetype</groupId>  
+    <version>0.14-SNAPSHOT</version> 
+  </parent>  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>org.apache.maven.archetypes</groupId>  
+  <artifactId>maven-archetype-dotnetexe</artifactId>  
+  <packaging>maven-plugin</packaging>  
+  <name>Maven Dotnet Executable Archetype</name>  
+  <version>0.14-SNAPSHOT</version> 
 </project>

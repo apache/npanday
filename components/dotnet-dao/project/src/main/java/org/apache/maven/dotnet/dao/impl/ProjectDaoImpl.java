@@ -548,7 +548,7 @@ public final class ProjectDaoImpl
                             Model model;
                             try
                             {
-                                model = reader.read( fileReader );
+                                model = reader.read( fileReader ); //TODO: interpolate values
                             }
                             catch ( XmlPullParserException e )
                             {

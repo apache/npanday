@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -16,26 +18,26 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0">
-  <parent>
-    <groupId>NMaven.Plugins</groupId>
-    <version>0.14-SNAPSHOT</version>
-    <artifactId>NMaven.Plugins</artifactId>
+<project> 
+  <parent> 
+    <groupId>NMaven.Plugins</groupId>  
+    <version>0.14-SNAPSHOT</version>  
+    <artifactId>NMaven.Plugins</artifactId> 
   </parent>  
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>NMaven.Plugins</groupId>
-  <artifactId>NMaven.Plugin.Settings</artifactId>
-  <packaging>netplugin</packaging>
-  <version>0.14-SNAPSHOT</version>
-  <name>NMaven.Plugin.Settings</name>
-  <dependencies>
-    <dependency>
-      <groupId>NMaven.Plugin</groupId>
-      <artifactId>NMaven.Plugin</artifactId>
-      <type>library</type>
-      <version>0.14-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>NMaven.Plugins</groupId>  
+  <artifactId>NMaven.Plugin.Settings</artifactId>  
+  <packaging>netplugin</packaging>  
+  <version>0.14-SNAPSHOT</version>  
+  <name>NMaven.Plugin.Settings</name>  
+  <dependencies> 
+    <dependency> 
+      <groupId>NMaven.Plugin</groupId>  
+      <artifactId>NMaven.Plugin</artifactId>  
+      <type>library</type>  
+      <version>0.14-SNAPSHOT</version> 
+    </dependency> 
+  </dependencies>  
   <!--
   <profiles>
     <profile>
@@ -74,5 +76,5 @@ under the License.
       </build>
     </profile>
   </profiles>
-  -->
+  --> 
 </project>

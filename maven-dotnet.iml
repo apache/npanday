@@ -42,6 +42,7 @@
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-vendor/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-vendor/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-vendor/src/test/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/imports/maven-pom-plugin/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0001/src/main/csharp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0002/src/main/csharp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/integration-tests/tests/it0003/src/main/csharp" isTestSource="false" />

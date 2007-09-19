@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ProjectGuid>{5BE35FDF-E620-4EB0-B9A8-2359C506D85D}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <RootNameSpace>NMaven.VisualStudio</RootNameSpace>
+    <RootNameSpace>NMaven.VisualStudio.Addin</RootNameSpace>
     <AssemblyName>NMaven.VisualStudio.Addin</AssemblyName>
     <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
     <OutputType>Library</OutputType>
@@ -32,7 +32,7 @@
     <IncrementalBuild>false</IncrementalBuild>
   </PropertyGroup>
   <ItemGroup>
-      <Reference Include="NMaven.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+    <Reference Include="NMaven.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\.m2\uac\gac_msil\NMaven.Model.Pom\0.14-SNAPSHOT__NMaven.Model\NMaven.Model.Pom.dll</HintPath>
     </Reference>

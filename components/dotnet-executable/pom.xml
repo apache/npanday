@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -16,45 +18,42 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <groupId>org.apache.maven.dotnet</groupId>
-    <version>0.14-SNAPSHOT</version>
-    <artifactId>dotnet-components</artifactId>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.maven.dotnet</groupId>
-  <artifactId>dotnet-executable</artifactId>
-  <name>dotnet-executable</name>
-  <description>
-    NMaven
-  </description>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
-      <artifactId>dotnet-core</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
-      <artifactId>dotnet-artifact</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
-      <artifactId>dotnet-model-executable-plugins</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
-      <artifactId>dotnet-model-compiler-plugins</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
-      <artifactId>dotnet-vendor</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-  </dependencies>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
+  <parent> 
+    <groupId>org.apache.maven.dotnet</groupId>  
+    <version>0.14-SNAPSHOT</version>  
+    <artifactId>dotnet-components</artifactId> 
+  </parent>  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>org.apache.maven.dotnet</groupId>  
+  <artifactId>dotnet-executable</artifactId>  
+  <name>dotnet-executable</name>  
+  <description>NMaven</description>  
+  <dependencies> 
+    <dependency> 
+      <groupId>org.apache.maven.dotnet</groupId>  
+      <artifactId>dotnet-core</artifactId>  
+      <version>0.14-SNAPSHOT</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.apache.maven.dotnet</groupId>  
+      <artifactId>dotnet-artifact</artifactId>  
+      <version>0.14-SNAPSHOT</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.apache.maven.dotnet</groupId>  
+      <artifactId>dotnet-model-executable-plugins</artifactId>  
+      <version>0.14-SNAPSHOT</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.apache.maven.dotnet</groupId>  
+      <artifactId>dotnet-model-compiler-plugins</artifactId>  
+      <version>0.14-SNAPSHOT</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.apache.maven.dotnet</groupId>  
+      <artifactId>dotnet-vendor</artifactId>  
+      <version>0.14-SNAPSHOT</version> 
+    </dependency> 
+  </dependencies> 
 </project>

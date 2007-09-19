@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -16,63 +18,60 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <groupId>NMaven.Project</groupId>
-    <version>0.14-SNAPSHOT</version>
-    <artifactId>NMaven.Project</artifactId>
-    <relativePath>../pom-dotnet.xml</relativePath>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>NMaven</groupId>
-  <artifactId>NMaven.Assemblies</artifactId>
-  <version>0.14-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>NMaven.Assemblies</name>
-  <url>http://incubator.apache.org/nmaven</url>
-  <description>
-    NMaven provides Maven 2.x plugins to support building of .NET applications
-  </description>
-  <modules>
-    <module>NMaven.Artifact</module>
-    <module>NMaven.Solution</module>
-    <module>NMaven.Logging</module>
-    <module>NMaven.Model/Pom</module>
-    <module>NMaven.Model/Settings</module>
-    <module>NMaven.Model/AutomationExtensibility</module>
-    <module>NMaven.Plugin</module>
-    <module>NMaven.Plugin.Loader</module>
-    <module>NMaven.Plugin.MojoGenerator</module>
-    <module>NMaven.Plugin.Runner</module>
-    <module>NMaven.Service/Embedder</module>
-  </modules>
-  <profiles>
-    <profile>
-      <activation>
-        <property>
-          <name>VisualStudio2005</name>
-        </property>
-      </activation>
-      <modules>
-        <module>NMaven.VisualStudio</module>
-        <module>NMaven.VisualStudio.Addin</module>
-        <module>NMaven.IDE</module>
-        <module>NMaven.VisualStudio.ProjectWizard</module>        
-      </modules>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.dotnet.plugins</groupId>
-            <artifactId>maven-compile-plugin</artifactId>
-            <extensions>true</extensions>
-            <configuration>
-              <vendor>MICROSOFT</vendor>
-              <frameworkVersion>2.0.50727</frameworkVersion>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
+  <parent> 
+    <groupId>NMaven.Project</groupId>  
+    <version>0.14-SNAPSHOT</version>  
+    <artifactId>NMaven.Project</artifactId>  
+    <relativePath>../pom-dotnet.xml</relativePath> 
+  </parent>  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>NMaven</groupId>  
+  <artifactId>NMaven.Assemblies</artifactId>  
+  <version>0.14-SNAPSHOT</version>  
+  <packaging>pom</packaging>  
+  <name>NMaven.Assemblies</name>  
+  <url>http://incubator.apache.org/nmaven</url>  
+  <description>NMaven provides Maven 2.x plugins to support building of .NET applications</description>  
+  <modules> 
+    <module>NMaven.Artifact</module>  
+    <module>NMaven.Solution</module>  
+    <module>NMaven.Logging</module>  
+    <module>NMaven.Model/Pom</module>  
+    <module>NMaven.Model/Settings</module>  
+    <module>NMaven.Model/AutomationExtensibility</module>  
+    <module>NMaven.Plugin</module>  
+    <module>NMaven.Plugin.Loader</module>  
+    <module>NMaven.Plugin.MojoGenerator</module>  
+    <module>NMaven.Plugin.Runner</module>  
+    <module>NMaven.Service/Embedder</module> 
+  </modules>  
+  <profiles> 
+    <profile> 
+      <activation> 
+        <property> 
+          <name>VisualStudio2005</name> 
+        </property> 
+      </activation>  
+      <modules> 
+        <module>NMaven.VisualStudio</module>  
+        <module>NMaven.VisualStudio.Addin</module>  
+        <module>NMaven.IDE</module>  
+        <module>NMaven.VisualStudio.ProjectWizard</module> 
+      </modules>  
+      <build> 
+        <plugins> 
+          <plugin> 
+            <groupId>org.apache.maven.dotnet.plugins</groupId>  
+            <artifactId>maven-compile-plugin</artifactId>  
+            <extensions>true</extensions>  
+            <configuration> 
+              <vendor>MICROSOFT</vendor>  
+              <frameworkVersion>2.0.50727</frameworkVersion> 
+            </configuration> 
+          </plugin> 
+        </plugins> 
+      </build> 
+    </profile> 
+  </profiles> 
 </project>

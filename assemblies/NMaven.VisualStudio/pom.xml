@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -16,31 +18,31 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0">
-  <parent>
-    <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
-    <artifactId>NMaven.Assemblies</artifactId>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>NMaven.VisualStudio</groupId>
-  <artifactId>NMaven.VisualStudio</artifactId>
-  <version>0.14-SNAPSHOT</version>
-  <packaging>library</packaging>
-  <name>NMaven.VisualStudio</name>
-  <dependencies>
-    <dependency>
-      <groupId>NMaven.Logging</groupId>
-      <artifactId>NMaven.Logging</artifactId>
-      <version>0.14-SNAPSHOT</version>
-      <type>library</type>
-    </dependency>
-    <dependency>
-      <groupId>EnvDTE</groupId>
-      <artifactId>EnvDTE</artifactId>
-      <type>gac</type>
-      <version>8.0.0.0</version>
-      <classifier>b03f5f7f11d50a3a</classifier>
-    </dependency>
-  </dependencies>
+<project> 
+  <parent> 
+    <groupId>NMaven</groupId>  
+    <version>0.14-SNAPSHOT</version>  
+    <artifactId>NMaven.Assemblies</artifactId> 
+  </parent>  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>NMaven.VisualStudio</groupId>  
+  <artifactId>NMaven.VisualStudio</artifactId>  
+  <version>0.14-SNAPSHOT</version>  
+  <packaging>library</packaging>  
+  <name>NMaven.VisualStudio</name>  
+  <dependencies> 
+    <dependency> 
+      <groupId>NMaven.Logging</groupId>  
+      <artifactId>NMaven.Logging</artifactId>  
+      <version>0.14-SNAPSHOT</version>  
+      <type>library</type> 
+    </dependency>  
+    <dependency> 
+      <groupId>EnvDTE</groupId>  
+      <artifactId>EnvDTE</artifactId>  
+      <type>gac</type>  
+      <version>8.0.0.0</version>  
+      <classifier>b03f5f7f11d50a3a</classifier> 
+    </dependency> 
+  </dependencies> 
 </project>

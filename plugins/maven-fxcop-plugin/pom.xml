@@ -1,20 +1,22 @@
-<?xml version="1.0"?><project>
-  <parent>
-    <artifactId>maven-dotnet-plugins</artifactId>
-    <groupId>org.apache.maven.dotnet.plugins</groupId>
-    <version>0.14-SNAPSHOT</version>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.maven.dotnet.plugins</groupId>
-  <artifactId>maven-fxcop-plugin</artifactId>
-  <packaging>maven-plugin</packaging>
-  <name>maven-fxcop-plugin</name>
-  <description> Maven Plugin for .NET: Runs the FxCop Code Analysis Tool</description>
-    <distributionManagement>
-    <site>
-      <id>nmaven-apache-site</id>
-      <name>NMaven Site</name>
-      <url>file://${basedir}/../../../www/plugins/maven-fxcop-plugin</url>
-    </site>
-  </distributionManagement>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project> 
+  <parent> 
+    <artifactId>maven-dotnet-plugins</artifactId>  
+    <groupId>org.apache.maven.dotnet.plugins</groupId>  
+    <version>0.14-SNAPSHOT</version> 
+  </parent>  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>org.apache.maven.dotnet.plugins</groupId>  
+  <artifactId>maven-fxcop-plugin</artifactId>  
+  <packaging>maven-plugin</packaging>  
+  <name>maven-fxcop-plugin</name>  
+  <description>Maven Plugin for .NET: Runs the FxCop Code Analysis Tool</description>  
+  <distributionManagement> 
+    <site> 
+      <id>nmaven-apache-site</id>  
+      <name>NMaven Site</name>  
+      <url>file://${basedir}/../../../www/plugins/maven-fxcop-plugin</url> 
+    </site> 
+  </distributionManagement> 
 </project>

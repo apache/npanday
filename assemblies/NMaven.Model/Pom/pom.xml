@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -16,69 +18,69 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0">
-  <parent>
-    <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
-    <artifactId>NMaven.Assemblies</artifactId>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>NMaven.Model</groupId>
-  <artifactId>NMaven.Model.Pom</artifactId>
-  <version>0.14-SNAPSHOT</version>
-  <packaging>library</packaging>
-  <name>NMaven.Model.Pom</name>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
-        <artifactId>maven-xsd-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>xsd</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <xsdFile>${basedir}/Pom.xsd</xsdFile>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
-        <artifactId>maven-compile-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <keyfile>sample.snk</keyfile>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
-        <artifactId>maven-install-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <isGacInstall>true</isGacInstall>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  <repositories>
-    <repository>
-      <id>test.repo</id>
-      <url>file://C:\tmp\remote-test-repo</url>
-    </repository>
-  </repositories>
- <distributionManagement>
- <snapshotRepository>
-   <name>Apache Development Snapshot Repository</name>
-   <id>maven1</id>
-   <url>file://C:\tmp\remote-test-repo</url>
- </snapshotRepository>
- <repository>
-   <id>nmaven1</id>
-   <name>Apache Development Snapshot Repository</name>
-   <url>file://C:\tmp\remote-test-repo</url>
- </repository>
-</distributionManagement>
+<project> 
+  <parent> 
+    <groupId>NMaven</groupId>  
+    <version>0.14-SNAPSHOT</version>  
+    <artifactId>NMaven.Assemblies</artifactId>  
+    <relativePath>../../pom.xml</relativePath> 
+  </parent>  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>NMaven.Model</groupId>  
+  <artifactId>NMaven.Model.Pom</artifactId>  
+  <version>0.14-SNAPSHOT</version>  
+  <packaging>library</packaging>  
+  <name>NMaven.Model.Pom</name>  
+  <build> 
+    <plugins> 
+      <plugin> 
+        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <artifactId>maven-xsd-plugin</artifactId>  
+        <executions> 
+          <execution> 
+            <goals> 
+              <goal>xsd</goal> 
+            </goals> 
+          </execution> 
+        </executions>  
+        <configuration> 
+          <xsdFile>${basedir}/Pom.xsd</xsdFile> 
+        </configuration> 
+      </plugin>  
+      <plugin> 
+        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <artifactId>maven-compile-plugin</artifactId>  
+        <extensions>true</extensions>  
+        <configuration> 
+          <keyfile>sample.snk</keyfile> 
+        </configuration> 
+      </plugin>  
+      <plugin> 
+        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <artifactId>maven-install-plugin</artifactId>  
+        <extensions>true</extensions>  
+        <configuration> 
+          <isGacInstall>true</isGacInstall> 
+        </configuration> 
+      </plugin> 
+    </plugins> 
+  </build>  
+  <repositories> 
+    <repository> 
+      <id>test.repo</id>  
+      <url>file://C:\tmp\remote-test-repo</url> 
+    </repository> 
+  </repositories>  
+  <distributionManagement> 
+    <snapshotRepository> 
+      <name>Apache Development Snapshot Repository</name>  
+      <id>maven1</id>  
+      <url>file://C:\tmp\remote-test-repo</url> 
+    </snapshotRepository>  
+    <repository> 
+      <id>nmaven1</id>  
+      <name>Apache Development Snapshot Repository</name>  
+      <url>file://C:\tmp\remote-test-repo</url> 
+    </repository> 
+  </distributionManagement> 
 </project>

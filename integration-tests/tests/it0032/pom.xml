@@ -1,45 +1,41 @@
-<project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.maven.it</groupId>
-  <artifactId>it0032</artifactId>
-  <packaging>library</packaging>
-  <version>1.0.0</version>
-  <name>it0032</name>
+<?xml version="1.0" encoding="UTF-8"?>
 
-  <dependencies>
-    <dependency>
-      <groupId>NUnit</groupId>
-      <artifactId>NUnit.Framework</artifactId>
-      <version>2.2.8.0</version>
-      <type>library</type>
-    </dependency>
-  </dependencies>
-
-  <build>
-    <sourceDirectory>src/main/csharp</sourceDirectory>
-    <testSourceDirectory>src/test</testSourceDirectory>
-
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
-        <artifactId>maven-compile-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <excludes>
-            <exclude>**/notToBeIncluded.cs</exclude>
-          </excludes>
-          <testExcludes>
-            <exclude>**/notToBeIncluded.txt</exclude>
-          </testExcludes>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
-        <artifactId>maven-test-plugin</artifactId>
-      </plugin>
-
-    </plugins>
-
-  </build>
+<project> 
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>org.apache.maven.it</groupId>  
+  <artifactId>it0032</artifactId>  
+  <packaging>library</packaging>  
+  <version>0.14-SNAPSHOT</version>  
+  <name>it0032</name>  
+  <dependencies> 
+    <dependency> 
+      <groupId>NUnit</groupId>  
+      <artifactId>NUnit.Framework</artifactId>  
+      <version>2.2.8.0</version>  
+      <type>library</type> 
+    </dependency> 
+  </dependencies>  
+  <build> 
+    <sourceDirectory>src/main/csharp</sourceDirectory>  
+    <testSourceDirectory>src/test</testSourceDirectory>  
+    <plugins> 
+      <plugin> 
+        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <artifactId>maven-compile-plugin</artifactId>  
+        <extensions>true</extensions>  
+        <configuration> 
+          <excludes> 
+            <exclude>**/notToBeIncluded.cs</exclude> 
+          </excludes>  
+          <testExcludes> 
+            <exclude>**/notToBeIncluded.txt</exclude> 
+          </testExcludes> 
+        </configuration> 
+      </plugin>  
+      <plugin> 
+        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <artifactId>maven-test-plugin</artifactId> 
+      </plugin> 
+    </plugins> 
+  </build> 
 </project>

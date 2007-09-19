@@ -132,7 +132,10 @@ public class EmbedderStarterMojo
      */
     private String frameworkVersion;
 
-    private String pomVersion = "0.14-SNAPSHOT";
+    /**
+     * @parameter expression = "${pom.version}"
+     */
+    private String pomVersion;
 
     /**
      * File logger: needed for creating logs when the IDE starts because the console output and thrown exceptions are

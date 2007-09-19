@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -16,68 +18,68 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0">
-  <parent>
-    <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
-    <artifactId>NMaven.Assemblies</artifactId>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>NMaven.VisualStudio</groupId>
-  <artifactId>NMaven.VisualStudio.ProjectWizard</artifactId>
-  <version>0.14-SNAPSHOT</version>
-  <packaging>library</packaging>
-  <name>NMaven.VisualStudio.ProjectWizard</name>
-  <dependencies>
-    <dependency>
-      <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>
-      <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>
-      <version>8.0.0.0</version>
-      <classifier>b03f5f7f11d50a3a</classifier>
-      <type>gac_msil</type>
-    </dependency>
-    <dependency>
-      <groupId>EnvDTE</groupId>
-      <artifactId>EnvDTE</artifactId>
-      <type>gac</type>
-      <version>8.0.0.0</version>
-      <classifier>b03f5f7f11d50a3a</classifier>
-    </dependency>
-    <dependency>
-      <groupId>EnvDTE80</groupId>
-      <artifactId>EnvDTE80</artifactId>
-      <type>gac</type>
-      <version>8.0.0.0</version>
-      <classifier>b03f5f7f11d50a3a</classifier>
-    </dependency>
-    <!--remmove-->
-    <dependency>
-      <groupId>Microsoft.VisualStudio.CommandBars</groupId>
-      <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>
-      <type>gac</type>
-      <version>8.0.0.0</version>
-      <classifier>b03f5f7f11d50a3a</classifier>
-    </dependency>
-  </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
-        <artifactId>maven-compile-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <frameworkVersion>2.0.50727</frameworkVersion>
-          <keyfile>sample.snk</keyfile>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
-        <artifactId>maven-install-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <isGacInstall>true</isGacInstall>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+<project> 
+  <parent> 
+    <groupId>NMaven</groupId>  
+    <version>0.14-SNAPSHOT</version>  
+    <artifactId>NMaven.Assemblies</artifactId> 
+  </parent>  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>NMaven.VisualStudio</groupId>  
+  <artifactId>NMaven.VisualStudio.ProjectWizard</artifactId>  
+  <version>0.14-SNAPSHOT</version>  
+  <packaging>library</packaging>  
+  <name>NMaven.VisualStudio.ProjectWizard</name>  
+  <dependencies> 
+    <dependency> 
+      <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>  
+      <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>  
+      <version>8.0.0.0</version>  
+      <classifier>b03f5f7f11d50a3a</classifier>  
+      <type>gac_msil</type> 
+    </dependency>  
+    <dependency> 
+      <groupId>EnvDTE</groupId>  
+      <artifactId>EnvDTE</artifactId>  
+      <type>gac</type>  
+      <version>8.0.0.0</version>  
+      <classifier>b03f5f7f11d50a3a</classifier> 
+    </dependency>  
+    <dependency> 
+      <groupId>EnvDTE80</groupId>  
+      <artifactId>EnvDTE80</artifactId>  
+      <type>gac</type>  
+      <version>8.0.0.0</version>  
+      <classifier>b03f5f7f11d50a3a</classifier> 
+    </dependency>  
+    <!--remmove-->  
+    <dependency> 
+      <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
+      <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
+      <type>gac</type>  
+      <version>8.0.0.0</version>  
+      <classifier>b03f5f7f11d50a3a</classifier> 
+    </dependency> 
+  </dependencies>  
+  <build> 
+    <plugins> 
+      <plugin> 
+        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <artifactId>maven-compile-plugin</artifactId>  
+        <extensions>true</extensions>  
+        <configuration> 
+          <frameworkVersion>2.0.50727</frameworkVersion>  
+          <keyfile>sample.snk</keyfile> 
+        </configuration> 
+      </plugin>  
+      <plugin> 
+        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <artifactId>maven-install-plugin</artifactId>  
+        <extensions>true</extensions>  
+        <configuration> 
+          <isGacInstall>true</isGacInstall> 
+        </configuration> 
+      </plugin> 
+    </plugins> 
+  </build> 
 </project>

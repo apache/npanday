@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -16,50 +18,49 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <groupId>org.apache.maven.dotnet</groupId>
-    <version>0.14-SNAPSHOT</version>
-    <artifactId>dotnet-components</artifactId>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.maven.dotnet</groupId>
-  <artifactId>dotnet-model</artifactId>
-  <packaging>pom</packaging>
-  <name>dotnet-model</name>
-  <modules>
-    <module>assembly-plugins</module>
-    <module>compiler-plugins</module>
-    <module>executable-plugins</module>
-    <module>netdependency</module>
-    <module>configuration-appenders</module>
-    <module>settings</module>
-    <module>entries</module>
-  </modules>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-    </dependency>
-  </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <workingDirectory>${project.build.directory}/site</workingDirectory>
-          <siteDirectory>${project.build.directory}/generated-site</siteDirectory>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <configuration>
-          <outputDirectory>${project.build.directory}/generated-site</outputDirectory>
-        </configuration>
-      </plugin>      
-    </plugins>
-  </build>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
+  <parent> 
+    <groupId>org.apache.maven.dotnet</groupId>  
+    <version>0.14-SNAPSHOT</version>  
+    <artifactId>dotnet-components</artifactId> 
+  </parent>  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>org.apache.maven.dotnet</groupId>  
+  <artifactId>dotnet-model</artifactId>  
+  <packaging>pom</packaging>  
+  <name>dotnet-model</name>  
+  <modules> 
+    <module>assembly-plugins</module>  
+    <module>compiler-plugins</module>  
+    <module>executable-plugins</module>  
+    <module>netdependency</module>  
+    <module>configuration-appenders</module>  
+    <module>settings</module>  
+    <module>entries</module> 
+  </modules>  
+  <dependencies> 
+    <dependency> 
+      <groupId>org.codehaus.plexus</groupId>  
+      <artifactId>plexus-utils</artifactId> 
+    </dependency> 
+  </dependencies>  
+  <build> 
+    <plugins> 
+      <plugin> 
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-site-plugin</artifactId>  
+        <configuration> 
+          <workingDirectory>${project.build.directory}/site</workingDirectory>  
+          <siteDirectory>${project.build.directory}/generated-site</siteDirectory> 
+        </configuration> 
+      </plugin>  
+      <plugin> 
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-resources-plugin</artifactId>  
+        <configuration> 
+          <outputDirectory>${project.build.directory}/generated-site</outputDirectory> 
+        </configuration> 
+      </plugin> 
+    </plugins> 
+  </build> 
 </project>

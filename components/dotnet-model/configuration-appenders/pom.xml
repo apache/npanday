@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -16,37 +18,34 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <groupId>org.apache.maven.dotnet</groupId>
-    <version>0.14-SNAPSHOT</version>
-    <artifactId>dotnet-model</artifactId>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.maven.dotnet</groupId>
-  <artifactId>dotnet-model-configuration-appenders</artifactId>
-  <name>dotnet-model-configuration-appenders</name>
-  <description>
-  </description>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.modello</groupId>
-        <artifactId>modello-maven-plugin</artifactId>
-        <configuration>
-          <model>configurationAppenders.mdo</model>
-          <version>1.0.0</version>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  <distributionManagement>
-    <site>
-      <id>nmaven-site</id>
-      <name>NMaven Site</name>
-      <url>
-        scp://shell.sourceforge.net//home/groups/n/nm/nmaven/htdocs/components/nmaven-model/nmaven-compile-plugin</url>
-    </site>
-  </distributionManagement>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
+  <parent> 
+    <groupId>org.apache.maven.dotnet</groupId>  
+    <version>0.14-SNAPSHOT</version>  
+    <artifactId>dotnet-model</artifactId> 
+  </parent>  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>org.apache.maven.dotnet</groupId>  
+  <artifactId>dotnet-model-configuration-appenders</artifactId>  
+  <name>dotnet-model-configuration-appenders</name>  
+  <description/>  
+  <build> 
+    <plugins> 
+      <plugin> 
+        <groupId>org.codehaus.modello</groupId>  
+        <artifactId>modello-maven-plugin</artifactId>  
+        <configuration> 
+          <model>configurationAppenders.mdo</model>  
+          <version>1.0.0</version> 
+        </configuration> 
+      </plugin> 
+    </plugins> 
+  </build>  
+  <distributionManagement> 
+    <site> 
+      <id>nmaven-site</id>  
+      <name>NMaven Site</name>  
+      <url>scp://shell.sourceforge.net//home/groups/n/nm/nmaven/htdocs/components/nmaven-model/nmaven-compile-plugin</url> 
+    </site> 
+  </distributionManagement> 
 </project>

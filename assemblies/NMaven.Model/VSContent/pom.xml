@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -16,20 +18,20 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0">
-  <parent>
-    <groupId>NMaven</groupId>
-    <version>0.14-SNAPSHOT</version>
-    <artifactId>NMaven.Assemblies</artifactId>
-    <relativePath>..\..\pom.xml</relativePath>
+<project> 
+  <parent> 
+    <groupId>NMaven</groupId>  
+    <version>0.14-SNAPSHOT</version>  
+    <artifactId>NMaven.Assemblies</artifactId>  
+    <relativePath>..\..\pom.xml</relativePath> 
   </parent>  
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>NMaven.Model</groupId>
-  <artifactId>NMaven.Model.VSContent</artifactId>
-  <packaging>library</packaging>
-  <version>0.14-SNAPSHOT</version>
-  <name>NMaven.Model.VSContent</name>
-  <build>
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>NMaven.Model</groupId>  
+  <artifactId>NMaven.Model.VSContent</artifactId>  
+  <packaging>library</packaging>  
+  <version>0.14-SNAPSHOT</version>  
+  <name>NMaven.Model.VSContent</name>  
+  <build> 
     <!--
     <plugins>
       <plugin>
@@ -47,6 +49,6 @@ under the License.
         </configuration>
       </plugin>
     </plugins>
-    -->
-  </build>
+    --> 
+  </build> 
 </project>
