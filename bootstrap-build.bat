@@ -2,7 +2,17 @@
 IF "%phase%"=="" SET phase=install
 ECHO Executing Phase: %phase%
 
-call mvn %phase% -DRdf %*
+if "%1"=="-DrdfProfile.none" (
+    ECHO Building Without RDF Profile
+    call mvn %phase% %*
+
+ ) else (
+    ECHO Building With RDF Profile
+    call mvn %phase% -DRdf %*
+ )
+
+:END
+
 IF errorlevel 1 GOTO END
 
 ECHO Installing 3rd Party Assemblies in the Local Repo
