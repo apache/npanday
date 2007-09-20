@@ -18,45 +18,55 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
-  <parent> 
-    <groupId>org.apache.maven.dotnet</groupId>  
-    <version>0.14-SNAPSHOT</version>  
-    <artifactId>dotnet-project</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <groupId>org.apache.maven.dotnet</groupId>  
-  <artifactId>dotnet-components</artifactId>  
-  <packaging>pom</packaging>  
-  <name>dotnet-components</name>  
-  <url>http://incubator.apache.org/nmaven</url>  
-  <description>NMaven provides Maven 2.x plugins to support building of .NET applications</description>  
-  <modules> 
-    <module>dotnet-artifact</module>  
-    <module>dotnet-assembler</module>  
-    <module>dotnet-core</module>  
-    <module>dotnet-dao/project</module>  
-    <module>dotnet-embedder</module>  
-    <module>dotnet-executable</module>  
-    <module>dotnet-jetty</module>  
-    <module>dotnet-model</module>  
-    <module>dotnet-plugin</module>  
-    <module>dotnet-registry</module>  
-    <module>dotnet-repository</module>  
-    <module>dotnet-service/embedder</module>  
-    <module>dotnet-vendor</module> 
-  </modules>  
-  <repositories> 
-    <repository> 
-      <id>aduna.org</id>  
-      <url>http://repository.aduna-software.org/maven2</url> 
-    </repository> 
-  </repositories>  
-  <distributionManagement> 
-    <site> 
-      <id>nmaven-apache-site</id>  
-      <name>NMaven Site</name>  
-      <url>file://${basedir}/../../www</url> 
-    </site> 
-  </distributionManagement> 
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>org.apache.maven.dotnet</groupId>
+    <version>0.14-SNAPSHOT</version>
+    <artifactId>dotnet-project</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.maven.dotnet</groupId>
+  <artifactId>dotnet-components</artifactId>
+  <packaging>pom</packaging>
+  <name>dotnet-components</name>
+  <url>http://incubator.apache.org/nmaven</url>
+  <description>NMaven provides Maven 2.x plugins to support building of .NET applications</description>
+  <modules>
+    <module>dotnet-artifact</module>
+    <module>dotnet-assembler</module>
+    <module>dotnet-core</module>
+    <module>dotnet-dao/project</module>
+    <module>dotnet-embedder</module>
+    <module>dotnet-executable</module>
+    <module>dotnet-jetty</module>
+    <module>dotnet-model</module>
+    <module>dotnet-plugin</module>
+    <module>dotnet-registry</module>
+    <module>dotnet-repository</module>
+    <module>dotnet-service/embedder</module>
+    <module>dotnet-vendor</module>
+  </modules>
+  <profiles>
+    <profile>
+      <activation>
+        <property>
+          <name>Rdf</name>
+        </property>
+      </activation>
+      <repositories>
+        <repository>
+          <id>aduna.org</id>
+          <url>http://repository.aduna-software.org/maven2</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+  <distributionManagement>
+    <site>
+      <id>nmaven-apache-site</id>
+      <name>NMaven Site</name>
+      <url>file://${basedir}/../../www</url>
+    </site>
+  </distributionManagement>
 </project>

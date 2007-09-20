@@ -2,7 +2,7 @@
 IF "%phase%"=="" SET phase=install
 ECHO Executing Phase: %phase%
 
-call mvn %phase% %*
+call mvn %phase% -DRdf %*
 IF errorlevel 1 GOTO END
 
 ECHO Installing 3rd Party Assemblies in the Local Repo
