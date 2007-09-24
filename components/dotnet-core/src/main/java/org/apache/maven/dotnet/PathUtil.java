@@ -64,8 +64,9 @@ public final class PathUtil
         }
         //TODO: gac_generic
         //String processArchitecture = ( artifact.getType().equals( "gac_generic" ) );
-        return new File( gacRepository, "\\" + artifact.getType() + "\\" + artifact.getArtifactId() + "\\" + version +
-            "__" + artifact.getClassifier() + "\\" + artifact.getArtifactId() + ".dll" );
+        return new File( gacRepository, File.separator + artifact.getType() + File.separator + artifact.getArtifactId()
+            + File.separator + version + "__" + artifact.getClassifier() + File.separator + artifact.getArtifactId()
+            + ".dll" );
     }
 
     /**
@@ -111,9 +112,10 @@ public final class PathUtil
             logger.warning( "NMAVEN-040-004: Local Repository is null - Cannot get application file." );
             return null;
         }
-        return new File( localRepository.getParentFile(), "pab\\gac_msil\\" + artifact.getArtifactId() + "\\" +
-            artifact.getVersion() + "__" + artifact.getGroupId() + "\\" + artifact.getArtifactId() + "." +
-            ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
+        return new File( localRepository.getParentFile(), "pab" + File.separator +"gac_msil" + File.separator
+            + artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" + artifact.getGroupId()
+            + File.separator + artifact.getArtifactId() + "."
+            + ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
     }
 
     /**
@@ -136,8 +138,18 @@ public final class PathUtil
             logger.warning( "NMAVEN-040-006: Local Repository is null - Cannot get application file." );
             return null;
         }
-        return new File( localRepository.getParentFile(), "uac\\gac_msil\\" + artifact.getArtifactId() + "\\" +
-            artifact.getVersion() + "__" + artifact.getGroupId() + "\\" + artifact.getArtifactId() + "." +
-            ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
+        ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifact.getType() );
+
+        if(artifactType.equals( ArtifactType.NULL))
+        {
+            logger.warning( "NMAVEN-040-009: Artifact Type not recognized - Cannot get application file: Type = "
+                + artifact.getType());
+            return null;
+        }
+
+        return new File( localRepository.getParentFile(), "uac" + File.separator + "gac_msil" + File.separator
+            + artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" + artifact.getGroupId()
+            + File.separator + artifact.getArtifactId() + "."
+            + ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
     }
 }

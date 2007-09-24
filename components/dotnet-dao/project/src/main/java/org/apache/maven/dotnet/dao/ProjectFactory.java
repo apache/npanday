@@ -94,7 +94,8 @@ public final class ProjectFactory
         Parent parent = model.getParent();
         if ( parent != null && pomFileDirectory != null )
         {
-            String parentPomName = FileUtils.filename( parent.getRelativePath() );
+            String parentPomName = FileUtils.filename( parent.getRelativePath() ).replace( "\\", File.separator)
+                .replace( "/", File.separator);
             File parentPomFile = new File( pomFileDirectory, parentPomName );
             FileReader fileReader = new FileReader( parentPomFile );
 
@@ -179,10 +180,11 @@ public final class ProjectFactory
                                                                           project.getPublicKeyTokenId() );
 
         File artifactFile = ( ( project.getArtifactType().startsWith( "gac" ) ) ) ? new File(
-            "C:\\WINDOWS\\assembly\\" + project.getArtifactType() + "\\" + project.getArtifactId() + "\\" +
-                project.getVersion() + "__" + project.getPublicKeyTokenId() + "\\" + project.getArtifactId() + ".dll" )
-            : new File( localRepository.getParentFile(), "\\uac\\gac_msil\\" + project.getArtifactId() + "\\" +
-                project.getVersion() + "__" + project.getGroupId() + "\\" + project.getArtifactId() + "." +
+            "C:\\WINDOWS\\assembly\\" + project.getArtifactType() + File.separator + project.getArtifactId() + File.separator +
+                project.getVersion() + "__" + project.getPublicKeyTokenId() + File.separator + project.getArtifactId() + ".dll" )
+            : new File( localRepository.getParentFile(), File.separator + "uac" + File.separator + "gac_msil" + File.separator
+                + project.getArtifactId() + File.separator +
+                project.getVersion() + "__" + project.getGroupId() + File.separator + project.getArtifactId() + "." +
                 ArtifactType.getArtifactTypeForPackagingName( project.getArtifactType() ).getExtension() );
 
         assembly.setFile( artifactFile );
@@ -210,13 +212,13 @@ public final class ProjectFactory
                                                                       null );
         //System.out.println("Scope = " + assembly.getScope() + ", Type = " + assembly.getType() + ", Classifier = " + assembly.getClassifier());
         File artifactFile = ( ( projectDependency.getArtifactType().startsWith( "gac" ) ) ) ? new File(
-            "C:\\WINDOWS\\assembly\\" + projectDependency.getArtifactType() + "\\" + projectDependency.getArtifactId() +
-                "\\" + projectDependency.getVersion() + "__" + projectDependency.getPublicKeyTokenId() + "\\" +
+            "C:\\WINDOWS\\assembly\\" + projectDependency.getArtifactType() + File.separator + projectDependency.getArtifactId() +
+                File.separator + projectDependency.getVersion() + "__" + projectDependency.getPublicKeyTokenId() + File.separator +
                 projectDependency.getArtifactId() + ".dll" ) : new File( System.getProperty( "user.home" ),
-                                                                         "\\.m2\\uac\\gac_msil\\" +
-                                                                             projectDependency.getArtifactId() + "\\" +
+                                                                         File.separator + ".m2" +File.separator + "uac" + File.separator + "gac_msil" +File.separator +
+                                                                             projectDependency.getArtifactId() + File.separator +
                                                                              projectDependency.getVersion() + "__" +
-                                                                             projectDependency.getGroupId() + "\\" +
+                                                                             projectDependency.getGroupId() + File.separator +
                                                                              projectDependency.getArtifactId() + "." +
                                                                              ArtifactType.getArtifactTypeForPackagingName(
                                                                                  projectDependency.getArtifactType() ).getExtension() );

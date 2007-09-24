@@ -12,11 +12,6 @@
   </netDependency>
   <netDependency>
     <groupId>NMaven.Plugins</groupId>
-    <artifactId>NMaven.Plugin.Solution</artifactId>
-    <type>netplugin</type>
-  </netDependency>
-  <netDependency>
-    <groupId>NMaven.Plugins</groupId>
     <artifactId>NMaven.Plugin.Devenv</artifactId>
     <type>netplugin</type>
   </netDependency>
@@ -37,6 +32,12 @@
     <groupId>NMaven.VisualStudio</groupId>
     <artifactId>NMaven.VisualStudio</artifactId>
     <type>library</type>
+    <profile>VisualStudio2005</profile>
+  </netDependency>
+  <netDependency>
+    <groupId>NMaven.Plugins</groupId>
+    <artifactId>NMaven.Plugin.Solution</artifactId>
+    <type>netplugin</type>
     <profile>VisualStudio2005</profile>
   </netDependency>
 

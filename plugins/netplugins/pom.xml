@@ -36,6 +36,17 @@ under the License.
     <module>NMaven.Plugin.Devenv</module>  
     <module>NMaven.Plugin.Resx</module>  
     <module>NMaven.Plugin.Settings</module>  
-    <module>NMaven.Plugin.Solution</module> 
-  </modules> 
+  </modules>
+    <profiles>
+    <profile>
+      <activation>
+        <property>
+          <name>VisualStudio2005</name>
+        </property>
+      </activation>
+      <modules>
+           <module>NMaven.Plugin.Solution</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

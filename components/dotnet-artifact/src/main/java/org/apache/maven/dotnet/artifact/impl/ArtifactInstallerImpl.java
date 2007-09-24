@@ -268,6 +268,10 @@ public class ArtifactInstallerImpl
                                                                                     null );
 
             File artifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( artifactDependency, localRepository );
+
+             //Removing the following check because it breaks compatibility with Mono. We would have to initialize
+             // the Executable Context (perf hit) to get this check for vendor. Fix This.
+            /*
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
                 artifactDependencyFile = PathUtil.getGlobalAssemblyCacheFileFor( artifactDependency, new File(
@@ -281,6 +285,16 @@ public class ArtifactInstallerImpl
                     ( artifactDependencyFile != null && !artifactDependencyFile.exists() )
                         ? artifactDependencyFile.getAbsolutePath() : null ) );
             }
+            */
+
+            if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
+            {
+                logger.info("NMAVEN-000-017: Could not find artifact to install: Artifact ID = "
+                    + artifact.getArtifactId() +", File Path = "
+                    + ((artifactDependencyFile != null) ? artifactDependencyFile.getAbsolutePath() : null));
+                return;
+            }
+
             artifactDependency.setFile( artifactDependencyFile );
             artifactDependencies.add( artifactDependency );
         }
@@ -398,6 +412,7 @@ public class ArtifactInstallerImpl
             }
             catch ( java.io.IOException e )
             {
+                e.printStackTrace();
                 throw new ArtifactInstallationException(
                     "NMAVEN-001-014: Unable to store model: Message = " + e.getMessage() );
             }

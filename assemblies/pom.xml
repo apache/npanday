@@ -35,7 +35,6 @@ under the License.
   <description>NMaven provides Maven 2.x plugins to support building of .NET applications</description>  
   <modules> 
     <module>NMaven.Artifact</module>  
-    <module>NMaven.Solution</module>  
     <module>NMaven.Logging</module>  
     <module>NMaven.Model/Pom</module>  
     <module>NMaven.Model/Settings</module>  
@@ -53,7 +52,8 @@ under the License.
           <name>VisualStudio2005</name> 
         </property> 
       </activation>  
-      <modules> 
+      <modules>
+        <module>NMaven.Solution</module>
         <module>NMaven.VisualStudio</module>  
         <module>NMaven.VisualStudio.Addin</module>  
         <module>NMaven.IDE</module>  

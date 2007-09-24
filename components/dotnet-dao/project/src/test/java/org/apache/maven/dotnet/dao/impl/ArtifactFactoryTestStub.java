@@ -72,7 +72,7 @@ public class ArtifactFactoryTestStub
 
     public Artifact createExtensionArtifact( String groupId, String artifactId, VersionRange versionRange )
     {
-        return createArtifact( groupId, artifactId, versionRange, "jar", null, Artifact.SCOPE_RUNTIME, null );
+        return createArtifact( groupId, artifactId, versionRange, "library", null, Artifact.SCOPE_RUNTIME, null );
     }
 
     private Artifact createArtifact( String groupId, String artifactId, String version, String scope, String type,

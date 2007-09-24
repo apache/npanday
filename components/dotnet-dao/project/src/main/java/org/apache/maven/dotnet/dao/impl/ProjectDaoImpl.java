@@ -510,6 +510,13 @@ public final class ProjectDaoImpl
                 if ( !projectDependency.isResolved() )
                 {
                     Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
+                    if(assembly.getType().equals( "jar"))
+                    {
+                        logger.info("Detected jar dependency - skipping: Artifact Dependency ID = "
+                            + assembly.getArtifactId());
+                        continue;
+                    }
+
                     if ( !assembly.getType().equals( "exe.config" ) )//TODO: Generalize to any attached artifact
                     {
                         Artifact pomArtifact = artifactFactory.createProjectArtifact( projectDependency.getGroupId(),
@@ -597,7 +604,8 @@ public final class ProjectDaoImpl
                         {
                             throw new IOException(
                                 "NMAVEN-180-020: Problem in resolving artifact: Assembly Artifact Id = " +
-                                    assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Message = " +
+                                    assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Local Path Check = " +
+                                    assembly.getFile().getAbsolutePath() +", Message = " +
                                     e.getMessage() );
                         }
                     }
