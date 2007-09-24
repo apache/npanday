@@ -55,3 +55,9 @@ Changing NMaven's Version:
  If you also need to override the maven version (it is currently set to maven-2.1-snapshot)
   bootstrap-build.bat -DmavenVersion=<<new_version>>
 
+Building Against NonPublic Repo (For release versions)
+ Deploy local versioned snapshot of maven 2.1 to internal repo
+ Deploy openrdf artifacts to internal repo
+ Modify version to internal release version (as shown above)
+ Type: bootstrap-build.bat -DrdfProfile.none -DVisualStudio2005 -DmavenVersion=<<Internal versioned copy of 2.1>>
+
