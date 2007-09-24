@@ -89,6 +89,13 @@ public class RepositoryAssemblerMojo
     private boolean withGac = false;
 
     /**
+     * Sets location of assembled artifacts.
+     *
+     * @parameter expression="${outputDirectory}" default-value = "archive-tmp/repository/releases"
+     */
+    private String outputDirectory;
+
+    /**
      * @component
      */
     private AssemblyResolver assemblyResolver;
@@ -131,7 +138,7 @@ public class RepositoryAssemblerMojo
         }
         catch ( RepositoryException e )
         {
-            throw new MojoExecutionException( e.getMessage() );
+            throw new MojoExecutionException( "NMAVEN-1700-007: Message = " + e.getMessage() );
         }
 
         artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
@@ -151,7 +158,7 @@ public class RepositoryAssemblerMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( e.getMessage() );
+            throw new MojoExecutionException("NMAVEN-1700-008: Message = " +  e.getMessage() );
         }
     }
 
@@ -167,8 +174,8 @@ public class RepositoryAssemblerMojo
             new DefaultArtifactRepository( "local", "file://" + localRepository, layout );
         ArtifactRepository deploymentRepository = repositoryFactory.createDeploymentArtifactRepository( null,
                                                                                                         "file://" +
-                                                                                                            project.getBuild().getDirectory() +
-                                                                                                            "/archive-tmp/repository/releases",
+                                                                                                            project.getBuild().getDirectory() + File.separator +
+                                                                                                            outputDirectory,
                                                                                                         layout, true );
 
         try
@@ -178,7 +185,7 @@ public class RepositoryAssemblerMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( e.getMessage() );
+            throw new MojoExecutionException( "NMAVEN-1700-009: Message = " + e.getMessage() );
         }
 
         for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )
@@ -210,7 +217,7 @@ public class RepositoryAssemblerMojo
             }
             catch ( ArtifactDeploymentException e )
             {
-                throw new MojoExecutionException( "NMAVEN-DEPLOY: Deploy Failed", e );
+                throw new MojoExecutionException( "NMAVEN-1700-000: Deploy Failed", e );
             }
         }
 
@@ -218,11 +225,11 @@ public class RepositoryAssemblerMojo
         try
         {
             tarArchiver.addDirectory(
-                new File( project.getBuild().getDirectory(), "/archive-tmp/repository/releases" ) );
+                new File( project.getBuild().getDirectory(), File.separator + outputDirectory ) );
         }
         catch ( ArchiverException e )
         {
-            throw new MojoExecutionException( "", e );
+            throw new MojoExecutionException( "NMAVEN-1700-001", e );
         }
 
         TarArchiver.TarCompressionMethod tarCompressionMethod = new TarArchiver.TarCompressionMethod();
@@ -236,11 +243,11 @@ public class RepositoryAssemblerMojo
         }
         catch ( ArchiverException e )
         {
-            throw new MojoExecutionException( "", e );
+            throw new MojoExecutionException( "NMAVEN-1700-002", e );
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "", e );
+            throw new MojoExecutionException( "NMAVEN-1700-003", e );
         }
 
     }
@@ -274,7 +281,7 @@ public class RepositoryAssemblerMojo
             }
             catch ( FileNotFoundException e )
             {
-                throw new MojoExecutionException( "NMAVEN-000-000: Unable to read pom" );
+                throw new MojoExecutionException( "NMAVEN-1700-004: Unable to read pom" );
             }
             MavenXpp3Reader reader = new MavenXpp3Reader();
             Model model;
@@ -284,12 +291,12 @@ public class RepositoryAssemblerMojo
             }
             catch ( XmlPullParserException e )
             {
-                throw new MojoExecutionException( "NMAVEN-000-000: Unable to read model" );
+                throw new MojoExecutionException( "NMAVEN-1700-005: Unable to read model" );
 
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "NMAVEN-000-000: Unable to read model" );
+                throw new MojoExecutionException( "NMAVEN-1700-006: Unable to read model" );
             }
 
             Parent parent = model.getParent();

@@ -6,6 +6,7 @@ execute the install script. It will install the nunit.framework.dll and other 3r
 Logs:
 900-999  : maven-compile-plugin
 1000-1099: maven-install-plugin
+1700-1799: maven-repository-plugin
 1100-1199: maven-test-plugin
 1200-1299: maven-webapp-plugin
 1300-1399: maven-wsdl-plugin
