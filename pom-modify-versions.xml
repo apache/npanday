@@ -44,7 +44,7 @@ under the License.
           </execution>
           <execution>
             <configuration>
-              <projectFile>pom-dotnet.xml</projectFile>
+              <projectFile>misc/dotnet-repository-builder/pom-dotnet.xml</projectFile>
               <xpath>//project/version</xpath>
               <newValue>${pom.version}</newValue>
             </configuration>
