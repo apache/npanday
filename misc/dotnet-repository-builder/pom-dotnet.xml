@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.dotnet</groupId>
-  <version>0.14</version>
+  <version>0.14-SNAPSHOT</version>
   <artifactId>dotnet-repository-builder</artifactId>
   <packaging>pom</packaging>
   <dependencies>
@@ -11,12 +11,6 @@
     <dependency>
       <groupId>NMaven.Artifact</groupId>
       <artifactId>NMaven.Artifact</artifactId>
-      <version>${pom.version}</version>
-      <type>library</type>
-    </dependency>
-    <dependency>
-      <groupId>NMaven.IDE</groupId>
-      <artifactId>NMaven.IDE</artifactId>
       <version>${pom.version}</version>
       <type>library</type>
     </dependency>
@@ -70,24 +64,6 @@
       <version>${pom.version}</version>
       <type>library</type>
     </dependency>
-    <dependency>
-      <groupId>NMaven</groupId>
-      <artifactId>NMaven.Solution</artifactId>
-      <version>${pom.version}</version>
-      <type>library</type>
-    </dependency>
-    <dependency>
-      <groupId>NMaven.VisualStudio</groupId>
-      <artifactId>NMaven.VisualStudio</artifactId>
-      <version>${pom.version}</version>
-      <type>library</type>
-    </dependency>
-    <dependency>
-      <groupId>NMaven.VisualStudio</groupId>
-      <artifactId>NMaven.VisualStudio.Addin</artifactId>
-      <version>${pom.version}</version>
-      <type>visual-studio-addin</type>
-    </dependency>
 
     <!--netplugins-->
     <dependency>
@@ -115,12 +91,6 @@
       <type>netplugin</type>
     </dependency>
     <dependency>
-      <groupId>NMaven.Plugins</groupId>
-      <artifactId>NMaven.Plugin.Solution</artifactId>
-      <version>${pom.version}</version>
-      <type>netplugin</type>
-    </dependency>
-    <dependency>
       <groupId>NUnit</groupId>
       <artifactId>NUnit.Framework</artifactId>
       <version>2.2.8.0</version>
@@ -144,4 +114,45 @@
       </plugin>
     </plugins>
   </build>
+   <profiles>
+    <profile>
+      <activation>
+        <property>
+          <name>VisualStudio2005</name>
+        </property>
+      </activation>
+      <dependencies>
+          <dependency>
+             <groupId>NMaven.Plugins</groupId>
+             <artifactId>NMaven.Plugin.Solution</artifactId>
+             <version>${pom.version}</version>
+             <type>netplugin</type>
+          </dependency>
+          <dependency>
+            <groupId>NMaven</groupId>
+            <artifactId>NMaven.Solution</artifactId>
+            <version>${pom.version}</version>
+            <type>library</type>
+          </dependency>
+          <dependency>
+            <groupId>NMaven.VisualStudio</groupId>
+            <artifactId>NMaven.VisualStudio</artifactId>
+            <version>${pom.version}</version>
+            <type>library</type>
+          </dependency>
+          <dependency>
+            <groupId>NMaven.VisualStudio</groupId>
+            <artifactId>NMaven.VisualStudio.Addin</artifactId>
+            <version>${pom.version}</version>
+            <type>visual-studio-addin</type>
+          </dependency>
+          <dependency>
+            <groupId>NMaven.IDE</groupId>
+            <artifactId>NMaven.IDE</artifactId>
+            <version>${pom.version}</version>
+            <type>library</type>
+          </dependency>
+     </dependencies>
+    </profile>
+  </profiles>
 </project>

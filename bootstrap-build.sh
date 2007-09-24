@@ -1,3 +1,4 @@
+mvn install:install-file -Dfile=./thirdparty/org.apache.ws/XmlSchema-1.1.jar -DpomFile=./thirdparty/org.apache.ws/XmlSchema-1.1.pom -DgroupId=org.apache.ws.commons -DartifactId=XmlSchema -Dversion=1.1
 mvn install -DRdf $*
 if [ $? -gt 0 ]
 then

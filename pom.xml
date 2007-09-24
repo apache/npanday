@@ -131,7 +131,8 @@ under the License.
   <modules> 
     <module>components</module>  
     <module>archetypes</module>  
-    <module>plugins</module> 
+    <module>plugins</module>
+    <module>misc/dotnet-repository-builder</module> 
   </modules>  
   <repositories> 
     <repository> 
