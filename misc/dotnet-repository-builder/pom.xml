@@ -8,7 +8,7 @@
   <packaging>pom</packaging>  
   <properties> 
     <mavenVersion>2.1-SNAPSHOT</mavenVersion>  
-    <nmavenVersion>0.14</nmavenVersion>  
+    <nmavenVersion>${pom.version}</nmavenVersion>
     <jettyVersion>6.1.5</jettyVersion>  
     <xfireVersion>1.2.5</xfireVersion> 
   </properties>  
@@ -196,7 +196,7 @@
     <dependency> 
       <groupId>NMaven.Plugins</groupId>  
       <artifactId>NMaven.Plugin.Solution.JavaBinding</artifactId>  
-      <version>${pom.version}</version> 
+      <version>${pom.version}</version>
     </dependency>  
     <!--maven-->  
     <dependency> 
