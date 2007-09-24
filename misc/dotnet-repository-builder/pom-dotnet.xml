@@ -102,7 +102,7 @@
       <plugin>
         <groupId>org.apache.maven.dotnet.plugins</groupId>
         <artifactId>maven-repository-plugin</artifactId>
-        <version>0.14-SNAPSHOT</version>
+        <version>${pom.version}</version>
         <executions>
           <execution>
             <phase>package</phase>
