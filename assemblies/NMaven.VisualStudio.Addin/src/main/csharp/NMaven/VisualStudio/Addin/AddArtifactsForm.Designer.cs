@@ -1,5 +1,7 @@
 namespace NMaven.VisualStudio.Addin
 {
+    using System.Windows.Forms;
+
     partial class AddArtifactsForm
     {
         /// <summary>
@@ -28,11 +30,8 @@ namespace NMaven.VisualStudio.Addin
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddArtifactsForm));
             this.addArtifact = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.remoteTabPage = new System.Windows.Forms.TabPage();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.localTabPage = new System.Windows.Forms.TabPage();
@@ -65,13 +64,6 @@ namespace NMaven.VisualStudio.Addin
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "");
-            this.imageList1.Images.SetKeyName(1, "unknown.gif");
-            // 
             // remoteTabPage
             // 
             this.remoteTabPage.Controls.Add(this.treeView1);
@@ -100,7 +92,6 @@ namespace NMaven.VisualStudio.Addin
             this.localTabPage.TabIndex = 0;
             this.localTabPage.Text = "Local";
             this.localTabPage.UseVisualStyleBackColor = true;
-
             // 
             // localListView
             // 
@@ -114,7 +105,6 @@ namespace NMaven.VisualStudio.Addin
             this.localListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.localListView.TabIndex = 0;
             this.localListView.UseCompatibleStateImageBehavior = false;
-
             // 
             // ArtifactNameHeader
             // 
@@ -157,7 +147,6 @@ namespace NMaven.VisualStudio.Addin
 
         private System.Windows.Forms.Button addArtifact;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.TabPage remoteTabPage;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.TabPage localTabPage;

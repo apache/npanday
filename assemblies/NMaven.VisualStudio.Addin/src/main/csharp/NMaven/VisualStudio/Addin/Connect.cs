@@ -516,11 +516,9 @@ using NMaven.Model.Pom;
         #region cbShowAddArtifactsForm_Click(CommandBarButton,bool)
         private void cbShowAddArtifactsForm_Click(CommandBarButton btn, ref bool Cancel)
         {
-            MessageBox.Show("Click Add Form");
             //First selected project
             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
             {
-                MessageBox.Show("Initi");
                 AddArtifactsForm form = new AddArtifactsForm(project, container);
                 form.Show();
                 break;

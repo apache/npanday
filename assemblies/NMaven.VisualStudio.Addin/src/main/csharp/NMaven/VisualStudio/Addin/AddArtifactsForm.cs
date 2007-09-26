@@ -245,7 +245,7 @@ namespace NMaven.VisualStudio.Addin
                 (@"<a[^>]*href\s*=\s*[\""\']?(?<URI>[^""'>\s]*)[\""\']?[^>]*>(?<Name>[^<]+|.*?)?</a\s*>");
             MatchCollection matches = Regex.Matches(Encoding.ASCII.GetString(page), pattern, RegexOptions.IgnoreCase);
 
-            treeView1.ImageList = imageList1;
+           // treeView1.ImageList = imageList1;
             foreach (Match match in matches)
             {
                 String name = match.Groups["Name"].Value;

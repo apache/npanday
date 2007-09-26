@@ -17,6 +17,7 @@
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-assembler/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-core/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-core/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/components/dotnet-core/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-core/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-dao/project/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/components/dotnet-dao/project/src/test/java" isTestSource="true" />
