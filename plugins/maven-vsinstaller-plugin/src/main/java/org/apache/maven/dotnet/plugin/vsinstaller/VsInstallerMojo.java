@@ -76,7 +76,7 @@ public class VsInstallerMojo
     private Settings settings;
 
     /**
-     * @parameter expression = "${pom.version}"
+     * @parameter expression = "${project.version}"
      */
     private String pomVersion;
 

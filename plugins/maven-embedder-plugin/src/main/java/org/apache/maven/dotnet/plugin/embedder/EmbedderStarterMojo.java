@@ -133,7 +133,7 @@ public class EmbedderStarterMojo
     private String frameworkVersion;
 
     /**
-     * @parameter expression = "${pom.version}"
+     * @parameter expression = "${project.version}"
      */
     private String pomVersion;
 
