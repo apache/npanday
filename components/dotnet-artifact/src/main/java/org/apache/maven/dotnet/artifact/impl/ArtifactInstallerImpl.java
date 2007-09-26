@@ -266,11 +266,15 @@ public class ArtifactInstallerImpl
                                                                                     dependency.getType(),
                                                                                     dependency.getClassifier(), scope,
                                                                                     null );
-
             File artifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( artifactDependency, localRepository );
-
-             //Removing the following check because it breaks compatibility with Mono. We would have to initialize
-             // the Executable Context (perf hit) to get this check for vendor. Fix This.
+            // if(artifactDependencyFile != null) System.out.println("AD = " + artifactDependencyFile.getAbsolutePath());
+            //Removing the following check because it breaks compatibility with Mono. We would have to initialize
+            // the Executable Context (perf hit) to get this check for vendor. Fix This.
+            if ( ( artifactDependencyFile == null || !artifactDependencyFile.exists() ) &&
+                artifactDependency.getType().startsWith( "gac" ) )
+            {
+                continue;
+            }
             /*
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
@@ -285,13 +289,13 @@ public class ArtifactInstallerImpl
                     ( artifactDependencyFile != null && !artifactDependencyFile.exists() )
                         ? artifactDependencyFile.getAbsolutePath() : null ) );
             }
-            */
 
+            */
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
-                logger.info("NMAVEN-000-017: Could not find artifact to install: Artifact ID = "
-                    + artifact.getArtifactId() +", File Path = "
-                    + ((artifactDependencyFile != null) ? artifactDependencyFile.getAbsolutePath() : null));
+                logger.warn( "NMAVEN-000-017: Could not find artifact to install: Artifact ID = " +
+                    artifact.getArtifactId() + ", File Path = " +
+                    ( ( artifactDependencyFile != null ) ? artifactDependencyFile.getAbsolutePath() : null ) );
                 return;
             }
 
