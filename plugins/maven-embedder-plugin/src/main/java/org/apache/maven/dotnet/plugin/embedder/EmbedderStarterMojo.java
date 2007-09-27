@@ -35,10 +35,12 @@ import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.dotnet.artifact.AssemblyResolver;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
+import org.apache.maven.dotnet.artifact.NetDependenciesRepository;
 import org.apache.maven.dotnet.vendor.VendorInfo;
 import org.apache.maven.dotnet.vendor.VendorFactory;
 import org.apache.maven.dotnet.vendor.VendorUnsupportedException;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
+import org.apache.maven.dotnet.registry.RepositoryRegistry;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -133,9 +135,11 @@ public class EmbedderStarterMojo
     private String frameworkVersion;
 
     /**
-     * @parameter expression = "${project.version}"
+     * Provides access to configuration information used by NMaven.
+     *
+     * @component
      */
-    private String pomVersion;
+    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
 
     /**
      * File logger: needed for creating logs when the IDE starts because the console output and thrown exceptions are
@@ -309,8 +313,23 @@ public class EmbedderStarterMojo
         }
     }
 
-    private String artifactsToClassPath( Set<Artifact> artifacts )
+    private String artifactsToClassPath( Set<Artifact> artifacts ) throws MojoExecutionException
     {
+        RepositoryRegistry repositoryRegistry;
+        try
+        {
+            repositoryRegistry = nmavenRegistry.createRepositoryRegistry();
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException(
+                "NMAVEN-1400-002: Failed to create the repository registry for this plugin", e );
+        }
+
+        NetDependenciesRepository repository =
+            (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
+        String pomVersion = repository.getProperty( "nmaven.version");
+
         StringBuffer sb = new StringBuffer();
         for ( Artifact artifact : artifacts )
         {

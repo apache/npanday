@@ -29,6 +29,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Installs Visual Studio 2005 addin.
@@ -75,11 +77,6 @@ public class VsInstallerMojo
      */
     private Settings settings;
 
-    /**
-     * @parameter expression = "${project.version}"
-     */
-    private String pomVersion;
-
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -100,6 +97,11 @@ public class VsInstallerMojo
             throw new MojoExecutionException(
                 "NMAVEN-1600-000: Failed to create the repository registry for this plugin", e );
         }
+
+        NetDependenciesRepository netRepository =
+            (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
+        String pomVersion = netRepository.getProperty( "nmaven.version");
+
         List<ArtifactRepository> remoteRepositories = new ArrayList<ArtifactRepository>();
 
         //TODO: Only use active profiles
@@ -142,12 +144,10 @@ public class VsInstallerMojo
         }
 
         //GAC Installs
-        NetDependenciesRepository repository =
-            (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
 
         List<NetDependencyMatchPolicy> gacInstallPolicies = new ArrayList<NetDependencyMatchPolicy>();
         gacInstallPolicies.add( new GacMatchPolicy( true ) );
-        List<Dependency> gacInstallDependencies = repository.getDependenciesFor( gacInstallPolicies );
+        List<Dependency> gacInstallDependencies = netRepository.getDependenciesFor( gacInstallPolicies );
         for ( Dependency dependency : gacInstallDependencies )
         {
             List<Artifact> artifacts = artifactContext.getArtifactsFor( dependency.getGroupId(),

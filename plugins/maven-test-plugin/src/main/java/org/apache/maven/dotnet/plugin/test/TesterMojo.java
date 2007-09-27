@@ -138,7 +138,7 @@ public class TesterMojo
 
     public void execute()
         throws MojoExecutionException
-    {
+    {            
         String skipTests = System.getProperty( "maven.test.skip" );
         if ( ( skipTests != null && skipTests.equalsIgnoreCase( "true" ) ) || skipTest )
         {
