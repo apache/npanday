@@ -59,6 +59,9 @@ public class NetDependenciesRepositoryImpl
      */
     private ArtifactFactory artifactFactory;
 
+    private Hashtable properties;
+
+
     /**
      * Constructor. This method is intended to be invoked by the <code>RepositoryRegistry<code>, not by the
      * application developer.
@@ -73,6 +76,7 @@ public class NetDependenciesRepositoryImpl
     public void load( InputStream inputStream, Hashtable properties )
         throws IOException
     {
+        this.properties = properties;
         NetDependencyXpp3Reader xpp3Reader = new NetDependencyXpp3Reader();
         Reader reader = new InputStreamReader( inputStream );
         NetDependencyModel model;
@@ -136,6 +140,11 @@ public class NetDependenciesRepositoryImpl
             }
         }
         return dependencies;
+    }
+
+    public String getProperty( String key )
+    {
+        return (String) properties.get( key );
     }
 
     /**

@@ -65,4 +65,6 @@ public interface NetDependenciesRepository
      *         specified match policies
      */
     List<Dependency> getDependenciesFor( List<NetDependencyMatchPolicy> matchPolicies );
+
+    String getProperty(String key);
 }
