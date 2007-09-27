@@ -52,8 +52,8 @@ under the License.
           <name>VisualStudio2005</name> 
         </property> 
       </activation>  
-      <modules>
-        <module>NMaven.Solution</module>
+      <modules> 
+        <module>NMaven.Solution</module>  
         <module>NMaven.VisualStudio</module>  
         <module>NMaven.VisualStudio.Addin</module>  
         <module>NMaven.IDE</module>  
