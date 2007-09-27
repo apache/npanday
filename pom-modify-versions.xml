@@ -42,7 +42,6 @@ under the License.
               <goal>alter-version</goal>
             </goals>
           </execution>
-          <!--
           <execution>
             <configuration>
               <projectFile>misc/dotnet-repository-builder/pom-dotnet.xml</projectFile>
@@ -55,7 +54,6 @@ under the License.
               <goal>alter-by-xpath</goal>
             </goals>
           </execution>
-          -->
           <execution>
             <configuration>
               <projectFile>pom.xml</projectFile>
