@@ -58,6 +58,8 @@ Changing NMaven's Version:
 Building Against NonPublic Repo (For release versions)
  Deploy local versioned snapshot of maven 2.1 to internal repo
  Deploy openrdf artifacts to internal repo
+ Deploy Castle artifacts to internal repo
  Modify version to internal release version (as shown above)
+ Manually change the mavenVersion property in the pom.xml to a release version
  Type: bootstrap-build.bat -DrdfProfile.none -DVisualStudio2005 -DmavenVersion=<<Internal versioned copy of 2.1>>
 

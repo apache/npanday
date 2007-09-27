@@ -42,11 +42,25 @@ under the License.
               <goal>alter-version</goal>
             </goals>
           </execution>
+          <!--
           <execution>
             <configuration>
               <projectFile>misc/dotnet-repository-builder/pom-dotnet.xml</projectFile>
               <xpath>//project/version</xpath>
               <newValue>${pom.version}</newValue>
+            </configuration>
+            <id>alter-assembly-version-assemblies</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>alter-by-xpath</goal>
+            </goals>
+          </execution>
+          -->
+          <execution>
+            <configuration>
+              <projectFile>pom.xml</projectFile>
+              <xpath>//project/properties/mavenVersion</xpath>
+              <newValue>${mavenVersion}</newValue>
             </configuration>
             <id>alter-assembly-version-assemblies</id>
             <phase>process-sources</phase>

@@ -131,7 +131,7 @@ under the License.
   <modules> 
     <module>components</module>  
     <module>archetypes</module>  
-    <module>plugins</module>
+    <module>plugins</module>  
     <module>misc/dotnet-repository-builder</module> 
   </modules>  
   <repositories> 
@@ -161,12 +161,12 @@ under the License.
         <groupId>org.apache.maven.wagon</groupId>  
         <artifactId>wagon-ssh-external</artifactId>  
         <version>1.0-beta-2</version> 
-      </extension>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav</artifactId>
-        <version>1.0-beta-2</version>
-      </extension>      
+      </extension>  
+      <extension> 
+        <groupId>org.apache.maven.wagon</groupId>  
+        <artifactId>wagon-webdav</artifactId>  
+        <version>1.0-beta-2</version> 
+      </extension> 
     </extensions>  
     <plugins> 
       <plugin> 
@@ -232,6 +232,7 @@ under the License.
   </dependencies>  
   <properties> 
     <mavenVersion>2.1-SNAPSHOT</mavenVersion>  
+    <nmavenVersion>0.14-SNAPSHOT</nmavenVersion>  
     <jettyVersion>6.1.5</jettyVersion>  
     <xfireVersion>1.2.5</xfireVersion> 
   </properties>  
