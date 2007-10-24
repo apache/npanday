@@ -1,3 +1,4 @@
+#region Apache License, Version 2.0
 //
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
@@ -16,6 +17,7 @@
 // specific language governing permissions and limitations
 // under the License.
 //
+#endregion
 
 using System;
 using System.Runtime.Serialization;
