@@ -21,58 +21,58 @@ under the License.
 <project> 
   <parent> 
     <groupId>NMaven</groupId>  
-    <version>0.14-SNAPSHOT</version>  
+    <version>0.14-incubating-SNAPSHOT</version>  
     <artifactId>NMaven.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NMaven.VisualStudio</groupId>  
   <artifactId>NMaven.VisualStudio.Addin</artifactId>  
-  <version>0.14-SNAPSHOT</version>  
+  <version>0.14-incubating-SNAPSHOT</version>  
   <packaging>visual-studio-addin</packaging>  
   <name>NMaven.VisualStudio.Addin</name>  
   <dependencies> 
     <dependency> 
       <groupId>NMaven.IDE</groupId>  
       <artifactId>NMaven.IDE</artifactId>  
-      <version>0.14-SNAPSHOT</version>  
+      <version>0.14-incubating-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.Plugin</groupId>  
       <artifactId>NMaven.Plugin</artifactId>  
-      <version>0.14-SNAPSHOT</version>  
+      <version>0.14-incubating-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.Logging</groupId>  
       <artifactId>NMaven.Logging</artifactId>  
-      <version>0.14-SNAPSHOT</version>  
+      <version>0.14-incubating-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.VisualStudio</groupId>  
       <artifactId>NMaven.VisualStudio</artifactId>  
-      <version>0.14-SNAPSHOT</version>  
+      <version>0.14-incubating-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.Service</groupId>  
       <artifactId>NMaven.Service.Embedder</artifactId>  
-      <version>0.14-SNAPSHOT</version>  
+      <version>0.14-incubating-SNAPSHOT</version>  
       <type>library</type>  
       <scope>runtime</scope> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.Artifact</groupId>  
       <artifactId>NMaven.Artifact</artifactId>  
-      <version>0.14-SNAPSHOT</version>  
+      <version>0.14-incubating-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.Model</groupId>  
       <artifactId>NMaven.Model.Settings</artifactId>  
       <type>library</type>  
-      <version>0.14-SNAPSHOT</version> 
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>Microsoft.VisualStudio.CommandBars</groupId>  

@@ -21,13 +21,13 @@ under the License.
 <project> 
   <parent> 
     <groupId>NMaven</groupId>  
-    <version>0.14-SNAPSHOT</version>  
+    <version>0.14-incubating-SNAPSHOT</version>  
     <artifactId>NMaven.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NMaven.Plugin</groupId>  
   <artifactId>NMaven.Plugin.Loader</artifactId>  
-  <version>0.14-SNAPSHOT</version>  
+  <version>0.14-incubating-SNAPSHOT</version>  
   <packaging>exe</packaging>  
   <name>NMaven.Plugin.Loader</name>  
   <dependencies> 
@@ -35,7 +35,7 @@ under the License.
       <groupId>NMaven.Plugin</groupId>  
       <artifactId>NMaven.Plugin</artifactId>  
       <type>library</type>  
-      <version>0.14-SNAPSHOT</version> 
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency> 
   </dependencies> 
 </project>

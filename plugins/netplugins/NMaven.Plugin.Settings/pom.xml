@@ -21,21 +21,21 @@ under the License.
 <project> 
   <parent> 
     <groupId>NMaven.Plugins</groupId>  
-    <version>0.14-SNAPSHOT</version>  
+    <version>0.14-incubating-SNAPSHOT</version>  
     <artifactId>NMaven.Plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NMaven.Plugins</groupId>  
   <artifactId>NMaven.Plugin.Settings</artifactId>  
   <packaging>netplugin</packaging>  
-  <version>0.14-SNAPSHOT</version>  
+  <version>0.14-incubating-SNAPSHOT</version>  
   <name>NMaven.Plugin.Settings</name>  
   <dependencies> 
     <dependency> 
       <groupId>NMaven.Plugin</groupId>  
       <artifactId>NMaven.Plugin</artifactId>  
       <type>library</type>  
-      <version>0.14-SNAPSHOT</version> 
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency> 
   </dependencies>  
   <!--

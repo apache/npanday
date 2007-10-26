@@ -21,32 +21,32 @@ under the License.
 <project> 
   <parent> 
     <groupId>NMaven</groupId>  
-    <version>0.14-SNAPSHOT</version>  
+    <version>0.14-incubating-SNAPSHOT</version>  
     <artifactId>NMaven.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NMaven.IDE</groupId>  
   <artifactId>NMaven.IDE</artifactId>  
-  <version>0.14-SNAPSHOT</version>  
+  <version>0.14-incubating-SNAPSHOT</version>  
   <packaging>library</packaging>  
   <name>NMaven.IDE</name>  
   <dependencies> 
     <dependency> 
       <groupId>NMaven.Service</groupId>  
       <artifactId>NMaven.Service.Embedder</artifactId>  
-      <version>0.14-SNAPSHOT</version>  
+      <version>0.14-incubating-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.Logging</groupId>  
       <artifactId>NMaven.Logging</artifactId>  
-      <version>0.14-SNAPSHOT</version>  
+      <version>0.14-incubating-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.Artifact</groupId>  
       <artifactId>NMaven.Artifact</artifactId>  
-      <version>0.14-SNAPSHOT</version>  
+      <version>0.14-incubating-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 

@@ -21,13 +21,13 @@ under the License.
 <project> 
   <parent> 
     <groupId>NMaven</groupId>  
-    <version>0.14-SNAPSHOT</version>  
+    <version>0.14-incubating-SNAPSHOT</version>  
     <artifactId>NMaven.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NMaven.Artifact</groupId>  
   <artifactId>NMaven.Artifact</artifactId>  
-  <version>0.14-SNAPSHOT</version>  
+  <version>0.14-incubating-SNAPSHOT</version>  
   <packaging>library</packaging>  
   <name>NMaven.Artifact</name>  
   <dependencies> 
@@ -35,13 +35,13 @@ under the License.
       <groupId>NMaven.Model</groupId>  
       <artifactId>NMaven.Model.Pom</artifactId>  
       <type>library</type>  
-      <version>0.14-SNAPSHOT</version> 
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.Model</groupId>  
       <artifactId>NMaven.Model.Settings</artifactId>  
       <type>library</type>  
-      <version>0.14-SNAPSHOT</version> 
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>NUnit</groupId>  

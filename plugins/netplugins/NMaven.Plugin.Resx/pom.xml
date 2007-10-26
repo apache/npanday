@@ -21,13 +21,13 @@ under the License.
 <project> 
   <parent> 
     <groupId>NMaven.Plugins</groupId>  
-    <version>0.14-SNAPSHOT</version>  
+    <version>0.14-incubating-SNAPSHOT</version>  
     <artifactId>NMaven.Plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NMaven.Plugins</groupId>  
   <artifactId>NMaven.Plugin.Resx</artifactId>  
   <packaging>exe</packaging>  
-  <version>0.14-SNAPSHOT</version>  
+  <version>0.14-incubating-SNAPSHOT</version>  
   <name>NMaven.Plugin.ResX</name> 
 </project>

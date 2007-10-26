@@ -21,13 +21,13 @@ under the License.
 <project> 
   <parent> 
     <groupId>NMaven</groupId>  
-    <version>0.14-SNAPSHOT</version>  
+    <version>0.14-incubating-SNAPSHOT</version>  
     <artifactId>NMaven.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NMaven.VisualStudio</groupId>  
   <artifactId>NMaven.VisualStudio.ProjectWizard</artifactId>  
-  <version>0.14-SNAPSHOT</version>  
+  <version>0.14-incubating-SNAPSHOT</version>  
   <packaging>library</packaging>  
   <name>NMaven.VisualStudio.ProjectWizard</name>  
   <dependencies> 

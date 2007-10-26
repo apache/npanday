@@ -56,11 +56,23 @@ under the License.
           </execution>
           <execution>
             <configuration>
+              <projectFile>pom-dotnet.xml</projectFile>
+              <xpath>//project/version</xpath>
+              <newValue>${pom.version}</newValue>
+            </configuration>
+            <id>alter-assembly-version-assemblies-2</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>alter-by-xpath</goal>
+            </goals>
+          </execution>
+          <execution>
+            <configuration>
               <projectFile>pom.xml</projectFile>
               <xpath>//project/properties/mavenVersion</xpath>
               <newValue>${mavenVersion}</newValue>
             </configuration>
-            <id>alter-assembly-version-assemblies</id>
+            <id>alter-assembly-version-assemblies-3</id>
             <phase>process-sources</phase>
             <goals>
               <goal>alter-by-xpath</goal>

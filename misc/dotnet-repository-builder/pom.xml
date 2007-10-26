@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -20,12 +21,12 @@ under the License.
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.maven.dotnet</groupId>  
-  <version>0.14-SNAPSHOT</version>  
+  <version>0.14-incubating-SNAPSHOT</version>  
   <artifactId>dotnet-repository-builder</artifactId>  
   <packaging>pom</packaging>  
   <properties> 
     <mavenVersion>2.1-SNAPSHOT</mavenVersion>  
-    <nmavenVersion>${pom.version}</nmavenVersion>
+    <nmavenVersion>${pom.version}</nmavenVersion>  
     <jettyVersion>6.1.5</jettyVersion>  
     <xfireVersion>1.2.5</xfireVersion> 
   </properties>  
@@ -38,182 +39,182 @@ under the License.
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>maven-archetype-dotnet-simple</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>maven-archetype-netexecutable</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <!--components-->  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-artifact</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-assembler</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-core</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-dao-project</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-embedder</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-executable</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-jetty</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-model-settings</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version>  
       <type>pom</type> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-registry</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-repository</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-vendor</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-service-embedder</artifactId>  
       <type>war</type>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <!--plugins-->  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-compile-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-deploy-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-embedder-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-fxcop-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-install-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-link-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-mojo-generator-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-repository-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-resgen-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-resolver-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-test-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-vsinstaller-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-webapp-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-wsdl-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-xsd-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet.plugins</groupId>  
       <artifactId>maven-xsp-plugin</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <!--netplugins-->  
     <dependency> 
       <groupId>NMaven.Plugins</groupId>  
       <artifactId>NMaven.Plugin.Addin.JavaBinding</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.Plugins</groupId>  
       <artifactId>NMaven.Plugin.Devenv.JavaBinding</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.Plugins</groupId>  
       <artifactId>NMaven.Plugin.Settings.JavaBinding</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>NMaven.Plugins</groupId>  
       <artifactId>NMaven.Plugin.Solution.JavaBinding</artifactId>  
-      <version>${pom.version}</version>
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <!--maven-->  
     <dependency> 
@@ -282,19 +283,19 @@ under the License.
       <version>1.1</version> 
     </dependency> 
   </dependencies>  
-  <build>
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ssh-external</artifactId>
-        <version>1.0-beta-2</version>
-      </extension>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav</artifactId>
-        <version>1.0-beta-2</version>
-      </extension>
-    </extensions>     
+  <build> 
+    <extensions> 
+      <extension> 
+        <groupId>org.apache.maven.wagon</groupId>  
+        <artifactId>wagon-ssh-external</artifactId>  
+        <version>1.0-beta-2</version> 
+      </extension>  
+      <extension> 
+        <groupId>org.apache.maven.wagon</groupId>  
+        <artifactId>wagon-webdav</artifactId>  
+        <version>1.0-beta-2</version> 
+      </extension> 
+    </extensions>  
     <plugins> 
       <plugin> 
         <artifactId>maven-assembly-plugin</artifactId>  

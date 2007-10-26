@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.maven.plugins</groupId>  
   <artifactId>maven-ndoc-plugin</artifactId>  
-  <version>0.14-SNAPSHOT</version>  
+  <version>0.14-incubating-SNAPSHOT</version>  
   <packaging>maven-plugin</packaging>  
   <name>Maven NDoc Report Plugin</name>  
   <prerequisites> 
@@ -50,7 +50,7 @@
     <dependency> 
       <groupId>org.apache.maven.plugins</groupId>  
       <artifactId>maven-csharp-helper-plugin</artifactId>  
-      <version>0.14-SNAPSHOT</version> 
+      <version>0.14-incubating-SNAPSHOT</version> 
     </dependency> 
   </dependencies> 
 </project>

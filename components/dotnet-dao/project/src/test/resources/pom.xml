@@ -22,7 +22,7 @@ under the License.
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NMaven.Test2</groupId>  
   <artifactId>NMaven.Test2.Test1</artifactId>  
-  <version>0.14-SNAPSHOT</version>  
+  <version>0.14-incubating-SNAPSHOT</version>  
   <name>NMaven.Test2.Test1</name>  
   <description/> 
 </project>
