@@ -1,3 +1,6 @@
+Disclaimer:
+Apache NMaven is undergoing incubation at the ASF.
+
 Prerequisites
 * csc.exe must be available on your PATH.  Usually it can be found in C:\WINDOWS\Microsoft.NET\Framework\[version]
 * NUnit must be installed or otherwise configured, see http://incubator.apache.org/nmaven/getting-started.html
@@ -49,10 +52,14 @@ Setting up the Visual Studio 2005 Addin:
 
 Changing NMaven's Version:
  If you need to either update (or change) NMaven's project version, run the following:
-   modify-versions.bat <<new_version>>
+   modify-versions.bat <<new_nmaven_version>> <<new_maven_version>>
+ For example,
+   modify-versions.bat 0.15 2.1-SNAPSHOT
+ changes the maven version to 0.15 and changes (or leaves) the maven version as 2.1-SNAPSHOT
+
  This changes all of the versions within the pom.xml files.
 
- If you also need to override the maven version (it is currently set to maven-2.1-snapshot)
+ If you also need to override the maven version at build time (it is currently set to maven-2.1-SNAPSHOT)
   bootstrap-build.bat -DmavenVersion=<<new_version>>
 
 Building Against NonPublic Repo (For release versions)
