@@ -319,7 +319,7 @@ public class ArtifactInstallerImpl
         {
             if ( !artifactDependency.getType().startsWith( "gac" ) )
             {
-                logger.info( "NMAVEN-001-005: Installing file into repository: File = " +
+                logger.info( "NMAVEN-001-005: Installing file into private assembly bin: File = " +
                     artifactDependency.getFile().getAbsolutePath() );
                 FileUtils.copyFileToDirectory( artifactDependency.getFile(), installDirectory );
             }

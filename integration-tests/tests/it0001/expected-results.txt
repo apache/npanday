@@ -1,1 +1,1 @@
-target/it0001.netmodule
+target/NMaven.IT.0001.dll

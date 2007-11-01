@@ -1,4 +1,4 @@
-namespace org.apache.maven.it {
+namespace NMaven.IT {
 
 public class It0001 {
 	public static void Main () { 
