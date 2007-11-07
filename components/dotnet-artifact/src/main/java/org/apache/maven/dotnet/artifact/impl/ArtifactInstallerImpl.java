@@ -353,13 +353,15 @@ public class ArtifactInstallerImpl
         {
             if ( artifact.getFile() != null && artifact.getFile().exists() )//maybe just a test compile and no install
             {
-                logger.info(
-                    "NMAVEN-001-007: Installing file into repository: File = " + artifact.getFile().getAbsolutePath() );
+
                 File artifactFile = artifact.getFile();
+                File destFile = PathUtil.getUserAssemblyCacheFileFor( artifact, localRepository );
+                                logger.info(
+                    "NMAVEN-001-007: Installing file into repository: File = " + artifact.getFile().getAbsolutePath()
+                        + ", Dest File = " + destFile.getAbsolutePath());
                 try
                 {
-                    FileUtils.copyFile( artifactFile,
-                                        PathUtil.getUserAssemblyCacheFileFor( artifact, localRepository ) );
+                    FileUtils.copyFile( artifactFile, destFile );
                 }
                 catch ( IOException e )
                 {
