@@ -120,9 +120,9 @@ public final class AssemblerContextImpl
                 }
             }
         }
+        informationalVersion = version;
         if ( version.contains( "-" ) )
         {
-            informationalVersion = version;
             version = version.split( "-" )[0];
         }
         assemblyInfo.setCompany( company );
