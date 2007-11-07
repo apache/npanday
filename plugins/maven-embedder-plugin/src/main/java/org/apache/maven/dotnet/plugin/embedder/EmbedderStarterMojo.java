@@ -155,6 +155,12 @@ public class EmbedderStarterMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        File logs = new File(System.getProperty( "user.home" ) + "\\.m2\\embedder-logs");
+        if(!logs.exists())
+        {
+            logs.mkdir();
+        }
+
         try
         {
             logger.addHandler( new FileHandler(
