@@ -19,6 +19,7 @@
 //
 #endregion
 using System;
+using System.Reflection;
 using System.Text;
 using System.Diagnostics;
 
@@ -54,8 +55,10 @@ namespace NMaven.Plugin.Launcher
                     new ProcessStartInfo(startProcessAssembly, @flattenArgs(args));
             }
 
+            String version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
 			processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_ASM"]
-				= "NMaven.Plugin, Version=0.14.0.0, PublicKeyToken=4b435f4d76e2f0e6, culture=neutral";
+				= "NMaven.Plugin, Version="+ version + ", PublicKeyToken=4b435f4d76e2f0e6, culture=neutral";
 			processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_TYPE"]
 				= "NMaven.Plugin.PluginDomainManager";
 
