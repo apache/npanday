@@ -39,6 +39,7 @@ using System.Xml.Serialization;
 using VSLangProj;
 
 using NMaven.Artifact;
+using NMaven.Logging;
 using NMaven.Model.Pom;
 using NMaven.Model.Setting;
 using Castle.Windsor;
@@ -47,6 +48,11 @@ namespace NMaven.VisualStudio.Addin
 {
     public partial class AddArtifactsForm : Form
     {
+        private List<NMaven.Artifact.Artifact> localArtifacts = new List<NMaven.Artifact.Artifact>();
+        private ArtifactContext artifactContext;
+        private Project project;
+        private NMaven.Logging.Logger logger;
+
         /// <summary>
         /// For Testing
         /// </summary>
@@ -57,12 +63,13 @@ namespace NMaven.VisualStudio.Addin
            // localListView.View = View.Details;
         }
 
-        public AddArtifactsForm(Project project, IWindsorContainer container)
+        public AddArtifactsForm(Project project, IWindsorContainer container, Logger logger)
         {
             this.project = project;
+            this.logger = logger;
             InitializeForm();
             InitializeComponent();
-            localListView.View = View.Details;
+            localListView.View = View.Details;           
             artifactContext = (ArtifactContext) container[typeof(ArtifactContext)];       
         }
 
@@ -118,6 +125,13 @@ namespace NMaven.VisualStudio.Addin
                         url = repository.url;
                     }
                 }
+            }
+
+            if (url == null)
+            {
+                MessageBox.Show("Remote repository not set: Try 'Add Maven Repository' option from menu. Will" +
+                    " require restart of addin.");
+                return;
             }
 
             SetUnsafeHttpHeaderParsing();
@@ -207,10 +221,6 @@ namespace NMaven.VisualStudio.Addin
             this.Close();
         }
 
-        private List<NMaven.Artifact.Artifact> localArtifacts = new List<NMaven.Artifact.Artifact>();
-        private ArtifactContext artifactContext;
-        private Project project;
-
         private Boolean IsIncluded(String name, String uri)
         {
             if (name.StartsWith(".") || name.Equals("Parent Directory") || name.Equals("Terms of Use"))
@@ -254,7 +264,6 @@ namespace NMaven.VisualStudio.Addin
             }
             return true;
         }
-
 
         private List<TreeNode> GetNodesFor(String url)
         {

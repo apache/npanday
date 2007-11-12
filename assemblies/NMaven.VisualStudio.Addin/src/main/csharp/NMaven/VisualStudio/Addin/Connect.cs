@@ -540,7 +540,7 @@ using NMaven.Model.Pom;
             //First selected project
             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
             {
-                AddArtifactsForm form = new AddArtifactsForm(project, container);
+                AddArtifactsForm form = new AddArtifactsForm(project, container, logger);
                 form.Show();
                 break;
             }
