@@ -145,10 +145,16 @@ namespace NMaven.VisualStudio.Addin
         {
             String pomFileName = 
                 (new FileInfo(project.FileName).Directory).FullName + @"\pom.xml";
-            if (!new FileInfo(pomFileName).Exists)
+            if (!new FileInfo(pomFileName).Exists)//No flat directory structure.
             {
-                MessageBox.Show("Could not add reference. Missing pom file: File = " + pomFileName);
-                return;
+                pomFileName = (new FileInfo(project.FileName).Directory.Parent.Parent.Parent).FullName 
+                    + @"\pom.xml";
+
+                if (!new FileInfo(pomFileName).Exists)
+                {
+                    MessageBox.Show("Could not add reference. Missing pom file: File = " + pomFileName);
+                    return;
+                }
             }
 
             XmlReader reader = XmlReader.Create(pomFileName);
