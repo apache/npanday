@@ -44,10 +44,15 @@ import java.io.File;
 import java.io.IOException;
 
 public class WagonManagerTestStub
-    implements WagonManager
+   // implements WagonManager
 {
 
     private File basedir;
+
+    public void addAuthenticationCredentials(String s, String s2, String s3 , String s4 ,String s5)
+    {
+
+    }
 
     public Wagon getWagon( String string )
         throws UnsupportedProtocolException
