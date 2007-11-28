@@ -231,7 +231,7 @@ under the License.
     </dependency> 
   </dependencies>  
   <properties> 
-    <mavenVersion>2.1-SNAPSHOT</mavenVersion>  
+    <mavenVersion>2.0.8</mavenVersion>  
     <jettyVersion>6.1.5</jettyVersion>  
     <xfireVersion>1.2.5</xfireVersion> 
   </properties>  
