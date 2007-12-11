@@ -158,7 +158,7 @@ public class RepositoryAssemblerMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException("NMAVEN-1700-008: Message = " +  e.getMessage() );
+            throw new MojoExecutionException("NMAVEN-1700-008: Message = " +  e.getMessage(), e );
         }
     }
 

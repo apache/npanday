@@ -125,9 +125,16 @@ public class RepositoryConverterImpl
                 artifact.setArtifactHandler( pomhandler );
 
                 File pomFile = new File( mavenRepository, pathOfPom( artifact ) );
+                pomFile.getParentFile().mkdirs();
                 FileWriter fileWriter = new FileWriter( pomFile );
-                new MavenXpp3Writer().write( fileWriter, model );
-                IOUtil.close( fileWriter );
+                try
+                {
+                    new MavenXpp3Writer().write( fileWriter, model );
+                }
+                finally
+                {
+                    IOUtil.close( fileWriter );
+                }
             }
             artifact.setArtifactHandler( handler );
         }
