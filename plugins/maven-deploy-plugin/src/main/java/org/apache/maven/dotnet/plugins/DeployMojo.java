@@ -76,6 +76,13 @@ public class DeployMojo
     private String packaging;
 
     /**
+     * The project classifier type
+     *
+     * @parameter
+     */
+    private String classifier;
+
+    /**
      * @component
      */
     private ArtifactFactory artifactFactory;
@@ -103,6 +110,22 @@ public class DeployMojo
             try
             {
                 artifactDeployer.deploy( exePath, attachedArtifact,
+                                         project.getDistributionManagementArtifactRepository(), localRepo );
+            }
+            catch ( ArtifactDeploymentException e )
+            {
+                throw new MojoExecutionException( "NMAVEN-DEPLOY: Deploy Failed", e );
+            }
+        }
+
+        if ( classifier != null )
+        {
+            Artifact attachedArtifact = artifactFactory.createArtifactWithClassifier( projectArtifact.getGroupId(),
+                                                                        projectArtifact.getArtifactId(),
+                                                                        project.getVersion(), packaging, classifier );
+            try
+            {
+                artifactDeployer.deploy( project.getArtifact().getFile(), attachedArtifact,
                                          project.getDistributionManagementArtifactRepository(), localRepo );
             }
             catch ( ArtifactDeploymentException e )
