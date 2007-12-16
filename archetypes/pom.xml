@@ -32,5 +32,6 @@ under the License.
   <modules> 
     <module>maven-archetype-dotnet-simple</module>  
     <module>maven-archetype-netexecutable</module> 
+    <module>maven-archetype-vb-simple</module> 
   </modules> 
 </project>
