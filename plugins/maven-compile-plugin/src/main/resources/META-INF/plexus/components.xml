@@ -112,7 +112,7 @@
         </phases>
       </configuration>
     </component>
-    <component>
+    <component>                    e
       <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
       <role-hint>exe</role-hint>
       <implementation>
