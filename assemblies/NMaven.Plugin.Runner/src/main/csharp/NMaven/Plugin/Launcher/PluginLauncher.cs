@@ -35,7 +35,7 @@ namespace NMaven.Plugin.Launcher
 		}
 
 		[STAThread]
-		static void Main(string[] args)
+		static int Main(string[] args)
 		{
 
 			Console.WriteLine("NMAVEN: Start Process = " + DateTime.Now);
@@ -63,9 +63,11 @@ namespace NMaven.Plugin.Launcher
 				= "NMaven.Plugin.PluginDomainManager";
 
 			processStartInfo.UseShellExecute = false;
-			Process.Start(processStartInfo);
-            Console.WriteLine("NMAVEN: End Process = " + DateTime.Now);
-		}
+			Process p = Process.Start(processStartInfo);
+            p.WaitForExit();
+            Console.WriteLine("NMAVEN: End Process = " + DateTime.Now + "; exit code = " + p.ExitCode);
+            return p.ExitCode;
+        }
 
 		private static string GetArgFor(string name, string[] args)
 		{
