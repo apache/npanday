@@ -141,23 +141,6 @@ public class VsInstallerMojo
                                                                    new DefaultRepositoryLayout() ) );
         }
         artifactContext.init( null, remoteRepositories, new File( localRepository ) );
-        List<Dependency> javaDependencies = new ArrayList<Dependency>();
-        Dependency warFile = new Dependency();
-        warFile.setGroupId( "org.apache.maven.dotnet" );
-        warFile.setArtifactId( "dotnet-service-embedder" );
-        warFile.setVersion( pomVersion );
-        warFile.setType( "war" );
-        javaDependencies.add( warFile );
-
-        try
-        {
-            artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( "VisualStudio2005", null,
-                                                                                               javaDependencies );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( e.getMessage() );
-        }
 
         //GAC Installs
 
