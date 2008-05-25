@@ -2,7 +2,7 @@
 IF "%phase%"=="" SET phase=install
 ECHO Executing Phase: %phase%
 
-cmd /C mvn.bat install:install-file -Dfile=./thirdparty/org.apache.ws/XmlSchema-1.1.jar -DpomFile=./thirdparty/org.apache.ws/XmlSchema-1.1.pom -DgroupId=org.apache.ws.commons -DartifactId=XmlSchema -Dversion=1.1
+cmd /C mvn.bat install:install-file -Dfile=./thirdparty/org.apache.ws/XmlSchema-1.1.jar -DpomFile=./thirdparty/org.apache.ws/XmlSchema-1.1.pom -DgroupId=org.apache.ws.commons -DartifactId=XmlSchema -Dversion=1.1 -Dpackaging=jar
 if "%1"=="-DrdfProfile.none" (
     ECHO Building Without RDF Profile
     cmd /C mvn.bat %phase% %*
