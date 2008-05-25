@@ -81,14 +81,14 @@ public class TesterMojo
     /**
      * Directory where reports are written.
      *
-     * @parameter expression = "${reportsDirectory}" default-value = "${project.build.directory}${file.separator}nunit-reports"
+     * @parameter expression = "${reportsDirectory}" default-value = "${project.build.directory}/nunit-reports"
      */
     private String reportsDirectory;
 
     /**
      * Test Assembly Location
      *
-     * @parameter expression = "${testAssemblyPath}" default-value = "${project.build.directory}${file.separator}test-assemblies"
+     * @parameter expression = "${testAssemblyPath}" default-value = "${project.build.directory}/test-assemblies"
      */
     private String testAssemblyPath;
 
