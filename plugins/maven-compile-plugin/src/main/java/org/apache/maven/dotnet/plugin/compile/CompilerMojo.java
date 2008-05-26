@@ -120,6 +120,15 @@ public final class CompilerMojo
      */
     private String language;
 
+   /**
+     * Returns the rootnamespace of the project. Used by VB project only.
+     *
+     * @parameter expression="${rootNameSpace}"
+     * 
+     */
+    private String rootNameSpace;
+    
+
     /**
      * The Vendor for the Compiler. Not
      * case or white-space sensitive.
@@ -208,6 +217,12 @@ public final class CompilerMojo
         if ( isDebug )
         {
             parameters.add( "/debug+" );
+        }
+		
+        //rootnamespace for VB
+        if ( "VB".equals(compilerRequirement.getLanguage()) && rootNameSpace != null )
+        {
+            parameters.add( "/rootnamespace:" + rootNameSpace );
         }
 
         compilerConfig.setCommands( parameters );
