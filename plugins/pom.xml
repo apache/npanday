@@ -77,11 +77,6 @@ under the License.
       <artifactId>dotnet-plugin</artifactId>  
       <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
-    <dependency> 
-      <groupId>org.apache.maven.dotnet</groupId>  
-      <artifactId>dotnet-jetty</artifactId>  
-      <version>0.14-incubating-SNAPSHOT</version> 
-    </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>  
