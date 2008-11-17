@@ -52,6 +52,7 @@ using NMaven.Model.Setting;
 using NMaven.Model.Pom;
 
 using NMaven.VisualStudio.Addin.Util;
+using System.Runtime.CompilerServices;
  
 #endregion
   
@@ -120,6 +121,7 @@ using NMaven.VisualStudio.Addin.Util;
         public void OnConnection(object application, ext_ConnectMode connectMode, object addInInst, ref Array custom)
         {
             _applicationObject = (DTE2)application;
+            mavenRunner = new MavenRunner(_applicationObject);
             _addInInstance = (AddIn)addInInst;
             Command command = null;
             if (connectMode == ext_ConnectMode.ext_cm_UISetup)
@@ -308,36 +310,75 @@ using NMaven.VisualStudio.Addin.Util;
                             ctl.Visible = true;
                             buildControls.Add(ctl);
 
+
+
+                            CommandBarButton cleanAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                                System.Type.Missing, System.Type.Missing, 1, true);
+                            cleanAllButton.Caption = "All Project: Clean";
+                            cleanAllButton.Visible = true;
+                            cleanAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbCleanAll_Click);
+
+
+                            CommandBarButton testAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                                System.Type.Missing, System.Type.Missing, 1, true);
+                            testAllButton.Caption = "All Project: Test";
+                            testAllButton.Visible = true;
+                            testAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbTestAll_Click);
+
+                            CommandBarButton installAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                                System.Type.Missing, System.Type.Missing, 1, true);
+                            installAllButton.Caption = "All Project: Install";
+                            installAllButton.Visible = true;
+                            installAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstallAll_Click);
+
+                            CommandBarButton buildAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                                System.Type.Missing, System.Type.Missing, 1, true);
+                            buildAllButton.Caption = "All Project: Build [compile]";
+                            buildAllButton.Visible = true;
+                            buildAllButton.FaceId = 645;
+                            buildAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuildAll_Click);
+
+                            
+
                             CommandBarButton cleanButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
                                 System.Type.Missing, System.Type.Missing, 1, true);
-                            cleanButton.Caption = "Clean";
+                            cleanButton.Caption = "Current Project: Clean";
                             cleanButton.Visible = true;
                             cleanButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbClean_Click);
 
 
+
                             CommandBarButton testButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
                                 System.Type.Missing, System.Type.Missing, 1, true);
-                            testButton.Caption = "Test";
+                            testButton.Caption = "Current Project: Test";
                             testButton.Visible = true;
                             testButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbTest_Click);
 
                             CommandBarButton installButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
                                 System.Type.Missing, System.Type.Missing, 1, true);
-                            installButton.Caption = "Install";
+                            installButton.Caption = "Current Project: Install";
                             installButton.Visible = true;
                             installButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstall_Click);
 
                             CommandBarButton buildButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
                                 System.Type.Missing, System.Type.Missing, 1, true);
-                            buildButton.Caption = "Build";
+                            buildButton.Caption = "Current Project: Build [compile]";
                             buildButton.Visible = true;
                             buildButton.FaceId = 645;
                             buildButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuild_Click);
+
+                            buildControls.Add(buildAllButton);
+                            buildControls.Add(installAllButton);
+                            buildControls.Add(cleanAllButton);
+                            buildControls.Add(testAllButton);
+
 
                             buildControls.Add(buildButton);
                             buildControls.Add(installButton);
                             buildControls.Add(cleanButton);
                             buildControls.Add(testButton);
+
+                            
                         }
                     }
                 }
@@ -484,46 +525,50 @@ using NMaven.VisualStudio.Addin.Util;
         #endregion
 
 
-        
-
 
         #region executeBuildCommand(FileInfo,string)
+        [MethodImpl(MethodImplOptions.Synchronized)]
         private void executeBuildCommand(FileInfo pomFile, String goal)
         {
-            // MVN Command
-            // By Jan Ancajas
-
-            if (mvnRunner != null && mvnRunner.IsRunning)
+            try
             {
-                DialogResult res = MessageBox.Show("A Maven Build is currently running, Do you want to stop the build and proceed to a new Build Execution?", "Stop NMaven Build:", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                // re-check if it is still running, before calling stop
-                if (mvnRunner != null && mvnRunner.IsRunning && res == DialogResult.Yes)
+                if (mavenRunner.IsRunning)
                 {
-                    mvnRunner.stop();
+                    DialogResult res = MessageBox.Show("A Maven Build is currently running, Do you want to stop the build and proceed to a new Build Execution?", "Stop NMaven Build:", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    // re-check if it is still running, before calling stop
+                    if (mavenRunner.IsRunning && res == DialogResult.Yes)
+                    {
+                        mavenRunner.stop();
+                    }
+                    else
+                    {
+                        // do not execute the request
+                        return;
+                    }
+
+                }
+
+
+                if (string.IsNullOrEmpty(ChangeMavenSettingsXmlForm.SettingsXmlFile))
+                {
+                    mavenRunner.execute(pomFile.FullName, goal);
                 }
                 else
                 {
-                    // do not execute the request
-                    return;
+                    string[] args = new string[1];
+                    args[0] = string.Format("-s\"{0}\"", ChangeMavenSettingsXmlForm.SettingsXmlFile);
+                    mavenRunner.execute(pomFile.FullName, goal, args);
                 }
-
             }
-
-
-            if (ChangeMavenSettingsXmlForm.SettingsXmlFile == null)
+            catch (Exception err)
             {
-                mvnRunner = new MVNRunner(_applicationObject, pomFile.DirectoryName, goal);
-            }
-            else
-            {
-                mvnRunner = new MVNRunner(_applicationObject, 
-                    pomFile.DirectoryName, 
-                    goal, 
-                    ChangeMavenSettingsXmlForm.SettingsXmlFile);
-            }
 
-            mvnRunner.execute();
+                MessageBox.Show("Maven Execution Error: " + err.Message, 
+                    "Execution Error:",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
 
 
 
@@ -532,155 +577,36 @@ using NMaven.VisualStudio.Addin.Util;
 
 
 
-
-
-        #region MVNRunnerClass
-
-
-        private class MVNRunner
+         public FileInfo CurrentSolutionPom
          {
-             private string goal;
-             private string directory;
-             private OutputWindowPane output;
-             private string settingsXml;
-             private System.Diagnostics.Process proc;
-             private static int runner_number = 0;
-
-
-             public MVNRunner(DTE2 dte2, string directory, string goal)
+             get
              {
-                 this.directory = directory;
-                 this.goal = goal;
-                 this.settingsXml = null;
-
-                 makeOutputWindow(dte2);
-                 
-             }
-
-
-             public MVNRunner(DTE2 dte2, string directory, string goal, string settingsXml)
-             {
-                 this.directory = directory;
-                 this.goal = goal;
-                 this.settingsXml = settingsXml;
-
-                 makeOutputWindow(dte2);
-
-             }
-
-             private void makeOutputWindow(DTE2 dte2)
-             {
-                 // _applicationObject is from the main class
-                 Window win = dte2.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);
-                 OutputWindow outputWindow = (OutputWindow)win.Object;
-                 output = outputWindow.OutputWindowPanes.Add(string.Format("[{0}] NMaven Execute", ++runner_number));
-             }
-
-             public void execute()
-             {
-                 System.Threading.ThreadStart threadDelegate = new System.Threading.ThreadStart(this.doRunMvn);
-                 System.Threading.Thread t = new System.Threading.Thread(threadDelegate);
-                 t.Start();
-             }
-
-             private void doRunMvn()
-             {
-                 output.Activate();
-
-                 string args;
-
-                 if (settingsXml != null && !settingsXml.Equals(""))
+                 try
                  {
-                     args = string.Format("{0} -s\"{1}\"", goal, ChangeMavenSettingsXmlForm.SettingsXmlFile);
-                 }
-                 else
-                 {
-                     args = goal;
-                 }
-
-
-                 proc = new System.Diagnostics.Process();
-
-
-                 string mvn_file = string.Format("{0}\\bin\\mvn.bat", System.Environment.GetEnvironmentVariable("M2_HOME"));
-
-                 output.OutputString(string.Format("\nNExecuting Maven Command: {0} {1}\n\n", mvn_file, args ));
-
-                 
-                 System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo(mvn_file);
-                 procInfo.Arguments = args;
-                 procInfo.WorkingDirectory = this.directory;
-
-                 procInfo.RedirectStandardOutput = true;
-                 procInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-                 procInfo.CreateNoWindow = true;
-                 procInfo.UseShellExecute = false;
-
-                 proc.StartInfo = procInfo;
-
-                 proc.EnableRaisingEvents = true;
-                 proc.Exited += new EventHandler(mvn_process_exited);
-                 
-
-
-                 proc.Start();
-                 System.IO.StreamReader mvnOutput = proc.StandardOutput;
-
-
-                 while (!proc.HasExited)
-                 {
-                     if (mvnOutput.Peek() != 0)
+                     FileInfo file = new FileInfo(Path.GetDirectoryName(_applicationObject.Solution.FileName) + @"\pom.xml");
+                     if(file.Exists)
                      {
-                         output.OutputString("\n" + mvnOutput.ReadLine());
+                         return file;
+                     }
+                     else
+                     {
+                         MessageBox.Show("Parent pom.xml Not Found!!! ",
+                         "File Not Found:",
+                         MessageBoxButtons.OK,
+                         MessageBoxIcon.Error);
+                         throw new Exception("Parent pom.xml Not Found");
                      }
                  }
-             }
-
-             
-             public bool IsRunning
-             {
-                 get
+                 catch (Exception e)
                  {
-                     if (proc == null)
-                         return false;
-
-                     return !proc.HasExited;
+                     MessageBox.Show("Locating Parent pom.xml Error: " + e.Message, 
+                         "Locating Parent pom.xml Error:",
+                         MessageBoxButtons.OK,
+                         MessageBoxIcon.Error);
+                     throw e;
                  }
              }
-
-             public void stop()
-             {
-                 output.OutputString("\nStopping Maven Execution....");
-                 if (IsRunning)
-                 {
-                     proc.Kill();
-                 }
-                 output.OutputString("\nMaven Execution Successfully Stoped!!!");
-             }
-
-             private void mvn_process_exited(object sender, System.EventArgs e)
-             {
-                 System.Diagnostics.Process process = (System.Diagnostics.Process)sender;
-                 
-                 int exitCode = process.ExitCode;
-                 if (exitCode == 0)
-                 {
-                    output.OutputString("\nNMaven Execution is Successful!!!");
-                 }
-                 else if (exitCode == -1)
-                 {
-                    output.OutputString("\nNMaven Execution Failed!!!");
-                 }
-                 else
-                 {
-                    output.OutputString("\nNMaven Execution Failed!!!, with exit code: " + exitCode);
-                 }
-             }
-
-
          }
-
-        #endregion
 
          public FileInfo CurrentSelectedProjectPom
          {
@@ -734,31 +660,128 @@ using NMaven.VisualStudio.Addin.Util;
         } 
         #endregion
 
+
+
+
+        #region cbInstallAll_Click(CommandBarButton,bool)
+        private void cbInstallAll_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            try
+            {
+                executeBuildCommand(CurrentSolutionPom, "install");
+            }
+            catch (Exception e)
+            {
+                Cancel = true;
+                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        #endregion
+
+        #region cbCleanAll_Click(CommandBarButton,bool)
+        private void cbCleanAll_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            try
+            {
+                executeBuildCommand(CurrentSolutionPom, "clean");
+            }
+            catch (Exception e)
+            {
+                Cancel = true;
+                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        #endregion
+
+        #region cbBuildAll_Click(CommandBarButton,bool)
+        private void cbBuildAll_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            try
+            {
+                executeBuildCommand(CurrentSolutionPom, "compile");
+            }
+            catch (Exception e)
+            {
+                Cancel = true;
+                MessageBox.Show("Maven Execution Error: " + e.Message,"Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        #endregion
+
+        #region cbTestAll_Click(CommandBarButton,bool)
+        private void cbTestAll_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            try
+            {
+                executeBuildCommand(CurrentSolutionPom, "test");
+            }
+            catch (Exception e)
+            {
+                Cancel = true;
+                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        #endregion
+
+
+
         #region cbInstall_Click(CommandBarButton,bool)
         private void cbInstall_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(CurrentSelectedProjectPom, "install");
+            try
+            {
+                executeBuildCommand(CurrentSelectedProjectPom, "install");
+            }
+            catch (Exception e)
+            {
+                Cancel = true;
+                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         } 
         #endregion
 
         #region cbClean_Click(CommandBarButton,bool)
         private void cbClean_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(CurrentSelectedProjectPom, "clean");
+            try
+            {
+                executeBuildCommand(CurrentSelectedProjectPom, "clean");
+            }
+            catch (Exception e)
+            {
+                Cancel = true;
+                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         } 
         #endregion
 
         #region cbBuild_Click(CommandBarButton,bool)
         private void cbBuild_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(CurrentSelectedProjectPom, "compile");
+            try
+            {
+                executeBuildCommand(CurrentSelectedProjectPom, "compile");
+            }
+            catch (Exception e)
+            {
+                Cancel = true;
+                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         } 
         #endregion
 
         #region cbTest_Click(CommandBarButton,bool)
         private void cbTest_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(CurrentSelectedProjectPom, "test");
+            try
+            {
+                executeBuildCommand(CurrentSelectedProjectPom, "test");
+            }
+            catch (Exception e)
+            {
+                Cancel = true;
+                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         } 
         #endregion
 
@@ -771,14 +794,14 @@ using NMaven.VisualStudio.Addin.Util;
         #region cbStopMavenBuild_Click(CommandBarButton,bool)
         private void cbStopMavenBuild_Click(CommandBarButton btn, ref bool Cancel)
          {
-             if (mvnRunner != null && mvnRunner.IsRunning)
+             if (mavenRunner != null && mavenRunner.IsRunning)
              {
                  DialogResult res = MessageBox.Show("Do you want to stop the Maven Build?", "Stop NMaven Build:", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                  // re-check if it is still running, before calling stop
-                 if (mvnRunner != null && mvnRunner.IsRunning && res == DialogResult.Yes)
+                 if (mavenRunner.IsRunning && res == DialogResult.Yes)
                  {
-                     mvnRunner.stop();
+                     mavenRunner.stop();
                  }
              }
          }
@@ -850,11 +873,7 @@ using NMaven.VisualStudio.Addin.Util;
         public void OnBeginShutdown(ref Array custom)
         {
             outputWindowPane.OutputString("\nShutting Down NMaven Visual Studio Addin...");
-            if (mvnRunner != null && mvnRunner.IsRunning)
-            {
-                outputWindowPane.OutputString("\nStopping All Running NMaven Executions...");
-                mvnRunner.stop();
-            }
+            mavenRunner.Quit();
             outputWindowPane.OutputString("\nNMaven Successfully Shutdown...");
         } 
         #endregion
@@ -916,7 +935,7 @@ using NMaven.VisualStudio.Addin.Util;
         private ArtifactContext container;
         private List<ReferencesEvents> referenceEvents;
         //private DirectoryInfo baseDirectoryInfo; 
-        private MVNRunner mvnRunner;
+        private MavenRunner mavenRunner;
         private bool _nmavenLunched = false;
         #endregion
     }
