@@ -287,6 +287,14 @@ using NMaven.Model.Pom;
                             ctl.Caption = "Add Maven Artifact...";
                             ctl.Visible = true;
                             addReferenceControls.Add(ctl);
+							
+							CommandBarButton removeCtl = (CommandBarButton)
+                            commandBar.Controls.Add(MsoControlType.msoControlButton,
+                            System.Type.Missing, System.Type.Missing, control.Index, true);
+                            removeCtl.Click += new _CommandBarButtonEvents_ClickEventHandler(cbShowRemoveArtifactsForm_Click);
+                            removeCtl.Caption = "Remove Maven Artifact...";
+                            removeCtl.Visible = true;
+                            addReferenceControls.Add(removeCtl);
 
                             CommandBarButton ctl1 = (CommandBarButton)
                                 commandBar.Controls.Add(MsoControlType.msoControlButton, 
@@ -615,7 +623,18 @@ using NMaven.Model.Pom;
             }
         } 
         #endregion
-
+         
+		 private void cbShowRemoveArtifactsForm_Click(CommandBarButton btn, ref bool Cancel)
+         {
+             //First selected project
+             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
+             {
+                 RemoveArtifactsForm form = new RemoveArtifactsForm(project, container, logger);
+                 form.Show();
+                 break;
+             }
+         }   
+		 
         #region OnBeginShutdown(Array)
         /// <summary>Implements the OnBeginShutdown method of the IDTExtensibility2 interface. Receives notification that the host application is being unloaded.</summary>
         /// <param term='custom'>Array of parameters that are host application specific.</param>
