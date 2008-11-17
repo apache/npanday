@@ -187,7 +187,7 @@ namespace NMaven.Model.Setting {
         public Proxy() {
             this.activeField = false;
             this.protocolField = "http";
-            this.portField = 8080;
+            this.portField = 9191;
         }
         
         /// <remarks/>
@@ -233,7 +233,7 @@ namespace NMaven.Model.Setting {
         }
         
         /// <remarks/>
-        [System.ComponentModel.DefaultValueAttribute(8080)]
+        [System.ComponentModel.DefaultValueAttribute(9191)]
         public int port {
             get {
                 return this.portField;

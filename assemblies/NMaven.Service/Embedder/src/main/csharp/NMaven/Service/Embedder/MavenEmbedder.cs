@@ -33,7 +33,7 @@ namespace NMaven.Service {
 
         /// <remarks/>
         public MavenEmbedderService() {
-            this.Url = "http://localhost:8080/dotnet-service-embedder/services/MavenEmbedderService";
+            this.Url = "http://localhost:9191/dotnet-service-embedder/services/MavenEmbedderService";
         }
 
         /// <remarks/>

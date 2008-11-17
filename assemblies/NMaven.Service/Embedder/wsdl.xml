@@ -48,7 +48,7 @@ under the License.
   </wsdl:binding>
   <wsdl:service name="MavenEmbedderService">
     <wsdl:port name="MavenEmbedderServiceHttpPort" binding="tns:MavenEmbedderServiceHttpBinding">
-      <wsdlsoap:address location="http://localhost:8080/dotnet-service-embedder/services/MavenEmbedderService"/>
+      <wsdlsoap:address location="http://localhost:9191/dotnet-service-embedder/services/MavenEmbedderService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

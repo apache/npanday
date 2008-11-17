@@ -286,7 +286,7 @@ namespace NMaven.IDE.Controls
             WebClient webClient = new WebClient();
             try
             {
-                webClient.DownloadData("http://localhost:8080?shutdown=true");
+                webClient.DownloadData("http://localhost:9191?shutdown=true");
             }
             catch (WebException ex)
             {
@@ -301,7 +301,7 @@ namespace NMaven.IDE.Controls
             byte[] data = null;
             try
             {
-                data = webClient.DownloadData("http://localhost:8080/dotnet-service-embedder");
+                data = webClient.DownloadData("http://localhost:9191/dotnet-service-embedder");
             }
             catch (WebException ex)
             {
@@ -312,10 +312,10 @@ namespace NMaven.IDE.Controls
                 logger.Log(Level.INFO, "Maven embedder already Started.");
                 return;
             }
-            logger.Log(Level.INFO, "Executing external command plugin: Command = " + @"mvn org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile=""" + warFileInfo.FullName + @"""");
+            logger.Log(Level.INFO, "Executing external command plugin: Command = " + @"mvn org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=9191 -DwarFile=""" + warFileInfo.FullName + @"""");
 
             ProcessStartInfo processStartInfo =
-                new ProcessStartInfo("mvn", @"org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile=""" + warFileInfo.FullName + @"""");
+                new ProcessStartInfo("mvn", @"org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=9191 -DwarFile=""" + warFileInfo.FullName + @"""");
             processStartInfo.UseShellExecute = true;
             processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             System.Diagnostics.Process.Start(processStartInfo);
