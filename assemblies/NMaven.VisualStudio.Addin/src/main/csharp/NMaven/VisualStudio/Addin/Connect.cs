@@ -156,7 +156,7 @@ namespace NMaven.VisualStudio.Addin
         #endregion
 		#region Clearing OutputWindow upon closing solution
 		//to hold eventhandler for solution
-		private EnvDTE.SolutionEvents globalSolutionEvents;
+		private static EnvDTE.SolutionEvents globalSolutionEvents;
 		
 		void SolutionEvents_BeforeClosing()
         {
@@ -290,7 +290,8 @@ namespace NMaven.VisualStudio.Addin
 
             Window win = _applicationObject.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);
             OutputWindow outputWindow = (OutputWindow)win.Object;
-            outputWindowPane = OutputWindowPanes.Add("NMaven Build System");
+            outputWindowPane = outputWindow.OutputWindowPanes.Add("NMaven Build System");
+            //outputWindowPane = OutputWindowPanes.Add("NMaven Build System");
 
             OutputWindowPaneHandler handler = new OutputWindowPaneHandler();
             handler.SetOutputWindowPaneHandler(outputWindowPane);
