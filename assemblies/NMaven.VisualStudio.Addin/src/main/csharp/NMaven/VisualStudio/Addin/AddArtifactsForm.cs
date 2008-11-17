@@ -128,7 +128,7 @@ namespace NMaven.VisualStudio.Addin
 
             SetUnsafeHttpHeaderParsing();
 
-            List<TreeNode> treeNodes = GetNodesFor(url);
+            List<TreeNode> treeNodes = getNodesFor(url);
             treeView1.Nodes.AddRange(treeNodes.ToArray());
             treeView1.MouseClick += new System.Windows.Forms.MouseEventHandler(treeView_MouseUp);
         }
@@ -224,11 +224,45 @@ namespace NMaven.VisualStudio.Addin
             return true;
         }
 
-        private List<TreeNode> GetNodesFor(String url)
+        List<TreeNode> getNodesFor(String url)
+        {
+            Uri repoUri = new Uri(url);
+            if (repoUri.IsFile)
+            {
+                return getNodesFromLocal(repoUri.LocalPath);
+            }
+            else
+            {
+                return getNodesFromRemote(url);
+            }
+        }
+
+        List<TreeNode> getNodesFromLocal(string repoFolder)
+        {
+            List<TreeNode> nodes = new List<TreeNode>();
+            if (!Directory.Exists(repoFolder))
+            {
+                MessageBox.Show(this, "Local repository path not found.", "Local Repository");
+                return nodes;
+            }
+
+            foreach (FileSystemInfo fsi in (new DirectoryInfo(repoFolder).GetFileSystemInfos()))
+            {
+                RemoteArtifactNode node = new RemoteArtifactNode(fsi.Name);
+                node.IsFileSystem = true;
+                node.ArtifactUrl = Path.Combine(repoFolder, fsi.Name);
+                node.IsAssembly = (fsi is FileInfo);
+                nodes.Add(node);
+            }
+
+            return nodes;
+        }
+
+        List<TreeNode> getNodesFromRemote(string url)
         {
             List<TreeNode> treeNodes = new List<TreeNode>();
-
             WebClient webClient = new WebClient();
+
             byte[] page = null;
 
             //prevent VS crash
@@ -247,11 +281,11 @@ namespace NMaven.VisualStudio.Addin
                 (@"<a[^>]*href\s*=\s*[\""\']?(?<URI>[^""'>\s]*)[\""\']?[^>]*>(?<Name>[^<]+|.*?)?<");
             MatchCollection matches = Regex.Matches(Encoding.ASCII.GetString(page), pattern, RegexOptions.IgnoreCase);
 
-           // treeView1.ImageList = imageList1;
+            // treeView1.ImageList = imageList1;
             foreach (Match match in matches)
             {
                 String name = match.Groups["Name"].Value;
-                String uri = match.Groups["URI"].Value; 
+                String uri = match.Groups["URI"].Value;
                 if (IsIncluded(name, uri))
                 {
                     RemoteArtifactNode node = new RemoteArtifactNode(name);  // new TreeNode(name);
@@ -259,6 +293,7 @@ namespace NMaven.VisualStudio.Addin
                     {
                         node.ImageIndex = 1;
                     }
+                    node.IsFileSystem = false;
                     string ext = Path.GetExtension(name).ToLower();
                     if (ext == ".dll" || ext == ".exe" || ext == ".netmodule")
                     {
@@ -271,10 +306,11 @@ namespace NMaven.VisualStudio.Addin
 
                     node.ArtifactUrl = url + "/" + uri.TrimEnd("/".ToCharArray()); ;
 
-                    treeNodes.Add(node);                  
+                    treeNodes.Add(node);
                 }
             }
             return treeNodes;
+
         }
 
         private void treeView_MouseUp(object sender, MouseEventArgs e)
@@ -283,7 +319,10 @@ namespace NMaven.VisualStudio.Addin
             {
                 Point point = new Point(e.X, e.Y);
                 RemoteArtifactNode node = treeView1.GetNodeAt(point) as RemoteArtifactNode;
-                List<TreeNode> treeNodes = GetNodesFor( node.ArtifactUrl);
+                if (node.IsAssembly)
+                    return;
+
+                List<TreeNode> treeNodes = getNodesFor( node.ArtifactUrl);
                 node.Nodes.Clear();
                 node.Nodes.AddRange(treeNodes.ToArray());
             }
@@ -429,8 +468,17 @@ namespace NMaven.VisualStudio.Addin
             NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
 
             String uri = node.ArtifactUrl;
+            String paths;
             String repoUrl = getRepositoryUrl();
-            String paths = normalizePath(uri.Substring(repoUrl.Length));
+            if (node.IsFileSystem)
+            {
+                Uri repoUri = new Uri(repoUrl);
+                paths = uri.Substring(repoUri.LocalPath.Length).Replace(@"\",@"/");
+            }
+            else 
+            {
+                paths = normalizePath(uri.Substring(repoUrl.Length));
+            }
 
             NMaven.Artifact.Artifact artifact =
                 artifactContext.GetArtifactRepository().GetArtifactFor(paths);
@@ -468,12 +516,21 @@ namespace NMaven.VisualStudio.Addin
 
             //Download
             artifact.FileInfo.Directory.Create();
-            WebClient client = new WebClient();
-            byte[] assembly = client.DownloadData(uri);
-            FileStream stream = new FileStream(artifact.FileInfo.FullName, FileMode.Create);
-            stream.Write(assembly, 0, assembly.Length);
-            stream.Close();
-
+            if (node.IsFileSystem)
+            {
+                if (!File.Exists(artifact.FileInfo.FullName))
+                {
+                    File.Copy(node.ArtifactUrl, artifact.FileInfo.FullName);
+                }
+            }
+            else
+            {
+                WebClient client = new WebClient();
+                byte[] assembly = client.DownloadData(uri);
+                FileStream stream = new FileStream(artifact.FileInfo.FullName, FileMode.Create);
+                stream.Write(assembly, 0, assembly.Length);
+                stream.Close();
+            }
             vsProject.References.Add(artifact.FileInfo.FullName);
 
         }
@@ -523,6 +580,14 @@ namespace NMaven.VisualStudio.Addin
         {
             get { return artifactUrl; }
             set { artifactUrl = value; }
+        }
+
+        private bool isFileSystem;
+
+        public bool IsFileSystem
+        {
+            get { return isFileSystem; }
+            set { isFileSystem = value; }
         }
 
     }
