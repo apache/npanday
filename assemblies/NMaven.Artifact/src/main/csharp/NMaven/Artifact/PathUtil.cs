@@ -39,5 +39,67 @@ namespace NMaven.Artifact
             return new FileInfo(localRepository.Parent.FullName + @"\uac\gac_msil\" + artifact.ArtifactId + @"\" + artifact.Version + "__" +
                 artifact.GroupId + @"\" + artifact.ArtifactId + "." + artifact.Extension);
         }
+
+
+        public static string[] GetRelativePathTokens(DirectoryInfo parentPath, FileInfo path)
+        {
+            return GetRelativePathTokens(parentPath.FullName, path.FullName);
+        }
+
+        public static string[] GetRelativePathTokens(DirectoryInfo parentPath, DirectoryInfo path)
+        {
+            return GetRelativePathTokens(parentPath.FullName, path.FullName);
+        }
+
+        public static string[] GetRelativePathTokens(FileInfo parentPath, FileInfo path)
+        {
+            return GetRelativePathTokens(parentPath.FullName, path.FullName);
+        }
+
+
+        public static string[] GetRelativePathTokens(string parentPath, string path)
+        {   
+            string[] parent = TokenizePath(parentPath);
+            string[] child = TokenizePath(path);
+
+            List<string> list = new List<string>();
+
+            for (int i = 0; i < parent.Length-1; i++)
+            {
+                 if(!parent[i].Equals(child[i], StringComparison.OrdinalIgnoreCase))
+                 {
+                     throw new Exception(string.Format("Path {0} is not a child path of {1}", path, parentPath));
+                 }
+            }
+
+
+            list.AddRange(child);
+            list.RemoveRange(0, parent.Length - 1);
+
+            return list.ToArray();
+
+        }
+
+
+        public static string[] TokenizePath(FileInfo fileInfo)
+        {
+            return TokenizePath(fileInfo.FullName);
+        }
+
+        public static  string[] tokenizePath(DirectoryInfo directoryInfo)
+        {
+            return TokenizePath(directoryInfo.FullName);
+        }
+
+        public static string[] TokenizePath(string filename)
+        {
+            string path = Path.GetFullPath(filename);
+            path = path.Replace('/', '\\');
+
+            return path.Split('\\');
+
+        }
+
+
     }
 }

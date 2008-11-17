@@ -63,48 +63,46 @@ namespace NMaven.Artifact
         public List<Artifact> GetArtifacts()
         {
             List<Artifact> artifacts = new List<Artifact>();
-            DirectoryInfo uac = new DirectoryInfo(localRepository.FullName + @"\uac\gac_msil\");
-            int directoryStartPosition = uac.FullName.Length;
-
-            List<FileInfo> fileInfos = GetArtifactsFromDirectory(uac);
-
-            foreach (FileInfo fileInfo in fileInfos)
+            try
             {
-                //Artifact artifact = new Artifact();
+                DirectoryInfo uac = new DirectoryInfo(localRepository.FullName + @"\uac\gac_msil\");
+                int directoryStartPosition = uac.FullName.Length;
 
+                List<FileInfo> fileInfos = GetArtifactsFromDirectory(uac);
 
-
-                //String relativePath = fileInfo.FullName.Substring(directoryStartPosition,
-                //    (fileInfo.FullName.Length - directoryStartPosition));
-                //String[] tokens = relativePath.Split(new char[1] { '\\' });
-                //artifact.ArtifactId = tokens[0];
-                //String[] tokens2 = tokens[1].Split(new char[2]{'_', '_'});
-                //artifact.Version = tokens2[0];
-                //artifact.GroupId = tokens2[2];
-                //artifact.FileInfo = fileInfo;
-
-                try
+                foreach (FileInfo fileInfo in fileInfos)
                 {
-                    Artifact artifact = getArtifact(uac,fileInfo);
-                    artifacts.Add(artifact);
+                    try
+                    {
+                        Artifact artifact = GetArtifact(uac, fileInfo);
+                        artifacts.Add(artifact);
+                    }
+                    catch
+                    {
+                        
+                    }
                 }
-                catch
-                {
-                    
-                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.StackTrace, e.Message);
             }
             return artifacts;
         }
 
         #region Repository Artifact Info Helper
 
-       
-
-
-
-        Artifact getArtifact(DirectoryInfo uacDirectory, FileInfo artifactFile)
+        public Artifact GetArtifact(FileInfo artifactFile)
         {
-            string[] tokens = getRelativePathTokens(uacDirectory, artifactFile);
+            DirectoryInfo uacDirectory = new DirectoryInfo(localRepository.FullName + @"\uac\gac_msil\");
+            return GetArtifact(uacDirectory, artifactFile);
+        }
+
+
+
+        public Artifact GetArtifact(DirectoryInfo uacDirectory, FileInfo artifactFile)
+        {
+            string[] tokens = PathUtil.GetRelativePathTokens(uacDirectory, artifactFile);
             
 
             // first file token is the artifact
@@ -143,60 +141,7 @@ namespace NMaven.Artifact
 
         #endregion
 
-        #region Path Helper Methods
 
-
-        string[] getRelativePathTokens(DirectoryInfo parentPath, FileInfo path)
-        {
-            return getRelativePathTokens(parentPath.FullName, path.FullName);
-        }
-
-        string[] getRelativePathTokens(DirectoryInfo parentPath, DirectoryInfo path)
-        {
-            return getRelativePathTokens(parentPath.FullName, path.FullName);
-        }
-
-        string[] getRelativePathTokens(FileInfo parentPath, FileInfo path)
-        {
-            return getRelativePathTokens(parentPath.FullName, path.FullName);
-        }
-
-
-        string[] getRelativePathTokens(string parentPath, string path)
-        {
-            string[] parent = tokenizePath(parentPath);
-            string[] child = tokenizePath(path);
-
-            List<string> list = new List<string>();
-            
-            list.AddRange(child);
-            list.RemoveRange(0, parent.Length-1);
-            
-            return list.ToArray();
-
-        }
-
-
-        string[] tokenizePath(FileInfo fileInfo)
-        {
-            return tokenizePath(fileInfo.FullName);
-        }
-
-        string[] tokenizePath(DirectoryInfo directoryInfo)
-        {
-            return tokenizePath(directoryInfo.FullName);
-        }
-
-        string[] tokenizePath(string filename)
-        {
-            string path = Path.GetFullPath(filename);
-            path = path.Replace('/', '\\');
-
-            return path.Split('\\');
-
-        }
-
-        #endregion
 
         public void Init(ArtifactContext artifactContext, DirectoryInfo localRepository)
         {
