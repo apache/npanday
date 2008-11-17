@@ -42,7 +42,6 @@ using NMaven.Artifact;
 using NMaven.Logging;
 using NMaven.Model.Pom;
 using NMaven.Model.Setting;
-using Castle.Windsor;
 
 namespace NMaven.VisualStudio.Addin
 {
@@ -63,14 +62,14 @@ namespace NMaven.VisualStudio.Addin
            // localListView.View = View.Details;
         }
 
-        public AddArtifactsForm(Project project, IWindsorContainer container, Logger logger)
+        public AddArtifactsForm(Project project, ArtifactContext container, Logger logger)
         {
             this.project = project;
             this.logger = logger;
             InitializeForm();
             InitializeComponent();
             localListView.View = View.Details;           
-            artifactContext = (ArtifactContext) container[typeof(ArtifactContext)];       
+            artifactContext = container;       
         }
 
         private void InitializeForm()

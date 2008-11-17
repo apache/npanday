@@ -45,18 +45,10 @@ using VSLangProj;
 
 using NMaven.Artifact;
 using NMaven.Logging;
-using NMaven.Service;
 using NMaven.VisualStudio.Logging;
-
-using NMaven.IDE;
-using NMaven.IDE.Impl;
-
-using Castle.Windsor;
-using Castle.Windsor.Configuration.Interpreters;
 
 using NMaven.Model.Setting;
 using NMaven.Model.Pom;
-//using NMaven.VisualStudio.Addin.NMaven.VisualStudio.Addin;
  
 #endregion
   
@@ -195,16 +187,8 @@ using NMaven.Model.Pom;
                 logger = NMaven.Logging.Logger.GetLogger("UC");
                 logger.AddHandler(handler);
 
-                 string localRepository = SettingsUtil.GetLocalRepositoryPath();
-                 string contents =
- @"<configuration>
-   <components>
-     <component id=""smtp.sender""
-                type=""NMaven.Artifact.ArtifactContext, NMaven.Artifact""/>
-   </components>
- </configuration>";
-  
-                container = new WindsorContainer(new XmlInterpreter(new Castle.Core.Resource.StaticContentResource(contents)));
+                //container = new WindsorContainer(new XmlInterpreter(new Castle.Core.Resource.StaticContentResource(contents)));
+                container = new ArtifactContext();
                
                 // by bong
                 launchNMavenBuildSystem(application);
@@ -217,13 +201,6 @@ using NMaven.Model.Pom;
          {
                 EnvDTE80.Windows2 windows2 = (EnvDTE80.Windows2)_applicationObject.Windows;
                 _applicationObject = (DTE2)application;
-
-                ideContext = new IdeContextImpl();
-
-                IIdeConfiguration configuration = Factory.CreateIdeConfiguration();
-                configuration.Logger = logger;
-                configuration.SocketLoggerPort = 9099;
-                ideContext.Init(configuration);
 
                 DTE2 dte2 = _applicationObject;
             
@@ -487,7 +464,10 @@ using NMaven.Model.Pom;
         /// <seealso class='IDTExtensibility2' />
         public void OnDisconnection(ext_DisconnectMode disconnectMode, ref Array custom)
         {
-
+            if (mvnRunner != null && mvnRunner.IsRunning)
+            {
+                mvnRunner.stop();
+            }
         }
         #endregion
 
@@ -720,7 +700,6 @@ using NMaven.Model.Pom;
             //TODO: Fix to handle multiple projects: NMAVEN-80
             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
             {
-                ideContext.GetLogger().Log(Level.INFO, "project.FileName = " + project.FileName);
                 projectFileInfo = new FileInfo(project.FileName);
                 break;
             }
@@ -912,9 +891,8 @@ using NMaven.Model.Pom;
         private List<CommandBarButton> nunitControls;
         private List<CommandBarControl> buildControls;
         private EnvDTE.SelectionEvents _selectionEvents;
-        private IIdeContext ideContext;
-        private IWindsorContainer container;
-         private List<ReferencesEvents> referenceEvents;
+        private ArtifactContext container;
+        private List<ReferencesEvents> referenceEvents;
         //private DirectoryInfo baseDirectoryInfo; 
          private MVNRunner mvnRunner;
         #endregion
