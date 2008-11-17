@@ -25,6 +25,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Windows.Forms;
 
 namespace NMaven.Artifact
 {
@@ -69,19 +70,133 @@ namespace NMaven.Artifact
 
             foreach (FileInfo fileInfo in fileInfos)
             {
-                Artifact artifact = new Artifact();
-                String relativePath = fileInfo.FullName.Substring(directoryStartPosition,
-                    (fileInfo.FullName.Length - directoryStartPosition));
-                String[] tokens = relativePath.Split(new char[1] { '\\' });
-                artifact.ArtifactId = tokens[0];
-                String[] tokens2 = tokens[1].Split(new char[2]{'_', '_'});
-                artifact.Version = tokens2[0];
-                artifact.GroupId = tokens2[2];
-                artifact.FileInfo = fileInfo;
-                artifacts.Add(artifact);
+                //Artifact artifact = new Artifact();
+
+
+
+                //String relativePath = fileInfo.FullName.Substring(directoryStartPosition,
+                //    (fileInfo.FullName.Length - directoryStartPosition));
+                //String[] tokens = relativePath.Split(new char[1] { '\\' });
+                //artifact.ArtifactId = tokens[0];
+                //String[] tokens2 = tokens[1].Split(new char[2]{'_', '_'});
+                //artifact.Version = tokens2[0];
+                //artifact.GroupId = tokens2[2];
+                //artifact.FileInfo = fileInfo;
+
+                try
+                {
+                    Artifact artifact = getArtifact(uac,fileInfo);
+                    artifacts.Add(artifact);
+                }
+                catch
+                {
+                    
+                }
             }
             return artifacts;
         }
+
+        #region Repository Artifact Info Helper
+
+       
+
+
+
+        Artifact getArtifact(DirectoryInfo uacDirectory, FileInfo artifactFile)
+        {
+            string[] tokens = getRelativePathTokens(uacDirectory, artifactFile);
+            
+
+            // first file token is the artifact
+            // eg. NMaven.VisualStudio.Addin\1.1.1.1__NMaven.VisualStudio\NMaven.VisualStudio.Addin.dll
+            string artifactId = tokens[0];
+            string groupId = getGroupId(tokens[1]);
+            string version = getVersion(tokens[1]);
+
+
+            Artifact artifact = new Artifact();
+            artifact.ArtifactId = artifactId;
+            artifact.Version = version;
+            artifact.GroupId = groupId;
+            artifact.FileInfo = artifactFile;
+            return artifact;
+        }
+
+
+
+        string getVersion(string versionAndGroupDirectoryName)
+        {
+            // 1.1.1.1__NMaven.VisualStudio from index 0 to __ is the version number
+            int index = versionAndGroupDirectoryName.IndexOf("__", 0);
+            string str = versionAndGroupDirectoryName.Substring(0, index);
+            return str;
+        }
+
+        string getGroupId(string versionAndGroupDirectoryName)
+        {
+            int index = versionAndGroupDirectoryName.IndexOf("__", 0) + 2;
+            // 1.1.1.1__NMaven.VisualStudio from (next to index of __) to last is the groupid
+            string str = versionAndGroupDirectoryName.Substring(index, (versionAndGroupDirectoryName.Length - index));
+            return str;
+
+        }
+
+        #endregion
+
+        #region Path Helper Methods
+
+
+        string[] getRelativePathTokens(DirectoryInfo parentPath, FileInfo path)
+        {
+            return getRelativePathTokens(parentPath.FullName, path.FullName);
+        }
+
+        string[] getRelativePathTokens(DirectoryInfo parentPath, DirectoryInfo path)
+        {
+            return getRelativePathTokens(parentPath.FullName, path.FullName);
+        }
+
+        string[] getRelativePathTokens(FileInfo parentPath, FileInfo path)
+        {
+            return getRelativePathTokens(parentPath.FullName, path.FullName);
+        }
+
+
+        string[] getRelativePathTokens(string parentPath, string path)
+        {
+            string[] parent = tokenizePath(parentPath);
+            string[] child = tokenizePath(path);
+
+            List<string> list = new List<string>();
+            
+            list.AddRange(child);
+            list.RemoveRange(0, parent.Length-1);
+            
+            return list.ToArray();
+
+        }
+
+
+        string[] tokenizePath(FileInfo fileInfo)
+        {
+            return tokenizePath(fileInfo.FullName);
+        }
+
+        string[] tokenizePath(DirectoryInfo directoryInfo)
+        {
+            return tokenizePath(directoryInfo.FullName);
+        }
+
+        string[] tokenizePath(string filename)
+        {
+            string path = Path.GetFullPath(filename);
+            path = path.Replace('/', '\\');
+
+            return path.Split('\\');
+
+        }
+
+        #endregion
 
         public void Init(ArtifactContext artifactContext, DirectoryInfo localRepository)
         {
