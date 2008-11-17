@@ -165,8 +165,11 @@ namespace NMaven.VisualStudio.Addin
                             MessageBox.Show(err1.Message, "NMaven Add Dependency Error:");
                         }
 
-                        VSProject vsProject = (VSProject)project.Object;
-                        vsProject.References.Add(artifact.FileInfo.FullName);
+                        if (project.Object is VSProject)
+                        {
+                            VSProject vsProject = (VSProject)project.Object;
+                            vsProject.References.Add(artifact.FileInfo.FullName);
+                        }                        
                     }
                 }
 
@@ -200,9 +203,12 @@ namespace NMaven.VisualStudio.Addin
                     stream.Write(assembly, 0, assembly.Length);
                     stream.Close();
 
-                    VSProject vsProject1 = (VSProject)project.Object;
-                    //File must exist
-                    vsProject1.References.Add(artifact1.FileInfo.FullName);
+                    if (project.Object is VSProject)
+                    {
+                        VSProject vsProject1 = (VSProject)project.Object;
+                        //File must exist
+                        vsProject1.References.Add(artifact1.FileInfo.FullName);
+                    }
                 }
             }
             catch (Exception err)
