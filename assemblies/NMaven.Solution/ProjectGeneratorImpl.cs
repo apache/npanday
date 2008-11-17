@@ -241,7 +241,27 @@ namespace NMaven.Solution.Impl
 		private void AddClassFilesToProject(Project project, BuildItemGroup compileGroup, DirectoryInfo rootDirectory, 
             DirectoryInfo sourceFileDirectory) 
 		{
-	        DirectoryInfo[] directoryInfos = rootDirectory.GetDirectories();
+	        DirectoryInfo[] directoryInfos = rootDirectory.GetDirectories(); 
+
+            // include classes directly inside  sourceDirectory
+            if (rootDirectory.FullName.Equals(sourceFileDirectory.FullName))
+            {
+                foreach (FileInfo fileInfo in rootDirectory.GetFiles())
+                { 
+                    if (fileInfo.FullName.EndsWith(".cs", false, null) || fileInfo.FullName.EndsWith(".vb", false, null))
+                    {
+                        if (compileGroup == null)
+                        {
+                            compileGroup = project.AddNewItemGroup();
+                        }
+
+                        BuildItem buildItem =
+                            compileGroup.AddNewItem("Compile",
+                                                    fileInfo.FullName.Substring(sourceFileDirectory.FullName.Length));
+                    }
+                }
+            }
+
             if(directoryInfos != null && directoryInfos.Length > 0)
             {
                 if (compileGroup == null)
