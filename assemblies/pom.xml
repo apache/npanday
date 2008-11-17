@@ -43,7 +43,8 @@ under the License.
     <module>NMaven.Plugin.Loader</module>  
     <module>NMaven.Plugin.MojoGenerator</module>  
     <module>NMaven.Plugin.Runner</module>  
-    <module>NMaven.Service/Embedder</module> 
+    <module>NMaven.Service/Embedder</module>
+    <module>NMaven.Utils</module>
     <module>NMaven.ProjectImporter</module> 
   </modules>  
   <profiles> 

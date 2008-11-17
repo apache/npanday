@@ -115,6 +115,12 @@ under the License.
       <version>0.14-maestro-1.5.2-SNAPSHOT</version>
       <type>library</type>
     </dependency>
+    <dependency>
+      <groupId>NMaven.Utils</groupId>
+      <artifactId>NMaven.Utils</artifactId>
+      <type>library</type>
+      <version>0.14-incubating-SNAPSHOT</version>
+    </dependency>
   </dependencies>  
   <profiles> 
     <profile> 

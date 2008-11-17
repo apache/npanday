@@ -51,7 +51,7 @@ using NMaven.VisualStudio.Logging;
 using NMaven.Model.Setting;
 using NMaven.Model.Pom;
 
-using NMaven.VisualStudio.Addin.Util;
+using NMaven.Utils;
 using System.Runtime.CompilerServices;
  
 #endregion

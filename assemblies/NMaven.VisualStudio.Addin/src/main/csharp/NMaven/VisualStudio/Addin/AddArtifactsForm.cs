@@ -43,7 +43,7 @@ using NMaven.Logging;
 using NMaven.Model.Pom;
 using NMaven.Model.Setting;
 
-using NMaven.VisualStudio.Addin.Util;
+using NMaven.Utils;
 
 namespace NMaven.VisualStudio.Addin
 {
