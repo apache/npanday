@@ -601,12 +601,13 @@ using System.Runtime.CompilerServices;
 
             if (!string.IsNullOrEmpty(errStr))
             {
-                DialogResult res = MessageBox.Show(errStr + "\nWould you like to continue building?", "Pom Error:", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                //DialogResult res = MessageBox.Show(errStr + "\nWould you like to continue building?", "Pom Error:", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
 
-                if (res != DialogResult.Yes)
-                {
-                    throw new Exception(errStr);
-                }
+                //if (res != DialogResult.Yes)
+                //{
+                //    throw new Exception(errStr);
+                //}
+                throw new Exception(errStr);
             }
             executeBuildCommand(pomFile, goal);
         }
@@ -619,13 +620,13 @@ using System.Runtime.CompilerServices;
             NMavenPomHelperUtility pomUtility = new NMavenPomHelperUtility(pomFile);
             if (!"pom".Equals(pomUtility.Packaging, StringComparison.OrdinalIgnoreCase))
             {
-                string errStr = string.Format("Not A Parent Pom Error: {0} is not of packaging type \"pom\", the pom is a \"{1}\" type, not a parent pom.",pomFile, pomUtility.Packaging);
-                DialogResult res = MessageBox.Show(errStr + "\nWould you like to continue building?", "Pom Error:", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                //DialogResult res = MessageBox.Show(errStr + "\nWould you like to continue building?", "Pom Error:", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
 
-                if (res != DialogResult.Yes)
-                {
-                    throw new Exception(errStr);
-                }
+                //if (res != DialogResult.Yes)
+                //{
+                //    throw new Exception(errStr);
+                //}
+                //throw new Exception(errStr);
             }
             executeBuildCommand(pomFile, goal);
         }
@@ -696,7 +697,11 @@ using System.Runtime.CompilerServices;
                      NMavenPomHelperUtility parentPomUtil = new NMavenPomHelperUtility(parentPomFile);
                      NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pomFile);
 
-                     if(pomFile.Exists || parentPomFile.Exists)
+                     if (!parentPomFile.Exists)
+                     {
+                         return pomFile;
+                     }
+                     else if(pomFile.Exists || parentPomFile.Exists)
                      {
                          if(!"pom".Equals(pomUtil.Packaging) 
                              && parentPomFile.Exists
@@ -708,20 +713,20 @@ using System.Runtime.CompilerServices;
                      }
                      else
                      {
-                         MessageBox.Show("Parent pom.xml Not Found!!! ",
-                         "File Not Found:",
-                         MessageBoxButtons.OK,
-                         MessageBoxIcon.Error);
+                         //MessageBox.Show("Parent pom.xml Not Found!!! ",
+                         //"File Not Found:",
+                         //MessageBoxButtons.OK,
+                         //MessageBoxIcon.Error);
                          throw new Exception("Parent pom.xml Not Found");
                      }
                  }
-                 catch (Exception e)
+                 catch (Exception)
                  {
-                     MessageBox.Show("Locating Parent pom.xml Error: " + e.Message, 
-                         "Locating Parent pom.xml Error:",
-                         MessageBoxButtons.OK,
-                         MessageBoxIcon.Error);
-                     throw e;
+                     //MessageBox.Show("Locating Parent pom.xml Error: " + e.Message, 
+                     //    "Locating Parent pom.xml Error:",
+                     //    MessageBoxButtons.OK,
+                     //    MessageBoxIcon.Error);
+                     throw;
                  }
              }
          }
