@@ -44,6 +44,7 @@ under the License.
     <module>NMaven.Plugin.MojoGenerator</module>  
     <module>NMaven.Plugin.Runner</module>  
     <module>NMaven.Service/Embedder</module> 
+    <module>NMaven.ProjectImporter</module> 
   </modules>  
   <profiles> 
     <profile> 
