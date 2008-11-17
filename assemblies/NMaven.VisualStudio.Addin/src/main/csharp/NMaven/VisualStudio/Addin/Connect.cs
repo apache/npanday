@@ -53,51 +53,98 @@ using NMaven.Model.Pom;
 
 using NMaven.Utils;
 using System.Runtime.CompilerServices;
- 
+
 #endregion
-  
-  namespace NMaven.VisualStudio.Addin
-  {
-      public class NMavenBuildSystemProperties : System.ComponentModel.ISynchronizeInvoke
-      {
-          private object application;
 
-          public object Application
-          {
-              get { return application; }
-              set { application = value; }
-          }
+namespace NMaven.VisualStudio.Addin
+{
+    /// <summary>
+    /// MSG_E_* = ERROR MSGS
+    /// MSG_EF_* = ERROR MSGS W/ STRING.FORMAT
+    /// MSG_L_* = LOG MSGS
+    /// MSG_Q_* = QUESTIONS STATEMENT
+    /// MSG_D_* = DISPLAY TEXT(Button, CommnadBar)
+    /// MSG_C_* = Caption
+    /// </summary>
+    public static class Messages
+    {
+        public const string MSG_E_NOTIMPLEMENTED = "The method or operation is not implemented.";
+        public const string MSG_L_NMAVEN_ALREADY_STARTED = "\nNMaven Addin Has Already Started.";
+        public const string MSG_L_NMAVEN_ADDIN_STARTED = "\nNMaven Addin Successfully Started.";
+        public const string MSG_E_NMAVEN_REMOVE_DEPENDENCY_ERROR = "NMaven Remove Dependency Error:";
+        public const string MSG_Q_STOP_MAVEN_BUILD = "Do you want to stop the Maven Build?";
+        public const string MSG_EF_NOT_A_PROJECT_POM = "Not A Project Pom Error: {0} is not a project Pom, the pom is a parent pom type.";
+        public const string MSG_EF_NOT_THE_PROJECT_POM = "The Pom may not be the project's Pom: Project Name: {0} is not equal to Pom artifactId: {1}";
+        public const string MSG_E_PARENTPOM_NOTFOUND = "parent-pom.xml Not Found";//from Parent pom.xml to paren-pom.xml
+        public const string MSG_E_EXEC_ERROR = "Maven Execution Error: ";
+        public const string MSG_L_SHUTTING_DOWN_NMAVEN = "\nShutting Down NMaven Visual Studio Addin.";
+        public const string MSG_L_SUCCESFULLY_SHUTDOWN = "\nNMaven Successfully Stopped.";//from ShutDown to Stopped
+        public const string MSG_D_NMAVEN_BUILD_SYSTEM = "NMaven Build System";
+        public const string MSG_T_NMAVEN_BUILDSYSTEM = "Executes the command for NMaven Addin";
+        public const string MSG_C_ADD_REFERENCE = "Add &Reference...";
+        public const string MSG_C_CONFIGURE_MAVEN_REPO = "Configure Maven Repository...";
+        public const string MSG_C_ADD_MAVEN_ARTIFACT = "Add Maven Artifact...";
+        public const string MSG_C_CHANGE_MAVEN_SETTING_XML = "Change Maven settings.xml...";
+        public const string MSG_C_SET_COMPILE_SIGN_ASSEMBLY_KEY = "Set NMaven Compile Sign Assembly Key...";
+        public const string MSG_C_IMPORT_PROJECT = "NMaven: Import Project";
+        public const string MSG_C_STOP_MAVEN_BUILD = "Stop Maven Build";
+        public const string MSG_C_MAVEN_PHASE = "Maven Phase";
+        public const string MSG_C_CLEAN_ALLPROJECT = "All Projects: Clean";
+        public const string MSG_C_TEST_ALLPROJECT = "All Projects: Test";
+        public const string MSG_C_INSTALL_ALLPROJECT = "All Projects: Install";
+        public const string MSG_C_BUILD_CURRENTPROJECT = "Current Project: Build [compile]";
+        public const string MSG_C_INSTALL_CURRENTPROJECT = "Current Project: Install";
+        public const string MSG_C_BUILD_ALLPROJECT = "All Projects: Build [compile]";
+        public const string MSG_C_CLEAN_CURRENTPROJECT = "Current Project: Clean";
+        public const string MSG_C_TEST_CURRENTPROJECT = "Current Project: Test";
+        public const string MSG_C_RUNUNITTEST = "Run Unit Test/s";
+        public const string MSG_C_COMPILEANDRUNTEST = "Compile and Run Unit Test/s";
+        public const string MSG_Q_STOPCURRENTBUILD = "A Maven Build is currently running, Do you want to stop the build and proceed to a new Build Execution?";
+        public const string MSG_C_STOPNMAVENBUILD = "Stop NMaven Build";
+        public const string MSG_C_EXEC_ERROR = "Execution Error:";
+        public const string MSG_C_ERROR = "Error";
+    }
+    public class NMavenBuildSystemProperties : System.ComponentModel.ISynchronizeInvoke
+    {
 
-          #region ISynchronizeInvoke Members
+        private object application;
 
-          public IAsyncResult BeginInvoke(Delegate method, object[] args)
-          {
-              throw new Exception("The method or operation is not implemented.");
-          }
+        public object Application
+        {
+            get { return application; }
+            set { application = value; }
+        }
 
-          public object EndInvoke(IAsyncResult result)
-          {
-              throw new Exception("The method or operation is not implemented.");
-          }
+        #region ISynchronizeInvoke Members
 
-          public object Invoke(Delegate method, object[] args)
-          {
-              throw new Exception("The method or operation is not implemented.");
-          }
+        public IAsyncResult BeginInvoke(Delegate method, object[] args)
+        {
+            throw new Exception(Messages.MSG_E_NOTIMPLEMENTED);
+        }
 
-          public bool InvokeRequired
-          {
-              get { return false; }
-          }
+        public object EndInvoke(IAsyncResult result)
+        {
+            throw new Exception(Messages.MSG_E_NOTIMPLEMENTED);
+        }
 
-          #endregion
-      }
+        public object Invoke(Delegate method, object[] args)
+        {
+            throw new Exception(Messages.MSG_E_NOTIMPLEMENTED);
+        }
+
+        public bool InvokeRequired
+        {
+            get { return false; }
+        }
+
+        #endregion
+    }
 
     #region Connect
-     /// <summary>The object for implementing an Add-in.</summary>
-     /// <seealso class='IDTExtensibility2' />
-     public class Connect : IDTExtensibility2, IDTCommandTarget
-     {
+    /// <summary>The object for implementing an Add-in.</summary>
+    /// <seealso class='IDTExtensibility2' />
+    public class Connect : IDTExtensibility2, IDTCommandTarget
+    {
         #region Connect()
         /// <summary>
         /// Implements the constructor for the Add-in object.
@@ -105,11 +152,10 @@ using System.Runtime.CompilerServices;
         /// </summary>
         public Connect()
         {
-  
         }
         #endregion
 
-         static bool projectRefEventLoaded;
+        static bool projectRefEventLoaded;
 
         #region OnConnection(object,ext_ConnectMode,object,Array)
         /// <summary>
@@ -126,7 +172,7 @@ using System.Runtime.CompilerServices;
             _applicationObject = (DTE2)application;
             mavenRunner = new MavenRunner(_applicationObject);
             _addInInstance = (AddIn)addInInst;
-            Command command = null;            
+            Command command = null;
 
             if (connectMode == ext_ConnectMode.ext_cm_UISetup)
             {
@@ -167,7 +213,7 @@ using System.Runtime.CompilerServices;
                 {
                     //Add a command to the Commands collection:
                     command = commands.AddNamedCommand2(_addInInstance, "NMavenAddin",
-                        "NMaven Build System", "Executes the command for NMavenAddin", true, 480, ref contextGUIDS,
+                        Messages.MSG_D_NMAVEN_BUILD_SYSTEM, Messages.MSG_T_NMAVEN_BUILDSYSTEM, true, 480, ref contextGUIDS,
                         (int)vsCommandStatus.vsCommandStatusSupported + (int)vsCommandStatus.vsCommandStatusEnabled,
                         (int)vsCommandStyle.vsCommandStylePictAndText,
                         vsCommandControlType.vsCommandControlTypeButton);
@@ -192,252 +238,250 @@ using System.Runtime.CompilerServices;
             }
         }
 
-         void attachReferenceEvent()
-         {
-             //References
-             referenceEvents = new List<ReferencesEvents>();
-             foreach (Project project in _applicationObject.Solution.Projects)
-             {
-                 projectRefEventLoaded = true;
-                 VSProject vsProject = null;
-                 try
-                 {
-                     vsProject = (VSProject)project.Object;
-                 }
-                 catch
-                 {
-                     //  not a csproj / vbproj file. Could be a solution folder. skip it.
-                     continue;
-                 }
-                 referenceEvents.Add(vsProject.Events.ReferencesEvents);
-                 vsProject.Events.ReferencesEvents.ReferenceRemoved
-                     += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
-
-             }
-         }
-
-        
-
-         private void launchNMavenBuildSystem()
-         {
-                // just to be safe, check if nmaven is already launched
-                if(_nmavenLaunched)
+        void attachReferenceEvent()
+        {
+            //References
+            referenceEvents = new List<ReferencesEvents>();
+            foreach (Project project in _applicationObject.Solution.Projects)
+            {
+                projectRefEventLoaded = true;
+                VSProject vsProject = null;
+                try
                 {
-                  outputWindowPane.OutputString("\nNMaven Addin Has Already Started...");
-                  return;
+                    vsProject = (VSProject)project.Object;
                 }
-                
-
-                
-                Window win = _applicationObject.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);
-                OutputWindow outputWindow = (OutputWindow)win.Object;
-                outputWindowPane = outputWindow.OutputWindowPanes.Add("NMaven Build System");
-
-                OutputWindowPaneHandler handler = new OutputWindowPaneHandler();
-                handler.SetOutputWindowPaneHandler(outputWindowPane);
-
-                logger = NMaven.Logging.Logger.GetLogger("UC");
-                logger.AddHandler(handler);
-
-                container = new ArtifactContext();
-         
-         
-         
-                EnvDTE80.Windows2 windows2 = (EnvDTE80.Windows2)_applicationObject.Windows;
-
-                DTE2 dte2 = _applicationObject;
-            
-                addReferenceControls = new List<CommandBarButton>();
-                buildControls = new List<CommandBarControl>();
-                foreach (CommandBar commandBar in (CommandBars)dte2.CommandBars)
+                catch
                 {
-                    foreach (CommandBarControl control in commandBar.Controls)
+                    //  not a csproj / vbproj file. Could be a solution folder. skip it.
+                    continue;
+                }
+                referenceEvents.Add(vsProject.Events.ReferencesEvents);
+                vsProject.Events.ReferencesEvents.ReferenceRemoved
+                    += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
+
+            }
+        }
+
+        private void launchNMavenBuildSystem()
+        {
+            // just to be safe, check if nmaven is already launched
+            if (_nmavenLaunched)
+            {
+                outputWindowPane.OutputString(Messages.MSG_L_NMAVEN_ALREADY_STARTED);
+                return;
+            }
+
+
+
+            Window win = _applicationObject.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);
+            OutputWindow outputWindow = (OutputWindow)win.Object;
+            outputWindowPane = outputWindow.OutputWindowPanes.Add("NMaven Build System");
+
+            OutputWindowPaneHandler handler = new OutputWindowPaneHandler();
+            handler.SetOutputWindowPaneHandler(outputWindowPane);
+
+            logger = NMaven.Logging.Logger.GetLogger("UC");
+            logger.AddHandler(handler);
+
+            container = new ArtifactContext();
+
+
+
+            EnvDTE80.Windows2 windows2 = (EnvDTE80.Windows2)_applicationObject.Windows;
+
+            DTE2 dte2 = _applicationObject;
+
+            addReferenceControls = new List<CommandBarButton>();
+            buildControls = new List<CommandBarControl>();
+            foreach (CommandBar commandBar in (CommandBars)dte2.CommandBars)
+            {
+                foreach (CommandBarControl control in commandBar.Controls)
+                {
+                    if (control.Caption.Equals(Messages.MSG_C_ADD_REFERENCE))
                     {
-                        if (control.Caption.Equals("Add &Reference..."))
-                        {
-                            CommandBarButton ctl = (CommandBarButton)
-                                commandBar.Controls.Add(MsoControlType.msoControlButton,
-                                System.Type.Missing, System.Type.Missing, control.Index, true);
-                            ctl.Click += new _CommandBarButtonEvents_ClickEventHandler(cbShowAddArtifactsForm_Click);
-                            ctl.Caption = "Add Maven Artifact...";
-                            ctl.Visible = true;
-                            addReferenceControls.Add(ctl);
-              							
-              				CommandBarButton ctl1 = (CommandBarButton)
-                                commandBar.Controls.Add(MsoControlType.msoControlButton, 
-                                System.Type.Missing, System.Type.Missing, control.Index, true);
-                            ctl1.Click += 
-                                new _CommandBarButtonEvents_ClickEventHandler(cbShowConfigureRepositoryForm_Click);
-                            ctl1.Caption = "Configure Maven Repository...";
-                            ctl1.Visible = true;
-                            addReferenceControls.Add(ctl1);
-
-                            // by jan ancajas
-                            CommandBarButton ctlSettingsXml = (CommandBarButton)
-                            commandBar.Controls.Add(MsoControlType.msoControlButton, 
-                                                      System.Type.Missing, 
-                                                      System.Type.Missing, 
-                                                      control.Index, 
-                                                      true);
-                            ctlSettingsXml.Click += 
-                                new _CommandBarButtonEvents_ClickEventHandler(cbChangeSettingsXmlForm_Click);
-                            ctlSettingsXml.Caption = "Change Maven settings.xml...";
-                            ctlSettingsXml.Visible = true;
-                            addReferenceControls.Add(ctlSettingsXml);
-
-
-
-                            CommandBarButton ctlSignAssembly = (CommandBarButton)
+                        CommandBarButton ctl = (CommandBarButton)
                             commandBar.Controls.Add(MsoControlType.msoControlButton,
-                                                      System.Type.Missing,
-                                                      System.Type.Missing,
-                                                      control.Index,
-                                                      true);
-                            ctlSignAssembly.Click +=
-                                new _CommandBarButtonEvents_ClickEventHandler(cbSetSignAssemblyForm_Click);
-                            ctlSignAssembly.Caption = "Set NMaven Compile Sign Assembly Key...";
-                            ctlSignAssembly.Visible = true;
-                            addReferenceControls.Add(ctlSignAssembly);
+                            System.Type.Missing, System.Type.Missing, control.Index, true);
+                        ctl.Click += new _CommandBarButtonEvents_ClickEventHandler(cbShowAddArtifactsForm_Click);
+                        ctl.Caption = Messages.MSG_C_ADD_MAVEN_ARTIFACT;
+                        ctl.Visible = true;
+                        addReferenceControls.Add(ctl);
 
-
-
-                            CommandBarButton ctlProjectImport = (CommandBarButton)
+                        CommandBarButton ctl1 = (CommandBarButton)
                             commandBar.Controls.Add(MsoControlType.msoControlButton,
-                                                      System.Type.Missing,
-                                                      System.Type.Missing,
-                                                      control.Index,
-                                                      true);
-                            ctlProjectImport.Click +=
-                                new _CommandBarButtonEvents_ClickEventHandler(cbChangeProjectImportForm_Click);
-                            ctlProjectImport.Caption = "NMaven: Import Project";
-                            ctlProjectImport.Visible = true;
-                            addReferenceControls.Add(ctlProjectImport);
+                            System.Type.Missing, System.Type.Missing, control.Index, true);
+                        ctl1.Click +=
+                            new _CommandBarButtonEvents_ClickEventHandler(cbShowConfigureRepositoryForm_Click);
+                        ctl1.Caption = Messages.MSG_C_CONFIGURE_MAVEN_REPO;
+                        ctl1.Visible = true;
+                        addReferenceControls.Add(ctl1);
 
-                            
-                            
-                        }
-                        // included build web site to support web site projects
-                        else if ((control.Caption.Equals("Clea&n")) || (control.Caption.Equals("Publis&h Selection")) || (control.Caption.Equals("Publis&h Web Site")))
-                        {
-                            // Add the stop maven build button here
-
-                            CommandBarButton stopButton = (CommandBarButton)commandBar.Controls.Add(MsoControlType.msoControlButton,
-                                System.Type.Missing, System.Type.Missing, control.Index + 1, true);
-                            stopButton.Caption = "Stop Maven Build...";
-                            stopButton.Visible = true;
-                            stopButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbStopMavenBuild_Click);
-                            buildControls.Add(stopButton);
+                        // by jan ancajas
+                        CommandBarButton ctlSettingsXml = (CommandBarButton)
+                        commandBar.Controls.Add(MsoControlType.msoControlButton,
+                                                  System.Type.Missing,
+                                                  System.Type.Missing,
+                                                  control.Index,
+                                                  true);
+                        ctlSettingsXml.Click +=
+                            new _CommandBarButtonEvents_ClickEventHandler(cbChangeSettingsXmlForm_Click);
+                        ctlSettingsXml.Caption = Messages.MSG_C_CHANGE_MAVEN_SETTING_XML;
+                        ctlSettingsXml.Visible = true;
+                        addReferenceControls.Add(ctlSettingsXml);
 
 
 
-
-                            CommandBarPopup ctl = (CommandBarPopup)
-                                commandBar.Controls.Add(MsoControlType.msoControlPopup,
-                                System.Type.Missing, System.Type.Missing, control.Index + 1, true);
-                            ctl.Caption = "Maven Phase";
-                            ctl.Visible = true;
-                            buildControls.Add(ctl);
-
-
-
-                            CommandBarButton cleanAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                                System.Type.Missing, System.Type.Missing, 1, true);
-                            cleanAllButton.Caption = "All Project: Clean";
-                            cleanAllButton.Visible = true;
-                            cleanAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbCleanAll_Click);
-
-
-                            CommandBarButton testAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                                System.Type.Missing, System.Type.Missing, 1, true);
-                            testAllButton.Caption = "All Project: Test";
-                            testAllButton.Visible = true;
-                            testAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbTestAll_Click);
-
-                            CommandBarButton installAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                                System.Type.Missing, System.Type.Missing, 1, true);
-                            installAllButton.Caption = "All Project: Install";
-                            installAllButton.Visible = true;
-                            installAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstallAll_Click);
-
-                            CommandBarButton buildAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                                System.Type.Missing, System.Type.Missing, 1, true);
-                            buildAllButton.Caption = "All Project: Build [compile]";
-                            buildAllButton.Visible = true;
-                            buildAllButton.FaceId = 645;
-                            buildAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuildAll_Click);
-
-                            
-
-                            CommandBarButton cleanButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                                System.Type.Missing, System.Type.Missing, 1, true);
-                            cleanButton.Caption = "Current Project: Clean";
-                            cleanButton.Visible = true;
-                            cleanButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbClean_Click);
+                        CommandBarButton ctlSignAssembly = (CommandBarButton)
+                        commandBar.Controls.Add(MsoControlType.msoControlButton,
+                                                  System.Type.Missing,
+                                                  System.Type.Missing,
+                                                  control.Index,
+                                                  true);
+                        ctlSignAssembly.Click +=
+                            new _CommandBarButtonEvents_ClickEventHandler(cbSetSignAssemblyForm_Click);
+                        ctlSignAssembly.Caption = Messages.MSG_C_SET_COMPILE_SIGN_ASSEMBLY_KEY;
+                        ctlSignAssembly.Visible = true;
+                        addReferenceControls.Add(ctlSignAssembly);
 
 
 
-                            CommandBarButton testButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                                System.Type.Missing, System.Type.Missing, 1, true);
-                            testButton.Caption = "Current Project: Test";
-                            testButton.Visible = true;
-                            testButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbTest_Click);
-
-                            CommandBarButton installButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                                System.Type.Missing, System.Type.Missing, 1, true);
-                            installButton.Caption = "Current Project: Install";
-                            installButton.Visible = true;
-                            installButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstall_Click);
-
-                            CommandBarButton buildButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                                System.Type.Missing, System.Type.Missing, 1, true);
-                            buildButton.Caption = "Current Project: Build [compile]";
-                            buildButton.Visible = true;
-                            buildButton.FaceId = 645;
-                            buildButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuild_Click);
-
-                            buildControls.Add(buildAllButton);
-                            buildControls.Add(installAllButton);
-                            buildControls.Add(cleanAllButton);
-                            buildControls.Add(testAllButton);
+                        CommandBarButton ctlProjectImport = (CommandBarButton)
+                        commandBar.Controls.Add(MsoControlType.msoControlButton,
+                                                  System.Type.Missing,
+                                                  System.Type.Missing,
+                                                  control.Index,
+                                                  true);
+                        ctlProjectImport.Click +=
+                            new _CommandBarButtonEvents_ClickEventHandler(cbChangeProjectImportForm_Click);
+                        ctlProjectImport.Caption = Messages.MSG_C_IMPORT_PROJECT;
+                        ctlProjectImport.Visible = true;
+                        addReferenceControls.Add(ctlProjectImport);
 
 
-                            buildControls.Add(buildButton);
-                            buildControls.Add(installButton);
-                            buildControls.Add(cleanButton);
-                            buildControls.Add(testButton);
 
-                            
-                        }
+                    }
+                    // included build web site to support web site projects
+                    else if ((control.Caption.Equals("Clea&n")) || (control.Caption.Equals("Publis&h Selection")) || (control.Caption.Equals("Publis&h Web Site")))
+                    {
+                        // Add the stop maven build button here
+
+                        CommandBarButton stopButton = (CommandBarButton)commandBar.Controls.Add(MsoControlType.msoControlButton,
+                            System.Type.Missing, System.Type.Missing, control.Index + 1, true);
+                        stopButton.Caption = Messages.MSG_C_STOP_MAVEN_BUILD;
+                        stopButton.Visible = true;
+                        stopButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbStopMavenBuild_Click);
+                        buildControls.Add(stopButton);
+
+
+
+
+                        CommandBarPopup ctl = (CommandBarPopup)
+                            commandBar.Controls.Add(MsoControlType.msoControlPopup,
+                            System.Type.Missing, System.Type.Missing, control.Index + 1, true);
+                        ctl.Caption = Messages.MSG_C_MAVEN_PHASE;
+                        ctl.Visible = true;
+                        buildControls.Add(ctl);
+
+
+
+                        CommandBarButton cleanAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                            System.Type.Missing, System.Type.Missing, 1, true);
+                        cleanAllButton.Caption = Messages.MSG_C_CLEAN_ALLPROJECT;
+                        cleanAllButton.Visible = true;
+                        cleanAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbCleanAll_Click);
+
+
+                        CommandBarButton testAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                            System.Type.Missing, System.Type.Missing, 1, true);
+                        testAllButton.Caption = Messages.MSG_C_TEST_ALLPROJECT;
+                        testAllButton.Visible = true;
+                        testAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbTestAll_Click);
+
+                        CommandBarButton installAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                            System.Type.Missing, System.Type.Missing, 1, true);
+                        installAllButton.Caption = Messages.MSG_C_INSTALL_ALLPROJECT;
+                        installAllButton.Visible = true;
+                        installAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstallAll_Click);
+
+                        CommandBarButton buildAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                            System.Type.Missing, System.Type.Missing, 1, true);
+                        buildAllButton.Caption = Messages.MSG_C_BUILD_ALLPROJECT;
+                        buildAllButton.Visible = true;
+                        buildAllButton.FaceId = 645;
+                        buildAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuildAll_Click);
+
+
+
+                        CommandBarButton cleanButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                            System.Type.Missing, System.Type.Missing, 1, true);
+                        cleanButton.Caption = Messages.MSG_C_CLEAN_CURRENTPROJECT;
+                        cleanButton.Visible = true;
+                        cleanButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbClean_Click);
+
+
+
+                        CommandBarButton testButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                            System.Type.Missing, System.Type.Missing, 1, true);
+                        testButton.Caption = Messages.MSG_C_TEST_CURRENTPROJECT;
+                        testButton.Visible = true;
+                        testButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbTest_Click);
+
+                        CommandBarButton installButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                            System.Type.Missing, System.Type.Missing, 1, true);
+                        installButton.Caption = Messages.MSG_C_INSTALL_CURRENTPROJECT;
+                        installButton.Visible = true;
+                        installButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstall_Click);
+
+                        CommandBarButton buildButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                            System.Type.Missing, System.Type.Missing, 1, true);
+                        buildButton.Caption = Messages.MSG_C_BUILD_CURRENTPROJECT;
+                        buildButton.Visible = true;
+                        buildButton.FaceId = 645;
+                        buildButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuild_Click);
+
+                        buildControls.Add(buildAllButton);
+                        buildControls.Add(installAllButton);
+                        buildControls.Add(cleanAllButton);
+                        buildControls.Add(testAllButton);
+
+
+                        buildControls.Add(buildButton);
+                        buildControls.Add(installButton);
+                        buildControls.Add(cleanButton);
+                        buildControls.Add(testButton);
+
+
                     }
                 }
-                nunitControls = new List<CommandBarButton>();
-                Window solutionExplorerWindow = dte2.Windows.Item(Constants.vsWindowKindSolutionExplorer);
-                _selectionEvents = dte2.Events.SelectionEvents;
-                _selectionEvents.OnChange += new _dispSelectionEvents_OnChangeEventHandler(this.OnChange);
+            }
+            nunitControls = new List<CommandBarButton>();
+            Window solutionExplorerWindow = dte2.Windows.Item(Constants.vsWindowKindSolutionExplorer);
+            _selectionEvents = dte2.Events.SelectionEvents;
+            _selectionEvents.OnChange += new _dispSelectionEvents_OnChangeEventHandler(this.OnChange);
 
-                _nmavenLaunched = true;
-                outputWindowPane.OutputString("\nNMaven Addin Successful Started...");
+            _nmavenLaunched = true;
+            outputWindowPane.OutputString(Messages.MSG_L_NMAVEN_ADDIN_STARTED);
         }
         #endregion
 
-         void ReferencesEvents_ReferenceRemoved(Reference pReference)
-         {
-             try
-             {
-                 NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, pReference.ContainingProject);
-                 pomUtil.RemovePomDependency(pReference.Name);
-             }
-             catch (Exception e)
-             {
-                 MessageBox.Show(e.Message, "NMaven Remove Dependency Error:");
-             }
-         }
+        void ReferencesEvents_ReferenceRemoved(Reference pReference)
+        {
+            try
+            {
+                NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, pReference.ContainingProject);
+                pomUtil.RemovePomDependency(pReference.Name);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, Messages.MSG_E_NMAVEN_REMOVE_DEPENDENCY_ERROR);
+            }
+        }
 
         #region OnChange()
         public void OnChange()
         {
             //Since the Solution  event is not so stable, attaching Reference Event is added here instead.
-            if (!projectRefEventLoaded) 
+            if (!projectRefEventLoaded)
             {
                 attachReferenceEvent();
             }
@@ -459,14 +503,14 @@ using System.Runtime.CompilerServices;
                                         commandBar.Controls.Add(MsoControlType.msoControlButton,
                                         System.Type.Missing, System.Type.Missing, control.Index, true);
                                     nunitControl.Click += new _CommandBarButtonEvents_ClickEventHandler(cbRunUnitTest_Click);
-                                    nunitControl.Caption = "Run Unit Test";
+                                    nunitControl.Caption = Messages.MSG_C_RUNUNITTEST;
                                     nunitControl.Visible = true;
                                     CommandBarButton nunitCompileAndRunControl = (CommandBarButton)
                                         commandBar.Controls.Add(MsoControlType.msoControlButton,
                                         System.Type.Missing, System.Type.Missing, control.Index, true);
                                     nunitCompileAndRunControl.Click
                                         += new _CommandBarButtonEvents_ClickEventHandler(cbCompileAndRunUnitTest_Click);
-                                    nunitCompileAndRunControl.Caption = "Compile and Run Unit Test";
+                                    nunitCompileAndRunControl.Caption = Messages.MSG_C_COMPILEANDRUNTEST;
                                     nunitCompileAndRunControl.Visible = true;
                                     nunitControls.Add(nunitControl);
                                     nunitControls.Add(nunitCompileAndRunControl);
@@ -519,7 +563,7 @@ using System.Runtime.CompilerServices;
         {
             //remove maven menus
             DTE2 dte2 = _applicationObject;
-            
+
             addReferenceControls = new List<CommandBarButton>();
             buildControls = new List<CommandBarControl>();
             foreach (CommandBar commandBar in (CommandBars)dte2.CommandBars)
@@ -534,23 +578,23 @@ using System.Runtime.CompilerServices;
 
                 }
             }
-            
+
             //unregister maven event listener
             foreach (Project project in dte2.Solution.Projects)
-            {   
+            {
                 VSProject vsProject = null;
                 try
                 {
                     vsProject = (VSProject)project.Object;
                 }
-                catch 
-                {                
+                catch
+                {
                     continue;
                 }
 
                 vsProject.Events.ReferencesEvents.ReferenceRemoved
                         -= new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
-                    
+
             }
         }
         #endregion
@@ -592,11 +636,11 @@ using System.Runtime.CompilerServices;
 
             if ("pom".Equals(pomUtility.Packaging, StringComparison.OrdinalIgnoreCase))
             {
-                errStr = string.Format("Not A Project Pom Error: {0} is not a project Pom, the pom is a parent pom type.", pomFile);
+                errStr = string.Format(Messages.MSG_EF_NOT_A_PROJECT_POM, pomFile);
             }
-            else if(!pomUtility.ArtifactId.Equals(project.Name, StringComparison.OrdinalIgnoreCase))
+            else if (!pomUtility.ArtifactId.Equals(project.Name, StringComparison.OrdinalIgnoreCase))
             {
-                errStr = string.Format("The Pom may not be the project's Pom: Project Name: {0} is not equal to Pom artifactId: {1}", project.Name, pomUtility.ArtifactId);
+                errStr = string.Format(Messages.MSG_EF_NOT_THE_PROJECT_POM, project.Name, pomUtility.ArtifactId);
             }
 
             if (!string.IsNullOrEmpty(errStr))
@@ -611,8 +655,6 @@ using System.Runtime.CompilerServices;
             }
             executeBuildCommand(pomFile, goal);
         }
-
-
 
         private void NMavenBuildAllProjects(String goal)
         {
@@ -637,12 +679,12 @@ using System.Runtime.CompilerServices;
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void executeBuildCommand(FileInfo pomFile, String goal)
         {
-            
+
             try
             {
                 if (mavenRunner.IsRunning)
                 {
-                    DialogResult res = MessageBox.Show("A Maven Build is currently running, Do you want to stop the build and proceed to a new Build Execution?", "Stop NMaven Build:", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult res = MessageBox.Show(Messages.MSG_Q_STOPCURRENTBUILD, Messages.MSG_C_STOPNMAVENBUILD, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                     // re-check if it is still running, before calling stop
                     if (mavenRunner.IsRunning && res == DialogResult.Yes)
@@ -672,119 +714,111 @@ using System.Runtime.CompilerServices;
             catch (Exception err)
             {
 
-                MessageBox.Show("Maven Execution Error: " + err.Message, 
-                    "Execution Error:",
+                MessageBox.Show(Messages.MSG_E_EXEC_ERROR + err.Message,
+                    Messages.MSG_C_EXEC_ERROR,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
 
 
 
-        } 
+        }
         #endregion
 
+        public FileInfo CurrentSolutionPom
+        {
+            get
+            {
+                try
+                {
+                    FileInfo parentPomFile = new FileInfo(Path.GetDirectoryName(_applicationObject.Solution.FileName) + @"\parent-pom.xml");
+                    FileInfo pomFile = new FileInfo(Path.GetDirectoryName(_applicationObject.Solution.FileName) + @"\pom.xml");
 
+                    NMavenPomHelperUtility parentPomUtil = new NMavenPomHelperUtility(parentPomFile);
+                    NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pomFile);
 
-         public FileInfo CurrentSolutionPom
-         {
-             get
-             {
-                 try
-                 {
-                     FileInfo parentPomFile = new FileInfo(Path.GetDirectoryName(_applicationObject.Solution.FileName) + @"\parent-pom.xml");
-                     FileInfo pomFile = new FileInfo(Path.GetDirectoryName(_applicationObject.Solution.FileName) + @"\pom.xml");
+                    if (!parentPomFile.Exists)
+                    {
+                        return pomFile;
+                    }
+                    else if (pomFile.Exists || parentPomFile.Exists)
+                    {
+                        if (!"pom".Equals(pomUtil.Packaging)
+                            && parentPomFile.Exists
+                            && "pom".Equals(parentPomUtil.Packaging))
+                        {
+                            return parentPomFile;
+                        }
+                        return pomFile;
+                    }
+                    else
+                    {
+                        //MessageBox.Show("Parent pom.xml Not Found!!! ",
+                        //"File Not Found:",
+                        //MessageBoxButtons.OK,
+                        //MessageBoxIcon.Error);
+                        throw new Exception(Messages.MSG_E_PARENTPOM_NOTFOUND);
+                    }
+                }
+                catch (Exception)
+                {
+                    //MessageBox.Show("Locating Parent pom.xml Error: " + e.Message, 
+                    //    "Locating Parent pom.xml Error:",
+                    //    MessageBoxButtons.OK,
+                    //    MessageBoxIcon.Error);
+                    throw;
+                }
+            }
+        }
 
-                     NMavenPomHelperUtility parentPomUtil = new NMavenPomHelperUtility(parentPomFile);
-                     NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pomFile);
+        public FileInfo CurrentSelectedProjectPom
+        {
+            get
+            {
 
-                     if (!parentPomFile.Exists)
-                     {
-                         return pomFile;
-                     }
-                     else if(pomFile.Exists || parentPomFile.Exists)
-                     {
-                         if(!"pom".Equals(pomUtil.Packaging) 
-                             && parentPomFile.Exists
-                             && "pom".Equals(parentPomUtil.Packaging))
-                         {
-                             return parentPomFile;
-                         }
-                         return pomFile;
-                     }
-                     else
-                     {
-                         //MessageBox.Show("Parent pom.xml Not Found!!! ",
-                         //"File Not Found:",
-                         //MessageBoxButtons.OK,
-                         //MessageBoxIcon.Error);
-                         throw new Exception("Parent pom.xml Not Found");
-                     }
-                 }
-                 catch (Exception)
-                 {
-                     //MessageBox.Show("Locating Parent pom.xml Error: " + e.Message, 
-                     //    "Locating Parent pom.xml Error:",
-                     //    MessageBoxButtons.OK,
-                     //    MessageBoxIcon.Error);
-                     throw;
-                 }
-             }
-         }
+                FileInfo pomFile = NMavenPomHelperUtility.FindPomFileUntil(
+                    new FileInfo(CurrentSelectedProject.FullName).Directory,
+                    new FileInfo(_applicationObject.Solution.FileName).Directory);
 
-         public FileInfo CurrentSelectedProjectPom
-         {
-             get 
-             {
+                if (pomFile != null)
+                {
+                    return pomFile;
+                }
 
-                 FileInfo pomFile = NMavenPomHelperUtility.FindPomFileUntil(
-                     new FileInfo(CurrentSelectedProject.FullName).Directory, 
-                     new FileInfo( _applicationObject.Solution.FileName).Directory);
+                return null;
 
-                 if (pomFile != null)
-                 {
-                     return pomFile;
-                 }
+            }
 
-                 return null;
-             
-             }
+        }
 
-         }
+        public Project CurrentSelectedProject
+        {
+            get
+            {
+                foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
+                {
+                    return project;
+                }
 
-         public Project CurrentSelectedProject
-         {
-             get
-             {
-                 foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
-                 {
-                     return project;
-                 }
+                return null;
 
-                 return null;
-
-             }
-         }
-
-
-
+            }
+        }
 
 
         #region cbRunUnitTest_Click(CommandBarButton,bool)
         private void cbRunUnitTest_Click(CommandBarButton btn, ref bool Cancel)
         {
             executeBuildCommand(CurrentSelectedProjectPom, "org.apache.maven.dotnet.plugins:maven-test-plugin:test");
-        } 
+        }
         #endregion
 
         #region cbCompileAndRunUnitTest_Click(CommandBarButton,bool)
         private void cbCompileAndRunUnitTest_Click(CommandBarButton btn, ref bool Cancel)
         {
             executeBuildCommand(CurrentSelectedProjectPom, "test");
-        } 
+        }
         #endregion
-
-
-
 
         #region cbInstallAll_Click(CommandBarButton,bool)
         private void cbInstallAll_Click(CommandBarButton btn, ref bool Cancel)
@@ -795,7 +829,7 @@ using System.Runtime.CompilerServices;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Messages.MSG_E_EXEC_ERROR + e.Message, Messages.MSG_C_ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -809,7 +843,7 @@ using System.Runtime.CompilerServices;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Messages.MSG_E_EXEC_ERROR + e.Message, Messages.MSG_C_ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -823,7 +857,7 @@ using System.Runtime.CompilerServices;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Maven Execution Error: " + e.Message,"Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Messages.MSG_E_EXEC_ERROR + e.Message, Messages.MSG_C_ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -837,12 +871,10 @@ using System.Runtime.CompilerServices;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Messages.MSG_E_EXEC_ERROR + e.Message, Messages.MSG_C_ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
-
-
 
         #region cbInstall_Click(CommandBarButton,bool)
         private void cbInstall_Click(CommandBarButton btn, ref bool Cancel)
@@ -853,9 +885,9 @@ using System.Runtime.CompilerServices;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Messages.MSG_E_EXEC_ERROR + e.Message, Messages.MSG_C_ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        } 
+        }
         #endregion
 
         #region cbClean_Click(CommandBarButton,bool)
@@ -867,9 +899,9 @@ using System.Runtime.CompilerServices;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Messages.MSG_E_EXEC_ERROR + e.Message, Messages.MSG_C_ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        } 
+        }
         #endregion
 
         #region cbBuild_Click(CommandBarButton,bool)
@@ -881,9 +913,9 @@ using System.Runtime.CompilerServices;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Messages.MSG_E_EXEC_ERROR + e.Message, Messages.MSG_C_ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        } 
+        }
         #endregion
 
         #region cbTest_Click(CommandBarButton,bool)
@@ -897,34 +929,32 @@ using System.Runtime.CompilerServices;
             {
                 MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        } 
+        }
         #endregion
 
-         private void cbShowConfigureRepositoryForm_Click(CommandBarButton btn, ref bool Cancel)
-         {
+        private void cbShowConfigureRepositoryForm_Click(CommandBarButton btn, ref bool Cancel)
+        {
             new ConfigureMavenRepositoryForm().Show();
         }
 
-
         #region cbStopMavenBuild_Click(CommandBarButton,bool)
         private void cbStopMavenBuild_Click(CommandBarButton btn, ref bool Cancel)
-         {
-             if (mavenRunner != null && mavenRunner.IsRunning)
-             {
-                 DialogResult res = MessageBox.Show("Do you want to stop the Maven Build?", "Stop NMaven Build:", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        {
+            if (mavenRunner != null && mavenRunner.IsRunning)
+            {
+                DialogResult res = MessageBox.Show(Messages.MSG_Q_STOP_MAVEN_BUILD, Messages.MSG_C_STOPNMAVENBUILD, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                 // re-check if it is still running, before calling stop
-                 if (mavenRunner.IsRunning && res == DialogResult.Yes)
-                 {
-                     mavenRunner.stop();
-                 }
-             }
-         }
+                // re-check if it is still running, before calling stop
+                if (mavenRunner.IsRunning && res == DialogResult.Yes)
+                {
+                    mavenRunner.stop();
+                }
+            }
+        }
         #endregion
 
-
-         #region cbShowAddArtifactsForm_Click(CommandBarButton,bool)
-         private void cbShowAddArtifactsForm_Click(CommandBarButton btn, ref bool Cancel)
+        #region cbShowAddArtifactsForm_Click(CommandBarButton,bool)
+        private void cbShowAddArtifactsForm_Click(CommandBarButton btn, ref bool Cancel)
         {
             //First selected project
             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
@@ -933,9 +963,9 @@ using System.Runtime.CompilerServices;
                 form.Show();
                 break;
             }
-        } 
+        }
         #endregion
-        
+
         // by jan ancajas
         #region cbChangeSettingsXmlForm_Click(CommandBarButton, bool)
         private void cbChangeSettingsXmlForm_Click(CommandBarButton btn, ref bool Cancel)
@@ -945,28 +975,24 @@ using System.Runtime.CompilerServices;
         }
         #endregion
 
-
         #region cbSetSignAssemblyForm_Click(CommandBarButton, bool)
 
+        private void cbSetSignAssemblyForm_Click(CommandBarButton btn, ref bool Cancel)
+        {
 
-         private void cbSetSignAssemblyForm_Click(CommandBarButton btn, ref bool Cancel)
-         {
+
+            //First selected project
+            foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
+            {
+                NMavenSignAssembly frm = new NMavenSignAssembly(project, container, logger, CurrentSelectedProjectPom);
+                frm.ShowDialog();
+                break;
+            }
 
 
-             //First selected project
-             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
-             {
-                 NMavenSignAssembly frm = new NMavenSignAssembly(project, container, logger, CurrentSelectedProjectPom);
-                 frm.ShowDialog(); 
-                 break;
-             }
-
-             
-         }
+        }
 
         #endregion
-
-
 
         #region cbChangeProjectImportForm_Click(CommandBarButton, bool)
         private void cbChangeProjectImportForm_Click(CommandBarButton btn, ref bool Cancel)
@@ -976,21 +1002,16 @@ using System.Runtime.CompilerServices;
         }
         #endregion
 
-
-         
-        
-        
-		 
         #region OnBeginShutdown(Array)
         /// <summary>Implements the OnBeginShutdown method of the IDTExtensibility2 interface. Receives notification that the host application is being unloaded.</summary>
         /// <param term='custom'>Array of parameters that are host application specific.</param>
         /// <seealso class='IDTExtensibility2' />
         public void OnBeginShutdown(ref Array custom)
         {
-            outputWindowPane.OutputString("\nShutting Down NMaven Visual Studio Addin...");
+            outputWindowPane.OutputString(Messages.MSG_L_SHUTTING_DOWN_NMAVEN);
             mavenRunner.Quit();
-            outputWindowPane.OutputString("\nNMaven Successfully Shutdown...");
-        } 
+            outputWindowPane.OutputString(Messages.MSG_L_SUCCESFULLY_SHUTDOWN);
+        }
         #endregion
 
         #region QueryStatus(string,vsCommandStatusTextWanted,vsCommandStatus,commandText)
@@ -1013,7 +1034,7 @@ using System.Runtime.CompilerServices;
                     return;
                 }
             }
-        } 
+        }
         #endregion
 
         #region Exec(string,vsCommandExecOption,object,object,bool)
@@ -1035,7 +1056,7 @@ using System.Runtime.CompilerServices;
             {
                 handled = true;
             }
-        } 
+        }
         #endregion
 
         #region Fields
