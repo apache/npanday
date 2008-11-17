@@ -66,6 +66,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.VisualStudio", "..\N
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.ProjectImporterEngine", "..\NMaven.ProjectImporter\Engine\src\main\csharp\NMaven.ProjectImporterEngine.csproj", "{91FC215D-C041-4000-8F71-C04A9EEABE55}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.Utils", "..\NMaven.Utils\src\main\csharp\NMaven.Utils.csproj", "{CAA4864F-F4C8-4024-8535-8B8C112307CE}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +124,14 @@ Global
 		{95661103-78B8-423A-80CA-41AFC69BD1DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95661103-78B8-423A-80CA-41AFC69BD1DE}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{95661103-78B8-423A-80CA-41AFC69BD1DE}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{91FC215D-C041-4000-8F71-C04A9EEABE55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91FC215D-C041-4000-8F71-C04A9EEABE55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91FC215D-C041-4000-8F71-C04A9EEABE55}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{91FC215D-C041-4000-8F71-C04A9EEABE55}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{CAA4864F-F4C8-4024-8535-8B8C112307CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA4864F-F4C8-4024-8535-8B8C112307CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA4864F-F4C8-4024-8535-8B8C112307CE}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA4864F-F4C8-4024-8535-8B8C112307CE}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -44,9 +44,9 @@
     <Reference Include="NMaven.ProjectImporterEngine">
       <HintPath>..\..\..\..\NMaven.ProjectImporter\Engine\target\NMaven.ProjectImporterEngine.dll</HintPath>
     </Reference>
-    <Reference Include="NMaven.Utils, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NMaven.Utils, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Documents and Settings\Melvin Sembrano\.m2\uac\gac_msil\NMaven.Utils\0.14-maestro-1.7.6-SNAPSHOT__NMaven.Utils\NMaven.Utils.dll</HintPath>
+      <HintPath>..\..\..\..\NMaven.Utils\target\NMaven.Utils.dll</HintPath>
     </Reference>
     <Reference Include="NMaven.VisualStudio">
       <HintPath>..\..\..\..\NMaven.VisualStudio\target\NMaven.VisualStudio.dll</HintPath>

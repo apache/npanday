@@ -10,11 +10,17 @@
   <PropertyGroup>
     <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>..\..\..\target\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NMaven.Model.Pom" />
+    <Reference Include="NMaven.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\NMaven.Model\Pom\target\NMaven.Model.Pom.dll</HintPath>
+    </Reference>
     <Reference Include="NMaven.Model.Settings, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\.m2\uac\gac_msil\NMaven.Model.Settings\0.14-SNAPSHOT__NMaven.Model\NMaven.Model.Settings.dll</HintPath>
+      <HintPath>..\..\..\..\NMaven.Utils\target\NMaven.Model.Settings.dll</HintPath>
     </Reference>
     <Reference Include="NUnit.Framework" />
     <Reference Include="System" />
