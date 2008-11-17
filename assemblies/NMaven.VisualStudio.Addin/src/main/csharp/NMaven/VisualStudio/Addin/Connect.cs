@@ -795,9 +795,27 @@ namespace NMaven.VisualStudio.Addin
 
         #region NMavenBuild
 
+        private void SaveAllDocuments()
+        {
+            Solution2 solution = (Solution2)_applicationObject.Solution;
+            foreach (Project project in solution.Projects)
+            {
+                ProjectItems items = project.ProjectItems;
+                foreach (ProjectItem item in items)
+                {
+                    
+                    try{if(!item.Saved)
+                    {
+                        item.Save(item.Name);
+                    }}catch{}
+                }
+            }
+        }
+		
         private void NMavenBuildSelectedProject(String goal)
         {
-            FileInfo pomFile = CurrentSelectedProjectPom;
+            SaveAllDocuments();
+			FileInfo pomFile = CurrentSelectedProjectPom;
             Project project = CurrentSelectedProject;
             NMavenPomHelperUtility pomUtility = new NMavenPomHelperUtility(pomFile);
 
@@ -845,7 +863,8 @@ namespace NMaven.VisualStudio.Addin
 
         private void NMavenBuildAllProjects(String goal)
         {
-            FileInfo pomFile = CurrentSolutionPom;
+            SaveAllDocuments();
+			FileInfo pomFile = CurrentSolutionPom;
             NMavenPomHelperUtility pomUtility = new NMavenPomHelperUtility(pomFile);
             if (!"pom".Equals(pomUtility.Packaging, StringComparison.OrdinalIgnoreCase))
             {
