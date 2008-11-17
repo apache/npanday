@@ -177,10 +177,21 @@ under the License.
       </plugin>  
       <plugin> 
         <artifactId>maven-assembly-plugin</artifactId>  
+        <inherited>false</inherited>  
         <configuration> 
           <descriptor>src/assembly/src.xml</descriptor>  
-          <outputDirectory>src/target</outputDirectory> 
+          <outputDirectory>target</outputDirectory> 
+          <finalName>nmaven</finalName>
         </configuration> 
+        <executions> 
+          <execution> 
+            <id>make-assembly</id>  
+            <phase>package</phase>  
+            <goals> 
+              <goal>single</goal> 
+            </goals> 
+          </execution> 
+        </executions> 
       </plugin>  
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>  
