@@ -53,6 +53,9 @@ using NMaven.Model.Pom;
 
 using NMaven.Utils;
 using System.Runtime.CompilerServices;
+using VSLangProj80;
+using System.Text;
+
 
 #endregion
 
@@ -82,6 +85,8 @@ namespace NMaven.VisualStudio.Addin
         public const string MSG_D_NMAVEN_BUILD_SYSTEM = "NMaven Build System";
         public const string MSG_T_NMAVEN_BUILDSYSTEM = "Executes the command for NMaven Addin";
         public const string MSG_C_ADD_REFERENCE = "Add &Reference...";
+        public const string MSG_C_ADD_WEB_REFERENCE = "Add W&eb Reference...";
+        public const string MSG_C_UPDATE_POM_WEB_REFERENCES = "Update POM Web References...";
         public const string MSG_C_CONFIGURE_MAVEN_REPO = "Configure Maven Repository...";
         public const string MSG_C_ADD_MAVEN_ARTIFACT = "Add Maven Artifact...";
         public const string MSG_C_CHANGE_MAVEN_SETTING_XML = "Change Maven settings.xml...";
@@ -143,7 +148,7 @@ namespace NMaven.VisualStudio.Addin
     #region Connect
     /// <summary>The object for implementing an Add-in.</summary>
     /// <seealso class='IDTExtensibility2' />
-    public class Connect : IDTExtensibility2, IDTCommandTarget
+    public class Connect : IDTExtensibility2, IDTCommandTarget, IWebServicesRefUtils
     {
         #region Connect()
         /// <summary>
@@ -253,28 +258,101 @@ namespace NMaven.VisualStudio.Addin
             }
         }
 
+        private const string WEB_PROJECT_KIND_GUID = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";
+
+        static bool IsWebProject(Project project)
+        {
+            // make sure there's a project item
+            if (project == null)
+                return false;
+
+            // compare the project kind to the web project guid
+            return (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0);
+        }
+
         void attachReferenceEvent()
         {
             //References
             referenceEvents = new List<ReferencesEvents>();
-            foreach (Project project in _applicationObject.Solution.Projects)
+            Solution2 solution = (Solution2)_applicationObject.Solution;
+
+            this.wsRefWatcher = new List<WebServicesReferenceWatcher>();
+
+            foreach (Project project in solution.Projects)
             {
                 projectRefEventLoaded = true;
-                VSProject vsProject = null;
+                VSProject2 vsProject = null;
+                
+                if (IsWebProject(project))
+                {
+                    outputWindowPane.OutputString(string.Format("\n{0} is not a project file, changing references for this project will need to re-import the pom file.", project.Name));
+                }
+                else
+                {
+                    try
+                    {
+                        vsProject = (VSProject2)project.Object;
+                    }
+                    catch
+                    {
+                        //  not a csproj / vbproj file. Could be a solution folder. skip it.
+                        continue;
+                    }
+                }
+                referenceEvents.Add(vsProject.Events2.ReferencesEvents);
+                
+                vsProject.Events2.ReferencesEvents.ReferenceRemoved
+                    += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
+                
+                //attach web references watcher
+
                 try
                 {
-                    vsProject = (VSProject)project.Object;
+                    ProjectItem webReferenceFolder = vsProject.WebReferencesFolder;
+                    if (webReferenceFolder == null)
+                    {
+                        webReferenceFolder = vsProject.CreateWebReferencesFolder();
+                    }
+
+                    string wsPath = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
+                    WebServicesReferenceWatcher wsw = new WebServicesReferenceWatcher(wsPath);
+                    wsw.Created += new EventHandler<WebReferenceEventArgs>(wsw_Created);
+                    wsw.Deleted += new EventHandler<WebReferenceEventArgs>(wsw_Deleted);
+                    wsw.Renamed += new EventHandler<WebReferenceEventArgs>(wsw_Renamed);
+                    wsw.Start();
+                    this.wsRefWatcher.Add(wsw);
+
                 }
-                catch
+                catch (Exception ex)
                 {
-                    //  not a csproj / vbproj file. Could be a solution folder. skip it.
-                    continue;
-                }
-                referenceEvents.Add(vsProject.Events.ReferencesEvents);
-                vsProject.Events.ReferencesEvents.ReferenceRemoved
-                    += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
+
+                    throw ex;
+                }                
 
             }
+        }
+
+        void wsw_Renamed(object sender, WebReferenceEventArgs e)
+        {
+            System.Threading.Thread.Sleep(1500); e.Init(); NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+            pomUtil.RenameWebReference(e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
+        }
+
+        void wsw_Deleted(object sender, WebReferenceEventArgs e)
+        {
+            NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+            pomUtil.RemoveWebReference(e.Namespace);
+        }
+
+        void wsw_Created(object sender, WebReferenceEventArgs e)
+        {
+            //wait for the files to be created
+            System.Threading.Thread.Sleep(1500);
+            e.Init();
+
+            NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+
+            pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty);
         }
 
         private void launchNMavenBuildSystem()
@@ -478,6 +556,11 @@ namespace NMaven.VisualStudio.Addin
             _nmavenLaunched = true;
             outputWindowPane.OutputString(Messages.MSG_L_NMAVEN_ADDIN_STARTED);
         }
+
+        void awfButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
+        {
+            outputWindowPane.OutputString("\n Add web reference click.");
+        }
         #endregion
 
         void ReferencesEvents_ReferenceRemoved(Reference pReference)
@@ -612,6 +695,11 @@ namespace NMaven.VisualStudio.Addin
                         -= new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
 
             }
+
+            foreach (WebServicesReferenceWatcher w in wsRefWatcher)
+            {
+                w.Stop();
+            }
         }
         #endregion
 
@@ -658,7 +746,7 @@ namespace NMaven.VisualStudio.Addin
             {
                 errStr = string.Format(Messages.MSG_EF_NOT_THE_PROJECT_POM, project.Name, pomUtility.ArtifactId);
             }
-
+            
             if (!string.IsNullOrEmpty(errStr))
             {
                 //DialogResult res = MessageBox.Show(errStr + "\nWould you like to continue building?", "Pom Error:", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
@@ -669,6 +757,16 @@ namespace NMaven.VisualStudio.Addin
                 //}
                 throw new Exception(errStr);
             }
+
+            //check if project has webreference
+            if (ProjectHasWebReferences(project))
+            { 
+                if(MessageBox.Show("Do you want to update webservice references?","NMaven Build", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    UpdateWebReferences(project);
+                }
+            }
+
             executeBuildCommand(pomFile, goal);
         }
 
@@ -686,6 +784,25 @@ namespace NMaven.VisualStudio.Addin
                 //}
                 //throw new Exception(errStr);
             }
+
+            Solution2 solution = (Solution2)_applicationObject.Solution;
+            bool asked = false;
+            foreach (Project project in solution.Projects)
+            {
+                if (!IsWebProject(project) && ProjectHasWebReferences(project))
+                {
+                    if (!asked && MessageBox.Show("Do you want to update webservice references?", "NMaven Build", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    {
+                        break;
+                    }
+                    else
+                        asked = true;
+
+                    UpdateWebReferences(project);
+                }
+
+            }
+
             executeBuildCommand(pomFile, goal);
         }
 
@@ -1086,10 +1203,196 @@ namespace NMaven.VisualStudio.Addin
         private EnvDTE.SelectionEvents _selectionEvents;
         private ArtifactContext container;
         private List<ReferencesEvents> referenceEvents;
+        private List<VSLangProj80.VSLangProjWebReferencesEvents> webRefEvents;
         //private DirectoryInfo baseDirectoryInfo; 
         private MavenRunner mavenRunner;
         private bool _nmavenLaunched = false;
+
+        List<WebServicesReferenceWatcher> wsRefWatcher = new List<WebServicesReferenceWatcher>();
+
         #endregion
+
+        #region IWebServicesRefUtils Members
+
+        public bool ProjectHasWebReferences(Project project)
+        {
+            VSProject2 p = (VSProject2)project.Object;
+            if (p.WebReferencesFolder == null)
+                return false;
+            if (p.WebReferencesFolder.ProjectItems.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public bool RemovePomWebReferenceInfo(string webRefNamespace)
+        {
+            NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+            pomUtil.RemoveWebReference(webRefNamespace);
+            return true;
+
+        }
+
+        public bool AddPomWebReferenceInfo(IWebServiceRefInfo webref)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public void UpdateWebReferences(Project project)
+        {
+            foreach (IWebServiceRefInfo wsInfo in GetWebReferences(project))
+            {
+                try
+                {
+                    UpdateWSDLFile(wsInfo);
+
+                }
+                catch (Exception ex)
+                {
+                    outputWindowPane.OutputString(string.Format("\nError updating {0}. [{1}]", wsInfo.Name, ex.Message));
+                }
+            }
+
+        }
+
+        public List<IWebServiceRefInfo> GetWebReferences(Project project)
+        {
+            VSProject2 p = (VSProject2)project.Object;
+            List<IWebServiceRefInfo> list = new List<IWebServiceRefInfo>();
+            
+            foreach (ProjectItem item in p.WebReferencesFolder.ProjectItems)
+            {
+                string refFolder = Path.Combine(Path.Combine(Path.GetDirectoryName(project.FullName), p.WebReferencesFolder.Name), item.Name);
+                string fname = WebServicesReferenceUtils.GetReferenceFile(refFolder);
+                if (!string.IsNullOrEmpty(fname))
+                {
+                    WebServiceRefInfo wr = new WebServiceRefInfo(item.Name, WebServicesReferenceUtils.GetWsdlUrl(fname));
+                    wr.WsdlFile = WebServicesReferenceUtils.GetWsdlFile(refFolder);
+                    list.Add(wr);
+                }
+            }
+            
+            return list;
+        }
+
+        public bool UpdateWSDLFile(IWebServiceRefInfo webRef)
+        {
+            byte[] page = null;
+            string wsdlUrl = webRef.WSDLUrl;
+
+            WebClient webClient = new WebClient();
+            try
+            {
+                page = webClient.DownloadData(wsdlUrl);
+
+                string wsdlContent = Encoding.UTF8.GetString(page);
+                TextWriter wr = new StreamWriter(webRef.WsdlFile,false);
+                wr.Write(wsdlContent);
+                wr.Flush();
+                wr.Close();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Cannot read url : " + wsdlUrl + Environment.NewLine + ex.Message + Environment.NewLine + ex.StackTrace);
+                return false;
+            }
+            return true;
+        }
+
+        public bool GenerateProxies(IWebServiceRefInfo webRef)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        #endregion
+
     }
     #endregion
+
+    public interface IWebServicesRefUtils
+    {
+        bool ProjectHasWebReferences(Project project);
+        bool RemovePomWebReferenceInfo(string webRefNamespace);
+        bool AddPomWebReferenceInfo(IWebServiceRefInfo webref);
+        List<IWebServiceRefInfo> GetWebReferences(Project project);
+        void UpdateWebReferences(Project project);
+        bool UpdateWSDLFile(IWebServiceRefInfo webRef);
+        bool GenerateProxies(IWebServiceRefInfo webRef);
+    }
+
+    public interface IWebServiceRefInfo
+    {
+        string Name { get; set;}
+        string WSDLUrl { get; set;}
+        string OutputFile { get; set;}
+        string WsdlFile { get; set;}
+    }
+
+    public class WebServiceRefInfo : IWebServiceRefInfo
+    {
+        public WebServiceRefInfo() { }
+        public WebServiceRefInfo(string name, string wsdlUrl)
+        {
+            this.name = name;
+            this.wsdlUrl = wsdlUrl;
+        }
+
+        #region IWebServiceRefInfo Members
+        string name;
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                name = value;
+            }
+        }
+
+        string wsdlUrl;
+        public string WSDLUrl
+        {
+            get
+            {
+                return wsdlUrl;
+            }
+            set
+            {
+                wsdlUrl = value;
+            }
+        }
+
+        string outputFile;
+        public string OutputFile
+        {
+            get
+            {
+                return outputFile;
+            }
+            set
+            {
+                outputFile = value;
+            }
+        }
+
+        string wsdlFile;
+        public string WsdlFile
+        {
+            get
+            {
+                return wsdlFile;
+            }
+            set
+            {
+                wsdlFile = value;
+            }
+        }
+
+        #endregion
+
+
+    }
 }
