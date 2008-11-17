@@ -39,7 +39,7 @@ namespace NMaven.Plugin.Solution
 		{
 		}
 
-	    [FieldAttribute("localRepo", Expression = "${settings.localRepository}", Type = "java.lang.String")]
+	  [FieldAttribute("localRepo", Expression = "${settings.localRepository}", Type = "java.lang.String")]
 		public String localRepository;
 
 		[FieldAttribute("basedir", Expression = "${basedir}", Type = "java.lang.String")]
@@ -47,7 +47,7 @@ namespace NMaven.Plugin.Solution
 		
 		[FieldAttribute("mavenProject", Expression = "${project}", Type = "org.apache.maven.project.MavenProject")]
 		public NMaven.Model.Pom.Model mavenProject;
-		
+
 		private String profile = null;
 		
 		public override Type GetMojoImplementationType()
@@ -57,7 +57,8 @@ namespace NMaven.Plugin.Solution
 		
 		public override void Execute()
 		{
-			IProjectGenerator projectGenerator = Factory.createDefaultProjectGenerator();
+
+           	IProjectGenerator projectGenerator = Factory.createDefaultProjectGenerator();
             FileInfo pomFileInfo = new FileInfo(basedir + @"\pom.xml");
 			List<IProjectReference> projectReferences = Execute(new DirectoryInfo(pomFileInfo.DirectoryName),
 			                                                           mavenProject, profile);
@@ -99,26 +100,33 @@ namespace NMaven.Plugin.Solution
 			} 
 			else
 			{
-                createMainAndTestProjectFiles(currentDirectory, model, projectReferences, projectGenerator, "csharp");
-                createMainAndTestProjectFiles(currentDirectory, model, projectReferences, projectGenerator, "vb");
+                // TODO: HEHEHEEHHEH
+                //createMainAndTestProjectFiles(currentDirectory, model, projectReferences, projectGenerator, "csharp");
+                //createMainAndTestProjectFiles(currentDirectory, model, projectReferences, projectGenerator, "vb");
+                createMainAndTestProjectFiles(currentDirectory, model, projectReferences, projectGenerator);
 			}	
 			return projectReferences;
 		}
 
-        private void createMainAndTestProjectFiles(DirectoryInfo currentDirectory, NMaven.Model.Pom.Model model, List<IProjectReference> projectReferences, IProjectGenerator projectGenerator, string projType)
+        private void createMainAndTestProjectFiles(DirectoryInfo currentDirectory, NMaven.Model.Pom.Model model, List<IProjectReference> projectReferences, IProjectGenerator projectGenerator)
         {
+
+            
+
+
+
             IProjectReference mainProjectReference = null;
-            if (new DirectoryInfo(currentDirectory.FullName + @"\src\main\" + projType + @"\").Exists)
+            if (SourceDirectory != null && SourceDirectory.Exists)
             {
                 mainProjectReference =
                     projectGenerator.GenerateProjectFor(model,
-                                                new DirectoryInfo(currentDirectory.FullName + @"\src\main\" + projType + @"\"),
-                                                model.artifactId, null, new DirectoryInfo(localRepository));
+                                                SourceDirectory,
+                                                model.artifactId, null, new DirectoryInfo(localRepository),currentDirectory);
                 Console.WriteLine("NMAVEN-000-000: Generated project: File Name = "
                                   + mainProjectReference.ProjectFile.FullName);
                 projectReferences.Add(mainProjectReference);
             }
-            if (new DirectoryInfo(currentDirectory.FullName + @"\src\test\" + projType + @"\").Exists)
+            if (TestSourceDirectory != null && TestSourceDirectory.Exists)
             {
                 List<IProjectReference> mainRef = new List<IProjectReference>();
                 if (mainProjectReference != null)
@@ -127,13 +135,17 @@ namespace NMaven.Plugin.Solution
                 }
                 IProjectReference projectReference =
                     projectGenerator.GenerateProjectFor(model,
-                                                new DirectoryInfo(currentDirectory.FullName + @"\src\test\" + projType + @"\"),
-                                                model.artifactId + "-Test", mainRef, new DirectoryInfo(localRepository));
+                                                TestSourceDirectory,
+                                                model.artifactId + "-Test", mainRef, new DirectoryInfo(localRepository),currentDirectory);
                 Console.WriteLine("NMAVEN-000-000: Generated test project: File Name = "
                                   + projectReference.ProjectFile.FullName);
                 projectReferences.Add(projectReference);
             }
         }
+
+
+
+
 		
 		private string GetArgFor(string name, string[] args)
 		{
@@ -162,5 +174,96 @@ namespace NMaven.Plugin.Solution
 			}
 			return model.modules;
         }
+
+        private DirectoryInfo SourceDirectory
+        {
+            get
+            {
+                DirectoryInfo currentDirectory = new DirectoryInfo(basedir);
+
+                // check if its not equal to the java default source dir
+                if (!(currentDirectory.FullName + @"\src\main\java").Equals(mavenProject.build.sourceDirectory))
+                {
+                    // make sure that it ends with a slash :-)
+                    // project generato has a bug, when generating a source code includes
+                    // when there is no slash in the directory name
+                    if (mavenProject.build.sourceDirectory.EndsWith(@"\") || mavenProject.build.sourceDirectory.EndsWith(@"/"))
+                    {
+                        return new DirectoryInfo(mavenProject.build.sourceDirectory);
+                    }
+                    else
+                    {
+                        return new DirectoryInfo(mavenProject.build.sourceDirectory + @"\");
+                    }
+                }
+                else
+                {
+                    
+                    DirectoryInfo d;
+                    // if csharp
+                    if ((d = new DirectoryInfo(currentDirectory.FullName + @"\src\main\csharp\")).Exists)
+                    {
+                        return d;
+                    }
+                    else if ((d = new DirectoryInfo(currentDirectory.FullName + @"\src\main\vb\")).Exists)
+                    {
+                        return d;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                } 
+
+            }
+        }
+
+
+        private DirectoryInfo TestSourceDirectory
+        {
+            get
+            {
+                DirectoryInfo currentDirectory = new DirectoryInfo(basedir);
+                // check if its not equal to the java default source dir
+                if (!(currentDirectory.FullName + @"\src\test\java").Equals(mavenProject.build.testSourceDirectory))
+                {
+                    // make sure that it ends with a slash :-)
+                    // project generato has a bug, when generating a source code includes
+                    // when there is no slash in the directory name
+                    if (mavenProject.build.testSourceDirectory.EndsWith(@"\") || mavenProject.build.testSourceDirectory.EndsWith(@"/"))
+                    {
+                        return new DirectoryInfo(mavenProject.build.testSourceDirectory);
+                    }
+                    else
+                    {
+                        return new DirectoryInfo(mavenProject.build.testSourceDirectory + @"\");
+                    }
+
+                }
+                else
+                {
+                   
+
+                    DirectoryInfo d;
+                    // if csharp
+                    if ((d = new DirectoryInfo(currentDirectory.FullName + @"\src\test\csharp\")).Exists)
+                    {
+                        return d;
+                    }
+                    else if ((d = new DirectoryInfo(currentDirectory.FullName + @"\src\test\vb\")).Exists)
+                    {
+                        return d;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+
+            }
+        }
+	
 	}
 }

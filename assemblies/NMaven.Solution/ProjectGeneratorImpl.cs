@@ -61,7 +61,8 @@ namespace NMaven.Solution.Impl
 		                                  DirectoryInfo sourceFileDirectory,
 		                                  String projectFileName,
 		                                  ICollection<IProjectReference> projectReferences,
-		                                  DirectoryInfo localRepository)
+		                                  DirectoryInfo localRepository,
+                                          DirectoryInfo currentDirectory)
 	    {		
 			Guid projectGuid = Guid.NewGuid();
 
@@ -69,13 +70,14 @@ namespace NMaven.Solution.Impl
             {
                 projectReferences = new List<IProjectReference>();
             }
+            
 
 			Project project = GetProjectFromPomModel(model, 
 			                                         sourceFileDirectory,
 			                                         projectFileName, 
 			                                         projectGuid,
-			                                         @"..\..\..\target\bin\Debug\", 
-			                                         @"..\..\..\target\obj\",
+			                                         currentDirectory + @"\target\bin\Debug\", 
+			                                         currentDirectory + @"\target\obj\",
 			                                         projectReferences,
 			                                         localRepository);
             String fileNameExtension = directoryToFileNameExtensionMapping[sourceFileDirectory.Name];

@@ -47,7 +47,9 @@ namespace NMaven.Solution
 		                            DirectoryInfo sourceFileDirectory,
 		                            string projectFileName,
                                     ICollection<IProjectReference> projectReferences,
-                                    DirectoryInfo localRepository);
+                                    DirectoryInfo localRepository,
+                                    DirectoryInfo currentDirectory
+                                    );
 		
         /// <summary>
         /// Generates a solution file that references the specified projects.
