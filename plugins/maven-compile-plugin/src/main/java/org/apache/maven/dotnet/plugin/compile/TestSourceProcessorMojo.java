@@ -80,6 +80,8 @@ public class TestSourceProcessorMojo
         excludeList.add( "*.vbproj" );
         excludeList.add( "*.sln" );
         excludeList.add( "obj/**" );
+        excludeList.add( "bin/**" );
+        excludeList.add( "target/**" );
         for ( int i = 0; i < testExcludes.length; ++i )
         {
             excludeList.add( testExcludes[i] );
