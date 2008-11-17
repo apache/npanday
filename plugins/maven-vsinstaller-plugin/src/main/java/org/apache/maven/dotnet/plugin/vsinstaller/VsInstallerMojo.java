@@ -129,6 +129,15 @@ public class VsInstallerMojo
 
         artifactContext.init( null, mavenProject.getRemoteArtifactRepositories(), new File( localRepository ) );
 
+        try
+        {
+            artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( "VisualStudio2005", null,
+                                                                                               null );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
         //GAC Installs
 
         List<NetDependencyMatchPolicy> gacInstallPolicies = new ArrayList<NetDependencyMatchPolicy>();
