@@ -504,6 +504,7 @@ using System.Runtime.CompilerServices;
         /// <seealso class='IDTExtensibility2' />
         public void OnDisconnection(ext_DisconnectMode disconnectMode, ref Array custom)
         {
+            //remove maven menus
             DTE2 dte2 = _applicationObject;
             
             addReferenceControls = new List<CommandBarButton>();
@@ -519,6 +520,24 @@ using System.Runtime.CompilerServices;
                     }
 
                 }
+            }
+            
+            //unregister maven event listener
+            foreach (Project project in dte2.Solution.Projects)
+            {   
+                VSProject vsProject = null;
+                try
+                {
+                    vsProject = (VSProject)project.Object;
+                }
+                catch (Exception ex)
+                {                
+                    continue;
+                }
+                   
+                vsProject.Events.ReferencesEvents.ReferenceRemoved 
+                        -= new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
+                    
             }
         }
         #endregion
