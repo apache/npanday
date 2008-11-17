@@ -173,21 +173,11 @@ public class NetExecutableFactoryImpl
                                              String localRepository, File parameterFile, String mojoName )
         throws PlatformUnsupportedException
     {
-        List<Artifact> artifacts = artifactContext.getArtifactsFor( groupId, artifactId, null, null );
-        if ( artifacts.size() == 0 )
-        {
-            throw new PlatformUnsupportedException(
-                "NMAVEN-066-023: Could not locate the plugin - missing entry in the net-dependencies.xml file: GroupId = " +
-                    groupId + ", ArtifactId = " + artifactId );
-        }
+        Artifact artifact = getArtifactFor(groupId, artifactId);
+        return getPluginLoaderFor(artifact, vendorInfo, localRepository, parameterFile, mojoName);
+    }
 
-        Artifact artifact = artifacts.get( 0 );
-        if ( artifact == null )
-        {
-            throw new PlatformUnsupportedException(
-                "NMAVEN-066-021: Could not locate the plugin: GroupId = " + groupId + ", ArtifactId = " + artifactId );
-        }
-
+    public NetExecutable getPluginLoaderFor(Artifact artifact, VendorInfo vendorInfo, String localRepository, File parameterFile, String mojoName) throws PlatformUnsupportedException {
         //AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
         File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, new File( localRepository ) );
 
@@ -203,6 +193,24 @@ public class NetExecutableFactoryImpl
 
         return getNetExecutableFromRepository( "NMaven.Plugin", "NMaven.Plugin.Runner", vendorInfo,
                                                new File( localRepository ), commands, false );
+    }
+
+    public Artifact getArtifactFor(String groupId, String artifactId) throws PlatformUnsupportedException {
+        List<Artifact> artifacts = artifactContext.getArtifactsFor( groupId, artifactId, null, null );
+        if ( artifacts.size() == 0 )
+        {
+            throw new PlatformUnsupportedException(
+                "NMAVEN-066-023: Could not locate the plugin - missing entry in the net-dependencies.xml file: GroupId = " +
+                    groupId + ", ArtifactId = " + artifactId );
+        }
+
+        Artifact artifact = artifacts.get( 0 );
+        if ( artifact == null )
+        {
+            throw new PlatformUnsupportedException(
+                "NMAVEN-066-021: Could not locate the plugin: GroupId = " + groupId + ", ArtifactId = " + artifactId );
+        }
+        return artifact;
     }
 
     public NetExecutable getNetExecutableFromRepository( String groupId, String artifactId, VendorInfo vendorInfo,

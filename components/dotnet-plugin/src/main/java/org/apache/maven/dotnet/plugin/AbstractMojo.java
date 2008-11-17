@@ -18,32 +18,49 @@
  */
 package org.apache.maven.dotnet.plugin;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.dotnet.vendor.VendorInfo;
-import org.apache.maven.dotnet.vendor.VendorFactory;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.dotnet.PlatformUnsupportedException;
+import org.apache.maven.dotnet.PathUtil;
+import org.apache.maven.dotnet.artifact.ArtifactContext;
+import org.apache.maven.dotnet.artifact.AssemblyResolver;
+import org.apache.maven.dotnet.dao.Project;
+import org.apache.maven.dotnet.dao.ProjectDao;
+import org.apache.maven.dotnet.dao.ProjectDependency;
+import org.apache.maven.dotnet.dao.ProjectFactory;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.executable.NetExecutableFactory;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import org.apache.maven.dotnet.registry.DataAccessObjectRegistry;
+import org.apache.maven.dotnet.vendor.VendorFactory;
+import org.apache.maven.dotnet.vendor.VendorInfo;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * The base class for plugins that execute a .NET plugin. Classes that extend this class are only expected to provide
@@ -53,8 +70,14 @@ import java.util.HashSet;
  */
 public abstract class AbstractMojo
     extends org.apache.maven.plugin.AbstractMojo
-    implements DotNetMojo
+    implements DotNetMojo, Contextualizable
 {
+    private PlexusContainer container;
+
+    public void contextualize(Context context) throws ContextException {
+        container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
+    }
+
     /**
      * Executes the mojo.
      *
@@ -130,7 +153,10 @@ public abstract class AbstractMojo
             }
             vendorInfo.setFrameworkVersion( getFrameworkVersion() );
             vendorInfo.setVendorVersion( getVendorVersion() );
-            getNetExecutableFactory().getPluginLoaderFor( getMojoGroupId(), getMojoArtifactId(), vendorInfo,
+
+            Artifact artifact = getNetExecutableFactory().getArtifactFor(getMojoGroupId(), getMojoArtifactId());
+            resolveArtifact(artifact);
+            getNetExecutableFactory().getPluginLoaderFor( artifact, vendorInfo,
                                                           getLocalRepository(), paramFile,
                                                           getClassName() ).execute();
         }
@@ -141,6 +167,70 @@ public abstract class AbstractMojo
         catch ( ExecutionException e )
         {
             throw new MojoExecutionException( "NMAVEN-xxx-000", e );
+        } catch (ComponentLookupException e) {
+            throw new MojoExecutionException( "NMAVEN-xxx-000", e );
+        }
+    }
+
+    private void resolveArtifact(Artifact artifact) throws ComponentLookupException, MojoExecutionException {
+        File localRepository = new File(getLocalRepository());
+        if (PathUtil.getPrivateApplicationBaseFileFor(artifact, localRepository).exists())
+        {
+            return;
+        }
+
+        ArtifactContext artifactContext = null;
+        AssemblyResolver assemblyResolver = null;
+        ArtifactFactory artifactFactory = null;
+        DataAccessObjectRegistry daoRegistry = null;
+        try {
+            artifactContext = (ArtifactContext) container.lookup(ArtifactContext.ROLE);
+            assemblyResolver = (AssemblyResolver) container.lookup(AssemblyResolver.ROLE);
+            artifactFactory = (ArtifactFactory) container.lookup(ArtifactFactory.ROLE);
+            daoRegistry = (DataAccessObjectRegistry) container.lookup(DataAccessObjectRegistry.ROLE);
+
+            Dependency dependency = new Dependency();
+            dependency.setGroupId(artifact.getGroupId());
+            dependency.setArtifactId(artifact.getArtifactId());
+            dependency.setVersion(artifact.getVersion());
+            dependency.setScope(Artifact.SCOPE_RUNTIME);
+            dependency.setType(artifact.getType());
+
+            assemblyResolver.resolveTransitivelyFor(new MavenProject(), Collections.singletonList(dependency), getMavenProject().getRemoteArtifactRepositories(),
+                    localRepository, false);
+
+            ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
+            dao.openConnection();
+            Project project = dao.getProjectFor(dependency.getGroupId(), dependency.getArtifactId(),
+                    dependency.getVersion(), dependency.getType(),
+                    dependency.getClassifier());
+
+            List<Dependency> sourceArtifactDependencies = new ArrayList<Dependency>();
+            for (ProjectDependency projectDependency : project.getProjectDependencies()) {
+                sourceArtifactDependencies.add(ProjectFactory.createDependencyFrom(projectDependency));
+            }
+            artifactContext.getArtifactInstaller().installArtifactAndDependenciesIntoPrivateApplicationBase(localRepository, artifact,
+                    sourceArtifactDependencies);
+            dao.closeConnection();
+        }
+        catch (IOException e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+        finally {
+            release(artifactContext);
+            release(assemblyResolver);
+            release(artifactFactory);
+            release(daoRegistry);
+        }
+    }
+
+    private void release(Object component) {
+        try {
+            if (component != null) {
+                container.release(component);
+            }
+        } catch (ComponentLifecycleException e) {
+            // ignore
         }
     }
 
