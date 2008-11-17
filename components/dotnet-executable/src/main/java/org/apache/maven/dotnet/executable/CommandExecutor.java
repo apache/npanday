@@ -21,11 +21,31 @@ package org.apache.maven.dotnet.executable;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.cli.*;
 
+import org.codehaus.plexus.util.Os;
+import org.codehaus.plexus.util.StringUtils;
+//import org.codehaus.plexus.util.cli.shell.BourneShell;
+//import org.codehaus.plexus.util.cli.shell.CmdShell;
+//import org.codehaus.plexus.util.cli.shell.CommandShell;
+import org.codehaus.plexus.util.cli.shell.Shell;
+import java.io.IOException;
+
+  
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.io.File;
+
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Vector;
+
+
+import java.lang.reflect.*;
+
 
 /**
  * Provides services for executing commands (executables or compilers). A <code>NetExecutable</code> or
@@ -173,7 +193,157 @@ public interface CommandExecutor
                     stdOut = new StreamConsumerImpl();
                     stdErr = new ErrorStreamConsumer();
 
-                    Commandline commandline = new Commandline();
+                    Commandline commandline = new Commandline()
+                    {
+                         protected Map envVars = Collections.synchronizedMap( new LinkedHashMap() );
+                         
+                         
+                         public Process execute()
+                             throws CommandLineException
+                         {
+                             // TODO: Provided only for backward compat. with <= 1.4
+                             //verifyShellState();
+                     
+                             Process process;
+                     
+                             //addEnvironment( "MAVEN_TEST_ENVAR", "MAVEN_TEST_ENVAR_VALUE" );
+                     
+                             String[] environment = getEnvironmentVariables();
+                             
+                             File workingDir = getWorkingDirectory();
+                     
+                             try
+                             {
+                                 String cmd = this.toString();
+                                 
+                                 if ( workingDir == null )
+                                 {
+                                     //process = Runtime.getRuntime().exec( getShellCommandline(), environment );
+                                     process = Runtime.getRuntime().exec( cmd, environment );
+                                 }
+                                 else
+                                 {
+                                     if ( !workingDir.exists() )
+                                     {
+                                         throw new CommandLineException( "Working directory \"" + workingDir.getPath()
+                                             + "\" does not exist!" );
+                                     }
+                                     else if ( !workingDir.isDirectory() )
+                                     {
+                                         throw new CommandLineException( "Path \"" + workingDir.getPath()
+                                             + "\" does not specify a directory." );
+                                     }
+                     
+                                     //process = Runtime.getRuntime().exec( getShellCommandline(), environment, workingDir );
+                                     process = Runtime.getRuntime().exec( cmd, environment, workingDir );
+                                 }
+                             }
+                             catch ( IOException ex )
+                             {
+                                 throw new CommandLineException( "Error while executing process.", ex );
+                             }
+                     
+                             return process;
+                         }
+                         
+                         public String[] getEnvironmentVariables()
+                             throws CommandLineException
+                         {
+                             try
+                             {
+                                 addSystemEnvironment();
+                             }
+                             catch ( Exception e )
+                             {
+                                 throw new CommandLineException( "Error setting up environmental variables", e );
+                             }
+                             String[] environmentVars = new String[envVars.size()];
+                             int i = 0;
+                             for ( Iterator iterator = envVars.keySet().iterator(); iterator.hasNext(); )
+                             {
+                                 String name = (String) iterator.next();
+                                 String value = (String) envVars.get( name );
+                                 environmentVars[i] = name + "=" + value;
+                                 i++;
+                             }
+                             return environmentVars;
+                         }
+                         
+                         
+                         
+                         public void addEnvironment( String name, String value )
+                         {
+                             //envVars.add( name + "=" + value );
+                             envVars.put( name, value );
+                         }
+                     
+                         /**
+                                                                    * Add system environment variables
+                                                                    */
+                         public void addSystemEnvironment()
+                             throws Exception
+                        {
+                             Properties systemEnvVars = CommandLineUtils.getSystemEnvVars();
+                     
+                             for ( Iterator i = systemEnvVars.keySet().iterator(); i.hasNext(); )
+                             {
+                                 String key = (String) i.next();
+                                 if ( !envVars.containsKey( key ) )
+                                 {
+                                     addEnvironment( key, systemEnvVars.getProperty( key ) );
+                                 }
+                             }
+                        }
+                        
+                        public String toString()
+                        {
+                            StringBuffer strBuff = new StringBuffer("");
+                            for(String command : getShellCommandline())
+                            {
+                                strBuff.append(" ");
+                                strBuff.append(escapeCmdParams(command));
+                            }
+                            return strBuff.toString().trim();
+                        }
+                        
+                        // escaped to make use of dotnet style of command escapes .
+                        // Eg. /define:"CONFIG=\"Debug\",DEBUG=-1,TRACE=-1,_MyType=\"Windows\",PLATFORM=\"AnyCPU\""
+                        private String escapeCmdParams(String param)
+                        {
+                            if(param == null)
+                                return null;
+                            
+                            String str = param;
+                            if(param.startsWith("/") && param.indexOf(":") > 0)
+                            {
+                                int delem = param.indexOf(":") + 1;
+                                String command = param.substring(0, delem);
+                                String value = param.substring(delem);
+                                
+                                if(value.indexOf(" ") > 0 || value.indexOf("\"") > 0)
+                                {
+                                    value = "\"" + value.replaceAll("\"", "\\\\\"")  + "\"";
+                                }
+                                
+                                str = command + value;
+                            }
+                            else if(param.indexOf(" ") > 0)
+                            {
+                                str = "\"" + param  + "\"";
+                            }
+                            
+                            return str;
+                        }
+
+
+
+
+                    
+                    
+                    };
+                    
+                    
+                    
                     commandline.setExecutable( executable );
                     commandline.addArguments( commands.toArray( new String[commands.size()]));
                     if ( workingDirectory != null && workingDirectory.exists() )

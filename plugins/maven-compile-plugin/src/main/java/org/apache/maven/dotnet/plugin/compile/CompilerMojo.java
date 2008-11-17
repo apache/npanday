@@ -82,6 +82,24 @@ public final class CompilerMojo
      * @parameter expression = "${keyfile}"
      */
     private File keyfile;
+    
+    
+    
+    /**
+     * The starup object class
+     *
+     * @parameter expression = "${main}"
+     */
+    private String main;
+    
+    
+    
+    /**
+     * define
+     *
+     * @parameter expression = "${define}"
+     */
+    private String define;
 
     /**
      * Specifies a strong name key container. (not currently supported)
@@ -123,10 +141,10 @@ public final class CompilerMojo
    /**
      * Returns the rootnamespace of the project. Used by VB project only.
      *
-     * @parameter expression="${rootNameSpace}"
+     * @parameter expression="${rootNamespace}"
      * 
      */
-    private String rootNameSpace;
+    private String rootNamespace;
     
 
     /**
@@ -219,10 +237,9 @@ public final class CompilerMojo
             parameters.add( "/debug+" );
         }
 		
-        //rootnamespace for VB
-        if ( "VB".equals(compilerRequirement.getLanguage()) && rootNameSpace != null )
+        if (rootNamespace != null )
         {
-            parameters.add( "/rootnamespace:" + rootNameSpace );
+            parameters.add( "/rootnamespace:" + rootNamespace );
         }
 
         compilerConfig.setCommands( parameters );
@@ -242,6 +259,33 @@ public final class CompilerMojo
             keyInfo.setKeyFileUri( keyfile.getAbsolutePath() );
             compilerConfig.setKeyInfo( keyInfo );
         }
+        
+        if(main != null)
+        {
+            parameters.add( "/main:" + main );
+        }
+        
+        if(define != null)
+        {
+            parameters.add( "/define:" + define);
+        }
+        else
+        {
+            if("winexe".equalsIgnoreCase(project.getPackaging()))
+            {
+                parameters.add( "/define:_MyType=\"WindowsForms\"" );
+            }
+            else if("exe".equalsIgnoreCase(project.getPackaging()))
+            {
+                parameters.add( "/define:_MyType=\"Console\"" );
+            }
+            else if("library".equalsIgnoreCase(project.getPackaging()) || "dll".equalsIgnoreCase(project.getPackaging()))
+            {
+                parameters.add( "/define:_MyType=\"Windows\"" );
+            }
+        
+        }
+        
 
         try
         {
