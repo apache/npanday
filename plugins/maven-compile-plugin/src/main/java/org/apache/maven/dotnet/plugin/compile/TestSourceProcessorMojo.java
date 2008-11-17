@@ -77,6 +77,7 @@ public class TestSourceProcessorMojo
         List<String> excludeList = new ArrayList<String>();
         excludeList.add( "*.suo" );
         excludeList.add( "*.csproj" );
+        excludeList.add( "*.vbproj" );
         excludeList.add( "*.sln" );
         excludeList.add( "obj/**" );
         for ( int i = 0; i < testExcludes.length; ++i )
