@@ -985,7 +985,7 @@ namespace NMaven.VisualStudio.Addin
             {
                 errStr = string.Format(Messages.MSG_EF_NOT_A_PROJECT_POM, pomFile);
             }
-            else if (!IsWebProject(project) && !pomUtility.ArtifactId.Equals(project.Name, StringComparison.OrdinalIgnoreCase))
+            else if (!IsWebProject(project) && !pomUtility.ArtifactId.Equals(NMavenImportProjectForm.FilterID(project.Name), StringComparison.OrdinalIgnoreCase))
             {
                 errStr = string.Format(Messages.MSG_EF_NOT_THE_PROJECT_POM, project.Name, pomUtility.ArtifactId);
             }
