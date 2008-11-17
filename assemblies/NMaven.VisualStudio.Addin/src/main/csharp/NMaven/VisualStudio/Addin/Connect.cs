@@ -920,6 +920,7 @@ namespace NMaven.VisualStudio.Addin
         private void NMavenBuildSelectedProject(String goal)
         {
             SaveAllDocuments();
+			UpdateVBProjectsPoms();
 			FileInfo pomFile = CurrentSelectedProjectPom;
             Project project = CurrentSelectedProject;
             NMavenPomHelperUtility pomUtility = new NMavenPomHelperUtility(pomFile);
@@ -969,6 +970,7 @@ namespace NMaven.VisualStudio.Addin
         private void NMavenBuildAllProjects(String goal)
         {
             SaveAllDocuments();
+			UpdateVBProjectsPoms();
 			FileInfo pomFile = CurrentSolutionPom;
             NMavenPomHelperUtility pomUtility = new NMavenPomHelperUtility(pomFile);
             if (!"pom".Equals(pomUtility.Packaging, StringComparison.OrdinalIgnoreCase))
