@@ -364,11 +364,28 @@ namespace NMaven.VisualStudio.Addin
                 return;
             }
 
-
-
             Window win = _applicationObject.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);
             OutputWindow outputWindow = (OutputWindow)win.Object;
-            outputWindowPane = outputWindow.OutputWindowPanes.Add("NMaven Build System");
+            OutputWindowPane outputPane = null;
+            OutputWindowPanes panes = outputWindow.OutputWindowPanes;
+
+            // Reuse the existing pane (if it exists)
+            Boolean paneExists = false;
+            for (int i = 1; i <= panes.Count; i++)
+            {
+                outputPane = panes.Item(i);
+                if (outputPane.Name == "NMaven Build System")
+                {
+                    paneExists = true;
+                    outputWindowPane = outputPane;    
+                }
+                
+            }
+            if(!paneExists)
+            {
+                outputWindowPane = outputWindow.OutputWindowPanes.Add("NMaven Build System");
+            }
+
             //outputWindowPane = OutputWindowPanes.Add("NMaven Build System");
 
             OutputWindowPaneHandler handler = new OutputWindowPaneHandler();
@@ -554,6 +571,7 @@ namespace NMaven.VisualStudio.Addin
             _selectionEvents.OnChange += new _dispSelectionEvents_OnChangeEventHandler(this.OnChange);
 
             _nmavenLaunched = true;
+			outputWindowPane.Clear();
             outputWindowPane.OutputString(Messages.MSG_L_NMAVEN_ADDIN_STARTED);
         }
 
