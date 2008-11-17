@@ -299,8 +299,6 @@ public class EmbedderStarterMojo
         }
         
         boolean isDotnetServiceEmbedderUp = false;
-        
-        boolean isDotnetServiceEmbedderUp = false;
 
         for ( int i = 0; i < 3; i++ )
         {
