@@ -163,4 +163,14 @@ public class WagonManagerTestStub
     {
         this.basedir = basedir;
     }
+	
+	public ArtifactRepository getMirrorRepository( ArtifactRepository repository )
+	{
+		return null;
+	}
+	
+	public void getArtifactMetadataFromDeploymentRepository( ArtifactMetadata metadata, ArtifactRepository remoteRepository, File file, String checksumPolicyWarn )
+		throws TransferFailedException, ResourceDoesNotExistException
+	{
+	}
 }
