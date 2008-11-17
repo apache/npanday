@@ -39,4 +39,6 @@ if "%1" == "-DMicrosoft" (
     IF errorlevel 1 GOTO END
  )
 
+cmd /C mvn.bat -f misc/dotnet-repository-builder/pom.xml %phase% %*
+
 :END
