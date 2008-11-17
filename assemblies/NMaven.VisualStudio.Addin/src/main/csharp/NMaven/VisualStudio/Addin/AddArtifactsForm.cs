@@ -144,7 +144,7 @@ namespace NMaven.VisualStudio.Addin
         private void addArtifact_Click(object sender, EventArgs e)
         {
             String pomFileName = 
-                (new FileInfo(project.FileName).Directory).FullName + @"\pom.xml";
+                (new FileInfo(project.FileName).Directory).FullName + @"\..\..\..\pom.xml";
             if (!new FileInfo(pomFileName).Exists)//No flat directory structure.
             {
                 pomFileName = (new FileInfo(project.FileName).Directory.Parent.Parent.Parent).FullName 
@@ -156,6 +156,15 @@ namespace NMaven.VisualStudio.Addin
                     return;
                 }
             }
+            
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.Load(pomFileName);
+            String namespaceUri = xmlDocument.DocumentElement.NamespaceURI;
+            if (string.IsNullOrEmpty(namespaceUri))
+            {
+                xmlDocument.DocumentElement.SetAttribute("xmlns", "http://maven.apache.org/POM/4.0.0");
+            }
+            xmlDocument.Save(pomFileName);
 
             XmlReader reader = XmlReader.Create(pomFileName);
             XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Pom.Model));
