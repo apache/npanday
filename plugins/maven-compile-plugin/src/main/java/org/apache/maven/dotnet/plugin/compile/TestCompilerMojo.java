@@ -97,7 +97,7 @@ public final class TestCompilerMojo
     /**
      * .NET Language. The default value is <code>C_SHARP</code>. Not case or white-space sensitive.
      *
-     * @parameter expression="${language}"
+     * @parameter expression="${testLanguage}"
      */
     private String testLanguage;
 
@@ -173,7 +173,7 @@ public final class TestCompilerMojo
 
         //Requirement
         CompilerRequirement compilerRequirement = CompilerRequirement.Factory.createDefaultCompilerRequirement();
-        compilerRequirement.setLanguage( language );
+        compilerRequirement.setLanguage( testLanguage );
         compilerRequirement.setFrameworkVersion( testFrameworkVersion );
         compilerRequirement.setProfile( "FULL" );
         compilerRequirement.setVendorVersion( testVendorVersion );
