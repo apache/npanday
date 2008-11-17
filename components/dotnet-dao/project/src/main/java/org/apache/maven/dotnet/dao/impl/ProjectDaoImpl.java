@@ -28,6 +28,11 @@ import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.PathUtil;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.repository.DefaultArtifactRepository;
+import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -94,11 +99,19 @@ public final class ProjectDaoImpl
     private String dependencyQuery;
 
     private String projectQuery;
+    
+    private ArtifactResolver artifactResolver;
 
     public void init( ArtifactFactory artifactFactory, WagonManager wagonManager )
     {
+        init( artifactFactory, wagonManager, null );
+    }
+    
+    public void init( ArtifactFactory artifactFactory, WagonManager wagonManager, ArtifactResolver artifactResolver)
+    {
         this.artifactFactory = artifactFactory;
         this.wagonManager = wagonManager;
+        this.artifactResolver = artifactResolver;
 
         List<ProjectUri> projectUris = new ArrayList<ProjectUri>();
         projectUris.add( ProjectUri.GROUP_ID );
@@ -121,7 +134,7 @@ public final class ProjectDaoImpl
         projectUris.add( ProjectUri.CLASSIFIER );
         projectUris.add( ProjectUri.PARENT );
 
-        projectQuery = "SELECT * FROM " + this.constructQueryFragmentFor( "{x}", projectUris );
+        projectQuery = "SELECT * FROM " + this.constructQueryFragmentFor( "{x}", projectUris );        
     }
 
     public Set<Project> getAllProjects()
@@ -392,6 +405,7 @@ public final class ProjectDaoImpl
         throws IOException, IllegalArgumentException
     {
         long startTime = System.currentTimeMillis();
+        String snapshotVersion=null;
 
         if ( project == null )
         {
@@ -568,7 +582,7 @@ public final class ProjectDaoImpl
 
                 if ( !projectDependency.isResolved() )
                 {
-                    Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
+                    Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory ); 
                     if(assembly.getType().equals( "jar"))
                     {
                         logger.info("Detected jar dependency - skipping: Artifact Dependency ID = "
@@ -586,12 +600,36 @@ public final class ProjectDaoImpl
                                                  "pom-." + System.currentTimeMillis() + ".xml" );
                         tmpFile.deleteOnExit();
                         pomArtifact.setFile( tmpFile );
-
+                        
+                        
                         try
-                        {
+                        {   
                             logger.info( "NMAVEN-180-012: Retrieving artifact: Artifact ID  = " +
-                                projectDependency.getArtifactId() );
-                            wagonManager.getArtifact( pomArtifact, artifactRepositories );
+                                         projectDependency.getArtifactId() );
+                            if (pomArtifact.isSnapshot())
+                            {
+                                
+                                ArtifactRepository localArtifactRepository = new DefaultArtifactRepository( "local", "file://" + localRepository, new DefaultRepositoryLayout() );
+                                try {
+                                    artifactResolver.resolve( pomArtifact, artifactRepositories,  localArtifactRepository);
+                                    
+                                    logger.info( "NMAVEN: resolving artifact: " + pomArtifact.toString() );
+                                    snapshotVersion = pomArtifact.getVersion();
+                                    
+                                }catch (ArtifactNotFoundException e) 
+                                {
+                                    logger.info( "NMAVEN:  Problem in resolving artifact: " + pomArtifact.toString() + ", Message = "+ e.getMessage());
+                                    
+                                }
+                                catch (ArtifactResolutionException e)
+                                {
+                                    logger.info( "NMAVEN:  Problem in resolving artifact: " + pomArtifact.toString() + ", Message = "+ e.getMessage());
+                                }
+                            }
+                            else
+                            {                                    
+                                wagonManager.getArtifact( pomArtifact, artifactRepositories );                                
+                            }
                         }
                         catch ( TransferFailedException e )
                         {
@@ -644,6 +682,11 @@ public final class ProjectDaoImpl
                     }
 
                     assembly.setFile( PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository ) );
+                    if (snapshotVersion != null)
+                    {    
+                        assembly.setVersion( snapshotVersion );
+                    }
+                    
                     if ( !assembly.getFile().exists() )
                     {
                         try
@@ -661,6 +704,9 @@ public final class ProjectDaoImpl
                         }
                         catch ( ResourceDoesNotExistException e )
                         {
+                            boolean found = false;
+                            
+                            
                             throw new IOException(
                                 "NMAVEN-180-020: Problem in resolving artifact: Assembly Artifact Id = " +
                                     assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Local Path Check = " +

@@ -25,6 +25,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.model.Model;
 import org.openrdf.repository.Repository;
 
@@ -117,6 +118,15 @@ public interface ProjectDao
      */
     void init( ArtifactFactory artifactFactory, WagonManager wagonManager );
 
+    /**
+     * Initializes the data access object
+     *
+     * @param artifactFactory the artifact factory used in creating artifacts
+     * @param wagonManager    the manager used for downloading artifacts
+     *@param artifactResolver    for snapshot artifact
+     */
+    void init( ArtifactFactory artifactFactory, WagonManager wagonManager, ArtifactResolver artifactResolver );
+    
     /**
      * Returns all projects.
      *

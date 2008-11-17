@@ -157,6 +157,9 @@
         <requirement>
           <role>org.apache.maven.artifact.manager.WagonManager</role>
         </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
       </requirements>
     </component>
     <component>
@@ -168,6 +171,9 @@
         </requirement>
         <requirement>
           <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
         </requirement>
       </requirements>
     </component>    

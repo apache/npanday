@@ -13,6 +13,9 @@
         <requirement>
           <role>org.apache.maven.dotnet.registry.DataAccessObjectRegistry</role>
         </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>        
       </requirements>
     </component>
   </components>

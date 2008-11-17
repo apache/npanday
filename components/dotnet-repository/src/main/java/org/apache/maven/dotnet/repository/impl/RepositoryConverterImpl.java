@@ -29,6 +29,7 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.handler.DefaultArtifactHandler;
@@ -65,6 +66,11 @@ public class RepositoryConverterImpl
      * The data access object registry used for finding DAO objects
      */
     private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
+    
+    /**
+     *  Resolver for  timestamp artifacts
+     */
+    private ArtifactResolver artifactResolver;
 
     private static Logger logger = Logger.getAnonymousLogger();
 
@@ -76,11 +82,12 @@ public class RepositoryConverterImpl
      * @param wagonManager    the manager used to download artifacts
      */
     protected void initTest( DataAccessObjectRegistry daoRegistry, ArtifactFactory artifactFactory,
-                             WagonManager wagonManager )
+                             WagonManager wagonManager, ArtifactResolver artifactResolver )
     {
         this.daoRegistry = daoRegistry;
         this.artifactFactory = artifactFactory;
         this.wagonManager = wagonManager;
+        this.artifactResolver = artifactResolver;
     }
 
     /**
@@ -90,7 +97,7 @@ public class RepositoryConverterImpl
         throws IOException
     {
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, wagonManager );
+        dao.init( artifactFactory, wagonManager, artifactResolver );
         dao.setRdfRepository( repository );
         dao.openConnection();
         Set<Project> projects = dao.getAllProjects();
@@ -146,7 +153,7 @@ public class RepositoryConverterImpl
         throws IOException
     {
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, wagonManager );
+        dao.init( artifactFactory, wagonManager, artifactResolver );
         dao.setRdfRepository( repository );
         dao.openConnection();
         Project project = dao.getProjectFor( artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),

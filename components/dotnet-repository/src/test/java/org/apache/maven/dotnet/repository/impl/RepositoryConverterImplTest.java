@@ -62,7 +62,7 @@ public class RepositoryConverterImplTest
 
         RepositoryConverterImpl repositoryConverter = new RepositoryConverterImpl();
         repositoryConverter.initTest( new DataAccessObjectRegistryStub(), new ArtifactFactoryTestStub(),
-                                      new WagonManagerTestStub() );
+                                      new WagonManagerTestStub(), new ArtifactResolverTestStub() );
 
         ArtifactFactory artifactFactory = new ArtifactFactoryTestStub();
         Artifact artifact = artifactFactory.createArtifactWithClassifier( project.getGroupId(), project.getArtifactId(),
@@ -119,7 +119,7 @@ public class RepositoryConverterImplTest
 
         RepositoryConverterImpl repositoryConverter = new RepositoryConverterImpl();
         repositoryConverter.initTest( new DataAccessObjectRegistryStub(), new ArtifactFactoryTestStub(),
-                                      new WagonManagerTestStub() );
+                                      new WagonManagerTestStub(), new ArtifactResolverTestStub() );
         try
         {
             repositoryConverter.convertRepositoryFormat( repository, testRepo );

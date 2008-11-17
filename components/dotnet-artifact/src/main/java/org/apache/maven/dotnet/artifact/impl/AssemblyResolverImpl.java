@@ -27,6 +27,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.model.Dependency;
 
 import org.codehaus.plexus.logging.LogEnabled;
@@ -70,6 +71,11 @@ public class AssemblyResolverImpl
      * Manager used to download artifacts.
      */
     private org.apache.maven.artifact.manager.WagonManager wagonManager;
+    
+    /**
+     * Used for resolving snapshot
+     */
+    private ArtifactResolver artifactResolver;
 
     /**
      * Constructor. This method is intended to by invoked by the plexus-container, not by the application developer.
@@ -119,9 +125,9 @@ public class AssemblyResolverImpl
             projectDependency.setSystemPath(dependency.getSystemPath());
             project.addProjectDependency( projectDependency );
         }
-
+        
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, wagonManager );
+        dao.init( artifactFactory, wagonManager, artifactResolver );
         dao.openConnection();
 
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();

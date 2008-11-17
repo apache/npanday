@@ -25,6 +25,7 @@ import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
 import org.apache.maven.dotnet.ArtifactType;
 import org.apache.maven.dotnet.artifact.ApplicationConfig;
@@ -121,6 +122,11 @@ public class InstallerMojo
      * @component
      */
     private ArtifactFactory artifactFactory;
+    
+    /**
+     * Used for resolving snapshot
+     */
+    private ArtifactResolver artifactResolver;
 
     public void execute()
         throws MojoExecutionException
@@ -133,7 +139,7 @@ public class InstallerMojo
         }
 
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, wagonManager );
+        dao.init( artifactFactory, wagonManager, artifactResolver );
         dao.openConnection();
 
         artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
