@@ -201,6 +201,7 @@
         <include>out</include>
         <include>target</include>
         <include>doc</include>
+        <include>keyfile</include>
         <include>recurse</include>
         <include>reference</include>
         <include>addmodule</include>
