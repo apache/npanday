@@ -1,0 +1,18 @@
+<assembly>
+  <id>bin</id>
+  <formats>
+    <format>tar.gz</format>
+  </formats>
+  <repositories>
+    <repository>
+      <outputDirectory>repository/releases</outputDirectory>
+      <includeMetadata>true</includeMetadata>
+    </repository>
+  </repositories>
+  <fileSets>
+    <fileSet>
+      <directory>target/dotnet</directory>
+      <outputDirectory>releases</outputDirectory>
+    </fileSet>
+  </fileSets>
+</assembly>
