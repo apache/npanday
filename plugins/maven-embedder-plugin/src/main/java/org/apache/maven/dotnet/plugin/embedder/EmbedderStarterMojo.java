@@ -66,7 +66,7 @@ import java.net.URLConnection;
 public class EmbedderStarterMojo
     extends AbstractMojo
 {
-    private static final String COULD_NOT_CONNECT = "Could not open a connection to: http://localhost:8080/dotnet-service-embedder:";
+    private static final String COULD_NOT_CONNECT = "Could not open a connection to: http://localhost:9191/dotnet-service-embedder:";
 
 	/**
      * The maven project.
@@ -121,7 +121,7 @@ public class EmbedderStarterMojo
     private String vendorVersion;
 
     /**
-     * @parameter expression = "${port}" default-value="8080"
+     * @parameter expression = "${port}" default-value="9191"
      */
     private int port;
 
@@ -291,7 +291,7 @@ public class EmbedderStarterMojo
         URL embedderUrl = null;
         try
         {
-            embedderUrl = new URL( "http://localhost:8080/dotnet-service-embedder" );
+            embedderUrl = new URL( "http://localhost:9191/dotnet-service-embedder" );
         }
         catch ( MalformedURLException e )
         {

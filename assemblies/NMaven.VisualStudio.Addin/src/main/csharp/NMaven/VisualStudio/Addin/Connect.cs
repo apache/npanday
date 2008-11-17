@@ -213,11 +213,11 @@ using NMaven.Model.Pom;
                     "dotnet-service-embedder", version, "war");
                 FileInfo warFileInfo = new FileInfo(localRepository + "/" + new JavaRepositoryLayout().pathOf(artifactWar) + "war");
                 logger.Log(Level.INFO, "Executing external command plugin: "
-                    + @"mvn org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile="""
+                    + @"mvn org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=9191 -DwarFile="""
                     + warFileInfo.FullName + @"""");
 
                 ProcessStartInfo processStartInfo =
-                    new ProcessStartInfo("mvn", @"org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=8080 -DwarFile="""
+                    new ProcessStartInfo("mvn", @"org.apache.maven.dotnet.plugins:maven-embedder-plugin:start -Dport=9191 -DwarFile="""
                      + warFileInfo.FullName + @"""");
                 processStartInfo.UseShellExecute = true;
                 processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -247,12 +247,12 @@ using NMaven.Model.Pom;
              else if (exitCode == -1)
              {
                  logger.Log(Level.INFO,
-                     "Unexpected error occured. Kindly close all application using port 8080 and retry.");
+                     "Unexpected error occured. Kindly close all application using port 9191 and retry.");
              }
              else
              {
                  logger.Log(Level.INFO,
-                     "Unable to launch NMaven Build System. Kindly close all application using port 8080 and retry.");
+                     "Unable to launch NMaven Build System. Kindly close all application using port 9191 and retry.");
              }
          }
 
@@ -623,7 +623,7 @@ using NMaven.Model.Pom;
         public void OnBeginShutdown(ref Array custom)
         {
             WebClient webClient = new WebClient();
-            webClient.DownloadData("http://localhost:8080?shutdown=true");
+            webClient.DownloadData("http://localhost:9191?shutdown=true");
         } 
         #endregion
 
