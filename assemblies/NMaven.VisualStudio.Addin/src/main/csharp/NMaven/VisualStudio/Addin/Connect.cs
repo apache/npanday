@@ -177,6 +177,24 @@ using NMaven.Model.Pom;
             }
             else if (connectMode == ext_ConnectMode.ext_cm_AfterStartup)
             {
+                launchNMavenBuildSystem();
+            }
+            
+        }
+
+        
+
+         private void launchNMavenBuildSystem()
+         {
+                // just to be safe, check if nmaven is already lunched
+                if(_nmavenLunched)
+                {
+                  outputWindowPane.OutputString("\nNMaven Addin Has Already Started...");
+                  return;
+                }
+                
+
+                
                 Window win = _applicationObject.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);
                 OutputWindow outputWindow = (OutputWindow)win.Object;
                 outputWindowPane = outputWindow.OutputWindowPanes.Add("NMaven Build System");
@@ -187,20 +205,11 @@ using NMaven.Model.Pom;
                 logger = NMaven.Logging.Logger.GetLogger("UC");
                 logger.AddHandler(handler);
 
-                //container = new WindsorContainer(new XmlInterpreter(new Castle.Core.Resource.StaticContentResource(contents)));
                 container = new ArtifactContext();
-               
-                // by bong
-                launchNMavenBuildSystem(application);
-            }
-        }
-
-        
-
-         private void launchNMavenBuildSystem(object application)
-         {
+         
+         
+         
                 EnvDTE80.Windows2 windows2 = (EnvDTE80.Windows2)_applicationObject.Windows;
-                _applicationObject = (DTE2)application;
 
                 DTE2 dte2 = _applicationObject;
             
@@ -221,8 +230,8 @@ using NMaven.Model.Pom;
                             ctl.Caption = "Add Maven Artifact...";
                             ctl.Visible = true;
                             addReferenceControls.Add(ctl);
-							
-							CommandBarButton removeCtl = (CommandBarButton)
+              							
+              							CommandBarButton removeCtl = (CommandBarButton)
                             commandBar.Controls.Add(MsoControlType.msoControlButton,
                             System.Type.Missing, System.Type.Missing, control.Index, true);
                             removeCtl.Click += new _CommandBarButtonEvents_ClickEventHandler(cbShowRemoveArtifactsForm_Click);
@@ -340,6 +349,7 @@ using NMaven.Model.Pom;
                 }
 
 
+                _nmavenLunched = true;
                 outputWindowPane.OutputString("\nNMaven Addin Successful Started...");
         }
         #endregion
@@ -464,10 +474,7 @@ using NMaven.Model.Pom;
         /// <seealso class='IDTExtensibility2' />
         public void OnDisconnection(ext_DisconnectMode disconnectMode, ref Array custom)
         {
-            if (mvnRunner != null && mvnRunner.IsRunning)
-            {
-                mvnRunner.stop();
-            }
+            
         }
         #endregion
 
@@ -492,9 +499,13 @@ using NMaven.Model.Pom;
         /// <seealso class='IDTExtensibility2' />
         public void OnStartupComplete(ref Array custom)
         {
-
+            launchNMavenBuildSystem();
         }
         #endregion
+
+
+        
+
 
         #region executeBuildCommand(FileInfo,string)
         private void executeBuildCommand(FileInfo pomFile, String goal)
@@ -832,8 +843,13 @@ using NMaven.Model.Pom;
         /// <seealso class='IDTExtensibility2' />
         public void OnBeginShutdown(ref Array custom)
         {
-            WebClient webClient = new WebClient();
-            webClient.DownloadData("http://localhost:9191?shutdown=true");
+            outputWindowPane.OutputString("\nShutting Down NMaven Visual Studio Addin...");
+            if (mvnRunner != null && mvnRunner.IsRunning)
+            {
+                outputWindowPane.OutputString("\nStopping All Running NMaven Executions...");
+                mvnRunner.stop();
+            }
+            outputWindowPane.OutputString("\nNMaven Successfully Shutdown...");
         } 
         #endregion
 
@@ -894,7 +910,8 @@ using NMaven.Model.Pom;
         private ArtifactContext container;
         private List<ReferencesEvents> referenceEvents;
         //private DirectoryInfo baseDirectoryInfo; 
-         private MVNRunner mvnRunner;
+        private MVNRunner mvnRunner;
+        private bool _nmavenLunched = false;
         #endregion
     }
     #endregion
