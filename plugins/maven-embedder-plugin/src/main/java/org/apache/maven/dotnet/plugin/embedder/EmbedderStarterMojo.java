@@ -66,7 +66,9 @@ import java.net.URLConnection;
 public class EmbedderStarterMojo
     extends AbstractMojo
 {
-    /**
+    private static final String COULD_NOT_CONNECT = "Could not open a connection to: http://localhost:8080/dotnet-service-embedder:";
+
+	/**
      * The maven project.
      *
      * @parameter expression="${project}"
@@ -295,6 +297,8 @@ public class EmbedderStarterMojo
         {
             e.printStackTrace();
         }
+        
+        boolean isDotnetServiceEmbedderUp = false;
 
         for ( int i = 0; i < 3; i++ )
         {
@@ -311,11 +315,20 @@ public class EmbedderStarterMojo
             try
             {
                 connection = embedderUrl.openConnection();
+                
+                connection.getInputStream();
+                
+                isDotnetServiceEmbedderUp = true;
             }
             catch ( IOException e )
             {
-                logger.severe( "Could not open a connection to: http://localhost:8080/dotnet-service-embedder:" );
+                logger.severe( COULD_NOT_CONNECT );
             }
+        }
+        
+        if ( isDotnetServiceEmbedderUp == false )
+        {
+        	throw new MojoFailureException( COULD_NOT_CONNECT );
         }
     }
 
@@ -348,3 +361,18 @@ public class EmbedderStarterMojo
         return sb.toString();
     }
 }
+/*
+  ~ Copyright 2005 Exist Global
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+*/

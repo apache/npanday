@@ -61,6 +61,41 @@ using NMaven.Model.Pom;
   
   namespace NMaven.VisualStudio.Addin
   {
+      public class NMavenBuildSystemProperties : System.ComponentModel.ISynchronizeInvoke
+      {
+          private object application;
+
+          public object Application
+          {
+              get { return application; }
+              set { application = value; }
+          }
+
+          #region ISynchronizeInvoke Members
+
+          public IAsyncResult BeginInvoke(Delegate method, object[] args)
+          {
+              throw new Exception("The method or operation is not implemented.");
+          }
+
+          public object EndInvoke(IAsyncResult result)
+          {
+              throw new Exception("The method or operation is not implemented.");
+          }
+
+          public object Invoke(Delegate method, object[] args)
+          {
+              throw new Exception("The method or operation is not implemented.");
+          }
+
+          public bool InvokeRequired
+          {
+              get { return false; }
+          }
+
+          #endregion
+      }
+
     #region Connect
      /// <summary>The object for implementing an Add-in.</summary>
      /// <seealso class='IDTExtensibility2' />
@@ -186,8 +221,43 @@ using NMaven.Model.Pom;
                      + warFileInfo.FullName + @"""");
                 processStartInfo.UseShellExecute = true;
                 processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                System.Diagnostics.Process.Start(processStartInfo);
+                System.Diagnostics.Process process = System.Diagnostics.Process.Start(processStartInfo);
+                
+                NMavenBuildSystemProperties nMavenBuildSystemProperties = new NMavenBuildSystemProperties();
+                nMavenBuildSystemProperties.Application = application;
+                process.SynchronizingObject = nMavenBuildSystemProperties;
+                process.EnableRaisingEvents = true;
+                process.Exited += new EventHandler(process_Exited);
+            }
+        }
 
+         private void process_Exited(object sender, System.EventArgs e)
+         {
+             System.Diagnostics.Process process = (System.Diagnostics.Process)sender;
+             NMavenBuildSystemProperties nMavenBuildSystemProperties = (NMavenBuildSystemProperties)process.SynchronizingObject;
+             object application = nMavenBuildSystemProperties.Application;
+
+             int exitCode = process.ExitCode;
+             if (exitCode == 0)
+             {
+                 launchNMavenBuildSystem(application);
+                 logger.Log(Level.INFO,
+                     "NMaven Build System successfully launched.");
+             }
+             else if (exitCode == -1)
+             {
+                 logger.Log(Level.INFO,
+                     "Unexpected error occured. Kindly close all application using port 8080 and retry.");
+             }
+             else
+             {
+                 logger.Log(Level.INFO,
+                     "Unable to launch NMaven Build System. Kindly close all application using port 8080 and retry.");
+             }
+         }
+
+         private void launchNMavenBuildSystem(object application)
+         {
                 EnvDTE80.Windows2 windows2 = (EnvDTE80.Windows2)_applicationObject.Windows;
                 _applicationObject = (DTE2)application;
 
@@ -283,7 +353,6 @@ using NMaven.Model.Pom;
                     vsProject.Events.ReferencesEvents.ReferenceRemoved 
                         += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
                 }
-            }
         }
         #endregion
 
