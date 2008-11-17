@@ -301,7 +301,12 @@ namespace NMaven.Solution.Impl
 					BuildItem buildItem = group.AddNewItem("Reference", dependency.artifactId);
 					//TODO: Fix this. Just because it is in the GAC on the system that builds the .csproj does not mean 
 					//it is in the GAC on another system. 
-                    if (!dependency.GetType().Equals("gac") && !IsInGac(dependency.artifactId))
+					
+					if("system".Equals(dependency.scope))
+					{
+						buildItem.SetMetadata("HintPath", dependency.systemPath, false);
+					}
+                    else if (!dependency.GetType().Equals("gac") && !IsInGac(dependency.artifactId))
                     {
                         buildItem.SetMetadata("HintPath", repoPath, false);
                     }

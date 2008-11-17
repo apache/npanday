@@ -39,6 +39,8 @@ namespace NMaven.Artifact
         private string extension;
 
         private String remotePath;
+		
+		private string systemPath;
 
         public String RemotePath
         {
@@ -81,5 +83,12 @@ namespace NMaven.Artifact
             get { return artifactScope; }
             set { artifactScope = value; }
         }
+		
+		public string SystemPath
+		{
+			get { return systemPath; }
+			set { systemPath = value; }
+		}
+		
     }     
 }
