@@ -28,17 +28,21 @@ import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.dotnet.artifact.ArtifactContext;
+import org.apache.maven.dotnet.PlatformUnsupportedException;
 import org.apache.maven.dotnet.artifact.NetDependenciesRepository;
 import org.apache.maven.dotnet.artifact.NetDependencyMatchPolicy;
-import org.apache.maven.dotnet.executable.NetExecutable;
 import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import org.apache.maven.dotnet.executable.NetExecutable;
+import org.apache.maven.dotnet.model.netdependency.NetDependency;
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
 import org.apache.maven.dotnet.vendor.Vendor;
-import org.apache.maven.dotnet.model.netdependency.NetDependency;
-import org.apache.maven.settings.Settings;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.settings.Profile;
 import org.apache.maven.settings.Repository;
+import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
@@ -59,6 +63,11 @@ import java.util.List;
 public class VsInstallerMojo
     extends AbstractMojo
 {
+
+    /**
+     * @parameter expression = "${project}"
+     */
+     public org.apache.maven.project.MavenProject mavenProject;
 
     /**
      * The the path to the local maven repository.
@@ -118,29 +127,7 @@ public class VsInstallerMojo
             (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
         String pomVersion = netRepository.getProperty( "nmaven.version");
 
-        List<ArtifactRepository> remoteRepositories = new ArrayList<ArtifactRepository>();
-
-        //TODO: Only use active profiles
-        List<Profile> profiles = settings.getProfiles();
-        List<Repository> repositories = new ArrayList<Repository>();
-        for ( Profile profile : profiles )
-        {
-            if ( profile.getRepositories() != null )
-            {
-                repositories.addAll( profile.getRepositories() );
-            }
-            if ( profile.getPluginRepositories() != null )
-            {
-                repositories.addAll( profile.getPluginRepositories() );
-            }
-        }
-
-        for ( Repository repository : repositories )
-        {
-            remoteRepositories.add( new DefaultArtifactRepository( repository.getId(), repository.getUrl(),
-                                                                   new DefaultRepositoryLayout() ) );
-        }
-        artifactContext.init( null, remoteRepositories, new File( localRepository ) );
+        artifactContext.init( null, mavenProject.getRemoteArtifactRepositories(), new File( localRepository ) );
 
         //GAC Installs
 
