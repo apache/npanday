@@ -241,7 +241,12 @@ namespace NMaven.VisualStudio.Addin
             {
                 return false;
             }
-
+            
+            if (uri.StartsWith(".."))
+            {
+                return false;
+            }
+            
             if (uri.Contains("."))
             {
                 String[] tokens = name.Split(".".ToCharArray());
@@ -286,7 +291,7 @@ namespace NMaven.VisualStudio.Addin
             WebClient webClient = new WebClient();
             byte[] page = webClient.DownloadData(url);
             String pattern =
-                (@"<a[^>]*href\s*=\s*[\""\']?(?<URI>[^""'>\s]*)[\""\']?[^>]*>(?<Name>[^<]+|.*?)?</a\s*>");
+                (@"<a[^>]*href\s*=\s*[\""\']?(?<URI>[^""'>\s]*)[\""\']?[^>]*>(?<Name>[^<]+|.*?)?<");
             MatchCollection matches = Regex.Matches(Encoding.ASCII.GetString(page), pattern, RegexOptions.IgnoreCase);
 
            // treeView1.ImageList = imageList1;
