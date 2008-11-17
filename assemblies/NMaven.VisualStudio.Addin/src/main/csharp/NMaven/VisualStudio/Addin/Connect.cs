@@ -263,6 +263,19 @@ using NMaven.Model.Pom;
 
 
 
+                            CommandBarButton ctlSignAssembly = (CommandBarButton)
+                            commandBar.Controls.Add(MsoControlType.msoControlButton,
+                                                      System.Type.Missing,
+                                                      System.Type.Missing,
+                                                      control.Index,
+                                                      true);
+                            ctlSignAssembly.Click +=
+                                new _CommandBarButtonEvents_ClickEventHandler(cbSetSignAssemblyForm_Click);
+                            ctlSignAssembly.Caption = "Set NMaven Compile Sign Assembly Key...";
+                            ctlSignAssembly.Visible = true;
+                            addReferenceControls.Add(ctlSignAssembly);
+
+
 
                             CommandBarButton ctlProjectImport = (CommandBarButton)
                             commandBar.Controls.Add(MsoControlType.msoControlButton,
@@ -811,9 +824,30 @@ using NMaven.Model.Pom;
         #endregion
 
 
+        #region cbSetSignAssemblyForm_Click(CommandBarButton, bool)
+
+
+         private void cbSetSignAssemblyForm_Click(CommandBarButton btn, ref bool Cancel)
+         {
+
+
+             //First selected project
+             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
+             {
+                 NMavenSignAssembly frm = new NMavenSignAssembly(project, container, logger);
+                 frm.ShowDialog(); 
+                 break;
+             }
+
+             
+         }
+
+        #endregion
+
+
 
         #region cbChangeProjectImportForm_Click(CommandBarButton, bool)
-         private void cbChangeProjectImportForm_Click(CommandBarButton btn, ref bool Cancel)
+        private void cbChangeProjectImportForm_Click(CommandBarButton btn, ref bool Cancel)
         {
             NMavenImportProjectForm frm = new NMavenImportProjectForm(_applicationObject);
             frm.ShowDialog();
