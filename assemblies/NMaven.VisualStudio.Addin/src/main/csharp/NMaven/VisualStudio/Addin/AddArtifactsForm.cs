@@ -389,6 +389,24 @@ namespace NMaven.VisualStudio.Addin
 
         void addLocalArtifact(LocalArtifactItem item)
         {
+            VSProject vsProject = null;
+
+            if (project.Object is VSProject)
+            {
+                vsProject = (VSProject)project.Object;
+            }
+            else
+            {
+                MessageBox.Show(this, "Cannot add artifact to none VS projects.", this.Text);
+                return;
+            }
+
+            if (vsProject.References.Find(item.Text) != null)
+            {
+                MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
+                return;
+            }
+
             NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
             NMaven.Artifact.Artifact artifact = item.Artifact;
             try
@@ -403,12 +421,7 @@ namespace NMaven.VisualStudio.Addin
                 return;
             }
 
-            if (project.Object is VSProject)
-            {
-                VSProject vsProject = (VSProject)project.Object;
-                vsProject.References.Add(artifact.FileInfo.FullName);
-            }                        
-
+            vsProject.References.Add(artifact.FileInfo.FullName);
         }
 
         void addRemoteArtifact(RemoteArtifactNode node)
@@ -421,6 +434,25 @@ namespace NMaven.VisualStudio.Addin
 
             NMaven.Artifact.Artifact artifact =
                 artifactContext.GetArtifactRepository().GetArtifactFor(paths);
+            
+            VSProject vsProject = null;
+
+            if (project.Object is VSProject)
+            {
+                vsProject = (VSProject)project.Object;
+            }
+            else
+            {
+                MessageBox.Show(this, "Cannot add artifact to none VS projects.", this.Text);
+                return;
+            }
+
+            if (vsProject.References.Find(artifact.ArtifactId) != null)
+            {
+                MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
+                return;
+            }
+
 
             try
             {
@@ -442,12 +474,8 @@ namespace NMaven.VisualStudio.Addin
             stream.Write(assembly, 0, assembly.Length);
             stream.Close();
 
-            if (project.Object is VSProject)
-            {
-                VSProject vsProject1 = (VSProject)project.Object;
-                //File must exist
-                vsProject1.References.Add(artifact.FileInfo.FullName);
-            }
+            vsProject.References.Add(artifact.FileInfo.FullName);
+
         }
     }
 
