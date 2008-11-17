@@ -363,40 +363,14 @@ using NMaven.Model.Pom;
 
          void ReferencesEvents_ReferenceRemoved(Reference pReference)
          {
-
-             Project project = pReference.ContainingProject;
-             
-             if (!CurrentSelectedProjectPom.Exists)
+             try
              {
-                 MessageBox.Show("Could not delete reference. Missing pom file: File = " + CurrentSelectedProjectPom);
-                 return;
+                 NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, pReference.ContainingProject);
+                 pomUtil.RemovePomDependency(pReference.Name);
              }
-
-             XmlReader reader = XmlReader.Create(CurrentSelectedProjectPom.FullName);
-             XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Pom.Model));
-             if (!serializer.CanDeserialize(reader))
+             catch (Exception e)
              {
-                 MessageBox.Show("Could not delete reference. Corrupted pom file: File = " + CurrentSelectedProjectPom.FullName);
-                 return;
-             }
-
-             NMaven.Model.Pom.Model model = (NMaven.Model.Pom.Model)serializer.Deserialize(reader);
-             List<Dependency> newDependencies = new List<Dependency>();
-             if(model.dependencies != null)
-             {
-                 foreach (Dependency dependency in model.dependencies)
-                 {
-                     if (!pReference.Name.Equals(dependency.artifactId))
-                     {
-                         newDependencies.Add(dependency);   
-                     }
-                 }
-                 model.dependencies = newDependencies.ToArray();
-                 reader.Close();
-
-                 TextWriter writer = new StreamWriter(CurrentSelectedProjectPom.FullName);
-                 serializer.Serialize(writer, model);
-                 writer.Close();
+                 MessageBox.Show(e.Message, "NMaven Remove Dependency Error:");
              }
          }
 

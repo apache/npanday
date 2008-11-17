@@ -133,88 +133,81 @@ namespace NMaven.VisualStudio.Addin
 
         private void addArtifact_Click(object sender, EventArgs e)
         {
-            if (!pom.Exists)
+            try
             {
-                MessageBox.Show("Could not add reference. Missing pom file: File = " + pom.FullName);
-                return;
-            }
-            
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.Load(pom.FullName);
-            String namespaceUri = xmlDocument.DocumentElement.NamespaceURI;
-            if (string.IsNullOrEmpty(namespaceUri))
-            {
-                xmlDocument.DocumentElement.SetAttribute("xmlns", "http://maven.apache.org/POM/4.0.0");
-            }
-            xmlDocument.Save(pom.FullName);
+                NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
 
-            XmlReader reader = XmlReader.Create(pom.FullName);
-            XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Pom.Model));
-            if (!serializer.CanDeserialize(reader))
-            {
-                MessageBox.Show("Could not add reference. Corrupted pom file: File = " + pom.FullName);
-                return;
-            }
 
-            NMaven.Model.Pom.Model model = (NMaven.Model.Pom.Model)serializer.Deserialize(reader);
-            List<Dependency> dependencies = new List<Dependency>();
-            if (model.dependencies != null)
-            {
-                dependencies.AddRange(model.dependencies);
-            }
- 
-            ListView.SelectedListViewItemCollection selectedItems = localListView.SelectedItems;
-            if (selectedItems != null)
-            {
-                foreach (ListViewItem item in selectedItems)
+
+                ListView.SelectedListViewItemCollection selectedItems = localListView.SelectedItems;
+                if (selectedItems != null)
                 {
-                    NMaven.Artifact.Artifact artifact = (NMaven.Artifact.Artifact)item.Tag;
-                    Dependency dependency = new Dependency();
-                    dependency.artifactId = artifact.ArtifactId;
-                    dependency.groupId = artifact.GroupId;
-                    dependency.version = artifact.Version;
-                    dependency.type = "library";
-                    //dependency.scope = artifact.ArtifactScope;
+                    foreach (ListViewItem item in selectedItems)
+                    {
+                        NMaven.Artifact.Artifact artifact = (NMaven.Artifact.Artifact)item.Tag;
+                        //Dependency dependency = new Dependency();
+                        //dependency.artifactId = artifact.ArtifactId;
+                        //dependency.groupId = artifact.GroupId;
+                        //dependency.version = artifact.Version;
+                        //dependency.type = "library";
+                        //dependency.scope = artifact.ArtifactScope;
 
-                    dependencies.Add(dependency);
-                    VSProject vsProject = (VSProject)project.Object;
-                    vsProject.References.Add(artifact.FileInfo.FullName);
+                        try
+                        {
+                            pomUtil.AddPomDependency(artifact.GroupId,
+                                                artifact.ArtifactId,
+                                                artifact.Version);
+                        }
+                        catch (Exception err1)
+                        {
+                            MessageBox.Show(err1.Message, "NMaven Add Dependency Error:");
+                        }
+
+                        VSProject vsProject = (VSProject)project.Object;
+                        vsProject.References.Add(artifact.FileInfo.FullName);
+                    }
+                }
+
+                TreeNode treeNode = treeView1.SelectedNode;
+                if (treeNode != null)
+                {
+                    String uri = (String)treeNode.Tag;
+                    String repoUrl = getRepositoryUrl();
+                    String paths = normalizePath(uri.Substring(repoUrl.Length));
+                    NMaven.Artifact.Artifact artifact1 =
+                        artifactContext.GetArtifactRepository().GetArtifactFor(paths);
+
+
+                    try
+                    {
+                        pomUtil.AddPomDependency(artifact1.GroupId,
+                                        artifact1.ArtifactId,
+                                        artifact1.Version);
+                    }
+                    catch (Exception err2)
+                    {
+
+                        MessageBox.Show(err2.Message, "NMaven Add Dependency Error:");
+                    }
+
+                    //Download
+                    artifact1.FileInfo.Directory.Create();
+                    WebClient client = new WebClient();
+                    byte[] assembly = client.DownloadData(uri);
+                    FileStream stream = new FileStream(artifact1.FileInfo.FullName, FileMode.Create);
+                    stream.Write(assembly, 0, assembly.Length);
+                    stream.Close();
+
+                    VSProject vsProject1 = (VSProject)project.Object;
+                    //File must exist
+                    vsProject1.References.Add(artifact1.FileInfo.FullName);
                 }
             }
-
-            TreeNode treeNode = treeView1.SelectedNode;
-            if (treeNode != null)
+            catch (Exception err)
             {
-                String uri = (String)treeNode.Tag;
-                String repoUrl = getRepositoryUrl();
-                String paths = normalizePath(uri.Substring(repoUrl.Length));
-                NMaven.Artifact.Artifact artifact1 = 
-                    artifactContext.GetArtifactRepository().GetArtifactFor(paths);
-                Dependency dependency1 = new Dependency();
-                dependency1.artifactId = artifact1.ArtifactId;
-                dependency1.groupId = artifact1.GroupId;
-                dependency1.version = artifact1.Version;
-                dependency1.type = "library";
-                dependencies.Add(dependency1);
+                MessageBox.Show(err.Message, "NMaven Add Dependency Error:");
+            }
 
-                //Download
-                artifact1.FileInfo.Directory.Create();
-                WebClient client = new WebClient();
-                byte[] assembly = client.DownloadData(uri);
-                FileStream stream = new FileStream(artifact1.FileInfo.FullName, FileMode.Create);
-                stream.Write(assembly, 0, assembly.Length);
-                stream.Close();
-                
-                VSProject vsProject1 = (VSProject)project.Object;
-                //File must exist
-                vsProject1.References.Add(artifact1.FileInfo.FullName);
-            }    
-            reader.Close();
-
-            model.dependencies = dependencies.ToArray();
-            TextWriter writer = new StreamWriter(pom.FullName);
-            serializer.Serialize(writer, model);
-            writer.Close();
             this.Close();
         }
 

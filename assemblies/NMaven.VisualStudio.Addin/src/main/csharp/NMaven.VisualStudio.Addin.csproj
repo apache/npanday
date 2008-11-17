@@ -92,6 +92,12 @@
     <Compile Include="NMaven\VisualStudio\Addin\AddArtifactsForm.Designer.cs">
       <DependentUpon>AddArtifactsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\ChangeMavenSettingsXmlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\ChangeMavenSettingsXmlForm.Designer.cs">
+      <DependentUpon>ChangeMavenSettingsXmlForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="NMaven\VisualStudio\Addin\ConfigureMavenRepositoryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +106,25 @@
     </Compile>
     <Compile Include="NMaven\VisualStudio\Addin\Connect.cs" />
     <Compile Include="NMaven\VisualStudio\Addin\MainFormTest.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\NMavenImportProjectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\NMavenImportProjectForm.Designer.cs">
+      <DependentUpon>NMavenImportProjectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\NMavenPomHelperUtility.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\NMavenSignAssembly.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\NMavenSignAssembly.Designer.cs">
+      <DependentUpon>NMavenSignAssembly.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\RemoveArtifactsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\RemoveArtifactsForm.Designer.cs">
+      <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -136,9 +161,25 @@
       <DependentUpon>AddArtifactsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="NMaven\VisualStudio\Addin\ChangeMavenSettingsXmlForm.resx">
+      <DependentUpon>ChangeMavenSettingsXmlForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="NMaven\VisualStudio\Addin\ConfigureMavenRepositoryForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ConfigureMavenRepositoryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NMaven\VisualStudio\Addin\NMavenImportProjectForm.resx">
+      <DependentUpon>NMavenImportProjectForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NMaven\VisualStudio\Addin\NMavenSignAssembly.resx">
+      <DependentUpon>NMavenSignAssembly.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NMaven\VisualStudio\Addin\RemoveArtifactsForm.resx">
+      <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
