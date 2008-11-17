@@ -111,6 +111,7 @@
       <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NMaven\VisualStudio\Addin\Util\GacUtility.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\Util\MavenRunner.cs" />
     <Compile Include="NMaven\VisualStudio\Addin\Util\NMavenPomHelperUtility.cs" />
   </ItemGroup>
   <ItemGroup>

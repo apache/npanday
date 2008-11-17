@@ -64,7 +64,10 @@ public final class DefaultCompiler
         List<String> commands = new ArrayList<String>();
         commands.add( "/out:" + artifactFilePath );
         commands.add( "/target:" + targetArtifactType );
-        commands.add( "/recurse:" + sourceDirectory + File.separator + "**" );
+        if(config.getIncludeSources() == null || config.getIncludeSources().isEmpty() )
+        {
+            commands.add( "/recurse:" + sourceDirectory + File.separator + "**" );
+        }
         if ( modules != null && !modules.isEmpty() )
         {
             StringBuffer sb = new StringBuffer();
@@ -153,7 +156,18 @@ public final class DefaultCompiler
         }
 
         CommandFilter filter = compilerContext.getCommandFilter();
-        return filter.filter( commands );
+        List<String> filteredCommands = filter.filter( commands );
+        
+        
+        if(config.getIncludeSources() != null && !config.getIncludeSources().isEmpty() )
+        {
+            for(String includeSource : config.getIncludeSources())
+            {
+                filteredCommands.add(includeSource);
+            }
+        }
+        
+        return filteredCommands;
     }
 
     public void resetCommands( List<String> commands )

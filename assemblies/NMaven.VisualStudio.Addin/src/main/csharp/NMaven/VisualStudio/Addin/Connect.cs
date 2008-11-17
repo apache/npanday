@@ -634,10 +634,21 @@ using System.Runtime.CompilerServices;
              {
                  try
                  {
-                     FileInfo file = new FileInfo(Path.GetDirectoryName(_applicationObject.Solution.FileName) + @"\pom.xml");
-                     if(file.Exists)
+                     FileInfo parentPomFile = new FileInfo(Path.GetDirectoryName(_applicationObject.Solution.FileName) + @"\parent-pom.xml");
+                     FileInfo pomFile = new FileInfo(Path.GetDirectoryName(_applicationObject.Solution.FileName) + @"\pom.xml");
+
+                     NMavenPomHelperUtility parentPomUtil = new NMavenPomHelperUtility(parentPomFile);
+                     NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pomFile);
+
+                     if(pomFile.Exists || parentPomFile.Exists)
                      {
-                         return file;
+                         if(!"pom".Equals(pomUtil.Packaging) 
+                             && parentPomFile.Exists
+                             && "pom".Equals(parentPomUtil.Packaging))
+                         {
+                             return parentPomFile;
+                         }
+                         return pomFile;
                      }
                      else
                      {

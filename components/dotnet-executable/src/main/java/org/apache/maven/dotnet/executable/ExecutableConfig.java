@@ -92,6 +92,22 @@ public interface ExecutableConfig
                 private boolean isTestCompile = false;
 
                 private File localRepository;
+                
+                private List<String> includeSources;
+                
+                
+                
+    
+    
+                public void setIncludeSources(List<String> includeSources)
+                {
+                    this.includeSources = includeSources;
+                }
+                
+                public List<String> getIncludeSources()
+                {
+                    return this.includeSources;
+                }
 
                 public List<String> getCommands()
                 {

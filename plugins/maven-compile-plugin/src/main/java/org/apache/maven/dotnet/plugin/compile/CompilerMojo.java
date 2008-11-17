@@ -194,7 +194,7 @@ public final class CompilerMojo
      *
      * @parameter expression="${addmodules}"
      */
-    private ArrayList<String> addModules;
+    private String[] addModules;
  
     /**
      * Specify a Win32 resource file (.res)
@@ -223,7 +223,15 @@ public final class CompilerMojo
      * @parameter expression = "${imports}" 
      * 
      */
-    private ArrayList<String> imports;
+    private String[] imports;
+    
+    /**
+     * Included Source Codes
+     *
+     * @parameter expression = "${includeSources}" 
+     * 
+     */
+    private File[] includeSources;
     
     /**
      * Embed the specified resource 
@@ -353,7 +361,7 @@ public final class CompilerMojo
      * @parameter expression = "${libs}" 
      * 
      */
-    private ArrayList<String> libs;    
+    private String[] libs;    
     
     /**
      * Compiles the class files.
@@ -417,7 +425,7 @@ public final class CompilerMojo
         	parameters.add( "/delaysign+" );
         }
         
-        if ( addModules != null && ! addModules.isEmpty() )
+        if ( addModules != null && addModules.length != 0 )
         {	
         	parameters.add( "/addmodule:" + listToCommaDelimitedString(addModules) ) ;        	
         }
@@ -437,7 +445,7 @@ public final class CompilerMojo
         	parameters.add( "/win32icon:" + win32Icon );
         }
         
-        if ( imports != null && ! imports.isEmpty() )
+        if ( imports != null && imports.length != 0 )
         {
         	parameters.add( "/imports:" + listToCommaDelimitedString(imports) );
         }
@@ -530,22 +538,13 @@ public final class CompilerMojo
             parameters.add( "/moduleassemblyname:" + moduleAssemblyName );
         }
         
-        if ( libs != null  && ! libs.isEmpty() )
+        if ( libs != null  && libs.length != 0 )
         {
             parameters.add( "/lib:"+ listToCommaDelimitedString( libs ) );
         }
         
-
-        compilerConfig.setCommands( parameters );
-
-        String artifactTypeName = project.getArtifact().getType();
-        ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifactTypeName );
-        if ( artifactType.equals( ArtifactType.NULL ) )
-        {
-            throw new MojoExecutionException( "NMAVEN-900-002: Unrecognized artifact type: Language = " + language +
-                ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName );
-        }
-        compilerConfig.setArtifactType( artifactType );
+        
+        
 
         if ( keyfile != null )
         {
@@ -563,6 +562,33 @@ public final class CompilerMojo
         {
             parameters.add( "/define:" + define);
         }
+        
+        
+        
+        if ( includeSources != null && includeSources.length != 0 )
+        {
+            ArrayList<String> srcs = new ArrayList<String>();
+            for(File includeSource : includeSources)
+            {
+                if(includeSource.exists())
+                {
+                    srcs.add(includeSource.getAbsolutePath());
+                }
+            }
+            
+          	compilerConfig.setIncludeSources(srcs);
+        }
+        
+        compilerConfig.setCommands( parameters );
+        
+        String artifactTypeName = project.getArtifact().getType();
+        ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifactTypeName );
+        if ( artifactType.equals( ArtifactType.NULL ) )
+        {
+            throw new MojoExecutionException( "NMAVEN-900-002: Unrecognized artifact type: Language = " + language +
+                ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName );
+        }
+        compilerConfig.setArtifactType( artifactType );
         
 
         try
@@ -656,12 +682,12 @@ public final class CompilerMojo
         return lastModArtifact;
     }
     
-    private String listToCommaDelimitedString( List<String> list )
+    private String listToCommaDelimitedString(String[] list )
     {
     	StringBuffer sb = new StringBuffer();
     	boolean flag = false;
     	
-    	if (list==null || list.size()==0) return "";
+    	if (list==null || list.length==0) return "";
     	
     	for (String item: list)
     	{

@@ -22,6 +22,7 @@ import org.apache.maven.dotnet.ArtifactType;
 import org.apache.maven.dotnet.executable.ExecutableConfig;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Provides configuration Information for the .NET Compile Environment
@@ -87,5 +88,19 @@ public interface CompilerConfig
      * @param keyInfo key info used for signing assemblies
      */
     void setKeyInfo(KeyInfo keyInfo);
+    
+    
+    /**
+     * Sets Include Sources
+     *
+     * @param inlcude sources file List
+     */
+    void setIncludeSources(List<String> includeSources);
+    
+    
+    /**
+     * Gets Include Sources
+     */
+    List<String> getIncludeSources();
 
 }
