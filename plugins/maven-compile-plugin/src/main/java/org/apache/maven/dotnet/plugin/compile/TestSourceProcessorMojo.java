@@ -17,7 +17,9 @@
  * under the License.
  */
 package org.apache.maven.dotnet.plugin.compile;
-
+ 
+import org.apache.maven.dotnet.PlatformUnsupportedException;
+import org.apache.maven.dotnet.assembler.AssemblerContext;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.util.DirectoryScanner;
@@ -60,6 +62,24 @@ public class TestSourceProcessorMojo
      * @parameter expression = "${testExcludes}"
      */
     private String[] testExcludes;
+    
+    /**
+     * @parameter expression = "${includes}"
+     */
+    private String[] includes;    
+    
+    /**
+     * @component
+     */
+    private AssemblerContext assemblerContext;
+    
+    /**
+     * .NET Language. The default value is <code>C_SHARP</code>. Not case or white-space sensitive.
+     *
+     * @parameter expression="${language}" default-value = "C_SHARP"
+     * @required
+     */
+    private String language;
 
     public void execute()
         throws MojoExecutionException
@@ -82,6 +102,22 @@ public class TestSourceProcessorMojo
         excludeList.add( "obj/**" );
         excludeList.add( "bin/**" );
         excludeList.add( "target/**" );
+        
+        List<String> includeList = new ArrayList<String>();
+        try
+        {
+            includeList.add( "**/*." + assemblerContext.getClassExtensionFor( language ) );
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NMAVEN-904-003: Language is not supported: Language = " + language, e );
+        }
+        for (int i = 0; i < includes.length; ++i)
+        {
+            includeList.add(includes[i]);
+        }
+        directoryScanner.setIncludes( includeList.toArray( includes ) );
+        
         for ( int i = 0; i < testExcludes.length; ++i )
         {
             excludeList.add( testExcludes[i] );

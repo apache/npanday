@@ -30,3 +30,4 @@ it0032: Verifies that compile plugin processes excludes and testExcludes element
 it0033: Verifies main source using vb, test  source using csharp.
 it0034:
 it0035: Verifies rootnamespace configuration for VB project
+it0036: Verifies that non-source code files should not be copied to target\build-sources,target\build-test-sources directory
