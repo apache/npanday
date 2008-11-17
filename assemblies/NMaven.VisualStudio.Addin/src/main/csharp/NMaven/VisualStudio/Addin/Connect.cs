@@ -231,15 +231,7 @@ using NMaven.Model.Pom;
                             ctl.Visible = true;
                             addReferenceControls.Add(ctl);
               							
-              							CommandBarButton removeCtl = (CommandBarButton)
-                            commandBar.Controls.Add(MsoControlType.msoControlButton,
-                            System.Type.Missing, System.Type.Missing, control.Index, true);
-                            removeCtl.Click += new _CommandBarButtonEvents_ClickEventHandler(cbShowRemoveArtifactsForm_Click);
-                            removeCtl.Caption = "Remove Maven Artifact...";
-                            removeCtl.Visible = true;
-                            addReferenceControls.Add(removeCtl);
-
-                            CommandBarButton ctl1 = (CommandBarButton)
+              				CommandBarButton ctl1 = (CommandBarButton)
                                 commandBar.Controls.Add(MsoControlType.msoControlButton, 
                                 System.Type.Missing, System.Type.Missing, control.Index, true);
                             ctl1.Click += 
@@ -359,6 +351,7 @@ using NMaven.Model.Pom;
                     referenceEvents.Add(vsProject.Events.ReferencesEvents);
                     vsProject.Events.ReferencesEvents.ReferenceRemoved 
                         += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
+                    
                 }
 
 
@@ -369,11 +362,12 @@ using NMaven.Model.Pom;
 
          void ReferencesEvents_ReferenceRemoved(Reference pReference)
          {
-             MessageBox.Show("Removing Reference");
-             Project project = pReference.ContainingProject;
 
-             String pomFileName =
-                 (new FileInfo(project.FileName).Directory).FullName + @"\pom.xml";
+             Project project = pReference.ContainingProject;
+             FileInfo solutionFile = new FileInfo(_applicationObject.Solution.FileName);
+             
+
+             String pomFileName = solutionFile.DirectoryName + @"\pom.xml";
 
              if (!new FileInfo(pomFileName).Exists)
              {
@@ -858,18 +852,6 @@ using NMaven.Model.Pom;
          
         
         
-        
-         
-		 private void cbShowRemoveArtifactsForm_Click(CommandBarButton btn, ref bool Cancel)
-         {
-             //First selected project
-             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
-             {
-                 RemoveArtifactsForm form = new RemoveArtifactsForm(project, container, logger);
-                 form.Show();
-                 break;
-             }
-         }   
 		 
         #region OnBeginShutdown(Array)
         /// <summary>Implements the OnBeginShutdown method of the IDTExtensibility2 interface. Receives notification that the host application is being unloaded.</summary>
