@@ -101,8 +101,19 @@ namespace NMaven.Solution.Impl
 			Guid solutionGuid = Guid.NewGuid();
 			foreach(IProjectReference projectReference in projectReferences) 
 			{
-				writer.Write("Project(\"{");
-				writer.Write("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC");
+                string projectType = null;
+                string projectFileExtension = projectReference.ProjectFile.Extension;
+                if (projectFileExtension == ".csproj")
+                {
+                    projectType = "FAE04EC0-301F-11D3-BF4B-00C04F79EFBC";
+                }
+                else if (projectFileExtension == ".vbproj")
+                {
+                    projectType = "F184B08F-C81C-45F6-A57F-5ABD9991F28F";
+                }
+
+                writer.Write("Project(\"{");
+                writer.Write(projectType);
 				writer.Write("}\") = \"");
 				writer.Write(projectReference.ProjectName);
 				writer.Write("\", \"");
