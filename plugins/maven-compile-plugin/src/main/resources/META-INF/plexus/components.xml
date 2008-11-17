@@ -22,7 +22,8 @@
           </process-sources>
           <process-resources>
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate
+            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
+			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
@@ -57,7 +58,8 @@
           </process-sources>
           <process-resources>
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate
+            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
+			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
@@ -100,6 +102,7 @@
           <process-resources>
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
+			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
@@ -141,6 +144,7 @@
           <process-resources>
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
+			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
@@ -182,6 +186,7 @@
           <process-resources>
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
+			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
@@ -224,6 +229,7 @@
           <process-resources>
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
+			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
@@ -265,6 +271,7 @@
           <process-resources>
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
             org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
+			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
             org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
