@@ -67,49 +67,55 @@ namespace NMaven.VisualStudio.Addin
             // 
             // addArtifact
             // 
-            this.addArtifact.Location = new System.Drawing.Point(447, 374);
+            this.addArtifact.Location = new System.Drawing.Point(299, 296);
+            this.addArtifact.Margin = new System.Windows.Forms.Padding(2);
             this.addArtifact.Name = "addArtifact";
-            this.addArtifact.Size = new System.Drawing.Size(75, 23);
+            this.addArtifact.Size = new System.Drawing.Size(83, 26);
             this.addArtifact.TabIndex = 1;
-            this.addArtifact.Text = "Add";
+            this.addArtifact.Text = "&Add";
             this.addArtifact.UseVisualStyleBackColor = true;
             this.addArtifact.Click += new System.EventHandler(this.addArtifact_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(546, 374);
+            this.button2.Location = new System.Drawing.Point(396, 296);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(86, 26);
             this.button2.TabIndex = 2;
-            this.button2.Text = "Cancel";
+            this.button2.Text = "&Close";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // remoteTabPage
             // 
             this.remoteTabPage.Controls.Add(this.treeView1);
-            this.remoteTabPage.Location = new System.Drawing.Point(4, 25);
+            this.remoteTabPage.Location = new System.Drawing.Point(4, 22);
+            this.remoteTabPage.Margin = new System.Windows.Forms.Padding(2);
             this.remoteTabPage.Name = "remoteTabPage";
-            this.remoteTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.remoteTabPage.Size = new System.Drawing.Size(628, 309);
+            this.remoteTabPage.Padding = new System.Windows.Forms.Padding(2);
+            this.remoteTabPage.Size = new System.Drawing.Size(469, 249);
             this.remoteTabPage.TabIndex = 1;
             this.remoteTabPage.Text = "Remote";
             this.remoteTabPage.UseVisualStyleBackColor = true;
             // 
             // treeView1
             // 
-            this.treeView1.Location = new System.Drawing.Point(23, 18);
+            this.treeView1.Location = new System.Drawing.Point(17, 15);
+            this.treeView1.Margin = new System.Windows.Forms.Padding(2);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(582, 272);
+            this.treeView1.Size = new System.Drawing.Size(438, 222);
             this.treeView1.TabIndex = 0;
+            this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
             // 
             // localTabPage
             // 
             this.localTabPage.Controls.Add(this.localListView);
-            this.localTabPage.Location = new System.Drawing.Point(4, 25);
+            this.localTabPage.Location = new System.Drawing.Point(4, 22);
+            this.localTabPage.Margin = new System.Windows.Forms.Padding(2);
             this.localTabPage.Name = "localTabPage";
-            this.localTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.localTabPage.Size = new System.Drawing.Size(628, 309);
+            this.localTabPage.Padding = new System.Windows.Forms.Padding(2);
+            this.localTabPage.Size = new System.Drawing.Size(469, 249);
             this.localTabPage.TabIndex = 0;
             this.localTabPage.Text = "Local";
             this.localTabPage.UseVisualStyleBackColor = true;
@@ -120,12 +126,14 @@ namespace NMaven.VisualStudio.Addin
             this.localListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ArtifactNameHeader,
             this.versionHeader});
-            this.localListView.Location = new System.Drawing.Point(22, 19);
+            this.localListView.Location = new System.Drawing.Point(16, 15);
+            this.localListView.Margin = new System.Windows.Forms.Padding(2);
             this.localListView.Name = "localListView";
-            this.localListView.Size = new System.Drawing.Size(583, 270);
+            this.localListView.Size = new System.Drawing.Size(438, 220);
             this.localListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.localListView.TabIndex = 0;
             this.localListView.UseCompatibleStateImageBehavior = false;
+            this.localListView.DoubleClick += new System.EventHandler(this.localListView_DoubleClick);
             // 
             // ArtifactNameHeader
             // 
@@ -141,21 +149,26 @@ namespace NMaven.VisualStudio.Addin
             // 
             this.artifactTabControl.Controls.Add(this.localTabPage);
             this.artifactTabControl.Controls.Add(this.remoteTabPage);
-            this.artifactTabControl.Location = new System.Drawing.Point(12, 12);
+            this.artifactTabControl.Location = new System.Drawing.Point(9, 10);
+            this.artifactTabControl.Margin = new System.Windows.Forms.Padding(2);
             this.artifactTabControl.Name = "artifactTabControl";
             this.artifactTabControl.SelectedIndex = 0;
-            this.artifactTabControl.Size = new System.Drawing.Size(636, 338);
+            this.artifactTabControl.Size = new System.Drawing.Size(477, 275);
             this.artifactTabControl.TabIndex = 0;
             // 
             // AddArtifactsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(677, 413);
+            this.ClientSize = new System.Drawing.Size(508, 336);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.addArtifact);
             this.Controls.Add(this.artifactTabControl);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "AddArtifactsForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Maven Artifact";
             this.remoteTabPage.ResumeLayout(false);
             this.localTabPage.ResumeLayout(false);

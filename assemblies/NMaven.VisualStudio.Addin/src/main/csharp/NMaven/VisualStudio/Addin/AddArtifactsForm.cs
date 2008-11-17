@@ -93,9 +93,9 @@ namespace NMaven.VisualStudio.Addin
             localArtifacts = artifactContext.GetArtifactRepository().GetArtifacts();
             foreach (NMaven.Artifact.Artifact artifact in localArtifacts)
             {
-                System.Windows.Forms.ListViewItem item = new System.Windows.Forms.ListViewItem(new string[] {
+                LocalArtifactItem item = new LocalArtifactItem(new string[] {
                     artifact.ArtifactId, artifact.Version}, -1);
-                item.Tag = artifact;
+                item.Artifact = artifact;
                 localListView.Items.Add(item);
             }
 
@@ -146,74 +146,25 @@ namespace NMaven.VisualStudio.Addin
                 {
                     foreach (ListViewItem item in selectedItems)
                     {
-                        NMaven.Artifact.Artifact artifact = (NMaven.Artifact.Artifact)item.Tag;
-                        //Dependency dependency = new Dependency();
-                        //dependency.artifactId = artifact.ArtifactId;
-                        //dependency.groupId = artifact.GroupId;
-                        //dependency.version = artifact.Version;
-                        //dependency.type = "library";
-                        //dependency.scope = artifact.ArtifactScope;
-
-                        try
-                        {
-                            pomUtil.AddPomDependency(artifact.GroupId,
-                                                artifact.ArtifactId,
-                                                artifact.Version);
-                        }
-                        catch (Exception err1)
-                        {
-                            MessageBox.Show(err1.Message, "NMaven Add Dependency Error:");
-                        }
-
-                        if (project.Object is VSProject)
-                        {
-                            VSProject vsProject = (VSProject)project.Object;
-                            vsProject.References.Add(artifact.FileInfo.FullName);
-                        }                        
+                        addLocalArtifact(item as LocalArtifactItem);
                     }
                 }
 
-                TreeNode treeNode = treeView1.SelectedNode;
-                if (treeNode != null)
+                RemoteArtifactNode treeNode = treeView1.SelectedNode as RemoteArtifactNode;
+                if (treeNode != null && treeNode.IsAssembly)
                 {
-                    String uri = (String)treeNode.Tag;
-                    String repoUrl = getRepositoryUrl();
-                    String paths = normalizePath(uri.Substring(repoUrl.Length));
-                    NMaven.Artifact.Artifact artifact1 =
-                        artifactContext.GetArtifactRepository().GetArtifactFor(paths);
-
-
-                    try
-                    {
-                        pomUtil.AddPomDependency(artifact1.GroupId,
-                                        artifact1.ArtifactId,
-                                        artifact1.Version);
-                    }
-                    catch (Exception err2)
-                    {
-
-                        MessageBox.Show(err2.Message, "NMaven Add Dependency Error:");
-                    }
-
-                    //Download
-                    artifact1.FileInfo.Directory.Create();
-                    WebClient client = new WebClient();
-                    byte[] assembly = client.DownloadData(uri);
-                    FileStream stream = new FileStream(artifact1.FileInfo.FullName, FileMode.Create);
-                    stream.Write(assembly, 0, assembly.Length);
-                    stream.Close();
-
-                    if (project.Object is VSProject)
-                    {
-                        VSProject vsProject1 = (VSProject)project.Object;
-                        //File must exist
-                        vsProject1.References.Add(artifact1.FileInfo.FullName);
-                    }
+                    addRemoteArtifact(treeNode);
+                }
+                else
+                {
+                    MessageBox.Show(this, string.Format("Cannot add {0} not an artifact assembly.", treeNode.FullPath), this.Text);
+                    return;
                 }
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message, "NMaven Add Dependency Error:");
+                return;
             }
 
             this.Close();
@@ -298,13 +249,23 @@ namespace NMaven.VisualStudio.Addin
                 String uri = match.Groups["URI"].Value; 
                 if (IsIncluded(name, uri))
                 {
-                    TreeNode node = new TreeNode(name);
+                    RemoteArtifactNode node = new RemoteArtifactNode(name);  // new TreeNode(name);
                     if (!IsDirectory(name))
                     {
                         node.ImageIndex = 1;
                     }
+                    string ext = Path.GetExtension(name).ToLower();
+                    if (ext == ".dll" || ext == ".exe" || ext == ".netmodule")
+                    {
+                        node.IsAssembly = true;
+                    }
+                    else
+                    {
+                        node.IsAssembly = false;
+                    }
 
-                    node.Tag = url + "/" + uri.TrimEnd("/".ToCharArray());
+                    node.ArtifactUrl = url + "/" + uri.TrimEnd("/".ToCharArray()); ;
+
                     treeNodes.Add(node);                  
                 }
             }
@@ -316,8 +277,8 @@ namespace NMaven.VisualStudio.Addin
             if (e.Button == MouseButtons.Left)
             {
                 Point point = new Point(e.X, e.Y);
-                TreeNode node = treeView1.GetNodeAt(point);
-                List<TreeNode> treeNodes = GetNodesFor( (String) node.Tag);
+                RemoteArtifactNode node = treeView1.GetNodeAt(point) as RemoteArtifactNode;
+                List<TreeNode> treeNodes = GetNodesFor( node.ArtifactUrl);
                 node.Nodes.Clear();
                 node.Nodes.AddRange(treeNodes.ToArray());
             }
@@ -393,6 +354,141 @@ namespace NMaven.VisualStudio.Addin
                 }
             }
             return null;
+        }
+
+        private void localListView_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
+
+                LocalArtifactItem item = localListView.SelectedItems[0] as LocalArtifactItem;
+
+                addLocalArtifact(item);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Add Artifacts");
+            }
+        }
+
+        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            RemoteArtifactNode node = e.Node as RemoteArtifactNode;
+            if (node.IsAssembly)
+            {
+                addRemoteArtifact(node);
+            }
+        }
+
+        void addLocalArtifact(LocalArtifactItem item)
+        {
+            NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
+            NMaven.Artifact.Artifact artifact = item.Artifact;
+            try
+            {
+                pomUtil.AddPomDependency(artifact.GroupId,
+                                    artifact.ArtifactId,
+                                    artifact.Version);
+            }
+            catch (Exception err1)
+            {
+                MessageBox.Show(err1.Message, "NMaven Add Dependency Error:");
+            }
+
+            if (project.Object is VSProject)
+            {
+                VSProject vsProject = (VSProject)project.Object;
+                vsProject.References.Add(artifact.FileInfo.FullName);
+            }                        
+
+        }
+
+        void addRemoteArtifact(RemoteArtifactNode node)
+        {
+            NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
+
+            String uri = node.ArtifactUrl;
+            String repoUrl = getRepositoryUrl();
+            String paths = normalizePath(uri.Substring(repoUrl.Length));
+
+            NMaven.Artifact.Artifact artifact =
+                artifactContext.GetArtifactRepository().GetArtifactFor(paths);
+
+            try
+            {
+                pomUtil.AddPomDependency(artifact.GroupId,
+                                artifact.ArtifactId,
+                                artifact.Version);
+            }
+            catch (Exception err2)
+            {
+
+                MessageBox.Show(err2.Message, "NMaven Add Dependency Error:");
+            }
+
+            //Download
+            artifact.FileInfo.Directory.Create();
+            WebClient client = new WebClient();
+            byte[] assembly = client.DownloadData(uri);
+            FileStream stream = new FileStream(artifact.FileInfo.FullName, FileMode.Create);
+            stream.Write(assembly, 0, assembly.Length);
+            stream.Close();
+
+            if (project.Object is VSProject)
+            {
+                VSProject vsProject1 = (VSProject)project.Object;
+                //File must exist
+                vsProject1.References.Add(artifact.FileInfo.FullName);
+            }
+        }
+    }
+
+    class LocalArtifactItem : ListViewItem
+    {
+        public LocalArtifactItem() { }
+        public LocalArtifactItem(string name)
+            : base(name)
+        {
+        }
+
+        public LocalArtifactItem(string[] items) : base(items) { }
+
+        public LocalArtifactItem(string[] items, int imageIndex) : base(items, imageIndex) { }
+
+        private NMaven.Artifact.Artifact artifact;
+
+        public NMaven.Artifact.Artifact Artifact
+        {
+            get { return artifact; }
+            set { artifact = value; }
+        }
+
+
+    }
+
+
+    class RemoteArtifactNode : TreeNode
+    {
+        public RemoteArtifactNode() { }
+        public RemoteArtifactNode(string name) : base(name)
+        {
+        }
+        private bool isAssembly;
+
+        public bool IsAssembly
+        {
+            get { return isAssembly; }
+            set { isAssembly = value; }
+        }
+
+        private string artifactUrl;
+
+        public string ArtifactUrl
+        {
+            get { return artifactUrl; }
+            set { artifactUrl = value; }
         }
 
     }
