@@ -134,6 +134,16 @@ extends AbstractMojo
      */
     private File localRepository;
 
+
+
+
+    /**
+     * The artifact acts as an Integration test project
+     *
+     * @parameter
+     */
+    protected boolean integrationTest;
+
     private String getExecutableFor( Vendor vendor, String home )
     {
         return !( nunitHome == null || nunitHome.equals( "" ) ) ? nunitHome + File.separator + "bin" + File.separator
@@ -150,8 +160,19 @@ extends AbstractMojo
             testAssemblyPath = "/" + testAssemblyPath;
         }
 
-        // if not use the commpiled test
-        commands.add( testAssemblyPath + File.separator + project.getArtifactId() + "-test.dll" );
+        
+
+        if(integrationTest)
+        {
+            // use the artifact itself if its an integration
+            commands.add( testAssemblyPath + File.separator + project.getArtifactId() + ".dll" );
+        }
+        else
+        {
+            // if not use the commpiled test
+            commands.add( testAssemblyPath + File.separator + project.getArtifactId() + "-test.dll" );
+        }
+        
         commands.add( "/xml:" + nUnitXmlFilePath.getAbsolutePath() );
 
         commands.add( "/output:" + nUnitResultOutputPath.getAbsolutePath() );
@@ -175,9 +196,18 @@ extends AbstractMojo
             getLog().warn( "NMAVEN-1100-000: Unit tests have been disabled." );
             return;
         }
+        
         String testFileName = "";
 
-        testFileName = project.getBuild().getDirectory() + File.separator + project.getArtifactId() + "-test.dll";
+        if(integrationTest)
+        {
+            getLog().info("NMAVEN-1100-000.1: Artifact is an Integration Test");
+            testFileName = project.getBuild().getDirectory() + File.separator + project.getArtifactId() + ".dll";
+        }
+        else
+        {
+            testFileName = project.getBuild().getDirectory() + File.separator + project.getArtifactId() + "-test.dll";
+        }
 
         if ( !( new File( testFileName ).exists() ) )
         {
