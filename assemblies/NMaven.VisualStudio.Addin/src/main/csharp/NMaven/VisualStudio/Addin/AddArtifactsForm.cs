@@ -426,6 +426,24 @@ namespace NMaven.VisualStudio.Addin
             }
         }
 
+        void addArtifactToPom(Artifact.Artifact artifact)
+        {
+            try
+            {
+                if (pom != null)
+                {
+                    NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
+                    pomUtil.AddPomDependency(artifact.GroupId, artifact.ArtifactId, artifact.Version);
+                }
+            }
+            catch (Exception err1)
+            {
+                MessageBox.Show(err1.Message, "NMaven Add Dependency Error:");
+                return;
+            }
+
+        }
+
         void addLocalArtifact(LocalArtifactItem item)
         {
             VSProject vsProject = null;
@@ -440,12 +458,15 @@ namespace NMaven.VisualStudio.Addin
                     MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
                     return;
                 }
+
+                addArtifactToPom(artifact);
                 vsProject.References.Add(artifact.FileInfo.FullName);
             }
             else
             {
                 if (Connect.IsWebProject(project))
                 {
+                    addArtifactToPom(artifact);
                     VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
                     website.References.AddFromFile(artifact.FileInfo.FullName);
                 }
@@ -454,22 +475,6 @@ namespace NMaven.VisualStudio.Addin
                     MessageBox.Show(this, "Cannot add artifact to none VS projects.", this.Text);
                     return;
                 }
-            }
-
-            try
-            {
-                if (pom != null)
-                {
-                    NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
-                    pomUtil.AddPomDependency(artifact.GroupId,
-                                        artifact.ArtifactId,
-                                        artifact.Version);
-                }
-            }
-            catch (Exception err1)
-            {
-                MessageBox.Show(err1.Message, "NMaven Add Dependency Error:");
-                return;
             }
 
         }
@@ -511,21 +516,7 @@ namespace NMaven.VisualStudio.Addin
             }
 
 
-            try
-            {
-                if (pom != null)
-                {
-                    NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
-                    pomUtil.AddPomDependency(artifact.GroupId,
-                                    artifact.ArtifactId,
-                                    artifact.Version);
-                }
-            }
-            catch (Exception err2)
-            {
-
-                MessageBox.Show(err2.Message, "NMaven Add Dependency Error:");
-            }
+            addArtifactToPom(artifact);
 
             //Download
             artifact.FileInfo.Directory.Create();

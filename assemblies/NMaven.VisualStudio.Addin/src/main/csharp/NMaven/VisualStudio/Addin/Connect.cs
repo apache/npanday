@@ -194,7 +194,8 @@ namespace NMaven.VisualStudio.Addin
             mavenRunner = new MavenRunner(_applicationObject);
             _addInInstance = (AddIn)addInInst;
             Command command = null;
-			
+            mavenConnected = true;
+
 			//next two lines add a eventhandler to handle beforeclosing a solution
 			globalSolutionEvents = (EnvDTE.SolutionEvents)((Events2)_applicationObject.Events).SolutionEvents;
             globalSolutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler(SolutionEvents_BeforeClosing);
@@ -305,6 +306,7 @@ namespace NMaven.VisualStudio.Addin
                         referenceEvents.Add(classProject.Events2.ReferencesEvents);
                         classProject.Events2.ReferencesEvents.ReferenceRemoved
                             += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
+                        classProject.Events2.ReferencesEvents.ReferenceAdded += new _dispReferencesEvents_ReferenceAddedEventHandler(ReferencesEvents_ReferenceAdded);
 
                         ProjectItem webReferenceFolder = classProject.WebReferencesFolder;
                         if (webReferenceFolder == null)
@@ -343,6 +345,50 @@ namespace NMaven.VisualStudio.Addin
                 }                
 
             }
+        }
+
+        void ReferencesEvents_ReferenceAdded(Reference pReference)
+        {
+            try
+            {
+                if (!mavenConnected)
+                    return;
+                
+                ArtifactContext artifactContext = new ArtifactContext();
+
+                bool inMavenRepo = false;
+                try
+                {
+                    Artifact.Artifact artifact = artifactContext.GetArtifactRepository().GetArtifact(new FileInfo(pReference.Path));
+                    inMavenRepo = true;
+                }
+                catch{}
+
+                NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+                if (pomUtil.IsPomDependency(pReference.Name))
+                    return;
+
+                GacUtility gac = new GacUtility();
+                string n = gac.GetAssemblyInfo(pReference.Name);
+                if (!inMavenRepo && string.IsNullOrEmpty(n))
+                {
+                    MessageBox.Show("Reference is not added to POM file. Reference is not in Maven Repository or in GAC.", "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                
+                Dependency dep = new Dependency();
+                dep.artifactId = pReference.Name;
+                dep.groupId = pReference.Name;
+                dep.version = pReference.Version;
+                dep.classifier = pReference.PublicKeyToken;
+                dep.type = "gac_msil";
+                pomUtil.AddPomDependency(dep);
+            }
+            catch(Exception e)
+            {
+                outputWindowPane.OutputString(e.Message);
+            }            
         }
 
         void webw_Deleted(object sender, FileSystemEventArgs e)
@@ -641,10 +687,12 @@ namespace NMaven.VisualStudio.Addin
             Window solutionExplorerWindow = dte2.Windows.Item(Constants.vsWindowKindSolutionExplorer);
             _selectionEvents = dte2.Events.SelectionEvents;
             _selectionEvents.OnChange += new _dispSelectionEvents_OnChangeEventHandler(this.OnChange);
-
             _nmavenLaunched = true;
 			outputWindowPane.Clear();
             outputWindowPane.OutputString(Messages.MSG_L_NMAVEN_ADDIN_STARTED);
+            
+            if (_applicationObject.Solution != null)
+                attachReferenceEvent();
         }
 
         void awfButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
@@ -657,6 +705,9 @@ namespace NMaven.VisualStudio.Addin
         {
             try
             {
+                if (!mavenConnected)
+                    return;
+
                 NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, pReference.ContainingProject);
                 pomUtil.RemovePomDependency(pReference.Name);
             }
@@ -726,6 +777,8 @@ namespace NMaven.VisualStudio.Addin
         }
         #endregion
 
+        static bool mavenConnected;
+
         #region ClearOutputWindowPane(object,EventArgs)
         private void ClearOutputWindowPane(object sender, EventArgs args)
         {
@@ -750,6 +803,7 @@ namespace NMaven.VisualStudio.Addin
         /// <seealso class='IDTExtensibility2' />
         public void OnDisconnection(ext_DisconnectMode disconnectMode, ref Array custom)
         {
+            mavenConnected = false;
             //remove maven menus
             DTE2 dte2 = _applicationObject;
 
