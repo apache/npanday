@@ -133,6 +133,12 @@ under the License.
       <type>library</type>  
       <version>2.0-rc2</version> 
     </dependency> 
+    <dependency>
+      <groupId>NMaven.ProjectImporter</groupId>
+      <artifactId>NMaven.ProjectImporterEngine</artifactId>
+      <version>0.14-maestro-1.5.2-SNAPSHOT</version>
+      <type>library</type>
+    </dependency>
   </dependencies>  
   <profiles> 
     <profile> 

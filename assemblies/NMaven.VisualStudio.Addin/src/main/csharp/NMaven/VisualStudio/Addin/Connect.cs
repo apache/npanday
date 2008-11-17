@@ -274,6 +274,22 @@ using NMaven.Model.Pom;
                             ctlSettingsXml.Caption = "Change Maven settings.xml...";
                             ctlSettingsXml.Visible = true;
                             addReferenceControls.Add(ctlSettingsXml);
+
+
+
+
+                            CommandBarButton ctlProjectImport = (CommandBarButton)
+                            commandBar.Controls.Add(MsoControlType.msoControlButton,
+                                                      System.Type.Missing,
+                                                      System.Type.Missing,
+                                                      control.Index,
+                                                      true);
+                            ctlProjectImport.Click +=
+                                new _CommandBarButtonEvents_ClickEventHandler(cbChangeProjectImportForm_Click);
+                            ctlProjectImport.Caption = "NMaven: Import Project";
+                            ctlProjectImport.Visible = true;
+                            addReferenceControls.Add(ctlProjectImport);
+
                             
                             
                         }
@@ -803,6 +819,19 @@ using NMaven.Model.Pom;
             frm.ShowDialog();
         }
         #endregion
+
+
+
+        #region cbChangeProjectImportForm_Click(CommandBarButton, bool)
+         private void cbChangeProjectImportForm_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            NMavenImportProjectForm frm = new NMavenImportProjectForm(_applicationObject);
+            frm.ShowDialog();
+        }
+        #endregion
+
+
+         
         
         
         
