@@ -191,8 +191,8 @@ using System.Runtime.CompilerServices;
 
          private void launchNMavenBuildSystem()
          {
-                // just to be safe, check if nmaven is already lunched
-                if(_nmavenLunched)
+                // just to be safe, check if nmaven is already launched
+                if(_nmavenLaunched)
                 {
                   outputWindowPane.OutputString("\nNMaven Addin Has Already Started...");
                   return;
@@ -390,8 +390,17 @@ using System.Runtime.CompilerServices;
                 //References
                 referenceEvents = new List<ReferencesEvents>();
                 foreach (Project project in _applicationObject.Solution.Projects)
-                {
-                    VSProject vsProject = (VSProject)project.Object;
+                {   
+                    VSProject vsProject = null;
+                    try
+                    {
+                        vsProject = (VSProject)project.Object;
+                    }
+                    catch (Exception ex)
+                    {
+                       //  not a csproj / vbproj file. Could be a solution folder. skip it.
+                       continue;
+                    }
                     referenceEvents.Add(vsProject.Events.ReferencesEvents);
                     vsProject.Events.ReferencesEvents.ReferenceRemoved 
                         += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
@@ -399,7 +408,7 @@ using System.Runtime.CompilerServices;
                 }
 
 
-                _nmavenLunched = true;
+                _nmavenLaunched = true;
                 outputWindowPane.OutputString("\nNMaven Addin Successful Started...");
         }
         #endregion
@@ -1005,7 +1014,7 @@ using System.Runtime.CompilerServices;
         private List<ReferencesEvents> referenceEvents;
         //private DirectoryInfo baseDirectoryInfo; 
         private MavenRunner mavenRunner;
-        private bool _nmavenLunched = false;
+        private bool _nmavenLaunched = false;
         #endregion
     }
     #endregion
