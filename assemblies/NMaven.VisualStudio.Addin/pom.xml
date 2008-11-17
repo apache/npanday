@@ -43,18 +43,18 @@ under the License.
       <version>0.14-incubating-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
-    <dependency>
-      <groupId>NMaven.Model</groupId>
-      <artifactId>NMaven.Model.Pom</artifactId>
-      <version>0.14-maestro-1.7.1-SNAPSHOT</version>
-      <type>library</type>
-    </dependency>
+    <dependency> 
+      <groupId>NMaven.Model</groupId>  
+      <artifactId>NMaven.Model.Pom</artifactId>  
+      <version>0.14-incubating-SNAPSHOT</version>  
+      <type>library</type> 
+    </dependency>  
     <dependency> 
       <groupId>NMaven.VisualStudio</groupId>  
       <artifactId>NMaven.VisualStudio</artifactId>  
       <version>0.14-incubating-SNAPSHOT</version>  
       <type>library</type> 
-    </dependency> 
+    </dependency>  
     <dependency> 
       <groupId>NMaven.Artifact</groupId>  
       <artifactId>NMaven.Artifact</artifactId>  
@@ -108,19 +108,19 @@ under the License.
       <type>gac</type>  
       <version>7.0.3300.0</version>  
       <classifier>b03f5f7f11d50a3a</classifier> 
-    </dependency>   
-    <dependency>
-      <groupId>NMaven.ProjectImporter</groupId>
-      <artifactId>NMaven.ProjectImporterEngine</artifactId>
-      <version>0.14-maestro-1.5.2-SNAPSHOT</version>
-      <type>library</type>
-    </dependency>
-    <dependency>
-      <groupId>NMaven.Utils</groupId>
-      <artifactId>NMaven.Utils</artifactId>
-      <type>library</type>
-      <version>0.14-incubating-SNAPSHOT</version>
-    </dependency>
+    </dependency>  
+    <dependency> 
+      <groupId>NMaven.ProjectImporter</groupId>  
+      <artifactId>NMaven.ProjectImporterEngine</artifactId>  
+      <version>0.14-incubating-SNAPSHOT</version>  
+      <type>library</type> 
+    </dependency>  
+    <dependency> 
+      <groupId>NMaven.Utils</groupId>  
+      <artifactId>NMaven.Utils</artifactId>  
+      <type>library</type>  
+      <version>0.14-incubating-SNAPSHOT</version> 
+    </dependency> 
   </dependencies>  
   <profiles> 
     <profile> 
