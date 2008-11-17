@@ -94,12 +94,12 @@ public final class ProjectFactory
         project.setVersion( model.getVersion() );
         project.setArtifactType( model.getPackaging() );
         Parent parent = model.getParent();
+        
         if ( parent != null && pomFileDirectory != null )
         {
-            String parentPomName = FileUtils.filename( parent.getRelativePath() ).replace( "\\", File.separator)
-                .replace( "/", File.separator);
-            File parentPomFile = new File( pomFileDirectory, parentPomName );
-            
+            File parentPomFile = new File( pomFileDirectory , parent.getRelativePath().replace( "\\", File.separator)
+                                           .replace( "/", File.separator) );
+
             if (  parentPomFile.exists() ) // if pom resides in remote repo, Maven should already handle this.
             {
                 FileReader fileReader = new FileReader( parentPomFile );
@@ -109,6 +109,15 @@ public final class ProjectFactory
                 try
                 {
                     parentModel = reader.read( fileReader );
+                    
+                    if (project.getGroupId()==null)
+                    {
+                        project.setGroupId( parentModel.getGroupId() );                      
+                    }
+                    if ( project.getVersion()==null )
+                    {
+                        project.setVersion( parentModel.getVersion() );
+                    }
                 }
                 catch ( XmlPullParserException e )
                 {
