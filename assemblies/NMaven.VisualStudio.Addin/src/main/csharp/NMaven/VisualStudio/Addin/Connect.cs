@@ -660,9 +660,9 @@ namespace NMaven.VisualStudio.Addin
                 NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, pReference.ContainingProject);
                 pomUtil.RemovePomDependency(pReference.Name);
             }
-            catch (Exception e)
+            catch //(Exception e)
             {
-                MessageBox.Show(e.Message, Messages.MSG_E_NMAVEN_REMOVE_DEPENDENCY_ERROR);
+                //MessageBox.Show(e.Message, Messages.MSG_E_NMAVEN_REMOVE_DEPENDENCY_ERROR);
             }
         }
 
@@ -1115,17 +1115,24 @@ namespace NMaven.VisualStudio.Addin
             get
             {
 
-                FileInfo pomFile = NMavenPomHelperUtility.FindPomFileUntil(
-                    new FileInfo(CurrentSelectedProject.FullName).Directory,
-                    new FileInfo(_applicationObject.Solution.FileName).Directory);
-
-                if (pomFile != null)
+                try
                 {
-                    return pomFile;
+                    FileInfo pomFile = NMavenPomHelperUtility.FindPomFileUntil(
+                new FileInfo(CurrentSelectedProject.FullName).Directory,
+                new FileInfo(_applicationObject.Solution.FileName).Directory);
+
+                    if (pomFile != null)
+                    {
+                        return pomFile;
+                    }
+
+                    return null;
+
                 }
-
-                return null;
-
+                catch
+                {
+                    return null;
+                }
             }
 
         }
@@ -1298,7 +1305,21 @@ namespace NMaven.VisualStudio.Addin
             //First selected project
             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
             {
-                AddArtifactsForm form = new AddArtifactsForm(project, container, logger, CurrentSelectedProjectPom);
+                FileInfo currentPom = this.CurrentSelectedProjectPom;
+                if (currentPom == null)
+                {
+                    DialogResult result = MessageBox.Show("Pom file not found, do you want to import the projects first before adding Maven Artifact?", "Add Maven Artifact", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if (result == DialogResult.Cancel)
+                        return;
+                    else if (result == DialogResult.Yes)
+                    {
+                        SaveAllDocuments();
+                        NMavenImportProjectForm frm = new NMavenImportProjectForm(_applicationObject);
+                        frm.ShowDialog();
+                        currentPom = this.CurrentSelectedProjectPom;
+                    } 
+                }
+                AddArtifactsForm form = new AddArtifactsForm(project, container, logger, currentPom);
                 form.Show();
                 break;
             }

@@ -137,10 +137,6 @@ namespace NMaven.VisualStudio.Addin
         {
             try
             {
-                NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
-
-
-
                 ListView.SelectedListViewItemCollection selectedItems = localListView.SelectedItems;
                 if (selectedItems != null)
                 {
@@ -404,8 +400,6 @@ namespace NMaven.VisualStudio.Addin
         {
             try
             {
-                NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
-
                 LocalArtifactItem item = localListView.SelectedItems[0] as LocalArtifactItem;
 
                 addLocalArtifact(item);
@@ -430,7 +424,6 @@ namespace NMaven.VisualStudio.Addin
         {
             VSProject vsProject = null;
 
-            NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
             NMaven.Artifact.Artifact artifact = item.Artifact;
 
             if (project.Object is VSProject)
@@ -459,9 +452,13 @@ namespace NMaven.VisualStudio.Addin
 
             try
             {
-                pomUtil.AddPomDependency(artifact.GroupId,
-                                    artifact.ArtifactId,
-                                    artifact.Version);
+                if (pom != null)
+                {
+                    NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
+                    pomUtil.AddPomDependency(artifact.GroupId,
+                                        artifact.ArtifactId,
+                                        artifact.Version);
+                }
             }
             catch (Exception err1)
             {
@@ -473,8 +470,6 @@ namespace NMaven.VisualStudio.Addin
 
         void addRemoteArtifact(RemoteArtifactNode node)
         {
-            NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
-
             String uri = node.ArtifactUrl;
             String paths;
             String repoUrl = getRepositoryUrl();
@@ -512,9 +507,13 @@ namespace NMaven.VisualStudio.Addin
 
             try
             {
-                pomUtil.AddPomDependency(artifact.GroupId,
-                                artifact.ArtifactId,
-                                artifact.Version);
+                if (pom != null)
+                {
+                    NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
+                    pomUtil.AddPomDependency(artifact.GroupId,
+                                    artifact.ArtifactId,
+                                    artifact.Version);
+                }
             }
             catch (Exception err2)
             {
