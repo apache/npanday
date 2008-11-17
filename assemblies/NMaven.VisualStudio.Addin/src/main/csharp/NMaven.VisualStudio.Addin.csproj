@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{81056ac2-dddd-43ba-a6d0-7ed461911039}</ProjectGuid>
+    <ProjectGuid>{5BE35FDF-E620-4EB0-B9A8-2359C506D85D}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <RootNameSpace>NMaven.VisualStudio</RootNameSpace>
     <AssemblyName>NMaven.VisualStudio.Addin</AssemblyName>
@@ -52,18 +52,92 @@
       <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\VSLangProj\7.0.3300.0__VSLangProj\VSLangProj</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="NMaven" />
-    <Folder Include="NMaven\VisualStudio" />
-    <Folder Include="NMaven\VisualStudio\Addin" />
-    <Folder Include="NMaven\VisualStudio\Addin\ProjectImporter" />
-    <Folder Include="NMaven\VisualStudio\Addin\ProjectImporter\Converter" />
-    <Folder Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest" />
-    <Folder Include="NMaven\VisualStudio\Addin\ProjectImporter\Reader" />
-    <Folder Include="NMaven\VisualStudio\Addin\ProjectImporter\Validator" />
-    <Folder Include="NMaven\VisualStudio\Addin\Util" />
+    <Compile Include="NMaven\VisualStudio\Addin\AddArtifactsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\AddArtifactsForm.Designer.cs">
+      <DependentUpon>AddArtifactsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\ChangeMavenSettingsXmlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\ChangeMavenSettingsXmlForm.Designer.cs">
+      <DependentUpon>ChangeMavenSettingsXmlForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\ConfigureMavenRepositoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\ConfigureMavenRepositoryForm.Designer.cs">
+      <DependentUpon>ConfigureMavenRepositoryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\Connect.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\MainFormTest.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\NMavenImportProjectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\NMavenImportProjectForm.Designer.cs">
+      <DependentUpon>NMavenImportProjectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\NMavenSignAssembly.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\NMavenSignAssembly.Designer.cs">
+      <DependentUpon>NMavenSignAssembly.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Converter\PomConverter.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\BootstrapperPackage.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\Compile.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\Content.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\EmbeddedResource.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\Folder.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\IncludeBase.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\None.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\ProjectDigest.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\ProjectDigester.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\ProjectReference.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\Reference.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\WebReferences.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\WebReferenceUrl.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\NMavenImporter.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Reader\ProjectReader.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Validator\ProjectValidator.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\RemoveArtifactsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\RemoveArtifactsForm.Designer.cs">
+      <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NMaven\VisualStudio\Addin\Util\GacUtility.cs" />
+    <Compile Include="NMaven\VisualStudio\Addin\Util\NMavenPomHelperUtility.cs" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="NMaven\VisualStudio\Addin\AddArtifactsForm.resx">
+      <DependentUpon>AddArtifactsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NMaven\VisualStudio\Addin\ChangeMavenSettingsXmlForm.resx">
+      <DependentUpon>ChangeMavenSettingsXmlForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NMaven\VisualStudio\Addin\ConfigureMavenRepositoryForm.resx">
+      <DependentUpon>ConfigureMavenRepositoryForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NMaven\VisualStudio\Addin\NMavenImportProjectForm.resx">
+      <DependentUpon>NMavenImportProjectForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NMaven\VisualStudio\Addin\NMavenSignAssembly.resx">
+      <DependentUpon>NMavenSignAssembly.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NMaven\VisualStudio\Addin\RemoveArtifactsForm.resx">
+      <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

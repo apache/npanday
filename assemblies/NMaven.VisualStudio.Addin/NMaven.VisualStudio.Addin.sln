@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.VisualStudio.Addin", "C:\Documents and Settings\shane\nmaven-apache\trunk\assemblies\NMaven.VisualStudio.Addin\src\main\csharp\NMaven.VisualStudio.Addin.csproj", "{5BE35FDF-E620-4EB0-B9A8-2359C506D85D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.VisualStudio.Addin", "src\main\csharp\NMaven.VisualStudio.Addin.csproj", "{5BE35FDF-E620-4EB0-B9A8-2359C506D85D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

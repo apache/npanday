@@ -563,22 +563,6 @@ public final class CompilerMojo
         {
             parameters.add( "/define:" + define);
         }
-        else
-        {
-            if("winexe".equalsIgnoreCase(project.getPackaging()))
-            {
-                parameters.add( "/define:_MyType=\"WindowsForms\"" );
-            }
-            else if("exe".equalsIgnoreCase(project.getPackaging()))
-            {
-                parameters.add( "/define:_MyType=\"Console\"" );
-            }
-            else if("library".equalsIgnoreCase(project.getPackaging()) || "dll".equalsIgnoreCase(project.getPackaging()))
-            {
-                parameters.add( "/define:_MyType=\"Windows\"" );
-            }
-        
-        }
         
 
         try
