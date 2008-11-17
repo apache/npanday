@@ -174,6 +174,12 @@ namespace NMaven.VisualStudio.Addin
 
         #region OnConnection(object,ext_ConnectMode,object,Array)
         /// <summary>
+        /// Used for SaveAllDocuments
+        /// </summary>
+        private CommandBarControl saveAllControl;
+		
+		
+		/// <summary>
         /// Implements the OnConnection method of the IDTExtensibility2 interface.
         /// Receives notification that the Add-in is being loaded.
         /// </summary>
@@ -819,22 +825,95 @@ namespace NMaven.VisualStudio.Addin
 
         #region NMavenBuild
 
-        private void SaveAllDocuments()
+        /// <summary>
+        /// Checks the currently selected pom file if there is a vb project in it.
+        /// </summary>
+        private bool IsVbProject(Project project)
+        { 
+            if(project.UniqueName.Contains("vbproj"))
+                return true;
+            return false;
+        }
+        
+        
+		/// <summary>
+        /// Updates the pomfile configuration on its rootnamespace
+        /// </summary>
+        private void UpdateVBProjectsPoms()
         {
+            FileInfo pomFile = CurrentSelectedProjectPom;
+            NMavenPomHelperUtility pomUtility = new NMavenPomHelperUtility(pomFile);
+            if (pomUtility.NMavenCompilerPluginLanguage == "vb" || pomUtility.NMavenCompilerPluginLanguage == "VB")
+            {
+            
+                string rootNamespace=string.Empty;
+                string startUp = string.Empty;
+
+                string projectPath = pomFile.DirectoryName + "\\" + pomUtility.ArtifactId + ".vbproj";
+                
+                FileStream fs = new FileStream(projectPath, FileMode.Open, FileAccess.Read,
+                                   FileShare.ReadWrite);
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.Load(fs);
+                XmlNodeList nodelist = xmldoc.GetElementsByTagName("PropertyGroup");
+                
+                foreach (XmlNode xmlnode in nodelist)
+                {
+
+                    XmlNodeList childNodeLlists = xmlnode.ChildNodes;
+                    foreach (XmlNode child in childNodeLlists)
+                    {
+                        if (child.Name.Equals("StartupObject"))
+                        {
+                            startUp = child.InnerText;
+                        }
+                        if (child.Name.Equals("RootNamespace"))
+                        {
+                            rootNamespace = child.InnerText;
+                            break;
+                        }
+                    }
+                }
+                pomUtility.SetNMavenCompilerPluginConfigurationValue("rootNamespace", rootNamespace);
+                pomUtility.SetNMavenCompilerPluginConfigurationValue("main", startUp);
+                
+                fs.Close();
+            }
+            SaveAllDocuments();
+        }
+
+        private CommandBarControl GetSaveAllControl()
+        {
+            CommandBarControl saveCtrl=null;
             EnvDTE80.Windows2 windows2 = (EnvDTE80.Windows2)_applicationObject.Windows;
 
             DTE2 dte2 = _applicationObject;
+
 
             foreach (CommandBar commandBar in (CommandBars)dte2.CommandBars)
             {
                 foreach (CommandBarControl control in commandBar.Controls)
                 {
-
                     if (control.Caption == "Save A&ll")
                     {
-                        control.Execute();
+                        saveCtrl = control;
+                        break;
                     }
+
                 }
+            }
+            return saveCtrl;
+        }
+
+        private void SaveAllDocuments()
+        {
+            if (saveAllControl == null)
+            {
+                saveAllControl = GetSaveAllControl();
+            }
+            if (saveAllControl != null)
+            {
+                saveAllControl.Execute();
             }
         }
 		
