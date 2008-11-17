@@ -34,7 +34,7 @@ namespace NMaven.Artifact
         {
             DirectoryInfo uac = new DirectoryInfo(localRepository.FullName + @"\uac\gac_msil\");
 
-            String[] tokens = uri.Split("/".ToCharArray());
+            String[] tokens = uri.Split("/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             int size = tokens.Length;
             if (size < 3)
             {

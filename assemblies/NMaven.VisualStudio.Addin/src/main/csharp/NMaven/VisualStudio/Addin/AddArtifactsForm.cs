@@ -113,18 +113,7 @@ namespace NMaven.VisualStudio.Addin
                 return;
             }
 
-            String url = null;
-
-            foreach (NMaven.Model.Setting.Profile profile in settings.profiles)
-            {
-                foreach (NMaven.Model.Setting.Repository repository in profile.repositories)
-                {
-                    if (repository.id.Equals("nmaven.id"))
-                    {
-                        url = repository.url;
-                    }
-                }
-            }
+            String url = getRepositoryUrl();
 
             if (url == null)
             {
@@ -203,8 +192,8 @@ namespace NMaven.VisualStudio.Addin
             if (treeNode != null)
             {
                 String uri = (String)treeNode.Tag;
-                int length = uri.Length - uri.LastIndexOf("/maven2/") - 8;
-                String paths = uri.Substring(uri.LastIndexOf("/maven2/") + 8, length);
+                String repoUrl = getRepositoryUrl();
+                String paths = normalizePath(uri.Substring(repoUrl.Length));
                 NMaven.Artifact.Artifact artifact1 = 
                     artifactContext.GetArtifactRepository().GetArtifactFor(paths);
                 Dependency dependency1 = new Dependency();
@@ -289,7 +278,20 @@ namespace NMaven.VisualStudio.Addin
             List<TreeNode> treeNodes = new List<TreeNode>();
 
             WebClient webClient = new WebClient();
-            byte[] page = webClient.DownloadData(url);
+            byte[] page = null;
+
+            //prevent VS crash
+            try
+            {
+                page = webClient.DownloadData(url);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Cannot read remote repository: " + url + " " + ex.Message + ex.StackTrace);
+                return treeNodes;
+            }
+
+
             String pattern =
                 (@"<a[^>]*href\s*=\s*[\""\']?(?<URI>[^""'>\s]*)[\""\']?[^>]*>(?<Name>[^<]+|.*?)?<");
             MatchCollection matches = Regex.Matches(Encoding.ASCII.GetString(page), pattern, RegexOptions.IgnoreCase);
@@ -343,6 +345,59 @@ namespace NMaven.VisualStudio.Addin
             FieldInfo fieldInfo = settingsSectionType.GetField("useUnsafeHeaderParsing",
                 BindingFlags.NonPublic | BindingFlags.Instance);
             fieldInfo.SetValue(settingsSection, true);
+        }
+
+        private Boolean isValidRemoteRepositoryUrl(String repoUrl)
+        {
+            WebClient webClient = new WebClient();
+            byte[] page = null;
+
+            try
+            {
+                page = webClient.DownloadData(repoUrl);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Cannot read remote repository: " + repoUrl + " " + ex.Message + ex.StackTrace);
+                return false;
+            }
+            return true;
+        }
+
+        /*
+         * e.g.: Castle/./Castle.Core/./2.0-rc2/./Castle.Core-2.0-rc2.dll
+         * transform it to: Castle/Castle.Core/2.0-rc2/Castle.Core-2.0-rc2.dll
+         * 
+        */
+        private String normalizePath(String path)
+        {
+            return path.Replace("/./", "/");
+        }
+
+        private String getRepositoryUrl()
+        {
+            Settings settings = null;
+            String settingsPath = SettingsUtil.GetUserSettingsPath();
+            try
+            {
+                settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + e.StackTrace);
+            }
+
+            foreach (NMaven.Model.Setting.Profile profile in settings.profiles)
+            {
+                foreach (NMaven.Model.Setting.Repository repository in profile.repositories)
+                {
+                    if (repository.id.Equals("nmaven.id"))
+                    {
+                        return repository.url;
+                    }
+                }
+            }
+            return null;
         }
 
     }
