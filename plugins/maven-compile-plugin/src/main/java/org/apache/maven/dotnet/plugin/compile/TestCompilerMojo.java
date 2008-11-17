@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.apache.maven.dotnet.plugin.compile;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -40,99 +41,8 @@ import java.io.File;
  * @description Maven Mojo for compiling test class files
  */
 public final class TestCompilerMojo
-    extends AbstractMojo
+    extends AbstractCompilerMojo
 {
-
-    /**
-     * The location of the local Maven repository.
-     *
-     * @parameter expression="${settings.localRepository}"
-     */
-    private File localRepository;
-
-    /**
-     * The maven project.
-     *
-     * @parameter expression="${project}"
-     * @required
-     */
-    private MavenProject project;
-
-    /**
-     * Additional compiler commands for test classes
-     *
-     * @parameter expression = "${testParameters}"
-     */
-    private ArrayList<String> testParameters;
-
-    /**
-     * Skips compiling of unit tests
-     *
-     * @parameter expression = "${skipTestCompile}" default-value = "false"
-     */
-    private boolean skipTestCompile;
-
-    /**
-     * The framework version to compile the test classes: 1.1, 2.0, 3.0
-     *
-     * @parameter expression = "${testFrameworkVersion}"
-     */
-    private String testFrameworkVersion;
-
-    /**
-     * The framework version to compile under: 1.1, 2.0, 3.0
-     *
-     * @parameter expression = "${frameworkVersion}"
-     */
-    private String frameworkVersion;
-
-    /**
-     * The Vendor for the Compiler. Supports MONO and MICROSOFT: the default value is <code>MICROSOFT</code>. Not
-     * case or white-space sensitive.
-     *
-     * @parameter expression="${testVendor}"
-     */
-    private String testVendor;
-
-    /**
-     * .NET Language. The default value is <code>C_SHARP</code>. Not case or white-space sensitive.
-     *
-     * @parameter expression="${testLanguage}"
-     */
-    private String testLanguage;
-
-    /**
-     * .NET Language. The default value is <code>C_SHARP</code>. Not case or white-space sensitive.
-     *
-     * @parameter expression="${language}" default-value = "C_SHARP"
-     * @required
-     */
-    private String language;
-
-    /**
-     * The Vendor for the Compiler. Supports MONO and MICROSOFT: the default value is <code>MICROSOFT</code>. Not
-     * case or white-space sensitive.
-     *
-     * @parameter expression="${vendor}"
-     */
-    private String vendor;
-
-    /**
-     * @parameter expression = "${testVendorVersion}"
-     */
-    private String testVendorVersion;
-
-    /**
-     * @component
-     */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
-
-    /**
-     * Include debug output.
-     *
-     * @parameter expression = "${isDebug}" default-value="false"
-     */
-    private boolean isDebug;
 
     /**
      * Compiles the class files.
@@ -143,7 +53,7 @@ public final class TestCompilerMojo
     public void execute()
         throws MojoExecutionException
     {
-        long startTime = System.currentTimeMillis();
+
 
         String skipTests = System.getProperty( "maven.test.skip" );
         if ( ( skipTests != null && skipTests.equalsIgnoreCase( "true" ) ) || skipTestCompile )
@@ -151,8 +61,17 @@ public final class TestCompilerMojo
             getLog().warn( "NMAVEN-903-004: Disabled unit tests: -Dmaven.test.skip=true" );
             return;
         }
-        FileUtils.mkdir( "target" );
 
+        // execute as a test
+        super.execute(true);
+
+    }
+
+
+
+
+    protected void initializeDefaults()
+    {
         if ( testLanguage == null )
         {
             testLanguage = language;
@@ -166,11 +85,15 @@ public final class TestCompilerMojo
             testFrameworkVersion = frameworkVersion;
         }
 
-        if ( localRepository == null )
-        {
-            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
-        }
+        profileAssemblyPath = null;
 
+    }
+
+
+
+
+    protected CompilerRequirement getCompilerRequirement() throws MojoExecutionException
+    {
         //Requirement
         CompilerRequirement compilerRequirement = CompilerRequirement.Factory.createDefaultCompilerRequirement();
         compilerRequirement.setLanguage( testLanguage );
@@ -189,39 +112,217 @@ public final class TestCompilerMojo
             throw new MojoExecutionException( "NMAVEN-900-000: Unknown Vendor: Vendor = " + vendor, e );
         }
 
+
+        return compilerRequirement;
+
+    }
+
+    protected CompilerConfig getCompilerConfig()  throws MojoExecutionException
+    {
+
         //Config
         CompilerConfig compilerConfig = (CompilerConfig) CompilerConfig.Factory.createDefaultExecutableConfig();
-        if ( testParameters == null )
-        {
-            testParameters = new ArrayList<String>();
-        }
-        if ( isDebug )
-        {
-            testParameters.add( "/debug+" );
-        }
-        compilerConfig.setCommands( testParameters );
+
+        compilerConfig.setCommands( getParameters() );
 
         compilerConfig.setArtifactType( ArtifactType.LIBRARY );
         compilerConfig.setTestCompile( true );
         compilerConfig.setLocalRepository( localRepository );
 
-        try
+
+
+
+
+        if ( testKeyfile != null )
         {
-            CompilerExecutable compilerExecutable =
-                netExecutableFactory.getCompilerExecutableFor( compilerRequirement, compilerConfig, project, null );
-            compilerExecutable.execute();
+            KeyInfo keyInfo = KeyInfo.Factory.createDefaultKeyInfo();
+            keyInfo.setKeyFileUri( testKeyfile.getAbsolutePath() );
+            compilerConfig.setKeyInfo( keyInfo );
         }
-        catch ( PlatformUnsupportedException e )
+
+
+
+        if ( testIncludeSources != null && testIncludeSources.length != 0 )
         {
-            throw new MojoExecutionException(
-                "NMAVEN-903-003: Unsupported Platform: Language = " + language + ", Vendor = " + vendor, e );
+            ArrayList<String> srcs = new ArrayList<String>();
+            for(File includeSource : testIncludeSources)
+            {
+                if(includeSource.exists())
+                {
+                    srcs.add(includeSource.getAbsolutePath());
+                }
+            }
+
+          	compilerConfig.setIncludeSources(srcs);
         }
-        catch ( ExecutionException e )
-        {
-            throw new MojoExecutionException(
-                "NMAVEN-903-002: Unable to Compile: Language = " + language + ", Vendor = " + vendor, e );
-        }
-        long endTime = System.currentTimeMillis();
-        getLog().info( "Mojo Execution Time = " + ( endTime - startTime ) );
+
+
+
+
+        return compilerConfig;
+
     }
+
+
+
+    protected ArrayList<String> getParameters()
+    {
+        ArrayList<String> params = new ArrayList<String>();
+
+
+        if (testParameters != null && testParameters.size() > 0)
+        {
+            params.addAll(testParameters);
+        }
+
+
+        if (isDebug)
+        {
+            params.add("/debug+");
+        }
+
+        if (testRootNamespace != null)
+        {
+            params.add("/rootnamespace:" + testRootNamespace);
+        }
+
+        if (testDelaysign)
+        {
+            params.add("/delaysign+");
+        }
+
+        if (testAddModules != null && testAddModules.length != 0)
+        {
+            params.add("/addmodule:" + listToCommaDelimitedString(testAddModules));
+        }
+
+        if (testWin32Res != null)
+        {
+            params.add("/win32res:" + testWin32Res);
+        }
+
+        if (testRemoveintchecks)
+        {
+            params.add("/removeintchecks+");
+        }
+
+        if (testWin32Icon != null)
+        {
+            params.add("/win32icon:" + testWin32Icon);
+        }
+
+        if (testImports != null && testImports.length != 0)
+        {
+            params.add("/imports:" + listToCommaDelimitedString(testImports));
+        }
+
+        if (testResource != null)
+        {
+            params.add("/resource:" + testResource);
+        }
+
+        if (testLinkResource != null)
+        {
+            params.add("/linkresource:" + testLinkResource);
+        }
+
+        if (testOptionexplicit)
+        {
+            params.add("/optionexplicit+");
+        }
+
+        if (testOptionStrict != null)
+        {
+            if (testOptionStrict.trim().equals("+") || testOptionStrict.trim().equals("-"))
+            {
+                params.add("/optionstrict" + testOptionStrict.trim());
+            }
+            else
+            {
+                params.add("/optionstrict:" + testOptionStrict.trim());
+            }
+
+        }
+
+        if (testOptimize)
+        {
+            params.add("/optimize+");
+        }
+
+        if (testOptionCompare != null)
+        {
+            params.add("/optioncompare:" + testOptionCompare);
+        }
+
+        if (testChecked)
+        {
+            params.add("/checked+");
+        }
+
+        if (testUnsafe)
+        {
+            params.add("/unsafe+");
+        }
+
+        if (testNoconfig)
+        {
+            params.add("/noconfig");
+        }
+
+        if (testBaseAddress != null)
+        {
+            params.add("/baseaddress:" + testBaseAddress);
+        }
+
+        if (testBugReport != null)
+        {
+            params.add("/bugreport:" + testBugReport);
+        }
+
+        if (testCodePage != null)
+        {
+            params.add("/codepage:" + testCodePage);
+        }
+
+        if (testUtf8output)
+        {
+            params.add("/utf8output");
+        }
+
+        if (testPdb != null)
+        {
+            params.add("/pdb:" + testPdb);
+        }
+
+        if (testErrorReport != null)
+        {
+            params.add("/errorreport:" + testErrorReport);
+        }
+
+        if (testModuleAssemblyName != null)
+        {
+            params.add("/moduleassemblyname:" + testModuleAssemblyName);
+        }
+
+        if (testLibs != null && testLibs.length != 0)
+        {
+            params.add("/lib:" + listToCommaDelimitedString(testLibs));
+        }
+
+        if (testMain != null)
+        {
+            params.add("/main:" + testMain);
+        }
+
+        if (testDefine != null)
+        {
+            params.add("/define:" + testDefine);
+        }
+
+
+        return params;
+    }
+
+
 }
+
