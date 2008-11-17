@@ -38,6 +38,7 @@ using System.Web.Services.Protocols;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Xml.XPath;
 
 using Microsoft.VisualStudio.CommandBars;
 
@@ -364,22 +365,18 @@ using NMaven.Model.Pom;
          {
 
              Project project = pReference.ContainingProject;
-             FileInfo solutionFile = new FileInfo(_applicationObject.Solution.FileName);
              
-
-             String pomFileName = solutionFile.DirectoryName + @"\pom.xml";
-
-             if (!new FileInfo(pomFileName).Exists)
+             if (!CurrentSelectedProjectPom.Exists)
              {
-                 MessageBox.Show("Could not delete reference. Missing pom file: File = " + pomFileName);
+                 MessageBox.Show("Could not delete reference. Missing pom file: File = " + CurrentSelectedProjectPom);
                  return;
              }
 
-             XmlReader reader = XmlReader.Create(pomFileName);
+             XmlReader reader = XmlReader.Create(CurrentSelectedProjectPom.FullName);
              XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Pom.Model));
              if (!serializer.CanDeserialize(reader))
              {
-                 MessageBox.Show("Could not delete reference. Corrupted pom file: File = " + pomFileName);
+                 MessageBox.Show("Could not delete reference. Corrupted pom file: File = " + CurrentSelectedProjectPom.FullName);
                  return;
              }
 
@@ -397,7 +394,7 @@ using NMaven.Model.Pom;
                  model.dependencies = newDependencies.ToArray();
                  reader.Close();
 
-                 TextWriter writer = new StreamWriter(pomFileName);
+                 TextWriter writer = new StreamWriter(CurrentSelectedProjectPom.FullName);
                  serializer.Serialize(writer, model);
                  writer.Close();
              }
@@ -709,66 +706,83 @@ using NMaven.Model.Pom;
 
         #endregion
 
+         public FileInfo CurrentSelectedProjectPom
+         {
+             get 
+             {
+
+                 FileInfo pomFile = NMavenPomHelperUtility.FindPomFileUntil(
+                     new FileInfo(CurrentSelectedProject.FullName).Directory, 
+                     new FileInfo( _applicationObject.Solution.FileName).Directory);
+
+                 if (pomFile != null)
+                 {
+                     return pomFile;
+                 }
+
+                 return null;
+             
+             }
+
+         }
+
+         public Project CurrentSelectedProject
+         {
+             get
+             {
+                 foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
+                 {
+                     return project;
+                 }
+
+                 return null;
+
+             }
+         }
 
 
-         #region getPomFile()
-         private FileInfo getPomFile()
-        {
-            FileInfo projectFileInfo = null;
-            //TODO: Fix to handle multiple projects: NMAVEN-80
-            foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
-            {
-                projectFileInfo = new FileInfo(project.FileName);
-                break;
-            }
-            FileInfo pomFile = new FileInfo(projectFileInfo.DirectoryName + @"\pom.xml");
-            if (!pomFile.Exists)
-            {
-                pomFile = new FileInfo(projectFileInfo.Directory.Parent.Parent.Parent.FullName + @"\pom.xml");
-            }
-            return pomFile;
-        } 
-        #endregion
+
+
 
         #region cbRunUnitTest_Click(CommandBarButton,bool)
         private void cbRunUnitTest_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(getPomFile(), "org.apache.maven.dotnet.plugins:maven-test-plugin:test");
+            executeBuildCommand(CurrentSelectedProjectPom, "org.apache.maven.dotnet.plugins:maven-test-plugin:test");
         } 
         #endregion
 
         #region cbCompileAndRunUnitTest_Click(CommandBarButton,bool)
         private void cbCompileAndRunUnitTest_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(getPomFile(), "test");
+            executeBuildCommand(CurrentSelectedProjectPom, "test");
         } 
         #endregion
 
         #region cbInstall_Click(CommandBarButton,bool)
         private void cbInstall_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(getPomFile(), "install");
+            executeBuildCommand(CurrentSelectedProjectPom, "install");
         } 
         #endregion
 
         #region cbClean_Click(CommandBarButton,bool)
         private void cbClean_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(getPomFile(), "clean");
+            executeBuildCommand(CurrentSelectedProjectPom, "clean");
         } 
         #endregion
 
         #region cbBuild_Click(CommandBarButton,bool)
         private void cbBuild_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(getPomFile(), "compile");
+            executeBuildCommand(CurrentSelectedProjectPom, "compile");
         } 
         #endregion
 
         #region cbTest_Click(CommandBarButton,bool)
         private void cbTest_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(getPomFile(), "test");
+            executeBuildCommand(CurrentSelectedProjectPom, "test");
         } 
         #endregion
 
@@ -801,7 +815,7 @@ using NMaven.Model.Pom;
             //First selected project
             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
             {
-                AddArtifactsForm form = new AddArtifactsForm(project, container, logger);
+                AddArtifactsForm form = new AddArtifactsForm(project, container, logger, CurrentSelectedProjectPom);
                 form.Show();
                 break;
             }
@@ -828,7 +842,7 @@ using NMaven.Model.Pom;
              //First selected project
              foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
              {
-                 NMavenSignAssembly frm = new NMavenSignAssembly(project, container, logger);
+                 NMavenSignAssembly frm = new NMavenSignAssembly(project, container, logger, CurrentSelectedProjectPom);
                  frm.ShowDialog(); 
                  break;
              }

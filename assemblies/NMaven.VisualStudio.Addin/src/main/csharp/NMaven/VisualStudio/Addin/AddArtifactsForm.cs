@@ -51,6 +51,7 @@ namespace NMaven.VisualStudio.Addin
         private ArtifactContext artifactContext;
         private Project project;
         private NMaven.Logging.Logger logger;
+        private FileInfo pom;
 
         /// <summary>
         /// For Testing
@@ -62,14 +63,15 @@ namespace NMaven.VisualStudio.Addin
            // localListView.View = View.Details;
         }
 
-        public AddArtifactsForm(Project project, ArtifactContext container, Logger logger)
+        public AddArtifactsForm(Project project, ArtifactContext container, Logger logger, FileInfo pom)
         {
             this.project = project;
             this.logger = logger;
             InitializeForm();
             InitializeComponent();
             localListView.View = View.Details;           
-            artifactContext = container;       
+            artifactContext = container;
+            this.pom = pom;
         }
 
         private void InitializeForm()
@@ -131,34 +133,26 @@ namespace NMaven.VisualStudio.Addin
 
         private void addArtifact_Click(object sender, EventArgs e)
         {
-            String pomFileName = 
-                (new FileInfo(project.FileName).Directory).FullName + @"\..\..\..\pom.xml";
-            if (!new FileInfo(pomFileName).Exists)//No flat directory structure.
+            if (!pom.Exists)
             {
-                pomFileName = (new FileInfo(project.FileName).Directory.Parent.Parent.Parent).FullName 
-                    + @"\pom.xml";
-
-                if (!new FileInfo(pomFileName).Exists)
-                {
-                    MessageBox.Show("Could not add reference. Missing pom file: File = " + pomFileName);
-                    return;
-                }
+                MessageBox.Show("Could not add reference. Missing pom file: File = " + pom.FullName);
+                return;
             }
             
             XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.Load(pomFileName);
+            xmlDocument.Load(pom.FullName);
             String namespaceUri = xmlDocument.DocumentElement.NamespaceURI;
             if (string.IsNullOrEmpty(namespaceUri))
             {
                 xmlDocument.DocumentElement.SetAttribute("xmlns", "http://maven.apache.org/POM/4.0.0");
             }
-            xmlDocument.Save(pomFileName);
+            xmlDocument.Save(pom.FullName);
 
-            XmlReader reader = XmlReader.Create(pomFileName);
+            XmlReader reader = XmlReader.Create(pom.FullName);
             XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Pom.Model));
             if (!serializer.CanDeserialize(reader))
             {
-                MessageBox.Show("Could not add reference. Corrupted pom file: File = " + pomFileName);
+                MessageBox.Show("Could not add reference. Corrupted pom file: File = " + pom.FullName);
                 return;
             }
 
@@ -218,7 +212,7 @@ namespace NMaven.VisualStudio.Addin
             reader.Close();
 
             model.dependencies = dependencies.ToArray();
-            TextWriter writer = new StreamWriter(pomFileName);
+            TextWriter writer = new StreamWriter(pom.FullName);
             serializer.Serialize(writer, model);
             writer.Close();
             this.Close();
