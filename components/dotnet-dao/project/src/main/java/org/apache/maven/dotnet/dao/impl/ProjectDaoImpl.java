@@ -471,6 +471,65 @@ public final class ProjectDaoImpl
                         projectDependency.setResolved( false );
                     }
                 }
+                
+                
+
+                // resolve system scope dependencies
+                if(projectDependency.getScope() != null
+                        &&  projectDependency.getScope().equals("system"))
+                {
+                     if(projectDependency.getSystemPath() == null)
+                     {
+                         throw new IOException(
+                                "systemPath required for System Scoped dependencies " +
+                                        "in Group ID = "
+                                 + projectDependency.getGroupId()
+                                 + ", Artiract ID = "
+                                 + projectDependency.getArtifactId()
+                                 );
+                     }
+
+                     File f = new File(projectDependency.getSystemPath());
+
+                    if(!f.exists())
+                    {
+                        throw new IOException(
+                                "Dependency systemPath File not found:"
+                                 + projectDependency.getSystemPath()
+                                 + "in Group ID = "
+                                 + projectDependency.getGroupId()
+                                 + ", Artiract ID = "
+                                 + projectDependency.getArtifactId()
+                                 );
+                    }
+
+
+                    Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
+                    assembly.setFile(f);
+                    assembly.setResolved(true);
+                    artifactDependencies.add(assembly);
+                    
+                    projectDependency.setResolved(true);
+                    
+                    
+
+                    logger.info( "NMAVEN-180-011.1: Project Dependency Resolved: Artifact ID = " +
+                                        projectDependency.getArtifactId() + ", Group ID = " + projectDependency.getGroupId() +
+                                        ", Version = " + projectDependency.getVersion() + ", Scope = " +
+                                        projectDependency.getScope() +
+                                        "SystemPath = " +
+                                        projectDependency.getSystemPath()
+                                    
+                    );
+                    
+                    continue;
+
+
+
+
+                }
+                
+                //TODO: hehehehhehehehehheheh
 
                 if ( !projectDependency.isResolved() )
                 {

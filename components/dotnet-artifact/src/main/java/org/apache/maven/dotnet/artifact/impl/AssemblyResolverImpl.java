@@ -115,6 +115,8 @@ public class AssemblyResolverImpl
             projectDependency.setVersion( dependency.getVersion() );
             projectDependency.setPublicKeyTokenId( dependency.getClassifier() );
             projectDependency.setArtifactType( dependency.getType() );
+            projectDependency.setScope(dependency.getScope());
+            projectDependency.setSystemPath(dependency.getSystemPath());
             project.addProjectDependency( projectDependency );
         }
 

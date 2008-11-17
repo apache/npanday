@@ -68,6 +68,8 @@ public final class ProjectFactory
             dependency.setVersion( projectDependency.getVersion() );
             dependency.setType( projectDependency.getArtifactType() );
             dependency.setClassifier( projectDependency.getPublicKeyTokenId() );
+            dependency.setScope(projectDependency.getScope());
+            dependency.setSystemPath(projectDependency.getSystemPath());
             dependencies.add( dependency );
         }
         model.setDependencies( dependencies );
@@ -137,6 +139,11 @@ public final class ProjectFactory
         projectDependency.setVersion( dependency.getVersion() );
         projectDependency.setPublicKeyTokenId( dependency.getClassifier() );
         projectDependency.setArtifactType( dependency.getType() );
+        projectDependency.setScope(dependency.getScope());
+        projectDependency.setSystemPath(dependency.getSystemPath());
+        
+        projectDependency.setScope(dependency.getScope());
+        projectDependency.setSystemPath(dependency.getSystemPath());
 
         logAndVerifyProjectParameters( projectDependency );
 
@@ -159,6 +166,8 @@ public final class ProjectFactory
         dependency.setVersion( projectDependency.getVersion() );
         dependency.setType( projectDependency.getArtifactType() );
         dependency.setClassifier( projectDependency.getPublicKeyTokenId() );
+        dependency.setScope(projectDependency.getScope());
+        dependency.setSystemPath(projectDependency.getSystemPath());
         return dependency;
     }
 

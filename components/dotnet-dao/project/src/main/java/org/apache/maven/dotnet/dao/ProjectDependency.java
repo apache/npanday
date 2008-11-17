@@ -28,6 +28,7 @@ public class ProjectDependency
      * The scope: runtime, compile, test
      */
     private String scope;
+    private String systemPath;
 
     /**
      * Returns the scope:  runtime, compile, test
@@ -47,6 +48,17 @@ public class ProjectDependency
     public void setScope( String scope )
     {
         this.scope = scope;
+    }
+    
+    
+    public String getSystemPath()
+    {
+        return systemPath;
+    }
+    
+    public void setSystemPath(String systemPath)
+    {
+        this.systemPath = systemPath;
     }
 
 }
