@@ -167,15 +167,6 @@ namespace NMaven.VisualStudio.Addin
                 MessageBox.Show(err.Message, "NMaven Add Dependency Error:");
                 return;
             }
-            
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.Load(pomFileName);
-            String namespaceUri = xmlDocument.DocumentElement.NamespaceURI;
-            if (string.IsNullOrEmpty(namespaceUri))
-            {
-                xmlDocument.DocumentElement.SetAttribute("xmlns", "http://maven.apache.org/POM/4.0.0");
-            }
-            xmlDocument.Save(pomFileName);
 
             this.Close();
         }
