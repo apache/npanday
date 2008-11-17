@@ -798,8 +798,10 @@ namespace NMaven.VisualStudio.Addin
         private void SaveAllDocuments()
         {
             Solution2 solution = (Solution2)_applicationObject.Solution;
+            solution.SaveAs(solution.FileName);
             foreach (Project project in solution.Projects)
             {
+                project.Save(project.Name);
                 ProjectItems items = project.ProjectItems;
                 foreach (ProjectItem item in items)
                 {
@@ -1229,7 +1231,8 @@ namespace NMaven.VisualStudio.Addin
         #region cbChangeProjectImportForm_Click(CommandBarButton, bool)
         private void cbChangeProjectImportForm_Click(CommandBarButton btn, ref bool Cancel)
         {
-            NMavenImportProjectForm frm = new NMavenImportProjectForm(_applicationObject);
+            SaveAllDocuments();
+			NMavenImportProjectForm frm = new NMavenImportProjectForm(_applicationObject);
             frm.ShowDialog();
         }
         #endregion
