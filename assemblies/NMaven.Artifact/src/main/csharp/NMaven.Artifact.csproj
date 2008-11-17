@@ -20,7 +20,7 @@
     </Reference>
     <Reference Include="NMaven.Model.Settings, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\NMaven.Utils\target\NMaven.Model.Settings.dll</HintPath>
+      <HintPath>..\..\..\..\NMaven.Model\Settings\target\NMaven.Model.Settings.dll</HintPath>
     </Reference>
     <Reference Include="NUnit.Framework" />
     <Reference Include="System" />
