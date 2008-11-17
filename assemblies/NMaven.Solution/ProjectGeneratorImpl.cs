@@ -201,7 +201,8 @@ namespace NMaven.Solution.Impl
             AddProjectDependencies(project, model, sourceFileDirectory, localRepository);
             AddFoldersToProject(project, null, sourceFileDirectory, sourceFileDirectory);
             AddClassFilesToProject(project, null, sourceFileDirectory, sourceFileDirectory);
-            AddProjectReferences(project, assemblyName, projectReferences);
+            AddProjectReferences(project, assemblyName, projectReferences);            
+            AddProjectResource(project, null, sourceFileDirectory);
 			return project;
 			
 		}
@@ -262,6 +263,25 @@ namespace NMaven.Solution.Impl
             	}           	
             }				
 		}
+
+        private void AddProjectResource(Project project, BuildItemGroup resourceGroup, DirectoryInfo sourceFileDirectory)
+        {
+            if (resourceGroup == null)
+            {
+                resourceGroup = project.AddNewItemGroup();
+            }
+
+            foreach (FileInfo  file  in sourceFileDirectory.GetFiles())
+            {                
+                if (file.FullName.ToLower().Contains(".resx"))
+                {
+                    Console.WriteLine("adding EmbeddedResource : " + file.Name);
+                    BuildItem buildItem = resourceGroup.AddNewItem("EmbeddedResource", file.Name);
+
+                    buildItem.SetMetadata("SubType", "Designer", false);
+                }
+            }            
+        }
 		
 		private void AddProjectDependencies(Project project, NMaven.Model.Pom.Model model, DirectoryInfo sourceFileDirectory,
 		    DirectoryInfo localRepository)
