@@ -524,12 +524,63 @@ using System.Runtime.CompilerServices;
         }
         #endregion
 
+        #region NMavenBuild
 
+        private void NMavenBuildSelectedProject(String goal)
+        {
+            FileInfo pomFile = CurrentSelectedProjectPom;
+            Project project = CurrentSelectedProject;
+            NMavenPomHelperUtility pomUtility = new NMavenPomHelperUtility(pomFile);
+
+            string errStr = null;
+
+            if ("pom".Equals(pomUtility.Packaging, StringComparison.OrdinalIgnoreCase))
+            {
+                errStr = string.Format("Not A Project Pom Error: {0} is not a project Pom, the pom is a parent pom type.", pomFile);
+            }
+            else if(!pomUtility.ArtifactId.Equals(project.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                errStr = string.Format("The Pom may not be the project's Pom: Project Name: {0} is not equal to Pom artifactId: {1}", project.Name, pomUtility.ArtifactId);
+            }
+
+            if (!string.IsNullOrEmpty(errStr))
+            {
+                DialogResult res = MessageBox.Show(errStr + "\nWould you like to continue building?", "Pom Error:", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+
+                if (res != DialogResult.Yes)
+                {
+                    throw new Exception(errStr);
+                }
+            }
+            executeBuildCommand(pomFile, goal);
+        }
+
+
+
+        private void NMavenBuildAllProjects(String goal)
+        {
+            FileInfo pomFile = CurrentSolutionPom;
+            NMavenPomHelperUtility pomUtility = new NMavenPomHelperUtility(pomFile);
+            if (!"pom".Equals(pomUtility.Packaging, StringComparison.OrdinalIgnoreCase))
+            {
+                string errStr = string.Format("Not A Parent Pom Error: {0} is not of packaging type \"pom\", the pom is a \"{1}\" type, not a parent pom.",pomFile, pomUtility.Packaging);
+                DialogResult res = MessageBox.Show(errStr + "\nWould you like to continue building?", "Pom Error:", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+
+                if (res != DialogResult.Yes)
+                {
+                    throw new Exception(errStr);
+                }
+            }
+            executeBuildCommand(pomFile, goal);
+        }
+
+        #endregion
 
         #region executeBuildCommand(FileInfo,string)
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void executeBuildCommand(FileInfo pomFile, String goal)
         {
+            
             try
             {
                 if (mavenRunner.IsRunning)
@@ -668,11 +719,10 @@ using System.Runtime.CompilerServices;
         {
             try
             {
-                executeBuildCommand(CurrentSolutionPom, "install");
+                NMavenBuildAllProjects("install");
             }
             catch (Exception e)
             {
-                Cancel = true;
                 MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -683,11 +733,10 @@ using System.Runtime.CompilerServices;
         {
             try
             {
-                executeBuildCommand(CurrentSolutionPom, "clean");
+                NMavenBuildAllProjects("clean");
             }
             catch (Exception e)
             {
-                Cancel = true;
                 MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -698,11 +747,10 @@ using System.Runtime.CompilerServices;
         {
             try
             {
-                executeBuildCommand(CurrentSolutionPom, "compile");
+                NMavenBuildAllProjects("compile");
             }
             catch (Exception e)
             {
-                Cancel = true;
                 MessageBox.Show("Maven Execution Error: " + e.Message,"Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -713,11 +761,10 @@ using System.Runtime.CompilerServices;
         {
             try
             {
-                executeBuildCommand(CurrentSolutionPom, "test");
+                NMavenBuildAllProjects("test");
             }
             catch (Exception e)
             {
-                Cancel = true;
                 MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -730,11 +777,10 @@ using System.Runtime.CompilerServices;
         {
             try
             {
-                executeBuildCommand(CurrentSelectedProjectPom, "install");
+                NMavenBuildSelectedProject("install");
             }
             catch (Exception e)
             {
-                Cancel = true;
                 MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         } 
@@ -745,11 +791,10 @@ using System.Runtime.CompilerServices;
         {
             try
             {
-                executeBuildCommand(CurrentSelectedProjectPom, "clean");
+                NMavenBuildSelectedProject("clean");
             }
             catch (Exception e)
             {
-                Cancel = true;
                 MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         } 
@@ -760,11 +805,10 @@ using System.Runtime.CompilerServices;
         {
             try
             {
-                executeBuildCommand(CurrentSelectedProjectPom, "compile");
+                NMavenBuildSelectedProject("compile");
             }
             catch (Exception e)
             {
-                Cancel = true;
                 MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         } 
@@ -775,11 +819,10 @@ using System.Runtime.CompilerServices;
         {
             try
             {
-                executeBuildCommand(CurrentSelectedProjectPom, "test");
+                NMavenBuildSelectedProject("test");
             }
             catch (Exception e)
             {
-                Cancel = true;
                 MessageBox.Show("Maven Execution Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         } 
