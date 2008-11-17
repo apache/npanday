@@ -43,6 +43,8 @@ using NMaven.Logging;
 using NMaven.Model.Pom;
 using NMaven.Model.Setting;
 
+using NMaven.VisualStudio.Addin.Util;
+
 namespace NMaven.VisualStudio.Addin
 {
     public partial class AddArtifactsForm : Form

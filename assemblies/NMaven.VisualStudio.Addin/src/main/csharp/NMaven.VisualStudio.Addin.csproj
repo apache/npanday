@@ -1,189 +1,69 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{5BE35FDF-E620-4EB0-B9A8-2359C506D85D}</ProjectGuid>
+    <ProjectGuid>{81056ac2-dddd-43ba-a6d0-7ed461911039}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <RootNameSpace>NMaven.VisualStudio.Addin</RootNameSpace>
+    <RootNameSpace>NMaven.VisualStudio</RootNameSpace>
     <AssemblyName>NMaven.VisualStudio.Addin</AssemblyName>
-    <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.VisualStudio.Addin\target\obj\</BaseIntermediateOutputPath>
     <OutputType>Library</OutputType>
-    <NoStandardLibraries>false</NoStandardLibraries>
-    <StartupObject>
-    </StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <WarningLevel>4</WarningLevel>
-    <IncrementalBuild>false</IncrementalBuild>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>TRACE</DefineConstants>
-    <WarningLevel>4</WarningLevel>
-    <IncrementalBuild>false</IncrementalBuild>
+    <OutputPath>C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.VisualStudio.Addin\target\bin\Debug\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NMaven.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\.m2\uac\gac_msil\NMaven.Model.Pom\0.14-SNAPSHOT__NMaven.Model\NMaven.Model.Pom.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\.m2\uac\gac_msil\Castle.Core\2.0-rc2__Castle\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.DynamicProxy, Version=1.1.5.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\.m2\uac\gac_msil\Castle.DynamicProxy\2.0-rc2__Castle\Castle.DynamicProxy.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.MicroKernel, Version=1.0.0.2, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\.m2\uac\gac_msil\Castle.MicroKernel\2.0-rc2__Castle\Castle.MicroKernel.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Windsor, Version=1.0.0.2, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\.m2\uac\gac_msil\Castle.Windsor\2.0-rc2__Castle\Castle.Windsor.dll</HintPath>
-    </Reference>
     <Reference Include="EnvDTE">
-      <HintPath>C:\Documents and Settings\shane\.m2\uac\gac_msil\EnvDTE\8.0.0.0__EnvDTE\EnvDTE</HintPath>
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\EnvDTE\8.0.0.0__EnvDTE\EnvDTE</HintPath>
     </Reference>
     <Reference Include="EnvDTE80">
-      <HintPath>C:\Documents and Settings\shane\.m2\uac\gac_msil\EnvDTE80\8.0.0.0__EnvDTE80\EnvDTE80</HintPath>
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\EnvDTE80\8.0.0.0__EnvDTE80\EnvDTE80</HintPath>
     </Reference>
     <Reference Include="Extensibility">
-      <HintPath>C:\Documents and Settings\shane\.m2\uac\gac_msil\Extensibility\7.0.3300.0__Extensibility\Extensibility</HintPath>
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\Extensibility\7.0.3300.0__Extensibility\Extensibility</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="Microsoft.VisualStudio.CommandBars">
-      <HintPath>C:\Documents and Settings\shane\.m2\uac\gac_msil\Microsoft.VisualStudio.CommandBars\8.0.0.0__Microsoft.VisualStudio.CommandBars\Microsoft.VisualStudio.CommandBars</HintPath>
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\Microsoft.VisualStudio.CommandBars\8.0.0.0__Microsoft.VisualStudio.CommandBars\Microsoft.VisualStudio.CommandBars</HintPath>
     </Reference>
-    <Reference Include="NMaven.Model.Settings, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\.m2\uac\gac_msil\NMaven.Model.Settings\0.14-SNAPSHOT__NMaven.Model\NMaven.Model.Settings.dll</HintPath>
+    <Reference Include="NMaven.Artifact">
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NMaven.Artifact\0.14-maestro-1.7.1-SNAPSHOT__NMaven.Artifact\NMaven.Artifact.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Logging">
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NMaven.Logging\0.14-maestro-1.7.1-SNAPSHOT__NMaven.Logging\NMaven.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Model.Pom" />
+    <Reference Include="NMaven.Model.Pom" />
+    <Reference Include="NMaven.Model.Settings">
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NMaven.Model.Settings\0.14-maestro-1.7.1-SNAPSHOT__NMaven.Model\NMaven.Model.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Plugin" />
+    <Reference Include="NMaven.ProjectImporterEngine">
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NMaven.ProjectImporterEngine\0.14-maestro-1.7.1-SNAPSHOT__NMaven.ProjectImporter\NMaven.ProjectImporterEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.VisualStudio">
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NMaven.VisualStudio\0.14-maestro-1.7.1-SNAPSHOT__NMaven.VisualStudio\NMaven.VisualStudio.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Common Files\Microsoft Shared\MSEnv\PublicAssemblies\VSLangProj.dll</HintPath>
-    </Reference>
-    <Reference Include="VSLangProj2, Version=7.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Common Files\Microsoft Shared\MSEnv\PublicAssemblies\VSLangProj2.dll</HintPath>
+    <Reference Include="System.Xml" />
+    <Reference Include="VSLangProj">
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\VSLangProj\7.0.3300.0__VSLangProj\VSLangProj</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NMaven\VisualStudio\Addin\AddArtifactsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\AddArtifactsForm.Designer.cs">
-      <DependentUpon>AddArtifactsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\ChangeMavenSettingsXmlForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\ChangeMavenSettingsXmlForm.Designer.cs">
-      <DependentUpon>ChangeMavenSettingsXmlForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\ConfigureMavenRepositoryForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\ConfigureMavenRepositoryForm.Designer.cs">
-      <DependentUpon>ConfigureMavenRepositoryForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\Connect.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\MainFormTest.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\NMavenImportProjectForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\NMavenImportProjectForm.Designer.cs">
-      <DependentUpon>NMavenImportProjectForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\NMavenPomHelperUtility.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\NMavenSignAssembly.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\NMavenSignAssembly.Designer.cs">
-      <DependentUpon>NMavenSignAssembly.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\RemoveArtifactsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\RemoveArtifactsForm.Designer.cs">
-      <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
-    </Compile>
+    <Folder Include="NMaven" />
+    <Folder Include="NMaven\VisualStudio" />
+    <Folder Include="NMaven\VisualStudio\Addin" />
+    <Folder Include="NMaven\VisualStudio\Addin\ProjectImporter" />
+    <Folder Include="NMaven\VisualStudio\Addin\ProjectImporter\Converter" />
+    <Folder Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest" />
+    <Folder Include="NMaven\VisualStudio\Addin\ProjectImporter\Reader" />
+    <Folder Include="NMaven\VisualStudio\Addin\ProjectImporter\Validator" />
+    <Folder Include="NMaven\VisualStudio\Addin\Util" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\NMaven.Artifact\src\main\csharp\NMaven.Artifact.csproj">
-      <Project>{701803D4-90F5-44D7-919D-4844FEB7F936}</Project>
-      <Name>NMaven.Artifact</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\NMaven.IDE\src\main\csharp\NMaven.IDE.csproj">
-      <Project>{31C18EC5-6876-4306-BF4E-A85A308C502E}</Project>
-      <Name>NMaven.IDE</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\NMaven.Logging\src\main\csharp\NMaven.Logging.csproj">
-      <Project>{C511B03B-8AB7-4E61-9F6E-5E6F9F65E8CE}</Project>
-      <Name>NMaven.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\NMaven.Plugin\src\main\csharp\NMaven.Plugin.csproj">
-      <Project>{B760D54F-22AC-43E7-A0A6-DE313D4663AF}</Project>
-      <Name>NMaven.Plugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\NMaven.Service\Embedder\src\main\csharp\NMaven.Service.Embedder.csproj">
-      <Project>{DF06BE45-AF6C-4DA4-8844-EA114F094C5F}</Project>
-      <Name>NMaven.Service.Embedder</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\NMaven.VisualStudio\src\main\csharp\NMaven.VisualStudio.csproj">
-      <Project>{95661103-78B8-423A-80CA-41AFC69BD1DE}</Project>
-      <Name>NMaven.VisualStudio</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="NMaven.VisualStudio.AddIn.AddIn" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="NMaven\VisualStudio\Addin\AddArtifactsForm.resx">
-      <DependentUpon>AddArtifactsForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NMaven\VisualStudio\Addin\ChangeMavenSettingsXmlForm.resx">
-      <DependentUpon>ChangeMavenSettingsXmlForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NMaven\VisualStudio\Addin\ConfigureMavenRepositoryForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ConfigureMavenRepositoryForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NMaven\VisualStudio\Addin\NMavenImportProjectForm.resx">
-      <DependentUpon>NMavenImportProjectForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NMaven\VisualStudio\Addin\NMavenSignAssembly.resx">
-      <DependentUpon>NMavenSignAssembly.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NMaven\VisualStudio\Addin\RemoveArtifactsForm.resx">
-      <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
