@@ -495,7 +495,22 @@ using System.Runtime.CompilerServices;
         /// <seealso class='IDTExtensibility2' />
         public void OnDisconnection(ext_DisconnectMode disconnectMode, ref Array custom)
         {
+            DTE2 dte2 = _applicationObject;
             
+            addReferenceControls = new List<CommandBarButton>();
+            buildControls = new List<CommandBarControl>();
+            foreach (CommandBar commandBar in (CommandBars)dte2.CommandBars)
+            {
+                foreach (CommandBarControl control in commandBar.Controls)
+                {
+                    if (control.Caption.ToLower().Contains("maven"))
+                    {
+                        // i dont know what 'false' means. but it works.
+                        control.Delete(false);
+                    }
+
+                }
+            }
         }
         #endregion
 
