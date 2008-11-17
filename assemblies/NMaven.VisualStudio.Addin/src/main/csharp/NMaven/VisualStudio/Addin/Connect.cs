@@ -288,7 +288,7 @@ using System.Runtime.CompilerServices;
                             
                         }
                         // included build web site to support web site projects
-                        else if ((control.Caption.Equals("Clea&n")) || (control.Caption.Equals("Publis&h Selection")))
+                        else if ((control.Caption.Equals("Clea&n")) || (control.Caption.Equals("Publis&h Selection")) || (control.Caption.Equals("Publis&h Web Site")))
                         {
                             // Add the stop maven build button here
 
