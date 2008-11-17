@@ -244,6 +244,12 @@ namespace NMaven.VisualStudio.Addin
 
             foreach (FileSystemInfo fsi in (new DirectoryInfo(repoFolder).GetFileSystemInfos()))
             {
+                if (fsi is FileInfo) 
+                {
+                    string ext = Path.GetExtension(fsi.FullName).ToLower();
+                    if (ext != ".dll" && ext != ".exe" && ext != ".netmodule")
+                        continue;
+                }
                 RemoteArtifactNode node = new RemoteArtifactNode(fsi.Name);
                 node.IsFileSystem = true;
                 node.ArtifactUrl = Path.Combine(repoFolder, fsi.Name);
