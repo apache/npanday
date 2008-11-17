@@ -94,9 +94,20 @@ public interface ExecutableConfig
                 private File localRepository;
                 
                 private List<String> includeSources;
-                
-                
-                
+
+
+                private File outputDirectory;
+
+
+                public File getOutputDirectory()
+                {
+                    return outputDirectory;
+                }
+
+                public void setOutputDirectory(File outputDirectory)
+                {
+                    this.outputDirectory = outputDirectory;
+                }
     
     
                 public void setIncludeSources(List<String> includeSources)

@@ -62,7 +62,19 @@ public final class DefaultCompiler
         compilerContext.getCompilerRequirement().getFrameworkVersion();
 
         List<String> commands = new ArrayList<String>();
+
+
+
+        if(config.getOutputDirectory() != null)
+        {
+            File f = new File(config.getOutputDirectory(), compilerContext.getArtifact().getName());
+            artifactFilePath = f.getAbsolutePath();
+        }
+
+        
         commands.add( "/out:" + artifactFilePath );
+    
+
         commands.add( "/target:" + targetArtifactType );
         if(config.getIncludeSources() == null || config.getIncludeSources().isEmpty() )
         {

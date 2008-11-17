@@ -28,6 +28,7 @@ import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.vendor.VendorFactory;
 import org.apache.maven.dotnet.executable.compiler.*;
 import org.apache.maven.artifact.Artifact;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +111,15 @@ public final class CompilerMojo
             KeyInfo keyInfo = KeyInfo.Factory.createDefaultKeyInfo();
             keyInfo.setKeyFileUri( keyfile.getAbsolutePath() );
             compilerConfig.setKeyInfo( keyInfo );
+        }
+
+        if(outputDirectory != null)
+        {
+            if(!outputDirectory.exists())
+            {
+                outputDirectory.mkdirs();
+            }
+            compilerConfig.setOutputDirectory(outputDirectory);
         }
 
 

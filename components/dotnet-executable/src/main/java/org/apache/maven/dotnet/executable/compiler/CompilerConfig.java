@@ -103,4 +103,18 @@ public interface CompilerConfig
      */
     List<String> getIncludeSources();
 
+
+
+    /**
+     * Gets Output Directory
+     */
+    File getOutputDirectory();
+
+    /**
+     * Sets OutputDirectory
+     *
+     * @param output directory
+     */
+    void setOutputDirectory(File outputDirectory);
+
 }

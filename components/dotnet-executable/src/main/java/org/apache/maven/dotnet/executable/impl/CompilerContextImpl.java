@@ -310,7 +310,7 @@ public final class CompilerContextImpl
                 {
                     modules.add( artifact );
                 }
-                else if ( type.equals( "library" ) || type.equals( "exe" ) || type.equals( "jar" ) )
+                else if (type.equals("asp") || type.equals( "library" ) || type.equals( "exe" ) || type.equals( "jar" ) )
                 {
                     libraries.add( artifact );
                 }

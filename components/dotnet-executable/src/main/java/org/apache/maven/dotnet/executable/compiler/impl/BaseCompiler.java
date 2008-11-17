@@ -114,7 +114,7 @@ abstract class BaseCompiler implements CompilerExecutable
     public void execute()
         throws ExecutionException
     {
-        if ( !( new File( compilerContext.getSourceDirectoryName() ).exists() ) )
+        if (compilerContext.getNetCompilerConfig().getIncludeSources() ==null && !( new File( compilerContext.getSourceDirectoryName() ).exists() ) )
         {
             logger.info( "NMAVEN-068-002: No source files to compile." );
             return;
