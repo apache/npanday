@@ -334,25 +334,67 @@ namespace NMaven.VisualStudio.Addin
 
         void wsw_Renamed(object sender, WebReferenceEventArgs e)
         {
-            System.Threading.Thread.Sleep(1500); e.Init(); NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
-            pomUtil.RenameWebReference(e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
+            try
+            {
+                System.Threading.Thread.Sleep(1500);
+                e.Init(projectReferenceFolder(CurrentSelectedProject)); 
+                NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+                pomUtil.RenameWebReference(e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
+
+            }
+            catch (Exception ex)
+            {
+                outputWindowPane.OutputString("\nError on webservice rename: "+ ex.Message);
+            }
         }
 
         void wsw_Deleted(object sender, WebReferenceEventArgs e)
         {
-            NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
-            pomUtil.RemoveWebReference(e.Namespace);
+            try
+            {
+                e.Init(projectReferenceFolder(CurrentSelectedProject));
+                NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+                pomUtil.RemoveWebReference(e.Namespace);
+
+            }
+            catch (Exception ex)
+            {
+                outputWindowPane.OutputString("\nError on webservice delete: " + ex.Message);
+            }
         }
 
         void wsw_Created(object sender, WebReferenceEventArgs e)
         {
-            //wait for the files to be created
-            System.Threading.Thread.Sleep(1500);
-            e.Init();
+            try
+            {
+                //wait for the files to be created
+                System.Threading.Thread.Sleep(1500);
+                Solution2 solution = (Solution2)_applicationObject.Solution;
+                e.Init(projectReferenceFolder(CurrentSelectedProject));
 
-            NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+                NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
 
-            pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty);
+                pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty);
+
+            }
+            catch (Exception ex)
+            {
+                outputWindowPane.OutputString("\nError on webservice create: " + ex.Message);
+            }
+        }
+
+        string projectReferenceFolder(Project project)
+        {
+            VSProject2 vsProject = (VSProject2)project.Object;
+
+            ProjectItem webReferenceFolder = vsProject.WebReferencesFolder;
+            if (webReferenceFolder == null)
+            {
+                webReferenceFolder = vsProject.CreateWebReferencesFolder();
+            }
+            
+            string wsPath = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
+            return wsPath;
         }
 
         private void launchNMavenBuildSystem()
@@ -683,6 +725,10 @@ namespace NMaven.VisualStudio.Addin
 
             addReferenceControls = new List<CommandBarButton>();
             buildControls = new List<CommandBarControl>();
+
+            outputWindowPane.Clear();
+            mavenRunner.ClearOutputWindow();
+
             foreach (CommandBar commandBar in (CommandBars)dte2.CommandBars)
             {
                 foreach (CommandBarControl control in commandBar.Controls)
@@ -709,8 +755,8 @@ namespace NMaven.VisualStudio.Addin
                     continue;
                 }
 
-                vsProject.Events.ReferencesEvents.ReferenceRemoved
-                        -= new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
+                //vsProject.Events.ReferencesEvents.ReferenceRemoved
+                //        -= new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
 
             }
 
@@ -718,6 +764,7 @@ namespace NMaven.VisualStudio.Addin
             {
                 w.Stop();
             }
+
         }
         #endregion
 
@@ -776,13 +823,21 @@ namespace NMaven.VisualStudio.Addin
                 throw new Exception(errStr);
             }
 
-            //check if project has webreference
-            if (ProjectHasWebReferences(project))
-            { 
-                if(MessageBox.Show("Do you want to update webservice references?","NMaven Build", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            try
+            {
+                //check if project has webreference
+                if (ProjectHasWebReferences(project))
                 {
-                    UpdateWebReferences(project);
+                    if (MessageBox.Show("Do you want to update webservice references?", "NMaven Build", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        UpdateWebReferences(project);
+                    }
                 }
+
+            }
+            catch
+            {
+                //never update
             }
 
             executeBuildCommand(pomFile, goal);
@@ -803,22 +858,29 @@ namespace NMaven.VisualStudio.Addin
                 //throw new Exception(errStr);
             }
 
-            Solution2 solution = (Solution2)_applicationObject.Solution;
-            bool asked = false;
-            foreach (Project project in solution.Projects)
+            try
             {
-                if (!IsWebProject(project) && ProjectHasWebReferences(project))
+                Solution2 solution = (Solution2)_applicationObject.Solution;
+                bool asked = false;
+                foreach (Project project in solution.Projects)
                 {
-                    if (!asked && MessageBox.Show("Do you want to update webservice references?", "NMaven Build", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    if (!IsWebProject(project) && ProjectHasWebReferences(project))
                     {
-                        break;
-                    }
-                    else
-                        asked = true;
+                        if (!asked && MessageBox.Show("Do you want to update webservice references?", "NMaven Build", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        {
+                            break;
+                        }
+                        else
+                            asked = true;
 
-                    UpdateWebReferences(project);
+                        UpdateWebReferences(project);
+                    }
+
                 }
 
+            }
+            catch 
+            {
             }
 
             executeBuildCommand(pomFile, goal);
@@ -1234,13 +1296,24 @@ namespace NMaven.VisualStudio.Addin
 
         public bool ProjectHasWebReferences(Project project)
         {
-            VSProject2 p = (VSProject2)project.Object;
-            if (p.WebReferencesFolder == null)
+            try
+            {
+                if (project.Object == null)
+                    return false;
+
+                VSProject2 p = (VSProject2)project.Object;
+                if (p.WebReferencesFolder == null)
+                    return false;
+                if (p.WebReferencesFolder.ProjectItems.Count > 0)
+                    return true;
+                else
+                    return false;
+
+            }
+            catch
+            {
                 return false;
-            if (p.WebReferencesFolder.ProjectItems.Count > 0)
-                return true;
-            else
-                return false;
+            }
         }
 
         public bool RemovePomWebReferenceInfo(string webRefNamespace)
