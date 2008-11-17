@@ -99,21 +99,25 @@ public final class ProjectFactory
             String parentPomName = FileUtils.filename( parent.getRelativePath() ).replace( "\\", File.separator)
                 .replace( "/", File.separator);
             File parentPomFile = new File( pomFileDirectory, parentPomName );
-            FileReader fileReader = new FileReader( parentPomFile );
-
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model parentModel;
-            try
+            
+            if (  parentPomFile.exists() ) // if pom resides in remote repo, Maven should already handle this.
             {
-                parentModel = reader.read( fileReader );
-            }
-            catch ( XmlPullParserException e )
-            {
-                throw new IOException( "NMAVEN-180-000: Unable to read model: Message = " + e.getMessage() );
+                FileReader fileReader = new FileReader( parentPomFile );
 
+                MavenXpp3Reader reader = new MavenXpp3Reader();
+                Model parentModel;
+                try
+                {
+                    parentModel = reader.read( fileReader );
+                }
+                catch ( XmlPullParserException e )
+                {
+                    throw new IOException( "NMAVEN-180-000: Unable to read model: Message = " + e.getMessage() );
+
+                }
+                //Project parentProject = createProjectFrom( parentModel, parentPomFile.getParentFile() );
+                //project.setParentProject( parentProject );
             }
-            //Project parentProject = createProjectFrom( parentModel, parentPomFile.getParentFile() );
-            //project.setParentProject( parentProject );
         }
 
         //TODO: publickey/classifier
