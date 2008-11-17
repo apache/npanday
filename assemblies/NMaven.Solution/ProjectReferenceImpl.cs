@@ -30,7 +30,7 @@ namespace NMaven.Solution.Impl
 	internal sealed class ProjectReferenceImpl : IProjectReference
 	{
 		
-		private FileInfo csProjFile;
+		private FileInfo projFile;
 		
 		private string projectName;
 		
@@ -40,16 +40,16 @@ namespace NMaven.Solution.Impl
 		{
 		}
 		
-		public FileInfo CSProjectFile
+		public FileInfo ProjectFile
 		{
 			get
 			{
-				return csProjFile;	
+				return projFile;	
 			}
 			
 			set
 			{
-				csProjFile = value;	
+				projFile = value;	
 			}
 		}
 		

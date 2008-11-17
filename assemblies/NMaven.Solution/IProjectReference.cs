@@ -25,12 +25,12 @@ using System.IO;
 namespace NMaven.Solution
 {
 	/// <summary>
-	/// Provides services for obtaining information about a project (.csproj) reference
+	/// Provides services for obtaining information about a project (.csproj or .vbproj) reference
 	/// </summary>
 	public interface IProjectReference
 	{
         		
-		FileInfo CSProjectFile
+		FileInfo ProjectFile
 		{
 			get;
 			set;

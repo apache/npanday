@@ -99,35 +99,41 @@ namespace NMaven.Plugin.Solution
 			} 
 			else
 			{
-				IProjectReference mainProjectReference = null;
-				if(new DirectoryInfo(currentDirectory.FullName + @"\src\main\csharp\").Exists)
-				{
-					mainProjectReference = 
-			 			projectGenerator.GenerateProjectFor(model,
-			 	                                    new DirectoryInfo(currentDirectory.FullName + @"\src\main\csharp\"),
-			 	                                    model.artifactId, null, new DirectoryInfo(localRepository));
-					Console.WriteLine("NMAVEN-000-000: Generated project: File Name = "
-					                  + mainProjectReference.CSProjectFile.FullName);
-					projectReferences.Add(mainProjectReference);
-				}
-				if(new DirectoryInfo( currentDirectory.FullName + @"\src\test\csharp\").Exists)
-				{
-					List<IProjectReference> mainRef = new List<IProjectReference>();
-					if(mainProjectReference != null)
-					{
-						mainRef.Add(mainProjectReference);
-					}
-					IProjectReference projectReference = 
-			 			projectGenerator.GenerateProjectFor(model,
-			 	                                    new DirectoryInfo(currentDirectory.FullName + @"\src\test\csharp\"),
-			 	                                    model.artifactId + "-Test", mainRef, new DirectoryInfo(localRepository));
-					Console.WriteLine("NMAVEN-000-000: Generated test project: File Name = "
-					                  + projectReference.CSProjectFile.FullName);
-					projectReferences.Add(projectReference);					
-				}
+                createMainAndTestProjectFiles(currentDirectory, model, projectReferences, projectGenerator, "csharp");
+                createMainAndTestProjectFiles(currentDirectory, model, projectReferences, projectGenerator, "vb");
 			}	
 			return projectReferences;
 		}
+
+        private void createMainAndTestProjectFiles(DirectoryInfo currentDirectory, NMaven.Model.Pom.Model model, List<IProjectReference> projectReferences, IProjectGenerator projectGenerator, string projType)
+        {
+            IProjectReference mainProjectReference = null;
+            if (new DirectoryInfo(currentDirectory.FullName + @"\src\main\" + projType + @"\").Exists)
+            {
+                mainProjectReference =
+                    projectGenerator.GenerateProjectFor(model,
+                                                new DirectoryInfo(currentDirectory.FullName + @"\src\main\" + projType + @"\"),
+                                                model.artifactId, null, new DirectoryInfo(localRepository));
+                Console.WriteLine("NMAVEN-000-000: Generated project: File Name = "
+                                  + mainProjectReference.ProjectFile.FullName);
+                projectReferences.Add(mainProjectReference);
+            }
+            if (new DirectoryInfo(currentDirectory.FullName + @"\src\test\" + projType + @"\").Exists)
+            {
+                List<IProjectReference> mainRef = new List<IProjectReference>();
+                if (mainProjectReference != null)
+                {
+                    mainRef.Add(mainProjectReference);
+                }
+                IProjectReference projectReference =
+                    projectGenerator.GenerateProjectFor(model,
+                                                new DirectoryInfo(currentDirectory.FullName + @"\src\test\" + projType + @"\"),
+                                                model.artifactId + "-Test", mainRef, new DirectoryInfo(localRepository));
+                Console.WriteLine("NMAVEN-000-000: Generated test project: File Name = "
+                                  + projectReference.ProjectFile.FullName);
+                projectReferences.Add(projectReference);
+            }
+        }
 		
 		private string GetArgFor(string name, string[] args)
 		{

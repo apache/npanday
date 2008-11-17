@@ -39,12 +39,22 @@ namespace NMaven.Solution.Impl
 	/// </summary>
 	internal sealed class ProjectGeneratorImpl : IProjectGenerator
 	{
+        private Dictionary<String, String> directoryToFileNameExtensionMapping;
+
+        private Dictionary<String, String> directoryToImportProject;
 		
         /// <summary>
         /// Constructor
         /// </summary>
 		internal ProjectGeneratorImpl()
 		{
+            directoryToFileNameExtensionMapping = new Dictionary<string,string>();
+            directoryToFileNameExtensionMapping.Add("csharp", ".csproj");
+            directoryToFileNameExtensionMapping.Add("vb", ".vbproj");
+
+            directoryToImportProject = new Dictionary<string, string>();
+            directoryToImportProject.Add("csharp", @"$(MSBuildBinPath)\Microsoft.CSharp.Targets");
+            directoryToImportProject.Add("vb", @"$(MSBuildBinPath)\Microsoft.VisualBasic.Targets");
 		}
 		
 	    public IProjectReference GenerateProjectFor(NMaven.Model.Pom.Model model, 
@@ -68,11 +78,12 @@ namespace NMaven.Solution.Impl
 			                                         @"..\..\..\target\obj\",
 			                                         projectReferences,
 			                                         localRepository);
-			FileInfo fileInfo = new FileInfo(sourceFileDirectory.FullName + @"\" + projectFileName + ".csproj");
+            String fileNameExtension = directoryToFileNameExtensionMapping[sourceFileDirectory.Name];
+            FileInfo fileInfo = new FileInfo(sourceFileDirectory.FullName + @"\" + projectFileName + fileNameExtension);
 		    project.Save(fileInfo.FullName);
 
             IProjectReference projectReference = Factory.createDefaultProjectReference();
-		    projectReference.CSProjectFile = fileInfo;
+		    projectReference.ProjectFile = fileInfo;
 		    projectReference.ProjectGuid = projectGuid;
 		    projectReference.ProjectName = projectFileName;
 			return projectReference;	    	
@@ -95,7 +106,7 @@ namespace NMaven.Solution.Impl
 				writer.Write("}\") = \"");
 				writer.Write(projectReference.ProjectName);
 				writer.Write("\", \"");
-				writer.Write(projectReference.CSProjectFile.FullName);
+				writer.Write(projectReference.ProjectFile.FullName);
 				writer.Write("\", \"{");
 				writer.Write(projectReference.ProjectGuid.ToString());
 				writer.WriteLine("}\"");
@@ -142,9 +153,11 @@ namespace NMaven.Solution.Impl
             Engine engine = new Engine(Environment.GetEnvironmentVariable("SystemRoot") + @"\Microsoft.NET\Framework\v2.0.50727");
             Project project = new Project(engine);
 
+            string outputType = GetOutputType(model.packaging, "test".Equals(sourceFileDirectory.Parent.Name));
+
             Console.WriteLine("ProjectGuid = " + projectGuid.ToString() + ", RootNameSpace = " +
                 model.groupId + ", AssemblyName = " + assemblyName + ", BaseIntPath = " +
-                baseIntermediateOutputPath + ", OutputType = " + GetOutputType(model.packaging) + 
+                baseIntermediateOutputPath + ", OutputType = " + outputType + 
                 ", Packaging = " + model.packaging);
             //Main Properties
             BuildPropertyGroup groupProject = project.AddNewPropertyGroup(false);
@@ -154,14 +167,14 @@ namespace NMaven.Solution.Impl
             groupProject.AddNewProperty("RootNameSpace", model.groupId);
             groupProject.AddNewProperty("AssemblyName", assemblyName);
             groupProject.AddNewProperty("BaseIntermediateOutputPath", baseIntermediateOutputPath);
-            groupProject.AddNewProperty("OutputType", GetOutputType(model.packaging));
+            groupProject.AddNewProperty("OutputType", outputType);
             
             //Debug Properties
             groupProject = project.AddNewPropertyGroup(false);
             buildProperty.Condition = " '$(Configuration)' == '' ";
             groupProject.AddNewProperty( "OutputPath", assemblyOutputPath, false);
-            
-            project.AddNewImport(@"$(MSBuildBinPath)\Microsoft.CSharp.Targets", null);
+
+            project.AddNewImport(directoryToImportProject[sourceFileDirectory.Name], null);
             DirectoryInfo configDirectory = new DirectoryInfo(Environment.CurrentDirectory + @"\src\main\config");
             if(configDirectory.Exists)
             {
@@ -187,7 +200,7 @@ namespace NMaven.Solution.Impl
 			BuildItemGroup itemGroup = project.AddNewItemGroup();
 			foreach(IProjectReference projectReference in projectReferences)
 			{
-				BuildItem buildItem = itemGroup.AddNewItem("ProjectReference", projectReference.CSProjectFile.FullName);
+				BuildItem buildItem = itemGroup.AddNewItem("ProjectReference", projectReference.ProjectFile.FullName);
 				buildItem.SetMetadata("Project", "{" + projectReference.ProjectGuid.ToString() + "}");
 				buildItem.SetMetadata("Name", projectName);		
 			}
@@ -313,15 +326,15 @@ namespace NMaven.Solution.Impl
             }
 		}
 		
-		private String GetOutputType(String type)
-		{
-			if (type.Equals("library") || type.Equals("netplugin") || type.Equals("visual-studio-addin")
+		private String GetOutputType(String type,bool isATest)
+        {
+            if (type.Equals("library") || type.Equals("netplugin") || type.Equals("visual-studio-addin")
                 || type.Equals("sharp-develop-addin") || type.Equals("nar")) return "Library";
-			else if (type.Equals("exe")) return "Exe";
-			else if (type.Equals("winexe")) return "WinExe";
-			else if (type.Equals("module")) return "Module";
-			return null;
-		}
+            else if (type.Equals("exe")) return isATest ? "Library" : "Exe";
+            else if (type.Equals("winexe")) return "WinExe";
+            else if (type.Equals("module")) return "Module";
+            return null;
+        }
 		
 		private String GetExtension(String type)
 		{
