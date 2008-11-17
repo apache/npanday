@@ -26,6 +26,7 @@ import org.apache.maven.dotnet.vendor.Vendor;
 import org.apache.maven.dotnet.executable.CommandExecutor;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
+import org.apache.maven.project.MavenProject;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ import java.security.NoSuchAlgorithmException;
 import java.io.File;
 import java.net.URL;
 import java.net.MalformedURLException;
-
 
 /**
  * Generates WSDL class
@@ -47,96 +47,108 @@ import java.net.MalformedURLException;
 public class WsdlGeneratorMojo
     extends AbstractMojo
 {
+   /**
+     * The maven project.
+     * 
+     * @parameter expression="${project}"
+     * @required
+     */
+    private MavenProject project;
+
+    /**
+     * Webreferences
+     * 
+     * @parameter
+     */
+    private WebReference[] webreferences;
 
     /**
      * The directory to place the generated binding classes.
-     *
-     * @parameter expression="${outputDirectory}" default-value = "${project.build.directory}${file.separator}build-sources"
-     * @required
+     * 
+     * @parameter
      */
     private String outputDirectory;
 
     /**
      * Paths (or URLs) of the WSDL files.
-     *
+     * 
      * @parameter expression="${paths}"
-     * @required
      */
     private String[] paths;
 
     /**
      * Language of the WSDL binding. Default value is CS (CSHARP).
-     *
+     * 
      * @parameter expression="${language}" default-value="CS"
      */
     private String language;
 
     /**
      * Turns on type sharing feature. Not supported for MONO.
-     *
+     * 
      * @parameter expression="${sharetypes}" default-value="false"
      */
     private boolean sharetypes;
 
     /**
      * Displays extra information when the sharetypes switch is specified. Not supported for MONO.
-     *
+     * 
      * @parameter expression="${verbose}" default-value="false"
      */
     private boolean verbose;
 
     /**
      * Generates fields instead of properties.
-     *
+     * 
      * @parameter expression="${fields}" default-value="false"
      */
     private boolean fields;
 
     /**
      * Generates explicit order identifiers on all particle members. Not supported for MONO.
-     *
+     * 
      * @parameter expression = "${order}" default-value = "false"
      */
     private boolean order;
 
     /**
      * Generates the INotifyPropertyChanged interface to enable data binding. Not supported for MONO.
-     *
+     * 
      * @parameter expression="${enableDataBinding}" default-value="false"
      */
     private boolean enableDataBinding;
 
     /**
      * Namespace of the WSDL binding. Default value is ${project.groupId}
-     *
+     * 
      * @parameter expression="${namespace}" default-value="${project.groupId}"
      */
     private String namespace;
 
     /**
      * Override the default protocol.
-     *
+     * 
      * @parameter expression="${protocol}"
      */
     private String protocol;
 
     /**
      * The server to retrieve the WSDL from.
-     *
+     * 
      * @parameter
      */
     private org.apache.maven.dotnet.plugin.wsdl.Server server;
 
     /**
      * The proxy server
-     *
+     * 
      * @parameter
      */
     private org.apache.maven.dotnet.plugin.wsdl.Proxy proxy;
 
     /**
      * Server values from the settings.xml file.
-     *
+     * 
      * @parameter expression="${settings.servers}"
      * @required
      */
@@ -144,7 +156,7 @@ public class WsdlGeneratorMojo
 
     /**
      * Server values from the settings.xml file.
-     *
+     * 
      * @parameter expression="${settings.proxies}"
      * @required
      */
@@ -157,14 +169,14 @@ public class WsdlGeneratorMojo
 
     /**
      * Generates server implementation
-     *
-     * @parameter expression="${serverInterface}"  default-value ="false"
+     * 
+     * @parameter expression="${serverInterface}" default-value ="false"
      */
     private boolean serverInterface;
 
     /**
      * Tells the plugin to ignore options not appropriate to the vendor.
-     *
+     * 
      * @parameter expresion ="${ignoreUnusedOptions}" default-value="false"
      */
     private boolean ignoreUnusedOptions;
@@ -172,31 +184,41 @@ public class WsdlGeneratorMojo
     public void execute()
         throws MojoExecutionException
     {
-        Vendor vendor = getCompilerVendor();
-        List<String> commands = getCommandsFor( vendor );
-
-        getLog().debug( "NMAVEN-1300-000: Commands = " + commands.toString() );
-        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        try
+        for ( WebReference webreference : webreferences )
         {
-            commandExecutor.executeCommand( getExecutableFor( vendor, netHome ), commands );
-            for ( String path : paths )
-            {
-                getLog().info( "NMAVEN-1300-008: Generated WSDL: File = " + outputDirectory + File.separator +
-                    getFileNameFor( path ) );
-            }
+            Vendor vendor = getCompilerVendor();
+            List<String> commands = getCommandsFor( vendor, webreference );
 
-        }
-        catch ( ExecutionException e )
-        {
-            //TODO: This is a hack to get around the fact that MONO returns a result=1 on warnings and MS returns a result=1 on errors.
-            //I don't want to fail on MONO warning here.
-            if ( ( vendor.equals( Vendor.MONO ) && commandExecutor.getResult() > 1 ) ||
-                vendor.equals( Vendor.MICROSOFT ) )
+            getLog().debug( "NMAVEN-1300-000: Commands = " + commands.toString() );
+            CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+            try
             {
-                throw new MojoExecutionException( "NMAVEN-1300-001: Result = " + commandExecutor.getResult(), e );
+                commandExecutor.executeCommand( getExecutableFor( vendor, netHome ), commands );
+                getLog().info(
+                               "NMAVEN-1300-008: Generated WSDL: File = "
+                                   + project.getBuild().getSourceDirectory()
+                                   + File.separator
+                                   + project.getBuild().getSourceDirectory()
+                                   + File.separator
+                                   + webreference.getOutput()
+                                   + File.separator
+                                   + getFileNameFor( project.getBuild().getSourceDirectory() + File.separator
+                                       + webreference.getPath() ) );
+
+            }
+            catch ( ExecutionException e )
+            {
+                // TODO: This is a hack to get around the fact that MONO returns a result=1 on warnings and MS returns a
+                // result=1 on errors.
+                // I don't want to fail on MONO warning here.
+                if ( ( vendor.equals( Vendor.MONO ) && commandExecutor.getResult() > 1 )
+                    || vendor.equals( Vendor.MICROSOFT ) )
+                {
+                    throw new MojoExecutionException( "NMAVEN-1300-001: Result = " + commandExecutor.getResult(), e );
+                }
             }
         }
+
     }
 
     public String getExecutableFor( Vendor vendor, String home )
@@ -205,7 +227,7 @@ public class WsdlGeneratorMojo
         return ( !isEmpty( home ) ) ? home + File.separator + "bin" + File.separator + executable : executable;
     }
 
-    public List<String> getCommandsFor( Vendor vendor )
+    public List<String> getCommandsFor( Vendor vendor, WebReference webreference )
         throws MojoExecutionException
     {
         String commandFlag = vendor.equals( Vendor.MICROSOFT ) ? "/" : "-";
@@ -214,21 +236,19 @@ public class WsdlGeneratorMojo
         populateServerCommands( commands, commandFlag );
         populateProxyCommands( commands, commandFlag );
         commands.add( commandFlag + "language:" + language );
-        commands.add( commandFlag + "namespace:" + namespace );
+        commands.add( commandFlag + "namespace:" + webreference.getNamespace() );
         commands.add( commandFlag + "fields:" + fields );
         if ( !isEmpty( protocol ) )
         {
             commands.add( commandFlag + "protocol:" + protocol );
         }
 
-        for ( String path : paths )
-        {
-            commands.add( commandFlag + "out:" + outputDirectory + getFileNameFor( path ) );
-        }
+        commands.add( commandFlag + "out:" + project.getBuild().getSourceDirectory() + File.separator
+            + webreference.getOutput()
+            + getFileNameFor( project.getBuild().getSourceDirectory() + File.separator + webreference.getPath() ) );
 
-        for ( String path : paths )
         {
-            commands.add( new File( path ).getAbsolutePath() );
+            commands.add( new File( project.getBuild().getSourceDirectory() + File.separator + webreference.getPath() ).getAbsolutePath() );
         }
 
         if ( vendor.equals( Vendor.MONO ) )
@@ -246,8 +266,8 @@ public class WsdlGeneratorMojo
                 else
                 {
                     getLog().warn(
-                        "NMAVEN-1300-002: Your pom.xml contains an option that is not supported by MONO: Your application" +
-                            " artifact will differ dependening on compiler/platform and may have different behavior." );
+                                   "NMAVEN-1300-002: Your pom.xml contains an option that is not supported by MONO: Your application"
+                                       + " artifact will differ dependening on compiler/platform and may have different behavior." );
                 }
             }
         }
@@ -341,7 +361,8 @@ public class WsdlGeneratorMojo
                     catch ( NoSuchAlgorithmException e )
                     {
                         throw new MojoExecutionException(
-                            "NMAVEN-1300-004: No Such Algorithm for hashing the password: " + "Algorithm = " + alg, e );
+                                                          "NMAVEN-1300-004: No Such Algorithm for hashing the password: "
+                                                              + "Algorithm = " + alg, e );
                     }
                 }
                 String proxyHost = mProxy.getHost();
@@ -402,7 +423,8 @@ public class WsdlGeneratorMojo
                     catch ( NoSuchAlgorithmException e )
                     {
                         throw new MojoExecutionException(
-                            "NMAVEN-1300-005: No Such Algorithm for hashing the password: " + "Algorithm = " + alg, e );
+                                                          "NMAVEN-1300-005: No Such Algorithm for hashing the password: "
+                                                              + "Algorithm = " + alg, e );
                     }
                 }
                 if ( !isEmpty( username ) )
@@ -439,12 +461,14 @@ public class WsdlGeneratorMojo
             if ( !file.exists() )
             {
                 throw new MojoExecutionException(
-                    "NMAVEN-1300-006: Unable to locate netHome - make sure that it exists:" + " Home = " + netHome );
+                                                  "NMAVEN-1300-006: Unable to locate netHome - make sure that it exists:"
+                                                      + " Home = " + netHome );
             }
             try
             {
-                vendor = platformDetector.getVendorFor( null, new File(
-                    file.getAbsolutePath() + File.separator + "bin" + File.separator + "wsdl" ) );
+                vendor =
+                    platformDetector.getVendorFor( null, new File( file.getAbsolutePath() + File.separator + "bin"
+                        + File.separator + "wsdl" ) );
             }
             catch ( PlatformUnsupportedException e )
             {
