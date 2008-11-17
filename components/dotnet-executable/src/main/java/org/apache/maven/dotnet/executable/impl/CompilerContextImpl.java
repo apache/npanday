@@ -36,6 +36,7 @@ import org.apache.maven.dotnet.RepositoryNotFoundException;
 import org.apache.maven.dotnet.vendor.Vendor;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.util.*;
 import java.io.File;
@@ -165,11 +166,14 @@ public final class CompilerContextImpl
     }
 
     public List<Artifact> getLibraryDependencies()
-    {
-        if ( config.isTestCompile() && ( config.getArtifactType().equals( ArtifactType.LIBRARY ) ||
-            config.getArtifactType().equals( ArtifactType.NETPLUGIN ) ) && project.getArtifact().getFile() != null &&
-            project.getArtifact().getFile().exists() && !libraries.contains( project.getArtifact() ) &&
-            !project.getArtifact().getType().equals( "module" ) )
+    {   
+                
+        if ( config.isTestCompile() 
+            && ( config.getArtifactType().equals( ArtifactType.LIBRARY ) 
+                 || config.getArtifactType().equals( ArtifactType.NETPLUGIN ))
+            && project.getArtifact().getFile() != null && project.getArtifact().getFile().exists()
+            && !libraries.contains( project.getArtifact() ) && !project.getArtifact().getType().equals( "module" ) 
+           )
         {
             libraries.add( project.getArtifact() );
         }
@@ -310,7 +314,7 @@ public final class CompilerContextImpl
                 {
                     modules.add( artifact );
                 }
-                else if (type.equals("asp") || type.equals( "library" ) || type.equals( "exe" ) || type.equals( "jar" ) )
+                else if ( type.equals("asp") || type.equals( "library" ) || type.equals( "exe" ) || type.equals( "jar" ) )
                 {
                     libraries.add( artifact );
                 }
@@ -358,6 +362,11 @@ public final class CompilerContextImpl
                     String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
                         : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
                     setArtifactGacFile( gacRoot, artifact );
+                    libraries.add( artifact );
+                }
+                else if ( type.equals( "com_reference" ) )
+                {
+                    moveInteropDllToBuildDirectory( artifact );
                     libraries.add( artifact );
                 }
             }
@@ -412,6 +421,34 @@ public final class CompilerContextImpl
                 win32icon = icons[0];
             }
         }
+    }
+    
+    private void moveInteropDllToBuildDirectory(Artifact artifact) throws PlatformUnsupportedException
+    {
+        try
+        {
+            File file = artifact.getFile();
+            String oldPath = file.getAbsolutePath();
+            String target = project.getBuild().getDirectory();
+            String newPath = target + File.separator + "Interop." + artifact.getArtifactId() + ".dll";
+            
+            if ( oldPath.contains( target ) ) //already copied to target
+                return ; 
+            
+            logger.info( "NMAVEN-000-000:[COM Reference] copying file ["+ oldPath+"] to [" + target +"]" );
+            FileUtils.copyFileToDirectory( file, new File( target ) );
+            
+            logger.info( "NMAVEN-000-000:[COM Reference] deleting directory ["+ file.getParentFile() +"]" );
+            FileUtils.deleteDirectory( file.getParentFile() );
+            
+            logger.info( "NMAVEN-000-000:[COM Reference] updating artifact path to ["+ newPath +"]" );
+            
+            artifact.setFile( new File( newPath ) );
+        }catch(Exception e)
+        {
+            throw new PlatformUnsupportedException (e);
+        }
+        
     }
 
     private void setArtifactGacFile( String gacRoot, Artifact artifact )

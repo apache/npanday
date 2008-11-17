@@ -107,6 +107,14 @@
       </configuration>
     </component>
     <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>com_reference</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <type>com_reference</type>
+      </configuration>
+    </component>
+    <component>
       <role>org.apache.maven.dotnet.artifact.ArtifactContext</role>
       <implementation>org.apache.maven.dotnet.artifact.impl.ArtifactContextImpl</implementation>
       <requirements>
