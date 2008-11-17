@@ -430,24 +430,33 @@ namespace NMaven.VisualStudio.Addin
         {
             VSProject vsProject = null;
 
+            NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
+            NMaven.Artifact.Artifact artifact = item.Artifact;
+
             if (project.Object is VSProject)
             {
                 vsProject = (VSProject)project.Object;
+                if (vsProject.References.Find(item.Text) != null)
+                {
+                    MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
+                    return;
+                }
+                vsProject.References.Add(artifact.FileInfo.FullName);
             }
             else
             {
-                MessageBox.Show(this, "Cannot add artifact to none VS projects.", this.Text);
-                return;
+                if (Connect.IsWebProject(project))
+                {
+                    VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
+                    website.References.AddFromFile(artifact.FileInfo.FullName);
+                }
+                else
+                {
+                    MessageBox.Show(this, "Cannot add artifact to none VS projects.", this.Text);
+                    return;
+                }
             }
 
-            if (vsProject.References.Find(item.Text) != null)
-            {
-                MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
-                return;
-            }
-
-            NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
-            NMaven.Artifact.Artifact artifact = item.Artifact;
             try
             {
                 pomUtil.AddPomDependency(artifact.GroupId,
@@ -460,7 +469,6 @@ namespace NMaven.VisualStudio.Addin
                 return;
             }
 
-            vsProject.References.Add(artifact.FileInfo.FullName);
         }
 
         void addRemoteArtifact(RemoteArtifactNode node)

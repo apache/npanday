@@ -260,7 +260,7 @@ namespace NMaven.VisualStudio.Addin
 
         private const string WEB_PROJECT_KIND_GUID = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";
 
-        static bool IsWebProject(Project project)
+        public static bool IsWebProject(Project project)
         {
             // make sure there's a project item
             if (project == null)
@@ -281,17 +281,31 @@ namespace NMaven.VisualStudio.Addin
             foreach (Project project in solution.Projects)
             {
                 projectRefEventLoaded = true;
-                VSProject2 vsProject = null;
-                
+
+                string referenceFolder = string.Empty;
+
                 if (IsWebProject(project))
                 {
-                    outputWindowPane.OutputString(string.Format("\n{0} is not a project file, changing references for this project will need to re-import the pom file.", project.Name));
+                    VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
+                    WebsiteAssemblyReferenceWatcher webw = new WebsiteAssemblyReferenceWatcher(Path.Combine(website.Project.FullName, "bin"));
+                    webw.Deleted += new FileSystemEventHandler(webw_Deleted);
+                    webw.Start();
                 }
                 else
                 {
                     try
                     {
-                        vsProject = (VSProject2)project.Object;
+                        VSProject2 classProject = (VSProject2)project.Object;
+                        referenceEvents.Add(classProject.Events2.ReferencesEvents);
+                        classProject.Events2.ReferencesEvents.ReferenceRemoved
+                            += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
+
+                        ProjectItem webReferenceFolder = classProject.WebReferencesFolder;
+                        if (webReferenceFolder == null)
+                        {
+                            webReferenceFolder = classProject.CreateWebReferencesFolder();
+                        }
+                        referenceFolder = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
                     }
                     catch
                     {
@@ -299,28 +313,21 @@ namespace NMaven.VisualStudio.Addin
                         continue;
                     }
                 }
-                referenceEvents.Add(vsProject.Events2.ReferencesEvents);
-                
-                vsProject.Events2.ReferencesEvents.ReferenceRemoved
-                    += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
                 
                 //attach web references watcher
 
                 try
                 {
-                    ProjectItem webReferenceFolder = vsProject.WebReferencesFolder;
-                    if (webReferenceFolder == null)
+                    if (!string.IsNullOrEmpty(referenceFolder))
                     {
-                        webReferenceFolder = vsProject.CreateWebReferencesFolder();
+                        string wsPath = referenceFolder;
+                        WebServicesReferenceWatcher wsw = new WebServicesReferenceWatcher(wsPath);
+                        wsw.Created += new EventHandler<WebReferenceEventArgs>(wsw_Created);
+                        wsw.Deleted += new EventHandler<WebReferenceEventArgs>(wsw_Deleted);
+                        wsw.Renamed += new EventHandler<WebReferenceEventArgs>(wsw_Renamed);
+                        wsw.Start();
+                        this.wsRefWatcher.Add(wsw);
                     }
-
-                    string wsPath = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
-                    WebServicesReferenceWatcher wsw = new WebServicesReferenceWatcher(wsPath);
-                    wsw.Created += new EventHandler<WebReferenceEventArgs>(wsw_Created);
-                    wsw.Deleted += new EventHandler<WebReferenceEventArgs>(wsw_Deleted);
-                    wsw.Renamed += new EventHandler<WebReferenceEventArgs>(wsw_Renamed);
-                    wsw.Start();
-                    this.wsRefWatcher.Add(wsw);
 
                 }
                 catch (Exception ex)
@@ -330,6 +337,23 @@ namespace NMaven.VisualStudio.Addin
                 }                
 
             }
+        }
+
+        void webw_Deleted(object sender, FileSystemEventArgs e)
+        {
+            try
+            {
+                NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+                if (Path.GetExtension(e.Name).ToLower() == ".dll" || Path.GetExtension(e.Name).ToLower() == ".exe")
+                {
+                    pomUtil.RemovePomDependency(Path.GetFileNameWithoutExtension(e.Name));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Messages.MSG_E_NMAVEN_REMOVE_DEPENDENCY_ERROR);
+            }
+   
         }
 
         void wsw_Renamed(object sender, WebReferenceEventArgs e)
@@ -827,7 +851,7 @@ namespace NMaven.VisualStudio.Addin
             {
                 errStr = string.Format(Messages.MSG_EF_NOT_A_PROJECT_POM, pomFile);
             }
-            else if (!pomUtility.ArtifactId.Equals(project.Name, StringComparison.OrdinalIgnoreCase))
+            else if (!IsWebProject(project) && !pomUtility.ArtifactId.Equals(project.Name, StringComparison.OrdinalIgnoreCase))
             {
                 errStr = string.Format(Messages.MSG_EF_NOT_THE_PROJECT_POM, project.Name, pomUtility.ArtifactId);
             }
