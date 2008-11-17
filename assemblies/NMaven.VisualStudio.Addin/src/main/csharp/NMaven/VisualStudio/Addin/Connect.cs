@@ -226,8 +226,6 @@ using System.Runtime.CompilerServices;
                     {
                         if (control.Caption.Equals("Add &Reference..."))
                         {
-                           // outputWindowPane.OutputString("Adding control reference: " + commandBar.Name + Environment.NewLine);
-
                             CommandBarButton ctl = (CommandBarButton)
                                 commandBar.Controls.Add(MsoControlType.msoControlButton,
                                 System.Type.Missing, System.Type.Missing, control.Index, true);
@@ -289,7 +287,8 @@ using System.Runtime.CompilerServices;
                             
                             
                         }
-                        else if (control.Caption.Equals("Clea&n"))
+                        // included build web site to support web site projects
+                        else if ((control.Caption.Equals("Clea&n")) || (control.Caption.Equals("Publis&h Selection")))
                         {
                             // Add the stop maven build button here
 
