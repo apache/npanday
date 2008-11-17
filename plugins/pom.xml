@@ -34,7 +34,8 @@ under the License.
     <module>netplugins/NMaven.Plugin.Devenv/javabinding</module>  
     <module>netplugins/NMaven.Plugin.Settings/javabinding</module>  
     <module>netplugins/NMaven.Plugin.Solution/javabinding</module>  
-    <module>maven-compile-plugin</module>  
+    <module>maven-compile-plugin</module>
+    <module>maven-aspx-plugin</module>    
     <module>maven-deploy-plugin</module>  
     <module>maven-embedder-plugin</module>  
     <module>maven-fxcop-plugin</module>  

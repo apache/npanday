@@ -34,7 +34,8 @@ public enum ArtifactType
     NETPLUGIN( "netplugin", "library", "dll" ),
     VISUAL_STUDIO_ADDIN( "visual-studio-addin", "library", "dll" ),
     SHARP_DEVELOP_ADDIN( "sharp-develop-addin", "library", "dll" ),
-    NULL( "null", "null", "null" );
+    NULL( "null", "null", "null" ),     
+    ASP ( "asp", "null", "zip" );
 
     /**
      * The extension used for the artifact(netmodule, dll, exe)
@@ -139,6 +140,10 @@ public enum ArtifactType
         {
             return ArtifactType.VISUAL_STUDIO_ADDIN;
         }
+        else if ( packagingName.equals( ArtifactType.ASP.getPackagingType() ) )
+        {
+            return ArtifactType.ASP;
+        }        
         return ArtifactType.NULL;
     }
 }
