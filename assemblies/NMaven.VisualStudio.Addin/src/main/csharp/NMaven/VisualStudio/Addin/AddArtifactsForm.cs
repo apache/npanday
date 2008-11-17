@@ -150,15 +150,20 @@ namespace NMaven.VisualStudio.Addin
                     }
                 }
 
-                RemoteArtifactNode treeNode = treeView1.SelectedNode as RemoteArtifactNode;
-                if (treeNode != null && treeNode.IsAssembly)
+                if (treeView1.SelectedNode != null)
                 {
-                    addRemoteArtifact(treeNode);
-                }
-                else
-                {
-                    MessageBox.Show(this, string.Format("Cannot add {0} not an artifact assembly.", treeNode.FullPath), this.Text);
-                    return;
+
+                    RemoteArtifactNode treeNode = treeView1.SelectedNode as RemoteArtifactNode;
+
+                    if (treeNode.IsAssembly)
+                    {
+                        addRemoteArtifact(treeNode);
+                    }
+                    else
+                    {
+                        MessageBox.Show(this, string.Format("Cannot add {0} not an artifact assembly.", treeNode.FullPath), this.Text);
+                        return;
+                    }
                 }
             }
             catch (Exception err)
@@ -395,6 +400,7 @@ namespace NMaven.VisualStudio.Addin
             catch (Exception err1)
             {
                 MessageBox.Show(err1.Message, "NMaven Add Dependency Error:");
+                return;
             }
 
             if (project.Object is VSProject)
