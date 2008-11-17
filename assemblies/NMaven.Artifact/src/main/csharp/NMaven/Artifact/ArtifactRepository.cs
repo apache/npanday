@@ -97,7 +97,10 @@ namespace NMaven.Artifact
             {
                 foreach (FileInfo fileInfo in directoryInfo.GetFiles())
                 {
-                    fileInfos.Add(fileInfo);                 
+                    if (fileInfo.Name.EndsWith(".dll") || fileInfo.Name.EndsWith(".exe") || fileInfo.Name.EndsWith(".netmodule") )
+                    {
+                        fileInfos.Add(fileInfo);
+                    }              
                 }
                 fileInfos.AddRange(GetArtifactsFromDirectory(directoryInfo));
             }
