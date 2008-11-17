@@ -277,6 +277,22 @@ namespace NMaven.VisualStudio.Addin
             return (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0);
         }
 
+		private void DeleteBinDir()
+        {
+            Solution2 solution = (Solution2)_applicationObject.Solution;
+
+            string[] directoryPartial = solution.FullName.Split("\\".ToCharArray());
+            string pathPartial = directoryPartial[directoryPartial.Length - 1];
+            string path = solution.FullName.Substring(0, solution.FullName.Length - pathPartial.Length);
+            path = path.Replace("\\", "//");
+            path = path + "/bin";
+           
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+        }
+		
         void attachReferenceEvent()
         {
             //References
@@ -294,7 +310,12 @@ namespace NMaven.VisualStudio.Addin
                 if (IsWebProject(project))
                 {
                     VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
-                    WebsiteAssemblyReferenceWatcher webw = new WebsiteAssemblyReferenceWatcher(Path.Combine(website.Project.FullName, "bin"));
+                    string binPath = Path.Combine(website.Project.FullName, "Bin");
+                    if(!Directory.Exists(binPath))
+                    {
+                        Directory.CreateDirectory(binPath);
+                    }
+                    WebsiteAssemblyReferenceWatcher webw = new WebsiteAssemblyReferenceWatcher(binPath);
                     webw.Deleted += new FileSystemEventHandler(webw_Deleted);
                     webw.Start();
                 }
@@ -314,6 +335,26 @@ namespace NMaven.VisualStudio.Addin
                             webReferenceFolder = classProject.CreateWebReferencesFolder();
                         }
                         referenceFolder = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
+                        //attach web references watcher
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(referenceFolder))
+                            {
+                                string wsPath = referenceFolder;
+                                WebServicesReferenceWatcher wsw = new WebServicesReferenceWatcher(wsPath);
+                                wsw.Created += new EventHandler<WebReferenceEventArgs>(wsw_Created);
+                                wsw.Deleted += new EventHandler<WebReferenceEventArgs>(wsw_Deleted);
+                                wsw.Renamed += new EventHandler<WebReferenceEventArgs>(wsw_Renamed);
+                                wsw.Start();
+                                this.wsRefWatcher.Add(wsw);
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+
+                            throw ex;
+                        }
                     }
                     catch
                     {
@@ -322,28 +363,6 @@ namespace NMaven.VisualStudio.Addin
                     }
                 }
                 
-                //attach web references watcher
-
-                try
-                {
-                    if (!string.IsNullOrEmpty(referenceFolder))
-                    {
-                        string wsPath = referenceFolder;
-                        WebServicesReferenceWatcher wsw = new WebServicesReferenceWatcher(wsPath);
-                        wsw.Created += new EventHandler<WebReferenceEventArgs>(wsw_Created);
-                        wsw.Deleted += new EventHandler<WebReferenceEventArgs>(wsw_Deleted);
-                        wsw.Renamed += new EventHandler<WebReferenceEventArgs>(wsw_Renamed);
-                        wsw.Start();
-                        this.wsRefWatcher.Add(wsw);
-                    }
-
-                }
-                catch (Exception ex)
-                {
-
-                    throw ex;
-                }                
-
             }
         }
 
@@ -1441,7 +1460,8 @@ namespace NMaven.VisualStudio.Addin
         /// <seealso class='Exec' />
         public void QueryStatus(string commandName, vsCommandStatusTextWanted neededText, ref vsCommandStatus status, ref object commandText)
         {
-            if (neededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone)
+            DeleteBinDir();
+			if (neededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone)
             {
                 if (commandName == "IDEAddin.Connect.IDEAddin")
                 {
