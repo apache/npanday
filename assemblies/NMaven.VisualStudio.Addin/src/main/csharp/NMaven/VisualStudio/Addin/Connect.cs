@@ -797,19 +797,19 @@ namespace NMaven.VisualStudio.Addin
 
         private void SaveAllDocuments()
         {
-            Solution2 solution = (Solution2)_applicationObject.Solution;
-            solution.SaveAs(solution.FileName);
-            foreach (Project project in solution.Projects)
+            EnvDTE80.Windows2 windows2 = (EnvDTE80.Windows2)_applicationObject.Windows;
+
+            DTE2 dte2 = _applicationObject;
+
+            foreach (CommandBar commandBar in (CommandBars)dte2.CommandBars)
             {
-                project.Save(project.Name);
-                ProjectItems items = project.ProjectItems;
-                foreach (ProjectItem item in items)
+                foreach (CommandBarControl control in commandBar.Controls)
                 {
-                    
-                    try{if(!item.Saved)
+
+                    if (control.Caption == "Save A&ll")
                     {
-                        item.Save(item.Name);
-                    }}catch{}
+                        control.Execute();
+                    }
                 }
             }
         }
