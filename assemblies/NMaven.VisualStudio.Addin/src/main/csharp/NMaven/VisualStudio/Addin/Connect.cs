@@ -34,7 +34,7 @@ using System.Reflection;
 using System.Globalization;
 using System.Drawing;
 using System.Threading;
-using System.Web.Services.Protocols;
+//using System.Web.Services.Protocols;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -108,7 +108,9 @@ using System.Runtime.CompilerServices;
   
         }
         #endregion
-  
+
+         static bool projectRefEventLoaded;
+
         #region OnConnection(object,ext_ConnectMode,object,Array)
         /// <summary>
         /// Implements the OnConnection method of the IDTExtensibility2 interface.
@@ -120,12 +122,15 @@ using System.Runtime.CompilerServices;
         /// <seealso class='IDTExtensibility2' />
         public void OnConnection(object application, ext_ConnectMode connectMode, object addInInst, ref Array custom)
         {
+
             _applicationObject = (DTE2)application;
             mavenRunner = new MavenRunner(_applicationObject);
             _addInInstance = (AddIn)addInInst;
-            Command command = null;
+            Command command = null;            
+
             if (connectMode == ext_ConnectMode.ext_cm_UISetup)
             {
+
                 object[] contextGUIDS = new object[] { };
                 Commands2 commands = (Commands2)_applicationObject.Commands;
                 string toolsMenuName;
@@ -179,13 +184,37 @@ using System.Runtime.CompilerServices;
                     //  already exists. If so there is no need to recreate the command and we can
                     //  safely ignore the exception.
                 }
+
             }
             else if (connectMode == ext_ConnectMode.ext_cm_AfterStartup)
             {
                 launchNMavenBuildSystem();
             }
-            
         }
+
+         void attachReferenceEvent()
+         {
+             //References
+             referenceEvents = new List<ReferencesEvents>();
+             foreach (Project project in _applicationObject.Solution.Projects)
+             {
+                 projectRefEventLoaded = true;
+                 VSProject vsProject = null;
+                 try
+                 {
+                     vsProject = (VSProject)project.Object;
+                 }
+                 catch
+                 {
+                     //  not a csproj / vbproj file. Could be a solution folder. skip it.
+                     continue;
+                 }
+                 referenceEvents.Add(vsProject.Events.ReferencesEvents);
+                 vsProject.Events.ReferencesEvents.ReferenceRemoved
+                     += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
+
+             }
+         }
 
         
 
@@ -386,27 +415,6 @@ using System.Runtime.CompilerServices;
                 _selectionEvents = dte2.Events.SelectionEvents;
                 _selectionEvents.OnChange += new _dispSelectionEvents_OnChangeEventHandler(this.OnChange);
 
-                //References
-                referenceEvents = new List<ReferencesEvents>();
-                foreach (Project project in _applicationObject.Solution.Projects)
-                {   
-                    VSProject vsProject = null;
-                    try
-                    {
-                        vsProject = (VSProject)project.Object;
-                    }
-                    catch (Exception ex)
-                    {
-                       //  not a csproj / vbproj file. Could be a solution folder. skip it.
-                       continue;
-                    }
-                    referenceEvents.Add(vsProject.Events.ReferencesEvents);
-                    vsProject.Events.ReferencesEvents.ReferenceRemoved 
-                        += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
-                    
-                }
-
-
                 _nmavenLaunched = true;
                 outputWindowPane.OutputString("\nNMaven Addin Successful Started...");
         }
@@ -428,6 +436,12 @@ using System.Runtime.CompilerServices;
         #region OnChange()
         public void OnChange()
         {
+            //Since the Solution  event is not so stable, attaching Reference Event is added here instead.
+            if (!projectRefEventLoaded) 
+            {
+                attachReferenceEvent();
+            }
+
             foreach (SelectedItem item in _applicationObject.SelectedItems)
             {
                 if (item.Name.EndsWith("Test.cs"))
@@ -529,12 +543,12 @@ using System.Runtime.CompilerServices;
                 {
                     vsProject = (VSProject)project.Object;
                 }
-                catch (Exception ex)
+                catch 
                 {                
                     continue;
                 }
-                   
-                vsProject.Events.ReferencesEvents.ReferenceRemoved 
+
+                vsProject.Events.ReferencesEvents.ReferenceRemoved
                         -= new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
                     
             }

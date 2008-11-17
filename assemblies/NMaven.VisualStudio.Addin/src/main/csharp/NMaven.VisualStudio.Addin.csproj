@@ -10,6 +10,10 @@
   <PropertyGroup>
     <OutputPath>C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.VisualStudio.Addin\target\bin\Debug\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <OutputPath>..\..\..\target\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EnvDTE">
       <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\EnvDTE\8.0.0.0__EnvDTE\EnvDTE</HintPath>
@@ -24,25 +28,32 @@
     <Reference Include="Microsoft.VisualStudio.CommandBars">
       <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\Microsoft.VisualStudio.CommandBars\8.0.0.0__Microsoft.VisualStudio.CommandBars\Microsoft.VisualStudio.CommandBars</HintPath>
     </Reference>
-    <Reference Include="NMaven.Artifact">
-      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NMaven.Artifact\0.14-maestro-1.7.1-SNAPSHOT__NMaven.Artifact\NMaven.Artifact.dll</HintPath>
+    <Reference Include="NMaven.Artifact, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\NMaven.Artifact\target\NMaven.Artifact.dll</HintPath>
     </Reference>
     <Reference Include="NMaven.Logging">
-      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NMaven.Logging\0.14-maestro-1.7.1-SNAPSHOT__NMaven.Logging\NMaven.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\NMaven.Logging\target\NMaven.Logging.dll</HintPath>
     </Reference>
     <Reference Include="NMaven.Model.Pom" />
     <Reference Include="NMaven.Model.Pom" />
     <Reference Include="NMaven.Model.Settings">
-      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NMaven.Model.Settings\0.14-maestro-1.7.1-SNAPSHOT__NMaven.Model\NMaven.Model.Settings.dll</HintPath>
+      <HintPath>..\..\..\..\NMaven.Model\Settings\target\NMaven.Model.Settings.dll</HintPath>
     </Reference>
     <Reference Include="NMaven.Plugin" />
     <Reference Include="NMaven.ProjectImporterEngine">
-      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NMaven.ProjectImporterEngine\0.14-maestro-1.7.1-SNAPSHOT__NMaven.ProjectImporter\NMaven.ProjectImporterEngine.dll</HintPath>
+      <HintPath>..\..\..\..\NMaven.ProjectImporter\Engine\target\NMaven.ProjectImporterEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Utils, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Documents and Settings\Melvin Sembrano\.m2\uac\gac_msil\NMaven.Utils\0.14-maestro-1.7.6-SNAPSHOT__NMaven.Utils\NMaven.Utils.dll</HintPath>
     </Reference>
     <Reference Include="NMaven.VisualStudio">
-      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NMaven.VisualStudio\0.14-maestro-1.7.1-SNAPSHOT__NMaven.VisualStudio\NMaven.VisualStudio.dll</HintPath>
+      <HintPath>..\..\..\..\NMaven.VisualStudio\target\NMaven.VisualStudio.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms" />
@@ -87,32 +98,12 @@
     <Compile Include="NMaven\VisualStudio\Addin\NMavenSignAssembly.Designer.cs">
       <DependentUpon>NMavenSignAssembly.cs</DependentUpon>
     </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Converter\PomConverter.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\BootstrapperPackage.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\Compile.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\Content.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\EmbeddedResource.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\Folder.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\IncludeBase.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\None.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\ProjectDigest.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\ProjectDigester.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\ProjectReference.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\Reference.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\WebReferences.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Digest\WebReferenceUrl.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\NMavenImporter.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Reader\ProjectReader.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\ProjectImporter\Validator\ProjectValidator.cs" />
     <Compile Include="NMaven\VisualStudio\Addin\RemoveArtifactsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NMaven\VisualStudio\Addin\RemoveArtifactsForm.Designer.cs">
       <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NMaven\VisualStudio\Addin\Util\GacUtility.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\Util\MavenRunner.cs" />
-    <Compile Include="NMaven\VisualStudio\Addin\Util\NMavenPomHelperUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="NMaven\VisualStudio\Addin\AddArtifactsForm.resx">
