@@ -30,6 +30,7 @@ import org.apache.maven.dotnet.executable.compiler.*;
 import org.apache.maven.artifact.Artifact;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.io.File;
 
@@ -71,10 +72,6 @@ public final class CompilerMojo
      */
     private ArrayList<String> parameters;
 
-    /**
-     * Delay-sign the assembly using only the public portion of the strong name key. (not currently supported)
-     */
-    private boolean delaysign;
 
     /**
      * Specify a strong name key file.
@@ -183,8 +180,181 @@ public final class CompilerMojo
      * @readonly
      */
     private File pomFile;
+    
+    /**
+     * Delay-sign the assembly using only the public portion of the strong name key
+     *
+     * @parameter 
+     * 
+     */
+    private boolean delaysign;
+    
+    /**
+     * Link the specified modules into this assembly
+     *
+     * @parameter expression="${addmodules}"
+     */
+    private ArrayList<String> addModules;
+ 
+    /**
+     * Specify a Win32 resource file (.res)
+     * 
+     * @parameter expression = "${win32res}"
+     */    
+    private String win32Res;
+    
+    /**
+     * Remove integer checks.
+     *  @parameter
+     */
+    private boolean removeintchecks;
 
+    /**
+     * Specifies a Win32 icon file (.ico) for the default Win32 resources.
+     *
+     * @parameter expression = "${win32icon}" 
+     * 
+     */
+    private String win32Icon;  
+    
+    /**
+     * Declare global Imports for namespaces in referenced metadata files.
+     *
+     * @parameter expression = "${imports}" 
+     * 
+     */
+    private ArrayList<String> imports;
+    
+    /**
+     * Embed the specified resource 
+     *
+     * @parameter expression = "${resource}" 
+     * 
+     */
+    private String resource;
+    
+    /**
+     * Link the specified resource to this assembly 
+     *
+     * @parameter expression = "${linkresource}" 
+     * 
+     */
+    private String linkResource;    
+    
 
+    /**
+     *Require explicit declaration of variables.
+     * 
+     *  @parameter
+     */
+    private boolean optionexplicit;
+
+    /**
+     *Enforce strict language semantics / Warn when strict language semantics are not respected.
+     *
+     * @parameter expression = "${optionstrict}" 
+     * 
+     */
+    private String optionStrict;
+
+    /**
+     *Enable optimizations.
+     * 
+     *  @parameter
+     */
+    private boolean optimize;
+    
+    /**
+     *Specifies binary or text style string comparisons
+     *
+     * @parameter expression = "${optioncompare}" 
+     * 
+     */    
+    private String optionCompare;
+    
+    /**
+     *Generate overflow checks
+     *
+     * @parameter
+     */    
+    private boolean checked;
+    
+    /**
+     *Allow 'unsafe' code
+     *
+     */    
+    private boolean unsafe;
+    
+    /**
+     *Do not auto include CSC.RSP/VBC.RSP file
+     *
+     * @parameter
+     */    
+    private boolean noconfig;
+
+    /**
+     *Base address for the library to be built
+     *
+     * @parameter expression = "${baseaddress}"  
+     * 
+     */    
+    private String baseAddress;
+    
+    /**
+     *Create a 'Bug Report' file.
+     *
+     * @parameter expression = "${bugreport}"  
+     * 
+     */    
+    private String bugReport;
+    
+    /**
+     *Specify the codepage to use when opening source files
+     *
+     * @parameter expression = "${codepage}"  
+     * 
+     */    
+    private String codePage;
+    
+    /**
+     *Output compiler messages in UTF-8 encoding
+     *
+     * @parameter
+     */    
+    private boolean utf8output;        
+    
+    /**
+     *Specify debug information file name (default: output file name with .pdb extension)
+     *
+     * @parameter expression = "${pdb}" 
+     * 
+     */    
+    private String pdb;
+
+    /**
+     *Specify how to handle internal compiler errors: prompt, send, queue, or none. The default is queue.
+     *
+     * @parameter expression = "${errorreport}" 
+     * 
+     */        
+    private String errorReport;
+
+    /**
+     *Name of the assembly which this module will be a part of
+     *
+     * @parameter expression = "${moduleassemblyname}" 
+     * 
+     */        
+    private String moduleAssemblyName;
+    
+    /**
+     * Specify additional directories to search in for references
+     *
+     * @parameter expression = "${libs}" 
+     * 
+     */
+    private ArrayList<String> libs;    
+    
     /**
      * Compiles the class files.
      *
@@ -241,6 +411,130 @@ public final class CompilerMojo
         {
             parameters.add( "/rootnamespace:" + rootNamespace );
         }
+        
+        if ( delaysign )
+        {
+        	parameters.add( "/delaysign+" );
+        }
+        
+        if ( addModules != null && ! addModules.isEmpty() )
+        {	
+        	parameters.add( "/addmodule:" + listToCommaDelimitedString(addModules) ) ;        	
+        }
+        
+        if ( win32Res != null )
+        {
+        	parameters.add( "/win32res:" + win32Res );
+        }
+        
+        if ( removeintchecks )
+        {
+        	parameters.add( "/removeintchecks+" );
+        }
+        
+        if ( win32Icon != null )
+        {
+        	parameters.add( "/win32icon:" + win32Icon );
+        }
+        
+        if ( imports != null && ! imports.isEmpty() )
+        {
+        	parameters.add( "/imports:" + listToCommaDelimitedString(imports) );
+        }
+        
+        if ( resource != null )
+        {
+        	parameters.add( "/resource:" + resource );
+        }
+        
+        if ( linkResource != null )
+        {
+        	parameters.add( "/linkresource:" + linkResource );
+        }
+        
+        if ( optionexplicit )
+        {
+            parameters.add( "/optionexplicit+" );
+        }
+        
+        if ( optionStrict != null )
+        {
+            if (optionStrict.equals( "+" )||optionStrict.equals( "-" ))
+            {
+                parameters.add( "/optionstrict" + optionStrict);
+            }
+            else 
+            {
+                parameters.add( "/optionstrict:" + optionStrict);
+            }
+            
+        }
+        
+        if ( optimize )
+        {
+            parameters.add( "/optimize+" );
+        }
+        
+        if ( optionCompare != null )
+        {
+            parameters.add( "/optioncompare:"+optionCompare );
+        }
+        
+        if ( checked )
+        {
+            parameters.add( "/checked+" );
+        }
+        
+        if ( unsafe )
+        {
+            parameters.add( "/unsafe+" );
+        }
+        
+        if ( noconfig )
+        {
+            parameters.add( "/noconfig" );
+        }
+        
+        if ( baseAddress != null )
+        {
+            parameters.add( "/baseaddress:" + baseAddress );
+        }
+        
+        if ( bugReport != null )
+        {
+            parameters.add( "/bugreport:" + bugReport );
+        }
+        
+        if ( codePage != null )
+        {
+            parameters.add( "/codepage:" + codePage );
+        }
+        
+        if ( utf8output )
+        {
+            parameters.add( "/utf8output" );
+        }
+        
+        if ( pdb != null )
+        {
+            parameters.add( "/pdb:" + pdb );
+        }
+        
+        if ( errorReport != null )
+        {
+            parameters.add( "/errorreport:" + errorReport );
+        }
+        
+        if ( moduleAssemblyName != null )
+        {
+            parameters.add( "/moduleassemblyname:" + moduleAssemblyName );
+        }
+        
+        if ( libs != null  && ! libs.isEmpty() )
+        {
+            parameters.add( "/lib:"+ listToCommaDelimitedString( libs ) );
+        }
+        
 
         compilerConfig.setCommands( parameters );
 
@@ -376,5 +670,25 @@ public final class CompilerMojo
             }
         }
         return lastModArtifact;
+    }
+    
+    private String listToCommaDelimitedString( List<String> list )
+    {
+    	StringBuffer sb = new StringBuffer();
+    	boolean flag = false;
+    	
+    	if (list==null || list.size()==0) return "";
+    	
+    	for (String item: list)
+    	{
+    		sb.append(flag==true?",":"").append( item.trim() );
+    		
+    		if (!flag)
+    		{	
+    			flag = true;
+    		}
+    	}
+    	return sb.toString();
+    
     }
 }
