@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>test.artfact.f35f17fa-e965-4328-aef8-07633760cd27</artifactId>
+    <groupId>test.group.725298d9-6e24-4695-a11e-d87fa119a0bb</groupId>
+    <version>1.2.3-SNAPSHOT</version>
+    <relativePath>..\parent-pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>MyLibrary</artifactId>
+  <packaging>library</packaging>
+  <name>test.group.725298d9-6e24-4695-a11e-d87fa119a0bb : MyLibrary</name>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <language>VB</language>
+          <rootNamespace>MyLibrary</rootNamespace>
+          <doc>MyLibrary.xml</doc>
+          <imports>
+            <import>Microsoft.VisualBasic</import>
+            <import>System</import>
+            <import>System.Collections</import>
+            <import>System.Collections.Generic</import>
+            <import>System.Data</import>
+            <import>System.Diagnostics</import>
+          </imports>
+          <includeSources>
+            <includeSource>Class1.vb</includeSource>
+            <includeSource>My Project\AssemblyInfo.vb</includeSource>
+            <includeSource>My Project\Application.Designer.vb</includeSource>
+            <includeSource>My Project\Resources.Designer.vb</includeSource>
+            <includeSource>My Project\Settings.Designer.vb</includeSource>
+          </includeSources>
+          <define>_MyType="Windows",PLATFORM="AnyCPU"</define>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

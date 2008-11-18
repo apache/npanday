@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>test.artfact.880e5691-144e-438c-8878-1be63b4f1f18</artifactId>
+    <groupId>test.group.d6e99795-3b7c-41bf-8e07-34ebe51f3ff6</groupId>
+    <version>1.2.3-SNAPSHOT</version>
+    <relativePath>parent-pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>flatVB_proj</artifactId>
+  <packaging>exe</packaging>
+  <name>test.group.d6e99795-3b7c-41bf-8e07-34ebe51f3ff6 : flatVB_proj</name>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <language>VB</language>
+          <rootNamespace>flatVB_proj</rootNamespace>
+          <main>flatVB_proj.Module1</main>
+          <doc>flatVB_proj.xml</doc>
+          <imports>
+            <import>Microsoft.VisualBasic</import>
+            <import>System</import>
+            <import>System.Collections</import>
+            <import>System.Collections.Generic</import>
+            <import>System.Data</import>
+            <import>System.Diagnostics</import>
+          </imports>
+          <includeSources>
+            <includeSource>Module1.vb</includeSource>
+            <includeSource>My Project\AssemblyInfo.vb</includeSource>
+            <includeSource>My Project\Application.Designer.vb</includeSource>
+            <includeSource>My Project\Resources.Designer.vb</includeSource>
+            <includeSource>My Project\Settings.Designer.vb</includeSource>
+          </includeSources>
+          <define>_MyType="Console",PLATFORM="AnyCPU"</define>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>Microsoft.Build.Engine</groupId>
+      <artifactId>Microsoft.Build.Engine</artifactId>
+      <version>2.0.0.0</version>
+      <type>gac_msil</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
+    </dependency>
+  </dependencies>
+</project>

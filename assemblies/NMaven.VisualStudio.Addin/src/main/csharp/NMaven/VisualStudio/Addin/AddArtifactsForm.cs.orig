@@ -43,8 +43,6 @@ using NMaven.Logging;
 using NMaven.Model.Pom;
 using NMaven.Model.Setting;
 
-using NMaven.Utils;
-
 namespace NMaven.VisualStudio.Addin
 {
     public partial class AddArtifactsForm : Form
@@ -53,7 +51,6 @@ namespace NMaven.VisualStudio.Addin
         private ArtifactContext artifactContext;
         private Project project;
         private NMaven.Logging.Logger logger;
-        private FileInfo pom;
 
         /// <summary>
         /// For Testing
@@ -65,15 +62,14 @@ namespace NMaven.VisualStudio.Addin
            // localListView.View = View.Details;
         }
 
-        public AddArtifactsForm(Project project, ArtifactContext container, Logger logger, FileInfo pom)
+        public AddArtifactsForm(Project project, ArtifactContext container, Logger logger)
         {
             this.project = project;
             this.logger = logger;
             InitializeForm();
             InitializeComponent();
             localListView.View = View.Details;           
-            artifactContext = container;
-            this.pom = pom;
+            artifactContext = container;       
         }
 
         private void InitializeForm()
@@ -93,9 +89,9 @@ namespace NMaven.VisualStudio.Addin
             localArtifacts = artifactContext.GetArtifactRepository().GetArtifacts();
             foreach (NMaven.Artifact.Artifact artifact in localArtifacts)
             {
-                LocalArtifactItem item = new LocalArtifactItem(new string[] {
+                System.Windows.Forms.ListViewItem item = new System.Windows.Forms.ListViewItem(new string[] {
                     artifact.ArtifactId, artifact.Version}, -1);
-                item.Artifact = artifact;
+                item.Tag = artifact;
                 localListView.Items.Add(item);
             }
 
@@ -117,7 +113,18 @@ namespace NMaven.VisualStudio.Addin
                 return;
             }
 
-            String url = getRepositoryUrl();
+            String url = null;
+
+            foreach (NMaven.Model.Setting.Profile profile in settings.profiles)
+            {
+                foreach (NMaven.Model.Setting.Repository repository in profile.repositories)
+                {
+                    if (repository.id.Equals("nmaven.id"))
+                    {
+                        url = repository.url;
+                    }
+                }
+            }
 
             if (url == null)
             {
@@ -128,46 +135,103 @@ namespace NMaven.VisualStudio.Addin
 
             SetUnsafeHttpHeaderParsing();
 
-            List<TreeNode> treeNodes = getNodesFor(url);
+            List<TreeNode> treeNodes = GetNodesFor(url);
             treeView1.Nodes.AddRange(treeNodes.ToArray());
             treeView1.MouseClick += new System.Windows.Forms.MouseEventHandler(treeView_MouseUp);
         }
 
         private void addArtifact_Click(object sender, EventArgs e)
         {
-            try
+            String pomFileName = 
+                (new FileInfo(project.FileName).Directory).FullName + @"\..\..\..\pom.xml";
+            if (!new FileInfo(pomFileName).Exists)//No flat directory structure.
             {
-                ListView.SelectedListViewItemCollection selectedItems = localListView.SelectedItems;
-                if (selectedItems != null)
+                pomFileName = (new FileInfo(project.FileName).Directory.Parent.Parent.Parent).FullName 
+                    + @"\pom.xml";
+
+                if (!new FileInfo(pomFileName).Exists)
                 {
-                    foreach (ListViewItem item in selectedItems)
-                    {
-                        addLocalArtifact(item as LocalArtifactItem);
-                    }
-                }
-
-                if (treeView1.SelectedNode != null)
-                {
-
-                    RemoteArtifactNode treeNode = treeView1.SelectedNode as RemoteArtifactNode;
-
-                    if (treeNode.IsAssembly)
-                    {
-                        addRemoteArtifact(treeNode);
-                    }
-                    else
-                    {
-                        MessageBox.Show(this, string.Format("Cannot add {0} not an artifact assembly.", treeNode.FullPath), this.Text);
-                        return;
-                    }
+                    MessageBox.Show("Could not add reference. Missing pom file: File = " + pomFileName);
+                    return;
                 }
             }
-            catch (Exception err)
+            
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.Load(pomFileName);
+            String namespaceUri = xmlDocument.DocumentElement.NamespaceURI;
+            if (string.IsNullOrEmpty(namespaceUri))
             {
-                MessageBox.Show(err.Message, "NMaven Add Dependency Error:");
+                xmlDocument.DocumentElement.SetAttribute("xmlns", "http://maven.apache.org/POM/4.0.0");
+            }
+            xmlDocument.Save(pomFileName);
+
+            XmlReader reader = XmlReader.Create(pomFileName);
+            XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Pom.Model));
+            if (!serializer.CanDeserialize(reader))
+            {
+                MessageBox.Show("Could not add reference. Corrupted pom file: File = " + pomFileName);
                 return;
             }
 
+            NMaven.Model.Pom.Model model = (NMaven.Model.Pom.Model)serializer.Deserialize(reader);
+            List<Dependency> dependencies = new List<Dependency>();
+            if (model.dependencies != null)
+            {
+                dependencies.AddRange(model.dependencies);
+            }
+ 
+            ListView.SelectedListViewItemCollection selectedItems = localListView.SelectedItems;
+            if (selectedItems != null)
+            {
+                foreach (ListViewItem item in selectedItems)
+                {
+                    NMaven.Artifact.Artifact artifact = (NMaven.Artifact.Artifact)item.Tag;
+                    Dependency dependency = new Dependency();
+                    dependency.artifactId = artifact.ArtifactId;
+                    dependency.groupId = artifact.GroupId;
+                    dependency.version = artifact.Version;
+                    dependency.type = "library";
+                    //dependency.scope = artifact.ArtifactScope;
+
+                    dependencies.Add(dependency);
+                    VSProject vsProject = (VSProject)project.Object;
+                    vsProject.References.Add(artifact.FileInfo.FullName);
+                }
+            }
+
+            TreeNode treeNode = treeView1.SelectedNode;
+            if (treeNode != null)
+            {
+                String uri = (String)treeNode.Tag;
+                int length = uri.Length - uri.LastIndexOf("/maven2/") - 8;
+                String paths = uri.Substring(uri.LastIndexOf("/maven2/") + 8, length);
+                NMaven.Artifact.Artifact artifact1 = 
+                    artifactContext.GetArtifactRepository().GetArtifactFor(paths);
+                Dependency dependency1 = new Dependency();
+                dependency1.artifactId = artifact1.ArtifactId;
+                dependency1.groupId = artifact1.GroupId;
+                dependency1.version = artifact1.Version;
+                dependency1.type = "library";
+                dependencies.Add(dependency1);
+
+                //Download
+                artifact1.FileInfo.Directory.Create();
+                WebClient client = new WebClient();
+                byte[] assembly = client.DownloadData(uri);
+                FileStream stream = new FileStream(artifact1.FileInfo.FullName, FileMode.Create);
+                stream.Write(assembly, 0, assembly.Length);
+                stream.Close();
+                
+                VSProject vsProject1 = (VSProject)project.Object;
+                //File must exist
+                vsProject1.References.Add(artifact1.FileInfo.FullName);
+            }    
+            reader.Close();
+
+            model.dependencies = dependencies.ToArray();
+            TextWriter writer = new StreamWriter(pomFileName);
+            serializer.Serialize(writer, model);
+            writer.Close();
             this.Close();
         }
 
@@ -220,99 +284,34 @@ namespace NMaven.VisualStudio.Addin
             return true;
         }
 
-        List<TreeNode> getNodesFor(String url)
-        {
-            Uri repoUri = new Uri(url);
-            if (repoUri.IsFile)
-            {
-                return getNodesFromLocal(repoUri.LocalPath);
-            }
-            else
-            {
-                return getNodesFromRemote(url);
-            }
-        }
-
-        List<TreeNode> getNodesFromLocal(string repoFolder)
-        {
-            List<TreeNode> nodes = new List<TreeNode>();
-            if (!Directory.Exists(repoFolder))
-            {
-                MessageBox.Show(this, "Local repository path not found.", "Local Repository");
-                return nodes;
-            }
-
-            foreach (FileSystemInfo fsi in (new DirectoryInfo(repoFolder).GetFileSystemInfos()))
-            {
-                if (fsi is FileInfo) 
-                {
-                    string ext = Path.GetExtension(fsi.FullName).ToLower();
-                    if (ext != ".dll" && ext != ".exe" && ext != ".netmodule")
-                        continue;
-                }
-                RemoteArtifactNode node = new RemoteArtifactNode(fsi.Name);
-                node.IsFileSystem = true;
-                node.ArtifactUrl = Path.Combine(repoFolder, fsi.Name);
-                node.IsAssembly = (fsi is FileInfo);
-                nodes.Add(node);
-            }
-
-            return nodes;
-        }
-
-        List<TreeNode> getNodesFromRemote(string url)
+        private List<TreeNode> GetNodesFor(String url)
         {
             List<TreeNode> treeNodes = new List<TreeNode>();
+
             WebClient webClient = new WebClient();
-
-            byte[] page = null;
-
-            //prevent VS crash
-            try
-            {
-                page = webClient.DownloadData(url);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Cannot read remote repository: " + url + " " + ex.Message + ex.StackTrace);
-                return treeNodes;
-            }
-
-
+            byte[] page = webClient.DownloadData(url);
             String pattern =
                 (@"<a[^>]*href\s*=\s*[\""\']?(?<URI>[^""'>\s]*)[\""\']?[^>]*>(?<Name>[^<]+|.*?)?<");
             MatchCollection matches = Regex.Matches(Encoding.ASCII.GetString(page), pattern, RegexOptions.IgnoreCase);
 
-            // treeView1.ImageList = imageList1;
+           // treeView1.ImageList = imageList1;
             foreach (Match match in matches)
             {
                 String name = match.Groups["Name"].Value;
-                String uri = match.Groups["URI"].Value;
+                String uri = match.Groups["URI"].Value; 
                 if (IsIncluded(name, uri))
                 {
-                    RemoteArtifactNode node = new RemoteArtifactNode(name);  // new TreeNode(name);
+                    TreeNode node = new TreeNode(name);
                     if (!IsDirectory(name))
                     {
                         node.ImageIndex = 1;
                     }
-                    node.IsFileSystem = false;
-                    string ext = Path.GetExtension(name).ToLower();
-                    if (ext == ".dll" || ext == ".exe" || ext == ".netmodule")
-                    {
-                        node.IsAssembly = true;
-                    }
-                    else
-                    {
-                        node.IsAssembly = false;
-                    }
 
-                    node.ArtifactUrl = url + "/" + uri.TrimEnd("/".ToCharArray()); ;
-
-                    treeNodes.Add(node);
+                    node.Tag = url + "/" + uri.TrimEnd("/".ToCharArray());
+                    treeNodes.Add(node);                  
                 }
             }
             return treeNodes;
-
         }
 
         private void treeView_MouseUp(object sender, MouseEventArgs e)
@@ -320,11 +319,8 @@ namespace NMaven.VisualStudio.Addin
             if (e.Button == MouseButtons.Left)
             {
                 Point point = new Point(e.X, e.Y);
-                RemoteArtifactNode node = treeView1.GetNodeAt(point) as RemoteArtifactNode;
-                if (node.IsAssembly)
-                    return;
-
-                List<TreeNode> treeNodes = getNodesFor( node.ArtifactUrl);
+                TreeNode node = treeView1.GetNodeAt(point);
+                List<TreeNode> treeNodes = GetNodesFor( (String) node.Tag);
                 node.Nodes.Clear();
                 node.Nodes.AddRange(treeNodes.ToArray());
             }
@@ -347,251 +343,6 @@ namespace NMaven.VisualStudio.Addin
             FieldInfo fieldInfo = settingsSectionType.GetField("useUnsafeHeaderParsing",
                 BindingFlags.NonPublic | BindingFlags.Instance);
             fieldInfo.SetValue(settingsSection, true);
-        }
-
-        private Boolean isValidRemoteRepositoryUrl(String repoUrl)
-        {
-            WebClient webClient = new WebClient();
-            byte[] page = null;
-
-            try
-            {
-                page = webClient.DownloadData(repoUrl);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Cannot read remote repository: " + repoUrl + " " + ex.Message + ex.StackTrace);
-                return false;
-            }
-            return true;
-        }
-
-        /*
-         * e.g.: Castle/./Castle.Core/./2.0-rc2/./Castle.Core-2.0-rc2.dll
-         * transform it to: Castle/Castle.Core/2.0-rc2/Castle.Core-2.0-rc2.dll
-         * 
-        */
-        private String normalizePath(String path)
-        {
-            return path.Replace("/./", "/");
-        }
-
-        private String getRepositoryUrl()
-        {
-            Settings settings = null;
-            String settingsPath = SettingsUtil.GetUserSettingsPath();
-            try
-            {
-                settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message + e.StackTrace);
-            }
-
-            foreach (NMaven.Model.Setting.Profile profile in settings.profiles)
-            {
-                foreach (NMaven.Model.Setting.Repository repository in profile.repositories)
-                {
-                    if (repository.id.Equals("nmaven.id"))
-                    {
-                        return repository.url;
-                    }
-                }
-            }
-            return null;
-        }
-
-        private void localListView_DoubleClick(object sender, EventArgs e)
-        {
-            try
-            {
-                LocalArtifactItem item = localListView.SelectedItems[0] as LocalArtifactItem;
-
-                addLocalArtifact(item);
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, ex.Message, "Add Artifacts");
-            }
-        }
-
-        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            RemoteArtifactNode node = e.Node as RemoteArtifactNode;
-            if (node.IsAssembly)
-            {
-                addRemoteArtifact(node);
-            }
-        }
-
-        void addArtifactToPom(Artifact.Artifact artifact)
-        {
-            try
-            {
-                if (pom != null)
-                {
-                    NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(pom);
-                    pomUtil.AddPomDependency(artifact.GroupId, artifact.ArtifactId, artifact.Version);
-                }
-            }
-            catch (Exception err1)
-            {
-                MessageBox.Show(err1.Message, "NMaven Add Dependency Error:");
-                return;
-            }
-
-        }
-
-        void addLocalArtifact(LocalArtifactItem item)
-        {
-            VSProject vsProject = null;
-
-            NMaven.Artifact.Artifact artifact = item.Artifact;
-
-            if (project.Object is VSProject)
-            {
-                vsProject = (VSProject)project.Object;
-                if (vsProject.References.Find(item.Text) != null)
-                {
-                    MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
-                    return;
-                }
-
-                addArtifactToPom(artifact);
-                vsProject.References.Add(artifact.FileInfo.FullName);
-            }
-            else
-            {
-                if (Connect.IsWebProject(project))
-                {
-                    addArtifactToPom(artifact);
-                    VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
-                    website.References.AddFromFile(artifact.FileInfo.FullName);
-                }
-                else
-                {
-                    MessageBox.Show(this, "Cannot add artifact to none VS projects.", this.Text);
-                    return;
-                }
-            }
-
-        }
-
-        void addRemoteArtifact(RemoteArtifactNode node)
-        {
-            String uri = node.ArtifactUrl;
-            String paths;
-            String repoUrl = getRepositoryUrl();
-            if (node.IsFileSystem)
-            {
-                Uri repoUri = new Uri(repoUrl);
-                paths = uri.Substring(repoUri.LocalPath.Length).Replace(@"\",@"/");
-            }
-            else 
-            {
-                paths = normalizePath(uri.Substring(repoUrl.Length));
-            }
-
-            NMaven.Artifact.Artifact artifact =
-                artifactContext.GetArtifactRepository().GetArtifactFor(paths);
-            
-            VSProject vsProject = null;
-
-            if (project.Object is VSProject)
-            {
-                vsProject = (VSProject)project.Object;
-            }
-            else
-            {
-                MessageBox.Show(this, "Cannot add artifact to none VS projects.", this.Text);
-                return;
-            }
-
-            if (vsProject.References.Find(artifact.ArtifactId) != null)
-            {
-                MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
-                return;
-            }
-
-
-            addArtifactToPom(artifact);
-
-            //Download
-            artifact.FileInfo.Directory.Create();
-            if (node.IsFileSystem)
-            {
-                if (!File.Exists(artifact.FileInfo.FullName))
-                {
-                    File.Copy(node.ArtifactUrl, artifact.FileInfo.FullName);
-                }
-            }
-            else
-            {
-                WebClient client = new WebClient();
-                byte[] assembly = client.DownloadData(uri);
-                FileStream stream = new FileStream(artifact.FileInfo.FullName, FileMode.Create);
-                stream.Write(assembly, 0, assembly.Length);
-                stream.Close();
-            }
-            vsProject.References.Add(artifact.FileInfo.FullName);
-
-        }
-    }
-
-    class LocalArtifactItem : ListViewItem
-    {
-        public LocalArtifactItem() { }
-        public LocalArtifactItem(string name)
-            : base(name)
-        {
-        }
-
-        public LocalArtifactItem(string[] items) : base(items) { }
-
-        public LocalArtifactItem(string[] items, int imageIndex) : base(items, imageIndex) { }
-
-        private NMaven.Artifact.Artifact artifact;
-
-        public NMaven.Artifact.Artifact Artifact
-        {
-            get { return artifact; }
-            set { artifact = value; }
-        }
-
-
-    }
-
-
-    class RemoteArtifactNode : TreeNode
-    {
-        public RemoteArtifactNode() { }
-        public RemoteArtifactNode(string name) : base(name)
-        {
-        }
-        private bool isAssembly;
-
-        public bool IsAssembly
-        {
-            get { return isAssembly; }
-            set { isAssembly = value; }
-        }
-
-        private string artifactUrl;
-
-        public string ArtifactUrl
-        {
-            get { return artifactUrl; }
-            set { artifactUrl = value; }
-        }
-
-        private bool isFileSystem;
-
-        public bool IsFileSystem
-        {
-            get { return isFileSystem; }
-            set { isFileSystem = value; }
         }
 
     }

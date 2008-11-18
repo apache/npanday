@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>test.group.d6e99795-3b7c-41bf-8e07-34ebe51f3ff6</groupId>
+  <artifactId>test.artfact.880e5691-144e-438c-8878-1be63b4f1f18</artifactId>
+  <packaging>pom</packaging>
+  <name>test.group.d6e99795-3b7c-41bf-8e07-34ebe51f3ff6 : test.artfact.880e5691-144e-438c-8878-1be63b4f1f18</name>
+  <version>1.2.3-SNAPSHOT</version>
+  <modules>
+    <module>consoleApp2</module>
+    <module>.</module>
+  </modules>
+</project>

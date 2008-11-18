@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>test.artfact.f35f17fa-e965-4328-aef8-07633760cd27</artifactId>
+    <groupId>test.group.725298d9-6e24-4695-a11e-d87fa119a0bb</groupId>
+    <version>1.2.3-SNAPSHOT</version>
+    <relativePath>parent-pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>flat-multi-module-web-application-vb</artifactId>
+  <packaging>asp</packaging>
+  <name>test.group.725298d9-6e24-4695-a11e-d87fa119a0bb : flat-multi-module-web-application-vb</name>
+  <build>
+    <sourceDirectory>.</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-aspx-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>test.group.725298d9-6e24-4695-a11e-d87fa119a0bb</groupId>
+      <artifactId>MyLibrary</artifactId>
+      <version>1.2.3-SNAPSHOT</version>
+      <type>library</type>
+    </dependency>
+  </dependencies>
+</project>

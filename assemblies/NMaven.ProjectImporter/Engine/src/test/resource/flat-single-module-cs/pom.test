@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>test.group.4105ae16-3bf8-40ef-8fd1-dbe2f4fdc03a</groupId>
+  <artifactId>FlatSingleModule</artifactId>
+  <packaging>library</packaging>
+  <name>test.group.4105ae16-3bf8-40ef-8fd1-dbe2f4fdc03a : FlatSingleModule</name>
+  <version>1.0-SNAPSHOT</version>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <rootNamespace>FlatSingleModule</rootNamespace>
+          <includeSources>
+            <includeSource>Class1.cs</includeSource>
+            <includeSource>Properties\AssemblyInfo.cs</includeSource>
+          </includeSources>
+          <define>PLATFORM="AnyCPU"</define>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

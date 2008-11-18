@@ -700,6 +700,7 @@ namespace NMaven.VisualStudio.Addin
 
 
                     }
+                }
             }
             nunitControls = new List<CommandBarButton>();
             Window solutionExplorerWindow = dte2.Windows.Item(Constants.vsWindowKindSolutionExplorer);

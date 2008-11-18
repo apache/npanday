@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>test.group.783fe539-4f96-4c20-9ebe-c02e08c8a150</groupId>
+  <artifactId>test.artfact.edad9f55-04eb-4d8c-a3a6-8dfe62c244d2</artifactId>
+  <packaging>pom</packaging>
+  <name>test.group.783fe539-4f96-4c20-9ebe-c02e08c8a150 : test.artfact.edad9f55-04eb-4d8c-a3a6-8dfe62c244d2</name>
+  <version>1.2.3-SNAPSHOT</version>
+  <modules>
+    <module>BongClassLib</module>
+    <module>SampleInterProject111</module>
+    <module>SampleWeb</module>
+  </modules>
+</project>

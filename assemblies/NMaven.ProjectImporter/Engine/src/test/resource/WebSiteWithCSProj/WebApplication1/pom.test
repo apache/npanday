@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>test.artfact.ebfc2100-025e-4a65-89d1-d0e3ba256407</artifactId>
+    <groupId>test.group.f62e92d8-c419-4041-b445-d3b6a3261f56</groupId>
+    <version>1.2.3-SNAPSHOT</version>
+    <relativePath>..\pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>WebApplication1</artifactId>
+  <packaging>asp</packaging>
+  <name>test.group.f62e92d8-c419-4041-b445-d3b6a3261f56 : WebApplication1</name>
+  <build>
+    <sourceDirectory>.</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <rootNamespace>WebApplication1</rootNamespace>
+          <includeSources>
+            <includeSource>Default.aspx.cs</includeSource>
+            <includeSource>Default.aspx.designer.cs</includeSource>
+            <includeSource>Properties\AssemblyInfo.cs</includeSource>
+          </includeSources>
+          <define>PLATFORM="AnyCPU"</define>
+          <outputDirectory>bin</outputDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

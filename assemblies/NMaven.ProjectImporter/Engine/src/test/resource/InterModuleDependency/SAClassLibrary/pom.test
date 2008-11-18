@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>test.artfact.cbcdfcb0-0a12-4bd6-8732-84c2a5951be5</artifactId>
+    <groupId>test.group.57984c30-e60d-432c-822c-1c8b94c62b91</groupId>
+    <version>1.2.3-SNAPSHOT</version>
+    <relativePath>..\pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>SAClassLibrary</artifactId>
+  <packaging>library</packaging>
+  <name>test.group.57984c30-e60d-432c-822c-1c8b94c62b91 : SAClassLibrary</name>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <rootNamespace>SAClassLibrary</rootNamespace>
+          <includeSources>
+            <includeSource>Items.cs</includeSource>
+            <includeSource>Properties\AssemblyInfo.cs</includeSource>
+          </includeSources>
+          <define>PLATFORM="AnyCPU"</define>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

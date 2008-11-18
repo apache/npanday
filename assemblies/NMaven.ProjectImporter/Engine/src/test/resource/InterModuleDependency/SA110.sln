@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SA110", "SA110\SA110.csproj", "{3C1E8ECB-9B8F-4EFF-9FE5-EE2254E16AA5}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAClassLibrary", "SAClassLibrary\SAClassLibrary.csproj", "{3FD4C009-AA42-493C-A54D-351528BB275F}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C1E8ECB-9B8F-4EFF-9FE5-EE2254E16AA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C1E8ECB-9B8F-4EFF-9FE5-EE2254E16AA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C1E8ECB-9B8F-4EFF-9FE5-EE2254E16AA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C1E8ECB-9B8F-4EFF-9FE5-EE2254E16AA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FD4C009-AA42-493C-A54D-351528BB275F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FD4C009-AA42-493C-A54D-351528BB275F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FD4C009-AA42-493C-A54D-351528BB275F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FD4C009-AA42-493C-A54D-351528BB275F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

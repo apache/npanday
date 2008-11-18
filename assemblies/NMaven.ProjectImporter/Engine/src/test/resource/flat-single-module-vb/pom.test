@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>test.group.d1bc00cd-9dd9-4c18-8d78-825001d8cbe7</groupId>
+  <artifactId>FlatSingleModuleVB</artifactId>
+  <packaging>library</packaging>
+  <name>test.group.d1bc00cd-9dd9-4c18-8d78-825001d8cbe7 : FlatSingleModuleVB</name>
+  <version>1.0-SNAPSHOT</version>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <language>VB</language>
+          <rootNamespace>FlatSingleModuleVB</rootNamespace>
+          <doc>FlatSingleModuleVB.xml</doc>
+          <imports>
+            <import>Microsoft.VisualBasic</import>
+            <import>System</import>
+            <import>System.Collections</import>
+            <import>System.Collections.Generic</import>
+            <import>System.Data</import>
+            <import>System.Diagnostics</import>
+          </imports>
+          <includeSources>
+            <includeSource>Class1.vb</includeSource>
+            <includeSource>My Project\AssemblyInfo.vb</includeSource>
+            <includeSource>My Project\Application.Designer.vb</includeSource>
+            <includeSource>My Project\Resources.Designer.vb</includeSource>
+            <includeSource>My Project\Settings.Designer.vb</includeSource>
+          </includeSources>
+          <define>_MyType="Windows",PLATFORM="AnyCPU"</define>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

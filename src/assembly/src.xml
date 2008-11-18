@@ -20,25 +20,3 @@
     </fileSet>
   </fileSets>
 </assembly>
-<assembly>
-  <id>src</id>
-  <formats>
-    <format>zip</format>
-    <format>tar.gz</format>
-    <format>tar.bz2</format>
-  </formats>
-  <fileSets>
-    <fileSet>
-      <directory>.</directory>
-      <outputDirectory>/</outputDirectory>
-      <excludes>
-        <exclude>**/target/**</exclude>
-        <exclude>**/*.*.orig</exclude>
-      </excludes>
-    </fileSet>
-    <fileSet>
-      <directory>target/nmaven-sources</directory>
-      <outputDirectory>/</outputDirectory>
-    </fileSet>
-  </fileSets>
-</assembly>

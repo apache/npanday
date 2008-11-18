@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>test.artfact.edad9f55-04eb-4d8c-a3a6-8dfe62c244d2</artifactId>
+    <groupId>test.group.783fe539-4f96-4c20-9ebe-c02e08c8a150</groupId>
+    <version>1.2.3-SNAPSHOT</version>
+    <relativePath>..\pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>SampleWeb</artifactId>
+  <packaging>asp</packaging>
+  <name>test.group.783fe539-4f96-4c20-9ebe-c02e08c8a150 : SampleWeb</name>
+  <build>
+    <sourceDirectory>.</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-aspx-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>test.group.783fe539-4f96-4c20-9ebe-c02e08c8a150</groupId>
+      <artifactId>SampleInterProject111</artifactId>
+      <version>1.2.3-SNAPSHOT</version>
+      <type>library</type>
+    </dependency>
+    <dependency>
+      <groupId>test.group.783fe539-4f96-4c20-9ebe-c02e08c8a150</groupId>
+      <artifactId>BongClassLibRenamedHehehe</artifactId>
+      <version>1.2.3-SNAPSHOT</version>
+      <type>library</type>
+    </dependency>
+    <dependency>
+      <groupId>Microsoft.Build.Engine</groupId>
+      <artifactId>Microsoft.Build.Engine</artifactId>
+      <version>2.0.0.0</version>
+      <type>gac</type>
+      <classifier>B03F5F7F11D50A3A</classifier>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>test.artfact.80304494-70d1-4305-acfa-065f41f92f72</artifactId>
+    <groupId>test.group.42241c48-3e90-4695-abf2-e844a15dd423</groupId>
+    <version>1.2.3-SNAPSHOT</version>
+    <relativePath>..\pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>Shell32Example</artifactId>
+  <packaging>winexe</packaging>
+  <name>test.group.42241c48-3e90-4695-abf2-e844a15dd423 : Shell32Example</name>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <rootNamespace>Shell32Example</rootNamespace>
+          <includeSources>
+            <includeSource>Form1.cs</includeSource>
+            <includeSource>Form1.Designer.cs</includeSource>
+            <includeSource>Program.cs</includeSource>
+            <includeSource>Properties\AssemblyInfo.cs</includeSource>
+            <includeSource>Properties\Resources.Designer.cs</includeSource>
+            <includeSource>Properties\Settings.Designer.cs</includeSource>
+          </includeSources>
+          <define>PLATFORM="AnyCPU"</define>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>Shell32</groupId>
+      <artifactId>Shell32</artifactId>
+      <version>1.0.0.0</version>
+      <type>com_reference</type>
+    </dependency>
+  </dependencies>
+</project>

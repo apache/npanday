@@ -1,0 +1,46 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{AB99C7DE-1065-452F-A49D-937F1FD18E81}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NMaven.ProjectImporter</RootNameSpace>
+    <AssemblyName>NMaven.ProjectImporterEngine-Test</AssemblyName>
+    <BaseIntermediateOutputPath>C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\target\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NMaven.Utils, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\target\test-assemblies\NMaven.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="NUnit.Framework">
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NUnit.Framework\2.2.8.0__NUnit\NUnit.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ImporterTests\AbstractProjectImportTest.cs" />
+    <Compile Include="ImporterTests\FileUtil.cs" />
+    <Compile Include="ImporterTests\FlatMultiModuleProjectTest.cs" />
+    <Compile Include="ImporterTests\FlatMultiModuleWebApplicationVBTest.cs" />
+    <Compile Include="ImporterTests\FlatSingleModuleTest.cs" />
+    <Compile Include="ImporterTests\FlatSingleModuleVBTest.cs" />
+    <Compile Include="ImporterTests\InterModuleDependency.cs" />
+    <Compile Include="ImporterTests\ProjectImporterAssertions.cs" />
+    <Compile Include="ImporterTests\ProjectImporterTestFixture.cs" />
+    <Compile Include="ImporterTests\SampleWebProjectsTest.cs" />
+    <Compile Include="ImporterTests\WebSiteWithCSharpProjectFile.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\main\csharp\NMaven.ProjectImporterEngine.csproj">
+      <Project>{91FC215D-C041-4000-8F71-C04A9EEABE55}</Project>
+      <Name>NMaven.ProjectImporterEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

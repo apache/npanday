@@ -1,0 +1,103 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{91FC215D-C041-4000-8F71-C04A9EEABE55}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NMaven.ProjectImporter</RootNameSpace>
+    <AssemblyName>NMaven.ProjectImporterEngine</AssemblyName>
+    <BaseIntermediateOutputPath>C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\target\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>..\..\..\target\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="NMaven.Artifact, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\NMaven.Artifact\target\NMaven.Artifact.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\NMaven.Logging\target\NMaven.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\target\test-assemblies\NMaven.Model.Pom.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Utils, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\NMaven.Utils\target\NMaven.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="NUnit.Framework">
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NUnit.Framework\2.2.8.0__NUnit\NUnit.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NMaven\ProjectImporter\Converter\Algorithms\WebWithVbOrCsProjectFilePomConverter.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\ComReference.cs" />
+    <Compile Include="NMaven\ProjectImporter\ImportProjectStructureAlgorithms\AbnormalProject.cs" />
+    <Compile Include="NMaven\ProjectImporter\ImportProjectStructureAlgorithms\AbstractProjectAlgorithm.cs" />
+    <Compile Include="NMaven\ProjectImporter\ImportProjectStructureAlgorithms\FlatMultiModuleProject.cs" />
+    <Compile Include="NMaven\ProjectImporter\ImportProjectStructureAlgorithms\FlatSingleModuleProject.cs" />
+    <Compile Include="NMaven\ProjectImporter\ImportProjectStructureAlgorithms\NormalMultiModuleProject.cs" />
+    <Compile Include="NMaven\ProjectImporter\ImportProjectStructureAlgorithms\NormalSingleProject.cs" />
+    <Compile Include="NMaven\ProjectImporter\Converter\Algorithms\AbstractPomConverter.cs" />
+    <Compile Include="NMaven\ProjectImporter\Converter\Algorithms\IPomConverter.cs" />
+    <Compile Include="NMaven\ProjectImporter\Converter\Algorithms\NormalPomConverter.cs" />
+    <Compile Include="NMaven\ProjectImporter\Converter\Algorithms\WebPomConverter.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\PomConverter.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Algorithms\IProjectDigestAlgorithm.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Algorithms\WebProjectDigestAlgorithm.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\BootstrapperPackage.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\Compile.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\Content.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\EmbeddedResource.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\Folder.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\IncludeBase.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\None.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Algorithms\NormalProjectDigestAlgorithm.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\ProjectReference.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\Reference.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\WebReferences.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\WebReferenceUrl.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\Model\ProjectDigest.cs" />
+    <Compile Include="NMaven\ProjectImporter\Digest\ProjectDigester.cs" />
+    <Compile Include="NMaven\ProjectImporter\ImportProjectStructureAlgorithms\IProjectTypeImporter.cs" />
+    <Compile Include="NMaven\ProjectImporter\NMavenImporter.cs" />
+    <Compile Include="NMaven\ProjectImporter\Parser\Solution\AbstractSolutionParserAlgorithm.cs" />
+    <Compile Include="NMaven\ProjectImporter\Parser\Solution\ISolutionParserAlgorithm.cs" />
+    <Compile Include="NMaven\ProjectImporter\Parser\Solution\ProjectSolutionParserWithoutInnerDataAlgorithm.cs" />
+    <Compile Include="NMaven\ProjectImporter\Parser\Solution\SolutionParser.cs" />
+    <Compile Include="NMaven\ProjectImporter\Parser\Solution\ProjectSolutionParserWithInnerWebsitePropertiesDataAlgorithm.cs" />
+    <Compile Include="NMaven\ProjectImporter\Parser\VisualStudioProjectTypes\VisualStudioProjectTypeEnum.cs" />
+    <Compile Include="NMaven\ProjectImporter\Parser\VisualStudioProjectTypes\VisualStudioProjectType.cs" />
+    <Compile Include="NMaven\ProjectImporter\Validator\ProjectStructureType.cs" />
+    <Compile Include="NMaven\ProjectImporter\Validator\ProjectValidator.cs" />
+    <Compile Include="NMaven\ProjectImporter\Verifiers\VerifyProjectImportSyncronization.cs" />
+    <Compile Include="NMaven\ProjectImporter\Verifiers\VerifyUnitTestsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NMaven\ProjectImporter\Verifiers\VerifyUnitTestsForm.Designer.cs">
+      <DependentUpon>VerifyUnitTestsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NMaven\ProjectImporter\Verifiers\VerifyUnitTestsToUser.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="NMaven\ProjectImporter\Verifiers\VerifyUnitTestsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VerifyUnitTestsForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

@@ -1,0 +1,5 @@
+C:\bong\sample_web_project\SampleInterProject111\bin\Debug\SampleInterProject111.dll
+C:\bong\sample_web_project\SampleInterProject111\bin\Debug\SampleInterProject111.pdb
+C:\bong\sample_web_project\SampleInterProject111\obj\Debug\ResolveAssemblyReference.cache
+C:\bong\sample_web_project\SampleInterProject111\obj\Debug\SampleInterProject111.dll
+C:\bong\sample_web_project\SampleInterProject111\obj\Debug\SampleInterProject111.pdb

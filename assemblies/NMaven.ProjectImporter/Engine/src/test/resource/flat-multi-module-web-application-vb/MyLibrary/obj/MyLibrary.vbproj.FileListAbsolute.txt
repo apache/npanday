@@ -1,0 +1,9 @@
+C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\src\test\resource\flat-multi-module-web-application-vb\MyLibrary\bin\Debug\MyLibrary.dll
+C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\src\test\resource\flat-multi-module-web-application-vb\MyLibrary\bin\Debug\MyLibrary.pdb
+C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\src\test\resource\flat-multi-module-web-application-vb\MyLibrary\bin\Debug\MyLibrary.xml
+C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\src\test\resource\flat-multi-module-web-application-vb\MyLibrary\obj\Debug\ResolveAssemblyReference.cache
+C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\src\test\resource\flat-multi-module-web-application-vb\MyLibrary\obj\Debug\MyLibrary.Resources.resources
+C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\src\test\resource\flat-multi-module-web-application-vb\MyLibrary\obj\Debug\MyLibrary.vbproj.GenerateResource.Cache
+C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\src\test\resource\flat-multi-module-web-application-vb\MyLibrary\obj\Debug\MyLibrary.dll
+C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\src\test\resource\flat-multi-module-web-application-vb\MyLibrary\obj\Debug\MyLibrary.xml
+C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\src\test\resource\flat-multi-module-web-application-vb\MyLibrary\obj\Debug\MyLibrary.pdb

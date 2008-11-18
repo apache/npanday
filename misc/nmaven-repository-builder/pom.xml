@@ -24,6 +24,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <artifactId>maven-aspx-plugin</artifactId>
+      <version>0.14-incubating-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.dotnet.plugins</groupId>
       <artifactId>maven-deploy-plugin</artifactId>
       <version>0.14-incubating-SNAPSHOT</version>
     </dependency>

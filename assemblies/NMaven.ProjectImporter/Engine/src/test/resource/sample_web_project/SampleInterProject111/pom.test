@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>test.artfact.edad9f55-04eb-4d8c-a3a6-8dfe62c244d2</artifactId>
+    <groupId>test.group.783fe539-4f96-4c20-9ebe-c02e08c8a150</groupId>
+    <version>1.2.3-SNAPSHOT</version>
+    <relativePath>..\pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>SampleInterProject111</artifactId>
+  <packaging>library</packaging>
+  <name>test.group.783fe539-4f96-4c20-9ebe-c02e08c8a150 : SampleInterProject111</name>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <rootNamespace>SampleInterProject111</rootNamespace>
+          <includeSources>
+            <includeSource>Class1.cs</includeSource>
+            <includeSource>Properties\AssemblyInfo.cs</includeSource>
+          </includeSources>
+          <define>PLATFORM="AnyCPU"</define>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

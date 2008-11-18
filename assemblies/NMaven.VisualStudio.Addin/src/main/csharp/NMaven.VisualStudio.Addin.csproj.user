@@ -1,0 +1,11 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectView>ProjectFiles</ProjectView>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\devenv.exe</StartProgram>
+    <StartArguments>/resetaddin NMaven.VisualStudio.Addin.Connect</StartArguments>
+    <StartWorkingDirectory>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\</StartWorkingDirectory>
+  </PropertyGroup>
+</Project>

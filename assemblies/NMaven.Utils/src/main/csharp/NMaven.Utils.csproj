@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{CAA4864F-F4C8-4024-8535-8B8C112307CE}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NMaven.Utils</RootNameSpace>
+    <AssemblyName>NMaven.Utils</AssemblyName>
+    <BaseIntermediateOutputPath>assemblies\NMaven.Utils\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>assemblies\NMaven.Utils\target\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>..\..\..\target\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EnvDTE">
+      <HintPath>C:\Documents and Settings\Melvin Sembrano\.m2\uac\gac_msil\EnvDTE\8.0.0.0__EnvDTE\EnvDTE</HintPath>
+    </Reference>
+    <Reference Include="EnvDTE80">
+      <HintPath>C:\Documents and Settings\Melvin Sembrano\.m2\uac\gac_msil\EnvDTE80\8.0.0.0__EnvDTE80\EnvDTE80</HintPath>
+    </Reference>
+    <Reference Include="Extensibility">
+      <HintPath>C:\Documents and Settings\Melvin Sembrano\.m2\uac\gac_msil\Extensibility\7.0.3300.0__Extensibility\Extensibility</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.VisualStudio.CommandBars">
+      <HintPath>C:\Documents and Settings\Melvin Sembrano\.m2\uac\gac_msil\Microsoft.VisualStudio.CommandBars\8.0.0.0__Microsoft.VisualStudio.CommandBars\Microsoft.VisualStudio.CommandBars</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Artifact, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\NMaven.Artifact\target\NMaven.Artifact.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Logging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\NMaven.Logging\target\NMaven.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Model.Pom" />
+    <Reference Include="NMaven.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\NMaven.Model\Pom\target\NMaven.Model.Pom.dll</HintPath>
+    </Reference>
+    <Reference Include="NMaven.Model.Settings, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\NMaven.Artifact\target\NMaven.Model.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NMaven\Utils\GacUtility.cs" />
+    <Compile Include="NMaven\Utils\MavenRunner.cs" />
+    <Compile Include="NMaven\Utils\NMavenPomHelperUtility.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>
