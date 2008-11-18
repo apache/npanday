@@ -277,22 +277,6 @@ namespace NMaven.VisualStudio.Addin
             return (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0);
         }
 
-		private void DeleteBinDir()
-        {
-            Solution2 solution = (Solution2)_applicationObject.Solution;
-
-            string[] directoryPartial = solution.FullName.Split("\\".ToCharArray());
-            string pathPartial = directoryPartial[directoryPartial.Length - 1];
-            string path = solution.FullName.Substring(0, solution.FullName.Length - pathPartial.Length);
-            path = path.Replace("\\", "//");
-            path = path + "/bin";
-           
-            if (Directory.Exists(path))
-            {
-                Directory.Delete(path, true);
-            }
-        }
-		
         void attachReferenceEvent()
         {
             //References
@@ -1460,7 +1444,6 @@ namespace NMaven.VisualStudio.Addin
         /// <seealso class='Exec' />
         public void QueryStatus(string commandName, vsCommandStatusTextWanted neededText, ref vsCommandStatus status, ref object commandText)
         {
-            DeleteBinDir();
 			if (neededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone)
             {
                 if (commandName == "IDEAddin.Connect.IDEAddin")

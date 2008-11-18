@@ -43,6 +43,24 @@ namespace NMaven.Utils
 			output.Clear();
 		}
 		
+        private void DeleteBinDir()
+        {
+            Solution2 solution = (Solution2)dte2.Solution;
+
+            string[] directoryPartial = solution.FullName.Split("\\".ToCharArray());
+            string pathPartial = directoryPartial[directoryPartial.Length - 1];
+            string path = solution.FullName.Substring(0, solution.FullName.Length - pathPartial.Length);
+            path = path.Replace("\\", "//");
+            path = path + "/bin";
+
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+
+        }
+
+
         public void Quit()
         {
             running = false;
@@ -306,6 +324,7 @@ namespace NMaven.Utils
             if (exitCode == 0)
             {
                 output.OutputString("\nNMaven Execution is Successful!!!");
+                DeleteBinDir();
             }
             else
             {
