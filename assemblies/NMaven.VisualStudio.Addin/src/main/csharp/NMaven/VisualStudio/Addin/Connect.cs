@@ -380,7 +380,7 @@ namespace NMaven.VisualStudio.Addin
                     refType = "com_reference";
                     if(refName.ToLower().StartsWith("interop."))
                         refName = refName.Substring(8);
-                    refToken = pReference.Identity.Split(@"\".ToCharArray())[0];
+                    refToken = pReference.Identity.Substring(0, pReference.Identity.LastIndexOf(@"\"));
                 }
                 else
                 {
