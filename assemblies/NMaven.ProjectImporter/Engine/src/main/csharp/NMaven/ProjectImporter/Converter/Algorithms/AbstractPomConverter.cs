@@ -244,11 +244,21 @@ namespace NMaven.ProjectImporter.Converter.Algorithms
                 comDependency.artifactId = comReference.Include;
                 comDependency.version = comReference.VersionMajor + "." + comReference.VersionMinor + ".0" + ".0";
                 comDependency.type = "com_reference";
-				comDependency.classifier = comReference.Guid;
+                comDependency.classifier = string.Format("{0}\\{1}.{2}\\{3}", comReference.Guid, convertDecToHex(comReference.VersionMajor), convertDecToHex(comReference.VersionMinor), convertDecToHex(comReference.Lcid));
                 AddDependency(comDependency);
             }
         }
 
+        string convertDecToHex(string decimalNum)
+        {
+            int decNum;
+            if (int.TryParse(decimalNum, out decNum))
+            {
+                return decNum.ToString("X");
+            }
+            return decimalNum;
+        }
+        
 
         protected bool IsModelHasDependency(Dependency dependency)
         {
