@@ -82,6 +82,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Description = NMaven Debug Solution
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{701803D4-90F5-44D7-919D-4844FEB7F936}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
