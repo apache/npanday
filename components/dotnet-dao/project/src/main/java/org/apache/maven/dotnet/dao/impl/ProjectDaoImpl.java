@@ -60,6 +60,8 @@ import org.openrdf.query.Binding;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
 import org.codehaus.plexus.util.cli.Commandline;
+import org.codehaus.plexus.util.cli.DefaultConsumer;
+import org.codehaus.plexus.util.cli.StreamConsumer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.util.logging.Logger;
@@ -68,6 +70,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileReader;
@@ -524,10 +527,11 @@ public final class ProjectDaoImpl
                 // resolve com reference
                 // flow:
                 // 1. generate the interop dll in temp folder and resolve to that path during dependency resolution
-                // 2. cut and paste the dll to  buildDirectory and update the paths once we grab the reference of MavenProject (CompilerContext.java)  
+                // 2. cut and paste the dll to  buildDirectory and update the paths once we grab the reference of MavenProject (CompilerContext.java)
                 if ( projectDependency.getArtifactType().equals( "com_reference" ) )
                 {                    
-                    String interopPath = generateInteropDll(projectDependency.getArtifactId());
+                    String tokenId = projectDependency.getPublicKeyTokenId();                    
+                    String interopPath = generateInteropDll(projectDependency.getArtifactId(), tokenId );
 
                     File f = new File( interopPath );
                     
@@ -946,11 +950,12 @@ public final class ProjectDaoImpl
     }
     
     //TODO:  move generateInteropDll, getInteropParameters, getTempDirectory, and execute methods to another class    
-    private String generateInteropDll( String name )
+    private String generateInteropDll( String name, String classifier )
         throws IOException
     {
 
         File tmpDir;
+        String comReferenceAbsolutePath = "";
         try
         {
             tmpDir = getTempDirectory();
@@ -959,10 +964,19 @@ public final class ProjectDaoImpl
         {
             throw new IOException( "Unable to create temporary directory" );
         }
-        
+                
+        try
+        {
+            comReferenceAbsolutePath = resolveComReferencePath( name, classifier );
+        }
+        catch ( Exception e )
+        {
+            throw new IOException( e.getMessage() );
+        }        
+
         String interopAbsolutePath = tmpDir.getAbsolutePath() + File.separator + "Interop." + name + ".dll" ;
-        
-        List<String> params = getInteropParameters( interopAbsolutePath, name );
+        List<String> params = getInteropParameters( interopAbsolutePath, comReferenceAbsolutePath, name );
+                
 
         try
         {
@@ -976,12 +990,52 @@ public final class ProjectDaoImpl
         return interopAbsolutePath;
     }
     
-    private List<String> getInteropParameters( String interopAbsolutePath, String name )
+    private String resolveComReferencePath(String name, String classifier) throws Exception
+    {
+        String registryPath = "HKEY_CLASSES_ROOT\\TypeLib\\" + classifier + "\\win32\\";
+        int lineNoOfPath = 1 ;
+        
+        List<String> parameters = new ArrayList<String>();
+        parameters.add( "query" );
+        parameters.add( registryPath );
+        parameters.add( "/ve" );
+        
+        StreamConsumer outConsumer = new StreamConsumerImpl();
+        StreamConsumer errorConsumer = new StreamConsumerImpl();
+        
+        
+        //TODO: investigate why outConsumer ignores newline
+        execute( "reg" , parameters, outConsumer, errorConsumer );
+        
+        //parse outConsumer
+        String out = outConsumer.toString();       
+
+        String tokens[] = out.split( "\n" );
+        
+        String lineResult  = "";
+        String[] result;
+        if (tokens.length >= lineNoOfPath - 1)
+        {
+            lineResult  = tokens[lineNoOfPath - 1];
+        }
+        
+        result = lineResult.split( "REG_SZ" );
+        
+        if (result.length > 1)
+        {            
+            return result[1].trim();
+        }
+            
+
+        return null;
+    }
+    
+    private List<String> getInteropParameters( String interopAbsolutePath, String comRerefenceAbsolutePath, String namespace )
     {
         List<String> parameters = new ArrayList<String>();
-        parameters.add( name + ".dll" );
+        parameters.add( comRerefenceAbsolutePath );
         parameters.add( "/out:" + interopAbsolutePath );        
-        parameters.add( "/namespace:" + name );
+        parameters.add( "/namespace:" + namespace );
 
         return parameters;
     }
@@ -999,27 +1053,69 @@ public final class ProjectDaoImpl
     //can't use dotnet-executable due to cyclic dependency.
     private void execute( String executable, List<String> commands ) throws Exception
     {
-        int result = 0;
+        execute( executable, commands, null, null );
+    }
+    
+    private void execute( String executable, List<String> commands, StreamConsumer systemOut, StreamConsumer systemError )
+        throws Exception
+    {
+        int result = 0;        
         Commandline commandline = new Commandline();
         commandline.setExecutable( executable );
-        commandline.addArguments( commands.toArray( new String[commands.size()]));
+        commandline.addArguments( commands.toArray( new String[commands.size()] ) );
         try
         {
-            result = CommandLineUtils.executeCommandLine( commandline,null ,null );            
+            result = CommandLineUtils.executeCommandLine( commandline, systemOut, systemError );
 
-            System.out.println( "NMAVEN-040-000: Executed command: Commandline = " + commandline +
-                    ", Result = " + result );
-            
-            if (  result != 0 )
+            System.out.println( "NMAVEN-040-000: Executed command: Commandline = " + commandline + ", Result = "
+                + result );
+
+            if ( result != 0 )
             {
-                throw new Exception( "NMAVEN-040-001: Could not execute: Command = " +
-                    commandline.toString() + ", Result = " + result );
+                throw new Exception( "NMAVEN-040-001: Could not execute: Command = " + commandline.toString()
+                    + ", Result = " + result );
             }
         }
         catch ( CommandLineException e )
         {
-            throw new Exception(
-                "NMAVEN-040-002: Could not execute: Command = " + commandline.toString() );
+            throw new Exception( "NMAVEN-040-002: Could not execute: Command = " + commandline.toString() );
+        }
+    }
+
+    /**
+     * TODO: refactor this to another class and all methods concerning com_reference 
+     * StreamConsumer instance that buffers the entire output
+     */    
+    class StreamConsumerImpl
+        implements StreamConsumer
+    {
+
+        private DefaultConsumer consumer;
+
+        private StringBuffer sb = new StringBuffer();
+
+        public StreamConsumerImpl()
+        {
+            consumer = new DefaultConsumer();
+        }
+
+        public void consumeLine( String line )
+        {
+            sb.append( line );
+            if ( logger != null )
+            {
+                consumer.consumeLine( line );
+            }
+        }
+
+        /**
+         * Returns the stream
+         * 
+         * @return the stream
+         */
+        public String toString()
+        {
+            return sb.toString();
         }
     }
     
