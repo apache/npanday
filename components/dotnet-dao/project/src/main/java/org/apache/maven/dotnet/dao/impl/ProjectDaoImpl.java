@@ -1003,9 +1003,14 @@ public final class ProjectDaoImpl
         StreamConsumer outConsumer = new StreamConsumerImpl();
         StreamConsumer errorConsumer = new StreamConsumerImpl();
         
-        
-        //TODO: investigate why outConsumer ignores newline
-        execute( "reg" , parameters, outConsumer, errorConsumer );
+        try
+        {
+            //TODO: investigate why outConsumer ignores newline
+            execute( "reg" , parameters, outConsumer, errorConsumer );            
+        }
+        catch(Exception e){
+            throw new Exception("Cannot find information of ["+name+"] ActiveX component in your system, you need to install this component first to continue.");
+        }
         
         //parse outConsumer
         String out = outConsumer.toString();       
