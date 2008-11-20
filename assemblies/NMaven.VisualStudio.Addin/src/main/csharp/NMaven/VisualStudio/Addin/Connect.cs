@@ -277,7 +277,7 @@ namespace NMaven.VisualStudio.Addin
             return (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0);
         }
 
-        void attachReferenceEvent()
+		void attachReferenceEvent()
         {
             //References
             referenceEvents = new List<ReferencesEvents>();
@@ -371,21 +371,34 @@ namespace NMaven.VisualStudio.Addin
                 if (pomUtil.IsPomDependency(pReference.Name))
                     return;
 
-                GacUtility gac = new GacUtility();
-                string n = gac.GetAssemblyInfo(pReference.Name);
-                if (!inMavenRepo && string.IsNullOrEmpty(n))
-                {
-                    MessageBox.Show("Reference is not added to POM file. Reference is not in Maven Repository or in GAC.", "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
+                string refType = "gac_msil";
+                string refName = pReference.Name;
+                string refToken = pReference.PublicKeyToken;
 
+                if (pReference.Type == prjReferenceType.prjReferenceTypeActiveX)
+                {
+                    refType = "com_reference";
+                    if(refName.ToLower().StartsWith("interop."))
+                        refName = refName.Substring(8);
+                    refToken = pReference.Identity.Split(@"\".ToCharArray())[0];
+                }
+                else
+                {
+                    GacUtility gac = new GacUtility();
+                    string n = gac.GetAssemblyInfo(pReference.Name);
+                    if (!inMavenRepo && string.IsNullOrEmpty(n))
+                    {
+                        MessageBox.Show("Reference not added to POM. Reference could not be validated as a Maven Artifact or System Reference. This may result in a automated build error.", "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                }
                 
                 Dependency dep = new Dependency();
-                dep.artifactId = pReference.Name;
-                dep.groupId = pReference.Name;
+                dep.artifactId = refName;
+                dep.groupId = refName;
                 dep.version = pReference.Version;
-                dep.classifier = pReference.PublicKeyToken;
-                dep.type = "gac_msil";
+                dep.classifier = refToken;
+                dep.type = refType;
                 pomUtil.AddPomDependency(dep);
             }
             catch(Exception e)
@@ -712,7 +725,11 @@ namespace NMaven.VisualStudio.Addin
                     return;
 
                 NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, pReference.ContainingProject);
-                pomUtil.RemovePomDependency(pReference.Name);
+                string refName = pReference.Name;
+                if (refName.ToLower().StartsWith("interop."))
+                    refName = refName.Substring(8);
+
+                pomUtil.RemovePomDependency(refName);
             }
             catch //(Exception e)
             {

@@ -460,7 +460,16 @@ namespace NMaven.VisualStudio.Addin
                 }
 
                 addArtifactToPom(artifact);
-                vsProject.References.Add(artifact.FileInfo.FullName);
+
+                try
+                {
+                    vsProject.References.Add(artifact.FileInfo.FullName);
+                }
+                catch
+                {
+                    MessageBox.Show("Cannot add COM reference from a Maven Artifact.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
             }
             else
             {
@@ -468,7 +477,16 @@ namespace NMaven.VisualStudio.Addin
                 {
                     addArtifactToPom(artifact);
                     VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
-                    website.References.AddFromFile(artifact.FileInfo.FullName);
+                    try
+                    {
+                        website.References.AddFromFile(artifact.FileInfo.FullName);
+
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Cannot add COM reference from a Maven Artifact.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;                        
+                    }
                 }
                 else
                 {

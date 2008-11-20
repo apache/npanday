@@ -244,6 +244,7 @@ namespace NMaven.ProjectImporter.Converter.Algorithms
                 comDependency.artifactId = comReference.Include;
                 comDependency.version = comReference.VersionMajor + "." + comReference.VersionMinor + ".0" + ".0";
                 comDependency.type = "com_reference";
+				comDependency.classifier = comReference.Guid;
                 AddDependency(comDependency);
             }
         }

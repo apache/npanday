@@ -43,7 +43,16 @@ namespace NMaven.Utils
 			output.Clear();
 		}
 		
-        private void DeleteBinDir()
+        public void Quit()
+        {
+            running = false;
+            if (IsRunning)
+            {
+                stop();
+            }
+        }
+
+		private void DeleteBinDir()
         {
             Solution2 solution = (Solution2)dte2.Solution;
 
@@ -60,16 +69,7 @@ namespace NMaven.Utils
 
         }
 
-
-        public void Quit()
-        {
-            running = false;
-            if (IsRunning)
-            {
-                stop();
-            }
-        }
-
+		
         private void OutputThreadDelegate()
         {
 
@@ -324,7 +324,7 @@ namespace NMaven.Utils
             if (exitCode == 0)
             {
                 output.OutputString("\nNMaven Execution is Successful!!!");
-                DeleteBinDir();
+				DeleteBinDir();
             }
             else
             {
