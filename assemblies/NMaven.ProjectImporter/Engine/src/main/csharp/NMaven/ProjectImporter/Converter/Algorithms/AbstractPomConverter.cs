@@ -635,11 +635,12 @@ namespace NMaven.ProjectImporter.Converter.Algorithms
             {
 
                 // silent for re-import
-                if (projectDigest.ExistingPom != null)
-                {
-                    return null;
-                }
-                else
+                //commented out 
+                //if (projectDigest.ExistingPom != null)
+                //{
+                //    return null;
+                //}
+                //else
                 {
                     // verbose for new-import
                     MessageBox.Show(
