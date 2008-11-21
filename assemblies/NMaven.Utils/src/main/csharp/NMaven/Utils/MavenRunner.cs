@@ -56,17 +56,35 @@ namespace NMaven.Utils
         {
             Solution2 solution = (Solution2)dte2.Solution;
 
-            string[] directoryPartial = solution.FullName.Split("\\".ToCharArray());
-            string pathPartial = directoryPartial[directoryPartial.Length - 1];
-            string path = solution.FullName.Substring(0, solution.FullName.Length - pathPartial.Length);
-            path = path.Replace("\\", "//");
-            path = path + "/bin";
+            Projects projs = solution.Projects;
 
-            if (Directory.Exists(path))
+            bool hasWebProject=false;
+
+            foreach (Project p in projs)
             {
-                Directory.Delete(path, true);
+                if (p.Kind == "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}")
+                {
+                    hasWebProject = true;
+                    break;
+                }
             }
 
+            if (hasWebProject)
+            {
+                string[] directoryPartial = solution.FullName.Split("\\".ToCharArray());
+                string pathPartial = directoryPartial[directoryPartial.Length - 1];
+                string path = solution.FullName.Substring(0, solution.FullName.Length - pathPartial.Length);
+                path = path.Replace("\\", "//");
+                path = path + "/bin";
+
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                }
+
+            }
+
+            
         }
 
 		
@@ -329,6 +347,7 @@ namespace NMaven.Utils
             else
             {
                 output.OutputString("\nNMaven Execution Failed!!!, with exit code: " + exitCode);
+                DeleteBinDir();
             }
             // dont display any failed execution if stop
             //else if (exitCode == -1)

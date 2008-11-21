@@ -1461,10 +1461,12 @@ namespace NMaven.VisualStudio.Addin
         /// <seealso class='Exec' />
         public void QueryStatus(string commandName, vsCommandStatusTextWanted neededText, ref vsCommandStatus status, ref object commandText)
         {
-			if (neededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone)
+            
+            if (neededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone)
             {
                 if (commandName == "IDEAddin.Connect.IDEAddin")
                 {
+                    attachReferenceEvent();
                     status = (vsCommandStatus)vsCommandStatus.vsCommandStatusSupported | vsCommandStatus.vsCommandStatusEnabled;
                     return;
                 }
