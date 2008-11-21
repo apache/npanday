@@ -668,6 +668,19 @@ namespace NMaven.ProjectImporter.Converter.Algorithms
 
                 //return refDependency;
             }
+            if (string.IsNullOrEmpty(reference.HintFullPath) && !string.IsNullOrEmpty(reference.Name))
+            {
+                MessageBox.Show(
+                        string.Format("Reference is Ignored!!!, Reference is not in Maven Repository or in GAC."
+                                    + "\nReference: {0}"
+                                    + "\nPlease Install it in your GAC or your Maven Repository."
+                                    + "\nInstalling Reference to your Maven Repository, will make the code portable to other machines",
+                            reference.Name
+                        ),
+
+                        "Reference Ignored"
+                        );
+            }
             
 
             
