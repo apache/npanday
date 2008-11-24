@@ -70,7 +70,9 @@
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <package>org.apache.maven.dotnet.plugins:maven-link-plugin:package</package>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
             org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
@@ -112,7 +114,9 @@
           </test-compile>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
             org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
@@ -201,7 +205,9 @@
           </test-compile>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
             org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
@@ -244,7 +250,9 @@
           </test-compile>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
             org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
@@ -287,7 +295,9 @@
           <deploy>org.apache.maven.dotnet.plugins:maven-mojo-generator-plugin:generate-bindings</deploy>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                       
+            org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
             org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
@@ -329,7 +339,9 @@
           </test-compile>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
             org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
@@ -371,7 +383,9 @@
           </test-compile>
           <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install
+            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,            
+            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
             org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
