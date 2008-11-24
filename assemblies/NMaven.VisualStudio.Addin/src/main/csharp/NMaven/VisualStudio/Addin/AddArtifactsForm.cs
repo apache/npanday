@@ -247,7 +247,7 @@ namespace NMaven.VisualStudio.Addin
                 if (fsi is FileInfo) 
                 {
                     string ext = Path.GetExtension(fsi.FullName).ToLower();
-                    if (ext != ".dll" && ext != ".exe" && ext != ".netmodule")
+                    if (ext != ".dll" && ext != ".exe" && ext != ".netmodule" && ext != ".ocx")
                         continue;
                 }
                 RemoteArtifactNode node = new RemoteArtifactNode(fsi.Name);
@@ -297,7 +297,7 @@ namespace NMaven.VisualStudio.Addin
                     }
                     node.IsFileSystem = false;
                     string ext = Path.GetExtension(name).ToLower();
-                    if (ext == ".dll" || ext == ".exe" || ext == ".netmodule")
+                    if (ext == ".dll" || ext == ".exe" || ext == ".netmodule" || ext == ".ocx")
                     {
                         node.IsAssembly = true;
                     }
@@ -444,57 +444,98 @@ namespace NMaven.VisualStudio.Addin
 
         }
 
+        bool addVSProjectReference(Artifact.Artifact artifact, string name)
+        {
+            VSProject vsProject = (VSProject)project.Object;
+            if (vsProject.References.Find(name) != null)
+            {
+                MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
+                return false;
+            }
+
+
+            try
+            {
+                Assembly a = Assembly.LoadFile(artifact.FileInfo.FullName);
+                if (a.ToString().Split(",".ToCharArray())[0].ToLower().StartsWith("interop."))
+                {
+                    MessageBox.Show("Cannot add COM Interop reference from a Maven Artifact, just use Add Reference if you wish to add a COM reference.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return false;
+                }
+
+                addArtifactToPom(artifact);
+                vsProject.References.Add(artifact.FileInfo.FullName);
+                return true;
+            }
+            catch
+            {
+                MessageBox.Show("Cannot add COM reference from a Maven Artifact.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
+            }
+
+        }
+
+        bool addVSWebProjectReference(Artifact.Artifact artifact, string name)
+        {
+            try
+            {
+                VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
+                
+                Assembly a = Assembly.LoadFile(artifact.FileInfo.FullName);
+                if (a.ToString().Split(",".ToCharArray())[0].ToLower().StartsWith("interop."))
+                {
+                    MessageBox.Show("Cannot add COM Interop reference from a Maven Artifact, just use Add Reference if you wish to add a COM reference.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return false;
+                }
+                
+                bool referenced = false;
+                try
+                {
+                    referenced = (website.References.Item(name) != null);
+                }
+                catch
+                {
+                    referenced = false;
+                }
+
+                if (referenced)
+                {
+                    MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
+                    return false;
+                }
+
+                addArtifactToPom(artifact);
+                website.References.AddFromFile(artifact.FileInfo.FullName);
+                return true;
+            }
+            catch
+            {
+                MessageBox.Show("Cannot add COM reference from a Maven Artifact.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
+            }
+
+        }
+
         void addLocalArtifact(LocalArtifactItem item)
         {
-            VSProject vsProject = null;
-
             NMaven.Artifact.Artifact artifact = item.Artifact;
 
             if (project.Object is VSProject)
             {
-                vsProject = (VSProject)project.Object;
-                if (vsProject.References.Find(item.Text) != null)
-                {
-                    MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
+                if (!addVSProjectReference(artifact, item.Text))
                     return;
-                }
-
-                addArtifactToPom(artifact);
-
-                try
-                {
-                    vsProject.References.Add(artifact.FileInfo.FullName);
-                }
-                catch
-                {
-                    MessageBox.Show("Cannot add COM reference from a Maven Artifact.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (Connect.IsWebProject(project))
+            {
+                if (!addVSWebProjectReference(artifact, item.Text))
                     return;
-                }
             }
             else
             {
-                if (Connect.IsWebProject(project))
-                {
-                    addArtifactToPom(artifact);
-                    VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
-                    try
-                    {
-                        website.References.AddFromFile(artifact.FileInfo.FullName);
-
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Cannot add COM reference from a Maven Artifact.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return;                        
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(this, "Cannot add artifact to none VS projects.", this.Text);
-                    return;
-                }
+                MessageBox.Show(this, "Cannot add artifact to none VS projects.", this.Text);
+                return;
             }
-
+            
         }
 
         void addRemoteArtifact(RemoteArtifactNode node)
@@ -514,27 +555,6 @@ namespace NMaven.VisualStudio.Addin
 
             NMaven.Artifact.Artifact artifact =
                 artifactContext.GetArtifactRepository().GetArtifactFor(paths);
-            
-            VSProject vsProject = null;
-
-            if (project.Object is VSProject)
-            {
-                vsProject = (VSProject)project.Object;
-            }
-            else
-            {
-                MessageBox.Show(this, "Cannot add artifact to none VS projects.", this.Text);
-                return;
-            }
-
-            if (vsProject.References.Find(artifact.ArtifactId) != null)
-            {
-                MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
-                return;
-            }
-
-
-            addArtifactToPom(artifact);
 
             //Download
             artifact.FileInfo.Directory.Create();
@@ -551,9 +571,29 @@ namespace NMaven.VisualStudio.Addin
                 byte[] assembly = client.DownloadData(uri);
                 FileStream stream = new FileStream(artifact.FileInfo.FullName, FileMode.Create);
                 stream.Write(assembly, 0, assembly.Length);
+                stream.Flush();
                 stream.Close();
+                stream.Dispose();
+                client.Dispose();
+                //make sure that file is properly closed before adding it to the reference
+                System.Threading.Thread.Sleep(1000);
             }
-            vsProject.References.Add(artifact.FileInfo.FullName);
+
+            if (project.Object is VSProject)
+            {
+                if (!addVSProjectReference(artifact, artifact.ArtifactId))
+                    return;
+            }
+            else if (Connect.IsWebProject(project))
+            {
+                if (!addVSWebProjectReference(artifact, artifact.ArtifactId))
+                    return;
+            }
+            else
+            {
+                MessageBox.Show(this, "Cannot add artifact to none VS projects.", this.Text);
+                return;
+            }
 
         }
     }

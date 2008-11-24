@@ -386,7 +386,11 @@ namespace NMaven.VisualStudio.Addin
                 {
                     GacUtility gac = new GacUtility();
                     string n = gac.GetAssemblyInfo(pReference.Name);
-                    if (!inMavenRepo && string.IsNullOrEmpty(n))
+                    if (pReference.ContainingProject != null)
+                    {
+                        refType = "library";
+                    }
+                    else if (!inMavenRepo && string.IsNullOrEmpty(n))
                     {
                         MessageBox.Show("Reference not added to POM. Reference could not be validated as a Maven Artifact or System Reference. This may result in a automated build error.", "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
@@ -726,7 +730,7 @@ namespace NMaven.VisualStudio.Addin
 
                 NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, pReference.ContainingProject);
                 string refName = pReference.Name;
-                if (refName.ToLower().StartsWith("interop."))
+                if (pReference.Type == prjReferenceType.prjReferenceTypeActiveX && refName.ToLower().StartsWith("interop."))
                     refName = refName.Substring(8);
 
                 pomUtil.RemovePomDependency(refName);
