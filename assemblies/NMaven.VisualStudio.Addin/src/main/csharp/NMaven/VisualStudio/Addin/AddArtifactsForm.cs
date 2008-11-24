@@ -567,14 +567,17 @@ namespace NMaven.VisualStudio.Addin
             }
             else
             {
-                WebClient client = new WebClient();
-                byte[] assembly = client.DownloadData(uri);
-                FileStream stream = new FileStream(artifact.FileInfo.FullName, FileMode.Create);
-                stream.Write(assembly, 0, assembly.Length);
-                stream.Flush();
-                stream.Close();
-                stream.Dispose();
-                client.Dispose();
+                if (!File.Exists(artifact.FileInfo.FullName))
+                {
+                    WebClient client = new WebClient();
+                    byte[] assembly = client.DownloadData(uri);
+                    FileStream stream = new FileStream(artifact.FileInfo.FullName, FileMode.Create);
+                    stream.Write(assembly, 0, assembly.Length);
+                    stream.Flush();
+                    stream.Close();
+                    stream.Dispose();
+                    client.Dispose();
+                }
                 //make sure that file is properly closed before adding it to the reference
                 System.Threading.Thread.Sleep(1000);
             }
