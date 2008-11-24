@@ -102,19 +102,6 @@ namespace NMaven.VisualStudio.Addin
             {
                 Created(this, e);
             }
-            else if (e.Name.EndsWith(".dll"))
-            {
-                MessageBox.Show(
-                       string.Format("Reference is Ignored!!!, Reference is not in Maven Repository or in GAC."
-                                   + "\nReference: {0}"
-                                   + "\nPlease Install it in your GAC or your Maven Repository."
-                                   + "\nInstalling Reference to your Maven Repository, will make the code portable to other machines",
-                          e.FullPath
-                       ),
-
-                       "Reference Ignored"
-                       );
-            }
         }
 
         void watcher_Deleted(object sender, FileSystemEventArgs e)
