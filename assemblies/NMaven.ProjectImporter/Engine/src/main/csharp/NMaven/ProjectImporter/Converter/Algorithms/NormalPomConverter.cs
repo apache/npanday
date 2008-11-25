@@ -54,9 +54,15 @@ namespace NMaven.ProjectImporter.Converter.Algorithms
             if(projectDigest.Language.Equals("vb",StringComparison.OrdinalIgnoreCase))
             {
                 AddPluginConfiguration(compilePlugin, "language", "VB");
+                AddPluginConfiguration(compilePlugin, "rootNamespace", projectDigest.RootNamespace);
+                string define = GetDefineConfigurationValue();
+                if (!string.IsNullOrEmpty(define))
+                {
+                    AddPluginConfiguration(compilePlugin, "define", define);
+                }
             }
 
-            AddPluginConfiguration(compilePlugin, "rootNamespace", projectDigest.RootNamespace);
+            
             AddPluginConfiguration(compilePlugin, "main", projectDigest.StartupObject);
             AddPluginConfiguration(compilePlugin, "doc", projectDigest.DocumentationFile);
             //AddPluginConfiguration(compilePlugin, "noconfig", "true");
@@ -74,11 +80,7 @@ namespace NMaven.ProjectImporter.Converter.Algorithms
             AddPluginConfiguration(compilePlugin, "includeSources", "includeSource", compiles.ToArray());
 
 
-            string define = GetDefineConfigurationValue();
-            if(!string.IsNullOrEmpty(define))
-            {
-                AddPluginConfiguration(compilePlugin, "define", define);
-            }
+            
 
             if ("true".Equals(projectDigest.SignAssembly, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrEmpty(projectDigest.AssemblyOriginatorKeyFile)

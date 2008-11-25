@@ -177,7 +177,11 @@ namespace NMaven.Solution.Impl
             groupProject.AddNewProperty("ProjectGuid", "{" + projectGuid.ToString() + "}");
             BuildProperty buildProperty = groupProject.AddNewProperty("Configuration", "Debug");
             buildProperty.Condition = " '$(Configuration)' == '' ";
-            groupProject.AddNewProperty("RootNameSpace", model.groupId);
+            if(projectGuid.ToString().Equals(""))
+            {
+                groupProject.AddNewProperty("RootNameSpace", model.groupId);
+            }
+            
             groupProject.AddNewProperty("AssemblyName", assemblyName);
             groupProject.AddNewProperty("BaseIntermediateOutputPath", baseIntermediateOutputPath);
             groupProject.AddNewProperty("OutputType", outputType);
