@@ -224,7 +224,10 @@ public class Project
     {
     	if ( groupId == null )
     	{
-    		return parentProject.groupId;
+    		if ( getParentProject() != null )
+    		{
+    			return getParentProject().groupId;
+    		}
     	}
         return groupId;
     }
@@ -248,7 +251,10 @@ public class Project
     {
     	if ( artifactId == null)
     	{
-    		return parentProject.artifactId;
+    		if ( getParentProject() != null )
+    		{
+    			return getParentProject().artifactId;
+    		}
     	}
         return artifactId;
     }
@@ -272,7 +278,10 @@ public class Project
     {
     	if ( version == null )
     	{
-    		return parentProject.version;
+    		if ( getParentProject() != null )
+    		{
+    			return getParentProject().version;
+    		}
     	}
         return version;
     }
