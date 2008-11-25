@@ -95,7 +95,18 @@ public final class ProjectFactory
         project.setArtifactType( model.getPackaging() );
         Parent parent = model.getParent();
         
-        if ( parent != null && pomFileDirectory != null )
+        if (parent != null) 
+        {
+            if (project.getGroupId() == null) 
+            {
+            	project.setGroupId(parent.getGroupId());
+            }
+            if(project.getVersion()== null)
+			{
+			    project.setVersion(parent.getVersion());
+			}
+		}        
+        if ( parent != null && pomFileDirectory != null && (project.getGroupId() == null || project.getVersion() == null))
         {
             File parentPomFile = new File( pomFileDirectory , parent.getRelativePath().replace( "\\", File.separator)
                                            .replace( "/", File.separator) );
