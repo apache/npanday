@@ -222,6 +222,10 @@ public class Project
      */
     public String getGroupId()
     {
+    	if ( groupId == null || groupId.isEmpty() )
+    	{
+    		return parentProject.groupId;
+    	}
         return groupId;
     }
 
@@ -242,6 +246,10 @@ public class Project
      */
     public String getArtifactId()
     {
+    	if ( artifactId == null || artifactId.isEmpty() )
+    	{
+    		return parentProject.artifactId;
+    	}
         return artifactId;
     }
 
@@ -262,6 +270,10 @@ public class Project
      */
     public String getVersion()
     {
+    	if ( version == null || version.isEmpty() )
+    	{
+    		return parentProject.version;
+    	}
         return version;
     }
 
