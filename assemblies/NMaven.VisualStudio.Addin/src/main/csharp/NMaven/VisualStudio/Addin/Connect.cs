@@ -293,15 +293,17 @@ namespace NMaven.VisualStudio.Addin
 
                 if (IsWebProject(project))
                 {
-                    VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
-                    string binPath = Path.Combine(website.Project.FullName, "Bin");
-                    if(!Directory.Exists(binPath))
-                    {
-                        Directory.CreateDirectory(binPath);
-                    }
-                    WebsiteAssemblyReferenceWatcher webw = new WebsiteAssemblyReferenceWatcher(binPath);
-                    webw.Deleted += new FileSystemEventHandler(webw_Deleted);
-                    webw.Start();
+                    // not needed anymore
+
+                    //VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
+                    //string binPath = Path.Combine(website.Project.FullName, "Bin");
+                    //if(!Directory.Exists(binPath))
+                    //{
+                    //    Directory.CreateDirectory(binPath);
+                    //}
+                    //WebsiteAssemblyReferenceWatcher webw = new WebsiteAssemblyReferenceWatcher(binPath);
+                    //webw.Deleted += new FileSystemEventHandler(webw_Deleted);
+                    //webw.Start();
                 }
                 else
                 {

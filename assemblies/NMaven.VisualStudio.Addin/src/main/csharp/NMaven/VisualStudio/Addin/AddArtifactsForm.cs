@@ -504,7 +504,9 @@ namespace NMaven.VisualStudio.Addin
                     return false;
                 }
 
-                addArtifactToPom(artifact);
+                // not need to written in pom anymore
+                //addArtifactToPom(artifact);
+                
                 website.References.AddFromFile(artifact.FileInfo.FullName);
                 return true;
             }
