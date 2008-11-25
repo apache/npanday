@@ -222,7 +222,7 @@ public class Project
      */
     public String getGroupId()
     {
-    	if ( groupId == null || groupId.isEmpty() )
+    	if ( groupId == null )
     	{
     		return parentProject.groupId;
     	}
@@ -246,7 +246,7 @@ public class Project
      */
     public String getArtifactId()
     {
-    	if ( artifactId == null || artifactId.isEmpty() )
+    	if ( artifactId == null)
     	{
     		return parentProject.artifactId;
     	}
@@ -270,7 +270,7 @@ public class Project
      */
     public String getVersion()
     {
-    	if ( version == null || version.isEmpty() )
+    	if ( version == null )
     	{
     		return parentProject.version;
     	}
