@@ -222,13 +222,6 @@ public class Project
      */
     public String getGroupId()
     {
-    	if ( groupId == null )
-    	{
-    		if ( getParentProject() != null )
-    		{
-    			return getParentProject().groupId;
-    		}
-    	}
         return groupId;
     }
 
@@ -249,13 +242,6 @@ public class Project
      */
     public String getArtifactId()
     {
-    	if ( artifactId == null)
-    	{
-    		if ( getParentProject() != null )
-    		{
-    			return getParentProject().artifactId;
-    		}
-    	}
         return artifactId;
     }
 
@@ -276,13 +262,6 @@ public class Project
      */
     public String getVersion()
     {
-    	if ( version == null )
-    	{
-    		if ( getParentProject() != null )
-    		{
-    			return getParentProject().version;
-    		}
-    	}
         return version;
     }
 
