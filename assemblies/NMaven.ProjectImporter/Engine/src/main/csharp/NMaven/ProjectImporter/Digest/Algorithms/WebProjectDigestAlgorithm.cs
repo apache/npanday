@@ -76,59 +76,59 @@ namespace NMaven.ProjectImporter.Digest.Algorithms
 
             //WebConfigAssemblies
             List<Reference> webConfigRefList = new List<Reference>();
-            if (projectMap.ContainsKey("WebConfigAssemblies"))
-            {
-                foreach (string var in (string[]) projectMap["WebConfigAssemblies"])
-                {
-                    Reference reference = new Reference(projectMap["ProjectFullPath"].ToString(), gac);
-                    reference.AssemblyInfo = var;
+            //if (projectMap.ContainsKey("WebConfigAssemblies"))
+            //{
+            //    foreach (string var in (string[]) projectMap["WebConfigAssemblies"])
+            //    {
+            //        Reference reference = new Reference(projectMap["ProjectFullPath"].ToString(), gac);
+            //        reference.AssemblyInfo = var;
 
-                    webConfigRefList.Add(reference);
-                }
+            //        webConfigRefList.Add(reference);
+            //    }
 
-            }
+            //}
 
 			//WebReferenceURL
-            if (projectMap.ContainsKey("WebReferencesUrl"))
-            {
-                List<WebReferenceUrl> webReferenceUrls = new List<WebReferenceUrl>();
-                if (projectDigest.WebReferenceUrls != null && projectDigest.WebReferenceUrls.Length > 0)
-                {
-                    webReferenceUrls.AddRange(projectDigest.WebReferenceUrls);
-                }
-                foreach (WebReferenceUrl webReferenceUrl in (WebReferenceUrl[])projectMap["WebReferencesUrl"])
-                {
-                    if (webReferenceUrl != null && !string.IsNullOrEmpty(webReferenceUrl.RelPath) && !string.IsNullOrEmpty(webReferenceUrl.UpdateFromURL))
-                        webReferenceUrls.Add(webReferenceUrl);
-                }
-                projectDigest.WebReferenceUrls = webReferenceUrls.ToArray();
-            }
+            //if (projectMap.ContainsKey("WebReferencesUrl"))
+            //{
+            //    List<WebReferenceUrl> webReferenceUrls = new List<WebReferenceUrl>();
+            //    if (projectDigest.WebReferenceUrls != null && projectDigest.WebReferenceUrls.Length > 0)
+            //    {
+            //        webReferenceUrls.AddRange(projectDigest.WebReferenceUrls);
+            //    }
+            //    foreach (WebReferenceUrl webReferenceUrl in (WebReferenceUrl[])projectMap["WebReferencesUrl"])
+            //    {
+            //        if (webReferenceUrl != null && !string.IsNullOrEmpty(webReferenceUrl.RelPath) && !string.IsNullOrEmpty(webReferenceUrl.UpdateFromURL))
+            //            webReferenceUrls.Add(webReferenceUrl);
+            //    }
+            //    projectDigest.WebReferenceUrls = webReferenceUrls.ToArray();
+            //}
 
 
             //BinAssemblies
             List<Reference> binRefList = new List<Reference>();
-            if (projectMap.ContainsKey("BinAssemblies"))
-            {
-                foreach (string var in (string[])projectMap["BinAssemblies"])
-                {
-                    // exclude if its already in the webconfig
+            //if (projectMap.ContainsKey("BinAssemblies"))
+            //{
+            //    foreach (string var in (string[])projectMap["BinAssemblies"])
+            //    {
+            //        // exclude if its already in the webconfig
                     
-                    Reference reference = new Reference(projectMap["ProjectFullPath"].ToString(), gac);
-                    reference.HintPath = var;
+            //        Reference reference = new Reference(projectMap["ProjectFullPath"].ToString(), gac);
+            //        reference.HintPath = var;
 
-                    // check if its not in project-reference or webconfig-assemblies references
-                    if (!ReferenceInReferenceList(reference, webConfigRefList) && !ReferenceInProjectReferenceList(reference, prjRefList))
-                    {
-                        binRefList.Add(reference);
-                    }
-                }
+            //        // check if its not in project-reference or webconfig-assemblies references
+            //        if (!ReferenceInReferenceList(reference, webConfigRefList) && !ReferenceInProjectReferenceList(reference, prjRefList))
+            //        {
+            //            binRefList.Add(reference);
+            //        }
+            //    }
 
-            }
+            //}
 
             // combine both web and bin assemblies
             List<Reference> referenceList = new List<Reference>();
-            referenceList.AddRange(webConfigRefList);
-            referenceList.AddRange(binRefList);
+            //referenceList.AddRange(webConfigRefList);
+            //referenceList.AddRange(binRefList);
 
             projectDigest.References = referenceList.ToArray();
 
