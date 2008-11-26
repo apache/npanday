@@ -560,8 +560,8 @@ namespace NMaven.Utils
                 return !string.IsNullOrEmpty
                 (
                     GetPomXPathExprValue(
-                        string.Format("//pom:project/pom:dependencies/pom:dependency[./pom:artifactId = '{0}'][1]/pom:artifactId",
-                        artifactId)
+                        string.Format("//pom:project/pom:dependencies/pom:dependency[translate(./pom:artifactId, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '{0}'][1]/pom:artifactId",
+                        artifactId.ToLower())
                         )
                 );
 
@@ -610,7 +610,7 @@ namespace NMaven.Utils
             {
                 foreach (Dependency dependency in model.dependencies)
                 {
-                    if (artifactId.Equals(dependency.artifactId))
+                    if (artifactId.ToLower().Equals(dependency.artifactId.ToLower()))
                     {
                         // consider groupId and version if not empty
                         if (!string.IsNullOrEmpty(groupId)
