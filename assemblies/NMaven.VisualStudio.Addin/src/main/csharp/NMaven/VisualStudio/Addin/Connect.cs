@@ -360,29 +360,22 @@ namespace NMaven.VisualStudio.Addin
                     return;
                 
                 ArtifactContext artifactContext = new ArtifactContext();
+                Artifact.Artifact artifact = new NMaven.Artifact.Artifact();
 
                 bool inMavenRepo = false;
                 try
                 {
-                    Artifact.Artifact artifact = artifactContext.GetArtifactRepository().GetArtifact(new FileInfo(pReference.Path));
+                    artifact = artifactContext.GetArtifactRepository().GetArtifact(new FileInfo(pReference.Path));
                     inMavenRepo = true;
                 }
                 catch
                 {
-                    if(!pReference.Name.Contains("Interop"))
-                    {
-                        MessageBox.Show(
-                        string.Format("Reference is Ignored!!!, Reference is not in Maven Repository or in GAC."
-                                    + "\nReference: {0}"
-                                    + "\nPlease Install it in your GAC or your Maven Repository."
-                                    + "\nInstalling Reference to your Maven Repository, will make the code portable to other machines",
-                            pReference.Path
-                        ),
-
-                        "Reference Ignored"
-                        );
-                    }
-                    
+                    //MessageBox.Show(
+                    //    string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
+                    //                + "\nReference: {0}"
+                    //                + "\nDeploying the Reference, will make the code portable to other machines",
+                    //        pReference.Path
+                    //    ));
                 }
 
                 NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
@@ -422,6 +415,8 @@ namespace NMaven.VisualStudio.Addin
                 dep.classifier = refToken;
                 dep.type = refType;
                 pomUtil.AddPomDependency(dep);
+                SaveAllDocuments();
+                AutoImport();
             }
             catch(Exception e)
             {
@@ -1001,6 +996,12 @@ namespace NMaven.VisualStudio.Addin
             return saveCtrl;
         }
 
+        private void AutoImport()
+        {
+            Solution2 solution = (Solution2)_applicationObject.Solution;
+            ProjectImporter.NMavenImporter.ReImportProject(solution.FullName);  
+        }
+        
         private void SaveAllDocuments()
         {
             if (saveAllControl == null)
@@ -1010,6 +1011,7 @@ namespace NMaven.VisualStudio.Addin
             if (saveAllControl != null)
             {
                 saveAllControl.Execute();
+                //AutoImport();
             }
         }
 		

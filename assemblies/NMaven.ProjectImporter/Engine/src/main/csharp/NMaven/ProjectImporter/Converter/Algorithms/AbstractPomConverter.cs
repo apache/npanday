@@ -642,45 +642,39 @@ namespace NMaven.ProjectImporter.Converter.Algorithms
                 //}
                 //else
                 {
-                    // verbose for new-import
+                    //verbose for new-import
+
                     MessageBox.Show(
-                        string.Format("Reference is Ignored!!!, Reference is not in Maven Repository or in GAC."
-                                    + "\nReference: {0}"
-                                    + "\nPlease Install it in your GAC or your Maven Repository."
-                                    + "\nInstalling Reference to your Maven Repository, will make the code portable to other machines",
-                            reference.HintFullPath
-                        ),
- 
-                        "Reference Ignored"
-                        );
+                         string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
+                                     + "\nReference: {0}"
+                                     + "\nDeploying the Reference, will make the code portable to other machines",
+                             reference.HintFullPath
+                         ));
                 }
 
 
                 // uncomment this if systemPath is supported
 
-                //Dependency refDependency = new Dependency();
-                //refDependency.artifactId = reference.Name;
-                //refDependency.groupId = reference.Name;
-                //refDependency.version = reference.Version ?? "1.0.0.0";
-                //refDependency.type = "library";
-                //refDependency.scope = "system";
-                //refDependency.systemPath = reference.HintFullPath;
+                Dependency refDependency = new Dependency();
+                refDependency.artifactId = reference.Name;
+                refDependency.groupId = reference.Name;
+                refDependency.version = reference.Version ?? "1.0.0.0";
+                refDependency.type = "library";
+                refDependency.scope = "system";
+                refDependency.systemPath = reference.HintFullPath;
 
-                //return refDependency;
+                return refDependency;
             }
-            if (string.IsNullOrEmpty(reference.HintFullPath) && !string.IsNullOrEmpty(reference.Name))
-            {
-                MessageBox.Show(
-                        string.Format("Reference is Ignored!!!, Reference is not in Maven Repository or in GAC."
-                                    + "\nReference: {0}"
-                                    + "\nPlease Install it in your GAC or your Maven Repository."
-                                    + "\nInstalling Reference to your Maven Repository, will make the code portable to other machines",
-                            reference.Name
-                        ),
-
-                        "Reference Ignored"
-                        );
-            }
+            //if (string.IsNullOrEmpty(reference.HintFullPath) && !string.IsNullOrEmpty(reference.Name))
+            //{
+            //    MessageBox.Show(
+            //            string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
+            //                        + "\nReference: {0}"
+            //                        + "\nPlease Install it in your GAC or your Maven Repository."
+            //                        + "\nInstalling Reference to your Maven Repository, will make the code portable to other machines",
+            //                reference.Name
+            //            ));
+            //}
             
 
             
