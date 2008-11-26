@@ -457,11 +457,11 @@ namespace NMaven.VisualStudio.Addin
             try
             {
                 Assembly a = Assembly.LoadFile(artifact.FileInfo.FullName);
-                if (a.ToString().Split(",".ToCharArray())[0].ToLower().StartsWith("interop."))
-                {
-                    MessageBox.Show("Cannot add COM Interop reference from a Maven Artifact, just use Add Reference if you wish to add a COM reference.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return false;
-                }
+                //if (a.ToString().Split(",".ToCharArray())[0].ToLower().StartsWith("interop."))
+                //{
+                //    MessageBox.Show("Cannot add COM Interop reference from a Maven Artifact, just use Add Reference if you wish to add a COM reference.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //    return false;
+                //}
 
                 addArtifactToPom(artifact);
                 vsProject.References.Add(artifact.FileInfo.FullName);
