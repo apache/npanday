@@ -159,17 +159,17 @@ namespace NMaven.VisualStudio.Addin
         {
         }
         #endregion
-		#region Clearing OutputWindow upon closing solution
-		//to hold eventhandler for solution
-		private static EnvDTE.SolutionEvents globalSolutionEvents;
-		
-		void SolutionEvents_BeforeClosing()
+        #region Clearing OutputWindow upon closing solution
+        //to hold eventhandler for solution
+        private static EnvDTE.SolutionEvents globalSolutionEvents;
+
+        void SolutionEvents_BeforeClosing()
         {
-			mavenRunner.ClearOutputWindow();
-			outputWindowPane.Clear();
+            mavenRunner.ClearOutputWindow();
+            outputWindowPane.Clear();
         }
 
-		#endregion
+        #endregion
         static bool projectRefEventLoaded;
 
         #region OnConnection(object,ext_ConnectMode,object,Array)
@@ -177,9 +177,9 @@ namespace NMaven.VisualStudio.Addin
         /// Used for SaveAllDocuments
         /// </summary>
         private CommandBarControl saveAllControl;
-		
-		
-		/// <summary>
+
+
+        /// <summary>
         /// Implements the OnConnection method of the IDTExtensibility2 interface.
         /// Receives notification that the Add-in is being loaded.
         /// </summary>
@@ -196,11 +196,11 @@ namespace NMaven.VisualStudio.Addin
             Command command = null;
             mavenConnected = true;
 
-			//next two lines add a eventhandler to handle beforeclosing a solution
-			globalSolutionEvents = (EnvDTE.SolutionEvents)((Events2)_applicationObject.Events).SolutionEvents;
+            //next two lines add a eventhandler to handle beforeclosing a solution
+            globalSolutionEvents = (EnvDTE.SolutionEvents)((Events2)_applicationObject.Events).SolutionEvents;
             globalSolutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler(SolutionEvents_BeforeClosing);
 
-			
+
             if (connectMode == ext_ConnectMode.ext_cm_UISetup)
             {
 
@@ -277,7 +277,7 @@ namespace NMaven.VisualStudio.Addin
             return (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0);
         }
 
-		void attachReferenceEvent()
+        void attachReferenceEvent()
         {
             //References
             referenceEvents = new List<ReferencesEvents>();
@@ -348,7 +348,7 @@ namespace NMaven.VisualStudio.Addin
                         continue;
                     }
                 }
-                
+
             }
         }
 
@@ -358,7 +358,7 @@ namespace NMaven.VisualStudio.Addin
             {
                 if (!mavenConnected)
                     return;
-                
+
                 ArtifactContext artifactContext = new ArtifactContext();
                 Artifact.Artifact artifact = new NMaven.Artifact.Artifact();
 
@@ -370,17 +370,13 @@ namespace NMaven.VisualStudio.Addin
                 }
                 catch
                 {
-                    //MessageBox.Show(
-                    //    string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
-                    //                + "\nReference: {0}"
-                    //                + "\nDeploying the Reference, will make the code portable to other machines",
-                    //        pReference.Path
-                    //    ));
                 }
 
                 NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
                 if (pomUtil.IsPomDependency(pReference.Name))
+                {
                     return;
+                }
 
                 string refType = "gac_msil";
                 string refName = pReference.Name;
@@ -389,7 +385,7 @@ namespace NMaven.VisualStudio.Addin
                 if (pReference.Type == prjReferenceType.prjReferenceTypeActiveX)
                 {
                     refType = "com_reference";
-                    if(refName.ToLower().StartsWith("interop."))
+                    if (refName.ToLower().StartsWith("interop."))
                         refName = refName.Substring(8);
                     refToken = pReference.Identity.Substring(0, pReference.Identity.LastIndexOf(@"\"));
                 }
@@ -397,17 +393,21 @@ namespace NMaven.VisualStudio.Addin
                 {
                     GacUtility gac = new GacUtility();
                     string n = gac.GetAssemblyInfo(pReference.Name);
-                    if (pReference.ContainingProject != null)
+                    if (pReference.SourceProject != null)
                     {
                         refType = "library";
                     }
                     else if (!inMavenRepo && string.IsNullOrEmpty(n))
                     {
-                        MessageBox.Show("Reference not added to POM. Reference could not be validated as a Maven Artifact or System Reference. This may result in a automated build error.", "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return;
+                        MessageBox.Show(string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
+                                                             + "\nReference: {0}"
+                                                             + "\nDeploying the Reference, will make the code portable to other machines",
+                                                     pReference.Name
+                                                 ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning); refType = "library";
+                        //return;
                     }
                 }
-                
+
                 Dependency dep = new Dependency();
                 dep.artifactId = refName;
                 dep.groupId = refName;
@@ -415,13 +415,13 @@ namespace NMaven.VisualStudio.Addin
                 dep.classifier = refToken;
                 dep.type = refType;
                 pomUtil.AddPomDependency(dep);
-                SaveAllDocuments();
-                AutoImport();
+                //SaveAllDocuments();
+                //AutoImport();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 outputWindowPane.OutputString(e.Message);
-            }            
+            }
         }
 
         void webw_Deleted(object sender, FileSystemEventArgs e)
@@ -438,7 +438,7 @@ namespace NMaven.VisualStudio.Addin
             {
                 MessageBox.Show(ex.Message, Messages.MSG_E_NMAVEN_REMOVE_DEPENDENCY_ERROR);
             }
-   
+
         }
 
         void wsw_Renamed(object sender, WebReferenceEventArgs e)
@@ -446,14 +446,14 @@ namespace NMaven.VisualStudio.Addin
             try
             {
                 System.Threading.Thread.Sleep(1500);
-                e.Init(projectReferenceFolder(CurrentSelectedProject)); 
+                e.Init(projectReferenceFolder(CurrentSelectedProject));
                 NMavenPomHelperUtility pomUtil = new NMavenPomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
                 pomUtil.RenameWebReference(e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
 
             }
             catch (Exception ex)
             {
-                outputWindowPane.OutputString("\nError on webservice rename: "+ ex.Message);
+                outputWindowPane.OutputString("\nError on webservice rename: " + ex.Message);
             }
         }
 
@@ -501,7 +501,7 @@ namespace NMaven.VisualStudio.Addin
             {
                 webReferenceFolder = vsProject.CreateWebReferencesFolder();
             }
-            
+
             string wsPath = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
             return wsPath;
         }
@@ -528,11 +528,11 @@ namespace NMaven.VisualStudio.Addin
                 if (outputPane.Name == "NMaven Build System")
                 {
                     paneExists = true;
-                    outputWindowPane = outputPane;    
+                    outputWindowPane = outputPane;
                 }
-                
+
             }
-            if(!paneExists)
+            if (!paneExists)
             {
                 outputWindowPane = outputWindow.OutputWindowPanes.Add("NMaven Build System");
             }
@@ -721,9 +721,9 @@ namespace NMaven.VisualStudio.Addin
             _selectionEvents = dte2.Events.SelectionEvents;
             _selectionEvents.OnChange += new _dispSelectionEvents_OnChangeEventHandler(this.OnChange);
             _nmavenLaunched = true;
-			outputWindowPane.Clear();
+            outputWindowPane.Clear();
             outputWindowPane.OutputString(Messages.MSG_L_NMAVEN_ADDIN_STARTED);
-            
+
             if (_applicationObject.Solution != null)
                 attachReferenceEvent();
         }
@@ -920,14 +920,14 @@ namespace NMaven.VisualStudio.Addin
         /// Checks the currently selected pom file if there is a vb project in it.
         /// </summary>
         private bool IsVbProject(Project project)
-        { 
-            if(project.UniqueName.Contains("vbproj"))
+        {
+            if (project.UniqueName.Contains("vbproj"))
                 return true;
             return false;
         }
-        
-        
-		/// <summary>
+
+
+        /// <summary>
         /// Updates the pomfile configuration on its rootnamespace
         /// </summary>
         private void UpdateVBProjectsPoms()
@@ -936,18 +936,18 @@ namespace NMaven.VisualStudio.Addin
             NMavenPomHelperUtility pomUtility = new NMavenPomHelperUtility(pomFile);
             if (pomUtility.NMavenCompilerPluginLanguage == "vb" || pomUtility.NMavenCompilerPluginLanguage == "VB")
             {
-            
-                string rootNamespace=string.Empty;
+
+                string rootNamespace = string.Empty;
                 string startUp = string.Empty;
 
                 string projectPath = pomFile.DirectoryName + "\\" + pomUtility.ArtifactId + ".vbproj";
-                
+
                 FileStream fs = new FileStream(projectPath, FileMode.Open, FileAccess.Read,
                                    FileShare.ReadWrite);
                 XmlDocument xmldoc = new XmlDocument();
                 xmldoc.Load(fs);
                 XmlNodeList nodelist = xmldoc.GetElementsByTagName("PropertyGroup");
-                
+
                 foreach (XmlNode xmlnode in nodelist)
                 {
 
@@ -967,7 +967,7 @@ namespace NMaven.VisualStudio.Addin
                 }
                 pomUtility.SetNMavenCompilerPluginConfigurationValue("rootNamespace", rootNamespace);
                 pomUtility.SetNMavenCompilerPluginConfigurationValue("main", startUp);
-                
+
                 fs.Close();
             }
             SaveAllDocuments();
@@ -975,7 +975,7 @@ namespace NMaven.VisualStudio.Addin
 
         private CommandBarControl GetSaveAllControl()
         {
-            CommandBarControl saveCtrl=null;
+            CommandBarControl saveCtrl = null;
             EnvDTE80.Windows2 windows2 = (EnvDTE80.Windows2)_applicationObject.Windows;
 
             DTE2 dte2 = _applicationObject;
@@ -999,9 +999,9 @@ namespace NMaven.VisualStudio.Addin
         private void AutoImport()
         {
             Solution2 solution = (Solution2)_applicationObject.Solution;
-            ProjectImporter.NMavenImporter.ReImportProject(solution.FullName);  
+            ProjectImporter.NMavenImporter.ReImportProject(solution.FullName);
         }
-        
+
         private void SaveAllDocuments()
         {
             if (saveAllControl == null)
@@ -1014,12 +1014,12 @@ namespace NMaven.VisualStudio.Addin
                 //AutoImport();
             }
         }
-		
+
         private void NMavenBuildSelectedProject(String goal)
         {
             SaveAllDocuments();
-			UpdateVBProjectsPoms();
-			FileInfo pomFile = CurrentSelectedProjectPom;
+            UpdateVBProjectsPoms();
+            FileInfo pomFile = CurrentSelectedProjectPom;
             Project project = CurrentSelectedProject;
             NMavenPomHelperUtility pomUtility = new NMavenPomHelperUtility(pomFile);
 
@@ -1033,7 +1033,7 @@ namespace NMaven.VisualStudio.Addin
             {
                 errStr = string.Format(Messages.MSG_EF_NOT_THE_PROJECT_POM, project.Name, pomUtility.ArtifactId);
             }
-            
+
             if (!string.IsNullOrEmpty(errStr))
             {
                 //DialogResult res = MessageBox.Show(errStr + "\nWould you like to continue building?", "Pom Error:", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
@@ -1068,8 +1068,8 @@ namespace NMaven.VisualStudio.Addin
         private void NMavenBuildAllProjects(String goal)
         {
             SaveAllDocuments();
-			UpdateVBProjectsPoms();
-			FileInfo pomFile = CurrentSolutionPom;
+            UpdateVBProjectsPoms();
+            FileInfo pomFile = CurrentSolutionPom;
             NMavenPomHelperUtility pomUtility = new NMavenPomHelperUtility(pomFile);
             if (!"pom".Equals(pomUtility.Packaging, StringComparison.OrdinalIgnoreCase))
             {
@@ -1103,7 +1103,7 @@ namespace NMaven.VisualStudio.Addin
                 }
 
             }
-            catch 
+            catch
             {
             }
 
@@ -1415,7 +1415,7 @@ namespace NMaven.VisualStudio.Addin
                         NMavenImportProjectForm frm = new NMavenImportProjectForm(_applicationObject);
                         frm.ShowDialog();
                         currentPom = this.CurrentSelectedProjectPom;
-                    } 
+                    }
                 }
                 AddArtifactsForm form = new AddArtifactsForm(project, container, logger, currentPom);
                 form.Show();
@@ -1456,7 +1456,7 @@ namespace NMaven.VisualStudio.Addin
         private void cbChangeProjectImportForm_Click(CommandBarButton btn, ref bool Cancel)
         {
             SaveAllDocuments();
-			NMavenImportProjectForm frm = new NMavenImportProjectForm(_applicationObject);
+            NMavenImportProjectForm frm = new NMavenImportProjectForm(_applicationObject);
             frm.ShowDialog();
         }
         #endregion
@@ -1485,7 +1485,7 @@ namespace NMaven.VisualStudio.Addin
         /// <seealso class='Exec' />
         public void QueryStatus(string commandName, vsCommandStatusTextWanted neededText, ref vsCommandStatus status, ref object commandText)
         {
-            
+
             if (neededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone)
             {
                 if (commandName == "IDEAddin.Connect.IDEAddin")
@@ -1598,7 +1598,7 @@ namespace NMaven.VisualStudio.Addin
         {
             VSProject2 p = (VSProject2)project.Object;
             List<IWebServiceRefInfo> list = new List<IWebServiceRefInfo>();
-            
+
             foreach (ProjectItem item in p.WebReferencesFolder.ProjectItems)
             {
                 string refFolder = Path.Combine(Path.Combine(Path.GetDirectoryName(project.FullName), p.WebReferencesFolder.Name), item.Name);
@@ -1610,7 +1610,7 @@ namespace NMaven.VisualStudio.Addin
                     list.Add(wr);
                 }
             }
-            
+
             return list;
         }
 
@@ -1625,7 +1625,7 @@ namespace NMaven.VisualStudio.Addin
                 page = webClient.DownloadData(wsdlUrl);
 
                 string wsdlContent = Encoding.UTF8.GetString(page);
-                TextWriter wr = new StreamWriter(webRef.WsdlFile,false);
+                TextWriter wr = new StreamWriter(webRef.WsdlFile, false);
                 wr.Write(wsdlContent);
                 wr.Flush();
                 wr.Close();
