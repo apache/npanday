@@ -62,7 +62,7 @@ namespace NMaven.Utils
 
             foreach (Project p in projs)
             {
-                if (p.Kind == "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}")
+                if (p.Kind == "{E24C65DC-7377-472B-9ABA-BC803B73C61A}")
                 {
                     hasWebProject = true;
                     break;
