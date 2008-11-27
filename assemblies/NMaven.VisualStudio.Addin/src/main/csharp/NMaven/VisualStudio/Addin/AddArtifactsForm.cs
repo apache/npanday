@@ -55,6 +55,13 @@ namespace NMaven.VisualStudio.Addin
         private NMaven.Logging.Logger logger;
         private FileInfo pom;
 
+        #region configure repo
+        
+        private Settings settings;
+        private String settingsPath;
+        
+        #endregion
+
         /// <summary>
         /// For Testing
         /// </summary>
@@ -62,7 +69,19 @@ namespace NMaven.VisualStudio.Addin
         {
             //InitializeForm();
             InitializeComponent();
-           // localListView.View = View.Details;
+            addArtifact.Hide();
+            // localListView.View = View.Details;
+            #region Initialize Configuration Repo
+            settingsPath = SettingsUtil.GetUserSettingsPath();
+            try
+            {
+                settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + e.StackTrace);
+            }
+            #endregion
         }
 
         public AddArtifactsForm(Project project, ArtifactContext container, Logger logger, FileInfo pom)
@@ -71,6 +90,7 @@ namespace NMaven.VisualStudio.Addin
             this.logger = logger;
             InitializeForm();
             InitializeComponent();
+            addArtifact.Hide();
             localListView.View = View.Details;           
             artifactContext = container;
             this.pom = pom;
@@ -86,6 +106,72 @@ namespace NMaven.VisualStudio.Addin
             this.Name = "AddArtifactsForm";
             this.Load += new System.EventHandler(this.AddArtifactsForm_Load);
             this.ResumeLayout(false);
+        }
+
+        private void Refresh()
+        {
+            localArtifacts = artifactContext.GetArtifactRepository().GetArtifacts();
+            foreach (NMaven.Artifact.Artifact artifact in localArtifacts)
+            {
+                LocalArtifactItem item = new LocalArtifactItem(new string[] {
+                    artifact.ArtifactId, artifact.Version}, -1);
+                item.Artifact = artifact;
+                localListView.Items.Add(item);
+            }
+
+            String settingsPath = SettingsUtil.GetUserSettingsPath();
+            Settings settings = null;
+            try
+            {
+                settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Invalid Settings File: " + ex.Message + ex.StackTrace);
+                return;
+            }
+
+            if (settings == null || settings.profiles == null)
+            {
+                MessageBox.Show("No Profile Found. Configure repository: ");
+                return;
+            }
+
+            String url = getRepositoryUrl();
+
+            if (url == null)
+            {
+                //MessageBox.Show("Remote repository not set: Try 'Add Maven Repository' option from menu. Will" +
+                //    " require restart of addin.");
+                //return;
+                MessageBox.Show("Remote repository not yet set: Please set your Remote Repository.");
+                ConfigureTab.Focus();
+                return;
+            }
+
+            SetUnsafeHttpHeaderParsing();
+
+            List<TreeNode> treeNodes = getNodesFor(url);
+            treeView1.Nodes.Clear();
+            treeView1.Nodes.AddRange(treeNodes.ToArray());
+            treeView1.MouseClick += new System.Windows.Forms.MouseEventHandler(treeView_MouseUp);
+
+
+            if (settings == null || settings.profiles == null)
+            {
+                return;
+            }
+
+            foreach (NMaven.Model.Setting.Profile profile in settings.profiles)
+            {
+                foreach (NMaven.Model.Setting.Repository repository in profile.repositories)
+                {
+                    if (repository.id.Equals("nmaven.id"))
+                    {
+                        RepoCombo.SelectedIndex = RepoCombo.Items.Add(repository.url);
+                    }
+                }
+            }
         }
 
         private void AddArtifactsForm_Load(object sender, EventArgs e)
@@ -121,8 +207,10 @@ namespace NMaven.VisualStudio.Addin
 
             if (url == null)
             {
-                MessageBox.Show("Remote repository not set: Try 'Add Maven Repository' option from menu. Will" +
-                    " require restart of addin.");
+                //MessageBox.Show("Remote repository not set: Try 'Add Maven Repository' option from menu. Will" +
+                //    " require restart of addin.");
+                //return;
+                MessageBox.Show("Remote repository not yet set: Please set your Remote Repository.");
                 return;
             }
 
@@ -131,6 +219,23 @@ namespace NMaven.VisualStudio.Addin
             List<TreeNode> treeNodes = getNodesFor(url);
             treeView1.Nodes.AddRange(treeNodes.ToArray());
             treeView1.MouseClick += new System.Windows.Forms.MouseEventHandler(treeView_MouseUp);
+
+
+            if (settings == null || settings.profiles == null)
+            {
+                return;
+            }
+
+            foreach (NMaven.Model.Setting.Profile profile in settings.profiles)
+            {
+                foreach (NMaven.Model.Setting.Repository repository in profile.repositories)
+                {
+                    if (repository.id.Equals("nmaven.id"))
+                    {
+                        RepoCombo.SelectedIndex = RepoCombo.Items.Add(repository.url);
+                    }
+                }
+            }
         }
 
         private void addArtifact_Click(object sender, EventArgs e)
@@ -600,6 +705,164 @@ namespace NMaven.VisualStudio.Addin
                 return;
             }
 
+        }
+
+        private void UpdateRepositoryFor(NMaven.Model.Setting.Profile profile, NMaven.Model.Setting.Repository repository)
+        {
+            NMaven.Model.Setting.Activation activation = new NMaven.Model.Setting.Activation();
+            activation.activeByDefault = true;
+            profile.activation = activation;
+
+            repository.url = RepoCombo.Text;
+            repository.id = "nmaven.id";
+
+            NMaven.Model.Setting.RepositoryPolicy releasesPolicy = new NMaven.Model.Setting.RepositoryPolicy();
+            NMaven.Model.Setting.RepositoryPolicy snapshotsPolicy = new NMaven.Model.Setting.RepositoryPolicy();
+            releasesPolicy.enabled = checkBoxRelease.Checked;
+            snapshotsPolicy.enabled = checkBoxSnapshot.Checked;
+            repository.releases = releasesPolicy;
+            repository.snapshots = snapshotsPolicy;
+        }
+
+        private void update_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(RepoCombo.Text))
+            {
+                bool hasConfiguration = false;
+                XmlSerializer serializer = new XmlSerializer(typeof(NMaven.Model.Setting.Settings));
+                if (settingsPath == null)
+                {
+                    settingsPath = SettingsUtil.GetUserSettingsPath();
+                }
+                if (settings == null)
+                {
+                    try
+                    {
+                        settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
+                    }
+                    catch (Exception err)
+                    {
+                        MessageBox.Show(err.Message + err.StackTrace);
+                    }
+                }
+
+                TextWriter writer = new StreamWriter(settingsPath);
+                if (settings.profiles != null)
+                {
+                    foreach (NMaven.Model.Setting.Profile profile in settings.profiles)
+                    {
+                        foreach (NMaven.Model.Setting.Repository repository in profile.repositories)
+                        {
+                            if (repository.id.Equals("nmaven.id"))
+                            {
+                                UpdateRepositoryFor(profile, repository);
+                                serializer.Serialize(writer, settings);
+                                writer.Close();
+                                hasConfiguration = true;
+                                try
+                                {
+                                    Refresh();
+                                    MessageBox.Show(this,"Successfully Changed Remote Repository.","Repository Configuration");
+                                }
+                                catch (Exception)
+                                {
+                                    MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning); 
+                                    RepoCombo.Text = string.Empty;
+                                }
+                                
+
+                            }
+                        }
+                    }
+                }
+                if (!hasConfiguration)
+                {
+                    NMaven.Model.Setting.Profile profile1 = new NMaven.Model.Setting.Profile();
+                    NMaven.Model.Setting.Repository repository1 = new NMaven.Model.Setting.Repository();
+                    profile1.repositories = new NMaven.Model.Setting.Repository[] { repository1 };
+                    UpdateRepositoryFor(profile1, repository1);
+
+                    if (settings.profiles == null)
+                    {
+                        settings.profiles = new NMaven.Model.Setting.Profile[] { profile1 };
+                    }
+                    else
+                    {
+                        List<NMaven.Model.Setting.Profile> profiles = new List<NMaven.Model.Setting.Profile>();
+                        profiles.AddRange(settings.profiles);
+                        profiles.Add(profile1);
+                        settings.profiles = profiles.ToArray();
+                    }
+                    serializer.Serialize(writer, settings);
+                    writer.Close();
+                    try
+                    {
+                        Refresh();
+                        MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        RepoCombo.Text = string.Empty;
+                    }
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Sorry, Repository cannot be blank.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            
+        }
+
+        private void RepoListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ConfigureTab_Click(object sender, EventArgs e)
+        {
+            addArtifact.Hide();
+        }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            addArtifact.Show();
+        }
+
+        private void remoteTabPage_Click(object sender, EventArgs e)
+        {
+            addArtifact.Show();
+        }
+
+        private void localTabPage_Click(object sender, EventArgs e)
+        {
+            addArtifact.Show();
+        }
+
+        private void localListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            addArtifact.Show();
+        }
+
+        private void RepoCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            addArtifact.Hide();
+        }
+
+        private void artifactTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (artifactTabControl.SelectedIndex == 2)
+            {
+                addArtifact.Hide();
+            }
+            else
+            {
+                localListView.Focus();
+                treeView1.Focus();
+                addArtifact.Show();
+            }
+            
         }
     }
 

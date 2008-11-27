@@ -354,8 +354,10 @@ namespace NMaven.VisualStudio.Addin
 
         void ReferencesEvents_ReferenceAdded(Reference pReference)
         {
+            bool isSystemPath = false;
             try
             {
+                outputWindowPane.OutputString(mavenConnected.ToString());
                 if (!mavenConnected)
                     return;
 
@@ -399,6 +401,7 @@ namespace NMaven.VisualStudio.Addin
                     }
                     else if (!inMavenRepo && string.IsNullOrEmpty(n))
                     {
+                        isSystemPath = true;
                         MessageBox.Show(string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
                                                              + "\nReference: {0}"
                                                              + "\nDeploying the Reference, will make the code portable to other machines",
@@ -412,11 +415,18 @@ namespace NMaven.VisualStudio.Addin
                 dep.artifactId = refName;
                 dep.groupId = refName;
                 dep.version = pReference.Version;
-                dep.classifier = refToken;
                 dep.type = refType;
+                // if condition is for system path dependencies
+                if (isSystemPath)
+                {
+                    dep.systemPath = pReference.Path;
+                    dep.scope = "system";
+                }
+                else
+                {
+                    dep.classifier = refToken;
+                }
                 pomUtil.AddPomDependency(dep);
-                //SaveAllDocuments();
-                //AutoImport();
             }
             catch (Exception e)
             {
@@ -569,14 +579,15 @@ namespace NMaven.VisualStudio.Addin
                         ctl.Visible = true;
                         addReferenceControls.Add(ctl);
 
-                        CommandBarButton ctl1 = (CommandBarButton)
-                            commandBar.Controls.Add(MsoControlType.msoControlButton,
-                            System.Type.Missing, System.Type.Missing, control.Index, true);
-                        ctl1.Click +=
-                            new _CommandBarButtonEvents_ClickEventHandler(cbShowConfigureRepositoryForm_Click);
-                        ctl1.Caption = Messages.MSG_C_CONFIGURE_MAVEN_REPO;
-                        ctl1.Visible = true;
-                        addReferenceControls.Add(ctl1);
+                        // commented out because configure maven is moved to add maven artifact.
+                        //CommandBarButton ctl1 = (CommandBarButton)
+                        //    commandBar.Controls.Add(MsoControlType.msoControlButton,
+                        //    System.Type.Missing, System.Type.Missing, control.Index, true);
+                        //ctl1.Click +=
+                        //    new _CommandBarButtonEvents_ClickEventHandler(cbShowConfigureRepositoryForm_Click);
+                        //ctl1.Caption = Messages.MSG_C_CONFIGURE_MAVEN_REPO;
+                        //ctl1.Visible = true;
+                        //addReferenceControls.Add(ctl1);
 
                         // by jan ancajas
                         CommandBarButton ctlSettingsXml = (CommandBarButton)

@@ -60,9 +60,17 @@ namespace NMaven.VisualStudio.Addin
             this.ArtifactNameHeader = new System.Windows.Forms.ColumnHeader();
             this.versionHeader = new System.Windows.Forms.ColumnHeader();
             this.artifactTabControl = new System.Windows.Forms.TabControl();
+            this.ConfigureTab = new System.Windows.Forms.TabPage();
+            this.UpdateLabel = new System.Windows.Forms.Label();
+            this.RepoCombo = new System.Windows.Forms.ComboBox();
+            this.checkBoxSnapshot = new System.Windows.Forms.CheckBox();
+            this.checkBoxRelease = new System.Windows.Forms.CheckBox();
+            this.update = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.remoteTabPage.SuspendLayout();
             this.localTabPage.SuspendLayout();
             this.artifactTabControl.SuspendLayout();
+            this.ConfigureTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // addArtifact
@@ -98,6 +106,7 @@ namespace NMaven.VisualStudio.Addin
             this.remoteTabPage.TabIndex = 1;
             this.remoteTabPage.Text = "Remote";
             this.remoteTabPage.UseVisualStyleBackColor = true;
+            this.remoteTabPage.Click += new System.EventHandler(this.remoteTabPage_Click);
             // 
             // treeView1
             // 
@@ -107,6 +116,7 @@ namespace NMaven.VisualStudio.Addin
             this.treeView1.Size = new System.Drawing.Size(438, 222);
             this.treeView1.TabIndex = 0;
             this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
             // localTabPage
             // 
@@ -119,6 +129,7 @@ namespace NMaven.VisualStudio.Addin
             this.localTabPage.TabIndex = 0;
             this.localTabPage.Text = "Local";
             this.localTabPage.UseVisualStyleBackColor = true;
+            this.localTabPage.Click += new System.EventHandler(this.localTabPage_Click);
             // 
             // localListView
             // 
@@ -133,6 +144,7 @@ namespace NMaven.VisualStudio.Addin
             this.localListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.localListView.TabIndex = 0;
             this.localListView.UseCompatibleStateImageBehavior = false;
+            this.localListView.SelectedIndexChanged += new System.EventHandler(this.localListView_SelectedIndexChanged);
             this.localListView.DoubleClick += new System.EventHandler(this.localListView_DoubleClick);
             // 
             // ArtifactNameHeader
@@ -149,12 +161,93 @@ namespace NMaven.VisualStudio.Addin
             // 
             this.artifactTabControl.Controls.Add(this.localTabPage);
             this.artifactTabControl.Controls.Add(this.remoteTabPage);
+            this.artifactTabControl.Controls.Add(this.ConfigureTab);
             this.artifactTabControl.Location = new System.Drawing.Point(9, 10);
             this.artifactTabControl.Margin = new System.Windows.Forms.Padding(2);
             this.artifactTabControl.Name = "artifactTabControl";
             this.artifactTabControl.SelectedIndex = 0;
             this.artifactTabControl.Size = new System.Drawing.Size(477, 275);
             this.artifactTabControl.TabIndex = 0;
+            this.artifactTabControl.SelectedIndexChanged += new System.EventHandler(this.artifactTabControl_SelectedIndexChanged);
+            // 
+            // ConfigureTab
+            // 
+            this.ConfigureTab.Controls.Add(this.UpdateLabel);
+            this.ConfigureTab.Controls.Add(this.RepoCombo);
+            this.ConfigureTab.Controls.Add(this.checkBoxSnapshot);
+            this.ConfigureTab.Controls.Add(this.checkBoxRelease);
+            this.ConfigureTab.Controls.Add(this.update);
+            this.ConfigureTab.Controls.Add(this.label1);
+            this.ConfigureTab.Location = new System.Drawing.Point(4, 22);
+            this.ConfigureTab.Name = "ConfigureTab";
+            this.ConfigureTab.Padding = new System.Windows.Forms.Padding(3);
+            this.ConfigureTab.Size = new System.Drawing.Size(469, 249);
+            this.ConfigureTab.TabIndex = 2;
+            this.ConfigureTab.Text = "Configure Repository";
+            this.ConfigureTab.UseVisualStyleBackColor = true;
+            this.ConfigureTab.Click += new System.EventHandler(this.ConfigureTab_Click);
+            // 
+            // UpdateLabel
+            // 
+            this.UpdateLabel.AutoSize = true;
+            this.UpdateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpdateLabel.Location = new System.Drawing.Point(66, 183);
+            this.UpdateLabel.Name = "UpdateLabel";
+            this.UpdateLabel.Size = new System.Drawing.Size(0, 20);
+            this.UpdateLabel.TabIndex = 11;
+            // 
+            // RepoCombo
+            // 
+            this.RepoCombo.FormattingEnabled = true;
+            this.RepoCombo.Location = new System.Drawing.Point(56, 77);
+            this.RepoCombo.Name = "RepoCombo";
+            this.RepoCombo.Size = new System.Drawing.Size(329, 21);
+            this.RepoCombo.TabIndex = 10;
+            this.RepoCombo.SelectedIndexChanged += new System.EventHandler(this.RepoCombo_SelectedIndexChanged);
+            // 
+            // checkBoxSnapshot
+            // 
+            this.checkBoxSnapshot.AutoSize = true;
+            this.checkBoxSnapshot.Location = new System.Drawing.Point(194, 138);
+            this.checkBoxSnapshot.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxSnapshot.Name = "checkBoxSnapshot";
+            this.checkBoxSnapshot.Size = new System.Drawing.Size(118, 17);
+            this.checkBoxSnapshot.TabIndex = 9;
+            this.checkBoxSnapshot.Text = "Snapshots Enabled";
+            this.checkBoxSnapshot.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxRelease
+            // 
+            this.checkBoxRelease.AutoSize = true;
+            this.checkBoxRelease.Location = new System.Drawing.Point(55, 138);
+            this.checkBoxRelease.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxRelease.Name = "checkBoxRelease";
+            this.checkBoxRelease.Size = new System.Drawing.Size(112, 17);
+            this.checkBoxRelease.TabIndex = 8;
+            this.checkBoxRelease.Text = "Releases Enabled";
+            this.checkBoxRelease.UseVisualStyleBackColor = true;
+            // 
+            // update
+            // 
+            this.update.Location = new System.Drawing.Point(335, 135);
+            this.update.Margin = new System.Windows.Forms.Padding(2);
+            this.update.Name = "update";
+            this.update.Size = new System.Drawing.Size(50, 21);
+            this.update.TabIndex = 7;
+            this.update.Text = "Update";
+            this.update.UseVisualStyleBackColor = true;
+            this.update.Click += new System.EventHandler(this.update_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(53, 45);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(167, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Remote Repository Location";
             // 
             // AddArtifactsForm
             // 
@@ -173,6 +266,8 @@ namespace NMaven.VisualStudio.Addin
             this.remoteTabPage.ResumeLayout(false);
             this.localTabPage.ResumeLayout(false);
             this.artifactTabControl.ResumeLayout(false);
+            this.ConfigureTab.ResumeLayout(false);
+            this.ConfigureTab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -188,5 +283,12 @@ namespace NMaven.VisualStudio.Addin
         private System.Windows.Forms.ColumnHeader ArtifactNameHeader;
         private System.Windows.Forms.ColumnHeader versionHeader;
         private System.Windows.Forms.TabControl artifactTabControl;
+        private TabPage ConfigureTab;
+        private CheckBox checkBoxSnapshot;
+        private CheckBox checkBoxRelease;
+        private Button update;
+        private Label label1;
+        private ComboBox RepoCombo;
+        private Label UpdateLabel;
     }
 }

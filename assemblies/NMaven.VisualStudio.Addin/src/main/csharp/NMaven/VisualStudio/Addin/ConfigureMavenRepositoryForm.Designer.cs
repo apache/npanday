@@ -58,26 +58,31 @@ namespace NMaven.VisualStudio.Addin
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(28, 61);
+            this.textBox1.Location = new System.Drawing.Point(21, 50);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(439, 22);
+            this.textBox1.Size = new System.Drawing.Size(330, 20);
             this.textBox1.TabIndex = 0;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(25, 31);
+            this.label1.Location = new System.Drawing.Point(19, 25);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(213, 17);
+            this.label1.Size = new System.Drawing.Size(167, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Remote Repository Location";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // update
             // 
-            this.update.Location = new System.Drawing.Point(401, 141);
+            this.update.Location = new System.Drawing.Point(301, 115);
+            this.update.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.update.Name = "update";
-            this.update.Size = new System.Drawing.Size(66, 26);
+            this.update.Size = new System.Drawing.Size(50, 21);
             this.update.TabIndex = 2;
             this.update.Text = "Update";
             this.update.UseVisualStyleBackColor = true;
@@ -86,33 +91,38 @@ namespace NMaven.VisualStudio.Addin
             // checkBoxRelease
             // 
             this.checkBoxRelease.AutoSize = true;
-            this.checkBoxRelease.Location = new System.Drawing.Point(28, 103);
+            this.checkBoxRelease.Location = new System.Drawing.Point(21, 84);
+            this.checkBoxRelease.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxRelease.Name = "checkBoxRelease";
-            this.checkBoxRelease.Size = new System.Drawing.Size(145, 21);
+            this.checkBoxRelease.Size = new System.Drawing.Size(112, 17);
             this.checkBoxRelease.TabIndex = 3;
             this.checkBoxRelease.Text = "Releases Enabled";
             this.checkBoxRelease.UseVisualStyleBackColor = true;
+            this.checkBoxRelease.CheckedChanged += new System.EventHandler(this.checkBoxRelease_CheckedChanged);
             // 
             // checkBoxSnapshot
             // 
             this.checkBoxSnapshot.AutoSize = true;
-            this.checkBoxSnapshot.Location = new System.Drawing.Point(213, 103);
+            this.checkBoxSnapshot.Location = new System.Drawing.Point(160, 84);
+            this.checkBoxSnapshot.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxSnapshot.Name = "checkBoxSnapshot";
-            this.checkBoxSnapshot.Size = new System.Drawing.Size(153, 21);
+            this.checkBoxSnapshot.Size = new System.Drawing.Size(118, 17);
             this.checkBoxSnapshot.TabIndex = 4;
             this.checkBoxSnapshot.Text = "Snapshots Enabled";
             this.checkBoxSnapshot.UseVisualStyleBackColor = true;
+            this.checkBoxSnapshot.CheckedChanged += new System.EventHandler(this.checkBoxSnapshot_CheckedChanged);
             // 
             // ConfigureMavenRepositoryForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(497, 198);
+            this.ClientSize = new System.Drawing.Size(373, 161);
             this.Controls.Add(this.checkBoxSnapshot);
             this.Controls.Add(this.checkBoxRelease);
             this.Controls.Add(this.update);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "ConfigureMavenRepositoryForm";
             this.Text = "ConfigureMavenRepositoryForm";
             this.Load += new System.EventHandler(this.ConfigureMavenRepositoryForm_Load);

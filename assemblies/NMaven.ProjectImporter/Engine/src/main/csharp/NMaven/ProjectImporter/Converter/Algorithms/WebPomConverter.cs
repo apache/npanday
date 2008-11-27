@@ -122,15 +122,15 @@ namespace NMaven.ProjectImporter.Converter.Algorithms
             Plugin aspxPlugin = AddPlugin("org.apache.maven.dotnet.plugins", "maven-aspx-plugin");
 
 			//Add Project WebReferences
-            AddWebReferences();
+            //AddWebReferences();
 
 
             // Add Project Inter-dependencies
-            AddInterProjectDependenciesToList();
+            //AddInterProjectDependenciesToList();
 
 
             // Add Project Reference Dependencies
-            AddProjectReferenceDependenciesToList();
+            //AddProjectReferenceDependenciesToList();
 
 
             if (writePom)
