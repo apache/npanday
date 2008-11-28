@@ -169,6 +169,14 @@ namespace NMaven.VisualStudio.Addin
             outputWindowPane.Clear();
         }
 
+        void SolutionEvents_Opened()
+        {
+            if (_applicationObject != null && _applicationObject.Solution != null)
+            {
+                attachReferenceEvent();
+            }
+        }
+
         #endregion
         static bool projectRefEventLoaded;
 
@@ -199,7 +207,7 @@ namespace NMaven.VisualStudio.Addin
             //next two lines add a eventhandler to handle beforeclosing a solution
             globalSolutionEvents = (EnvDTE.SolutionEvents)((Events2)_applicationObject.Events).SolutionEvents;
             globalSolutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler(SolutionEvents_BeforeClosing);
-
+            globalSolutionEvents.Opened +=new _dispSolutionEvents_OpenedEventHandler(SolutionEvents_Opened);
 
             if (connectMode == ext_ConnectMode.ext_cm_UISetup)
             {
