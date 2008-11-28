@@ -25,6 +25,7 @@ namespace NMaven.Utils
         ManualResetEvent outputThreadEvent;
 
 
+
         public MavenRunner(DTE2 dte2)
         {
             this.dte2 = dte2;
@@ -58,31 +59,40 @@ namespace NMaven.Utils
 
             Projects projs = solution.Projects;
 
-            bool hasWebProject=false;
-
-            foreach (Project p in projs)
-            {
-                if (p.Kind == "{E24C65DC-7377-472B-9ABA-BC803B73C61A}")
-                {
-                    hasWebProject = true;
-                    break;
-                }
-            }
-
-            if (hasWebProject)
-            {
+            bool isFlatProject = true;
+            
                 string[] directoryPartial = solution.FullName.Split("\\".ToCharArray());
                 string pathPartial = directoryPartial[directoryPartial.Length - 1];
                 string path = solution.FullName.Substring(0, solution.FullName.Length - pathPartial.Length);
+                
                 path = path.Replace("\\", "//");
+                string baseDirectory = path;
                 path = path + "/bin";
 
-                if (Directory.Exists(path))
+
+                string[] directories = Directory.GetDirectories(baseDirectory);
+                foreach (string dir in directories)
+                {
+                    string[] dirFiles = Directory.GetFiles(dir);
+                    foreach (string f in dirFiles)
+                    {
+                        if (f.Contains("pom.xml"))
+                        {
+                            isFlatProject = false;
+                            break;
+                        }
+                    }
+                    if (!isFlatProject)
+                    {
+                        break;
+                    }
+                }
+
+                if (Directory.Exists(path) && !isFlatProject)
                 {
                     Directory.Delete(path, true);
                 }
-
-            }
+          
 
             
         }
