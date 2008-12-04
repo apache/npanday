@@ -119,10 +119,9 @@ namespace NMaven.ProjectImporter.Parser.Solution
 
                         foreach (string key in ps.Map.Keys)
                         {
-                            Microsoft.Build.BuildEngine.Project prj = GetMSBuildProject(solution, key);
+                            Microsoft.Build.BuildEngine.Project prj = GetMSBuildProject(solution, key.Replace("{","").Replace("}", ""));
                             if (prj != null)
                             {
-                                System.Windows.Forms.MessageBox.Show(prj.FullFileName);
                                 projectReferenceList.Add(prj);
                             }
                         }
@@ -142,7 +141,6 @@ namespace NMaven.ProjectImporter.Parser.Solution
 
             foreach (Project p in solution.Projects)
             {
-
                 if (p.ProjectGUID.Equals("{" + projectGuid + "}", StringComparison.OrdinalIgnoreCase))
                 {
                     string projectReferenceName = p.ProjectName;

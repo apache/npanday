@@ -61,7 +61,26 @@ namespace NMaven.ProjectImporter.Digest.Algorithms
 
 
             List<Reference> references = new List<Reference>();
+            
             List<ProjectReference> projectReferences = new List<ProjectReference>();
+            if (projectMap.ContainsKey("InterProjectReferences")
+                && projectMap["InterProjectReferences"] != null
+                && projectMap["InterProjectReferences"] is Microsoft.Build.BuildEngine.Project[]
+                )
+            {
+                Microsoft.Build.BuildEngine.Project[] interProjectReferences = (Microsoft.Build.BuildEngine.Project[])projectMap["InterProjectReferences"];
+
+                foreach (Microsoft.Build.BuildEngine.Project p in interProjectReferences)
+                {
+                    ProjectReference prjRef = new ProjectReference(projectBasePath);
+                    prjRef.ProjectPath = p.FullFileName;
+                    prjRef.Name = GetProjectAssemblyName(Path.GetFullPath(prjRef.ProjectFullPath));
+                    projectReferences.Add(prjRef);
+
+                }
+
+            }
+
             List<Compile> compiles = new List<Compile>();
             List<None> nones = new List<None>();
             List<WebReferenceUrl> webReferenceUrls = new List<WebReferenceUrl>();
