@@ -47,7 +47,6 @@ namespace NMaven.ProjectImporter.Parser.Solution
 
                     string[] binAssemblies = GetBinAssemblies(Path.Combine(fullpath, @"bin"));
                     dictionary.Add("BinAssemblies", binAssemblies);
-
                     //ParseInnerData(dictionary, match.Groups["projectInnerData"].ToString());
                     ParseProjectReferences(dictionary, project, solution);
                 }
@@ -60,9 +59,9 @@ namespace NMaven.ProjectImporter.Parser.Solution
                     Microsoft.Build.BuildEngine.Project prj = new Microsoft.Build.BuildEngine.Project(BUILD_ENGINE);
                     prj.Load(fullpath);
                     //ParseInnerData(dictionary, match.Groups["projectInnerData"].ToString());
+                    ParseProjectReferences(dictionary, project, solution);
                     dictionary.Add("Project", prj);
                 }
-
 
                 list.Add(dictionary);
 
@@ -85,24 +84,28 @@ namespace NMaven.ProjectImporter.Parser.Solution
                     {
                         // ProjectReferences = "{11F2FCC8-5941-418A-A0E7-42D250BA9D21}|SampleInterProject111.dll;{9F37BA7B-06F9-4B05-925D-B5BC16322E8B}|BongClassLib.dll;"
 
-                        Regex regex = new Regex(PROJECT_REFERENCE_REGEX, RegexOptions.Multiline | RegexOptions.IgnoreCase);
-                        MatchCollection matches = regex.Matches(ps.Map["ProjectReferences"]);
-
-
-                        foreach (Match match in matches)
+                        try
                         {
-                            string projectReferenceGUID = match.Groups["ProjectReferenceGUID"].ToString();
-                            string projectReferenceDll = match.Groups["ProjectReferenceDll"].ToString();
-                            string projectReferenceName = null;
-                            string projectReferencePath = null;
-                            string projectReferenceFullPath = null;
+                            Regex regex = new Regex(PROJECT_REFERENCE_REGEX, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+                            MatchCollection matches = regex.Matches(ps.Map["ProjectReferences"]);
 
-                            Microsoft.Build.BuildEngine.Project prj = GetMSBuildProject(solution, projectReferenceGUID);
-                            if (prj != null)
+
+                            foreach (Match match in matches)
                             {
-                                projectReferenceList.Add(prj);
+                                string projectReferenceGUID = match.Groups["ProjectReferenceGUID"].ToString();
+                                string projectReferenceDll = match.Groups["ProjectReferenceDll"].ToString();
+                                string projectReferenceName = null;
+                                string projectReferencePath = null;
+                                string projectReferenceFullPath = null;
+
+                                Microsoft.Build.BuildEngine.Project prj = GetMSBuildProject(solution, projectReferenceGUID);
+                                if (prj != null)
+                                {
+                                    projectReferenceList.Add(prj);
+                                }
                             }
                         }
+                        catch { }
 
 
 
@@ -116,9 +119,10 @@ namespace NMaven.ProjectImporter.Parser.Solution
 
                         foreach (string key in ps.Map.Keys)
                         {
-                            Microsoft.Build.BuildEngine.Project prj = GetMSBuildProject(solution, "{" + key + "}");
+                            Microsoft.Build.BuildEngine.Project prj = GetMSBuildProject(solution, key);
                             if (prj != null)
                             {
+                                System.Windows.Forms.MessageBox.Show(prj.FullFileName);
                                 projectReferenceList.Add(prj);
                             }
                         }
