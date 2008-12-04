@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
-    <artifactId>test.artfact.101ac720-d9f0-4ac8-a305-cff98e877f33</artifactId>
-    <groupId>test.group.49c1d2c9-3f39-4c35-801c-d8e143b7132f</groupId>
+    <artifactId>test.artfact.020f9ac8-540c-4b97-8ec6-bde99fa148e9</artifactId>
+    <groupId>test.group.2f925a56-fcd9-470d-b712-c279dd3e9a22</groupId>
     <version>1.2.3-SNAPSHOT</version>
     <relativePath>..\pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>Project2</artifactId>
   <packaging>library</packaging>
-  <name>test.group.49c1d2c9-3f39-4c35-801c-d8e143b7132f : Project2</name>
+  <name>test.group.2f925a56-fcd9-470d-b712-c279dd3e9a22 : Project2</name>
   <build>
     <sourceDirectory>./</sourceDirectory>
     <plugins>
@@ -41,4 +41,12 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>test.group.2f925a56-fcd9-470d-b712-c279dd3e9a22</groupId>
+      <artifactId>Project1</artifactId>
+      <version>1.2.3-SNAPSHOT</version>
+      <type>library</type>
+    </dependency>
+  </dependencies>
 </project>
