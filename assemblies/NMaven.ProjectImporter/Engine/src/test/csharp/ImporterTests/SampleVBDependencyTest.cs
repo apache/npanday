@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace NMaven.ProjectImporter.ImporterTests
 {
     [TestFixture]
-    public class SampleVBDependencyTest
+    public class SampleVBDependencyTest : AbstractProjectImportTest
     {
 
 
