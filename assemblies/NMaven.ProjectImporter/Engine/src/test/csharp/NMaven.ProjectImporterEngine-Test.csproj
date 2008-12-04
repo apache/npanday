@@ -32,6 +32,7 @@
     <Compile Include="ImporterTests\InterModuleDependency.cs" />
     <Compile Include="ImporterTests\ProjectImporterAssertions.cs" />
     <Compile Include="ImporterTests\ProjectImporterTestFixture.cs" />
+    <Compile Include="ImporterTests\SampleVBDependencyTest.cs" />
     <Compile Include="ImporterTests\SampleWebProjectsTest.cs" />
     <Compile Include="ImporterTests\WebSiteWithCSharpProjectFile.cs" />
   </ItemGroup>

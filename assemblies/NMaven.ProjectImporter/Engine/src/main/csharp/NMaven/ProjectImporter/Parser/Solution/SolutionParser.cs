@@ -12,8 +12,9 @@ namespace NMaven.ProjectImporter.Parser.Solution
     {
         static ISolutionParserAlgorithm[] ALGORITHMS = 
         {
-            new ProjectSolutionParserWithInnerWebsitePropertiesDataAlgorithm(),
-            new ProjectSolutionParserWithoutInnerDataAlgorithm()
+            //new ProjectSolutionParserWithInnerWebsitePropertiesDataAlgorithm(),
+            //new ProjectSolutionParserWithoutInnerDataAlgorithm(),
+            new ProjectSolutionParser()
         };
 
 
