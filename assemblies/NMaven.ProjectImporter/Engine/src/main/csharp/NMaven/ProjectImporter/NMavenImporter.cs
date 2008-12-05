@@ -13,7 +13,7 @@ using NMaven.ProjectImporter.Converter;
 using NMaven.ProjectImporter.Converter.Algorithms;
 using NMaven.ProjectImporter.Validator;
 using NMaven.ProjectImporter.ImportProjectStructureAlgorithms;
-using NMaven.ProjectImporter.Parser.Solution;
+using NMaven.ProjectImporter.Parser.SlnParser;
 
 
 /// Author: Leopoldo Lee Agdeppa III
@@ -154,7 +154,7 @@ namespace NMaven.ProjectImporter
 
         /// <summary>
         /// Facade for Parsing A solution File to get its projects
-        /// calls NMaven.ProjectImporter.Parser.SolutionParser.ParseSolution(FileInfo)
+        /// calls NMaven.ProjectImporter.Parser.SlnParserParser.ParseSolution(FileInfo)
         /// </summary>
         /// <param name="solutionFile">the full path of the *.sln (visual studio solution) file you want to parse</param>
         /// <returns></returns>
