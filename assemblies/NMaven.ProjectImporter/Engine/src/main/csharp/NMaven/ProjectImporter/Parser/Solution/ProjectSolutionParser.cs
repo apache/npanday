@@ -45,6 +45,12 @@ namespace NMaven.ProjectImporter.Parser.Solution
                     string[] assemblies = GetWebConfigAssemblies(Path.Combine(fullpath, "web.config"));
                     dictionary.Add("WebConfigAssemblies", assemblies);
 
+
+                    //@001 SERNACIO START retrieving webreference
+                    Digest.Model.WebReferenceUrl[] webReferences = getWebReferenceUrls(fullpath);
+                    dictionary.Add("WebReferencesUrl", webReferences);
+                    //@001 SERNACIO END retrieving webreference
+
                     string[] binAssemblies = GetBinAssemblies(Path.Combine(fullpath, @"bin"));
                     dictionary.Add("BinAssemblies", binAssemblies);
                     //ParseInnerData(dictionary, match.Groups["projectInnerData"].ToString());
@@ -94,10 +100,7 @@ namespace NMaven.ProjectImporter.Parser.Solution
                             {
                                 string projectReferenceGUID = match.Groups["ProjectReferenceGUID"].ToString();
                                 string projectReferenceDll = match.Groups["ProjectReferenceDll"].ToString();
-                                string projectReferenceName = null;
-                                string projectReferencePath = null;
-                                string projectReferenceFullPath = null;
-
+                                
                                 Microsoft.Build.BuildEngine.Project prj = GetMSBuildProject(solution, projectReferenceGUID);
                                 if (prj != null)
                                 {
@@ -166,6 +169,56 @@ namespace NMaven.ProjectImporter.Parser.Solution
             }
 
             return null;
+        }
+
+
+
+        Digest.Model.WebReferenceUrl[] getWebReferenceUrls(string projectPath)
+        {
+            List<Digest.Model.WebReferenceUrl> returnList = new List<Digest.Model.WebReferenceUrl>();
+            string webPath = Path.GetFullPath(Path.Combine(projectPath, "App_WebReferences"));
+            if (Directory.Exists(webPath))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(webPath);
+                foreach (DirectoryInfo folders in dirInfo.GetDirectories())
+                {
+                    if (folders.Equals(".svn")) continue;
+                    returnList.AddRange(getWebReferenceUrls(folders, "App_WebReferences"));
+                }
+            }
+            return returnList.ToArray();
+        }
+
+        Digest.Model.WebReferenceUrl[] getWebReferenceUrls(DirectoryInfo folder, string currentPath)
+        {
+            string relPath = Path.Combine(currentPath, folder.Name);
+            string url = string.Empty;
+            List<Digest.Model.WebReferenceUrl> webReferenceUrls = new List<Digest.Model.WebReferenceUrl>();
+
+            FileInfo[] fileInfo = folder.GetFiles("*.discomap");
+            if (fileInfo != null && fileInfo.Length > 0)
+            {
+                System.Xml.XPath.XPathDocument xDoc = new System.Xml.XPath.XPathDocument(fileInfo[0].FullName);
+                System.Xml.XPath.XPathNavigator xNav = xDoc.CreateNavigator();
+                string xpathExpression = @"DiscoveryClientResultsFile/Results/DiscoveryClientResult[@referenceType='System.Web.Services.Discovery.ContractReference']/@url";
+                System.Xml.XPath.XPathNodeIterator xIter = xNav.Select(xpathExpression);
+                if (xIter.MoveNext())
+                {
+                    url = xIter.Current.TypedValue.ToString();
+                }
+            }
+            if (!string.IsNullOrEmpty(url))
+            {
+                Digest.Model.WebReferenceUrl newWebReferenceUrl = new Digest.Model.WebReferenceUrl();
+                newWebReferenceUrl.RelPath = relPath;
+                newWebReferenceUrl.UpdateFromURL = url;
+                webReferenceUrls.Add(newWebReferenceUrl);
+            }
+            foreach (DirectoryInfo dirInfo in folder.GetDirectories())
+            {
+                webReferenceUrls.AddRange(getWebReferenceUrls(dirInfo, relPath));
+            }
+            return webReferenceUrls.ToArray();
         }
 
 
