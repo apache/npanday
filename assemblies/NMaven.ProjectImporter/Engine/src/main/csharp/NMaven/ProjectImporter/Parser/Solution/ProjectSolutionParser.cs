@@ -9,6 +9,8 @@ using System.Text.RegularExpressions;
 using Microsoft.Build.BuildEngine;
 using System.Xml;
 
+/// Author: Leopoldo Lee Agdeppa III
+
 namespace NMaven.ProjectImporter.Parser.Solution
 {
     public class ProjectSolutionParser : ISolutionParserAlgorithm

@@ -4,6 +4,8 @@ using System.Text;
 using NMaven.ProjectImporter.SlnParser.Model;
 using System.IO;
 
+/// Author: Leopoldo Lee Agdeppa III
+
 namespace NMaven.ProjectImporter.SlnParser
 {
     public static class SolutionFactory

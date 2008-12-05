@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+/// Author: Leopoldo Lee Agdeppa III
+
 namespace NMaven.ProjectImporter.SlnParser
 {
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
+/// Author: Leopoldo Lee Agdeppa III
+
 namespace NMaven.ProjectImporter.SlnParser
 {
     public class LexicalAnalizer
