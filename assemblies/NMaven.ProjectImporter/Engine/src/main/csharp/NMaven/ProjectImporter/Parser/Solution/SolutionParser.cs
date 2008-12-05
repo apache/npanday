@@ -10,11 +10,11 @@ namespace NMaven.ProjectImporter.Parser.Solution
 {
     public sealed class SolutionParser
     {
-        static ISolutionParserAlgorithm[] ALGORITHMS = 
+        public delegate List<Dictionary<string, object>> ParserAlgoDelegate(System.IO.FileInfo solutionFile);
+
+        static ParserAlgoDelegate[] ALGORITHMS = 
         {
-            //new ProjectSolutionParserWithInnerWebsitePropertiesDataAlgorithm(),
-            //new ProjectSolutionParserWithoutInnerDataAlgorithm(),
-            new ProjectSolutionParser()
+            new ProjectSolutionParser().Parse
         };
 
 
@@ -22,9 +22,9 @@ namespace NMaven.ProjectImporter.Parser.Solution
         {
             List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
 
-            foreach (ISolutionParserAlgorithm algo in ALGORITHMS)
+            foreach (ParserAlgoDelegate algo in ALGORITHMS)
             {
-               list.AddRange(algo.Parse(solutionFile));
+               list.AddRange(algo(solutionFile));
             }
 
             return list;
