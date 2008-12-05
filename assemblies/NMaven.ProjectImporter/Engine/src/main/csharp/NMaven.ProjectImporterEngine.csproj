@@ -73,12 +73,8 @@
     <Compile Include="NMaven\ProjectImporter\Digest\ProjectDigester.cs" />
     <Compile Include="NMaven\ProjectImporter\ImportProjectStructureAlgorithms\IProjectTypeImporter.cs" />
     <Compile Include="NMaven\ProjectImporter\NMavenImporter.cs" />
-    <Compile Include="NMaven\ProjectImporter\Parser\Solution\AbstractSolutionParserAlgorithm.cs" />
-    <Compile Include="NMaven\ProjectImporter\Parser\Solution\ISolutionParserAlgorithm.cs" />
     <Compile Include="NMaven\ProjectImporter\Parser\Solution\ProjectSolutionParser.cs" />
-    <Compile Include="NMaven\ProjectImporter\Parser\Solution\ProjectSolutionParserWithoutInnerDataAlgorithm.cs" />
     <Compile Include="NMaven\ProjectImporter\Parser\Solution\SolutionParser.cs" />
-    <Compile Include="NMaven\ProjectImporter\Parser\Solution\ProjectSolutionParserWithInnerWebsitePropertiesDataAlgorithm.cs" />
     <Compile Include="NMaven\ProjectImporter\Parser\VisualStudioProjectTypes\VisualStudioProjectTypeEnum.cs" />
     <Compile Include="NMaven\ProjectImporter\Parser\VisualStudioProjectTypes\VisualStudioProjectType.cs" />
     <Compile Include="NMaven\ProjectImporter\SlnParser\LexanState.cs" />

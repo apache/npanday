@@ -13,7 +13,7 @@ using System.Xml;
 
 namespace NMaven.ProjectImporter.Parser.Solution
 {
-    public class ProjectSolutionParser : ISolutionParserAlgorithm
+    public class ProjectSolutionParser
     {
 
         protected static string PROJECT_REFERENCE_REGEX;
@@ -135,8 +135,6 @@ namespace NMaven.ProjectImporter.Parser.Solution
                     }
                     else if("ProjectDependencies".Equals(ps.Name))
                     {
-                        // TODO: implemtation here
-
                         //{0D80BE11-F1CE-409E-B9AC-039D3801209F} = {0D80BE11-F1CE-409E-B9AC-039D3801209F}
 
                         foreach (string key in ps.Map.Keys)
