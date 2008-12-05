@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using NMaven.ProjectImporter.SlnParser.Model;
+using NMaven.ProjectImporter.Parser.SlnParser.Model;
 using System.IO;
 
 /// Author: Leopoldo Lee Agdeppa III
 
-namespace NMaven.ProjectImporter.SlnParser
+namespace NMaven.ProjectImporter.Parser.SlnParser
 {
     public static class SolutionFactory
     {

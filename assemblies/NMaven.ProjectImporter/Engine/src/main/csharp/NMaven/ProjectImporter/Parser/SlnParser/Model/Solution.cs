@@ -5,7 +5,7 @@ using System.IO;
 
 /// Author: Leopoldo Lee Agdeppa III
 
-namespace NMaven.ProjectImporter.SlnParser.Model
+namespace NMaven.ProjectImporter.Parser.SlnParser.Model
 {
     public class Solution
     {

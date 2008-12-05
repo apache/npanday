@@ -4,11 +4,10 @@ using System.Text;
 
 /// Author: Leopoldo Lee Agdeppa III
 
-namespace NMaven.ProjectImporter.SlnParser.Model
+namespace NMaven.ProjectImporter.Parser.SlnParser.Model
 {
-    public class GlobalSection
+    public class ProjectSection
     {
-
         string name;
         public string Name
         {

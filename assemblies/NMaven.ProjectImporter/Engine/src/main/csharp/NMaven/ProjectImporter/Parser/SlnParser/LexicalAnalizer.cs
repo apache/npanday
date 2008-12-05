@@ -5,7 +5,7 @@ using System.IO;
 
 /// Author: Leopoldo Lee Agdeppa III
 
-namespace NMaven.ProjectImporter.SlnParser
+namespace NMaven.ProjectImporter.Parser.SlnParser
 {
     public class LexicalAnalizer
     {
