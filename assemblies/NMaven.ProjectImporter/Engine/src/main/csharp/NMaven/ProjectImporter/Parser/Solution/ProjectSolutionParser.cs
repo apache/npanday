@@ -6,19 +6,36 @@ using NMaven.ProjectImporter.SlnParser.Model;
 using System.IO;
 using NMaven.ProjectImporter.Parser.VisualStudioProjectTypes;
 using System.Text.RegularExpressions;
+using Microsoft.Build.BuildEngine;
+using System.Xml;
 
 namespace NMaven.ProjectImporter.Parser.Solution
 {
-    public class ProjectSolutionParser : AbstractSolutionParserAlgorithm
+    public class ProjectSolutionParser : ISolutionParserAlgorithm
     {
-        public override List<Dictionary<string, object>> Parse(FileInfo solutionFile)
+
+        protected static string PROJECT_REFERENCE_REGEX;
+
+        protected static Engine BUILD_ENGINE;
+
+        static ProjectSolutionParser()
+        {
+            PROJECT_REFERENCE_REGEX = @"({(?<ProjectReferenceGUID>([^\}])*)}\|(?<ProjectReferenceDll>([^;])*);)";
+
+            // gets the directory path of mscorlib using the System.String Type Assembly path
+            string msBuildPath = Path.GetDirectoryName(System.Reflection.Assembly.GetAssembly(typeof(string)).Location);
+            BUILD_ENGINE = new Engine(msBuildPath);
+        }
+
+
+        public List<Dictionary<string, object>> Parse(FileInfo solutionFile)
         {
 
             List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
             NMaven.ProjectImporter.SlnParser.Model.Solution solution = SolutionFactory.GetSolution(solutionFile);
 
 
-            foreach (Project project in solution.Projects)
+            foreach (NMaven.ProjectImporter.SlnParser.Model.Project project in solution.Projects)
             {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
@@ -79,7 +96,7 @@ namespace NMaven.ProjectImporter.Parser.Solution
 
 
 
-        protected void ParseProjectReferences(Dictionary<string, object> dictionary, Project project, NMaven.ProjectImporter.SlnParser.Model.Solution solution)
+        protected void ParseProjectReferences(Dictionary<string, object> dictionary, NMaven.ProjectImporter.SlnParser.Model.Project project, NMaven.ProjectImporter.SlnParser.Model.Solution solution)
         {
             if (project.ProjectSections != null)
             {
@@ -142,7 +159,7 @@ namespace NMaven.ProjectImporter.Parser.Solution
         Microsoft.Build.BuildEngine.Project GetMSBuildProject(NMaven.ProjectImporter.SlnParser.Model.Solution solution, string projectGuid)
         {
 
-            foreach (Project p in solution.Projects)
+            foreach (NMaven.ProjectImporter.SlnParser.Model.Project p in solution.Projects)
             {
                 if (p.ProjectGUID.Equals("{" + projectGuid + "}", StringComparison.OrdinalIgnoreCase))
                 {
@@ -169,6 +186,72 @@ namespace NMaven.ProjectImporter.Parser.Solution
             }
 
             return null;
+        }
+
+
+
+        protected string[] GetWebConfigAssemblies(string webconfig)
+        {
+            List<string> list = new List<string>();
+
+            string xpath_expr = @"//configuration/system.web/compilation/assemblies/add";
+
+            FileInfo webConfigFile = new FileInfo(webconfig);
+
+            if (!webConfigFile.Exists)
+            {
+                // return empty string array
+                return list.ToArray();
+            }
+
+
+            XmlDocument xmldoc = new System.Xml.XmlDocument();
+            xmldoc.Load(webConfigFile.FullName);
+
+            XmlNodeList valueList = xmldoc.SelectNodes(xpath_expr);
+
+            foreach (System.Xml.XmlNode val in valueList)
+            {
+                string assembly = val.Attributes["assembly"].Value;
+
+                if (!string.IsNullOrEmpty(assembly))
+                {
+                    list.Add(assembly);
+                }
+
+            }
+
+
+
+            return list.ToArray();
+
+        }
+
+
+        protected String[] GetBinAssemblies(string webBinDir)
+        {
+            List<string> list = new List<string>();
+
+            DirectoryInfo dir = new DirectoryInfo(webBinDir);
+
+            if (!dir.Exists)
+            {
+                // return an empty array string
+                return list.ToArray();
+            }
+
+            foreach (FileInfo dll in dir.GetFiles("*.dll"))
+            {
+                list.Add(dll.FullName);
+
+            }
+
+
+
+            return list.ToArray();
+
+
+
         }
 
 
