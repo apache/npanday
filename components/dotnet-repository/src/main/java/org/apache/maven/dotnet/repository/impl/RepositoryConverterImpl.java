@@ -103,7 +103,7 @@ public class RepositoryConverterImpl
         Set<Project> projects = dao.getAllProjects();
         for ( Project project : projects )
         {
-            logger.info( "NMAVEN-190-000: Converting Project: Artifact ID = " + project.getArtifactId() +
+            logger.info( "NPANDAY-190-000: Converting Project: Artifact ID = " + project.getArtifactId() +
                 ", Dependency Count =" + project.getProjectDependencies().size() );
             Artifact artifact = ProjectFactory.createArtifactFrom( project, artifactFactory, mavenRepository );
             Model model = ProjectFactory.createModelFrom( project );
@@ -121,7 +121,7 @@ public class RepositoryConverterImpl
                 }
                 else
                 {
-                    logger.info( "NMAVEN-190-001: Could not find file: " + artifact.getFile().getAbsolutePath() );
+                    logger.info( "NPANDAY-190-001: Could not find file: " + artifact.getFile().getAbsolutePath() );
                     continue;
                 }
             }
@@ -159,7 +159,7 @@ public class RepositoryConverterImpl
         Project project = dao.getProjectFor( artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                              artifact.getType(), artifact.getClassifier() );
 
-        logger.info( "NMAVEN-190-002: Converting Project: Artifact ID = " + project.getArtifactId() +
+        logger.info( "NPANDAY-190-002: Converting Project: Artifact ID = " + project.getArtifactId() +
             ", Dependency Count =" + project.getProjectDependencies().size() );
         Model model = ProjectFactory.createModelFrom( project );
 
@@ -176,7 +176,7 @@ public class RepositoryConverterImpl
             }
             else
             {
-                logger.info( "NMAVEN-190-003: Could not find file: " + artifact.getFile().getAbsolutePath() );
+                logger.info( "NPANDAY-190-003: Could not find file: " + artifact.getFile().getAbsolutePath() );
                 return;
             }
         }
