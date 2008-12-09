@@ -17,8 +17,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 <model>
-  <id>nmaven-settings</id>
-  <name>NMavenSettings</name>
+  <id>npanday-settings</id>
+  <name>NPandaySettings</name>
   <description></description>
   <defaults>
     <default>
@@ -27,8 +27,8 @@ under the License.
     </default>
   </defaults>
   <classes>
-    <class rootElement="true" xml.tagName="nmavenSettings">
-      <name>NMavenSettings</name>
+    <class rootElement="true" xml.tagName="npandaySettings">
+      <name>NPandaySettings</name>
       <fields>
         <field>
           <name>operatingSystem</name>
