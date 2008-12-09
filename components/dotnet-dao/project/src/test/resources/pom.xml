@@ -20,9 +20,9 @@ under the License.
 -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>NMaven.Test2</groupId>  
-  <artifactId>NMaven.Test2.Test1</artifactId>  
+  <groupId>NPanday.Test2</groupId>  
+  <artifactId>NPanday.Test2.Test1</artifactId>  
   <version>0.14-incubating-SNAPSHOT</version>  
-  <name>NMaven.Test2.Test1</name>  
+  <name>NPanday.Test2.Test1</name>  
   <description/> 
 </project>

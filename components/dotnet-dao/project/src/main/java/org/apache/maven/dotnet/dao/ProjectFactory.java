@@ -132,7 +132,7 @@ public final class ProjectFactory
                 }
                 catch ( XmlPullParserException e )
                 {
-                    throw new IOException( "NMAVEN-180-000: Unable to read model: Message = " + e.getMessage() );
+                    throw new IOException( "NPANDAY-180-000: Unable to read model: Message = " + e.getMessage() );
 
                 }
                 //Project parentProject = createProjectFrom( parentModel, parentPomFile.getParentFile() );
@@ -271,23 +271,23 @@ public final class ProjectFactory
     {
         if ( project.getGroupId() == null )
         {
-            logger.warning( "NMAVEN-180-001: Project Group ID is missing" );
+            logger.warning( "NPANDAY-180-001: Project Group ID is missing" );
             return false;
         }
         if ( project.getArtifactId() == null )
         {
-            logger.warning( "NMAVEN-180-002: Project Artifact ID is missing: Group Id = " + project.getGroupId() );
+            logger.warning( "NPANDAY-180-002: Project Artifact ID is missing: Group Id = " + project.getGroupId() );
             return false;
         }
         if ( project.getVersion() == null )
         {
-            logger.warning( "NMAVEN-180-003: Project Version is missing: Group Id = " + project.getGroupId() +
+            logger.warning( "NPANDAY-180-003: Project Version is missing: Group Id = " + project.getGroupId() +
                 ", Artifact Id = " + project.getArtifactId() );
             return false;
         }
         if ( project.getArtifactType() == null )
         {
-            logger.warning( "NMAVEN-180-004: Project Artifact Type is missing: Group Id" + project.getGroupId() +
+            logger.warning( "NPANDAY-180-004: Project Artifact Type is missing: Group Id" + project.getGroupId() +
                 ", Artifact Id = " + project.getArtifactId() + ", Version = " + project.getVersion() );
             return false;
         }

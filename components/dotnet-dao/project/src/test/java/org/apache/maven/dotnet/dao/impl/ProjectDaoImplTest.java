@@ -66,11 +66,11 @@ public class ProjectDaoImplTest
         ProjectDao dao = this.createProjectDao();
 
         Project project = new Project();
-        project.setGroupId( "NMaven" );
-        project.setArtifactId( "NMaven.Test5" );
+        project.setGroupId( "NPanday" );
+        project.setArtifactId( "NPanday.Test5" );
         project.setVersion( "1.0.0" );
         project.setArtifactType( "library" );
-        //ProjectDependency test2 = createProjectDependency( "NMaven", "NMaven.Test5", "1.0.0" );
+        //ProjectDependency test2 = createProjectDependency( "NPanday", "NPanday.Test5", "1.0.0" );
         //project.addProjectDependency( test2 );
 
         try
@@ -102,8 +102,8 @@ public class ProjectDaoImplTest
         ProjectDao dao = this.createProjectDao();
 
         Project project = new Project();
-        project.setGroupId( "NMaven.Model" );
-        project.setArtifactId( "NMaven.Model.Pom" );
+        project.setGroupId( "NPanday.Model" );
+        project.setArtifactId( "NPanday.Model.Pom" );
         project.setVersion( "0.14.0.0" );
         project.setPublicKeyTokenId( "b03f5f7f11d50a3a" );
         project.setArtifactType( "library" );
@@ -136,7 +136,7 @@ public class ProjectDaoImplTest
         Project proj = null;
         try
         {
-            proj = dao.getProjectFor( "NMaven.Model", "NMaven.Model.Pom", "0.14.0.0", "library", null );
+            proj = dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.14.0.0", "library", null );
         }
         catch ( java.io.IOException e )
         {
@@ -186,11 +186,11 @@ public class ProjectDaoImplTest
         ProjectDao dao = this.createProjectDao();
 
         Project project1 = new Project();
-        project1.setGroupId( "NMaven" );
-        project1.setArtifactId( "NMaven.Plugin" );
+        project1.setGroupId( "NPanday" );
+        project1.setArtifactId( "NPanday.Plugin" );
         project1.setVersion( "0.14.0.0" );
         project1.setArtifactType( "library" );
-        project1.addProjectDependency( this.createProjectDependency( "NMaven", "NMaven.Test4", "1.0.0" ) );
+        project1.addProjectDependency( this.createProjectDependency( "NPanday", "NPanday.Test4", "1.0.0" ) );
 
         Set<Artifact> artifacts = null;
         try
@@ -207,14 +207,14 @@ public class ProjectDaoImplTest
         assertEquals( "Incorrect number of returned artifacts", 1, artifacts.size() );
 
         Artifact artifact = (Artifact) artifacts.toArray()[0];
-        assertEquals( "Group Id is incorrect", "NMaven", artifact.getGroupId() );
-        assertEquals( "Artifact Id is incorrect", "NMaven.Test4", artifact.getArtifactId() );
+        assertEquals( "Group Id is incorrect", "NPanday", artifact.getGroupId() );
+        assertEquals( "Artifact Id is incorrect", "NPanday.Test4", artifact.getArtifactId() );
         assertEquals( "Version is incorrect", "1.0.0", artifact.getVersion() );
 
         Project testProject = null;
         try
         {
-            testProject = dao.getProjectFor( "NMaven", "NMaven.Plugin", "0.14.0.0", "library", null );
+            testProject = dao.getProjectFor( "NPanday", "NPanday.Plugin", "0.14.0.0", "library", null );
         }
         catch ( IOException e )
         {
@@ -229,7 +229,7 @@ public class ProjectDaoImplTest
         ProjectDependency projectDependency = (ProjectDependency) projectDependencies.toArray()[0];
         assertTrue( "Could not find required dependency. Found Dependency: GroupId = " +
             projectDependency.getGroupId() + ", Artifact Id = " + projectDependency.getArtifactId(),
-                    this.hasDependency( "NMaven", "NMaven.Test4", "1.0.0", projectDependencies ) );
+                    this.hasDependency( "NPanday", "NPanday.Test4", "1.0.0", projectDependencies ) );
         dao.closeConnection();
     }
 
@@ -239,8 +239,8 @@ public class ProjectDaoImplTest
         ProjectDao dao = this.createProjectDao();
 
         Project project = new Project();
-        project.setGroupId( "NMaven.Model" );
-        project.setArtifactId( "NMaven.Model.Pom" );
+        project.setGroupId( "NPanday.Model" );
+        project.setArtifactId( "NPanday.Model.Pom" );
         project.setVersion( "0.14.0.0" );
         project.setArtifactType( "library" );
         Set<Artifact> artifacts = null;
@@ -258,7 +258,7 @@ public class ProjectDaoImplTest
         Project proj = null;
         try
         {
-            proj = dao.getProjectFor( "NMaven.Model", "NMaven.Model.Pom", "0.14.0.0", "library", null );
+            proj = dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.14.0.0", "library", null );
         }
         catch ( java.io.IOException e )
         {
@@ -279,8 +279,8 @@ public class ProjectDaoImplTest
         ProjectDao dao = this.createProjectDao();
 
         Project project = new Project();
-        project.setGroupId( "NMaven.Model" );
-        project.setArtifactId( "NMaven.Model.Pom" );
+        project.setGroupId( "NPanday.Model" );
+        project.setArtifactId( "NPanday.Model.Pom" );
         project.setVersion( "0.14.0.0" );
         project.setArtifactType( "library" );
 
@@ -297,7 +297,7 @@ public class ProjectDaoImplTest
 
         try
         {
-            dao.getProjectFor( "NMaven.Model", "NMaven.Model.Pom", "0.15.0.0", "library", null );
+            dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.15.0.0", "library", null );
         }
         catch ( java.io.IOException e )
         {
