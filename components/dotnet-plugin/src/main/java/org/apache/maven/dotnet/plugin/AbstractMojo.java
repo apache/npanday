@@ -100,7 +100,7 @@ public abstract class AbstractMojo
         }
         catch ( ParserConfigurationException e )
         {
-            throw new MojoExecutionException( "NMAVEN-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
         }
         Document document = builder.newDocument();
 
@@ -113,7 +113,7 @@ public abstract class AbstractMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
         }
 
         StreamResult result = new StreamResult();
@@ -125,12 +125,12 @@ public abstract class AbstractMojo
         }
         catch ( TransformerConfigurationException e )
         {
-            throw new MojoExecutionException( "NMAVEN-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
 
         }
         catch ( TransformerException e )
         {
-            throw new MojoExecutionException( "NMAVEN-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
         }
         finally
         {
@@ -140,7 +140,7 @@ public abstract class AbstractMojo
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "NMAVEN-xxx-000: Unable to write file", e );
+                throw new MojoExecutionException( "NPANDAY-xxx-000: Unable to write file", e );
             }
         }
 
@@ -162,13 +162,13 @@ public abstract class AbstractMojo
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NMAVEN-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
         } catch (ComponentLookupException e) {
-            throw new MojoExecutionException( "NMAVEN-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
         }
     }
 

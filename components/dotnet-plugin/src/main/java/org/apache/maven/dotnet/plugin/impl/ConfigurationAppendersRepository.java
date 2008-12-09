@@ -34,7 +34,7 @@ public class ConfigurationAppendersRepository implements Repository
         catch ( XmlPullParserException e )
         {
             e.printStackTrace();
-            throw new IOException( "NMAVEN-062-000: Could not read plugins-compiler.xml" );
+            throw new IOException( "NPANDAY-062-000: Could not read plugins-compiler.xml" );
         }
         List<ConfigurationAppender> appenders  = model.getConfigurationAppenders();
         appenderClasses = new HashSet<Class>();
@@ -47,7 +47,7 @@ public class ConfigurationAppendersRepository implements Repository
             catch ( ClassNotFoundException e )
             {
                 e.printStackTrace();
-                throw new IOException("NMAVEN-xxx-000: Could not load class appender: Name = ");
+                throw new IOException("NPANDAY-xxx-000: Could not load class appender: Name = ");
             }
         }
 
