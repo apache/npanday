@@ -38,8 +38,8 @@ under the License.
   </dependencies>  
   <distributionManagement> 
     <site> 
-      <id>nmaven-apache-site</id>  
-      <name>NMaven Site</name>  
+      <id>npanday-apache-site</id>  
+      <name>NPanday Site</name>  
       <url>file://${basedir}/../../../www/plugins/maven-install-plugin</url> 
     </site> 
   </distributionManagement> 

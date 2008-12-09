@@ -157,17 +157,17 @@ public class InstallerMojo
                                                                                             profile, getCommands(),
                                                                                             null );
                     netExecutable.execute();
-                    getLog().info( "NMAVEN-xxx-003: Installed Assembly into GAC: Assembly = " +
+                    getLog().info( "NPANDAY-xxx-003: Installed Assembly into GAC: Assembly = " +
                         project.getArtifact().getFile() + ",  Vendor = " + netExecutable.getVendor().getVendorName() );
                 }
                 catch ( ExecutionException e )
                 {
-                    throw new MojoExecutionException( "NMAVEN-1400-000: Unable to execute gacutil: Vendor " + vendor +
+                    throw new MojoExecutionException( "NPANDAY-1400-000: Unable to execute gacutil: Vendor " + vendor +
                         ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
                 }
                 catch ( PlatformUnsupportedException e )
                 {
-                    throw new MojoExecutionException( "NMAVEN-1400-001: Platform Unsupported: Vendor " + vendor +
+                    throw new MojoExecutionException( "NPANDAY-1400-001: Platform Unsupported: Vendor " + vendor +
                         ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
                 }
                 storeMavenProject( project );
@@ -180,7 +180,7 @@ public class InstallerMojo
             }
             catch ( ArtifactInstallationException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1001-000: Failed to install artifacts", e );
+                throw new MojoExecutionException( "NPANDAY-1001-000: Failed to install artifacts", e );
             }
         }
 
@@ -263,7 +263,7 @@ public class InstallerMojo
         }
         catch ( java.io.IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1001-001: Failed to install artifacts", e );
+            throw new MojoExecutionException( "NPANDAY-1001-001: Failed to install artifacts", e );
         }
     }
 }

@@ -93,7 +93,7 @@ public class LinkerMojo
         {
             return;
         }
-        getLog().info( "NMAVEN-000-000: Linking modules to assembly: Output File = " + outputFile.getAbsolutePath() );
+        getLog().info( "NPANDAY-000-000: Linking modules to assembly: Output File = " + outputFile.getAbsolutePath() );
 
         try
         {
@@ -102,12 +102,12 @@ public class LinkerMojo
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1400-000: Unable to execute al: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-1400-000: Unable to execute al: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1400-001: Platform Unsupported: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-1400-001: Platform Unsupported: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
     }

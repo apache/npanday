@@ -101,7 +101,7 @@ public class FileInstallerMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
+    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
 
     /**
      * The artifact factory component, which is used for creating artifacts.
@@ -136,19 +136,19 @@ public class FileInstallerMojo
         if ( pomFile != null && !pomFile.exists() )
         {
             throw new MojoExecutionException(
-                "NMAVEN-1000-002: Pom  File is missing: File = " + pomFile.getAbsolutePath() );
+                "NPANDAY-1000-002: Pom  File is missing: File = " + pomFile.getAbsolutePath() );
         }
         else if ( pomFile == null )
         {
             try
             {
-                this.getLog().info( "NMAVEN-xxx-000: Installing file with generated pom" );
+                this.getLog().info( "NPANDAY-xxx-000: Installing file with generated pom" );
                 artifactContext.getArtifactInstaller().installFileWithoutPom( groupId, artifactId, version, packaging,
                                                                               artifactFile );
             }
             catch ( org.apache.maven.artifact.installer.ArtifactInstallationException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1000-000: Failed to install artifact file", e );
+                throw new MojoExecutionException( "NPANDAY-1000-000: Failed to install artifact file", e );
             }
         }
         else
@@ -156,14 +156,14 @@ public class FileInstallerMojo
             Artifact sourceArtifact =
                 artifactFactory.createArtifact( groupId, artifactId, version, "compile", packaging );
             sourceArtifact.setFile( artifactFile );
-            this.getLog().info( "NMAVEN-xxx-000: Installing file with specified pom" );
+            this.getLog().info( "NPANDAY-xxx-000: Installing file with specified pom" );
             try
             {
                 artifactContext.getArtifactInstaller().installArtifactWithPom( sourceArtifact, pomFile, false );
             }
             catch ( ArtifactInstallationException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1000-003: Failed to install artifact file", e );
+                throw new MojoExecutionException( "NPANDAY-1000-003: Failed to install artifact file", e );
             }
         }
     }
