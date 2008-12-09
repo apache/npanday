@@ -47,10 +47,10 @@ public class JettyStarter
 
         String port = System.getProperty( "port" );
         String warFile = System.getProperty( "warFile" );
-        logger.info( "NMAVEN: Port = " + port + ", warFile = " + warFile );
+        logger.info( "NPANDAY: Port = " + port + ", warFile = " + warFile );
         if ( !new File( warFile ).exists() )
         {
-            logger.severe( "NMAVEN: War File does not exist" );
+            logger.severe( "NPANDAY: War File does not exist" );
             return;
         }
 
@@ -76,10 +76,10 @@ public class JettyStarter
         }
         catch ( Exception e )
         {
-            logger.severe( "NMAVEN: Problem starting the server: " + e.getMessage() );
+            logger.severe( "NPANDAY: Problem starting the server: " + e.getMessage() );
         }
 
-        logger.info( "NMAVEN: Successfully started server" );
+        logger.info( "NPANDAY: Successfully started server" );
 
         try
         {
@@ -87,7 +87,7 @@ public class JettyStarter
         }
         catch ( InterruptedException e )
         {
-            logger.severe( "NMAVEN: Problem joining the server: " + e.getMessage() );
+            logger.severe( "NPANDAY: Problem joining the server: " + e.getMessage() );
         }
     }
 
