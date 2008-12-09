@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="npandaySettings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="operatingSystem" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="architecture" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="defaultSetup" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="vendorName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+              <xs:element name="vendorVersion" type="xs:string" minOccurs="0" maxOccurs="1"/>
+              <xs:element name="frameworkVersion" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="vendors" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="vendor" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="vendorName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="vendorVersion" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="isDefault" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="frameworks" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="framework" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="frameworkVersion" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                <xs:element name="installRoot" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                <xs:element name="sdkInstallRoot" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                <xs:element name="executablePaths" minOccurs="0" maxOccurs="1">
+                                   <xs:complexType>
+                                     <xs:sequence>
+                                       <xs:element name="executablePath" type = "xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                                     </xs:sequence>
+                                   </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="npandaySettings"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

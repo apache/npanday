@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">  
+  <parent> 
+    <groupId>org.apache.maven.dotnet.plugins</groupId>  
+    <version>0.14-incubating-SNAPSHOT</version>  
+    <artifactId>maven-dotnet-plugins</artifactId>  
+    <relativePath>../../../pom.xml</relativePath> 
+  </parent>  
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>NPanday.Plugins</groupId>  
+  <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>  
+  <packaging>maven-plugin</packaging>  
+  <name>NPanday.Plugin.Settings.JavaBinding</name>  
+  <dependencies> 
+    <dependency> 
+      <groupId>org.apache.maven.dotnet</groupId>  
+      <artifactId>dotnet-assembler</artifactId>  
+      <version>0.14-incubating-SNAPSHOT</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.apache.maven.dotnet</groupId>  
+      <artifactId>dotnet-executable</artifactId>  
+      <version>0.14-incubating-SNAPSHOT</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.apache.maven.dotnet</groupId>  
+      <artifactId>dotnet-artifact</artifactId>  
+      <version>0.14-incubating-SNAPSHOT</version> 
+    </dependency>  
+    <dependency> 
+      <groupId>org.apache.maven.dotnet</groupId>  
+      <artifactId>dotnet-plugin</artifactId>  
+      <version>0.14-incubating-SNAPSHOT</version> 
+    </dependency> 
+  </dependencies>  
+  <distributionManagement> 
+    <site> 
+      <id>npanday-apache-site</id>  
+      <name>NPanday Site</name>  
+      <url>file://${basedir}/../../../www/plugins/maven-settings-plugin</url> 
+    </site> 
+  </distributionManagement> 
+</project>
