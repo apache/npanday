@@ -114,7 +114,7 @@ public class DeployMojo
             }
             catch ( ArtifactDeploymentException e )
             {
-                throw new MojoExecutionException( "NMAVEN-DEPLOY: Deploy Failed", e );
+                throw new MojoExecutionException( "NPANDAY-DEPLOY: Deploy Failed", e );
             }
         }
 
@@ -130,7 +130,7 @@ public class DeployMojo
             }
             catch ( ArtifactDeploymentException e )
             {
-                throw new MojoExecutionException( "NMAVEN-DEPLOY: Deploy Failed", e );
+                throw new MojoExecutionException( "NPANDAY-DEPLOY: Deploy Failed", e );
             }
         }
 
@@ -141,7 +141,7 @@ public class DeployMojo
         }
         catch ( ArtifactDeploymentException e )
         {
-            throw new MojoExecutionException( "NMAVEN-DEPLOY: Deploy Failed", e );
+            throw new MojoExecutionException( "NPANDAY-DEPLOY: Deploy Failed", e );
         }
     }
 }
