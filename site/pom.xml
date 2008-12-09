@@ -3,47 +3,47 @@
 <project> 
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.maven-site</groupId>  
-  <artifactId>nmaven-apache-site</artifactId>  
+  <artifactId>npanday-apache-site</artifactId>  
   <packaging>pom</packaging>  
   <version>0.14-incubating-SNAPSHOT</version>  
-  <name>NMaven</name>  
-  <url>http://incubator.apache.org/nmaven</url>  
-  <description>NMaven provides Maven 2.x plugins to support building of .NET applications</description>  
+  <name>NPanday</name>  
+  <url>http://incubator.apache.org/npanday</url>  
+  <description>NPanday provides Maven 2.x plugins to support building of .NET applications</description>  
   <mailingLists> 
     <mailingList> 
-      <name>NMaven Dev List</name>  
-      <subscribe>nmaven-dev-subscribe@incubator.apache.org</subscribe>  
-      <unsubscribe>nmaven-dev-unsubscribe@incubator.apache.org</unsubscribe>  
-      <post>nmaven-dev@incubator.apache.org</post>  
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-nmaven-dev/</archive>  
+      <name>NPanday Dev List</name>  
+      <subscribe>npanday-dev-subscribe@incubator.apache.org</subscribe>  
+      <unsubscribe>npanday-dev-unsubscribe@incubator.apache.org</unsubscribe>  
+      <post>npanday-dev@incubator.apache.org</post>  
+      <archive>http://mail-archives.apache.org/mod_mbox/incubator-npanday-dev/</archive>  
       <otherArchives> 
-        <otherArchive>http://www.nabble.com/nmaven-dev-f17655.html</otherArchive> 
+        <otherArchive>http://www.nabble.com/npanday-dev-f17655.html</otherArchive> 
       </otherArchives> 
     </mailingList>  
     <mailingList> 
-      <name>NMaven Commits List</name>  
-      <subscribe>nmaven-commits-subscribe@incubator.apache.org</subscribe>  
-      <unsubscribe>nmaven-commits-unsubscribe@incubator.apache.org</unsubscribe>  
-      <post>nmaven-commits@incubator.apache.org</post>  
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-nmaven-commits/</archive>  
+      <name>NPanday Commits List</name>  
+      <subscribe>npanday-commits-subscribe@incubator.apache.org</subscribe>  
+      <unsubscribe>npanday-commits-unsubscribe@incubator.apache.org</unsubscribe>  
+      <post>npanday-commits@incubator.apache.org</post>  
+      <archive>http://mail-archives.apache.org/mod_mbox/incubator-npanday-commits/</archive>  
       <otherArchives> 
-        <otherArchive>http://www.nabble.com/nmaven-commits-f17656.html</otherArchive> 
+        <otherArchive>http://www.nabble.com/npanday-commits-f17656.html</otherArchive> 
       </otherArchives> 
     </mailingList> 
   </mailingLists>  
   <scm> 
-    <url>https://svn.apache.org/repos/asf/incubator/nmaven/</url>  
-    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</connection>  
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/trunk</developerConnection>  
+    <url>https://svn.apache.org/repos/asf/incubator/npanday/</url>  
+    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/</connection>  
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/trunk</developerConnection>  
     <tag>REL_0_14_SNAPSHOT</tag> 
   </scm>  
   <organization> 
-    <name>NMaven</name>  
-    <url>http://incubator.apache.org/nmaven</url> 
+    <name>NPanday</name>  
+    <url>http://incubator.apache.org/npanday</url> 
   </organization>  
   <issueManagement> 
     <system>JIRA Bugtracking</system>  
-    <url>http://jira.codehaus.org/browse/NMAVEN</url> 
+    <url>http://jira.codehaus.org/browse/NPANDAY</url> 
   </issueManagement>  
   <licenses> 
     <license> 
@@ -124,8 +124,8 @@
   </reporting>  
   <distributionManagement> 
     <site> 
-      <id>nmaven-apache-site</id>  
-      <name>NMaven Site</name>  
+      <id>npanday-apache-site</id>  
+      <name>NPanday Site</name>  
       <url>file://${basedir}/../../www</url> 
     </site> 
   </distributionManagement> 
