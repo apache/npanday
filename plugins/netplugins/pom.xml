@@ -20,22 +20,22 @@ under the License.
 -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <parent> 
-    <groupId>NMaven.Project</groupId>  
+    <groupId>NPanday.Project</groupId>  
     <version>0.14-incubating-SNAPSHOT</version>  
-    <artifactId>NMaven.Project</artifactId>  
+    <artifactId>NPanday.Project</artifactId>  
     <relativePath>../../pom-dotnet.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>NMaven.Plugins</groupId>  
-  <artifactId>NMaven.Plugins</artifactId>  
+  <groupId>NPanday.Plugins</groupId>  
+  <artifactId>NPanday.Plugins</artifactId>  
   <packaging>pom</packaging>  
   <version>0.14-incubating-SNAPSHOT</version>  
-  <name>NMaven.Plugins</name>  
+  <name>NPanday.Plugins</name>  
   <modules> 
-    <module>NMaven.Plugin.Addin</module>  
-    <module>NMaven.Plugin.Devenv</module>  
-    <module>NMaven.Plugin.Resx</module>  
-    <module>NMaven.Plugin.Settings</module> 
+    <module>NPanday.Plugin.Addin</module>  
+    <module>NPanday.Plugin.Devenv</module>  
+    <module>NPanday.Plugin.Resx</module>  
+    <module>NPanday.Plugin.Settings</module> 
   </modules>  
   <profiles> 
     <profile> 
@@ -45,7 +45,7 @@ under the License.
         </property> 
       </activation>  
       <modules> 
-        <module>NMaven.Plugin.Solution</module> 
+        <module>NPanday.Plugin.Solution</module> 
       </modules> 
     </profile> 
   </profiles> 
