@@ -44,17 +44,17 @@ public final class PathUtil
     {
         if ( artifact == null )
         {
-            logger.warning( "NMAVEN-040-000: Artifact is null - Cannot get application file." );
+            logger.warning( "NPANDAY-040-000: Artifact is null - Cannot get application file." );
             return null;
         }
         if ( gacRepository == null )
         {
-            logger.warning( "NMAVEN-040-001: GAC Repository is null - Cannot get application file." );
+            logger.warning( "NPANDAY-040-001: GAC Repository is null - Cannot get application file." );
             return null;
         }
         if ( artifact.getClassifier() == null )
         {
-            logger.warning( "NMAVEN-040-002: Assembly must be signed - Cannot get application file." );
+            logger.warning( "NPANDAY-040-002: Assembly must be signed - Cannot get application file." );
         }
         String version = artifact.getVersion();
         int count = version.split( "[.]" ).length;
@@ -81,12 +81,12 @@ public final class PathUtil
     {
         if ( artifact == null )
         {
-            logger.warning( "NMAVEN-040-007: Artifact is null - Cannot get repository file." );
+            logger.warning( "NPANDAY-040-007: Artifact is null - Cannot get repository file." );
             return null;
         }
         if ( localRepository == null )
         {
-            logger.warning( "NMAVEN-040-008: Local Repository is null - Cannot get repository file." );
+            logger.warning( "NPANDAY-040-008: Local Repository is null - Cannot get repository file." );
             return null;
         }
         return new File( localRepository, new DefaultRepositoryLayout().pathOf( artifact ) );
@@ -104,12 +104,12 @@ public final class PathUtil
     {
         if ( artifact == null )
         {
-            logger.warning( "NMAVEN-040-003: Artifact is null - Cannot get application file." );
+            logger.warning( "NPANDAY-040-003: Artifact is null - Cannot get application file." );
             return null;
         }
         if ( localRepository == null )
         {
-            logger.warning( "NMAVEN-040-004: Local Repository is null - Cannot get application file." );
+            logger.warning( "NPANDAY-040-004: Local Repository is null - Cannot get application file." );
             return null;
         }
         return new File( localRepository.getParentFile(), "pab" + File.separator +"gac_msil" + File.separator
@@ -130,19 +130,19 @@ public final class PathUtil
     {
         if ( artifact == null )
         {
-            logger.warning( "NMAVEN-040-005: Artifact is null - Cannot get application file." );
+            logger.warning( "NPANDAY-040-005: Artifact is null - Cannot get application file." );
             return null;
         }
         if ( localRepository == null )
         {
-            logger.warning( "NMAVEN-040-006: Local Repository is null - Cannot get application file." );
+            logger.warning( "NPANDAY-040-006: Local Repository is null - Cannot get application file." );
             return null;
         }
         ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifact.getType() );
 
         if(artifactType.equals( ArtifactType.NULL))
         {
-            logger.warning( "NMAVEN-040-009: Artifact Type not recognized - Cannot get application file: Type = "
+            logger.warning( "NPANDAY-040-009: Artifact Type not recognized - Cannot get application file: Type = "
                 + artifact.getType());
             return null;
         }

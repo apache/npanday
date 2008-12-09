@@ -1,74 +1,74 @@
 <netDependencies>
   <!--Plugins-->
   <netDependency>
-    <groupId>NMaven.Plugins</groupId>
-    <artifactId>NMaven.Plugin.Resx</artifactId>
+    <groupId>NPanday.Plugins</groupId>
+    <artifactId>NPanday.Plugin.Resx</artifactId>
     <type>exe</type>
   </netDependency>
   <netDependency>
-    <groupId>NMaven.Plugins</groupId>
-    <artifactId>NMaven.Plugin.Settings</artifactId>
+    <groupId>NPanday.Plugins</groupId>
+    <artifactId>NPanday.Plugin.Settings</artifactId>
     <type>netplugin</type>
   </netDependency>
   <netDependency>
-    <groupId>NMaven.Plugins</groupId>
-    <artifactId>NMaven.Plugin.Devenv</artifactId>
+    <groupId>NPanday.Plugins</groupId>
+    <artifactId>NPanday.Plugin.Devenv</artifactId>
     <type>netplugin</type>
   </netDependency>
   <netDependency>
-    <groupId>NMaven.Plugins</groupId>
-    <artifactId>NMaven.Plugin.Addin</artifactId>
+    <groupId>NPanday.Plugins</groupId>
+    <artifactId>NPanday.Plugin.Addin</artifactId>
     <type>netplugin</type>
   </netDependency>
 
   <!--IDE-->
   <netDependency>
-    <groupId>NMaven.VisualStudio</groupId>
-    <artifactId>NMaven.VisualStudio.Addin</artifactId>
+    <groupId>NPanday.VisualStudio</groupId>
+    <artifactId>NPanday.VisualStudio.Addin</artifactId>
     <type>visual-studio-addin</type>
     <profile>VisualStudio2005</profile>
   </netDependency>
   <netDependency>
-    <groupId>NMaven.VisualStudio</groupId>
-    <artifactId>NMaven.VisualStudio</artifactId>
+    <groupId>NPanday.VisualStudio</groupId>
+    <artifactId>NPanday.VisualStudio</artifactId>
     <type>library</type>
     <profile>VisualStudio2005</profile>
   </netDependency>
   <netDependency>
-    <groupId>NMaven.Plugins</groupId>
-    <artifactId>NMaven.Plugin.Solution</artifactId>
+    <groupId>NPanday.Plugins</groupId>
+    <artifactId>NPanday.Plugin.Solution</artifactId>
     <type>netplugin</type>
     <profile>VisualStudio2005</profile>
   </netDependency>
 
   <!--Plugin Framework-->
   <netDependency>
-    <groupId>NMaven.Plugin</groupId>
-    <artifactId>NMaven.Plugin</artifactId>
+    <groupId>NPanday.Plugin</groupId>
+    <artifactId>NPanday.Plugin</artifactId>
     <type>library</type>
     <isGacInstall>true</isGacInstall>
     <publicKeyToken>4b435f4d76e2f0e6</publicKeyToken>
   </netDependency>
   <netDependency>
-    <groupId>NMaven.Model</groupId>
-    <artifactId>NMaven.Model.Pom</artifactId>
+    <groupId>NPanday.Model</groupId>
+    <artifactId>NPanday.Model.Pom</artifactId>
     <type>library</type>
     <isGacInstall>true</isGacInstall>
     <publicKeyToken>4b435f4d76e2f0e6</publicKeyToken>
   </netDependency>
   <netDependency>
-    <groupId>NMaven.Plugin</groupId>
-    <artifactId>NMaven.Plugin.Runner</artifactId>
+    <groupId>NPanday.Plugin</groupId>
+    <artifactId>NPanday.Plugin.Runner</artifactId>
     <type>exe</type>
   </netDependency>
   <netDependency>
-    <groupId>NMaven.Plugin</groupId>
-    <artifactId>NMaven.Plugin.Loader</artifactId>
+    <groupId>NPanday.Plugin</groupId>
+    <artifactId>NPanday.Plugin.Loader</artifactId>
     <type>exe</type>
   </netDependency>
   <netDependency>
-    <groupId>NMaven.Plugin</groupId>
-    <artifactId>NMaven.Plugin.MojoGenerator</artifactId>
+    <groupId>NPanday.Plugin</groupId>
+    <artifactId>NPanday.Plugin.MojoGenerator</artifactId>
     <type>exe</type>
   </netDependency>
 </netDependencies>

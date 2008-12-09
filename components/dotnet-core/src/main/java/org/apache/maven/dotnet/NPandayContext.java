@@ -27,17 +27,17 @@ import org.codehaus.plexus.logging.Logger;
  * @author Shane Isbell
  */
 
-public interface NMavenContext
+public interface NPandayContext
 {
     /**
      * Role used to register component implementations with the container.
      */
-    String ROLE = NMavenContext.class.getName();
+    String ROLE = NPandayContext.class.getName();
 
     /**
      * This method is used to obtain an instance of a <code>Repository</code> specified within the registry-config.xml file.
      * This method allows the application developer to create configuration files and have them accessible through the
-     * NMaven Context. For more information on how the registry/repository works, go to
+     * NPanday Context. For more information on how the registry/repository works, go to
      * http://jvending.sourceforge.net/registry-cdc/
      *
      * @param repositoryName the name of the repository. This name should match the /<repository-name> field within the

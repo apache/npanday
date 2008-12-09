@@ -28,7 +28,7 @@ under the License.
   <groupId>org.apache.maven.dotnet</groupId>  
   <artifactId>dotnet-core</artifactId>  
   <name>dotnet-core</name>  
-  <description>NMaven</description>  
+  <description>NPanday</description>  
   <dependencies> 
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  

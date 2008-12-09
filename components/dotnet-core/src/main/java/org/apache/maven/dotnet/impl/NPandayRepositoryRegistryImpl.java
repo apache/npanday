@@ -16,29 +16,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet;
+package org.apache.maven.dotnet.impl;
 
 import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import org.apache.maven.dotnet.NPandayRepositoryRegistry;
 
 import java.io.IOException;
 
 /**
- * @author Shane Isbell
+ * Implementation of NPandayRepositoryRegistry
  */
-public interface NMavenRepositoryRegistry
+public final class NPandayRepositoryRegistryImpl
+    implements NPandayRepositoryRegistry
 {
 
-    /**
-     * Role used to register component implementations with the container.
-     */
-    String ROLE = NMavenRepositoryRegistry.class.getName();
+    private RepositoryRegistry repositoryRegistry;
 
     /**
-     * Creates a repository registry.
+     * Returns an instance of the repository registry.
      *
-     * @return an repository registry
+     * @return an instance of the repository registry
      * @throws IOException
      */
-    RepositoryRegistry createRepositoryRegistry()
-        throws IOException;
+    public synchronized RepositoryRegistry createRepositoryRegistry()
+        throws IOException
+    {
+        if ( repositoryRegistry.isEmpty() )
+        {
+            repositoryRegistry.loadFromResource( "/META-INF/npanday/registry-config.xml", this.getClass() );
+        }
+        return repositoryRegistry;
+    }
 }
