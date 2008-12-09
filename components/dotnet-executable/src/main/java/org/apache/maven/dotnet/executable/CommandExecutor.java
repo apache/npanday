@@ -355,24 +355,24 @@ public interface CommandExecutor
                         result = CommandLineUtils.executeCommandLine( commandline, stdOut, stdErr );
                         if ( logger != null )
                         {
-                            logger.debug( "NMAVEN-040-000: Executed command: Commandline = " + commandline +
+                            logger.debug( "NPANDAY-040-000: Executed command: Commandline = " + commandline +
                                 ", Result = " + result );
                         }
                         else
                         {
-                            System.out.println( "NMAVEN-040-000: Executed command: Commandline = " + commandline +
+                            System.out.println( "NPANDAY-040-000: Executed command: Commandline = " + commandline +
                                 ", Result = " + result );
                         }
                         if ( ( failsOnErrorOutput && stdErr.hasError() ) || result != 0 )
                         {
-                            throw new ExecutionException( "NMAVEN-040-001: Could not execute: Command = " +
+                            throw new ExecutionException( "NPANDAY-040-001: Could not execute: Command = " +
                                 commandline.toString() + ", Result = " + result );
                         }
                     }
                     catch ( CommandLineException e )
                     {
                         throw new ExecutionException(
-                            "NMAVEN-040-002: Could not execute: Command = " + commandline.toString() );
+                            "NPANDAY-040-002: Could not execute: Command = " + commandline.toString() );
                     }
                 }
 
@@ -393,7 +393,7 @@ public interface CommandExecutor
 
                 /**
                  * Provides behavior for determining whether the command utility wrote anything to the Standard Error Stream.
-                 * NOTE: I am using this to decide whether to fail the NMaven build. If the compiler implementation chooses
+                 * NOTE: I am using this to decide whether to fail the NPanday build. If the compiler implementation chooses
                  * to write warnings to the error stream, then the build will fail on warnings!!!
                  */
                 class ErrorStreamConsumer
@@ -414,7 +414,7 @@ public interface CommandExecutor
                     {
                         if ( logger == null )
                         {
-                            System.out.println( "NMAVEN-040-003: Error Log not set: Will not output error logs" );
+                            System.out.println( "NPANDAY-040-003: Error Log not set: Will not output error logs" );
                         }
                         error = false;
                     }

@@ -20,7 +20,7 @@ package org.apache.maven.dotnet.executable.compiler.impl;
 
 import org.apache.maven.dotnet.executable.NetExecutable;
 import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.NMavenContext;
+import org.apache.maven.dotnet.NPandayContext;
 import org.apache.maven.dotnet.executable.compiler.CompilerContext;
 
 import java.util.List;
@@ -55,7 +55,7 @@ public final class CSharpCompilerForProfile
         if ( !path.exists() )
         {
             throw new ExecutionException(
-                "NMAVEN-067-002: The assembly path does not exist: Path = " + path.getAbsolutePath() );
+                "NPANDAY-067-002: The assembly path does not exist: Path = " + path.getAbsolutePath() );
         }
 
         List<String> commands = netCompiler.getCommands();
@@ -73,10 +73,10 @@ public final class CSharpCompilerForProfile
         
     }
 
-    public void init( NMavenContext nmavenContext )
+    public void init( NPandayContext npandayContext )
     {
-        super.init( nmavenContext);
-        netCompiler.init( nmavenContext );
-        this.compilerContext = (CompilerContext) nmavenContext;
+        super.init( npandayContext);
+        netCompiler.init( npandayContext );
+        this.compilerContext = (CompilerContext) npandayContext;
     }
 }

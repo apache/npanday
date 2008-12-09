@@ -44,7 +44,7 @@ public class AspxCompiler
     {
         if ( compilerContext == null )
         {
-            throw new ExecutionException( "NMAVEN-068-000: Compiler has not been initialized with a context" );
+            throw new ExecutionException( "NPANDAY-068-000: Compiler has not been initialized with a context" );
         }
         CompilerConfig config = compilerContext.getNetCompilerConfig();
         
@@ -68,7 +68,7 @@ public class AspxCompiler
     public void execute()
         throws ExecutionException
     {
-        logger.info( "NMAVEN-068-003: Compiling Artifact: Vendor = "
+        logger.info( "NPANDAY-068-003: Compiling Artifact: Vendor = "
             + compilerContext.getCompilerRequirement().getVendor() + ", Language = "
             + compilerContext.getCompilerRequirement().getVendor() + ", Assembly Name = "
             + compilerContext.getArtifact().getAbsolutePath() );

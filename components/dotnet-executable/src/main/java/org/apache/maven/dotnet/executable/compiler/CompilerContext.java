@@ -25,7 +25,7 @@ import java.util.List;
 import java.io.File;
 
 import org.apache.maven.dotnet.executable.*;
-import org.apache.maven.dotnet.NMavenContext;
+import org.apache.maven.dotnet.NPandayContext;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
 
 /**
@@ -34,7 +34,7 @@ import org.apache.maven.dotnet.PlatformUnsupportedException;
  * @author Shane Isbell
  */
 public interface CompilerContext
-    extends NMavenContext
+    extends NPandayContext
 {
 
     /**

@@ -18,7 +18,7 @@
  */
 package org.apache.maven.dotnet.executable;
 
-import org.apache.maven.dotnet.NMavenContext;
+import org.apache.maven.dotnet.NPandayContext;
 import org.apache.maven.dotnet.InitializationException;
 import org.apache.maven.project.MavenProject;
 
@@ -28,7 +28,7 @@ import org.apache.maven.project.MavenProject;
  * @author Shane Isbell
  */
 public interface RepositoryExecutableContext
-    extends NMavenContext
+    extends NPandayContext
 {
     /**
      * Returns an instance of NetExecutable for this context.

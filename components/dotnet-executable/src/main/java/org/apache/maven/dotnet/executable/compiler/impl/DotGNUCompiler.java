@@ -46,7 +46,7 @@ public final class DotGNUCompiler
     {
         if ( compilerContext == null )
         {
-            throw new ExecutionException( "NMAVEN-069-000: Compiler has not been initialized with a context" );
+            throw new ExecutionException( "NPANDAY-069-000: Compiler has not been initialized with a context" );
         }
         CompilerConfig config = compilerContext.getNetCompilerConfig();
         List<Artifact> resources = compilerContext.getLibraryDependencies();

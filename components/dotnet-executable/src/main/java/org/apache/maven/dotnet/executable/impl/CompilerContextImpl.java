@@ -134,7 +134,7 @@ public final class CompilerContextImpl
         }
         catch ( ArtifactException e )
         {
-            logger.error( "NMAVEN-061-000: Improper Initialization of the Net Modules", e );
+            logger.error( "NPANDAY-061-000: Improper Initialization of the Net Modules", e );
             return new ArrayList<Artifact>();
             //TODO: How to handle this: usually implies improper init of ArtifactContext
         }
@@ -219,7 +219,7 @@ public final class CompilerContextImpl
         ArtifactType artifactType = config.getArtifactType();
         if ( artifactType == null || artifactType.equals( ArtifactType.NULL ) )
         {
-            throw new InvalidArtifactException( "NMAVEN-061-001: Artifact Type cannot be null" );
+            throw new InvalidArtifactException( "NPANDAY-061-001: Artifact Type cannot be null" );
         }
 
         //TODO: The test-plugin has a dependency on this fileName/dir. If we change it here, it will break the plugin. Fix this encapsulation issue.
@@ -248,7 +248,7 @@ public final class CompilerContextImpl
         if ( repository == null )
         {
             throw new RepositoryNotFoundException(
-                "NMAVEN-061-002: Could not find repository: Name = " + repositoryName );
+                "NPANDAY-061-002: Could not find repository: Name = " + repositoryName );
         }
         return repository;
     }
@@ -288,7 +288,7 @@ public final class CompilerContextImpl
         else
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-061-008: Could not locate Global Assembly Cache for Mono. Try setting the MONO_ROOT environmental variable." );
+                "NPANDAY-061-008: Could not locate Global Assembly Cache for Mono. Try setting the MONO_ROOT environmental variable." );
         }
     }
 
@@ -384,17 +384,17 @@ public final class CompilerContextImpl
         catch ( ClassNotFoundException e )
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-061-004: Unable to create NetCompiler: Class Name = " + className, e );
+                "NPANDAY-061-004: Unable to create NetCompiler: Class Name = " + className, e );
         }
         catch ( InstantiationException e )
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-061-005: Unable to create NetCompiler: Class Name = " + className, e );
+                "NPANDAY-061-005: Unable to create NetCompiler: Class Name = " + className, e );
         }
         catch ( IllegalAccessException e )
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-061-006: Unable to create NetCompiler: Class Name = " + className, e );
+                "NPANDAY-061-006: Unable to create NetCompiler: Class Name = " + className, e );
         }
         commandFilter =
             CommandFilter.Factory.createDefaultCommandFilter( compilerCapability.getCommandCapability(), logger );
@@ -413,7 +413,7 @@ public final class CompilerContextImpl
             if ( icons.length > 1 )
             {
                 throw new PlatformUnsupportedException(
-                    "NMAVEN-061-007: There is more than one win32icon in resource directory: Number = " + icons
+                    "NPANDAY-061-007: There is more than one win32icon in resource directory: Number = " + icons
                         .length );
             }
             if ( icons.length == 1 )
@@ -435,13 +435,13 @@ public final class CompilerContextImpl
             if ( oldPath.contains( target ) ) //already copied to target
                 return ; 
             
-            logger.info( "NMAVEN-000-000:[COM Reference] copying file ["+ oldPath+"] to [" + target +"]" );
+            logger.info( "NPANDAY-000-000:[COM Reference] copying file ["+ oldPath+"] to [" + target +"]" );
             FileUtils.copyFileToDirectory( file, new File( target ) );
             
-            logger.info( "NMAVEN-000-000:[COM Reference] deleting directory ["+ file.getParentFile() +"]" );
+            logger.info( "NPANDAY-000-000:[COM Reference] deleting directory ["+ file.getParentFile() +"]" );
             FileUtils.deleteDirectory( file.getParentFile() );
             
-            logger.info( "NMAVEN-000-000:[COM Reference] updating artifact path to ["+ newPath +"]" );
+            logger.info( "NPANDAY-000-000:[COM Reference] updating artifact path to ["+ newPath +"]" );
             
             artifact.setFile( new File( newPath ) );
         }catch(Exception e)
@@ -459,7 +459,7 @@ public final class CompilerContextImpl
         if ( !gacFile.exists() )
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-000-000: Could not find GAC dependency: File = " + gacFile.getAbsolutePath() );
+                "NPANDAY-000-000: Could not find GAC dependency: File = " + gacFile.getAbsolutePath() );
         }
         artifact.setFile( gacFile );
     }

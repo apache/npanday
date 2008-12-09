@@ -96,7 +96,7 @@ public interface CommandFilter
                             }
                             else if ( logger != null )
                             {
-                                logger.info( "NMAVEN-060-000: Ignoring unknown command: Command = " + command );
+                                logger.info( "NPANDAY-060-000: Ignoring unknown command: Command = " + command );
                             }
                         }
                     }

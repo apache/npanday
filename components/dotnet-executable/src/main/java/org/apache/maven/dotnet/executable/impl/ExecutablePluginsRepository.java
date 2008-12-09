@@ -71,7 +71,7 @@ public final class ExecutablePluginsRepository
         catch ( XmlPullParserException e )
         {
             e.printStackTrace();
-            throw new IOException( "NMAVEN-067-000: Could not read executable-plugins.xml" );
+            throw new IOException( "NPANDAY-067-000: Could not read executable-plugins.xml" );
         }
         executablePlugins = plugins.getExecutablePlugins();
     }
@@ -136,7 +136,7 @@ public final class ExecutablePluginsRepository
                 }
                 else
                 {
-                    System.out.println( "NMAVEN-067-001: Unknown Vendor, skipping: Name = " + compilerVendor );
+                    System.out.println( "NPANDAY-067-001: Unknown Vendor, skipping: Name = " + compilerVendor );
                     continue;
                 }
                 platformCapabilities.add( platformCapability );

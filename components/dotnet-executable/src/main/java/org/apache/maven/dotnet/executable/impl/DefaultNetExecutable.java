@@ -20,7 +20,7 @@ package org.apache.maven.dotnet.executable.impl;
 
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.executable.*;
-import org.apache.maven.dotnet.NMavenContext;
+import org.apache.maven.dotnet.NPandayContext;
 import org.apache.maven.dotnet.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
@@ -99,13 +99,13 @@ public class DefaultNetExecutable
         }
         catch ( ExecutionException e )
         {
-            throw new ExecutionException( "NMAVEN-070-000: Execution Path = " +
+            throw new ExecutionException( "NPANDAY-070-000: Execution Path = " +
                 ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Command = " +
                 commands, e );
         }
         if ( commandExecutor.getStandardOut().contains( "error" ) )
         {
-            throw new ExecutionException( "NMAVEN-070-001: Command = " + commands );
+            throw new ExecutionException( "NPANDAY-070-001: Command = " + commands );
         }
     }
 
@@ -114,7 +114,7 @@ public class DefaultNetExecutable
     {
         if ( executableContext == null )
         {
-            throw new ExecutionException( "NMAVEN-070-002: Executable has not been initialized with a context" );
+            throw new ExecutionException( "NPANDAY-070-002: Executable has not been initialized with a context" );
         }
         return executableContext.getExecutableCapability().getExecutable();
     }
@@ -124,9 +124,9 @@ public class DefaultNetExecutable
         return executableContext.getExecutableCapability().getVendor();
     }
 
-    public void init( NMavenContext nmavenContext )
+    public void init( NPandayContext npandayContext )
     {
-        this.executableContext = (ExecutableContext) nmavenContext;
+        this.executableContext = (ExecutableContext) npandayContext;
         this.logger = executableContext.getLogger();
         commands = executableContext.getExecutableConfig().getCommands();
     }

@@ -101,15 +101,15 @@ public class NetExecutableFactoryImpl
         }
         catch ( IllegalStateException e )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-011: Illegal State: Vendor Info = " + vendorInfo, e );
+            throw new PlatformUnsupportedException( "NPANDAY-066-011: Illegal State: Vendor Info = " + vendorInfo, e );
         }
 
         if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-012: Missing Vendor Information: " + vendorInfo );
+            throw new PlatformUnsupportedException( "NPANDAY-066-012: Missing Vendor Information: " + vendorInfo );
         }
 
-        logger.info( "NMAVEN-066-013: Found Vendor = " + vendorInfo );
+        logger.info( "NPANDAY-066-013: Found Vendor = " + vendorInfo );
         compilerRequirement.setVendor( vendorInfo.getVendor() );
         compilerRequirement.setVendorVersion( vendorInfo.getVendorVersion() );
         compilerRequirement.setFrameworkVersion( vendorInfo.getFrameworkVersion() );
@@ -124,7 +124,7 @@ public class NetExecutableFactoryImpl
             }
             catch ( PlatformUnsupportedException e )
             {
-                logger.debug( "NMAVEN-066-017: Did not find an SDK install root: " + vendorInfo, e );
+                logger.debug( "NPANDAY-066-017: Did not find an SDK install root: " + vendorInfo, e );
             }
             File installRoot = vendorInfoRepository.getInstallRootFor( vendorInfo );
 
@@ -162,7 +162,7 @@ public class NetExecutableFactoryImpl
         }
         catch ( ExecutionException e )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-007: Unable to find net executable", e );
+            throw new PlatformUnsupportedException( "NPANDAY-066-007: Unable to find net executable", e );
         }
     }
 
@@ -187,11 +187,11 @@ public class NetExecutableFactoryImpl
         commands.add( "mojoName=" + mojoName );//ArtifactId = namespace
 
         Artifact pluginLoaderArtifact =
-            artifactContext.getArtifactsFor( "NMaven.Plugin", "NMaven.Plugin.Loader", null, null ).get( 0 );
+            artifactContext.getArtifactsFor( "NPanday.Plugin", "NPanday.Plugin.Loader", null, null ).get( 0 );
         artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ) );
         commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
 
-        return getNetExecutableFromRepository( "NMaven.Plugin", "NMaven.Plugin.Runner", vendorInfo,
+        return getNetExecutableFromRepository( "NPanday.Plugin", "NPanday.Plugin.Runner", vendorInfo,
                                                new File( localRepository ), commands, false );
     }
 
@@ -200,7 +200,7 @@ public class NetExecutableFactoryImpl
         if ( artifacts.size() == 0 )
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-066-023: Could not locate the plugin - missing entry in the net-dependencies.xml file: GroupId = " +
+                "NPANDAY-066-023: Could not locate the plugin - missing entry in the net-dependencies.xml file: GroupId = " +
                     groupId + ", ArtifactId = " + artifactId );
         }
 
@@ -208,7 +208,7 @@ public class NetExecutableFactoryImpl
         if ( artifact == null )
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-066-021: Could not locate the plugin: GroupId = " + groupId + ", ArtifactId = " + artifactId );
+                "NPANDAY-066-021: Could not locate the plugin: GroupId = " + groupId + ", ArtifactId = " + artifactId );
         }
         return artifact;
     }
@@ -224,14 +224,14 @@ public class NetExecutableFactoryImpl
             if ( artifacts.size() == 0 )
             {
                 throw new PlatformUnsupportedException(
-                    "NMAVEN-066-024: Could not locate the executable - missing entry in the net-dependencies.xml file: GroupId = " +
+                    "NPANDAY-066-024: Could not locate the executable - missing entry in the net-dependencies.xml file: GroupId = " +
                         groupId + ", ArtifactId = " + artifactId );
             }
 
             Artifact artifact = artifacts.get( 0 );
             if ( artifact == null )
             {
-                throw new PlatformUnsupportedException( "NMAVEN-066-025: Could not locate the executable: GroupId = " +
+                throw new PlatformUnsupportedException( "NPANDAY-066-025: Could not locate the executable: GroupId = " +
                     groupId + ", ArtifactId = " + artifactId );
             }
 
@@ -239,11 +239,11 @@ public class NetExecutableFactoryImpl
             commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
             //TODO: Replace
             String pluginArtifactPath = PathUtil.getPrivateApplicationBaseFileFor(
-                artifactContext.getArtifactsFor( "NMaven.Plugin", "NMaven.Plugin", null, null ).get( 0 ),
+                artifactContext.getArtifactsFor( "NPanday.Plugin", "NPanday.Plugin", null, null ).get( 0 ),
                 localRepository ).getAbsolutePath();
 
             commands.add( "pluginArtifactPath=" + pluginArtifactPath );
-            return getNetExecutableFromRepository( "NMaven.Plugin", "NMaven.Plugin.Runner", vendorInfo, localRepository,
+            return getNetExecutableFromRepository( "NPanday.Plugin", "NPanday.Plugin.Runner", vendorInfo, localRepository,
                                                    commands, false );
         }
 
@@ -258,23 +258,23 @@ public class NetExecutableFactoryImpl
         }
         catch ( IllegalStateException e )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
+            throw new PlatformUnsupportedException( "NPANDAY-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
         }
 
         if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-020: Missing Vendor Information: " + vendorInfo );
+            throw new PlatformUnsupportedException( "NPANDAY-066-020: Missing Vendor Information: " + vendorInfo );
         }
         List<Artifact> artifacts = artifactContext.getArtifactsFor( groupId, artifactId, null, null );
         if ( artifacts.size() == 0 )
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-066-022: Could not locate the executable- missing entry in the net-dependencies.xml: GroupId = " +
+                "NPANDAY-066-022: Could not locate the executable- missing entry in the net-dependencies.xml: GroupId = " +
                     groupId + ", ArtifactId = " + artifactId );
         }
         Artifact artifact = artifacts.get( 0 );
 
-        logger.debug( "NMAVEN-066-003: Found Vendor: " + vendorInfo );
+        logger.debug( "NPANDAY-066-003: Found Vendor: " + vendorInfo );
 
         File artifactPath =  PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository );
         List<String> modifiedCommands = new ArrayList<String>();
@@ -298,7 +298,7 @@ public class NetExecutableFactoryImpl
             if ( exe == null )
             {
                 logger.info(
-                    "NMAVEN-066-005: Executable path for mono does not exist. Will attempt to execute MONO using" +
+                    "NPANDAY-066-005: Executable path for mono does not exist. Will attempt to execute MONO using" +
                         " the main PATH variable." );
                 exe = "mono";
                 commands.add( "vendor=MONO" );//if forked process, it needs to know.
@@ -326,7 +326,7 @@ public class NetExecutableFactoryImpl
         catch ( InitializationException e )
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-066-006: Unable to initialize the repository executable context", e );
+                "NPANDAY-066-006: Unable to initialize the repository executable context", e );
         }
 
         try
@@ -335,7 +335,7 @@ public class NetExecutableFactoryImpl
         }
         catch ( ExecutionException e )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-004: Unable to find net executable", e );
+            throw new PlatformUnsupportedException( "NPANDAY-066-004: Unable to find net executable", e );
         }
     }
 
@@ -354,13 +354,13 @@ public class NetExecutableFactoryImpl
         }
         catch ( IllegalStateException e )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
+            throw new PlatformUnsupportedException( "NPANDAY-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
         }
 
         if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null ||
             vendorInfo.getVendorVersion() == null )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-018: Missing Vendor Information: " + vendorInfo );
+            throw new PlatformUnsupportedException( "NPANDAY-066-018: Missing Vendor Information: " + vendorInfo );
         }
 
         ExecutableRequirement executableRequirement =
@@ -382,7 +382,7 @@ public class NetExecutableFactoryImpl
         }
         catch ( ExecutionException e )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-001: Unable to find net executable", e );
+            throw new PlatformUnsupportedException( "NPANDAY-066-001: Unable to find net executable", e );
         }
     }
 
@@ -408,15 +408,15 @@ public class NetExecutableFactoryImpl
         }
         catch ( IllegalStateException e )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
+            throw new PlatformUnsupportedException( "NPANDAY-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
         }
 
         if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-019: Missing Vendor Information: " + vendorInfo );
+            throw new PlatformUnsupportedException( "NPANDAY-066-019: Missing Vendor Information: " + vendorInfo );
         }
 
-        logger.debug( "NMAVEN-066-003: Found Vendor: " + vendorInfo );
+        logger.debug( "NPANDAY-066-003: Found Vendor: " + vendorInfo );
         ExecutableRequirement executableRequirement =
             ExecutableRequirement.Factory.createDefaultExecutableRequirement();
         executableRequirement.setVendor( vendorInfo.getVendor() );
@@ -431,7 +431,7 @@ public class NetExecutableFactoryImpl
             : executableConfig.getExecutionPaths();
         if ( netHome != null && netHome.exists() )
         {
-            logger.info( "NMAVEN-066-014: Found executable path from pom: Path = " + netHome.getAbsolutePath() );
+            logger.info( "NPANDAY-066-014: Found executable path from pom: Path = " + netHome.getAbsolutePath() );
             executablePaths.add( netHome.getAbsolutePath() );
         }
         else if ( vendorInfo.getExecutablePaths() != null )
@@ -440,14 +440,14 @@ public class NetExecutableFactoryImpl
             {
                 if ( path.exists() )
                 {
-                    logger.debug( "NMAVEN-066-015: Found executable path: Path = " + path.getAbsolutePath() );
+                    logger.debug( "NPANDAY-066-015: Found executable path: Path = " + path.getAbsolutePath() );
                     executablePaths.add( path.getAbsolutePath() );
                 }
             }
         }
         else
         {
-            logger.info( "NMAVEN-066-016: Did not find executable path, will try system path" );
+            logger.info( "NPANDAY-066-016: Did not find executable path, will try system path" );
         }
         executableConfig.setExecutionPaths( executablePaths );
         executableContext.init( executableRequirement, executableConfig, capabilityMatcher );
@@ -458,7 +458,7 @@ public class NetExecutableFactoryImpl
         }
         catch ( ExecutionException e )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-066-001: Unable to find net executable", e );
+            throw new PlatformUnsupportedException( "NPANDAY-066-001: Unable to find net executable", e );
         }
     }
 }

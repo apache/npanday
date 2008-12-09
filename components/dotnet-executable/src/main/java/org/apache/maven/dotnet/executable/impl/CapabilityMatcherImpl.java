@@ -55,7 +55,7 @@ public class CapabilityMatcherImpl
     {
         if ( compilerRequirement == null )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-065-006: The compiler requirement should not be null." );
+            throw new PlatformUnsupportedException( "NPANDAY-065-006: The compiler requirement should not be null." );
         }
         if ( matchPolicies == null )
         {
@@ -125,14 +125,14 @@ public class CapabilityMatcherImpl
     {
         for ( ExecutableCapability executableCapability : executableCapabilities )
         {
-            logger.debug( "NMAVEN-065-005: Attempting to match capability: " + executableCapability );
+            logger.debug( "NPANDAY-065-005: Attempting to match capability: " + executableCapability );
             if ( matchExecutableCapability( executableCapability, matchPolicies ) )
             {
-                logger.debug( "NMAVEN-065-001: Made a Platform Capability Match: " + executableCapability );
+                logger.debug( "NPANDAY-065-001: Made a Platform Capability Match: " + executableCapability );
                 return executableCapability;
             }
         }
-        throw new PlatformUnsupportedException( "NMAVEN-065-002: Could not match platform: OS = " +
+        throw new PlatformUnsupportedException( "NPANDAY-065-002: Could not match platform: OS = " +
             System.getProperty( "os.name" ) + ", Number of Capabilities = " + executableCapabilities.size() +
             ", Number of Policies = " + matchPolicies.size() );
     }
@@ -177,7 +177,7 @@ public class CapabilityMatcherImpl
         }
         if ( primary.isEmpty() )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-065-003: No compiler capabilities configured" );
+            throw new PlatformUnsupportedException( "NPANDAY-065-003: No compiler capabilities configured" );
         }
         return primary;
     }
@@ -208,7 +208,7 @@ public class CapabilityMatcherImpl
         }
         if ( primary.isEmpty() )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-065-004: No executable capabilities configured" );
+            throw new PlatformUnsupportedException( "NPANDAY-065-004: No executable capabilities configured" );
         }
         return primary;
     }

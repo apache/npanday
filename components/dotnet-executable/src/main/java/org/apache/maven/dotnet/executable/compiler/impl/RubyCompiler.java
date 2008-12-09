@@ -46,7 +46,7 @@ public final class RubyCompiler
     {
         if ( compilerContext == null )
         {
-            throw new ExecutionException( "NMAVEN-068-000: Compiler has not been initialized with a context" );
+            throw new ExecutionException( "NPANDAY-068-000: Compiler has not been initialized with a context" );
         }
         List<String> commands = new ArrayList<String>();
 

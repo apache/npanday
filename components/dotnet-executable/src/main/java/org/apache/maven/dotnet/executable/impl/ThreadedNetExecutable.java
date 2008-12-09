@@ -23,7 +23,7 @@ import org.apache.maven.dotnet.executable.ExecutableContext;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.executable.CommandFilter;
 import org.apache.maven.dotnet.executable.CommandExecutor;
-import org.apache.maven.dotnet.NMavenContext;
+import org.apache.maven.dotnet.NPandayContext;
 import org.apache.maven.dotnet.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
@@ -56,11 +56,11 @@ public class ThreadedNetExecutable
         }
         catch ( ExecutionException e )
         {
-            //  throw new ExecutionException( "NMAVEN-063-000: Command = " + commands, e );
+            //  throw new ExecutionException( "NPANDAY-063-000: Command = " + commands, e );
         }
         if ( commandExecutor.getStandardOut().contains( "error" ) )
         {
-            //   t/w new ExecutionException( "NMAVEN-063-001: Command = " + commands );
+            //   t/w new ExecutionException( "NPANDAY-063-001: Command = " + commands );
         }
     }
 
@@ -114,7 +114,7 @@ public class ThreadedNetExecutable
     {
         if ( executableContext == null )
         {
-            throw new ExecutionException( "NMAVEN-063-002: Executable has not been initialized with a context" );
+            throw new ExecutionException( "NPANDAY-063-002: Executable has not been initialized with a context" );
         }
         return executableContext.getExecutableCapability().getExecutable();
     }
@@ -124,9 +124,9 @@ public class ThreadedNetExecutable
         return executableContext.getExecutableCapability().getVendor();
     }
     
-    public void init( NMavenContext nmavenContext )
+    public void init( NPandayContext npandayContext )
     {
-        this.executableContext = (ExecutableContext) nmavenContext;
+        this.executableContext = (ExecutableContext) npandayContext;
         this.logger = executableContext.getLogger();
     }
 }

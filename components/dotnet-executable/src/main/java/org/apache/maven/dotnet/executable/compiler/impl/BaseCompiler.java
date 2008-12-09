@@ -23,7 +23,7 @@ import org.apache.maven.dotnet.executable.compiler.InvalidArtifactException;
 import org.apache.maven.dotnet.executable.compiler.CompilerExecutable;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.executable.CommandExecutor;
-import org.apache.maven.dotnet.NMavenContext;
+import org.apache.maven.dotnet.NPandayContext;
 import org.apache.maven.dotnet.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
@@ -51,10 +51,10 @@ abstract class BaseCompiler implements CompilerExecutable
     /**
      * This method may be overridden if the developer needs to create a profile of one of the other compilers.
      */
-    public void init( NMavenContext nmavenContext )
+    public void init( NPandayContext npandayContext )
     {
-        this.compilerContext = (CompilerContext) nmavenContext;
-        this.logger = nmavenContext.getLogger();
+        this.compilerContext = (CompilerContext) npandayContext;
+        this.logger = npandayContext.getLogger();
     }
 
     /**
@@ -74,7 +74,7 @@ abstract class BaseCompiler implements CompilerExecutable
     {
         if ( compilerContext == null )
         {
-            throw new ExecutionException( "NMAVEN-068-001: Compiler has not been initialized with a context" );
+            throw new ExecutionException( "NPANDAY-068-001: Compiler has not been initialized with a context" );
         }
         return compilerContext.getCompilerCapability().getExecutable();
     }
@@ -116,10 +116,10 @@ abstract class BaseCompiler implements CompilerExecutable
     {
         if (compilerContext.getNetCompilerConfig().getIncludeSources() ==null && !( new File( compilerContext.getSourceDirectoryName() ).exists() ) )
         {
-            logger.info( "NMAVEN-068-002: No source files to compile." );
+            logger.info( "NPANDAY-068-002: No source files to compile." );
             return;
         }
-        logger.info( "NMAVEN-068-003: Compiling Artifact: Vendor = " +
+        logger.info( "NPANDAY-068-003: Compiling Artifact: Vendor = " +
             compilerContext.getCompilerRequirement().getVendor() + ", Language = " +
             compilerContext.getCompilerRequirement().getVendor() + ", Assembly Name = " +
             compilerContext.getArtifact().getAbsolutePath() );

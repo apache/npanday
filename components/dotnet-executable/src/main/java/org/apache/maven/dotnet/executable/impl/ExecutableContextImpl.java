@@ -95,7 +95,7 @@ public class ExecutableContextImpl
         if ( repository == null )
         {
             throw new RepositoryNotFoundException(
-                "NMAVEN-064-000: Could not find repository: Name = " + repositoryName );
+                "NPANDAY-064-000: Could not find repository: Name = " + repositoryName );
         }
         return repository;
     }
@@ -119,17 +119,17 @@ public class ExecutableContextImpl
         catch ( ClassNotFoundException e )
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-064-001: Unable to create NetCompiler: Class Name = " + className, e );
+                "NPANDAY-064-001: Unable to create NetCompiler: Class Name = " + className, e );
         }
         catch ( InstantiationException e )
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-064-002: Unable to create NetCompiler: Class Name = " + className, e );
+                "NPANDAY-064-002: Unable to create NetCompiler: Class Name = " + className, e );
         }
         catch ( IllegalAccessException e )
         {
             throw new PlatformUnsupportedException(
-                "NMAVEN-064-003: Unable to create NetCompiler: Class Name = " + className, e );
+                "NPANDAY-064-003: Unable to create NetCompiler: Class Name = " + className, e );
         }
         commandFilter =
             CommandFilter.Factory.createDefaultCommandFilter( executableCapability.getCommandCapability(), logger );

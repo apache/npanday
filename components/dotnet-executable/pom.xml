@@ -28,7 +28,7 @@ under the License.
   <groupId>org.apache.maven.dotnet</groupId>  
   <artifactId>dotnet-executable</artifactId>  
   <name>dotnet-executable</name>  
-  <description>NMaven</description>  
+  <description>NPanday</description>  
   <dependencies> 
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  

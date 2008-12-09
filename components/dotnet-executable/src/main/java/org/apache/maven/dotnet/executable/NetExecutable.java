@@ -18,7 +18,7 @@
  */
 package org.apache.maven.dotnet.executable;
 
-import org.apache.maven.dotnet.NMavenContext;
+import org.apache.maven.dotnet.NPandayContext;
 import org.apache.maven.dotnet.vendor.Vendor;
 
 import java.util.List;
@@ -80,9 +80,9 @@ public interface NetExecutable
     /**
      * Initialize this compiler.
      *
-     * @param nmavenContext
+     * @param npandayContext
      */
-    void init( NMavenContext nmavenContext );
+    void init( NPandayContext npandayContext );
 
     /**
      * Returns vendor framework used to run executable.

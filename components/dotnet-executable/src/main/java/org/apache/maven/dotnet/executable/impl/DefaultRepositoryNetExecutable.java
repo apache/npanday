@@ -21,7 +21,7 @@ package org.apache.maven.dotnet.executable.impl;
 import org.apache.maven.dotnet.executable.ExecutionException;
 import org.apache.maven.dotnet.executable.CommandExecutor;
 import org.apache.maven.dotnet.executable.*;
-import org.apache.maven.dotnet.NMavenContext;
+import org.apache.maven.dotnet.NPandayContext;
 import org.apache.maven.dotnet.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
@@ -63,7 +63,7 @@ public class DefaultRepositoryNetExecutable
     {
         if ( executableContext == null )
         {
-            logger.info( "NMAVEN-063-002: Executable has not been initialized with a context" );
+            logger.info( "NPANDAY-063-002: Executable has not been initialized with a context" );
             return null;
         }
         List<String> executablePaths = executableContext.getExecutableConfig().getExecutionPaths();
@@ -94,14 +94,14 @@ public class DefaultRepositoryNetExecutable
         }
         catch ( ExecutionException e )
         {
-            throw new ExecutionException( "NMAVEN-063-000: Execution Path = " +
+            throw new ExecutionException( "NPANDAY-063-000: Execution Path = " +
                 ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Command = " +
                 commands, e );
         }
         if ( commandExecutor.getStandardOut().contains( "error" ) )
         {
             throw new ExecutionException(
-                "NMAVEN-063-001: Executable = " + getExecutable() + ",Command = " + commands );
+                "NPANDAY-063-001: Executable = " + getExecutable() + ",Command = " + commands );
         }
     }
 
@@ -111,7 +111,7 @@ public class DefaultRepositoryNetExecutable
     {
         if ( executableContext == null )
         {
-            throw new ExecutionException( "NMAVEN-063-002: Executable has not been initialized with a context" );
+            throw new ExecutionException( "NPANDAY-063-002: Executable has not been initialized with a context" );
         }
 
         List<String> executablePaths = executableContext.getExecutableConfig().getExecutionPaths();
@@ -120,7 +120,7 @@ public class DefaultRepositoryNetExecutable
             for ( String executablePath : executablePaths )
             {
                 File exe = new File( executablePath );
-                logger.debug( "NMAVEN-063-004: Checking executable path = " + exe.getAbsolutePath() );
+                logger.debug( "NPANDAY-063-004: Checking executable path = " + exe.getAbsolutePath() );
                 if ( exe.exists() )
                 {
                     return new File( executablePath ).getName();
@@ -131,7 +131,7 @@ public class DefaultRepositoryNetExecutable
                 }
             }
         }
-        throw new ExecutionException( "NMAVEN-063-003: Executable path has not been set or is invalid" );
+        throw new ExecutionException( "NPANDAY-063-003: Executable path has not been set or is invalid" );
     }
 
     public Vendor getVendor()
@@ -146,9 +146,9 @@ public class DefaultRepositoryNetExecutable
         }
     }
 
-    public void init( NMavenContext nmavenContext )
+    public void init( NPandayContext npandayContext )
     {
-        this.executableContext = (RepositoryExecutableContext) nmavenContext;
+        this.executableContext = (RepositoryExecutableContext) npandayContext;
         this.logger = executableContext.getLogger();
         commands = Collections.unmodifiableList( executableContext.getExecutableConfig().getCommands() );
     }

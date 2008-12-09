@@ -68,7 +68,7 @@ public final class CompilerPluginsRepository
         catch ( XmlPullParserException e )
         {
             e.printStackTrace();
-            throw new IOException( "NMAVEN-062-000: Could not read plugins-compiler.xml" );
+            throw new IOException( "NPANDAY-062-000: Could not read plugins-compiler.xml" );
         }
         compilerPlugins = plugins.getCompilerPlugins();
     }
@@ -145,7 +145,7 @@ public final class CompilerPluginsRepository
                 }
                 else
                 {
-                    System.out.println( "NMAVEN-062-001: Unknown Vendor, skipping: Name = " + compilerVendor );
+                    System.out.println( "NPANDAY-062-001: Unknown Vendor, skipping: Name = " + compilerVendor );
                     continue;
                 }
                 platformCapabilities.add( platformCapability );

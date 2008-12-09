@@ -78,7 +78,7 @@ public class RepositoryExecutableContextImpl
         if ( repository == null )
         {
             throw new RepositoryNotFoundException(
-                "NMAVEN-064-000: Could not find repository: Name = " + repositoryName );
+                "NPANDAY-064-000: Could not find repository: Name = " + repositoryName );
         }
         return repository;
     }
