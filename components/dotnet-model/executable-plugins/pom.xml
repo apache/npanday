@@ -43,8 +43,8 @@ under the License.
   </build>  
   <distributionManagement> 
     <site> 
-      <id>nmaven-apache-site</id>  
-      <name>NMaven Site</name>  
+      <id>npanday-apache-site</id>  
+      <name>NPanday Site</name>  
       <url>file://${basedir}/../../../../www/components/dotnet-model/executable-plugins</url> 
     </site> 
   </distributionManagement> 

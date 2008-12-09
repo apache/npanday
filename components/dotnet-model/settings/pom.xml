@@ -43,9 +43,9 @@ under the License.
   </build>  
   <distributionManagement> 
     <site> 
-      <id>nmaven-site</id>  
-      <name>NMaven Site</name>  
-      <url>scp://shell.sourceforge.net//home/groups/n/nm/nmaven/htdocs/components/nmaven-model/nmaven-model-settings</url> 
+      <id>npanday-site</id>  
+      <name>NPanday Site</name>  
+      <url>scp://shell.sourceforge.net//home/groups/n/nm/npanday/htdocs/components/npanday-model/npanday-model-settings</url> 
     </site> 
   </distributionManagement> 
 </project>

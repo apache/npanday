@@ -1,13 +1,13 @@
-<project name="NMaven">
+<project name="NPanday">
   <bannerRight>
     <src>./images/apache-incubator-logo.png</src>
   </bannerRight>
 
   <body>
     <links>
-      <item name="Project Site" href="http://incubator.apache.org/projects/nmaven.html"/>
-      <item name="NMaven" href="http://incubator.apache.org/nmaven"/>
-      <item name="NMaven SVN" href="http://svn.apache.org/repos/asf/incubator/nmaven/"/>
+      <item name="Project Site" href="http://incubator.apache.org/projects/npanday.html"/>
+      <item name="NPanday" href="http://incubator.apache.org/npanday"/>
+      <item name="NPanday SVN" href="http://svn.apache.org/repos/asf/incubator/npanday/"/>
       <item name="Maven" href="http://maven.apache.org/"/>
       <item name="Mono Project" href="http://www.mono-project.com/"/>
       <item name="DotGNU" href="http://dotgnu.org/"/>
