@@ -118,7 +118,7 @@ public interface PlatformDetector
                     if ( isEmpty( command ) && isEmpty( netHome ) )
                     {
                         throw new PlatformUnsupportedException(
-                            "NMAVEN-042-000: Both command and netHome params cannot be null or empty" );
+                            "NPANDAY-042-000: Both command and netHome params cannot be null or empty" );
                     }
                     else if ( !isEmpty( command ) && isEmpty( netHome ) )
                     {
@@ -189,7 +189,7 @@ public interface PlatformDetector
                     else
                     {
                         throw new PlatformUnsupportedException(
-                            "NMAVEN-042-001: Platform not supported: Results = " + results );
+                            "NPANDAY-042-001: Platform not supported: Results = " + results );
                     }
                 }
 
@@ -206,7 +206,7 @@ public interface PlatformDetector
                     if ( !new File( path ).exists() )
                     {
                         throw new PlatformUnsupportedException(
-                            "NMAVEN-042-002: Unable to locate path: Path = " + path );
+                            "NPANDAY-042-002: Unable to locate path: Path = " + path );
                     }
 
                     if ( path.contains( "Microsoft.NET" ) )
@@ -221,7 +221,7 @@ public interface PlatformDetector
                     {
                         return Vendor.DOTGNU;
                     }
-                    throw new PlatformUnsupportedException( "NMAVEN-042-003: Platform not supported: Path " + path );
+                    throw new PlatformUnsupportedException( "NPANDAY-042-003: Platform not supported: Path " + path );
                 }
 
                 private boolean isEmpty( String value )

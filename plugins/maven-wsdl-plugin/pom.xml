@@ -32,8 +32,8 @@ under the License.
   <description>Maven Plugin for .NET: Generates WSDLs</description>  
   <distributionManagement> 
     <site> 
-      <id>nmaven-apache-site</id>  
-      <name>NMaven Site</name>  
+      <id>npanday-apache-site</id>  
+      <name>NPanday Site</name>  
       <url>file://${basedir}/../../../www/plugins/maven-wsdl-plugin</url> 
     </site> 
   </distributionManagement> 

@@ -68,7 +68,7 @@ public class ExistingResxGenerator extends AbstractMojo
         
         if ( vendor != null && vendor.equals( "DotGNU" ) )
         {
-            getLog().info( "NMAVEN-1501-005: Unsupported Plugin" );
+            getLog().info( "NPANDAY-1501-005: Unsupported Plugin" );
             return;
         }
         
@@ -104,12 +104,12 @@ public class ExistingResxGenerator extends AbstractMojo
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1501-002: Unable to execute resgen: Vendor = " + vendor +
+            throw new MojoExecutionException( "NPANDAY-1501-002: Unable to execute resgen: Vendor = " + vendor +
                 ", frameworkVersion = " + frameworkVersion, e );
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1501-003: Platform Unsupported", e );
+            throw new MojoExecutionException( "NPANDAY-1501-003: Platform Unsupported", e );
         }        
     }
     

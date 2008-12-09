@@ -161,19 +161,19 @@ public class XsdGeneratorMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
+    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
 
     public void execute()
         throws MojoExecutionException
     {
         try
         {
-            nmavenRegistry.createRepositoryRegistry();
+            npandayRegistry.createRepositoryRegistry();
         }
         catch ( IOException e )
         {
             throw new MojoExecutionException(
-                "NMAVEN-1400-0032 Failed to create the repository registry for this plugin", e );
+                "NPANDAY-1400-0032 Failed to create the repository registry for this plugin", e );
         }
 
         FileUtils.mkdir( outputDirectory );
@@ -184,12 +184,12 @@ public class XsdGeneratorMojo
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1400-000: Unable to execute xsd: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-1400-000: Unable to execute xsd: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1400-001: Platform Unsupported: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-1400-001: Platform Unsupported: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
     }

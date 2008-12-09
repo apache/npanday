@@ -95,7 +95,7 @@ public class ResourceGeneratorMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
+    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
 
     public void execute()
         throws MojoExecutionException

@@ -58,7 +58,7 @@ public class ResourceCopierMojo
         List<Resource> resources = project.getResources();
         if ( resources.isEmpty() )
         {
-            getLog().info( "NMAVEN-1500-000: No resources found" );
+            getLog().info( "NPANDAY-1500-000: No resources found" );
             return;
         }
         for ( Resource resource : resources )
@@ -77,7 +77,7 @@ public class ResourceCopierMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1500-004: Failed to copy config file.", e );
+            throw new MojoExecutionException( "NPANDAY-1500-004: Failed to copy config file.", e );
         }
     }
 
@@ -105,16 +105,16 @@ public class ResourceCopierMojo
             try
             {
                 FileUtils.copyFile( sourceFile, destinationFile );
-                getLog().debug( "NMAVEN-1500-001: Copied Resource File: Source File = " + sourceFile.getAbsolutePath() +
+                getLog().debug( "NPANDAY-1500-001: Copied Resource File: Source File = " + sourceFile.getAbsolutePath() +
                     ", Destination File = " + destinationFile.getAbsolutePath() );
             }
             catch ( IOException e )
             {
                 throw new MojoExecutionException(
-                    "NMAVEN-1500-002: Unable to copy resource file: Source File = " + sourceFile.getAbsolutePath(), e );
+                    "NPANDAY-1500-002: Unable to copy resource file: Source File = " + sourceFile.getAbsolutePath(), e );
             }
         }
-        getLog().info( "NMAVEN-1500-003: Copied resource directory: Number of Resources = " + files.length +
+        getLog().info( "NPANDAY-1500-003: Copied resource directory: Number of Resources = " + files.length +
             ", Resource Directory = " + sourceDirectory + ", Destination Directory = " + outputDirectory + File
             .separator + "assembly-resources" );
     }

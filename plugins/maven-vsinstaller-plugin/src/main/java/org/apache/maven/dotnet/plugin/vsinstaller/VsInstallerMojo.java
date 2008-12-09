@@ -84,11 +84,11 @@ public class VsInstallerMojo
     private ArtifactContext artifactContext;
 
     /**
-     * Provides access to configuration information used by NMaven.
+     * Provides access to configuration information used by NPanday.
      *
      * @component
      */
-    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
+    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
 
     /**
      * Provides services to obtain executables.
@@ -115,17 +115,17 @@ public class VsInstallerMojo
         RepositoryRegistry repositoryRegistry;
         try
         {
-            repositoryRegistry = nmavenRegistry.createRepositoryRegistry();
+            repositoryRegistry = npandayRegistry.createRepositoryRegistry();
         }
         catch ( IOException e )
         {
             throw new MojoExecutionException(
-                "NMAVEN-1600-000: Failed to create the repository registry for this plugin", e );
+                "NPANDAY-1600-000: Failed to create the repository registry for this plugin", e );
         }
 
         NetDependenciesRepository netRepository =
             (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
-        String pomVersion = netRepository.getProperty( "nmaven.version");
+        String pomVersion = netRepository.getProperty( "npanday.version");
 
         artifactContext.init( null, mavenProject.getRemoteArtifactRepositories(), new File( localRepository ) );
 
@@ -154,17 +154,17 @@ public class VsInstallerMojo
                     Vendor.MICROSOFT.getVendorName(), "2.0.50727", "GACUTIL",
                     getGacInstallCommandsFor( artifacts.get( 0 ) ), null );
                 netExecutable.execute();
-                getLog().info( "NMAVEN-1600-004: Installed Assembly into GAC: Assembly = " +
+                getLog().info( "NPANDAY-1600-004: Installed Assembly into GAC: Assembly = " +
                     artifacts.get( 0 ).getFile().getAbsolutePath() + ",  Vendor = " +
                     netExecutable.getVendor().getVendorName() );
             }
             catch ( ExecutionException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1600-005: Unable to execute gacutil:", e );
+                throw new MojoExecutionException( "NPANDAY-1600-005: Unable to execute gacutil:", e );
             }
             catch ( PlatformUnsupportedException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1600-006: Platform Unsupported:", e );
+                throw new MojoExecutionException( "NPANDAY-1600-006: Platform Unsupported:", e );
             }
         }
 
@@ -172,9 +172,9 @@ public class VsInstallerMojo
         try
         {
             String addin =
-                IOUtil.toString( VsInstallerMojo.class.getResourceAsStream( "/template/NMaven.VisualStudio.AddIn" ) );
+                IOUtil.toString( VsInstallerMojo.class.getResourceAsStream( "/template/NPanday.VisualStudio.AddIn" ) );
             File outputFile = new File( System.getProperty( "user.home" ) +
-                "\\My Documents\\Visual Studio 2005\\Addins\\NMaven.VisualStudio.AddIn" );
+                "\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn" );
 
             if ( !outputFile.getParentFile().exists() )
             {

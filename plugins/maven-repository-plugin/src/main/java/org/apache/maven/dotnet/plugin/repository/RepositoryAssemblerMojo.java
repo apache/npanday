@@ -138,7 +138,7 @@ public class RepositoryAssemblerMojo
         }
         catch ( RepositoryException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1700-007: Message = " + e.getMessage() );
+            throw new MojoExecutionException( "NPANDAY-1700-007: Message = " + e.getMessage() );
         }
 
         artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
@@ -158,7 +158,7 @@ public class RepositoryAssemblerMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException("NMAVEN-1700-008: Message = " +  e.getMessage(), e );
+            throw new MojoExecutionException("NPANDAY-1700-008: Message = " +  e.getMessage(), e );
         }
     }
 
@@ -185,7 +185,7 @@ public class RepositoryAssemblerMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1700-009: Message = " + e.getMessage() );
+            throw new MojoExecutionException( "NPANDAY-1700-009: Message = " + e.getMessage() );
         }
 
         for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )
@@ -217,7 +217,7 @@ public class RepositoryAssemblerMojo
             }
             catch ( ArtifactDeploymentException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1700-000: Deploy Failed", e );
+                throw new MojoExecutionException( "NPANDAY-1700-000: Deploy Failed", e );
             }
         }
 
@@ -229,7 +229,7 @@ public class RepositoryAssemblerMojo
         }
         catch ( ArchiverException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1700-001", e );
+            throw new MojoExecutionException( "NPANDAY-1700-001", e );
         }
 
         TarArchiver.TarCompressionMethod tarCompressionMethod = new TarArchiver.TarCompressionMethod();
@@ -243,11 +243,11 @@ public class RepositoryAssemblerMojo
         }
         catch ( ArchiverException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1700-002", e );
+            throw new MojoExecutionException( "NPANDAY-1700-002", e );
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1700-003", e );
+            throw new MojoExecutionException( "NPANDAY-1700-003", e );
         }
 
     }
@@ -281,7 +281,7 @@ public class RepositoryAssemblerMojo
             }
             catch ( FileNotFoundException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1700-004: Unable to read pom" );
+                throw new MojoExecutionException( "NPANDAY-1700-004: Unable to read pom" );
             }
             MavenXpp3Reader reader = new MavenXpp3Reader();
             Model model;
@@ -291,12 +291,12 @@ public class RepositoryAssemblerMojo
             }
             catch ( XmlPullParserException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1700-005: Unable to read model" );
+                throw new MojoExecutionException( "NPANDAY-1700-005: Unable to read model" );
 
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1700-006: Unable to read model" );
+                throw new MojoExecutionException( "NPANDAY-1700-006: Unable to read model" );
             }
 
             Parent parent = model.getParent();

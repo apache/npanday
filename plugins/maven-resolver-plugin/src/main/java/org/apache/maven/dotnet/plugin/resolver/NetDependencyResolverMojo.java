@@ -44,7 +44,7 @@ import org.apache.maven.dotnet.PlatformUnsupportedException;
  * @author Shane Isbell
  * @goal resolve
  * @phase process-resources
- * @description Resolves the .NET assemblies that NMaven needs to run.
+ * @description Resolves the .NET assemblies that NPanday needs to run.
  */
 public class NetDependencyResolverMojo
     extends AbstractMojo
@@ -96,7 +96,7 @@ public class NetDependencyResolverMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
+    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
 
     /**
      * @component
@@ -128,12 +128,12 @@ public class NetDependencyResolverMojo
         RepositoryRegistry repositoryRegistry;
         try
         {
-            repositoryRegistry = nmavenRegistry.createRepositoryRegistry();
+            repositoryRegistry = npandayRegistry.createRepositoryRegistry();
         }
         catch ( IOException e )
         {
             throw new MojoExecutionException(
-                "NMAVEN-1600-000: Failed to create the repository registry for this plugin", e );
+                "NPANDAY-1600-000: Failed to create the repository registry for this plugin", e );
         }
 
         if ( netDependencies == null )
@@ -153,7 +153,7 @@ public class NetDependencyResolverMojo
         }
 
         artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
-        if ( !new File( localRepository, "nmaven.artifacts.resolved" ).exists() ) //performance optimization
+        if ( !new File( localRepository, "npanday.artifacts.resolved" ).exists() ) //performance optimization
         {
             try
             {
@@ -166,7 +166,7 @@ public class NetDependencyResolverMojo
                 throw new MojoExecutionException( e.getMessage() );
             }
 
-            new File( localRepository, "nmaven.artifacts.resolved" ).mkdir();
+            new File( localRepository, "npanday.artifacts.resolved" ).mkdir();
         }
 
         //Do GAC Install, if needed
@@ -175,7 +175,7 @@ public class NetDependencyResolverMojo
         {
             NetDependenciesRepository repository =
                 (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
-            getLog().info( "NMAVEN-1600-001: Found net dependencies: Number = " + dependencies.size() );
+            getLog().info( "NPANDAY-1600-001: Found net dependencies: Number = " + dependencies.size() );
 
             List<NetDependencyMatchPolicy> gacInstallPolicies = new ArrayList<NetDependencyMatchPolicy>();
             gacInstallPolicies.add( new GacMatchPolicy( true ) );
@@ -194,18 +194,18 @@ public class NetDependencyResolverMojo
                                                                                                 artifacts.get( 0 ) ),
                                                                                             null );
                     netExecutable.execute();
-                    getLog().info( "NMAVEN-1600-004: Installed Assembly into GAC: Assembly = " +
+                    getLog().info( "NPANDAY-1600-004: Installed Assembly into GAC: Assembly = " +
                         artifacts.get( 0 ).getFile().getAbsolutePath() + ",  Vendor = " +
                         netExecutable.getVendor().getVendorName() );
                 }
                 catch ( ExecutionException e )
                 {
-                    throw new MojoExecutionException( "NMAVEN-1600-005: Unable to execute gacutil: Vendor " + vendor +
+                    throw new MojoExecutionException( "NPANDAY-1600-005: Unable to execute gacutil: Vendor " + vendor +
                         ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
                 }
                 catch ( PlatformUnsupportedException e )
                 {
-                    throw new MojoExecutionException( "NMAVEN-1600-006: Platform Unsupported: Vendor " + vendor +
+                    throw new MojoExecutionException( "NPANDAY-1600-006: Platform Unsupported: Vendor " + vendor +
                         ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
                 }
             }

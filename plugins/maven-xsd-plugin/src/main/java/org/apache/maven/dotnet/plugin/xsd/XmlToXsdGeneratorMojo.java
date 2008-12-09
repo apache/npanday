@@ -100,19 +100,19 @@ public class XmlToXsdGeneratorMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
+    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
 
     public void execute()
         throws MojoExecutionException
     {
         try
         {
-            nmavenRegistry.createRepositoryRegistry();
+            npandayRegistry.createRepositoryRegistry();
         }
         catch ( IOException e )
         {
             throw new MojoExecutionException(
-                "NMAVEN-1401-003: Failed to create the repository registry for this plugin", e );
+                "NPANDAY-1401-003: Failed to create the repository registry for this plugin", e );
         }
 
         FileUtils.mkdir( outputDirectory );
@@ -123,12 +123,12 @@ public class XmlToXsdGeneratorMojo
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1401-000: Unable to execute xsd: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-1401-000: Unable to execute xsd: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1401-001: Platform Unsupported: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-1401-001: Platform Unsupported: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
     }
@@ -141,7 +141,7 @@ public class XmlToXsdGeneratorMojo
         {
             if ( !( new File( xmlFile ) ).exists() )
             {
-                throw new MojoExecutionException( "NMAVEN-1401-002: XML File does not exist: FileName = " + xmlFile );
+                throw new MojoExecutionException( "NPANDAY-1401-002: XML File does not exist: FileName = " + xmlFile );
             }
             commands.add( xmlFile );
         }

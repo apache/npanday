@@ -193,7 +193,7 @@ extends AbstractMojo
         String skipTests = System.getProperty( "maven.test.skip" );
         if ( ( skipTests != null && skipTests.equalsIgnoreCase( "true" ) ) || skipTest )
         {
-            getLog().warn( "NMAVEN-1100-000: Unit tests have been disabled." );
+            getLog().warn( "NPANDAY-1100-000: Unit tests have been disabled." );
             return;
         }
         
@@ -201,7 +201,7 @@ extends AbstractMojo
 
         if(integrationTest)
         {
-            getLog().info("NMAVEN-1100-000.1: Artifact is an Integration Test");
+            getLog().info("NPANDAY-1100-000.1: Artifact is an Integration Test");
             testFileName = project.getBuild().getDirectory() + File.separator + project.getArtifactId() + ".dll";
         }
         else
@@ -211,7 +211,7 @@ extends AbstractMojo
 
         if ( !( new File( testFileName ).exists() ) )
         {
-            getLog().info( "NMAVEN-1100-001: No Unit Tests" );
+            getLog().info( "NPANDAY-1100-001: No Unit Tests" );
             return;
         }
 
@@ -252,14 +252,14 @@ extends AbstractMojo
                 }
                 catch ( IOException e )
                 {
-                    throw new MojoExecutionException( "NMAVEN-1100-002: Artifact = " + artifact.toString(), e );
+                    throw new MojoExecutionException( "NPANDAY-1100-002: Artifact = " + artifact.toString(), e );
                 }
             }
         }
 
         if ( nunitLibs.size() == 0 )
         {
-            throw new MojoExecutionException( "NMAVEN-1100-003: Could not find any nunit libraries." );
+            throw new MojoExecutionException( "NPANDAY-1100-003: Could not find any nunit libraries." );
         }
 
         // Copy Main Artifact
@@ -273,7 +273,7 @@ extends AbstractMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1100-004: Unable to copy library to target directory: ", e );
+            throw new MojoExecutionException( "NPANDAY-1100-004: Unable to copy library to target directory: ", e );
         }
         // TODO: Check timestamps
         // Copy Test Artifact
@@ -283,7 +283,7 @@ extends AbstractMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1100-005: Unable to copy library to target directory: ", e );
+            throw new MojoExecutionException( "NPANDAY-1100-005: Unable to copy library to target directory: ", e );
         }
 
         // Copy NUnit Dependencies
@@ -297,7 +297,7 @@ extends AbstractMojo
             catch ( IOException e )
             {
                 throw new MojoExecutionException(
-                                                  "NMAVEN-1100-006: Unable to copy nunit library to target directory: File = "
+                                                  "NPANDAY-1100-006: Unable to copy nunit library to target directory: File = "
                                                       + file.getAbsolutePath(), e );
             }
         }
@@ -305,7 +305,7 @@ extends AbstractMojo
         FileUtils.mkdir( reportsDirectory );
 
         List<String> commands = getCommandsFor( null );
-        getLog().debug( "NMAVEN-1100-008: " + commands.toString() );
+        getLog().debug( "NPANDAY-1100-008: " + commands.toString() );
 
         // pretty print nunit logs
         getLog().info( System.getProperty( "line.separator" ) );
@@ -354,7 +354,7 @@ extends AbstractMojo
         catch ( ExecutionException e )
         {
             String line = System.getProperty( "line.separator" );
-            throw new MojoFailureException( "NMAVEN-1100-007: There are test failures." + line + line + e.getMessage() );
+            throw new MojoFailureException( "NPANDAY-1100-007: There are test failures." + line + line + e.getMessage() );
         }
     }
 }

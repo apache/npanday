@@ -189,13 +189,13 @@ public class WsdlGeneratorMojo
             Vendor vendor = getCompilerVendor();
             List<String> commands = getCommandsFor( vendor, webreference );
 
-            getLog().debug( "NMAVEN-1300-000: Commands = " + commands.toString() );
+            getLog().debug( "NPANDAY-1300-000: Commands = " + commands.toString() );
             CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
             try
             {
                 commandExecutor.executeCommand( getExecutableFor( vendor, netHome ), commands );
                 getLog().info(
-                               "NMAVEN-1300-008: Generated WSDL: File = "
+                               "NPANDAY-1300-008: Generated WSDL: File = "
                                    + project.getBuild().getSourceDirectory()
                                    + File.separator
                                    + project.getBuild().getSourceDirectory()
@@ -214,7 +214,7 @@ public class WsdlGeneratorMojo
                 if ( ( vendor.equals( Vendor.MONO ) && commandExecutor.getResult() > 1 )
                     || vendor.equals( Vendor.MICROSOFT ) )
                 {
-                    throw new MojoExecutionException( "NMAVEN-1300-001: Result = " + commandExecutor.getResult(), e );
+                    throw new MojoExecutionException( "NPANDAY-1300-001: Result = " + commandExecutor.getResult(), e );
                 }
             }
         }
@@ -261,12 +261,12 @@ public class WsdlGeneratorMojo
             {
                 if ( !ignoreUnusedOptions )
                 {
-                    throw new MojoExecutionException( "NMAVEN-1300-005: Illegal Option(s) for Mono" );
+                    throw new MojoExecutionException( "NPANDAY-1300-005: Illegal Option(s) for Mono" );
                 }
                 else
                 {
                     getLog().warn(
-                                   "NMAVEN-1300-002: Your pom.xml contains an option that is not supported by MONO: Your application"
+                                   "NPANDAY-1300-002: Your pom.xml contains an option that is not supported by MONO: Your application"
                                        + " artifact will differ dependening on compiler/platform and may have different behavior." );
                 }
             }
@@ -343,7 +343,7 @@ public class WsdlGeneratorMojo
             Proxy mProxy = getProxyFor( proxy.getId() );
             if ( mProxy != null )
             {
-                getLog().debug( "NMAVEN-1300-003: Found proxy: ID = " + mProxy.getId() );
+                getLog().debug( "NPANDAY-1300-003: Found proxy: ID = " + mProxy.getId() );
                 String username = mProxy.getUsername();
                 String password = mProxy.getPassword();
                 boolean isHashed = proxy.isHashPassword();
@@ -361,7 +361,7 @@ public class WsdlGeneratorMojo
                     catch ( NoSuchAlgorithmException e )
                     {
                         throw new MojoExecutionException(
-                                                          "NMAVEN-1300-004: No Such Algorithm for hashing the password: "
+                                                          "NPANDAY-1300-004: No Such Algorithm for hashing the password: "
                                                               + "Algorithm = " + alg, e );
                     }
                 }
@@ -423,7 +423,7 @@ public class WsdlGeneratorMojo
                     catch ( NoSuchAlgorithmException e )
                     {
                         throw new MojoExecutionException(
-                                                          "NMAVEN-1300-005: No Such Algorithm for hashing the password: "
+                                                          "NPANDAY-1300-005: No Such Algorithm for hashing the password: "
                                                               + "Algorithm = " + alg, e );
                     }
                 }
@@ -452,7 +452,7 @@ public class WsdlGeneratorMojo
             }
             catch ( PlatformUnsupportedException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1300-009", e );
+                throw new MojoExecutionException( "NPANDAY-1300-009", e );
             }
         }
         else
@@ -461,7 +461,7 @@ public class WsdlGeneratorMojo
             if ( !file.exists() )
             {
                 throw new MojoExecutionException(
-                                                  "NMAVEN-1300-006: Unable to locate netHome - make sure that it exists:"
+                                                  "NPANDAY-1300-006: Unable to locate netHome - make sure that it exists:"
                                                       + " Home = " + netHome );
             }
             try
@@ -472,11 +472,11 @@ public class WsdlGeneratorMojo
             }
             catch ( PlatformUnsupportedException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1300-010", e );
+                throw new MojoExecutionException( "NPANDAY-1300-010", e );
             }
 
         }
-        getLog().info( "NMAVEN-1300-007: WSDL Vendor found: " + vendor.getVendorName() );
+        getLog().info( "NPANDAY-1300-007: WSDL Vendor found: " + vendor.getVendorName() );
         return vendor;
     }
 
