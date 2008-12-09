@@ -41,6 +41,6 @@ if "%1" == "-DMicrosoft" (
 
 cmd /C mvn.bat -f misc/dotnet-repository-builder/pom.xml %phase% %*
 
-cmd /C mvn.bat -f misc/nmaven-repository-builder/pom.xml %phase% %*
+cmd /C mvn.bat -f misc/npanday-repository-builder/pom.xml %phase% %*
 
 :END

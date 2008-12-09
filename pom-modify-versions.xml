@@ -22,7 +22,7 @@ under the License.
   <groupId>org.apache.maven.dotnet</groupId>
   <artifactId>dotnet-modify-versions</artifactId>
   <packaging>pom</packaging>
-  <version>${nmavenVersion}</version>
+  <version>${npandayVersion}</version>
   <name>dotnet-modify-versions</name>
   <build>
     <plugins>

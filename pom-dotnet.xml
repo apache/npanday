@@ -20,48 +20,48 @@ under the License.
 -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>NMaven.Project</groupId>  
-  <artifactId>NMaven.Project</artifactId>  
+  <groupId>NPanday.Project</groupId>  
+  <artifactId>NPanday.Project</artifactId>  
   <packaging>pom</packaging>  
   <version>0.14-incubating-SNAPSHOT</version>  
-  <name>NMaven.Project</name>  
-  <url>http://incubator.apache.org/nmaven</url>  
-  <description>NMaven provides Maven 2.x plugins to support building of .NET applications</description>  
+  <name>NPanday.Project</name>  
+  <url>http://incubator.apache.org/npanday</url>  
+  <description>NPanday provides Maven 2.x plugins to support building of .NET applications</description>  
   <mailingLists> 
     <mailingList> 
-      <name>NMaven Dev List</name>  
-      <subscribe>nmaven-dev-subscribe@incubator.apache.org</subscribe>  
-      <unsubscribe>nmaven-dev-unsubscribe@incubator.apache.org</unsubscribe>  
-      <post>nmaven-dev@incubator.apache.org</post>  
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-nmaven-dev/</archive>  
+      <name>NPanday Dev List</name>  
+      <subscribe>npanday-dev-subscribe@incubator.apache.org</subscribe>  
+      <unsubscribe>npanday-dev-unsubscribe@incubator.apache.org</unsubscribe>  
+      <post>npanday-dev@incubator.apache.org</post>  
+      <archive>http://mail-archives.apache.org/mod_mbox/incubator-npanday-dev/</archive>  
       <otherArchives> 
-        <otherArchive>http://www.nabble.com/nmaven-dev-f17655.html</otherArchive> 
+        <otherArchive>http://www.nabble.com/npanday-dev-f17655.html</otherArchive> 
       </otherArchives> 
     </mailingList>  
     <mailingList> 
-      <name>NMaven Commits List</name>  
-      <subscribe>nmaven-commits-subscribe@incubator.apache.org</subscribe>  
-      <unsubscribe>nmaven-commits-unsubscribe@incubator.apache.org</unsubscribe>  
-      <post>nmaven-commits@incubator.apache.org</post>  
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-nmaven-commits/</archive>  
+      <name>NPanday Commits List</name>  
+      <subscribe>npanday-commits-subscribe@incubator.apache.org</subscribe>  
+      <unsubscribe>npanday-commits-unsubscribe@incubator.apache.org</unsubscribe>  
+      <post>npanday-commits@incubator.apache.org</post>  
+      <archive>http://mail-archives.apache.org/mod_mbox/incubator-npanday-commits/</archive>  
       <otherArchives> 
-        <otherArchive>http://www.nabble.com/nmaven-commits-f17656.html</otherArchive> 
+        <otherArchive>http://www.nabble.com/npanday-commits-f17656.html</otherArchive> 
       </otherArchives> 
     </mailingList> 
   </mailingLists>  
   <scm> 
-    <url>https://svn.apache.org/repos/asf/incubator/nmaven/</url>  
-    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</connection>  
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/nmaven/</developerConnection>  
+    <url>https://svn.apache.org/repos/asf/incubator/npanday/</url>  
+    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/</connection>  
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/</developerConnection>  
     <tag>REL_0_14_SNAPSHOT</tag> 
   </scm>  
   <organization> 
-    <name>NMaven</name>  
-    <url>http://incubator.apache.org/nmaven</url> 
+    <name>NPanday</name>  
+    <url>http://incubator.apache.org/npanday</url> 
   </organization>  
   <issueManagement> 
     <system>JIRA Bugtracking</system>  
-    <url>http://jira.codehaus.org/browse/NMAVEN</url> 
+    <url>http://jira.codehaus.org/browse/NPANDAY</url> 
   </issueManagement>  
   <licenses> 
     <license> 
@@ -162,7 +162,7 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>  
         <artifactId>maven-release-plugin</artifactId>  
         <configuration> 
-          <tagBase>https://svn.apache.org/repos/asf/incubator/nmaven/tags</tagBase> 
+          <tagBase>https://svn.apache.org/repos/asf/incubator/npanday/tags</tagBase> 
         </configuration> 
       </plugin> 
     </plugins> 

@@ -15,7 +15,7 @@
       </excludes>
     </fileSet>
     <fileSet>
-      <directory>target/nmaven-sources</directory>
+      <directory>target/npanday-sources</directory>
       <outputDirectory>/</outputDirectory>
     </fileSet>
   </fileSets>
