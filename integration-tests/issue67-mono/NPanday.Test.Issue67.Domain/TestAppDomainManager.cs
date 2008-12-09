@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace NMaven.Test.Issue67.Domain
+namespace NPanday.Test.Issue67.Domain
 {
 	public sealed class TestAppDomainManager : AppDomainManager
 	{

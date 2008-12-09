@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Remoting;
-using NMaven.Test.Issue67.Domain;
+using NPanday.Test.Issue67.Domain;
 
-namespace NMaven.Test.Issue67.Loader
+namespace NPanday.Test.Issue67.Loader
 {
 	/// <summary>
 	/// Provides methods for loading plugins and for creating Mojos.

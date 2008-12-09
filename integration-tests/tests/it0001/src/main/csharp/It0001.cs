@@ -1,4 +1,4 @@
-namespace NMaven.IT {
+namespace NPanday.IT {
 
 public class It0001 {
 	public static void Main () { 

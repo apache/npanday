@@ -1,1 +1,1 @@
-target/NMaven.IT.0001.dll
+target/NPanday.IT.0001.dll

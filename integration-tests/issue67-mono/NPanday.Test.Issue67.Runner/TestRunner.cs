@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using System.Diagnostics;
 
-namespace NMaven.Test.Issue67.Runner
+namespace NPanday.Test.Issue67.Runner
 {
 	public class TestRunner
 	{
@@ -31,9 +31,9 @@ namespace NMaven.Test.Issue67.Runner
             }
 
 			processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_ASM"]
-				= "NMaven.Test.Issue67.Domain, Version=0.0.0.0, PublicKeyToken=4b435f4d76e2f0e6, culture=neutral";
+				= "NPanday.Test.Issue67.Domain, Version=0.0.0.0, PublicKeyToken=4b435f4d76e2f0e6, culture=neutral";
 			processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_TYPE"]
-				= "NMaven.Test.Issue67.Domain.TestAppDomainManager";
+				= "NPanday.Test.Issue67.Domain.TestAppDomainManager";
 
 			processStartInfo.UseShellExecute = false;
 			Process.Start(processStartInfo);
