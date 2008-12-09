@@ -691,7 +691,7 @@ public abstract class AbstractCompilerMojo
                 {
                     if (isUpToDateWithPomAndSettingsAndDependencies(compilerExecutable.getCompiledArtifact()))
                     {
-                        getLog().info("NMAVEN-900-003: Nothing to compile - all classes are up-to-date");
+                        getLog().info("NPANDAY-900-003: Nothing to compile - all classes are up-to-date");
                         project.getArtifact().setFile(compilerExecutable.getCompiledArtifact());
                         return;
                     }
@@ -707,7 +707,7 @@ public abstract class AbstractCompilerMojo
             compilerExecutable.execute();
             long endTimeCompile = System.currentTimeMillis();
 
-            getLog().info("NMAVEN-900-004: Compile Time = " + (endTimeCompile - startTimeCompile) + " ms");
+            getLog().info("NPANDAY-900-004: Compile Time = " + (endTimeCompile - startTimeCompile) + " ms");
 
 
             if (!test)
@@ -718,12 +718,12 @@ public abstract class AbstractCompilerMojo
         }
         catch (PlatformUnsupportedException e)
         {
-            throw new MojoExecutionException("NMAVEN-900-005: Unsupported Platform: Language = " + language +
+            throw new MojoExecutionException("NPANDAY-900-005: Unsupported Platform: Language = " + language +
                     ", Vendor = " + vendor + ", ArtifactType = " + project.getArtifact().getType(), e);
         }
         catch (ExecutionException e)
         {
-            throw new MojoExecutionException("NMAVEN-900-006: Unable to Compile: Language = " + language +
+            throw new MojoExecutionException("NPANDAY-900-006: Unable to Compile: Language = " + language +
                     ", Vendor = " + vendor + ", ArtifactType = " + project.getArtifact().getType() + ", Source Directory = " +
                     project.getBuild().getSourceDirectory(), e);
         }
@@ -764,7 +764,7 @@ public abstract class AbstractCompilerMojo
 
     protected boolean isUpToDateWithPomAndSettingsAndDependencies(File targetFile)
     {
-        File settingsFile = new File(localRepository, ".m2/nmaven-settings.xml");
+        File settingsFile = new File(localRepository, ".m2/npanday-settings.xml");
         Artifact latestDependencyModification =
                 this.getLatestDependencyModification(project.getDependencyArtifacts());
 
@@ -772,19 +772,19 @@ public abstract class AbstractCompilerMojo
         //TODO: Change in resource should cause an update
         if (targetFile.lastModified() < pomFile.lastModified())
         {
-            getLog().info("NMAVEN-900-007: Project pom has changed. Forcing a recompile.");
+            getLog().info("NPANDAY-900-007: Project pom has changed. Forcing a recompile.");
             return false;
         }
         else if (settingsFile.exists() && targetFile.lastModified() < settingsFile.lastModified())
         {
-            getLog().info("NMAVEN-900-008:Project settings has changed. Forcing a recompile.");
+            getLog().info("NPANDAY-900-008:Project settings has changed. Forcing a recompile.");
             return false;
         }
         else if (latestDependencyModification != null &&
                 targetFile.lastModified() < latestDependencyModification.getFile().lastModified())
         {
             getLog().info(
-                    "NMAVEN-900-009: Detected change in module dependency. Forcing a recompile: Changed Artifact = " +
+                    "NPANDAY-900-009: Detected change in module dependency. Forcing a recompile: Changed Artifact = " +
                             latestDependencyModification);
             return false;
         }

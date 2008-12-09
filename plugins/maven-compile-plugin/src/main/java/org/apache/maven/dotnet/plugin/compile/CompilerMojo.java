@@ -60,7 +60,7 @@ public final class CompilerMojo
 
         if ( profileAssemblyPath != null && !profileAssemblyPath.exists() )
         {
-            throw new MojoExecutionException( "NMAVEN-900-000: Profile Assembly Path does not exist: Path = " +
+            throw new MojoExecutionException( "NPANDAY-900-000: Profile Assembly Path does not exist: Path = " +
                 profileAssemblyPath.getAbsolutePath() );
         }
 
@@ -90,7 +90,7 @@ public final class CompilerMojo
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-900-001: Unknown Vendor: Vendor = " + vendor, e );
+            throw new MojoExecutionException( "NPANDAY-900-001: Unknown Vendor: Vendor = " + vendor, e );
         }
 
         return compilerRequirement;
@@ -144,7 +144,7 @@ public final class CompilerMojo
         ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifactTypeName );
         if ( artifactType.equals( ArtifactType.NULL ) )
         {
-            throw new MojoExecutionException( "NMAVEN-900-002: Unrecognized artifact type: Language = " + language +
+            throw new MojoExecutionException( "NPANDAY-900-002: Unrecognized artifact type: Language = " + language +
                 ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName );
         }
         compilerConfig.setArtifactType( artifactType );

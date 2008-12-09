@@ -92,7 +92,7 @@ public class ComponentInitializerMojo
         }
         catch ( InitializationException e )
         {
-            throw new MojoExecutionException( "NMAVEN-901-002: Failed to initialize the assembler context" );
+            throw new MojoExecutionException( "NPANDAY-901-002: Failed to initialize the assembler context" );
         }
 
         long endTime = System.currentTimeMillis();

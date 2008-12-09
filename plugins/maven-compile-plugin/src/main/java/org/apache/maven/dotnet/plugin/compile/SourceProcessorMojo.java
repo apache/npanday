@@ -89,7 +89,7 @@ public class SourceProcessorMojo
 
         if ( !new File( sourceDirectory ).exists() )
         {
-            getLog().info( "NMAVEN-904-001: No source files to copy" );
+            getLog().info( "NPANDAY-904-001: No source files to copy" );
             return;
         }
         DirectoryScanner directoryScanner = new DirectoryScanner();
@@ -111,7 +111,7 @@ public class SourceProcessorMojo
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-904-003: Language is not supported: Language = " + language, e );
+            throw new MojoExecutionException( "NPANDAY-904-003: Language is not supported: Language = " + language, e );
         }
     	for (int i = 0; i < includes.length; ++i)
     	{
@@ -127,7 +127,7 @@ public class SourceProcessorMojo
 
         directoryScanner.scan();
         String[] files = directoryScanner.getIncludedFiles();
-        getLog().info( "NMAVEN-904-002: Copying source files: From = " + sourceDirectory + ",  To = " +
+        getLog().info( "NPANDAY-904-002: Copying source files: From = " + sourceDirectory + ",  To = " +
             outputDirectory + ", File Count = " + files.length );
 
         super.getPluginContext().put( "SOURCE_FILES_UP_TO_DATE", Boolean.TRUE );
@@ -146,7 +146,7 @@ public class SourceProcessorMojo
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "NMAVEN-904-000: Unable to process sources", e );
+                throw new MojoExecutionException( "NPANDAY-904-000: Unable to process sources", e );
             }
         }
     }

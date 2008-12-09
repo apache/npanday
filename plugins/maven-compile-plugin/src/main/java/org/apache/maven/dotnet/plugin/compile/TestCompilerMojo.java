@@ -58,7 +58,7 @@ public final class TestCompilerMojo
         String skipTests = System.getProperty( "maven.test.skip" );
         if ( ( skipTests != null && skipTests.equalsIgnoreCase( "true" ) ) || skipTestCompile )
         {
-            getLog().warn( "NMAVEN-903-004: Disabled unit tests: -Dmaven.test.skip=true" );
+            getLog().warn( "NPANDAY-903-004: Disabled unit tests: -Dmaven.test.skip=true" );
             return;
         }
 
@@ -109,7 +109,7 @@ public final class TestCompilerMojo
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-900-000: Unknown Vendor: Vendor = " + vendor, e );
+            throw new MojoExecutionException( "NPANDAY-900-000: Unknown Vendor: Vendor = " + vendor, e );
         }
 
 

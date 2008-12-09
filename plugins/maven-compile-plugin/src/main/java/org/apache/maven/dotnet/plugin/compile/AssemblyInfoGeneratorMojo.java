@@ -140,17 +140,17 @@ public class AssemblyInfoGeneratorMojo
                 List files = FileUtils.getFiles( srcFile, "**/AssemblyInfo.*", null );
                 if ( files.size() != 0 )
                 {
-                    getLog().info( "NMAVEN-902-001: Found AssemblyInfo file(s), so will not generate one" );
+                    getLog().info( "NPANDAY-902-001: Found AssemblyInfo file(s), so will not generate one" );
                     return;
                 }
             }
             catch ( IOException e )
             {
                 throw new MojoExecutionException(
-                    "NMAVEN-902-004: Could not determine whether an AssemblyInfo file exists", e );
+                    "NPANDAY-902-004: Could not determine whether an AssemblyInfo file exists", e );
             }
         }
-        getLog().info( "NMAVEN-902-000: Generating Assembly Info: Language = " + language.trim() );
+        getLog().info( "NPANDAY-902-000: Generating Assembly Info: Language = " + language.trim() );
 
         //TODO: Investigate the affect of not setting isDefault and profile. In the case of executables, this is
         //managed by the framework. I intended to keep vendor info and state machine processor out of the
@@ -167,7 +167,7 @@ public class AssemblyInfoGeneratorMojo
         }
         catch ( VendorUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-902-007: Vendor not supported: Vendor = " + vendor );
+            throw new MojoExecutionException( "NPANDAY-902-007: Vendor not supported: Vendor = " + vendor );
         }
 
         AssemblyInfo assemblyInfo = assemblerContext.getAssemblyInfo();
@@ -178,7 +178,7 @@ public class AssemblyInfoGeneratorMojo
         catch ( org.apache.maven.dotnet.vendor.IllegalStateException e )
         {
             throw new MojoExecutionException(
-                "NMAVEN-902-008: Illegal state of vendor info: Message =  " + e.getMessage() );
+                "NPANDAY-902-008: Illegal state of vendor info: Message =  " + e.getMessage() );
         }
 
         if ( vendorInfo.getVendor().equals( Vendor.MICROSOFT ) && vendorInfo.getVendorVersion().equals( "1.1.4322" ) )
@@ -193,11 +193,11 @@ public class AssemblyInfoGeneratorMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-902-002: Problem generating assembly info class", e );
+            throw new MojoExecutionException( "NPANDAY-902-002: Problem generating assembly info class", e );
         }
         catch ( AssemblyInfoException e )
         {
-            throw new MojoExecutionException( "NMAVEN-902-005: Problem generating assembly info class", e );
+            throw new MojoExecutionException( "NPANDAY-902-005: Problem generating assembly info class", e );
         }
 
         long endTime = System.currentTimeMillis();
