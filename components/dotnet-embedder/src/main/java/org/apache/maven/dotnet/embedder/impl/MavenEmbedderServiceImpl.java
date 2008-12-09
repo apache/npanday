@@ -91,7 +91,7 @@ public final class MavenEmbedderServiceImpl
                         resetSocket( request.getLoggerPort() );
                     }
 
-                    logger.info( "NMAVEN: Executing Maven Build Request: Goal = " + request.getGoal() +
+                    logger.info( "NPANDAY: Executing Maven Build Request: Goal = " + request.getGoal() +
                         ", Pom File = " + request.getPomFile() );
                     List<String> goals = new ArrayList<String>();
                     goals.add( request.getGoal() );
@@ -126,7 +126,7 @@ public final class MavenEmbedderServiceImpl
     public Set<org.apache.maven.dotnet.embedder.MavenProject> getMavenProjectsFor( String basedir )
         throws EmbedderException
     {
-        logger.info( "NMAVEN: Getting maven projects: BaseDir = " + basedir );
+        logger.info( "NPANDAY: Getting maven projects: BaseDir = " + basedir );
         Set<MavenProject> allMavenProjects = getMavenProjectsFrom( basedir, "**/*pom*.xml" );
         Set<MavenProject> mavenProjects = new HashSet<MavenProject>();
         for ( MavenProject mavenProject : getMavenProjectsFrom( basedir, "*pom*.xml" ) )
@@ -140,7 +140,7 @@ public final class MavenEmbedderServiceImpl
             ( (MavenProjectImpl) mavenProject ).setIsOrphaned( true );
         }
         mavenProjects.addAll( orphanedMavenProjects );
-        logger.info( "NMAVEN: Found projects: Orphaned  = " + orphanedMavenProjects.size() + ", Total = " +
+        logger.info( "NPANDAY: Found projects: Orphaned  = " + orphanedMavenProjects.size() + ", Total = " +
             allMavenProjects.size() + ", Returned = " + mavenProjects.size() );
         return mavenProjects;
     }
@@ -202,7 +202,7 @@ public final class MavenEmbedderServiceImpl
     private void resetSocket( int port )
         throws EmbedderException
     {
-        logger.info( "NMAVEN: Resetting logger port: " + port );
+        logger.info( "NPANDAY: Resetting logger port: " + port );
         SocketLoggerManager socketLoggerManager =
             (SocketLoggerManager) embedder.getPlexusContainer().getLoggerManager();
         SocketLogger socketLogger = (SocketLogger) socketLoggerManager.createLogger( "90" );
@@ -212,7 +212,7 @@ public final class MavenEmbedderServiceImpl
         }
         catch ( IOException e )
         {
-            throw new EmbedderException( "NMAVEN: Failed to set socket handler port: Port = " + port, e );
+            throw new EmbedderException( "NPANDAY: Failed to set socket handler port: Port = " + port, e );
         }
     }
 
@@ -259,16 +259,16 @@ public final class MavenEmbedderServiceImpl
             }
             catch ( XmlPullParserException e )
             {
-                throw new EmbedderException( "NMAVEN: Failed to read model: Pom  File = " + pomFile );
+                throw new EmbedderException( "NPANDAY: Failed to read model: Pom  File = " + pomFile );
             }
             catch ( IOException e )
             {
-                throw new EmbedderException( "NMAVEN: Failed to read model: Pom  File = " + pomFile );
+                throw new EmbedderException( "NPANDAY: Failed to read model: Pom  File = " + pomFile );
             }
 
             if ( model == null )
             {
-                throw new EmbedderException( "NMAVEN: Failed to read model - value is null: Pom  File = " + pomFile );
+                throw new EmbedderException( "NPANDAY: Failed to read model - value is null: Pom  File = " + pomFile );
             }
 
             mavenProject.setArtifactId( model.getArtifactId() );
@@ -342,7 +342,7 @@ public final class MavenEmbedderServiceImpl
                 return mavenProject;
             }
         }
-        throw new EmbedderException( "NMAVEN: Could not find a matching maven project: Pom File = " +
+        throw new EmbedderException( "NPANDAY: Could not find a matching maven project: Pom File = " +
             pomFile.getAbsolutePath() + " Maven Project File Count = " + allMavenProjects.size() );
     }
 

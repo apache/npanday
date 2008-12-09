@@ -23,7 +23,7 @@
         <services>
           <service>
             <name>MavenEmbedderService</name>
-            <namespace>http://incubator.apache.org/nmaven/MavenEmbedderService</namespace>
+            <namespace>http://incubator.apache.org/npanday/MavenEmbedderService</namespace>
             <serviceClass>org.apache.maven.dotnet.embedder.MavenEmbedderService</serviceClass>
           </service>
         </services>
