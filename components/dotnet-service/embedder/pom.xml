@@ -30,7 +30,7 @@ under the License.
   <artifactId>dotnet-service-embedder</artifactId>  
   <packaging>war</packaging>  
   <name>dotnet-service-embedder</name>  
-  <description>NMaven</description>  
+  <description>NPanday</description>  
   <build> 
     <finalName>dotnet-service-embedder</finalName> 
   </build>  
