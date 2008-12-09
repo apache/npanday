@@ -27,18 +27,18 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.apache.maven.dotnet.model.settings.NMavenSettings;
+import org.apache.maven.dotnet.model.settings.NPandaySettings;
 import org.apache.maven.dotnet.model.settings.Vendor;
 import org.apache.maven.dotnet.model.settings.DefaultSetup;
 import org.apache.maven.dotnet.model.settings.Framework;
-import org.apache.maven.dotnet.model.settings.io.xpp3.NMavenSettingsXpp3Reader;
+import org.apache.maven.dotnet.model.settings.io.xpp3.NPandaySettingsXpp3Reader;
 import org.apache.maven.dotnet.PlatformUnsupportedException;
 import org.apache.maven.dotnet.vendor.VendorFactory;
 import org.apache.maven.dotnet.vendor.VendorInfo;
 import org.apache.maven.dotnet.vendor.VendorUnsupportedException;
 
 /**
- *  Provides methods for loading and reading the nmaven-settings config file.
+ *  Provides methods for loading and reading the npanday-settings config file.
  *
  * @author Shane Isbell
  */
@@ -47,7 +47,7 @@ public final class SettingsRepository
 {
 
     /**
-     * List of all vendors from the nmaven-settings file. The <code>Vendor</code> is the raw model type.
+     * List of all vendors from the npanday-settings file. The <code>Vendor</code> is the raw model type.
      */
     private List<Vendor> vendors;
 
@@ -58,7 +58,7 @@ public final class SettingsRepository
     private DefaultSetup defaultSetup;
 
     /**
-     * List of all vendors from the nmaven-settings file.
+     * List of all vendors from the npanday-settings file.
      */
     private List<VendorInfo> vendorInfos;
 
@@ -76,9 +76,9 @@ public final class SettingsRepository
     public void load( InputStream inputStream, Hashtable properties )
         throws IOException
     {
-        NMavenSettingsXpp3Reader xpp3Reader = new NMavenSettingsXpp3Reader();
+        NPandaySettingsXpp3Reader xpp3Reader = new NPandaySettingsXpp3Reader();
         Reader reader = new InputStreamReader( inputStream );
-        NMavenSettings settings;
+        NPandaySettings settings;
         try
         {
             settings = xpp3Reader.read( reader );
@@ -86,7 +86,7 @@ public final class SettingsRepository
         catch ( XmlPullParserException e )
         {
             e.printStackTrace();
-            throw new IOException( "NMAVEN-104-000: Could not read nmaven-settings.xml" );
+            throw new IOException( "NPANDAY-104-000: Could not read npanday-settings.xml" );
         }
         vendors = settings.getVendors();
         defaultSetup = settings.getDefaultSetup();
@@ -130,9 +130,9 @@ public final class SettingsRepository
     }
 
     /**
-     * Returns all vendor infos from the nmaven-settings file.
+     * Returns all vendor infos from the npanday-settings file.
      *
-     * @return all vendor infos from the nmaven-settings file
+     * @return all vendor infos from the npanday-settings file
      */
     List<VendorInfo> getVendorInfos()
     {
@@ -144,7 +144,7 @@ public final class SettingsRepository
     {
         if ( vendor == null || vendorVersion == null || frameworkVersion == null )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-104-004: One of more of the parameters is null: Vendor = " +
+            throw new PlatformUnsupportedException( "NPANDAY-104-004: One of more of the parameters is null: Vendor = " +
                 vendor + ", Vendor Version = " + vendorVersion + ", Framework Version = " + frameworkVersion );
         }
         for ( Vendor v : vendors )
@@ -180,7 +180,7 @@ public final class SettingsRepository
     {
         if ( vendor == null || vendorVersion == null || frameworkVersion == null )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-104-001: One of more of the parameters is null: Vendor = " +
+            throw new PlatformUnsupportedException( "NPANDAY-104-001: One of more of the parameters is null: Vendor = " +
                 vendor + ", Vendor Version = " + vendorVersion + ", Framework Version = " + frameworkVersion );
         }
         for ( Vendor v : vendors )
@@ -197,7 +197,7 @@ public final class SettingsRepository
                 }
             }
         }
-        throw new PlatformUnsupportedException( "NMAVEN-104-002: Unable to find install root: Vendor = " + vendor +
+        throw new PlatformUnsupportedException( "NPANDAY-104-002: Unable to find install root: Vendor = " + vendor +
             ", Vendor Version = " + vendorVersion + ", Framework Version = " + frameworkVersion );
     }
 

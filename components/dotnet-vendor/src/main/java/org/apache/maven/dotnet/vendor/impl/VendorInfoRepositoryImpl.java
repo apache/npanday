@@ -75,7 +75,7 @@ public class VendorInfoRepositoryImpl
      */
     public boolean exists()
     {
-        return ( repositoryRegistry.find( "nmaven-settings" ) != null );
+        return ( repositoryRegistry.find( "npanday-settings" ) != null );
     }
 
     /**
@@ -84,7 +84,7 @@ public class VendorInfoRepositoryImpl
     public File getInstallRootFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException
     {
-        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "nmaven-settings" );
+        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
         return settingsRepository.getInstallRootFor( vendorInfo.getVendor().getVendorName(),
                                                      vendorInfo.getVendorVersion(), vendorInfo.getFrameworkVersion() );
     }
@@ -92,7 +92,7 @@ public class VendorInfoRepositoryImpl
     public File getSdkInstallRootFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException
     {
-        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "nmaven-settings" );
+        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
         return settingsRepository.getSdkInstallRootFor( vendorInfo.getVendor().getVendorName(),
                                                         vendorInfo.getVendorVersion(),
                                                         vendorInfo.getFrameworkVersion() );
@@ -103,7 +103,7 @@ public class VendorInfoRepositoryImpl
      */
     public List<VendorInfo> getVendorInfos()
     {
-        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "nmaven-settings" );
+        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
         return Collections.unmodifiableList( settingsRepository.getVendorInfos() );
     }
 
@@ -217,7 +217,7 @@ public class VendorInfoRepositoryImpl
                 }
                 catch ( InvalidVersionFormatException e )
                 {
-                    throw new PlatformUnsupportedException( "NMAVEN-xxx-000: Invalid version format", e );
+                    throw new PlatformUnsupportedException( "NPANDAY-xxx-000: Invalid version format", e );
                 }
 
                 for ( VendorInfo vendorInfo : vendorInfos )
@@ -229,7 +229,7 @@ public class VendorInfoRepositoryImpl
                         if ( !gacRoot.exists() )
                         {
                             throw new PlatformUnsupportedException(
-                                "NMAVEN-xxx-000: The Mono GAC path does not exist: Path = " +
+                                "NPANDAY-xxx-000: The Mono GAC path does not exist: Path = " +
                                     gacRoot.getAbsolutePath() );
                         }
                         return gacRoot;
@@ -251,6 +251,6 @@ public class VendorInfoRepositoryImpl
         {
             return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
         }
-        throw new PlatformUnsupportedException("NMAVEN-xxx-000: Could not locate a valid GAC");
+        throw new PlatformUnsupportedException("NPANDAY-xxx-000: Could not locate a valid GAC");
     }
 }

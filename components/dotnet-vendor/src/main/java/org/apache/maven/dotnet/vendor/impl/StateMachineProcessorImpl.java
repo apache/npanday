@@ -84,7 +84,7 @@ public final class StateMachineProcessorImpl
         try
         {
             factory.init( repositoryRegistry, vendorInfoRepository, logger );
-            logger.debug( "NMAVEN-102-000: Initialized rule factory." );
+            logger.debug( "NPANDAY-102-000: Initialized rule factory." );
             transitionRules.put( VendorInfoState.MFF, factory.createVendorInfoSetterForMFF() );
             transitionRules.put( VendorInfoState.FTF, factory.createVendorInfoSetterForFTF() );
             transitionRules.put( VendorInfoState.FFT, factory.createVendorInfoSetterForFFT() );
@@ -98,7 +98,7 @@ public final class StateMachineProcessorImpl
         }
         catch ( org.apache.maven.dotnet.InitializationException e )
         {
-            logger.debug( "NMAVEN-102-001: Unable to initialize rule factory.", e );
+            logger.debug( "NPANDAY-102-001: Unable to initialize rule factory.", e );
             transitionRules.put( VendorInfoState.MFF, factory.createVendorInfoSetterForMFF_NoSettings() );
             transitionRules.put( VendorInfoState.NFT, factory.createVendorInfoSetterForNFT_NoSettings() );
             transitionRules.put( VendorInfoState.NTF, factory.createVendorInfoSetterForNTF_NoSettings() );
@@ -122,7 +122,7 @@ public final class StateMachineProcessorImpl
         if ( rule == null )
         {
             throw new IllegalStateException(
-                "NMAVEN-102-002: Could not find rule for state: State = " + startState.name() );
+                "NPANDAY-102-002: Could not find rule for state: State = " + startState.name() );
         }
         for ( VendorInfoState state = VendorInfoState.START; !state.equals( VendorInfoState.EXIT ); )
         {
@@ -131,7 +131,7 @@ public final class StateMachineProcessorImpl
             if ( rule == null && !state.equals( VendorInfoState.EXIT ) )
             {
                 throw new IllegalStateException(
-                    "NMAVEN-102-003: Could not find rule for state: State = " + state.name() );
+                    "NPANDAY-102-003: Could not find rule for state: State = " + state.name() );
             }
         }
     }

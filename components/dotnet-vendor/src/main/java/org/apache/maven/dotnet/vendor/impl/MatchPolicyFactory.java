@@ -120,7 +120,7 @@ final class MatchPolicyFactory
                 }
                 catch ( InvalidVersionFormatException e )
                 {
-                    logger.info( "NMAVEN-101-000: Invalid framework version: Version = " + frameworkVersion, e );
+                    logger.info( "NPANDAY-101-000: Invalid framework version: Version = " + frameworkVersion, e );
                     return false;
                 }
             }

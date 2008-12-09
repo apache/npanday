@@ -26,7 +26,7 @@ import java.util.Set;
 import java.io.File;
 
 /**
- * Provides services for matching and obtaining vendor info from the nmaven-settings config file.
+ * Provides services for matching and obtaining vendor info from the npanday-settings config file.
  *
  * @author Shane Isbell
  */

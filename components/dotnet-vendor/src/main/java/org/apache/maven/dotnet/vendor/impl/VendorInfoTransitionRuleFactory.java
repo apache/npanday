@@ -44,17 +44,17 @@ final class VendorInfoTransitionRuleFactory
     private VendorInfoRepository vendorInfoRepository;
 
     /**
-     * The default vendor as specified within the nmaven-settings file
+     * The default vendor as specified within the npanday-settings file
      */
     private Vendor defaultVendor;
 
     /**
-     * The default vendor version as specified within the nmaven-settings file
+     * The default vendor version as specified within the npanday-settings file
      */
     private String defaultVendorVersion;
 
     /**
-     * The default framework version as specified within the nmaven-settings file
+     * The default framework version as specified within the npanday-settings file
      */
     private String defaultFrameworkVersion;
 
@@ -78,8 +78,8 @@ final class VendorInfoTransitionRuleFactory
     /**
      * Initializes this factory.
      *
-     * @param repositoryRegistry   the repository registry containing various NMaven config information.
-     * @param vendorInfoRepository the vendor info repository used for accessing the nmaven-settings config file
+     * @param repositoryRegistry   the repository registry containing various NPanday config information.
+     * @param vendorInfoRepository the vendor info repository used for accessing the npanday-settings config file
      * @param logger               the plexus logger
      * @throws InitializationException if there is a problem initializing this factory
      */
@@ -90,24 +90,24 @@ final class VendorInfoTransitionRuleFactory
         this.logger = logger;
         if ( repositoryRegistry == null )
         {
-            throw new InitializationException( "NMAVEN-103-000: Unable to find the repository registry" );
+            throw new InitializationException( "NPANDAY-103-000: Unable to find the repository registry" );
         }
 
-        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "nmaven-settings" );
+        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
         if ( settingsRepository == null )
         {
             throw new InitializationException(
-                "NMAVEN-103-001: Settings Repository is null. Aborting initialization of VendorInfoTranstionRuleFactory" );
+                "NPANDAY-103-001: Settings Repository is null. Aborting initialization of VendorInfoTranstionRuleFactory" );
         }
 
         try
         {
             defaultVendor = VendorFactory.createVendorFromName( settingsRepository.getDefaultSetup().getVendorName() );
-            logger.debug( "NMAVEN-103-036: Default Vendor Initialized: Name = " + defaultVendor );
+            logger.debug( "NPANDAY-103-036: Default Vendor Initialized: Name = " + defaultVendor );
         }
         catch ( VendorUnsupportedException e )
         {
-            throw new InitializationException( "NMAVEN-103-002: Unknown Default Vendor: Name = " + defaultVendor );
+            throw new InitializationException( "NPANDAY-103-002: Unknown Default Vendor: Name = " + defaultVendor );
         }
         defaultVendorVersion = settingsRepository.getDefaultSetup().getVendorVersion().trim();
         defaultFrameworkVersion = settingsRepository.getDefaultSetup().getFrameworkVersion().trim();
@@ -120,7 +120,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-034: Entering State = Post Process" );
+                logger.debug( "NPANDAY-103-034: Entering State = Post Process" );
                 if ( ( vendorInfo.getExecutablePaths() == null || vendorInfo.getExecutablePaths().size() == 0 ) &&
                     vendorInfoRepository.exists() )
                 {
@@ -132,7 +132,7 @@ final class VendorInfoTransitionRuleFactory
                     }
                     catch ( PlatformUnsupportedException e )
                     {
-                        logger.debug( "NMAVEN-103-36: Failed to resolve install sdk root." );
+                        logger.debug( "NPANDAY-103-36: Failed to resolve install sdk root." );
                     }
                     try
                     {                       
@@ -141,7 +141,7 @@ final class VendorInfoTransitionRuleFactory
                     }
                     catch ( PlatformUnsupportedException e )
                     {
-                        logger.debug( "NMAVEN-103-35: Failed to resolve install root." );
+                        logger.debug( "NPANDAY-103-35: Failed to resolve install root." );
                     }
                     finally
                     {
@@ -167,7 +167,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-003: Entering State = NTT" );
+                logger.debug( "NPANDAY-103-003: Entering State = NTT" );
                 return VendorInfoState.POST_PROCESS;
             }
         };
@@ -179,7 +179,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-004: Entering State = NFF" );
+                logger.debug( "NPANDAY-103-004: Entering State = NFF" );
                 if ( vendorInfo.getVendor().equals( defaultVendor ) )
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
@@ -227,7 +227,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-005: Entering State = NFF" );
+                logger.debug( "NPANDAY-103-005: Entering State = NFF" );
                 vendorInfo.setFrameworkVersion( "2.0.50727" );
                 return VendorInfoState.NFT;
             }
@@ -240,7 +240,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-006: Entering State = NFT" );
+                logger.debug( "NPANDAY-103-006: Entering State = NFT" );
                 return VendorInfoState.POST_PROCESS; //NO WAY TO KNOW
             }
         };
@@ -252,7 +252,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-007: Entering State = NFT" );
+                logger.debug( "NPANDAY-103-007: Entering State = NFT" );
                 if ( vendorInfo.getFrameworkVersion().equals( defaultFrameworkVersion ) &&
                     vendorInfo.getVendor().equals( defaultVendor ) )
                 {
@@ -281,7 +281,7 @@ final class VendorInfoTransitionRuleFactory
                             }
                             catch ( InvalidVersionFormatException e )
                             {
-                                logger.warn( "NMAVEN-103-039: Bad nmaven-settings.xml file", e );
+                                logger.warn( "NPANDAY-103-039: Bad npanday-settings.xml file", e );
                                 return createVendorInfoSetterForNFT_NoSettings().process( vendorInfo );
                             }
                             return VendorInfoState.NTT;
@@ -311,7 +311,7 @@ final class VendorInfoTransitionRuleFactory
                             }
                             catch ( InvalidVersionFormatException e )
                             {
-                                logger.warn( "NMAVEN-103-040: Bad nmaven-settings.xml file", e );
+                                logger.warn( "NPANDAY-103-040: Bad npanday-settings.xml file", e );
                                 return createVendorInfoSetterForNFT_NoSettings().process( vendorInfo );
                             }
                             return VendorInfoState.NTT;
@@ -329,7 +329,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-008: Entering State = NTF" );
+                logger.debug( "NPANDAY-103-008: Entering State = NTF" );
                 vendorInfo.setFrameworkVersion( "2.0.50727" );
                 return VendorInfoState.NTT;
             }
@@ -342,7 +342,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-009: Entering State = NTF" );
+                logger.debug( "NPANDAY-103-009: Entering State = NTF" );
                 if ( vendorInfo.getVendorVersion().equals( defaultVendorVersion ) )
                 {
                     vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
@@ -372,7 +372,7 @@ final class VendorInfoTransitionRuleFactory
                             }
                             catch ( InvalidVersionFormatException e )
                             {
-                                logger.warn( "NMAVEN-103-037: Bad nmaven-settings.xml file", e );
+                                logger.warn( "NPANDAY-103-037: Bad npanday-settings.xml file", e );
                                 return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
                             }
                             return VendorInfoState.NTT;
@@ -403,7 +403,7 @@ final class VendorInfoTransitionRuleFactory
                             }
                             catch ( InvalidVersionFormatException e )
                             {
-                                logger.warn( "NMAVEN-103-038: Bad nmaven-settings.xml file", e );
+                                logger.warn( "NPANDAY-103-038: Bad npanday-settings.xml file", e );
                                 return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
                             }
                             return VendorInfoState.NTT;
@@ -424,7 +424,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-010: Entering State = FTF" );
+                logger.debug( "NPANDAY-103-010: Entering State = FTF" );
                 String vendorVersion = vendorInfo.getVendorVersion();
                 if ( vendorVersion.equals( "2.0.50727" ) || vendorVersion.equals( "1.1.4322" ) )
                 {
@@ -446,7 +446,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-011: Entering State = FTF" );
+                logger.debug( "NPANDAY-103-011: Entering State = FTF" );
                 if ( vendorInfo.getVendorVersion().equals( defaultVendorVersion ) )
                 {
                     vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
@@ -527,7 +527,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-012: Entering State = FFT" );
+                logger.debug( "NPANDAY-103-012: Entering State = FFT" );
                 if ( vendorInfo.getFrameworkVersion().equals( defaultFrameworkVersion ) )
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
@@ -610,7 +610,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-013: Entering State = FFT" );
+                logger.debug( "NPANDAY-103-013: Entering State = FFT" );
                 try
                 {
                     vendorInfo.setVendor( VendorFactory.getDefaultVendorForOS() );
@@ -631,7 +631,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-014: Entering State = FTT" );
+                logger.debug( "NPANDAY-103-014: Entering State = FTT" );
                 String vendorVersion = vendorInfo.getVendorVersion();
                 Vendor defaultVendor;
                 try
@@ -663,7 +663,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-015: Entering State = FTT" );
+                logger.debug( "NPANDAY-103-015: Entering State = FTT" );
                 List<VendorInfo> vendorInfos = vendorInfoRepository.getVendorInfosFor( vendorInfo, false );
                 if ( vendorInfos.isEmpty() )
                 {
@@ -693,7 +693,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-016: Entering State = FFF" );
+                logger.debug( "NPANDAY-103-016: Entering State = FFF" );
                 try
                 {
                     vendorInfo.setVendor( VendorFactory.getDefaultVendorForOS() );
@@ -714,7 +714,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-017: Entering State = FFF" );
+                logger.debug( "NPANDAY-103-017: Entering State = FFF" );
                 vendorInfo.setVendor( defaultVendor );
                 vendorInfo.setVendorVersion( defaultVendorVersion );
                 vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
@@ -730,7 +730,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-018: Entering State = MTT" );
+                logger.debug( "NPANDAY-103-018: Entering State = MTT" );
                 return VendorInfoState.POST_PROCESS;
             }
         };
@@ -742,7 +742,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-019: Entering State = MTF" );
+                logger.debug( "NPANDAY-103-019: Entering State = MTF" );
                 vendorInfo.setFrameworkVersion( vendorInfo.getVendorVersion() );
                 return VendorInfoState.MTT;
             }
@@ -755,7 +755,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-020: Entering State = MTF" );
+                logger.debug( "NPANDAY-103-020: Entering State = MTF" );
                 vendorInfo.setVendorVersion( vendorInfo.getFrameworkVersion() );
                 return VendorInfoState.MTT;
             }
@@ -768,7 +768,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-021: Entering State = MFF" );
+                logger.debug( "NPANDAY-103-021: Entering State = MFF" );
                 String systemRoot = System.getenv("SystemRoot");
                 String systemDrive = System.getenv("SystemDrive");
                 File v1 = new File( systemRoot, "\\Microsoft.NET\\Framework\\v1.1.4322" );
@@ -812,7 +812,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-022: Entering State = MFF" );
+                logger.debug( "NPANDAY-103-022: Entering State = MFF" );
                 if ( vendorInfo.getVendor().equals( defaultVendor ) )
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
@@ -843,7 +843,7 @@ final class VendorInfoTransitionRuleFactory
                     }
                     catch ( InvalidVersionFormatException e )
                     {
-                        logger.info( "NMAVEN-103-030: Invalid version. Unable to determine best vendor version", e );
+                        logger.info( "NPANDAY-103-030: Invalid version. Unable to determine best vendor version", e );
                         return createVendorInfoSetterForMFF_NoSettings().process( vendorInfo );
                     }
                 }
@@ -857,7 +857,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-023: Entering State = GFF" );
+                logger.debug( "NPANDAY-103-023: Entering State = GFF" );
                 vendorInfo.setFrameworkVersion( "2.0.50727" );
                 vendorInfo.setVendorVersion( "2.0.50727" );
                 return VendorInfoState.POST_PROCESS;
@@ -871,7 +871,7 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NMAVEN-103-035: Entering State = GFF" );
+                logger.debug( "NPANDAY-103-035: Entering State = GFF" );
                 if ( vendorInfo.getVendor().equals( defaultVendor ) )
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
@@ -899,7 +899,7 @@ final class VendorInfoTransitionRuleFactory
                     }
                     catch ( InvalidVersionFormatException e )
                     {
-                        logger.info( "NMAVEN-103-031: Invalid version. Unable to determine best vendor version", e );
+                        logger.info( "NPANDAY-103-031: Invalid version. Unable to determine best vendor version", e );
                         return createVendorInfoSetterForGFF_NoSettings().process( vendorInfo );
                     }
                 }
