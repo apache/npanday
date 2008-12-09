@@ -101,7 +101,7 @@ public final class AssemblerContextImpl
         File file = new File( basedir + "/COPYRIGHT.txt" );
         if ( file.exists() )
         {
-            logger.debug( "NMAVEN-020-000: Found Copyright: " + file.getAbsolutePath() );
+            logger.debug( "NPANDAY-020-000: Found Copyright: " + file.getAbsolutePath() );
             FileInputStream fis = null;
             try
             {
@@ -110,7 +110,7 @@ public final class AssemblerContextImpl
             }
             catch ( IOException e )
             {
-                logger.info( "NMAVEN-020-001: Could not get copyright: File = " + file.getAbsolutePath(), e );
+                logger.info( "NPANDAY-020-001: Could not get copyright: File = " + file.getAbsolutePath(), e );
             }
             finally
             {
@@ -157,17 +157,17 @@ public final class AssemblerContextImpl
         catch ( ClassNotFoundException e )
         {
             throw new AssemblyInfoException(
-                "NMAVEN-020-002: Unable to create AssemblyInfoMarshaller: Class Name = " + className, e );
+                "NPANDAY-020-002: Unable to create AssemblyInfoMarshaller: Class Name = " + className, e );
         }
         catch ( InstantiationException e )
         {
             throw new AssemblyInfoException(
-                "NMAVEN-020-003: Unable to create AssemblyInfoMarshaller: Class Name = " + className, e );
+                "NPANDAY-020-003: Unable to create AssemblyInfoMarshaller: Class Name = " + className, e );
         }
         catch ( IllegalAccessException e )
         {
             throw new AssemblyInfoException(
-                "NMAVEN-020-004: Unable to create AssemblyInfoMarshaller: Class Name = " + className, e );
+                "NPANDAY-020-004: Unable to create AssemblyInfoMarshaller: Class Name = " + className, e );
         }
 
         return marshaller;
@@ -185,7 +185,7 @@ public final class AssemblerContextImpl
         }
         catch ( AssemblyInfoException e )
         {
-            throw new PlatformUnsupportedException( "NMAVEN-020-006: Language not supported: Language = " + language,
+            throw new PlatformUnsupportedException( "NPANDAY-020-006: Language not supported: Language = " + language,
                                                     e );
         }
     }
@@ -200,7 +200,7 @@ public final class AssemblerContextImpl
         repository = (AssemblyPluginsRepository) repositoryRegistry.find( "assembly-plugins" );
         if ( repository == null )
         {
-            throw new InitializationException( "NMAVEN-020-005: Unable to find the assembly-plugins.xml file" );
+            throw new InitializationException( "NPANDAY-020-005: Unable to find the assembly-plugins.xml file" );
         }
     }
 }

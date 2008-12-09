@@ -75,14 +75,14 @@ public final class AssemblyPluginsRepository
         catch ( XmlPullParserException e )
         {
             e.printStackTrace();
-            throw new IOException( "NMAVEN-021-000: Could not read plugins-compiler.xml" );
+            throw new IOException( "NPANDAY-021-000: Could not read plugins-compiler.xml" );
         }
         assemblyPlugins = plugins.getAssemblyPlugins();
         Set languages = getAssemblyPluginLanguages();
         if ( languages.size() < assemblyPlugins.size() )
         {
             throw new IOException(
-                "NMAVEN-021-001: Duplicate language entries in the assembly-plugins.xml: Total Language Count = " +
+                "NPANDAY-021-001: Duplicate language entries in the assembly-plugins.xml: Total Language Count = " +
                     languages.size() + ", Total Plugins = " + assemblyPlugins.size() );
         }
     }
@@ -122,7 +122,7 @@ public final class AssemblyPluginsRepository
                 return assemblyPlugin;
             }
         }
-        throw new AssemblyInfoException( "NMAVEN-022-002: Unable to locate AssemblyPlugin: Language = " + language );
+        throw new AssemblyInfoException( "NPANDAY-022-002: Unable to locate AssemblyPlugin: Language = " + language );
     }
 
     /**

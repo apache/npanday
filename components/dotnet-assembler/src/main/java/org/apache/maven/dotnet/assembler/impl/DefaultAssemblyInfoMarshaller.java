@@ -88,7 +88,7 @@ final class DefaultAssemblyInfoMarshaller
         catch ( IOException e )
         {
             e.printStackTrace();
-            throw new IOException( "NMAVEN-022-000: Failed to generate AssemblyInfo" );
+            throw new IOException( "NPANDAY-022-000: Failed to generate AssemblyInfo" );
         }
         finally
         {
@@ -145,7 +145,7 @@ final class DefaultAssemblyInfoMarshaller
         if ( !name.startsWith( "Assembly" ) )
         {
             throw new IOException(
-                "NMAVEN-022-001: Invalid assembly info parameter: Name = " + name + ", Value = " + value );
+                "NPANDAY-022-001: Invalid assembly info parameter: Name = " + name + ", Value = " + value );
         }
         if ( name.equals( "AssemblyDescription" ) )
         {
