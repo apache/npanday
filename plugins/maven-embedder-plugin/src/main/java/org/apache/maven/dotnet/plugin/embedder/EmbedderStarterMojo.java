@@ -137,11 +137,11 @@ public class EmbedderStarterMojo
     private String frameworkVersion;
 
     /**
-     * Provides access to configuration information used by NMaven.
+     * Provides access to configuration information used by NPanday.
      *
      * @component
      */
-    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
+    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
 
     /**
      * File logger: needed for creating logs when the IDE starts because the console output and thrown exceptions are
@@ -166,7 +166,7 @@ public class EmbedderStarterMojo
         try
         {
             logger.addHandler( new FileHandler(
-                System.getProperty( "user.home" ) + "\\.m2\\embedder-logs\\nmaven-embedder-log.xml" ) );
+                System.getProperty( "user.home" ) + "\\.m2\\embedder-logs\\npanday-embedder-log.xml" ) );
         }
         catch ( IOException e )
         {
@@ -189,7 +189,7 @@ public class EmbedderStarterMojo
         {
             localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
         }
-        logger.info( "NMAVEN: Found local repository: Path =  " + localRepository );
+        logger.info( "NPANDAY: Found local repository: Path =  " + localRepository );
 
         ArtifactRepository localArtifactRepository =
             new DefaultArtifactRepository( "local", "file://" + localRepository, new DefaultRepositoryLayout() );
@@ -199,7 +199,7 @@ public class EmbedderStarterMojo
         Artifact artifact = artifactFactory.createDependencyArtifact( "org.mortbay.jetty", "jetty-embedded",
                                                                       VersionRange.createFromVersion( "6.1.5" ), "jar",
                                                                       null, "runtime", null );
-        logger.info( "NMAVEN-000-000: Dependency: Type  = " + artifact.getType() + ", Artifact ID = " +
+        logger.info( "NPANDAY-000-000: Dependency: Type  = " + artifact.getType() + ", Artifact ID = " +
             artifact.getArtifactId() );
         artifactDependencies.add( artifact );
 
@@ -211,12 +211,12 @@ public class EmbedderStarterMojo
         }
         catch ( ArtifactResolutionException e )
         {
-            logger.severe( "NMAVEN:" + e.getMessage() );
+            logger.severe( "NPANDAY:" + e.getMessage() );
             throw new MojoExecutionException( "", e );
         }
         catch ( ArtifactNotFoundException e )
         {
-            logger.severe( "NMAVEN:" + e.getMessage() );
+            logger.severe( "NPANDAY:" + e.getMessage() );
             throw new MojoExecutionException( "", e );
         }
 
@@ -282,10 +282,10 @@ public class EmbedderStarterMojo
         }
         catch ( PlatformUnsupportedException e )
         {
-            logger.severe( "NMAVEN-1400-001: Platform Unsupported: Vendor " + ", frameworkVersion = " +
+            logger.severe( "NPANDAY-1400-001: Platform Unsupported: Vendor " + ", frameworkVersion = " +
                 frameworkVersion + ", Message =" + e );
             throw new MojoExecutionException(
-                "NMAVEN-1400-001: Platform Unsupported: Vendor " + ", frameworkVersion = " + frameworkVersion, e );
+                "NPANDAY-1400-001: Platform Unsupported: Vendor " + ", frameworkVersion = " + frameworkVersion, e );
         }
 
         URL embedderUrl = null;
@@ -337,17 +337,17 @@ public class EmbedderStarterMojo
         RepositoryRegistry repositoryRegistry;
         try
         {
-            repositoryRegistry = nmavenRegistry.createRepositoryRegistry();
+            repositoryRegistry = npandayRegistry.createRepositoryRegistry();
         }
         catch ( IOException e )
         {
             throw new MojoExecutionException(
-                "NMAVEN-1400-002: Failed to create the repository registry for this plugin", e );
+                "NPANDAY-1400-002: Failed to create the repository registry for this plugin", e );
         }
 
         NetDependenciesRepository repository =
             (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
-        String pomVersion = repository.getProperty( "nmaven.version");
+        String pomVersion = repository.getProperty( "npanday.version");
 
         StringBuffer sb = new StringBuffer();
         for ( Artifact artifact : artifacts )

@@ -21,7 +21,7 @@
  <Exceptions>
   <Exception Keyword="CA0055" Kind="AssemblyLoad">
    <Type>Microsoft.FxCop.Common.AssemblyLoadException</Type>
-   <ExceptionMessage>* Could not load file: 'target\NMaven.Logging.dll'.</ExceptionMessage>
+   <ExceptionMessage>* Could not load file: 'target\NPanday.Logging.dll'.</ExceptionMessage>
   </Exception>
   <Exception Keyword="CA0052" Kind="Engine">
    <Type>Microsoft.FxCop.Sdk.FxCopException</Type>

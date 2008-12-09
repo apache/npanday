@@ -119,7 +119,7 @@ public class FxCopAggregateMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException("NMAVEN-000-000:");
+            throw new MojoExecutionException("NPANDAY-000-000:");
         }
 
         try
@@ -143,7 +143,7 @@ public class FxCopAggregateMojo
                 }
                 catch ( IOException e )
                 {
-                    throw new MojoExecutionException( "NMAVEN-1100-002: Artifact = " + artifact.toString(), e );
+                    throw new MojoExecutionException( "NPANDAY-1100-002: Artifact = " + artifact.toString(), e );
                 }
             }
         }
@@ -155,12 +155,12 @@ public class FxCopAggregateMojo
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NMAVEN-xxx-000: Unable to execute: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-xxx-000: Unable to execute: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-xxx-001: Platform Unsupported: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-xxx-001: Platform Unsupported: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
     }
@@ -191,7 +191,7 @@ public class FxCopAggregateMojo
         catch ( XmlPullParserException e )
         {
             e.printStackTrace();
-            throw new IOException( "NMAVEN-002-013: Unable to read pom file" );
+            throw new IOException( "NPANDAY-002-013: Unable to read pom file" );
         }
         return model;
     }

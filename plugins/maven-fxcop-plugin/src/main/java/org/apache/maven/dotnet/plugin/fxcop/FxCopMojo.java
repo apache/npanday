@@ -102,15 +102,15 @@ public class FxCopMojo
         if ( project.getPackaging().equals( "pom" ) )
         {
 
-            if ( System.getProperty( "NMAVEN.ROOT_DIR" ) == null )
+            if ( System.getProperty( "NPANDAY.ROOT_DIR" ) == null )
             {
-                System.setProperty( "NMAVEN.ROOT_DIR", project.getBasedir().getAbsolutePath() );
+                System.setProperty( "NPANDAY.ROOT_DIR", project.getBasedir().getAbsolutePath() );
             }
             return;
         }
 
-        rootDir = ( System.getProperty( "NMAVEN.ROOT_DIR" ) != null ) ? new File(
-            System.getProperty( "NMAVEN.ROOT_DIR" ) ) : null;
+        rootDir = ( System.getProperty( "NPANDAY.ROOT_DIR" ) != null ) ? new File(
+            System.getProperty( "NPANDAY.ROOT_DIR" ) ) : null;
 
         try
         {
@@ -138,7 +138,7 @@ public class FxCopMojo
                 }
                 catch ( IOException e )
                 {
-                    throw new MojoExecutionException( "NMAVEN-1100-002: Artifact = " + artifact.toString(), e );
+                    throw new MojoExecutionException( "NPANDAY-1100-002: Artifact = " + artifact.toString(), e );
                 }
             }
         }
@@ -150,12 +150,12 @@ public class FxCopMojo
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NMAVEN-xxx-000: Unable to execute: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-xxx-000: Unable to execute: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-xxx-001: Platform Unsupported: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-xxx-001: Platform Unsupported: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
     }
