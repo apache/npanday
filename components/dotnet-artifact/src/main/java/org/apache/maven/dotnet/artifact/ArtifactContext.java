@@ -77,9 +77,9 @@ public interface ArtifactContext
     Artifact getArtifactByID( String id );
 
     /**
-     * Returns an artifact installer used for installing NMaven artifacts into the local Maven repository.
+     * Returns an artifact installer used for installing NPanday artifacts into the local Maven repository.
      *
-     * @return an artifact installer for NMaven artifacts
+     * @return an artifact installer for NPanday artifacts
      */
     ArtifactInstaller getArtifactInstaller();
 
