@@ -1,4 +1,4 @@
-Find the latest documentation at: http://incubator.apache.org/nmaven/
+Find the latest documentation at: http://incubator.apache.org/npanday/
 
 Logs:
 000-019: dotnet-artifact
