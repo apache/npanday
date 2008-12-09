@@ -32,6 +32,7 @@ import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.project.artifact.ProjectArtifactMetadata;
 
 import java.io.File;
+import java.util.HashMap;
 
 /**
  * Deploys the .NET assembly file to the remote repository.
@@ -109,6 +110,13 @@ public class DeployFileMojo
     private String packaging;
 
     /**
+     * The project classifier type
+     *
+     * @parameter
+     */
+    private String classifier;
+
+    /**
      * @component
      */
     private ArtifactDeployer artifactDeployer;
@@ -132,11 +140,20 @@ public class DeployFileMojo
      * @required
      */
     private String url;
+    static HashMap<String, String> __packagingExtensions = new HashMap<String, String>();
+    static
+    {
+        __packagingExtensions.put("exe", "exe");
+        __packagingExtensions.put("winexe", "exe");
+        __packagingExtensions.put("dll", "dll");
+        __packagingExtensions.put("library", "dll");
+    }
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        Artifact artifact = artifactFactory.createArtifact( groupId, artifactId, version, packaging, "dll" );
+
+        Artifact artifact = artifactFactory.createArtifact( groupId, artifactId, version, packaging, __packagingExtensions.get(packaging) );
         ArtifactMetadata metadata = new ProjectArtifactMetadata( artifact, pomFile );
         artifact.addMetadata( metadata );
 
