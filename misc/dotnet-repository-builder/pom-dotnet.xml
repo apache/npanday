@@ -27,83 +27,83 @@ under the License.
   <dependencies> 
     <!--assemblies-->  
     <dependency> 
-      <groupId>NMaven.Artifact</groupId>  
-      <artifactId>NMaven.Artifact</artifactId>  
+      <groupId>NPanday.Artifact</groupId>  
+      <artifactId>NPanday.Artifact</artifactId>  
       <version>${pom.version}</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Logging</groupId>  
-      <artifactId>NMaven.Logging</artifactId>  
+      <groupId>NPanday.Logging</groupId>  
+      <artifactId>NPanday.Logging</artifactId>  
       <version>${pom.version}</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Model</groupId>  
-      <artifactId>NMaven.Model.Pom</artifactId>  
+      <groupId>NPanday.Model</groupId>  
+      <artifactId>NPanday.Model.Pom</artifactId>  
       <version>${pom.version}</version>  
       <type>library</type>  
       <classifier>4b435f4d76e2f0e6</classifier> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Model</groupId>  
-      <artifactId>NMaven.Model.AutomationExtensibility</artifactId>  
+      <groupId>NPanday.Model</groupId>  
+      <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
       <version>${pom.version}</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Plugin</groupId>  
-      <artifactId>NMaven.Plugin</artifactId>  
+      <groupId>NPanday.Plugin</groupId>  
+      <artifactId>NPanday.Plugin</artifactId>  
       <version>${pom.version}</version>  
       <type>library</type>  
       <classifier>4b435f4d76e2f0e6</classifier> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Plugin</groupId>  
-      <artifactId>NMaven.Plugin.Loader</artifactId>  
+      <groupId>NPanday.Plugin</groupId>  
+      <artifactId>NPanday.Plugin.Loader</artifactId>  
       <version>${pom.version}</version>  
       <type>exe</type> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Plugin</groupId>  
-      <artifactId>NMaven.Plugin.MojoGenerator</artifactId>  
+      <groupId>NPanday.Plugin</groupId>  
+      <artifactId>NPanday.Plugin.MojoGenerator</artifactId>  
       <version>${pom.version}</version>  
       <type>exe</type> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Plugin</groupId>  
-      <artifactId>NMaven.Plugin.Runner</artifactId>  
+      <groupId>NPanday.Plugin</groupId>  
+      <artifactId>NPanday.Plugin.Runner</artifactId>  
       <version>${pom.version}</version>  
       <type>exe</type> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Service</groupId>  
-      <artifactId>NMaven.Service.Embedder</artifactId>  
+      <groupId>NPanday.Service</groupId>  
+      <artifactId>NPanday.Service.Embedder</artifactId>  
       <version>${pom.version}</version>  
       <type>library</type> 
     </dependency>  
     <!--netplugins-->  
     <dependency> 
-      <groupId>NMaven.Plugins</groupId>  
-      <artifactId>NMaven.Plugin.Addin</artifactId>  
+      <groupId>NPanday.Plugins</groupId>  
+      <artifactId>NPanday.Plugin.Addin</artifactId>  
       <version>${pom.version}</version>  
       <type>netplugin</type> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Plugins</groupId>  
-      <artifactId>NMaven.Plugin.Devenv</artifactId>  
+      <groupId>NPanday.Plugins</groupId>  
+      <artifactId>NPanday.Plugin.Devenv</artifactId>  
       <version>${pom.version}</version>  
       <type>netplugin</type> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Plugins</groupId>  
-      <artifactId>NMaven.Plugin.Resx</artifactId>  
+      <groupId>NPanday.Plugins</groupId>  
+      <artifactId>NPanday.Plugin.Resx</artifactId>  
       <version>${pom.version}</version>  
       <type>exe</type> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Plugins</groupId>  
-      <artifactId>NMaven.Plugin.Settings</artifactId>  
+      <groupId>NPanday.Plugins</groupId>  
+      <artifactId>NPanday.Plugin.Settings</artifactId>  
       <version>${pom.version}</version>  
       <type>netplugin</type> 
     </dependency>  
@@ -152,32 +152,32 @@ under the License.
       </activation>  
       <dependencies> 
         <dependency> 
-          <groupId>NMaven.Plugins</groupId>  
-          <artifactId>NMaven.Plugin.Solution</artifactId>  
+          <groupId>NPanday.Plugins</groupId>  
+          <artifactId>NPanday.Plugin.Solution</artifactId>  
           <version>${pom.version}</version>  
           <type>netplugin</type> 
         </dependency>  
         <dependency> 
-          <groupId>NMaven</groupId>  
-          <artifactId>NMaven.Solution</artifactId>  
+          <groupId>NPanday</groupId>  
+          <artifactId>NPanday.Solution</artifactId>  
           <version>${pom.version}</version>  
           <type>library</type> 
         </dependency>  
         <dependency> 
-          <groupId>NMaven.VisualStudio</groupId>  
-          <artifactId>NMaven.VisualStudio</artifactId>  
+          <groupId>NPanday.VisualStudio</groupId>  
+          <artifactId>NPanday.VisualStudio</artifactId>  
           <version>${pom.version}</version>  
           <type>library</type> 
         </dependency>  
         <dependency> 
-          <groupId>NMaven.VisualStudio</groupId>  
-          <artifactId>NMaven.VisualStudio.Addin</artifactId>  
+          <groupId>NPanday.VisualStudio</groupId>  
+          <artifactId>NPanday.VisualStudio.Addin</artifactId>  
           <version>${pom.version}</version>  
           <type>visual-studio-addin</type> 
         </dependency>  
         <dependency> 
-          <groupId>NMaven.IDE</groupId>  
-          <artifactId>NMaven.IDE</artifactId>  
+          <groupId>NPanday.IDE</groupId>  
+          <artifactId>NPanday.IDE</artifactId>  
           <version>${pom.version}</version>  
           <type>library</type> 
         </dependency> 

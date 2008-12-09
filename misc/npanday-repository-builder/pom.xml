@@ -9,13 +9,13 @@
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.maven.dotnet</groupId>  
   <version>0.14-incubating-SNAPSHOT</version>  
-  <artifactId>nmaven-repository-builder</artifactId>  
+  <artifactId>npanday-repository-builder</artifactId>  
   <packaging>pom</packaging>
-  <name>NMaven Repository Builder</name>  
+  <name>NPanday Repository Builder</name>  
   <dependencies> 
 
     <!--
-    NMAVEN PLUGINS
+    NPANDAY PLUGINS
     -->
     <dependency>
       <groupId>org.apache.maven.dotnet.plugins</groupId>
@@ -104,31 +104,31 @@
     </dependency>
 
     <!--
-    NMAVEN NETPLUGINS
+    NPANDAY NETPLUGINS
      -->  
     <dependency> 
-      <groupId>NMaven.Plugins</groupId>  
-      <artifactId>NMaven.Plugin.Addin.JavaBinding</artifactId>  
+      <groupId>NPanday.Plugins</groupId>  
+      <artifactId>NPanday.Plugin.Addin.JavaBinding</artifactId>  
       <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Plugins</groupId>  
-      <artifactId>NMaven.Plugin.Devenv.JavaBinding</artifactId>  
+      <groupId>NPanday.Plugins</groupId>  
+      <artifactId>NPanday.Plugin.Devenv.JavaBinding</artifactId>  
       <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Plugins</groupId>  
-      <artifactId>NMaven.Plugin.Settings.JavaBinding</artifactId>  
+      <groupId>NPanday.Plugins</groupId>  
+      <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>  
       <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>NMaven.Plugins</groupId>  
-      <artifactId>NMaven.Plugin.Solution.JavaBinding</artifactId>  
+      <groupId>NPanday.Plugins</groupId>  
+      <artifactId>NPanday.Plugin.Solution.JavaBinding</artifactId>  
       <version>0.14-incubating-SNAPSHOT</version> 
     </dependency>
 
     <!--
-    NMAVEN ARCHETYPES
+    NPANDAY ARCHETYPES
     -->
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
