@@ -87,15 +87,15 @@ public class NetDependenciesRepositoryImpl
         catch ( XmlPullParserException e )
         {
             e.printStackTrace();
-            throw new IOException( "NMAVEN-003-000: Could not read net-dependencies.xml" );
+            throw new IOException( "NPANDAY-003-000: Could not read net-dependencies.xml" );
         }
         netDependencies = model.getNetDependencies();
-        String nmavenVersion = (String) properties.get( "nmaven.version" );
+        String npandayVersion = (String) properties.get( "npanday.version" );
         for ( NetDependency dependency : netDependencies )
         {
-            if ( dependency.getVersion() == null && dependency.getGroupId().startsWith( "NMaven" ) )
+            if ( dependency.getVersion() == null && dependency.getGroupId().startsWith( "NPanday" ) )
             {
-                dependency.setVersion( nmavenVersion );
+                dependency.setVersion( npandayVersion );
             }
         }
     }
@@ -223,7 +223,7 @@ public class NetDependenciesRepositoryImpl
 
     /**
      * Copies the information from a <code>NetDependency</code> object to a <code>Dependency</code> object. This method
-     * is for converting from an NMaven specific model to a Maven model that can be used within the general Maven
+     * is for converting from an NPanday specific model to a Maven model that can be used within the general Maven
      * framework. Note that all artifacts automatically have a runtime scope since <code>NetDependencies</code> are
      * always executables that are intended to be executed directly from the local Maven repository.
      *

@@ -110,7 +110,7 @@ public final class ArtifactContextImpl
         if ( repository == null )
         {
             logger.warn(
-                "NMAVEN-000-001: Could not locate artifact (net dependencies repository not found): Group ID = " +
+                "NPANDAY-000-001: Could not locate artifact (net dependencies repository not found): Group ID = " +
                     groupId + ", Artifact ID = " + artifactId + ", Version = " + version + ", Type = " + type );
             return new ArrayList<Artifact>();
         }
@@ -160,7 +160,7 @@ public final class ArtifactContextImpl
     {
         if ( artifact == null )
         {
-            throw new ArtifactException( "NMAVEN-000-002: Cannot get .NET modules dependencies of a null artifact" );
+            throw new ArtifactException( "NPANDAY-000-002: Cannot get .NET modules dependencies of a null artifact" );
         }
         List<ArtifactMatchPolicy> matchPolicies = new ArrayList<ArtifactMatchPolicy>();
         matchPolicies.add( new NetModuleMatchPolicy() );

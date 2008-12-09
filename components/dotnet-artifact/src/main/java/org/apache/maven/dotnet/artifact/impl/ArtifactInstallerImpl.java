@@ -194,12 +194,12 @@ public class ArtifactInstallerImpl
                 catch ( ArtifactResolutionException e )
                 {
                     throw new IOException(
-                        "NMAVEN-001-000: Problem resolving artifact for java binding: Message = " + e.getMessage() );
+                        "NPANDAY-001-000: Problem resolving artifact for java binding: Message = " + e.getMessage() );
                 }
                 catch ( ArtifactNotFoundException e )
                 {
                     throw new IOException(
-                        "NMAVEN-001-001: Could not find artifact for java binding: Message =" + e.getMessage() );
+                        "NPANDAY-001-001: Could not find artifact for java binding: Message =" + e.getMessage() );
                 }
             }
         }
@@ -217,12 +217,12 @@ public class ArtifactInstallerImpl
             catch ( ArtifactResolutionException e )
             {
                 throw new IOException(
-                    "NMAVEN-001-002: Problem resolving java dependency artifact: Message = " + e.getMessage() );
+                    "NPANDAY-001-002: Problem resolving java dependency artifact: Message = " + e.getMessage() );
             }
             catch ( ArtifactNotFoundException e )
             {
                 throw new IOException(
-                    "NMAVEN-001-003: Could not find java dependency artifact: Message = " + e.getMessage() );
+                    "NPANDAY-001-003: Could not find java dependency artifact: Message = " + e.getMessage() );
             }
         }
 
@@ -284,7 +284,7 @@ public class ArtifactInstallerImpl
 
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
-                throw new IOException( "NMAVEN-001-004: Could not find artifact dependency: Artifact ID = " +
+                throw new IOException( "NPANDAY-001-004: Could not find artifact dependency: Artifact ID = " +
                     artifactDependency.getArtifactId() + ", Path = " + (
                     ( artifactDependencyFile != null && !artifactDependencyFile.exists() )
                         ? artifactDependencyFile.getAbsolutePath() : null ) );
@@ -293,7 +293,7 @@ public class ArtifactInstallerImpl
             */
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
-                logger.warn( "NMAVEN-000-017: Could not find artifact to install: Artifact ID = " +
+                logger.warn( "NPANDAY-000-017: Could not find artifact to install: Artifact ID = " +
                     artifact.getArtifactId() + ", File Path = " +
                     ( ( artifactDependencyFile != null ) ? artifactDependencyFile.getAbsolutePath() : null ) );
                 return;
@@ -308,7 +308,7 @@ public class ArtifactInstallerImpl
             File artifactFile = artifact.getFile();
             if ( artifactFile == null || !artifactFile.exists() )
             {
-                throw new IOException( "NMAVEN-001-016: Could not find artifact: Artifact ID = " +
+                throw new IOException( "NPANDAY-001-016: Could not find artifact: Artifact ID = " +
                     artifact.getArtifactId() + ", Path = " +
                     ( ( artifactFile != null ) ? artifactFile.getAbsolutePath() : null ) );
             }
@@ -319,7 +319,7 @@ public class ArtifactInstallerImpl
         {
             if ( !artifactDependency.getType().startsWith( "gac" ) )
             {
-                logger.info( "NMAVEN-001-005: Installing file into private assembly bin: File = " +
+                logger.info( "NPANDAY-001-005: Installing file into private assembly bin: File = " +
                     artifactDependency.getFile().getAbsolutePath() );
                 FileUtils.copyFileToDirectory( artifactDependency.getFile(), installDirectory );
             }
@@ -343,7 +343,7 @@ public class ArtifactInstallerImpl
             }
             catch ( IOException e )
             {
-                throw new ArtifactInstallationException( "NMAVEN-001-006: Failed to install artifact: ID = " +
+                throw new ArtifactInstallationException( "NPANDAY-001-006: Failed to install artifact: ID = " +
                     artifact.getId() + ", File = " +
                     ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
             }
@@ -357,7 +357,7 @@ public class ArtifactInstallerImpl
                 File artifactFile = artifact.getFile();
                 File destFile = PathUtil.getUserAssemblyCacheFileFor( artifact, localRepository );
                                 logger.info(
-                    "NMAVEN-001-007: Installing file into repository: File = " + artifact.getFile().getAbsolutePath()
+                    "NPANDAY-001-007: Installing file into repository: File = " + artifact.getFile().getAbsolutePath()
                         + ", Dest File = " + destFile.getAbsolutePath());
                 try
                 {
@@ -365,20 +365,20 @@ public class ArtifactInstallerImpl
                 }
                 catch ( IOException e )
                 {
-                    throw new ArtifactInstallationException( "NMAVEN-001-008: Failed to install artifact: ID = " +
+                    throw new ArtifactInstallationException( "NPANDAY-001-008: Failed to install artifact: ID = " +
                         artifact.getId() + ", File = " +
                         ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
                 }
             }
             else
             {
-                logger.info( "NMAVEN-001-010: Artifact does not exist. Nothing to install: Artifact = " +
+                logger.info( "NPANDAY-001-010: Artifact does not exist. Nothing to install: Artifact = " +
                     artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion() );
             }
         }
         catch ( ArtifactInstallationException e )
         {
-            throw new ArtifactInstallationException( "NMAVEN-001-011: Failed to install artifact: ID = " +
+            throw new ArtifactInstallationException( "NPANDAY-001-011: Failed to install artifact: ID = " +
                 artifact.getId() + ", File = " +
                 ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
         }
@@ -402,11 +402,11 @@ public class ArtifactInstallerImpl
             }
             catch ( XmlPullParserException e )
             {
-                throw new ArtifactInstallationException( "NMAVEN-001-012: Unable to read pom file" );
+                throw new ArtifactInstallationException( "NPANDAY-001-012: Unable to read pom file" );
             }
             catch ( IOException e )
             {
-                throw new ArtifactInstallationException( "NMAVEN-001-013: Unable to read pom file" );
+                throw new ArtifactInstallationException( "NPANDAY-001-013: Unable to read pom file" );
             }
 
             ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
@@ -420,7 +420,7 @@ public class ArtifactInstallerImpl
             {
                 e.printStackTrace();
                 throw new ArtifactInstallationException(
-                    "NMAVEN-001-014: Unable to store model: Message = " + e.getMessage() );
+                    "NPANDAY-001-014: Unable to store model: Message = " + e.getMessage() );
             }
             finally
             {
@@ -456,7 +456,7 @@ public class ArtifactInstallerImpl
         catch ( IOException e )
         {
             throw new ArtifactInstallationException(
-                "NMAVEN-001-015: Unable to read model: Message =" + e.getMessage() );
+                "NPANDAY-001-015: Unable to read model: Message =" + e.getMessage() );
         }
         IOUtil.close( fileWriter );
         installArtifactWithPom( artifact, tempFile, false );
