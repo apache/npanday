@@ -70,7 +70,7 @@ public class XspStarterMojo
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1400-001: Platform Unsupported:", e );
+            throw new MojoExecutionException( "NPANDAY-1400-001: Platform Unsupported:", e );
         }
     }
 }

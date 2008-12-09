@@ -63,13 +63,13 @@ public class NetArchiveDeployerMojo
         try
         {
             FileUtils.copyDirectoryStructure( new File( outputDirectory ), new File( deployArtifact ) );
-            getLog().info( "NMAVEN-1201-001: Copied .NET Web Application to deployment directory: " + "From = " +
+            getLog().info( "NPANDAY-1201-001: Copied .NET Web Application to deployment directory: " + "From = " +
                 outputDirectory + ", To = " + deployArtifact );
         }
         catch ( IOException e )
         {
             throw new MojoExecutionException(
-                "NMAVEN-1201-000: Failed to copy .NET Web Application to deployment directory: " + "From = " +
+                "NPANDAY-1201-000: Failed to copy .NET Web Application to deployment directory: " + "From = " +
                     outputDirectory + ", To = " + deployArtifact, e );
         }
     }

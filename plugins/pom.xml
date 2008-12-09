@@ -30,10 +30,10 @@ under the License.
   <packaging>pom</packaging>  
   <name>maven-dotnet-plugins</name>  
   <modules> 
-    <module>netplugins/NMaven.Plugin.Addin/javabinding</module>  
-    <module>netplugins/NMaven.Plugin.Devenv/javabinding</module>  
-    <module>netplugins/NMaven.Plugin.Settings/javabinding</module>  
-    <module>netplugins/NMaven.Plugin.Solution/javabinding</module>  
+    <module>netplugins/NPanday.Plugin.Addin/javabinding</module>  
+    <module>netplugins/NPanday.Plugin.Devenv/javabinding</module>  
+    <module>netplugins/NPanday.Plugin.Settings/javabinding</module>  
+    <module>netplugins/NPanday.Plugin.Solution/javabinding</module>  
     <module>maven-compile-plugin</module>
     <module>maven-aspx-plugin</module>    
     <module>maven-deploy-plugin</module>  
@@ -116,8 +116,8 @@ under the License.
   </reporting>  
   <distributionManagement> 
     <site> 
-      <id>nmaven-apache-site</id>  
-      <name>NMaven Site</name>  
+      <id>npanday-apache-site</id>  
+      <name>NPanday Site</name>  
       <url>file://${basedir}/../../www</url> 
     </site> 
   </distributionManagement> 

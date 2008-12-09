@@ -81,7 +81,7 @@ public class NetAchiverMojo
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1200-000: Unable to process sources", e );
+                throw new MojoExecutionException( "NPANDAY-1200-000: Unable to process sources", e );
             }
         }
 
@@ -106,7 +106,7 @@ public class NetAchiverMojo
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "NMAVEN-1200-001", e );
+                throw new MojoExecutionException( "NPANDAY-1200-001", e );
             }
         }
 
@@ -116,15 +116,15 @@ public class NetAchiverMojo
         {
             zipArchiver.addDirectory( new File( outputDirectory ) );
             zipArchiver.createArchive();
-            getLog().info( "NMAVEN-1200-004: Created .NET Archive: File = " + outputDirectory + ".nar" );
+            getLog().info( "NPANDAY-1200-004: Created .NET Archive: File = " + outputDirectory + ".nar" );
         }
         catch ( ArchiverException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1200-002: Unable to create .NET archive:", e );
+            throw new MojoExecutionException( "NPANDAY-1200-002: Unable to create .NET archive:", e );
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "NMAVEN-1200-003: Unable to create .NET archive", e );
+            throw new MojoExecutionException( "NPANDAY-1200-003: Unable to create .NET archive", e );
         }
     }
 }

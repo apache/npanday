@@ -1,6 +1,6 @@
-Find the latest documentation at: http://incubator.apache.org/nmaven 
+Find the latest documentation at: http://incubator.apache.org/npanday 
 
-Before building the nmaven-plugin project, build the nmaven-components project and then go to the scripts directory and
+Before building the npanday-plugin project, build the npanday-components project and then go to the scripts directory and
 execute the install script. It will install the nunit.framework.dll and other 3rd party libs into the local Maven repo.
 
 Logs:
