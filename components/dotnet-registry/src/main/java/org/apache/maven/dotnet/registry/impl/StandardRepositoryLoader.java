@@ -55,18 +55,18 @@ public class StandardRepositoryLoader
     {
         if ( repositoryRegistry == null )
         {
-            throw new IOException( "NMAVEN-084-000: The repository registry has not been set." );
+            throw new IOException( "NPANDAY-084-000: The repository registry has not been set." );
         }
 
         Hashtable props = ( initParams != null ) ? initParams : new Hashtable();
 
         if ( fileUri == null || fileUri.trim().equals( "" ) )
         {
-            throw new IOException( "NMAVEN-084-001: File uri must be provided." );
+            throw new IOException( "NPANDAY-084-001: File uri must be provided." );
         }
         if ( repositoryClass == null || repositoryClass.trim().equals( "" ) )
         {
-            throw new IOException( "NMAVEN-084-002: Repository class name must be provided: File Name = " + fileUri +
+            throw new IOException( "NPANDAY-084-002: Repository class name must be provided: File Name = " + fileUri +
                 ", Properties = " + props.toString() );
         }
 
@@ -86,7 +86,7 @@ public class StandardRepositoryLoader
             ( (String) initParams.get( "optional" ) ).equalsIgnoreCase( "true" ) );
         if ( stream == null && !optional )
         {
-            throw new IOException( "NMAVEN-084-003: Unable to loadRegistry config file: " + message );
+            throw new IOException( "NPANDAY-084-003: Unable to loadRegistry config file: " + message );
         }
         else if ( stream == null && optional )
         {
@@ -103,15 +103,15 @@ public class StandardRepositoryLoader
         }
         catch ( IOException e )
         {
-            throw new IOException( "NMAVEN-084-004: " + e.toString() + " : " + message );
+            throw new IOException( "NPANDAY-084-004: " + e.toString() + " : " + message );
         }
         catch ( Exception e )
         {
-            throw new IOException( "NMAVEN-084-005: " + e.toString() + " : " + message );
+            throw new IOException( "NPANDAY-084-005: " + e.toString() + " : " + message );
         }
         catch ( Error e )
         {
-            throw new IOException( "NMAVEN-084-006: " + e.toString() + " : " + message );
+            throw new IOException( "NPANDAY-084-006: " + e.toString() + " : " + message );
         }
         return repository;
     }

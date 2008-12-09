@@ -57,11 +57,11 @@ public class RepositoryRegistryImpl
     {
         try
         {
-            loadFromResource( "/META-INF/nmaven/registry-config.xml", this.getClass() );
+            loadFromResource( "/META-INF/npanday/registry-config.xml", this.getClass() );
         }
         catch ( IOException e )
         {
-            throw new InitializationException( "NMAVEN-082-000: Message = ", e );
+            throw new InitializationException( "NPANDAY-082-000: Message = ", e );
         }
     }
 
@@ -90,7 +90,7 @@ public class RepositoryRegistryImpl
                 org.apache.maven.dotnet.registry.RepositoryRegistry.class.getResourceAsStream( "/registry.properties" );
             if ( stream == null )
             {
-                throw new IOException( "NMAVEN-082-001: Could not find /registry.properties file with the jar" );
+                throw new IOException( "NPANDAY-082-001: Could not find /registry.properties file with the jar" );
             }
 
             Properties prop = new Properties();
@@ -101,7 +101,7 @@ public class RepositoryRegistryImpl
                 String loaderClassName = prop.getProperty( "repositoryLoader" );
                 if ( loaderClassName == null )
                 {
-                    throw new IOException( "NMAVEN-082-002: Missing the repositoryLoader from the /registry.properties" );
+                    throw new IOException( "NPANDAY-082-002: Missing the repositoryLoader from the /registry.properties" );
                 }
 
                 String message = "Repository Loader = " + loaderClassName;
@@ -112,11 +112,11 @@ public class RepositoryRegistryImpl
                 }
                 catch ( Exception e )
                 {
-                    throw new IOException( "NMAVEN-082-003: " + e.toString() + " : " + message );
+                    throw new IOException( "NPANDAY-082-003: " + e.toString() + " : " + message );
                 }
                 catch ( Error e )
                 {
-                    throw new IOException( "NMAVEN-082-004: " + e.toString() + " : " + message );
+                    throw new IOException( "NPANDAY-082-004: " + e.toString() + " : " + message );
                 }
             }
 
@@ -125,7 +125,7 @@ public class RepositoryRegistryImpl
                 String loaderClassName = prop.getProperty( "registryLoader" );
                 if ( loaderClassName == null )
                 {
-                    throw new IOException( "NMAVEN-082-005: Missing the registryLoader from the /registry.properties" );
+                    throw new IOException( "NPANDAY-082-005: Missing the registryLoader from the /registry.properties" );
                 }
 
                 String message = "Registry Loader = " + loaderClassName;
@@ -136,11 +136,11 @@ public class RepositoryRegistryImpl
                 }
                 catch ( Exception e )
                 {
-                    throw new IOException( "NMAVEN-082-006: " + e.toString() + " : " + message );
+                    throw new IOException( "NPANDAY-082-006: " + e.toString() + " : " + message );
                 }
                 catch ( Error e )
                 {
-                    throw new IOException( "NMAVEN-082-007: " + e.toString() + " : " + message );
+                    throw new IOException( "NPANDAY-082-007: " + e.toString() + " : " + message );
                 }
             }
         }
@@ -163,13 +163,13 @@ public class RepositoryRegistryImpl
     {
         if ( sourceClass == null )
         {
-            throw new IOException( "NMAVEN-082-008: The class cannot be null when loading from a resource" );
+            throw new IOException( "NPANDAY-082-008: The class cannot be null when loading from a resource" );
         }
         InputStream stream = sourceClass.getResourceAsStream( fileName );
 
         if ( stream == null )
         {
-            throw new IOException( "NMAVEN-082-009: Could not locate resource: File Name = " + fileName );
+            throw new IOException( "NPANDAY-082-009: Could not locate resource: File Name = " + fileName );
         }
         loadFromInputStream( stream );
     }

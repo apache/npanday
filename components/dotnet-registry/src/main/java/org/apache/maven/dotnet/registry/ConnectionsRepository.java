@@ -68,7 +68,7 @@ public class ConnectionsRepository
         }
         catch ( RepositoryException e )
         {
-            throw new IOException("NMAVEN-080-005: Failed to initialized repository. Message = " + e.getMessage());
+            throw new IOException("NPANDAY-080-005: Failed to initialized repository. Message = " + e.getMessage());
         }
 
         Set<String> keys = properties.keySet();
@@ -84,29 +84,29 @@ public class ConnectionsRepository
                     if ( !( o instanceof DataAccessObject ) )
                     {
                         throw new IOException(
-                            "NMAVEN-080-000: dao tag references a class that does not implement the DataAccessObject interface." );
+                            "NPANDAY-080-000: dao tag references a class that does not implement the DataAccessObject interface." );
                     }
                     DataAccessObject dao = (DataAccessObject) o;
                     dao.init( rdfRepository, keyName, daoClassName );
                     dao.setRepositoryRegistry( registry );
                     daos.add( dao );
-                    logger.info( "NMAVEN-080-001: Adding data access object: Class Name = " + daoClassName );
+                    logger.info( "NPANDAY-080-001: Adding data access object: Class Name = " + daoClassName );
                 }
                 catch ( Exception e )
                 {
                     e.printStackTrace();
                     throw new IOException(
-                        "NMAVEN-080-002: Problem instantiating the DAO Class: Class Name = " + daoClassName );
+                        "NPANDAY-080-002: Problem instantiating the DAO Class: Class Name = " + daoClassName );
                 }
                 catch ( Error e )
                 {
                     e.printStackTrace();
                     throw new IOException(
-                        "NMAVEN-080-003: Problem instantiating the DAO Class: Class Name = " + daoClassName );
+                        "NPANDAY-080-003: Problem instantiating the DAO Class: Class Name = " + daoClassName );
                 }
             }
         }
-        logger.info( "NMAVEN-080-004: Connection Start Up: Time = " + ( System.currentTimeMillis() - start ) );
+        logger.info( "NPANDAY-080-004: Connection Start Up: Time = " + ( System.currentTimeMillis() - start ) );
     }
 
     /**

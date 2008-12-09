@@ -90,7 +90,7 @@ public class StandardRegistryLoader
         }
         catch ( XmlPullParserException e )
         {
-            throw new IOException( "NMAVEN-083-000: Message = " + e.toString() );
+            throw new IOException( "NPANDAY-083-000: Message = " + e.toString() );
         }
         loadIntoRegistry();
     }
@@ -159,7 +159,7 @@ public class StandardRegistryLoader
     {
         if ( repositoryLoader == null )
         {
-            throw new IOException( "NMAVEN-083-001:: Repository Loader does not exist" );
+            throw new IOException( "NPANDAY-083-001:: Repository Loader does not exist" );
         }
         for ( Iterator i = repositories.iterator(); i.hasNext(); )
         {
