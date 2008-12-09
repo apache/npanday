@@ -137,7 +137,7 @@ public class AspxCompilerMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NMavenRepositoryRegistry nmavenRegistry;
+    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
 
     public void execute()
         throws MojoExecutionException
@@ -161,7 +161,7 @@ public class AspxCompilerMojo
 
         if ( profileAssemblyPath != null && !profileAssemblyPath.exists() )
         {
-            throw new MojoExecutionException( "NMAVEN-900-000: Profile Assembly Path does not exist: Path = " +
+            throw new MojoExecutionException( "NPANDAY-900-000: Profile Assembly Path does not exist: Path = " +
                 profileAssemblyPath.getAbsolutePath() );
         }
 
@@ -191,7 +191,7 @@ public class AspxCompilerMojo
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-900-001: Unknown Vendor: Vendor = " + vendor, e );
+            throw new MojoExecutionException( "NPANDAY-900-001: Unknown Vendor: Vendor = " + vendor, e );
         }
 
         if ( parameters == null )
@@ -215,7 +215,7 @@ public class AspxCompilerMojo
         ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifactTypeName );
         if ( artifactType.equals( ArtifactType.NULL ) )
         {
-            throw new MojoExecutionException( "NMAVEN-900-002: Unrecognized artifact type: Language = " + language +
+            throw new MojoExecutionException( "NPANDAY-900-002: Unrecognized artifact type: Language = " + language +
                 ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName );
         }
         compilerConfig.setArtifactType( artifactType );
@@ -230,17 +230,17 @@ public class AspxCompilerMojo
             compilerExecutable.execute();
             long endTimeCompile = System.currentTimeMillis();
 
-            getLog().info( "NMAVEN-000-000: Compile Time = " + ( endTimeCompile - startTimeCompile ) + " ms" );
+            getLog().info( "NPANDAY-000-000: Compile Time = " + ( endTimeCompile - startTimeCompile ) + " ms" );
             project.getArtifact().setFile( compilerExecutable.getCompiledArtifact() );
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NMAVEN-900-005: Unsupported Platform: Language = " + language +
+            throw new MojoExecutionException( "NPANDAY-900-005: Unsupported Platform: Language = " + language +
                 ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName, e );
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NMAVEN-900-006: Unable to Compile: Language = " + language +
+            throw new MojoExecutionException( "NPANDAY-900-006: Unable to Compile: Language = " + language +
                 ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName + ", Source Directory = " +
                 project.getBuild().getSourceDirectory(), e );
         }
@@ -308,7 +308,7 @@ public class AspxCompilerMojo
         String targetFile =
             project.getBuild().getDirectory() + File.separator + project.getArtifactId() + "-" + project.getVersion() +
                 "-dist" + ".zip";
-        getLog().info( "NMAVEN-000-000: Setting the target file: " + targetFile );
+        getLog().info( "NPANDAY-000-000: Setting the target file: " + targetFile );
         project.getArtifact().setFile( new File( targetFile ) );
 
     }

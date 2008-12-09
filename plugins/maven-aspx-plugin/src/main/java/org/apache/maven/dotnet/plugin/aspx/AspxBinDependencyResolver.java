@@ -60,13 +60,13 @@ public class AspxBinDependencyResolver
         {
             try
             {
-                getLog().info( "NMAVEN-000-0000: copying " + dependency.getFile().getAbsolutePath() + " , to " + binDir );
+                getLog().info( "NPANDAY-000-0000: copying " + dependency.getFile().getAbsolutePath() + " , to " + binDir );
 
                 FileUtils.copyFileToDirectory( dependency.getFile().getAbsolutePath(), binDir );
             }
             catch ( IOException ioe )
             {
-                throw new MojoExecutionException( "NMAVEN-000-0000: Error copying dependency " + dependency, ioe );
+                throw new MojoExecutionException( "NPANDAY-000-0000: Error copying dependency " + dependency, ioe );
             }
         }
 
