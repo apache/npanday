@@ -3,7 +3,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">  
   <parent> 
     <groupId>org.apache.maven.dotnet.plugins</groupId>  
-    <version>0.14-incubating-SNAPSHOT</version>  
+    <version>0.9-SNAPSHOT</version>  
     <artifactId>maven-dotnet-plugins</artifactId>  
     <relativePath>../../../pom.xml</relativePath> 
   </parent>  
@@ -16,22 +16,22 @@
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-assembler</artifactId>  
-      <version>0.14-incubating-SNAPSHOT</version> 
+      <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-executable</artifactId>  
-      <version>0.14-incubating-SNAPSHOT</version> 
+      <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-artifact</artifactId>  
-      <version>0.14-incubating-SNAPSHOT</version> 
+      <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-plugin</artifactId>  
-      <version>0.14-incubating-SNAPSHOT</version> 
+      <version>0.9-SNAPSHOT</version> 
     </dependency> 
   </dependencies> 
 </project>

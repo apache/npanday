@@ -23,7 +23,7 @@ under the License.
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>org.apache.maven.dotnet.plugins</groupId>
-    <version>0.14-incubating-SNAPSHOT</version>
+    <version>0.9-SNAPSHOT</version>
     <artifactId>maven-dotnet-plugins</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -36,7 +36,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.dotnet</groupId>
       <artifactId>dotnet-registry</artifactId>
-      <version>0.14-incubating-SNAPSHOT</version>
+      <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>

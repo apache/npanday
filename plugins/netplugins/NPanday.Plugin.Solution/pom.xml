@@ -21,14 +21,14 @@ under the License.
 <project> 
   <parent> 
     <groupId>NPanday.Plugins</groupId>  
-    <version>0.14-incubating-SNAPSHOT</version>  
+    <version>0.9-SNAPSHOT</version>  
     <artifactId>NPanday.Plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NPanday.Plugins</groupId>  
   <artifactId>NPanday.Plugin.Solution</artifactId>  
   <packaging>netplugin</packaging>  
-  <version>0.14-incubating-SNAPSHOT</version>  
+  <version>0.9-SNAPSHOT</version>  
   <name>NPanday.Plugin.Solution</name>  
   <dependencies> 
     <dependency> 
@@ -41,25 +41,25 @@ under the License.
       <groupId>NPanday.Artifact</groupId>  
       <artifactId>NPanday.Artifact</artifactId>  
       <type>library</type>  
-      <version>0.14-incubating-SNAPSHOT</version> 
+      <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>NPanday</groupId>  
       <artifactId>NPanday.Solution</artifactId>  
-      <version>0.14-incubating-SNAPSHOT</version>  
+      <version>0.9-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Model</groupId>  
       <artifactId>NPanday.Model.Pom</artifactId>  
       <type>library</type>  
-      <version>0.14-incubating-SNAPSHOT</version> 
+      <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
       <type>library</type>  
-      <version>0.14-incubating-SNAPSHOT</version> 
+      <version>0.9-SNAPSHOT</version> 
     </dependency> 
   </dependencies> 
 </project>
