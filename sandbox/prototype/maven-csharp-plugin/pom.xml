@@ -5,12 +5,12 @@
   <parent> 
     <groupId>org.apache.maven.plugins</groupId>  
     <artifactId>maven-plugin-parent</artifactId>  
-    <version>0.14-incubating-SNAPSHOT</version> 
+    <version>0.9-SNAPSHOT</version> 
   </parent>  
   <artifactId>maven-csharp-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>csharp-plugin</name>  
-  <version>0.14-incubating-SNAPSHOT</version>  
+  <version>0.9-SNAPSHOT</version>  
   <inceptionYear>2005</inceptionYear>  
   <description>M2 csharp plugin</description>  
   <contributors> 

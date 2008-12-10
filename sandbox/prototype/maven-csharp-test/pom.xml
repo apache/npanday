@@ -6,7 +6,7 @@
   <artifactId>maven-csharp-plugin-test</artifactId>  
   <packaging>dotnetexe</packaging>  
   <name>csharp-plugin-test</name>  
-  <version>0.14-incubating-SNAPSHOT</version>  
+  <version>0.9-SNAPSHOT</version>  
   <inceptionYear>2005</inceptionYear>  
   <description>M2 csharp plugin Test</description>  
   <contributors> 

@@ -4,12 +4,12 @@
   <parent> 
     <artifactId>maven-archetype-bundles</artifactId>  
     <groupId>org.apache.maven.archetype</groupId>  
-    <version>0.14-incubating-SNAPSHOT</version> 
+    <version>0.9-SNAPSHOT</version> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.maven.archetypes</groupId>  
   <artifactId>maven-archetype-dotnetexe</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>Maven Dotnet Executable Archetype</name>  
-  <version>0.14-incubating-SNAPSHOT</version> 
+  <version>0.9-SNAPSHOT</version> 
 </project>

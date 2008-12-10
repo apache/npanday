@@ -5,13 +5,13 @@
   <parent> 
     <groupId>org.apache.maven.plugins</groupId>  
     <artifactId>maven-plugins</artifactId>  
-    <version>0.14-incubating-SNAPSHOT</version> 
+    <version>0.9-SNAPSHOT</version> 
   </parent>  
   <groupId>org.apache.maven.plugins</groupId>  
   <artifactId>maven-csharp-source-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>Maven CSharp Source Plugin</name>  
-  <version>0.14-incubating-SNAPSHOT</version>  
+  <version>0.9-SNAPSHOT</version>  
   <url>http://maven.apache.org/</url>  
   <build> 
     <plugins> 
@@ -46,7 +46,7 @@
     <dependency> 
       <groupId>org.apache.maven.plugins</groupId>  
       <artifactId>maven-csharp-helper-plugin</artifactId>  
-      <version>0.14-incubating-SNAPSHOT</version> 
+      <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.codehaus.plexus</groupId>  
