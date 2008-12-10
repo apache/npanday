@@ -33,7 +33,6 @@ under the License.
     <module>netplugins/NPanday.Plugin.Addin/javabinding</module>  
     <module>netplugins/NPanday.Plugin.Devenv/javabinding</module>  
     <module>netplugins/NPanday.Plugin.Settings/javabinding</module>  
-    <module>netplugins/NPanday.Plugin.Solution/javabinding</module>  
     <module>maven-compile-plugin</module>
     <module>maven-aspx-plugin</module>    
     <module>maven-deploy-plugin</module>  

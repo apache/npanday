@@ -20,12 +20,6 @@
       <type>library</type>
     </dependency>
     <dependency>
-      <groupId>NPanday.IDE</groupId>
-      <artifactId>NPanday.IDE</artifactId>
-      <version>${pom.version}</version>
-      <type>library</type>
-    </dependency>
-    <dependency>
       <groupId>NPanday.Logging</groupId>
       <artifactId>NPanday.Logging</artifactId>
       <version>${pom.version}</version>
@@ -82,18 +76,6 @@
       <type>exe</type>
     </dependency>
     <dependency>
-      <groupId>NPanday.Service</groupId>
-      <artifactId>NPanday.Service.Embedder</artifactId>
-      <version>${pom.version}</version>
-      <type>library</type>
-    </dependency>
-    <dependency>
-      <groupId>NPanday</groupId>
-      <artifactId>NPanday.Solution</artifactId>
-      <version>${pom.version}</version>
-      <type>library</type>
-    </dependency>
-    <dependency>
       <groupId>NPanday.VisualStudio</groupId>
       <artifactId>NPanday.VisualStudio</artifactId>
       <version>${pom.version}</version>
@@ -128,12 +110,6 @@
     <dependency>
       <groupId>NPanday.Plugins</groupId>
       <artifactId>NPanday.Plugin.Settings</artifactId>
-      <version>${pom.version}</version>
-      <type>netplugin</type>
-    </dependency>
-    <dependency>
-      <groupId>NPanday.Plugins</groupId>
-      <artifactId>NPanday.Plugin.Solution</artifactId>
       <version>${pom.version}</version>
       <type>netplugin</type>
     </dependency>

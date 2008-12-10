@@ -34,12 +34,6 @@
     <type>library</type>
     <profile>VisualStudio2005</profile>
   </netDependency>
-  <netDependency>
-    <groupId>NPanday.Plugins</groupId>
-    <artifactId>NPanday.Plugin.Solution</artifactId>
-    <type>netplugin</type>
-    <profile>VisualStudio2005</profile>
-  </netDependency>
 
   <!--Plugin Framework-->
   <netDependency>

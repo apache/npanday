@@ -44,12 +44,6 @@ under the License.
       <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>NPanday</groupId>  
-      <artifactId>NPanday.Solution</artifactId>  
-      <version>0.9-SNAPSHOT</version>  
-      <type>library</type> 
-    </dependency>  
-    <dependency> 
       <groupId>NPanday.Model</groupId>  
       <artifactId>NPanday.Model.Pom</artifactId>  
       <type>library</type>  

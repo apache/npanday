@@ -76,12 +76,6 @@ under the License.
       <version>${pom.version}</version>  
       <type>exe</type> 
     </dependency>  
-    <dependency> 
-      <groupId>NPanday.Service</groupId>  
-      <artifactId>NPanday.Service.Embedder</artifactId>  
-      <version>${pom.version}</version>  
-      <type>library</type> 
-    </dependency>  
     <!--netplugins-->  
     <dependency> 
       <groupId>NPanday.Plugins</groupId>  
@@ -152,18 +146,6 @@ under the License.
       </activation>  
       <dependencies> 
         <dependency> 
-          <groupId>NPanday.Plugins</groupId>  
-          <artifactId>NPanday.Plugin.Solution</artifactId>  
-          <version>${pom.version}</version>  
-          <type>netplugin</type> 
-        </dependency>  
-        <dependency> 
-          <groupId>NPanday</groupId>  
-          <artifactId>NPanday.Solution</artifactId>  
-          <version>${pom.version}</version>  
-          <type>library</type> 
-        </dependency>  
-        <dependency> 
           <groupId>NPanday.VisualStudio</groupId>  
           <artifactId>NPanday.VisualStudio</artifactId>  
           <version>${pom.version}</version>  
@@ -175,12 +157,6 @@ under the License.
           <version>${pom.version}</version>  
           <type>visual-studio-addin</type> 
         </dependency>  
-        <dependency> 
-          <groupId>NPanday.IDE</groupId>  
-          <artifactId>NPanday.IDE</artifactId>  
-          <version>${pom.version}</version>  
-          <type>library</type> 
-        </dependency> 
       </dependencies> 
     </profile> 
   </profiles> 
