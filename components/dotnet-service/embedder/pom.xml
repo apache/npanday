@@ -21,7 +21,7 @@ under the License.
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <parent> 
     <groupId>org.apache.maven.dotnet</groupId>  
-    <version>0.14-incubating-SNAPSHOT</version>  
+    <version>0.9-SNAPSHOT</version>  
     <artifactId>dotnet-components</artifactId>  
     <relativePath>..\..\pom.xml</relativePath> 
   </parent>  
@@ -38,7 +38,7 @@ under the License.
     <dependency> 
       <groupId>org.apache.maven.dotnet</groupId>  
       <artifactId>dotnet-embedder</artifactId>  
-      <version>0.14-incubating-SNAPSHOT</version> 
+      <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven</groupId>  
