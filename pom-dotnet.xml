@@ -23,7 +23,7 @@ under the License.
   <groupId>NPanday.Project</groupId>  
   <artifactId>NPanday.Project</artifactId>  
   <packaging>pom</packaging>  
-  <version>0.14-incubating-SNAPSHOT</version>  
+  <version>0.9-SNAPSHOT</version>  
   <name>NPanday.Project</name>  
   <url>http://incubator.apache.org/npanday</url>  
   <description>NPanday provides Maven 2.x plugins to support building of .NET applications</description>  
