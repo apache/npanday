@@ -1,0 +1,46 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{701803D4-90F5-44D7-919D-4844FEB7F936}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NPanday.Artifact</RootNameSpace>
+    <AssemblyName>NPanday.Artifact</AssemblyName>
+    <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>..\..\..\target\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NPanday.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\NPanday.Model\Pom\target\NPanday.Model.Pom.dll</HintPath>
+    </Reference>
+    <Reference Include="NPanday.Model.Settings, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\NPanday.Model\Settings\target\NPanday.Model.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="NUnit.Framework" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NPanday\Artifact\Artifact.cs" />
+    <Compile Include="NPanday\Artifact\ArtifactContext.cs" />
+    <Compile Include="NPanday\Artifact\ArtifactRepository.cs" />
+    <Compile Include="NPanday\Artifact\ArtifactRepositoryLayout.cs" />
+    <Compile Include="NPanday\Artifact\ArtifactScope.cs" />
+    <Compile Include="NPanday\Artifact\AssemblyRepositoryLayout.cs" />
+    <Compile Include="NPanday\Artifact\IArtifactContext.cs" />
+    <Compile Include="NPanday\Artifact\JavaRepositoryLayout.cs" />
+    <Compile Include="NPanday\Artifact\PathUtil.cs" />
+    <Compile Include="NPanday\Artifact\RepositoryType.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

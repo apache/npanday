@@ -20,32 +20,31 @@ under the License.
 -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <parent> 
-    <groupId>NMaven.Project</groupId>  
+    <groupId>NPanday.Project</groupId>  
     <version>0.14-incubating-SNAPSHOT</version>  
-    <artifactId>NMaven.Project</artifactId>  
+    <artifactId>NPanday.Project</artifactId>  
     <relativePath>../pom-dotnet.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>NMaven</groupId>  
-  <artifactId>NMaven.Assemblies</artifactId>  
+  <groupId>NPanday</groupId>  
+  <artifactId>NPanday.Assemblies</artifactId>  
   <version>0.14-incubating-SNAPSHOT</version>  
   <packaging>pom</packaging>  
-  <name>NMaven.Assemblies</name>  
-  <url>http://incubator.apache.org/nmaven</url>  
-  <description>NMaven provides Maven 2.x plugins to support building of .NET applications</description>  
+  <name>NPanday.Assemblies</name>  
+  <url>http://incubator.apache.org/NPanday</url>  
+  <description>NPanday provides Maven 2.x plugins to support building of .NET applications</description>  
   <modules> 
-    <module>NMaven.Artifact</module>  
-    <module>NMaven.Logging</module>  
-    <module>NMaven.Model/Pom</module>  
-    <module>NMaven.Model/Settings</module>  
-    <module>NMaven.Model/AutomationExtensibility</module>  
-    <module>NMaven.Plugin</module>  
-    <module>NMaven.Plugin.Loader</module>  
-    <module>NMaven.Plugin.MojoGenerator</module>  
-    <module>NMaven.Plugin.Runner</module>  
-    <module>NMaven.Service/Embedder</module>
-    <module>NMaven.Utils</module>
-    <module>NMaven.ProjectImporter</module> 
+    <module>NPanday.Artifact</module>  
+    <module>NPanday.Logging</module>  
+    <module>NPanday.Model/Pom</module>  
+    <module>NPanday.Model/Settings</module>  
+    <module>NPanday.Model/AutomationExtensibility</module>  
+    <module>NPanday.Plugin</module>  
+    <module>NPanday.Plugin.Loader</module>  
+    <module>NPanday.Plugin.MojoGenerator</module>  
+    <module>NPanday.Plugin.Runner</module>  
+    <module>NPanday.Utils</module>
+    <module>NPanday.ProjectImporter</module> 
   </modules>  
   <profiles> 
     <profile> 
@@ -55,11 +54,9 @@ under the License.
         </property> 
       </activation>  
       <modules> 
-        <module>NMaven.Solution</module>  
-        <module>NMaven.VisualStudio</module>  
-        <module>NMaven.VisualStudio.Addin</module>  
-        <module>NMaven.IDE</module>  
-        <module>NMaven.VisualStudio.ProjectWizard</module> 
+        <module>NPanday.VisualStudio</module>  
+        <module>NPanday.VisualStudio.Addin</module>  
+        <module>NPanday.VisualStudio.ProjectWizard</module> 
       </modules>  
       <build> 
         <plugins> 

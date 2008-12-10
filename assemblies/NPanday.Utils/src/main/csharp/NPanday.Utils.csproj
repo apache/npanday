@@ -1,0 +1,63 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{CAA4864F-F4C8-4024-8535-8B8C112307CE}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NPanday.Utils</RootNameSpace>
+    <AssemblyName>NPanday.Utils</AssemblyName>
+    <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>..\..\..\target\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>..\..\..\target\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EnvDTE">
+      <HintPath>C:\Documents and Settings\Melvin Sembrano\.m2\uac\gac_msil\EnvDTE\8.0.0.0__EnvDTE\EnvDTE</HintPath>
+    </Reference>
+    <Reference Include="EnvDTE80">
+      <HintPath>C:\Documents and Settings\Melvin Sembrano\.m2\uac\gac_msil\EnvDTE80\8.0.0.0__EnvDTE80\EnvDTE80</HintPath>
+    </Reference>
+    <Reference Include="Extensibility">
+      <HintPath>C:\Documents and Settings\Melvin Sembrano\.m2\uac\gac_msil\Extensibility\7.0.3300.0__Extensibility\Extensibility</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.VisualStudio.CommandBars">
+      <HintPath>C:\Documents and Settings\Melvin Sembrano\.m2\uac\gac_msil\Microsoft.VisualStudio.CommandBars\8.0.0.0__Microsoft.VisualStudio.CommandBars\Microsoft.VisualStudio.CommandBars</HintPath>
+    </Reference>
+    <Reference Include="NPanday.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\NPanday.Model\Pom\target\NPanday.Model.Pom.dll</HintPath>
+    </Reference>
+    <Reference Include="NPanday.Model.Settings, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\NPanday.Model\Settings\target\NPanday.Model.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NPanday\Utils\GacUtility.cs" />
+    <Compile Include="NPanday\Utils\MavenRunner.cs" />
+    <Compile Include="NPanday\Utils\PomHelperUtility.cs" />
+    <Compile Include="NPanday\Utils\RepositoryUtility.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\NPanday.Artifact\src\main\csharp\NPanday.Artifact.csproj">
+      <Project>{701803D4-90F5-44D7-919D-4844FEB7F936}</Project>
+      <Name>NPanday.Artifact</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NPanday.Logging\src\main\csharp\NPanday.Logging.csproj">
+      <Project>{C511B03B-8AB7-4E61-9F6E-5E6F9F65E8CE}</Project>
+      <Name>NPanday.Logging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

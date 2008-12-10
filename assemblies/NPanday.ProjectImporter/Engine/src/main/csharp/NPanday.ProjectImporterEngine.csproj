@@ -1,0 +1,112 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{91FC215D-C041-4000-8F71-C04A9EEABE55}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NPanday.ProjectImporter</RootNameSpace>
+    <AssemblyName>NPanday.ProjectImporterEngine</AssemblyName>
+    <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>..\..\..\target\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>..\..\..\target\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="NPanday.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\NPanday.Model\Pom\target\NPanday.Model.Pom.dll</HintPath>
+    </Reference>
+    <Reference Include="NUnit.Framework">
+      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NUnit.Framework\2.2.8.0__NUnit\NUnit.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NPanday\ProjectImporter\Converter\Algorithms\WebWithVbOrCsProjectFilePomConverter.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\ComReference.cs" />
+    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\AbnormalProject.cs" />
+    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\AbstractProjectAlgorithm.cs" />
+    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\FlatMultiModuleProject.cs" />
+    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\FlatSingleModuleProject.cs" />
+    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\NormalMultiModuleProject.cs" />
+    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\NormalSingleProject.cs" />
+    <Compile Include="NPanday\ProjectImporter\Converter\Algorithms\AbstractPomConverter.cs" />
+    <Compile Include="NPanday\ProjectImporter\Converter\Algorithms\IPomConverter.cs" />
+    <Compile Include="NPanday\ProjectImporter\Converter\Algorithms\NormalPomConverter.cs" />
+    <Compile Include="NPanday\ProjectImporter\Converter\Algorithms\WebPomConverter.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\PomConverter.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Algorithms\IProjectDigestAlgorithm.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Algorithms\WebProjectDigestAlgorithm.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\BootstrapperPackage.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\Compile.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\Content.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\EmbeddedResource.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\Folder.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\IncludeBase.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\None.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Algorithms\NormalProjectDigestAlgorithm.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\ProjectReference.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\Reference.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\WebReferences.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\WebReferenceUrl.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Model\ProjectDigest.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\ProjectDigester.cs" />
+    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\IProjectTypeImporter.cs" />
+    <Compile Include="NPanday\ProjectImporter\NPandayImporter.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\ProjectSolutionParser.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\SolutionParser.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\VisualStudioProjectTypes\VisualStudioProjectTypeEnum.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\VisualStudioProjectTypes\VisualStudioProjectType.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\LexanState.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\LexicalAnalizer.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Model\Global.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Model\GlobalSection.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Model\Project.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Model\ProjectSection.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Model\Solution.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\SemanticalData.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Semantics.cs" />
+    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\SolutionFactory.cs" />
+    <Compile Include="NPanday\ProjectImporter\Validator\ProjectStructureType.cs" />
+    <Compile Include="NPanday\ProjectImporter\Validator\ProjectValidator.cs" />
+    <Compile Include="NPanday\ProjectImporter\Verifiers\VerifyProjectImportSyncronization.cs" />
+    <Compile Include="NPanday\ProjectImporter\Verifiers\VerifyUnitTestsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NPanday\ProjectImporter\Verifiers\VerifyUnitTestsForm.Designer.cs">
+      <DependentUpon>VerifyUnitTestsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NPanday\ProjectImporter\Verifiers\VerifyUnitTestsToUser.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="NPanday\ProjectImporter\Verifiers\VerifyUnitTestsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VerifyUnitTestsForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\NPanday.Artifact\src\main\csharp\NPanday.Artifact.csproj">
+      <Project>{701803D4-90F5-44D7-919D-4844FEB7F936}</Project>
+      <Name>NPanday.Artifact</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\NPanday.Logging\src\main\csharp\NPanday.Logging.csproj">
+      <Project>{C511B03B-8AB7-4E61-9F6E-5E6F9F65E8CE}</Project>
+      <Name>NPanday.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\NPanday.Utils\src\main\csharp\NPanday.Utils.csproj">
+      <Project>{CAA4864F-F4C8-4024-8535-8B8C112307CE}</Project>
+      <Name>NPanday.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

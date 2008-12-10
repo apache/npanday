@@ -1,5 +1,0 @@
-C:\bong\sample_web_project\BongClassLib\bin\Debug\BongClassLibRenamedHehehe.dll
-C:\bong\sample_web_project\BongClassLib\bin\Debug\BongClassLibRenamedHehehe.pdb
-C:\bong\sample_web_project\BongClassLib\obj\Debug\ResolveAssemblyReference.cache
-C:\bong\sample_web_project\BongClassLib\obj\Debug\BongClassLibRenamedHehehe.dll
-C:\bong\sample_web_project\BongClassLib\obj\Debug\BongClassLibRenamedHehehe.pdb

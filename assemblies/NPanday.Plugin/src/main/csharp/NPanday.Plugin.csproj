@@ -1,0 +1,41 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{B760D54F-22AC-43E7-A0A6-DE313D4663AF}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <RootNameSpace>NPanday.Plugin</RootNameSpace>
+    <AssemblyName>NPanday.Plugin</AssemblyName>
+    <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NPanday.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\NPanday.Model\Pom\target\NPanday.Model.Pom.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NPanday\Plugin\AbstractMojo.cs" />
+    <Compile Include="NPanday\Plugin\ClassAttribute.cs" />
+    <Compile Include="NPanday\Plugin\FieldAttribute.cs" />
+    <Compile Include="NPanday\Plugin\FieldInjectorAttribute.cs" />
+    <Compile Include="NPanday\Plugin\Generator\Code.cs" />
+    <Compile Include="NPanday\Plugin\Generator\ImportPackage.cs" />
+    <Compile Include="NPanday\Plugin\Generator\JavaClass.cs" />
+    <Compile Include="NPanday\Plugin\Generator\JavaClassUnmarshaller.cs" />
+    <Compile Include="NPanday\Plugin\Generator\JavaField.cs" />
+    <Compile Include="NPanday\Plugin\Generator\JavaMethod.cs" />
+    <Compile Include="NPanday\Plugin\Injector\IFieldInjector.cs" />
+    <Compile Include="NPanday\Plugin\Injector\Impl\FieldInjectorRepository.cs" />
+    <Compile Include="NPanday\Plugin\Injector\Impl\MavenProjectInjector.cs" />
+    <Compile Include="NPanday\Plugin\Injector\Impl\StringInjector.cs" />
+    <Compile Include="NPanday\Plugin\PluginDomainManager.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

@@ -1,6 +1,0 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-# SharpDevelop 2.1.0.2376
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMaven.Plugin", "C:\Documents and Settings\shane\nmaven-apache\trunk-fix\assemblies\NMaven.Plugin\src\main\csharp\NMaven.Plugin.csproj", "{9f400405-41d4-4fe5-9998-0d6bf1da0129}"
-EndProject

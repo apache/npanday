@@ -1,6 +1,0 @@
-<configuration>
-  <components>
-    <component id="smtp.sender"
-               type="NMaven.Artifact.ArtifactContext, NMaven.Artifact"/>
-  </components>
-</configuration>
