@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using NMaven.ProjectImporter;
+using NPanday.ProjectImporter;
 
 /// Author: Joe Ocaba
 

@@ -7,7 +7,7 @@ using NUnit.Framework;
 using NPanday.ProjectImporter;
 using NPanday.ProjectImporter.ImporterTests;
 
-namespace NMaven.ProjectImporter.ImporterTests
+namespace NPanday.ProjectImporter.ImporterTests
 {
     [TestFixture]
     public class SingleModuleCSharpTest : AbstractProjectImportTest

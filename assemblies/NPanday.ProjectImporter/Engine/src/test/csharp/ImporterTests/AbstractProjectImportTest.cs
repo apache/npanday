@@ -88,6 +88,8 @@ namespace NPanday.ProjectImporter.ImporterTests
         {
             groupId = "test.group." + Guid.NewGuid().ToString();
             artifactId = "test.artfact." + Guid.NewGuid().ToString();
+			Assert.IsNotNull(ProjectImporterTestFixture.SampleProjectsPath, "ProjectImporterTestFixture.SampleProjectsPath must not be null");
+			Assert.IsNotNull(SolutionFileRelativePath, "SolutionFileRelativePath must not be null");
 
             string solutionFile = Path.Combine(ProjectImporterTestFixture.SampleProjectsPath, SolutionFileRelativePath);
             try
