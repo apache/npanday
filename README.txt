@@ -1,6 +1,3 @@
-Disclaimer:
-Apache NPanday is undergoing incubation at the ASF.
-
 Prerequisites
 * csc.exe must be available on your PATH.  Usually it can be found in C:\WINDOWS\Microsoft.NET\Framework\[version]
 * NUnit must be installed or otherwise configured, see http://incubator.apache.org/npanday/getting-started.html
