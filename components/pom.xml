@@ -36,8 +36,7 @@ under the License.
     <module>dotnet-assembler</module>  
     <module>dotnet-core</module>  
     <module>dotnet-dao/project</module>  
-    <module>dotnet-executable</module>  
-    <module>dotnet-jetty</module>  
+    <module>dotnet-executable</module>
     <module>dotnet-model</module>  
     <module>dotnet-plugin</module>  
     <module>dotnet-registry</module>  

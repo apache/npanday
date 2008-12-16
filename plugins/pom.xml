@@ -36,7 +36,6 @@ under the License.
     <module>maven-compile-plugin</module>
     <module>maven-aspx-plugin</module>    
     <module>maven-deploy-plugin</module>  
-    <module>maven-embedder-plugin</module>  
     <module>maven-fxcop-plugin</module>  
     <module>maven-install-plugin</module>  
     <module>maven-link-plugin</module>  
