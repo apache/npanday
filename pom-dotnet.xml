@@ -30,38 +30,25 @@ under the License.
   <mailingLists> 
     <mailingList> 
       <name>NPanday Dev List</name>  
-      <subscribe>npanday-dev-subscribe@incubator.apache.org</subscribe>  
-      <unsubscribe>npanday-dev-unsubscribe@incubator.apache.org</unsubscribe>  
-      <post>npanday-dev@incubator.apache.org</post>  
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-npanday-dev/</archive>  
+      <post>npanday@discussions.codeplex.com</post>  
       <otherArchives> 
-        <otherArchive>http://www.nabble.com/npanday-dev-f17655.html</otherArchive> 
+        <otherArchive>http://n2.nabble.com/NPanday-Discussions-f1657131.html</otherArchive> 
       </otherArchives> 
     </mailingList>  
-    <mailingList> 
-      <name>NPanday Commits List</name>  
-      <subscribe>npanday-commits-subscribe@incubator.apache.org</subscribe>  
-      <unsubscribe>npanday-commits-unsubscribe@incubator.apache.org</unsubscribe>  
-      <post>npanday-commits@incubator.apache.org</post>  
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-npanday-commits/</archive>  
-      <otherArchives> 
-        <otherArchive>http://www.nabble.com/npanday-commits-f17656.html</otherArchive> 
-      </otherArchives> 
-    </mailingList> 
   </mailingLists>  
   <scm> 
-    <url>https://svn.apache.org/repos/asf/incubator/npanday/</url>  
-    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/</connection>  
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/</developerConnection>  
-    <tag>REL_0_14_SNAPSHOT</tag> 
+    <url>https://npanday.svn.codeplex.com/svn/</url>  
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/</connection>  
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/</developerConnection>  
+    <tag>REL_0_9_SNAPSHOT</tag> 
   </scm>  
   <organization> 
     <name>NPanday</name>  
-    <url>http://incubator.apache.org/npanday</url> 
+    <url>http://codeplex.com/npanday</url> 
   </organization>  
   <issueManagement> 
-    <system>JIRA Bugtracking</system>  
-    <url>http://jira.codehaus.org/browse/NPANDAY</url> 
+    <system>Codeplex Issue Tracker</system>  
+    <url>http://www.codeplex.com/npanday/WorkItem/List.aspx</url> 
   </issueManagement>  
   <licenses> 
     <license> 
@@ -72,63 +59,80 @@ under the License.
   <developers> 
     <developer> 
       <name>Brett Porter</name>  
-      <id>brett</id>  
+      <id>brettporter</id>  
       <email>brett@apache.org</email>  
       <roles> 
-        <role>champion</role>  
-        <role>mentor</role> 
+        <role>coordinator</role>  
       </roles> 
     </developer>  
     <developer> 
-      <name>Jason van Zyl</name>  
-      <id>jvanzyl</id>  
-      <email>jvanzyl@apache.org</email>  
+      <name>Melvin Sembrano</name>  
+      <id>melvinsembrano</id>  
+      <email>melvinsembrano@gmail.com</email>  
       <roles> 
-        <role>champion</role>  
-        <role>mentor</role> 
+        <role>coordinator</role>  
       </roles> 
     </developer>  
+    <developer> 
+      <name>Leopoldo Agdeppa</name>  
+      <id>lagdeppa</id>  
+      <email>lagdeppa@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Jan Ancajas</name>  
+      <id>jancajas</id>  
+      <email>jancajas@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Joe Ocaba</name>  
+      <id>jocaba</id>  
+      <email>jocaba@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Shein Ernacio</name>  
+      <id>sernacio</id>  
+      <email>sernacio@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Cédric</name>  
+      <id>mimil</id>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Maricor Baclay</name>  
+      <id>mbaclay</id>  
+      <email>mbaclay@exist.com</email>  
+      <roles> 
+        <role>QA</role>  
+      </roles> 
+    </developer>  
+    <!--Emeritus Committers-->
     <developer> 
       <name>Shane Isbell</name>  
       <id>sisbell</id>  
       <email>sisbell@apache.org</email>  
       <url>http://jroller.com/page/random7</url>  
-      <roles> 
-        <role>committer</role> 
-      </roles> 
-    </developer>  
+    </developer>      
     <developer> 
-      <name>Dan Fabulich</name>  
-      <id>dfabulich</id>  
-      <email>dfabulich@apache.org</email>  
-      <roles> 
-        <role>committer</role> 
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Chris Stevenson</name>  
-      <id>chrisjs</id>  
-      <email>chrisjs@apache.org</email>  
-      <roles> 
-        <role>committer</role> 
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Trygve Laugstol</name>  
-      <id>trygvis</id>  
-      <email>trygvis@apache.org</email>  
-      <roles> 
-        <role>committer</role> 
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>James Strachan</name>  
-      <id>jstrachan</id>  
-      <email>jstrachan@apache.org</email>  
-      <roles> 
-        <role>committer</role> 
-      </roles> 
-    </developer> 
+      <name>Evan Worley</name>  
+      <id>eworley</id>  
+      <email>eworley@apache.org</email>  
+    </developer>        
+    <!--Emeritus Committers-->
   </developers>  
   <modules> 
     <module>assemblies</module>  
@@ -162,7 +166,7 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>  
         <artifactId>maven-release-plugin</artifactId>  
         <configuration> 
-          <tagBase>https://svn.apache.org/repos/asf/incubator/npanday/tags</tagBase> 
+          <tagBase>https://npanday.svn.codeplex.com/svn/tags</tagBase> 
         </configuration> 
       </plugin> 
     </plugins> 
