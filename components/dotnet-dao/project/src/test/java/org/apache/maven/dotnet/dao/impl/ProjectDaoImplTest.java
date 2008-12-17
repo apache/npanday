@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.dao.impl;
+package npanday.dao.impl;
 
 import junit.framework.TestCase;
 
@@ -36,11 +36,11 @@ import org.openrdf.sail.memory.MemoryStoreRDFSInferencer;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.rdfxml.RDFXMLWriter;
-import org.apache.maven.dotnet.dao.Project;
-import org.apache.maven.dotnet.dao.ProjectDependency;
-import org.apache.maven.dotnet.dao.Requirement;
-import org.apache.maven.dotnet.dao.ProjectDao;
-import org.apache.maven.dotnet.dao.ProjectUri;
+import npanday.dao.Project;
+import npanday.dao.ProjectDependency;
+import npanday.dao.Requirement;
+import npanday.dao.ProjectDao;
+import npanday.dao.ProjectUri;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.Artifact;
 

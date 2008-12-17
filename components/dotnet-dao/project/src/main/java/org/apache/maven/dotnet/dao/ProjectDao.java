@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.dao;
+package npanday.dao;
 
-import org.apache.maven.dotnet.registry.DataAccessObject;
+import npanday.registry.DataAccessObject;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.repository.ArtifactRepository;

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.dao;
+package npanday.dao;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Dependency;
@@ -25,7 +25,7 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.versioning.VersionRange;
-import org.apache.maven.dotnet.ArtifactType;
+import npanday.ArtifactType;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.codehaus.plexus.util.FileUtils;
 

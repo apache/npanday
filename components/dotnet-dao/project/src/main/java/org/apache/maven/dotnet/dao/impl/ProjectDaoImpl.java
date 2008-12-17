@@ -16,16 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.dao.impl;
+package npanday.dao.impl;
 
-import org.apache.maven.dotnet.dao.ProjectDao;
-import org.apache.maven.dotnet.dao.ProjectUri;
-import org.apache.maven.dotnet.dao.ProjectFactory;
-import org.apache.maven.dotnet.dao.Project;
-import org.apache.maven.dotnet.dao.ProjectDependency;
-import org.apache.maven.dotnet.dao.Requirement;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.PathUtil;
+import npanday.dao.ProjectDao;
+import npanday.dao.ProjectUri;
+import npanday.dao.ProjectFactory;
+import npanday.dao.Project;
+import npanday.dao.ProjectDependency;
+import npanday.dao.Requirement;
+import npanday.registry.RepositoryRegistry;
+import npanday.PathUtil;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.DefaultArtifactRepository;

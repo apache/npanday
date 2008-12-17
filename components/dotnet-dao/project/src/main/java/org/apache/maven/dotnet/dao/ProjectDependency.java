@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.dao;
+package npanday.dao;
 
 /**
  * Class for accessing information about project dependencies.

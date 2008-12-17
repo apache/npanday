@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.dao;
+package npanday.dao;
 
 /**
  * Enumeration of the project uri predicates.
