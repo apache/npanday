@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.maven.dotnet.plugin;
+package npanday.plugin;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

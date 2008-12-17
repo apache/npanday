@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin;
+package npanday.plugin;
 
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.dotnet.executable.NetExecutableFactory;
+import npanday.executable.NetExecutableFactory;
 import org.w3c.dom.Document;
 
 import javax.xml.transform.dom.DOMSource;

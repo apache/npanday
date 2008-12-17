@@ -1,4 +1,4 @@
-package org.apache.maven.dotnet.plugin;
+package npanday.plugin;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Documented;

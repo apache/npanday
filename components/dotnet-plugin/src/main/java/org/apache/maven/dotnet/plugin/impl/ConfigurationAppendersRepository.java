@@ -1,10 +1,10 @@
-package org.apache.maven.dotnet.plugin.impl;
+package npanday.plugin.impl;
 
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.model.configurationappenders.io.xpp3.ConfigurationAppendersXpp3Reader;
-import org.apache.maven.dotnet.model.configurationappenders.ConfigurationAppenderModel;
-import org.apache.maven.dotnet.model.configurationappenders.ConfigurationAppender;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
+import npanday.model.configurationappenders.io.xpp3.ConfigurationAppendersXpp3Reader;
+import npanday.model.configurationappenders.ConfigurationAppenderModel;
+import npanday.model.configurationappenders.ConfigurationAppender;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.InputStream;

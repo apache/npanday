@@ -1,9 +1,9 @@
-package org.apache.maven.dotnet.plugin.impl;
+package npanday.plugin.impl;
 
-import org.apache.maven.dotnet.plugin.PluginContext;
-import org.apache.maven.dotnet.plugin.ConfigurationAppender;
-import org.apache.maven.dotnet.plugin.ConfigurationAppenderAnnotation;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.plugin.PluginContext;
+import npanday.plugin.ConfigurationAppender;
+import npanday.plugin.ConfigurationAppenderAnnotation;
+import npanday.registry.RepositoryRegistry;
 
 import java.util.Set;
 import java.lang.reflect.Field;

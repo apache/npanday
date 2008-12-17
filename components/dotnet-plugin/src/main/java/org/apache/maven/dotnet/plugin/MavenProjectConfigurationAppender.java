@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.maven.dotnet.plugin;
+package npanday.plugin;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

@@ -16,23 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin;
+package npanday.plugin;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.PathUtil;
-import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.artifact.AssemblyResolver;
-import org.apache.maven.dotnet.dao.Project;
-import org.apache.maven.dotnet.dao.ProjectDao;
-import org.apache.maven.dotnet.dao.ProjectDependency;
-import org.apache.maven.dotnet.dao.ProjectFactory;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.executable.NetExecutableFactory;
-import org.apache.maven.dotnet.registry.DataAccessObjectRegistry;
-import org.apache.maven.dotnet.vendor.VendorFactory;
-import org.apache.maven.dotnet.vendor.VendorInfo;
+import npanday.PlatformUnsupportedException;
+import npanday.PathUtil;
+import npanday.artifact.ArtifactContext;
+import npanday.artifact.AssemblyResolver;
+import npanday.dao.Project;
+import npanday.dao.ProjectDao;
+import npanday.dao.ProjectDependency;
+import npanday.dao.ProjectFactory;
+import npanday.executable.ExecutionException;
+import npanday.executable.NetExecutableFactory;
+import npanday.registry.DataAccessObjectRegistry;
+import npanday.vendor.VendorFactory;
+import npanday.vendor.VendorInfo;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -278,7 +278,7 @@ public abstract class AbstractMojo
     }
 
     /**
-     * @see org.apache.maven.dotnet.plugin.DotNetMojo#getLocalRepository()
+     * @see npanday.plugin.DotNetMojo#getLocalRepository()
      */
     public abstract String getLocalRepository();
 

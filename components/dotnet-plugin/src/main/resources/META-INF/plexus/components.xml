@@ -1,23 +1,23 @@
 <component-set>
   <components>
     <component>
-      <role>org.apache.maven.dotnet.plugin.DotNetMojo</role>
-      <implementation>org.apache.maven.dotnet.plugin.AbstractMojo</implementation>
+      <role>npanday.plugin.DotNetMojo</role>
+      <implementation>npanday.plugin.AbstractMojo</implementation>
       <requirements>
         <requirement>
-          <role>org.apache.maven.dotnet.executable.NetExecutableFactory</role>
+          <role>npanday.executable.NetExecutableFactory</role>
         </requirement>
         <requirement>
-          <role>org.apache.maven.dotnet.plugin.PluginContext</role>
+          <role>npanday.plugin.PluginContext</role>
         </requirement>
       </requirements>
     </component>
     <component>
-      <role>org.apache.maven.dotnet.plugin.PluginContext</role>
-      <implementation>org.apache.maven.dotnet.plugin.impl.PluginContextImpl</implementation>
+      <role>npanday.plugin.PluginContext</role>
+      <implementation>npanday.plugin.impl.PluginContextImpl</implementation>
       <requirements>
         <requirement>
-          <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+          <role>npanday.registry.RepositoryRegistry</role>
         </requirement>
       </requirements>
     </component>
