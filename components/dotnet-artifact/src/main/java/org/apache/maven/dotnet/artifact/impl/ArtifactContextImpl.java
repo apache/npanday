@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.artifact.impl;
+package npanday.artifact.impl;
 
 import java.util.*;
 import java.io.File;
 
-import org.apache.maven.dotnet.artifact.*;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.PathUtil;
+import npanday.artifact.*;
+import npanday.registry.RepositoryRegistry;
+import npanday.PathUtil;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.apache.maven.artifact.Artifact;
@@ -50,7 +50,7 @@ public final class ArtifactContextImpl
     /**
      * An installer component for installing artifacts into a local Maven repository.
      */
-    private org.apache.maven.dotnet.artifact.ArtifactInstaller artifactInstaller;
+    private npanday.artifact.ArtifactInstaller artifactInstaller;
 
     /**
      * A registry component of repository (config) files
@@ -92,7 +92,7 @@ public final class ArtifactContextImpl
     }
 
     /**
-     * @see org.apache.maven.dotnet.artifact.ArtifactContext#getLocalRepository()
+     * @see npanday.artifact.ArtifactContext#getLocalRepository()
      */
     public File getLocalRepository()
     {
@@ -135,7 +135,7 @@ public final class ArtifactContextImpl
     }
 
     /**
-     * @see org.apache.maven.dotnet.artifact.ArtifactContext#getArtifactInstaller()
+     * @see npanday.artifact.ArtifactContext#getArtifactInstaller()
      */
     public ArtifactInstaller getArtifactInstaller()
     {

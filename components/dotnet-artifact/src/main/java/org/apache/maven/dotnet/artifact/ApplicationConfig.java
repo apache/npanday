@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.artifact;
+package npanday.artifact;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.dotnet.PathUtil;
+import npanday.PathUtil;
 
 import java.io.File;
 

@@ -115,17 +115,17 @@
       </configuration>
     </component>
     <component>
-      <role>org.apache.maven.dotnet.artifact.ArtifactContext</role>
-      <implementation>org.apache.maven.dotnet.artifact.impl.ArtifactContextImpl</implementation>
+      <role>npanday.artifact.ArtifactContext</role>
+      <implementation>npanday.artifact.impl.ArtifactContextImpl</implementation>
       <requirements>
         <requirement>
           <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
         </requirement>
         <requirement>
-          <role>org.apache.maven.dotnet.artifact.ArtifactInstaller</role>
+          <role>npanday.artifact.ArtifactInstaller</role>
         </requirement>
         <requirement>
-          <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+          <role>npanday.registry.RepositoryRegistry</role>
         </requirement>
         <requirement>
           <role>org.apache.maven.artifact.handler.manager.ArtifactHandlerManager</role>
@@ -137,8 +137,8 @@
       </requirements>
     </component>
     <component>
-      <role>org.apache.maven.dotnet.artifact.ArtifactInstaller</role>
-      <implementation>org.apache.maven.dotnet.artifact.impl.ArtifactInstallerImpl</implementation>
+      <role>npanday.artifact.ArtifactInstaller</role>
+      <implementation>npanday.artifact.impl.ArtifactInstallerImpl</implementation>
       <requirements>
         <requirement>
           <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
@@ -147,19 +147,19 @@
           <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
         </requirement>
         <requirement>
-          <role>org.apache.maven.dotnet.artifact.AssemblyResolver</role>
+          <role>npanday.artifact.AssemblyResolver</role>
         </requirement>
         <requirement>
-          <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+          <role>npanday.registry.RepositoryRegistry</role>
         </requirement>
         <requirement>
-          <role>org.apache.maven.dotnet.registry.DataAccessObjectRegistry</role>
+          <role>npanday.registry.DataAccessObjectRegistry</role>
         </requirement>        
       </requirements>
     </component>
     <component>
-      <role>org.apache.maven.dotnet.artifact.AssemblyResolver</role>
-      <implementation>org.apache.maven.dotnet.artifact.impl.AssemblyResolverImpl</implementation>
+      <role>npanday.artifact.AssemblyResolver</role>
+      <implementation>npanday.artifact.impl.AssemblyResolverImpl</implementation>
       <requirements>
         <requirement>
           <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
@@ -168,7 +168,7 @@
           <role>org.apache.maven.artifact.repository.ArtifactRepositoryFactory</role>
         </requirement>
         <requirement>
-          <role>org.apache.maven.dotnet.registry.DataAccessObjectRegistry</role>
+          <role>npanday.registry.DataAccessObjectRegistry</role>
         </requirement>
         <requirement>
           <role>org.apache.maven.artifact.manager.WagonManager</role>
@@ -179,8 +179,8 @@
       </requirements>
     </component>
     <component>
-      <role>org.apache.maven.dotnet.dao.ProjectDao</role>
-      <implementation>org.apache.maven.dotnet.dao.impl.ProjectDaoImpl</implementation>
+      <role>npanday.dao.ProjectDao</role>
+      <implementation>npanday.dao.impl.ProjectDaoImpl</implementation>
       <requirements>
         <requirement>
           <role>org.apache.maven.artifact.manager.WagonManager</role>

@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.artifact;
+package npanday.artifact;
 
-import org.apache.maven.dotnet.model.netdependency.NetDependency;
+import npanday.model.netdependency.NetDependency;
 
 /**
  * Provides a way for a developer to implement custom match policies for a net dependency.

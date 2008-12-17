@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.artifact;
+package npanday.artifact;
 
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
 import org.apache.maven.model.Dependency;
 
 import java.io.InputStream;
@@ -36,13 +36,13 @@ public interface NetDependenciesRepository
     extends Repository
 {
     /**
-     * @see org.apache.maven.dotnet.registry.Repository#load(java.io.InputStream, java.util.Hashtable)
+     * @see npanday.registry.Repository#load(java.io.InputStream, java.util.Hashtable)
      */
     void load( InputStream inputStream, Hashtable properties )
         throws IOException;
 
     /**
-     * @see org.apache.maven.dotnet.registry.Repository#setRepositoryRegistry(org.apache.maven.dotnet.registry.RepositoryRegistry)
+     * @see npanday.registry.Repository#setRepositoryRegistry(npanday.registry.RepositoryRegistry)
      */
     void setRepositoryRegistry( RepositoryRegistry repositoryRegistry );
 

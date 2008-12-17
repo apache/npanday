@@ -16,15 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.artifact.impl;
+package npanday.artifact.impl;
 
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.model.netdependency.NetDependency;
-import org.apache.maven.dotnet.model.netdependency.NetDependencyModel;
-import org.apache.maven.dotnet.model.netdependency.io.xpp3.NetDependencyXpp3Reader;
-import org.apache.maven.dotnet.artifact.NetDependenciesRepository;
-import org.apache.maven.dotnet.artifact.NetDependencyMatchPolicy;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
+import npanday.model.netdependency.NetDependency;
+import npanday.model.netdependency.NetDependencyModel;
+import npanday.model.netdependency.io.xpp3.NetDependencyXpp3Reader;
+import npanday.artifact.NetDependenciesRepository;
+import npanday.artifact.NetDependencyMatchPolicy;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.artifact.Artifact;
@@ -102,7 +102,7 @@ public class NetDependenciesRepositoryImpl
 
 
     /**
-     * @see Repository#setRepositoryRegistry(org.apache.maven.dotnet.registry.RepositoryRegistry)
+     * @see Repository#setRepositoryRegistry(npanday.registry.RepositoryRegistry)
      */
     public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
     {
@@ -122,7 +122,7 @@ public class NetDependenciesRepositoryImpl
     }
 
     /**
-     * @see NetDependenciesRepository#getDependenciesFor(java.util.List<org.apache.maven.dotnet.artifact.NetDependencyMatchPolicy>)
+     * @see NetDependenciesRepository#getDependenciesFor(java.util.List<npanday.artifact.NetDependencyMatchPolicy>)
      */
     public List<Dependency> getDependenciesFor( List<NetDependencyMatchPolicy> matchPolicies )
     {

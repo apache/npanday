@@ -16,21 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.artifact.impl;
+package npanday.artifact.impl;
 
-import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.artifact.ApplicationConfig;
-import org.apache.maven.dotnet.ArtifactType;
-import org.apache.maven.dotnet.PathUtil;
-import org.apache.maven.dotnet.artifact.NetDependencyMatchPolicy;
-import org.apache.maven.dotnet.artifact.NetDependenciesRepository;
-import org.apache.maven.dotnet.artifact.AssemblyResolver;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.model.netdependency.NetDependency;
-import org.apache.maven.dotnet.dao.ProjectDao;
-import org.apache.maven.dotnet.dao.Project;
-import org.apache.maven.dotnet.dao.ProjectFactory;
-import org.apache.maven.dotnet.dao.ProjectDependency;
+import npanday.artifact.ArtifactContext;
+import npanday.artifact.ApplicationConfig;
+import npanday.ArtifactType;
+import npanday.PathUtil;
+import npanday.artifact.NetDependencyMatchPolicy;
+import npanday.artifact.NetDependenciesRepository;
+import npanday.artifact.AssemblyResolver;
+import npanday.registry.RepositoryRegistry;
+import npanday.model.netdependency.NetDependency;
+import npanday.dao.ProjectDao;
+import npanday.dao.Project;
+import npanday.dao.ProjectFactory;
+import npanday.dao.ProjectDependency;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.versioning.VersionRange;
@@ -67,7 +67,7 @@ import java.util.HashSet;
  * @author Shane Isbell
  */
 public class ArtifactInstallerImpl
-    implements org.apache.maven.dotnet.artifact.ArtifactInstaller, LogEnabled
+    implements npanday.artifact.ArtifactInstaller, LogEnabled
 {
 
     /**
@@ -115,7 +115,7 @@ public class ArtifactInstallerImpl
     /**
      * Registry used for finding DAOs
      */
-    private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
+    private npanday.registry.DataAccessObjectRegistry daoRegistry;
 
 
     /**
@@ -140,7 +140,7 @@ public class ArtifactInstallerImpl
     }
 
     /**
-     * @see org.apache.maven.dotnet.artifact.ArtifactInstaller#resolveAndInstallNetDependenciesForProfile(String, java.util.List<org.apache.maven.model.Dependency>, java.util.List<org.apache.maven.model.Dependency>)
+     * @see npanday.artifact.ArtifactInstaller#resolveAndInstallNetDependenciesForProfile(String, java.util.List<org.apache.maven.model.Dependency>, java.util.List<org.apache.maven.model.Dependency>)
      */
     public void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> netDependencies,
                                                             List<Dependency> javaDependencies )
@@ -248,7 +248,7 @@ public class ArtifactInstallerImpl
     }
 
     /**
-     * @see org.apache.maven.dotnet.artifact.ArtifactInstaller#installArtifactAndDependenciesIntoPrivateApplicationBase(java.io.File, org.apache.maven.artifact.Artifact, java.util.List<org.apache.maven.model.Dependency>)
+     * @see npanday.artifact.ArtifactInstaller#installArtifactAndDependenciesIntoPrivateApplicationBase(java.io.File, org.apache.maven.artifact.Artifact, java.util.List<org.apache.maven.model.Dependency>)
      */
     public void installArtifactAndDependenciesIntoPrivateApplicationBase( File localRepository, Artifact artifact,
                                                                           List<Dependency> dependencies )
@@ -327,7 +327,7 @@ public class ArtifactInstallerImpl
     }
 
     /**
-     * @see org.apache.maven.dotnet.artifact.ArtifactInstaller#installArtifactWithPom(org.apache.maven.artifact.Artifact,java.io.File,boolean)
+     * @see npanday.artifact.ArtifactInstaller#installArtifactWithPom(org.apache.maven.artifact.Artifact,java.io.File,boolean)
      */
     public void installArtifactWithPom( Artifact artifact, File pomFile, boolean modifyProjectMetadata )
         throws ArtifactInstallationException
@@ -430,7 +430,7 @@ public class ArtifactInstallerImpl
     }
 
     /**
-     * @see org.apache.maven.dotnet.artifact.ArtifactInstaller#installFileWithoutPom(String, String, String, String, java.io.File)
+     * @see npanday.artifact.ArtifactInstaller#installFileWithoutPom(String, String, String, String, java.io.File)
      */
     public void installFileWithoutPom( String groupId, String artifactId, String version, String packaging,
                                        File artifactFile )
@@ -463,7 +463,7 @@ public class ArtifactInstallerImpl
     }
 
     /**
-     * @see org.apache.maven.dotnet.artifact.ArtifactInstaller#init(org.apache.maven.dotnet.artifact.ArtifactContext, java.util.List<org.apache.maven.artifact.repository.ArtifactRepository>, java.io.File)
+     * @see npanday.artifact.ArtifactInstaller#init(npanday.artifact.ArtifactContext, java.util.List<org.apache.maven.artifact.repository.ArtifactRepository>, java.io.File)
      */
     public void init( ArtifactContext artifactContext, List<ArtifactRepository> remoteArtifactRepositories,
                       File localRepository )

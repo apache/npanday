@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.maven.dotnet.artifact.impl;
+package npanday.artifact.impl;
 
 import org.codehaus.plexus.logging.Logger;
 

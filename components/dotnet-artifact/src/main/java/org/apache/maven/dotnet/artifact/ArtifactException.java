@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.artifact;
+package npanday.artifact;
 
 /**
  * Thrown to indicate an artifact exception.

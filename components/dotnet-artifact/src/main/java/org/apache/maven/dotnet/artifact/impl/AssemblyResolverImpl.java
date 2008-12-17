@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.artifact.impl;
+package npanday.artifact.impl;
 
-import org.apache.maven.dotnet.artifact.AssemblyResolver;
-import org.apache.maven.dotnet.dao.ProjectDao;
-import org.apache.maven.dotnet.dao.Project;
-import org.apache.maven.dotnet.dao.ProjectDependency;
+import npanday.artifact.AssemblyResolver;
+import npanday.dao.ProjectDao;
+import npanday.dao.Project;
+import npanday.dao.ProjectDependency;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -65,7 +65,7 @@ public class AssemblyResolverImpl
     /**
      * Registry used for finding DAOs
      */
-    private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
+    private npanday.registry.DataAccessObjectRegistry daoRegistry;
 
     /**
      * Manager used to download artifacts.
