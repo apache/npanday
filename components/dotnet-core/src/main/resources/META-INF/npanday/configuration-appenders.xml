@@ -1,8 +1,8 @@
 <configurationAppenders>
   <configurationAppender>
-    <name>org.apache.maven.dotnet.plugin.MavenProjectConfigurationAppender</name>
+    <name>npanday.plugin.MavenProjectConfigurationAppender</name>
   </configurationAppender>
   <configurationAppender>
-    <name>org.apache.maven.dotnet.plugin.StringConfigurationAppender</name>
+    <name>npanday.plugin.StringConfigurationAppender</name>
   </configurationAppender>
 </configurationAppenders>

@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet;
+package npanday;
 
-import org.apache.maven.dotnet.registry.Repository;
+import npanday.registry.Repository;
 import org.codehaus.plexus.logging.Logger;
 
 /**

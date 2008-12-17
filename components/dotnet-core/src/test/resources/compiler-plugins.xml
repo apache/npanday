@@ -1,7 +1,7 @@
 <compilerPlugins>
     <compilerPlugin>
         <identifier>MS-CS</identifier>
-        <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
+        <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
         <compiler>MICROSOFT</compiler>
         <executable>csc</executable>
         <language>C_SHARP</language>
@@ -54,7 +54,7 @@
 
     <compilerPlugin>
         <identifier>MONO-CS</identifier>
-        <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
+        <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
         <compiler>MONO</compiler>
         <language>C_SHARP</language>
         <executable>mcs</executable>
@@ -74,7 +74,7 @@
 
     <compilerPlugin>
         <identifier>NEM</identifier>
-        <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.NemerleCompiler</pluginClass>
+        <pluginClass>npanday.executable.compiler.impl.NemerleCompiler</pluginClass>
         <compiler>MONO</compiler>
         <language>NEMERLE</language>
         <executable>ncc</executable>

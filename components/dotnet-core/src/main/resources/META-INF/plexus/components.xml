@@ -1,11 +1,11 @@
 <component-set>
   <components>
     <component>
-      <role>org.apache.maven.dotnet.NPandayRepositoryRegistry</role>
-      <implementation>org.apache.maven.dotnet.impl.NPandayRepositoryRegistryImpl</implementation>
+      <role>npanday.NPandayRepositoryRegistry</role>
+      <implementation>npanday.impl.NPandayRepositoryRegistryImpl</implementation>
       <requirements>
         <requirement>
-          <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+          <role>npanday.registry.RepositoryRegistry</role>
         </requirement>
       </requirements>
     </component>

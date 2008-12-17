@@ -3,7 +3,7 @@
   <repositories>
     <repository>
       <repository-name>npanday-settings</repository-name>
-      <repository-class>org.apache.maven.dotnet.vendor.impl.SettingsRepository</repository-class>
+      <repository-class>npanday.vendor.impl.SettingsRepository</repository-class>
       <repository-config>${user.home}/.m2/npanday-settings.xml</repository-config>
       <init-param>
         <param-name>optional</param-name>
@@ -12,7 +12,7 @@
     </repository>
     <repository>
       <repository-name>npanday-settings</repository-name>
-      <repository-class>org.apache.maven.dotnet.vendor.impl.SettingsRepository</repository-class>
+      <repository-class>npanday.vendor.impl.SettingsRepository</repository-class>
       <repository-config>${npanday.settings}</repository-config>
       <init-param>
         <param-name>optional</param-name>
@@ -21,22 +21,22 @@
     </repository>
     <repository>
       <repository-name>compiler-plugins</repository-name>
-      <repository-class>org.apache.maven.dotnet.executable.impl.CompilerPluginsRepository</repository-class>
+      <repository-class>npanday.executable.impl.CompilerPluginsRepository</repository-class>
       <repository-config>/META-INF/npanday/compiler-plugins.xml</repository-config>
     </repository>
     <repository>
       <repository-name>assembly-plugins</repository-name>
-      <repository-class>org.apache.maven.dotnet.assembler.impl.AssemblyPluginsRepository</repository-class>
+      <repository-class>npanday.assembler.impl.AssemblyPluginsRepository</repository-class>
       <repository-config>/META-INF/npanday/assembly-plugins.xml</repository-config>
     </repository>
     <repository>
       <repository-name>executable-plugins</repository-name>
-      <repository-class>org.apache.maven.dotnet.executable.impl.ExecutablePluginsRepository</repository-class>
+      <repository-class>npanday.executable.impl.ExecutablePluginsRepository</repository-class>
       <repository-config>/META-INF/npanday/executable-plugins.xml</repository-config>
     </repository>
     <repository>
       <repository-name>net-dependencies</repository-name>
-      <repository-class>org.apache.maven.dotnet.artifact.impl.NetDependenciesRepositoryImpl</repository-class>
+      <repository-class>npanday.artifact.impl.NetDependenciesRepositoryImpl</repository-class>
       <repository-config>/META-INF/npanday/net-dependencies.xml</repository-config>
       <init-param>
         <param-name>npanday.version</param-name>
@@ -45,16 +45,16 @@
     </repository>
     <repository>
       <repository-name>connections</repository-name>
-      <repository-class>org.apache.maven.dotnet.registry.ConnectionsRepository</repository-class>
+      <repository-class>npanday.registry.ConnectionsRepository</repository-class>
       <repository-config>/META-INF/npanday/null.properties</repository-config>
       <init-param>
         <param-name>dao:project</param-name>
-        <param-value>org.apache.maven.dotnet.dao.impl.ProjectDaoImpl</param-value>
+        <param-value>npanday.dao.impl.ProjectDaoImpl</param-value>
       </init-param>
     </repository>
     <repository>
       <repository-name>configuration-appenders</repository-name>
-      <repository-class>org.apache.maven.dotnet.plugin.impl.ConfigurationAppendersRepository</repository-class>
+      <repository-class>npanday.plugin.impl.ConfigurationAppendersRepository</repository-class>
       <repository-config>/META-INF/npanday/configuration-appenders.xml</repository-config>
     </repository>
   </repositories>

@@ -1,33 +1,33 @@
 <assemblyPlugins>
   <assemblyPlugin>
     <identifier>CS</identifier>
-    <pluginClass>org.apache.maven.dotnet.assembler.impl.DefaultAssemblyInfoMarshaller</pluginClass>
+    <pluginClass>npanday.assembler.impl.DefaultAssemblyInfoMarshaller</pluginClass>
     <language>C_SHARP</language>
     <extension>cs</extension>
   </assemblyPlugin>
   <!--
   <assemblyPlugin>
     <identifier>RUBY</identifier>
-    <pluginClass>org.apache.maven.dotnet.assembler.impl.DefaultAssemblyInfoMarshaller</pluginClass>
+    <pluginClass>npanday.assembler.impl.DefaultAssemblyInfoMarshaller</pluginClass>
     <language>RUBY</language>
     <extension>rb</extension>
   </assemblyPlugin>
   -->
   <assemblyPlugin>
     <identifier>VB</identifier>
-    <pluginClass>org.apache.maven.dotnet.assembler.impl.VBAssemblyInfoMarshaller</pluginClass>
+    <pluginClass>npanday.assembler.impl.VBAssemblyInfoMarshaller</pluginClass>
     <language>VB</language>
     <extension>vb</extension>
   </assemblyPlugin>
   <assemblyPlugin>
     <identifier>JAVA</identifier>
-    <pluginClass>org.apache.maven.dotnet.assembler.impl.JavaAssemblyInfoMarshaller</pluginClass>
+    <pluginClass>npanday.assembler.impl.JavaAssemblyInfoMarshaller</pluginClass>
     <language>JAVA</language>
     <extension>java</extension>
   </assemblyPlugin>
   <assemblyPlugin>
     <identifier>NEM</identifier>
-    <pluginClass>org.apache.maven.dotnet.assembler.impl.DefaultAssemblyInfoMarshaller</pluginClass>
+    <pluginClass>npanday.assembler.impl.DefaultAssemblyInfoMarshaller</pluginClass>
     <language>NEMERLE</language>
     <extension>n</extension>
   </assemblyPlugin>

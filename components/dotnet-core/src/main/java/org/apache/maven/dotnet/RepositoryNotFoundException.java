@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet;
+package npanday;
 
 /**
  * Exception class thrown when a Repository does not exist in the registry.

@@ -1,7 +1,7 @@
 <compilerPlugins>
   <compilerPlugin>
     <identifier>MS-CS-1.1</identifier>
-    <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
+    <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>csc</executable>
     <language>C_SHARP</language>
@@ -52,7 +52,7 @@
   </compilerPlugin>
   <compilerPlugin>
     <identifier>MS-CS-2.0</identifier>
-    <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
+    <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>csc</executable>
     <language>C_SHARP</language>
@@ -111,7 +111,7 @@
   </compilerPlugin>
   <compilerPlugin>
     <identifier>MS-CS:COMPACT</identifier>
-    <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.CSharpCompilerForProfile</pluginClass>
+    <pluginClass>npanday.executable.compiler.impl.CSharpCompilerForProfile</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>csc</executable>
     <language>C_SHARP</language>
@@ -183,7 +183,7 @@
   </compilerPlugin>
   <compilerPlugin>
     <identifier>MS-VB</identifier>
-    <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
+    <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>vbc</executable>
     <language>VB</language>
@@ -245,7 +245,7 @@
   
   <compilerPlugin>
     <identifier>ASP</identifier>
-    <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.AspxCompiler</pluginClass>
+    <pluginClass>npanday.executable.compiler.impl.AspxCompiler</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>aspnet_compiler</executable>
     <language>ASP</language>
@@ -280,7 +280,7 @@
   
   <compilerPlugin>
     <identifier>MONO-CS</identifier>
-    <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
+    <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
     <vendor>MONO</vendor>
     <language>C_SHARP</language>
     <profile>FULL</profile>
@@ -336,7 +336,7 @@
   </compilerPlugin>
   <compilerPlugin>
     <identifier>MONO-CS-2</identifier>
-    <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DefaultCompiler</pluginClass>
+    <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
     <vendor>MONO</vendor>
     <language>C_SHARP</language>
     <profile>FULL</profile>
@@ -392,7 +392,7 @@
   </compilerPlugin>
   <compilerPlugin>
     <identifier>NEM</identifier>
-    <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.NemerleCompiler</pluginClass>
+    <pluginClass>npanday.executable.compiler.impl.NemerleCompiler</pluginClass>
     <vendor>MONO</vendor>
     <language>NEMERLE</language>
     <profile>FULL</profile>
@@ -438,7 +438,7 @@
   </compilerPlugin>
   <compilerPlugin>
     <identifier>DotGNU-CS</identifier>
-    <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.DotGNUCompiler</pluginClass>
+    <pluginClass>npanday.executable.compiler.impl.DotGNUCompiler</pluginClass>
     <vendor>DotGNU</vendor>
     <language>C_SHARP</language>
     <profile>FULL</profile>
@@ -468,7 +468,7 @@
   <!--
   <compilerPlugin>
     <identifier>Ruby</identifier>
-    <pluginClass>org.apache.maven.dotnet.executable.compiler.impl.RubyCompiler</pluginClass>
+    <pluginClass>npanday.executable.compiler.impl.RubyCompiler</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>RubyCompiler.exe</executable>
     <netDependencyId>RubyCompiler</netDependencyId>
