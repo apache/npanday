@@ -1,9 +1,9 @@
-package org.apache.maven.dotnet.vendor.impl;
+package npanday.vendor.impl;
 
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.registry.RepositoryLoader;
-import org.apache.maven.dotnet.registry.RegistryLoader;
-import org.apache.maven.dotnet.registry.Repository;
+import npanday.registry.RepositoryRegistry;
+import npanday.registry.RepositoryLoader;
+import npanday.registry.RegistryLoader;
+import npanday.registry.Repository;
 
 
 import java.io.IOException;

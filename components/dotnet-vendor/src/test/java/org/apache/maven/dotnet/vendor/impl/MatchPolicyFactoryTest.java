@@ -16,15 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor.impl;
+package npanday.vendor.impl;
 
 import junit.framework.TestCase;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.codehaus.plexus.logging.Logger;
-import org.apache.maven.dotnet.vendor.VendorInfoMatchPolicy;
-import org.apache.maven.dotnet.vendor.VendorInfo;
-import org.apache.maven.dotnet.vendor.VendorTestFactory;
-import org.apache.maven.dotnet.vendor.Vendor;
+import npanday.vendor.VendorInfoMatchPolicy;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorTestFactory;
+import npanday.vendor.Vendor;
 
 /**
  *

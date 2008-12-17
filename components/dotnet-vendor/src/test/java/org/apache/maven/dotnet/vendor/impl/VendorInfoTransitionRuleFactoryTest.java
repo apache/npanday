@@ -1,13 +1,13 @@
-package org.apache.maven.dotnet.vendor.impl;
+package npanday.vendor.impl;
 
 import junit.framework.TestCase;
-import org.apache.maven.dotnet.InitializationException;
-import org.apache.maven.dotnet.vendor.VendorInfoTransitionRule;
-import org.apache.maven.dotnet.vendor.VendorInfo;
-import org.apache.maven.dotnet.vendor.VendorInfoState;
-import org.apache.maven.dotnet.vendor.Vendor;
-import org.apache.maven.dotnet.vendor.VendorTestFactory;
-import org.apache.maven.dotnet.model.settings.DefaultSetup;
+import npanday.InitializationException;
+import npanday.vendor.VendorInfoTransitionRule;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorInfoState;
+import npanday.vendor.Vendor;
+import npanday.vendor.VendorTestFactory;
+import npanday.model.settings.DefaultSetup;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.codehaus.plexus.logging.Logger;
 

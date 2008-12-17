@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor;
+package npanday.vendor;
 
-import org.apache.maven.dotnet.vendor.VendorInfo;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.vendor.VendorInfo;
+import npanday.PlatformUnsupportedException;
 
 import java.util.List;
 import java.util.Set;
@@ -87,7 +87,7 @@ public interface VendorInfoRepository
      *
      * @param vendorInfo the vendor info
      * @return file pointing to the .NET framework installation root used for compiling artifacts
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException
+     * @throws npanday.PlatformUnsupportedException
      *
      */
     File getInstallRootFor( VendorInfo vendorInfo )

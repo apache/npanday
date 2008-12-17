@@ -1,4 +1,4 @@
-package org.apache.maven.dotnet.vendor;
+package npanday.vendor;
 
 import junit.framework.TestCase;
 

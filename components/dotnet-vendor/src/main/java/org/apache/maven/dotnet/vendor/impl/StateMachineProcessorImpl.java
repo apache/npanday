@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor.impl;
+package npanday.vendor.impl;
 
-import org.apache.maven.dotnet.vendor.*;
-import org.apache.maven.dotnet.vendor.IllegalStateException;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.vendor.*;
+import npanday.vendor.IllegalStateException;
+import npanday.registry.RepositoryRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,7 +96,7 @@ public final class StateMachineProcessorImpl
             transitionRules.put( VendorInfoState.NFF, factory.createVendorInfoSetterForNFF() );
             transitionRules.put( VendorInfoState.GFF, factory.createVendorInfoSetterForGFF() );
         }
-        catch ( org.apache.maven.dotnet.InitializationException e )
+        catch ( npanday.InitializationException e )
         {
             logger.debug( "NPANDAY-102-001: Unable to initialize rule factory.", e );
             transitionRules.put( VendorInfoState.MFF, factory.createVendorInfoSetterForMFF_NoSettings() );
@@ -112,7 +112,7 @@ public final class StateMachineProcessorImpl
     }
 
     /**
-     * @see StateMachineProcessor#process(org.apache.maven.dotnet.vendor.VendorInfo)
+     * @see StateMachineProcessor#process(npanday.vendor.VendorInfo)
      */
     public void process( VendorInfo vendorInfo )
         throws IllegalStateException

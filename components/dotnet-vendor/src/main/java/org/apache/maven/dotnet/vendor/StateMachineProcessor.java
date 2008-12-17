@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor;
+package npanday.vendor;
 
 /**
  * Provides services for filling in missing vendor info according to its state of completion. An implementation of this

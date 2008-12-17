@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor.impl;
+package npanday.vendor.impl;
 
-import org.apache.maven.dotnet.vendor.VendorInfoMatchPolicy;
-import org.apache.maven.dotnet.vendor.VendorInfo;
-import org.apache.maven.dotnet.vendor.InvalidVersionFormatException;
+import npanday.vendor.VendorInfoMatchPolicy;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.InvalidVersionFormatException;
 import org.codehaus.plexus.logging.Logger;
 
 /**

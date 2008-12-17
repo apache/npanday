@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor;
+package npanday.vendor;
 
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.PlatformUnsupportedException;
 
 /**
  * Provides services for returning an instance of Vendor based on the OS or name.
@@ -40,7 +40,7 @@ public final class VendorFactory
      * Microsoft for windows and Mono for all others.
      *
      * @return the default vendor of the operating system on which the application is running
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException
+     * @throws npanday.PlatformUnsupportedException
      *          if the default vendor cannot be determined
      */
     public static synchronized Vendor getDefaultVendorForOS()

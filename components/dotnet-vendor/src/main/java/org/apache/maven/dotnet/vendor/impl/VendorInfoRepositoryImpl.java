@@ -16,15 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor.impl;
+package npanday.vendor.impl;
 
-import org.apache.maven.dotnet.vendor.VendorInfoRepository;
-import org.apache.maven.dotnet.vendor.VendorInfo;
-import org.apache.maven.dotnet.vendor.VendorInfoMatchPolicy;
-import org.apache.maven.dotnet.vendor.InvalidVersionFormatException;
-import org.apache.maven.dotnet.vendor.Vendor;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.vendor.VendorInfoRepository;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorInfoMatchPolicy;
+import npanday.vendor.InvalidVersionFormatException;
+import npanday.vendor.Vendor;
+import npanday.registry.RepositoryRegistry;
+import npanday.PlatformUnsupportedException;
 
 import java.util.List;
 import java.util.Collections;
@@ -71,7 +71,7 @@ public class VendorInfoRepositoryImpl
     }
 
     /**
-     * @see org.apache.maven.dotnet.vendor.VendorInfoRepository#exists()
+     * @see npanday.vendor.VendorInfoRepository#exists()
      */
     public boolean exists()
     {
@@ -79,7 +79,7 @@ public class VendorInfoRepositoryImpl
     }
 
     /**
-     * @see VendorInfoRepository#getInstallRootFor(org.apache.maven.dotnet.vendor.VendorInfo)
+     * @see VendorInfoRepository#getInstallRootFor(npanday.vendor.VendorInfo)
      */
     public File getInstallRootFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException
@@ -99,7 +99,7 @@ public class VendorInfoRepositoryImpl
     }
 
     /**
-     * @see org.apache.maven.dotnet.vendor.VendorInfoRepository#getVendorInfos()
+     * @see npanday.vendor.VendorInfoRepository#getVendorInfos()
      */
     public List<VendorInfo> getVendorInfos()
     {
@@ -154,7 +154,7 @@ public class VendorInfoRepositoryImpl
     }
 
     /**
-     * @see VendorInfoRepository#getVendorInfosFor(org.apache.maven.dotnet.vendor.VendorInfo, boolean)
+     * @see VendorInfoRepository#getVendorInfosFor(npanday.vendor.VendorInfo, boolean)
      */
     public List<VendorInfo> getVendorInfosFor( VendorInfo vendorInfo, boolean isDefault )
     {

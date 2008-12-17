@@ -1,6 +1,6 @@
-package org.apache.maven.dotnet.vendor;
+package npanday.vendor;
 
-import org.apache.maven.dotnet.model.settings.DefaultSetup;
+import npanday.model.settings.DefaultSetup;
 
 import java.io.File;
 import java.util.List;

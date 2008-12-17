@@ -16,13 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor.impl;
+package npanday.vendor.impl;
 
 import java.util.regex.Pattern;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.maven.dotnet.vendor.InvalidVersionFormatException;
+import npanday.vendor.InvalidVersionFormatException;
 
 /**
  * Provides a way to match versions.

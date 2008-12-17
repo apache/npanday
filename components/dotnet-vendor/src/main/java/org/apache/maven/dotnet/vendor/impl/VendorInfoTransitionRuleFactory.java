@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor.impl;
+package npanday.vendor.impl;
 
-import org.apache.maven.dotnet.vendor.*;
-import org.apache.maven.dotnet.InitializationException;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.vendor.*;
+import npanday.InitializationException;
+import npanday.PlatformUnsupportedException;
+import npanday.registry.RepositoryRegistry;
 
 import java.util.List;
 import java.util.Set;

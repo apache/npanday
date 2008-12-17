@@ -1,11 +1,11 @@
-package org.apache.maven.dotnet.vendor.impl;
+package npanday.vendor.impl;
 
-import org.apache.maven.dotnet.vendor.VendorInfoRepository;
-import org.apache.maven.dotnet.vendor.VendorInfo;
-import org.apache.maven.dotnet.vendor.InvalidVersionFormatException;
-import org.apache.maven.dotnet.vendor.Vendor;
+import npanday.vendor.VendorInfoRepository;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.InvalidVersionFormatException;
+import npanday.vendor.Vendor;
 
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.PlatformUnsupportedException;
 
 import java.io.File;
 import java.util.List;

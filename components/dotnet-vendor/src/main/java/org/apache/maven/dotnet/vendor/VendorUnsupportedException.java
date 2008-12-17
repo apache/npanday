@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor;
+package npanday.vendor;
 
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.PlatformUnsupportedException;
 
 /**
  * Exception thrown when the vendor is not recognized or is not valid for a specific platform or language.

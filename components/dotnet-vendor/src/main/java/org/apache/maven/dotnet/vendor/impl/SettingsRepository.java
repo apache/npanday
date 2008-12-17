@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor.impl;
+package npanday.vendor.impl;
 
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.*;
@@ -27,15 +27,15 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.apache.maven.dotnet.model.settings.NPandaySettings;
-import org.apache.maven.dotnet.model.settings.Vendor;
-import org.apache.maven.dotnet.model.settings.DefaultSetup;
-import org.apache.maven.dotnet.model.settings.Framework;
-import org.apache.maven.dotnet.model.settings.io.xpp3.NPandaySettingsXpp3Reader;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.vendor.VendorFactory;
-import org.apache.maven.dotnet.vendor.VendorInfo;
-import org.apache.maven.dotnet.vendor.VendorUnsupportedException;
+import npanday.model.settings.NPandaySettings;
+import npanday.model.settings.Vendor;
+import npanday.model.settings.DefaultSetup;
+import npanday.model.settings.Framework;
+import npanday.model.settings.io.xpp3.NPandaySettingsXpp3Reader;
+import npanday.PlatformUnsupportedException;
+import npanday.vendor.VendorFactory;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorUnsupportedException;
 
 /**
  *  Provides methods for loading and reading the npanday-settings config file.
@@ -123,7 +123,7 @@ public final class SettingsRepository
     }
 
     /**
-     * @see Repository#setRepositoryRegistry(org.apache.maven.dotnet.registry.RepositoryRegistry)
+     * @see Repository#setRepositoryRegistry(npanday.registry.RepositoryRegistry)
      */
     public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
     {
@@ -173,7 +173,7 @@ public final class SettingsRepository
      * @param vendorVersion     the vendor version
      * @param frameworkVersion  the .NET framework version
      * @return the install root for the .NET framework
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException if there is no install root found for the specified parameters
+     * @throws npanday.PlatformUnsupportedException if there is no install root found for the specified parameters
      */
     public File getInstallRootFor( String vendor, String vendorVersion, String frameworkVersion )
         throws PlatformUnsupportedException

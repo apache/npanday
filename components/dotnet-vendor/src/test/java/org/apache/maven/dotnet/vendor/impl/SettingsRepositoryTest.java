@@ -1,4 +1,4 @@
-package org.apache.maven.dotnet.vendor.impl;
+package npanday.vendor.impl;
 
 import junit.framework.TestCase;
 
@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
 
-import org.apache.maven.dotnet.model.settings.DefaultSetup;
-import org.apache.maven.dotnet.model.settings.Framework;
-import org.apache.maven.dotnet.model.settings.Vendor;
-import org.apache.maven.dotnet.vendor.VendorTestFactory;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.model.settings.DefaultSetup;
+import npanday.model.settings.Framework;
+import npanday.model.settings.Vendor;
+import npanday.vendor.VendorTestFactory;
+import npanday.PlatformUnsupportedException;
 
 public class SettingsRepositoryTest
     extends TestCase

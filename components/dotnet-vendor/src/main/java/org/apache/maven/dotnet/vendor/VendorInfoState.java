@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.vendor;
+package npanday.vendor;
 
 /**
  * Provides a way to know how complete a vendor info object is or more concisely its state of completion.
