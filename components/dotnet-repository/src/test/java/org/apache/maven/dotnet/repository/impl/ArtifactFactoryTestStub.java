@@ -1,4 +1,4 @@
-package org.apache.maven.dotnet.repository.impl;
+package npanday.repository.impl;
 
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.Artifact;

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.repository;
+package npanday.repository;
 
 import org.apache.maven.project.artifact.ProjectArtifactMetadata;
 import org.apache.maven.artifact.Artifact;

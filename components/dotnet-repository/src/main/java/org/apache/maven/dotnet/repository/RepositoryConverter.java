@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.repository;
+package npanday.repository;
 
 import org.openrdf.repository.Repository;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.dotnet.artifact.ApplicationConfig;
+import npanday.artifact.ApplicationConfig;
 
 import java.io.File;
 import java.io.IOException;

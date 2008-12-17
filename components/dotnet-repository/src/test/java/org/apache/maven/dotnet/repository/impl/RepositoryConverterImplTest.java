@@ -1,10 +1,10 @@
-package org.apache.maven.dotnet.repository.impl;
+package npanday.repository.impl;
 
 import junit.framework.TestCase;
-import org.apache.maven.dotnet.dao.impl.ProjectDaoImpl;
-import org.apache.maven.dotnet.dao.ProjectDao;
-import org.apache.maven.dotnet.dao.Project;
-import org.apache.maven.dotnet.dao.ProjectDependency;
+import npanday.dao.impl.ProjectDaoImpl;
+import npanday.dao.ProjectDao;
+import npanday.dao.Project;
+import npanday.dao.ProjectDependency;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.Artifact;

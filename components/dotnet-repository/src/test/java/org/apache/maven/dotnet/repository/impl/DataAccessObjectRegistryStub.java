@@ -1,8 +1,8 @@
-package org.apache.maven.dotnet.repository.impl;
+package npanday.repository.impl;
 
-import org.apache.maven.dotnet.registry.DataAccessObjectRegistry;
-import org.apache.maven.dotnet.registry.DataAccessObject;
-import org.apache.maven.dotnet.dao.impl.ProjectDaoImpl;
+import npanday.registry.DataAccessObjectRegistry;
+import npanday.registry.DataAccessObject;
+import npanday.dao.impl.ProjectDaoImpl;
 
 import java.util.Set;
 

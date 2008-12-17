@@ -1,8 +1,8 @@
 <component-set>
   <components>
     <component>
-      <role>org.apache.maven.dotnet.repository.RepositoryConverter</role>
-      <implementation>org.apache.maven.dotnet.repository.impl.RepositoryConverterImpl</implementation>
+      <role>npanday.repository.RepositoryConverter</role>
+      <implementation>npanday.repository.impl.RepositoryConverterImpl</implementation>
       <requirements>
         <requirement>
           <role>org.apache.maven.artifact.manager.WagonManager</role>
@@ -11,7 +11,7 @@
           <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
         </requirement>
         <requirement>
-          <role>org.apache.maven.dotnet.registry.DataAccessObjectRegistry</role>
+          <role>npanday.registry.DataAccessObjectRegistry</role>
         </requirement>
         <requirement>
           <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>

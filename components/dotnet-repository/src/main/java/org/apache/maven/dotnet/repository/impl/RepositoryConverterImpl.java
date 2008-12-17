@@ -16,15 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.repository.impl;
+package npanday.repository.impl;
 
-import org.apache.maven.dotnet.repository.RepositoryConverter;
-import org.apache.maven.dotnet.dao.Project;
-import org.apache.maven.dotnet.dao.ProjectDao;
-import org.apache.maven.dotnet.dao.ProjectFactory;
-import org.apache.maven.dotnet.registry.DataAccessObjectRegistry;
-import org.apache.maven.dotnet.ArtifactType;
-import org.apache.maven.dotnet.artifact.ApplicationConfig;
+import npanday.repository.RepositoryConverter;
+import npanday.dao.Project;
+import npanday.dao.ProjectDao;
+import npanday.dao.ProjectFactory;
+import npanday.registry.DataAccessObjectRegistry;
+import npanday.ArtifactType;
+import npanday.artifact.ApplicationConfig;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
@@ -65,7 +65,7 @@ public class RepositoryConverterImpl
     /**
      * The data access object registry used for finding DAO objects
      */
-    private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
+    private npanday.registry.DataAccessObjectRegistry daoRegistry;
     
     /**
      *  Resolver for  timestamp artifacts
