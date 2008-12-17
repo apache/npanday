@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.compile;
+package npanday.plugin.compile;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.dotnet.assembler.AssemblerContext;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.assembler.AssemblerContext;
+import npanday.PlatformUnsupportedException;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.DirectoryScanner;
 

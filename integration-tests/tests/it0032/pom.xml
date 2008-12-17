@@ -20,7 +20,7 @@
     <testSourceDirectory>src/test</testSourceDirectory>  
     <plugins> 
       <plugin> 
-        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <groupId>npanday.plugin</groupId>  
         <artifactId>maven-compile-plugin</artifactId>  
         <extensions>true</extensions>  
         <configuration> 
@@ -33,7 +33,7 @@
         </configuration> 
       </plugin>  
       <plugin> 
-        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <groupId>npanday.plugin</groupId>  
         <artifactId>maven-test-plugin</artifactId> 
       </plugin> 
     </plugins> 

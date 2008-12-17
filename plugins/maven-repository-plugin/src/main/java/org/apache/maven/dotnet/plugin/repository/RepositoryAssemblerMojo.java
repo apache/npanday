@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.repository;
+package npanday.plugin.repository;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -31,9 +31,9 @@ import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.deployer.ArtifactDeployer;
 import org.apache.maven.artifact.deployer.ArtifactDeploymentException;
-import org.apache.maven.dotnet.artifact.AssemblyResolver;
-import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.repository.RepositoryConverter;
+import npanday.artifact.AssemblyResolver;
+import npanday.artifact.ArtifactContext;
+import npanday.repository.RepositoryConverter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.artifact.ProjectArtifactMetadata;
 import org.apache.maven.model.Model;

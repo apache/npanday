@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.resolver;
+package npanday.plugin.resolver;
 
 /**
  * Provides access to net dependency information.

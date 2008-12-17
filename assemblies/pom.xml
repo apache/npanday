@@ -32,7 +32,7 @@ under the License.
   <version>0.9-SNAPSHOT</version>  
   <packaging>pom</packaging>  
   <name>NPanday.Assemblies</name>  
-  <url>http://incubator.apache.org/NPanday</url>  
+  <url>http://codeplex.com/npanday</url>  
   <description>NPanday provides Maven 2.x plugins to support building of .NET applications</description>  
   <modules>
     <module>NPanday.Model/Pom</module>  
@@ -62,7 +62,7 @@ under the License.
       <build> 
         <plugins> 
           <plugin> 
-            <groupId>org.apache.maven.dotnet.plugins</groupId>  
+            <groupId>npanday.plugin</groupId>  
             <artifactId>maven-compile-plugin</artifactId>  
             <extensions>true</extensions>  
             <configuration> 

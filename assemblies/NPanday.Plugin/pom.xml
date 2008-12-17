@@ -41,7 +41,7 @@ under the License.
   <build> 
     <plugins> 
       <plugin> 
-        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <groupId>npanday.plugin</groupId>  
         <artifactId>maven-compile-plugin</artifactId>  
         <extensions>true</extensions>  
         <configuration> 
@@ -49,7 +49,7 @@ under the License.
         </configuration> 
       </plugin>  
       <plugin> 
-        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <groupId>npanday.plugin</groupId>  
         <artifactId>maven-install-plugin</artifactId>  
         <extensions>true</extensions>  
         <configuration> 
@@ -57,7 +57,7 @@ under the License.
         </configuration> 
       </plugin> 
       <plugin> 
-        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <groupId>npanday.plugin</groupId>  
         <artifactId>maven-deploy-plugin</artifactId>  
         <configuration> 
           <classifier>4b435f4d76e2f0e6</classifier>

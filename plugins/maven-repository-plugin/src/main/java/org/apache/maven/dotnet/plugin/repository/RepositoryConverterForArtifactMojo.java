@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.repository;
+package npanday.plugin.repository;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.dotnet.repository.RepositoryConverter;
-import org.apache.maven.dotnet.artifact.ApplicationConfig;
+import npanday.repository.RepositoryConverter;
+import npanday.artifact.ApplicationConfig;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.sail.memory.MemoryStore;

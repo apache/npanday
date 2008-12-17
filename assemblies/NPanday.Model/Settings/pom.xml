@@ -36,7 +36,7 @@ under the License.
     <plugins> 
       <!--
        <plugin>
-         <groupId>org.apache.maven.dotnet.plugins</groupId>
+         <groupId>npanday.plugin</groupId>
          <artifactId>maven-xsd-plugin</artifactId>
          <executions>
            <execution>

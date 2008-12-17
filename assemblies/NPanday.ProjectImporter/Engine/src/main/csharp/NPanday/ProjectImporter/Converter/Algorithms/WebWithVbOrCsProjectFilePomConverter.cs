@@ -38,7 +38,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             Model.build.sourceDirectory = ".";
 
             // change the outputDirectory of the plugin
-            Plugin compilePlugin = FindPlugin("org.apache.maven.dotnet.plugins", "maven-compile-plugin");
+            Plugin compilePlugin = FindPlugin("npanday.plugins", "maven-compile-plugin");
             AddPluginConfiguration(compilePlugin, "outputDirectory", "bin");
 
             if (writePom)

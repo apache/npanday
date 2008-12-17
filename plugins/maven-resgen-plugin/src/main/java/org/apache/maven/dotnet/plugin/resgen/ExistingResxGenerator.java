@@ -1,11 +1,11 @@
-package org.apache.maven.dotnet.plugin.resgen;
+package npanday.plugin.resgen;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.executable.ExecutionException;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -42,7 +42,7 @@ public class ExistingResxGenerator extends AbstractMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
     
     /**
      * @parameter expression = "${frameworkVersion}"

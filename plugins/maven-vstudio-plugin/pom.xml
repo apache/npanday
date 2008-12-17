@@ -20,12 +20,12 @@ under the License.
 -->
 <project> 
   <parent> 
-    <groupId>org.apache.maven.dotnet.plugins</groupId>  
+    <groupId>npanday.plugin</groupId>  
     <version>0.9-SNAPSHOT</version>  
     <artifactId>maven-dotnet-plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>org.apache.maven.dotnet.plugins</groupId>  
+  <groupId>npanday.plugin</groupId>  
   <artifactId>maven-vstudio-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>maven-vstudio-plugin</name>  

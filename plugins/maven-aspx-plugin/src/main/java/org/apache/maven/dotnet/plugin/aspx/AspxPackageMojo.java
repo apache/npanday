@@ -1,4 +1,4 @@
-package org.apache.maven.dotnet.plugin.aspx;
+package npanday.plugin.aspx;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

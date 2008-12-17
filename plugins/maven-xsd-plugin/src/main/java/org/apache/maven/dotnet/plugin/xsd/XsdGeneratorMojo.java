@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.xsd;
+package npanday.plugin.xsd;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.executable.ExecutionException;
+import npanday.PlatformUnsupportedException;
 
 /**
  * Generates XSD class.
@@ -155,13 +155,13 @@ public class XsdGeneratorMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
 
 
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
+    private npanday.NPandayRepositoryRegistry npandayRegistry;
 
     public void execute()
         throws MojoExecutionException

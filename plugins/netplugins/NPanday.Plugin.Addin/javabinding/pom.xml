@@ -2,34 +2,34 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <parent> 
-    <groupId>org.apache.maven.dotnet.plugins</groupId>  
+    <groupId>npanday.plugin</groupId>  
     <version>0.9-SNAPSHOT</version>  
     <artifactId>maven-dotnet-plugins</artifactId>  
     <relativePath>../../../pom.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>NPanday.Plugins</groupId>  
+  <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Addin.JavaBinding</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>NPanday.Plugin.Addin.JavaBinding</name>  
   <dependencies> 
     <dependency> 
-      <groupId>org.apache.maven.dotnet</groupId>  
+      <groupId>npanday</groupId>  
       <artifactId>dotnet-assembler</artifactId>  
       <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>org.apache.maven.dotnet</groupId>  
+      <groupId>npanday</groupId>  
       <artifactId>dotnet-executable</artifactId>  
       <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>org.apache.maven.dotnet</groupId>  
+      <groupId>npanday</groupId>  
       <artifactId>dotnet-artifact</artifactId>  
       <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>org.apache.maven.dotnet</groupId>  
+      <groupId>npanday</groupId>  
       <artifactId>dotnet-plugin</artifactId>  
       <version>0.9-SNAPSHOT</version> 
     </dependency> 

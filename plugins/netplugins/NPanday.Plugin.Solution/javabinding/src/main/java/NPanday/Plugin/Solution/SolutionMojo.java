@@ -19,14 +19,14 @@
 
  package NPanday.Plugin.Solution;
 
-import org.apache.maven.dotnet.plugin.FieldAnnotation;
+import npanday.plugin.FieldAnnotation;
 
 /**
  * @phase Package
  * @goal Solution
  */
 public class SolutionMojo
-    extends org.apache.maven.dotnet.plugin.AbstractMojo
+    extends npanday.plugin.AbstractMojo
 {
 
        /**
@@ -70,12 +70,12 @@ public class SolutionMojo
        /**
         * @component
         */
-        private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+        private npanday.executable.NetExecutableFactory netExecutableFactory;
 
        /**
         * @component
         */
-        private org.apache.maven.dotnet.plugin.PluginContext pluginContext;
+        private npanday.plugin.PluginContext pluginContext;
 
         public String getMojoArtifactId()
         {
@@ -92,12 +92,12 @@ public class SolutionMojo
             return "NPanday.Plugin.Solution.SolutionMojo";
         }
 
-        public org.apache.maven.dotnet.plugin.PluginContext getNetPluginContext()
+        public npanday.plugin.PluginContext getNetPluginContext()
         {
             return pluginContext;
         }
 
-        public org.apache.maven.dotnet.executable.NetExecutableFactory getNetExecutableFactory()
+        public npanday.executable.NetExecutableFactory getNetExecutableFactory()
         {
             return netExecutableFactory;
         }

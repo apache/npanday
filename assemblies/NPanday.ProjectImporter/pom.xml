@@ -37,7 +37,7 @@ under the License.
   <build> 
     <plugins> 
       <plugin> 
-        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <groupId>npanday.plugin</groupId>  
         <artifactId>maven-compile-plugin</artifactId>  
         <extensions>true</extensions>  
         <configuration> 

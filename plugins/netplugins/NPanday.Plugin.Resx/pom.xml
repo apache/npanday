@@ -20,12 +20,12 @@ under the License.
 -->
 <project> 
   <parent> 
-    <groupId>NPanday.Plugins</groupId>  
+    <groupId>npanday.plugin</groupId>  
     <version>0.9-SNAPSHOT</version>  
-    <artifactId>NPanday.Plugins</artifactId> 
+    <artifactId>npanday.plugin</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>NPanday.Plugins</groupId>  
+  <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Resx</artifactId>  
   <packaging>exe</packaging>  
   <version>0.9-SNAPSHOT</version>  

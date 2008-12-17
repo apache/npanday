@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.webapp;
+package npanday.plugin.webapp;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.plugin.AbstractMojo;

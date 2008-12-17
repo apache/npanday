@@ -16,17 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.resgen;
+package npanday.plugin.resgen;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.vendor.VendorInfo;
-import org.apache.maven.dotnet.vendor.VendorFactory;
-import org.apache.maven.dotnet.artifact.ArtifactContext;
+import npanday.executable.ExecutionException;
+import npanday.PlatformUnsupportedException;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorFactory;
+import npanday.artifact.ArtifactContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,12 +90,12 @@ public class ResourceGeneratorMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
 
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
+    private npanday.NPandayRepositoryRegistry npandayRegistry;
 
     public void execute()
         throws MojoExecutionException

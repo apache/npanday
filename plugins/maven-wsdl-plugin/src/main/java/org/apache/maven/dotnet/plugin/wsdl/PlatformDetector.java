@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.wsdl;
+package npanday.plugin.wsdl;
 
-import org.apache.maven.dotnet.vendor.Vendor;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.executable.CommandExecutor;
-import org.apache.maven.dotnet.executable.ExecutionException;
+import npanday.vendor.Vendor;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.CommandExecutor;
+import npanday.executable.ExecutionException;
 
 import java.io.File;
 import java.util.List;
@@ -64,7 +64,7 @@ public interface PlatformDetector
      * @param command
      * @param netHomePath
      * @return a Vendor instance for the given command and/or netHomePath
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException
+     * @throws npanday.PlatformUnsupportedException
      *          if the vendor cannot be matched
      */
     Vendor getVendorFor( String command, File netHomePath )
@@ -156,7 +156,7 @@ public interface PlatformDetector
                  *
                  * @param command
                  * @return vendor instance
-                 * @throws org.apache.maven.dotnet.PlatformUnsupportedException
+                 * @throws npanday.PlatformUnsupportedException
                  *          if the platform cannot be matched.
                  */
                 private Vendor getVendorForCommand( String command )

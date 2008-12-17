@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.resolver;
+package npanday.plugin.resolver;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -24,21 +24,21 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.registry.RepositoryRegistry;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.apache.maven.dotnet.artifact.AssemblyResolver;
-import org.apache.maven.dotnet.artifact.NetDependenciesRepository;
-import org.apache.maven.dotnet.artifact.NetDependencyMatchPolicy;
-import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.model.netdependency.NetDependency;
-import org.apache.maven.dotnet.executable.NetExecutable;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.artifact.AssemblyResolver;
+import npanday.artifact.NetDependenciesRepository;
+import npanday.artifact.NetDependencyMatchPolicy;
+import npanday.artifact.ArtifactContext;
+import npanday.model.netdependency.NetDependency;
+import npanday.executable.NetExecutable;
+import npanday.executable.ExecutionException;
+import npanday.PlatformUnsupportedException;
 
 /**
  * @author Shane Isbell
@@ -96,12 +96,12 @@ public class NetDependencyResolverMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
+    private npanday.NPandayRepositoryRegistry npandayRegistry;
 
     /**
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
 
     /**
      * @component

@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.maven.dotnet.plugin.compile;
+package npanday.plugin.compile;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
-import org.apache.maven.dotnet.executable.compiler.CompilerExecutable;
-import org.apache.maven.dotnet.executable.compiler.CompilerRequirement;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutionException;
+import npanday.executable.compiler.CompilerConfig;
+import npanday.executable.compiler.CompilerExecutable;
+import npanday.executable.compiler.CompilerRequirement;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -275,7 +275,7 @@ public abstract class AbstractCompilerMojo
     /**
      * @component
      */
-    protected org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    protected npanday.executable.NetExecutableFactory netExecutableFactory;
 
     /**
      * @parameter expression="${project.file}"

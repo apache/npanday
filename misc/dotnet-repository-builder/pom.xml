@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <groupId>NPanday</groupId>  
-    <artifactId>NPanday.Core</artifactId>  
+    <groupId>npanday</groupId>  
+    <artifactId>npanday-project</artifactId>  
     <version>0.9-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.maven.dotnet</groupId>
+  <groupId>npanday</groupId>
   <version>0.9-SNAPSHOT</version>
   <artifactId>dotnet-repository-builder</artifactId>
   <packaging>pom</packaging>
@@ -90,25 +90,25 @@
 
     <!--netplugins-->
     <dependency>
-      <groupId>NPanday.Plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Addin</artifactId>
       <version>${pom.version}</version>
       <type>netplugin</type>
     </dependency>
     <dependency>
-      <groupId>NPanday.Plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Devenv</artifactId>
       <version>${pom.version}</version>
       <type>netplugin</type>
     </dependency>
     <dependency>
-      <groupId>NPanday.Plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Resx</artifactId>
       <version>${pom.version}</version>
       <type>exe</type>
     </dependency>
     <dependency>
-      <groupId>NPanday.Plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Settings</artifactId>
       <version>${pom.version}</version>
       <type>netplugin</type>
@@ -147,7 +147,7 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <groupId>npanday.plugin</groupId>
         <artifactId>maven-repository-plugin</artifactId>
         <version>${pom.version}</version>
         <configuration>

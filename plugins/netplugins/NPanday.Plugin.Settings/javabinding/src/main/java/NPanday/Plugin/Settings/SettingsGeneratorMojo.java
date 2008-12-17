@@ -19,7 +19,7 @@
 
  package NPanday.Plugin.Settings;
 
-import org.apache.maven.dotnet.plugin.FieldAnnotation;
+import npanday.plugin.FieldAnnotation;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -30,7 +30,7 @@ import java.io.File;
  * @goal generate-settings
  */
 public class SettingsGeneratorMojo
-    extends org.apache.maven.dotnet.plugin.AbstractMojo
+    extends npanday.plugin.AbstractMojo
 {
     /**
      * @parameter expression = "${project}"
@@ -60,12 +60,12 @@ public class SettingsGeneratorMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
 
     /**
      * @component
      */
-    private org.apache.maven.dotnet.plugin.PluginContext pluginContext;
+    private npanday.plugin.PluginContext pluginContext;
 
     public String getMojoArtifactId()
     {
@@ -82,12 +82,12 @@ public class SettingsGeneratorMojo
         return "NPanday.Plugin.Settings.SettingsGeneratorMojo";
     }
 
-    public org.apache.maven.dotnet.plugin.PluginContext getNetPluginContext()
+    public npanday.plugin.PluginContext getNetPluginContext()
     {
         return pluginContext;
     }
 
-    public org.apache.maven.dotnet.executable.NetExecutableFactory getNetExecutableFactory()
+    public npanday.executable.NetExecutableFactory getNetExecutableFactory()
     {
         return netExecutableFactory;
     }

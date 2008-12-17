@@ -26,11 +26,11 @@ under the License.
     <relativePath>../../pom-dotnet.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>NPanday.Plugins</groupId>  
-  <artifactId>NPanday.Plugins</artifactId>  
+  <groupId>npanday.plugin</groupId>  
+  <artifactId>npanday.plugin</artifactId>  
   <packaging>pom</packaging>  
   <version>0.9-SNAPSHOT</version>  
-  <name>NPanday.Plugins</name>  
+  <name>npanday.plugin</name>  
   <modules> 
     <module>NPanday.Plugin.Addin</module>  
     <module>NPanday.Plugin.Devenv</module>  

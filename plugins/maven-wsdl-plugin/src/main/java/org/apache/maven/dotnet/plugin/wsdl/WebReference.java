@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.apache.maven.dotnet.plugin.wsdl;
+package npanday.plugin.wsdl;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

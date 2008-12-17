@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.xsp;
+package npanday.plugin.xsp;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.vendor.Vendor;
+import npanday.PlatformUnsupportedException;
+import npanday.vendor.Vendor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class XspStarterMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
 
     public void execute()
         throws MojoExecutionException

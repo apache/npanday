@@ -25,12 +25,12 @@
     <testSourceDirectory>src/test/csharp</testSourceDirectory>  
     <plugins> 
       <plugin> 
-        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <groupId>npanday.plugin</groupId>  
         <artifactId>maven-compile-plugin</artifactId>  
         <extensions>true</extensions> 
       </plugin>  
       <plugin> 
-        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <groupId>npanday.plugin</groupId>  
         <artifactId>maven-test-plugin</artifactId>  
         <configuration> 
           <supportedRuntimes> 

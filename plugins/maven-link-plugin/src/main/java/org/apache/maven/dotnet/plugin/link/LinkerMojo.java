@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.maven.dotnet.plugin.link;
+package npanday.plugin.link;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.executable.ExecutionException;
+import npanday.PlatformUnsupportedException;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
@@ -84,7 +84,7 @@ public class LinkerMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
 
     public void execute()
         throws MojoExecutionException

@@ -19,14 +19,14 @@
 
  package NPanday.Plugin.Devenv;
 
-import org.apache.maven.dotnet.plugin.FieldAnnotation;
+import npanday.plugin.FieldAnnotation;
 
 /**
  * @phase deploy
  * @goal start
  */
 public class DevenvMojo
-    extends org.apache.maven.dotnet.plugin.AbstractMojo
+    extends npanday.plugin.AbstractMojo
 {
        /**
         * @parameter expression = "${project.artifactId}"
@@ -68,12 +68,12 @@ public class DevenvMojo
        /**
         * @component
         */
-        private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+        private npanday.executable.NetExecutableFactory netExecutableFactory;
 
        /**
         * @component
         */
-        private org.apache.maven.dotnet.plugin.PluginContext pluginContext;
+        private npanday.plugin.PluginContext pluginContext;
 
         public String getMojoArtifactId()
         {
@@ -90,12 +90,12 @@ public class DevenvMojo
             return "NPanday.Plugin.Devenv.DevenvMojo";
         }
 
-        public org.apache.maven.dotnet.plugin.PluginContext getNetPluginContext()
+        public npanday.plugin.PluginContext getNetPluginContext()
         {
             return pluginContext;
         }
 
-        public org.apache.maven.dotnet.executable.NetExecutableFactory getNetExecutableFactory()
+        public npanday.executable.NetExecutableFactory getNetExecutableFactory()
         {
             return netExecutableFactory;
         }

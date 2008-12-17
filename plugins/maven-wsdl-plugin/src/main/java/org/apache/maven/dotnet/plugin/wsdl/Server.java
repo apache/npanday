@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.wsdl;
+package npanday.plugin.wsdl;
 
 /**
  * Holds server information of WSDL host.

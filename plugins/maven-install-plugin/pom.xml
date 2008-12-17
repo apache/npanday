@@ -20,12 +20,12 @@ under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent> 
-    <groupId>org.apache.maven.dotnet.plugins</groupId>  
+    <groupId>npanday.plugin</groupId>  
     <version>0.9-SNAPSHOT</version>  
     <artifactId>maven-dotnet-plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>org.apache.maven.dotnet.plugins</groupId>  
+  <groupId>npanday.plugin</groupId>  
   <artifactId>maven-install-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>maven-install-plugin</name>  

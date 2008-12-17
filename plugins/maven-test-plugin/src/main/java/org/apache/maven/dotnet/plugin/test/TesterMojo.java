@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.maven.dotnet.plugin.test;
+package npanday.plugin.test;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -33,10 +33,10 @@ import java.util.List;
 import java.io.IOException;
 import java.io.File;
 
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.vendor.Vendor;
-import org.apache.maven.dotnet.executable.CommandExecutor;
-import org.apache.maven.dotnet.artifact.AssemblyResolver;
+import npanday.executable.ExecutionException;
+import npanday.vendor.Vendor;
+import npanday.executable.CommandExecutor;
+import npanday.artifact.AssemblyResolver;
 import org.codehaus.plexus.logging.AbstractLogger;
 import org.codehaus.plexus.logging.Logger;
 

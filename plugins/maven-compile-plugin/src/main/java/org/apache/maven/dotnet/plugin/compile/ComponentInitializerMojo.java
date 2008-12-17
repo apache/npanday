@@ -16,15 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.compile;
+package npanday.plugin.compile;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
-import org.apache.maven.dotnet.InitializationException;
-import org.apache.maven.dotnet.assembler.AssemblerContext;
-import org.apache.maven.dotnet.artifact.AssemblyResolver;
+import npanday.InitializationException;
+import npanday.assembler.AssemblerContext;
+import npanday.artifact.AssemblyResolver;
 
 
 import java.io.File;

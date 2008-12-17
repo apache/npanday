@@ -16,17 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.compile;
+package npanday.plugin.compile;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.ArtifactType;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.vendor.VendorFactory;
-import org.apache.maven.dotnet.executable.compiler.*;
+import npanday.PlatformUnsupportedException;
+import npanday.ArtifactType;
+import npanday.executable.ExecutionException;
+import npanday.vendor.VendorFactory;
+import npanday.executable.compiler.*;
 import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.FileUtils;
 

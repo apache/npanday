@@ -11,12 +11,12 @@
     <sourceDirectory>src/main/csharp</sourceDirectory>  
     <plugins> 
       <plugin> 
-        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <groupId>npanday.plugin</groupId>  
         <artifactId>maven-compile-plugin</artifactId>  
         <extensions>true</extensions> 
       </plugin>  
       <plugin> 
-        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <groupId>npanday.plugin</groupId>  
         <artifactId>maven-xsp-plugin</artifactId>  
         <executions> 
           <execution> 

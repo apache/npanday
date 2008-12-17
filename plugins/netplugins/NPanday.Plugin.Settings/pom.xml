@@ -20,12 +20,12 @@ under the License.
 -->
 <project> 
   <parent> 
-    <groupId>NPanday.Plugins</groupId>  
+    <groupId>npanday.plugin</groupId>  
     <version>0.9-SNAPSHOT</version>  
-    <artifactId>NPanday.Plugins</artifactId> 
+    <artifactId>npanday.plugin</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>NPanday.Plugins</groupId>  
+  <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Settings</artifactId>  
   <packaging>netplugin</packaging>  
   <version>0.9-SNAPSHOT</version>  
@@ -50,7 +50,7 @@ under the License.
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.dotnet.plugins</groupId>
+            <groupId>npanday.plugin</groupId>
             <artifactId>maven-compile-plugin</artifactId>
             <extensions>true</extensions>
             <configuration>
@@ -58,7 +58,7 @@ under the License.
             </configuration>
           </plugin>
           <plugin>
-            <groupId>org.apache.maven.dotnet.plugins</groupId>
+            <groupId>npanday.plugin</groupId>
             <artifactId>maven-xsd-plugin</artifactId>
             <executions>
               <execution>

@@ -2,12 +2,12 @@
 
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <parent> 
-    <groupId>NPanday</groupId>  
-    <artifactId>NPanday.Core</artifactId>  
+    <groupId>npanday</groupId>  
+    <artifactId>npanday-project</artifactId>  
     <version>0.9-SNAPSHOT</version> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>org.apache.maven.dotnet</groupId>  
+  <groupId>npanday</groupId>  
   <version>0.9-SNAPSHOT</version>  
   <artifactId>npanday-repository-builder</artifactId>  
   <packaging>pom</packaging>
@@ -18,82 +18,82 @@
     NPANDAY PLUGINS
     -->
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-compile-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-aspx-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-deploy-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-fxcop-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-install-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-link-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-mojo-generator-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-repository-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-resgen-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-resolver-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-test-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-vsinstaller-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-webapp-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-wsdl-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-xsd-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet.plugins</groupId>
+      <groupId>npanday.plugin</groupId>
       <artifactId>maven-xsp-plugin</artifactId>
       <version>0.9-SNAPSHOT</version>
     </dependency>
@@ -102,17 +102,17 @@
     NPANDAY NETPLUGINS
      -->  
     <dependency> 
-      <groupId>NPanday.Plugins</groupId>  
+      <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Addin.JavaBinding</artifactId>  
       <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>NPanday.Plugins</groupId>  
+      <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Devenv.JavaBinding</artifactId>  
       <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>NPanday.Plugins</groupId>  
+      <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>  
       <version>0.9-SNAPSHOT</version> 
     </dependency>  
@@ -121,17 +121,17 @@
     NPANDAY ARCHETYPES
     -->
     <dependency> 
-      <groupId>org.apache.maven.dotnet</groupId>  
+      <groupId>npanday</groupId>  
       <artifactId>maven-archetype-dotnet-simple</artifactId>  
       <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>org.apache.maven.dotnet</groupId>  
+      <groupId>npanday</groupId>  
       <artifactId>maven-archetype-netexecutable</artifactId>  
       <version>0.9-SNAPSHOT</version> 
     </dependency>
     <dependency> 
-      <groupId>org.apache.maven.dotnet</groupId>  
+      <groupId>npanday</groupId>  
       <artifactId>maven-archetype-vb-simple</artifactId>  
       <version>0.9-SNAPSHOT</version> 
     </dependency>
@@ -149,7 +149,7 @@
               <outputDirectory>${project.build.directory}/dotnet</outputDirectory>
               <artifactItems>
                 <artifactItem>
-                  <groupId>org.apache.maven.dotnet</groupId>
+                  <groupId>npanday</groupId>
                   <artifactId>dotnet-repository-builder</artifactId>
                   <version>${project.version}</version>
                   <type>tar.gz</type>

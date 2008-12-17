@@ -66,10 +66,10 @@ namespace NPanday.Plugin.Generator
 	        JavaClass javaClass = new JavaClass();
 		 	javaClass.PackageName = abstractMojoType.Namespace;
 		 	javaClass.ClassName = abstractMojoType.Name;
-		 	javaClass.ExtendsClassName = "org.apache.maven.dotnet.plugin.AbstractMojo";
+		 	javaClass.ExtendsClassName = "npanday.plugin.AbstractMojo";
 	 	    
 		 	ImportPackage importPackage = new ImportPackage();
-		 	javaClass.ImportPackage = importPackage.AddPackage("org.apache.maven.dotnet.plugin.FieldAnnotation");
+		 	javaClass.ImportPackage = importPackage.AddPackage("npanday.plugin.FieldAnnotation");
 		 	
 		 	List<String> classComments = new List<String>();
 			System.Attribute[] attributes =
@@ -115,9 +115,9 @@ namespace NPanday.Plugin.Generator
         	//components
         	List<String> comments = new List<String>();
         	comments.Add("@component");
-        	javaFields.Add(CreateJavaField("private", "org.apache.maven.dotnet.executable.NetExecutableFactory", 
+        	javaFields.Add(CreateJavaField("private", "npanday.executable.NetExecutableFactory", 
         	                               "netExecutableFactory", comments, null));
-        	javaFields.Add(CreateJavaField("private", "org.apache.maven.dotnet.plugin.PluginContext", 
+        	javaFields.Add(CreateJavaField("private", "npanday.plugin.PluginContext", 
         	                               "pluginContext", comments, null)); 
         	
         	//methods
@@ -135,11 +135,11 @@ namespace NPanday.Plugin.Generator
         	                                 new Code().AddLine(@"return """ + abstractMojoType.Namespace 
         	                                                    + "." + abstractMojoType.Name + @""";")));
         	                               
-        	javaMethods.Add(CreateJavaMethod("public", "org.apache.maven.dotnet.plugin.PluginContext", 
+        	javaMethods.Add(CreateJavaMethod("public", "npanday.plugin.PluginContext", 
         	                                 "getNetPluginContext",
         	                                 CreateCodeWithSimpleReturnType("pluginContext")));
         	
-        	javaMethods.Add(CreateJavaMethod("public", "org.apache.maven.dotnet.executable.NetExecutableFactory", 
+        	javaMethods.Add(CreateJavaMethod("public", "npanday.executable.NetExecutableFactory", 
         	                                 "getNetExecutableFactory",
         	                                 CreateCodeWithSimpleReturnType("netExecutableFactory"))); 
         	                                

@@ -1,4 +1,4 @@
-package org.apache.maven.dotnet.plugin.aspx;
+package npanday.plugin.aspx;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -24,13 +24,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.dotnet.ArtifactType;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
-import org.apache.maven.dotnet.executable.compiler.CompilerExecutable;
-import org.apache.maven.dotnet.executable.compiler.CompilerRequirement;
-import org.apache.maven.dotnet.vendor.VendorFactory;
+import npanday.ArtifactType;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutionException;
+import npanday.executable.compiler.CompilerConfig;
+import npanday.executable.compiler.CompilerExecutable;
+import npanday.executable.compiler.CompilerRequirement;
+import npanday.vendor.VendorFactory;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -132,12 +132,12 @@ public class AspxCompilerMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
 
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
+    private npanday.NPandayRepositoryRegistry npandayRegistry;
 
     public void execute()
         throws MojoExecutionException

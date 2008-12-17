@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.maven.dotnet.plugin.vsinstaller;
+package npanday.plugin.vsinstaller;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -27,15 +27,15 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.artifact.NetDependenciesRepository;
-import org.apache.maven.dotnet.artifact.NetDependencyMatchPolicy;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.executable.NetExecutable;
-import org.apache.maven.dotnet.model.netdependency.NetDependency;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.vendor.Vendor;
+import npanday.artifact.ArtifactContext;
+import npanday.PlatformUnsupportedException;
+import npanday.artifact.NetDependenciesRepository;
+import npanday.artifact.NetDependencyMatchPolicy;
+import npanday.executable.ExecutionException;
+import npanday.executable.NetExecutable;
+import npanday.model.netdependency.NetDependency;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.Vendor;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -88,14 +88,14 @@ public class VsInstallerMojo
      *
      * @component
      */
-    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
+    private npanday.NPandayRepositoryRegistry npandayRegistry;
 
     /**
      * Provides services to obtain executables.
      *
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
 
     /**
      * @parameter expression="${settings}"

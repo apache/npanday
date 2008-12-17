@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.generator;
+package npanday.plugin.generator;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -26,10 +26,10 @@ import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.vendor.VendorFactory;
-import org.apache.maven.dotnet.vendor.VendorInfo;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutionException;
+import npanday.vendor.VendorFactory;
+import npanday.vendor.VendorInfo;
 
 /**
  * Generates Java Bindings for .NET Mojos.
@@ -89,7 +89,7 @@ public class MojoGeneratorMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
 
     public void execute()
         throws MojoExecutionException

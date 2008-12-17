@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.install;
+package npanday.plugin.install;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -26,15 +26,15 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.ArtifactType;
-import org.apache.maven.dotnet.artifact.ApplicationConfig;
-import org.apache.maven.dotnet.executable.NetExecutable;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.dao.Project;
-import org.apache.maven.dotnet.dao.ProjectDependency;
-import org.apache.maven.dotnet.dao.ProjectDao;
+import npanday.artifact.ArtifactContext;
+import npanday.ArtifactType;
+import npanday.artifact.ApplicationConfig;
+import npanday.executable.NetExecutable;
+import npanday.executable.ExecutionException;
+import npanday.PlatformUnsupportedException;
+import npanday.dao.Project;
+import npanday.dao.ProjectDependency;
+import npanday.dao.ProjectDao;
 import org.apache.maven.model.Dependency;
 
 import java.io.File;
@@ -85,7 +85,7 @@ public class InstallerMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
 
     /**
      * The Vendor for the executable.
@@ -109,7 +109,7 @@ public class InstallerMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
+    private npanday.registry.DataAccessObjectRegistry daoRegistry;
 
     /**
      * @component

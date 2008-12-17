@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.compile;
+package npanday.plugin.compile;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -27,12 +27,12 @@ import java.io.IOException;
 import java.io.File;
 import java.util.List;
 
-import org.apache.maven.dotnet.InitializationException;
-import org.apache.maven.dotnet.vendor.*;
-import org.apache.maven.dotnet.assembler.AssemblerContext;
-import org.apache.maven.dotnet.assembler.AssemblyInfoMarshaller;
-import org.apache.maven.dotnet.assembler.AssemblyInfoException;
-import org.apache.maven.dotnet.assembler.AssemblyInfo;
+import npanday.InitializationException;
+import npanday.vendor.*;
+import npanday.assembler.AssemblerContext;
+import npanday.assembler.AssemblyInfoMarshaller;
+import npanday.assembler.AssemblyInfoException;
+import npanday.assembler.AssemblyInfo;
 
 /**
  * Generates an AssemblyInfo.* class based on information within the pom file.
@@ -114,7 +114,7 @@ public class AssemblyInfoGeneratorMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.vendor.StateMachineProcessor stateMachineProcessor;
+    private npanday.vendor.StateMachineProcessor stateMachineProcessor;
 
 
     /**
@@ -175,7 +175,7 @@ public class AssemblyInfoGeneratorMojo
         {
             stateMachineProcessor.process( vendorInfo );
         }
-        catch ( org.apache.maven.dotnet.vendor.IllegalStateException e )
+        catch ( npanday.vendor.IllegalStateException e )
         {
             throw new MojoExecutionException(
                 "NPANDAY-902-008: Illegal state of vendor info: Message =  " + e.getMessage() );

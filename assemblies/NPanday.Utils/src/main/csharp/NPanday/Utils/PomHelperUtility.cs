@@ -215,7 +215,7 @@ namespace NPanday.Utils
 
         public string GetNPandayCompilerPluginConfigurationValue(string config)
         {
-            return GetPomXPathExprValue(@"//pom:project/pom:build/pom:plugins[./pom:plugin/pom:groupId = 'org.apache.maven.dotnet.plugins' and  ./pom:plugin/pom:artifactId = 'maven-compile-plugin'][1]/pom:plugin/pom:configuration/pom:" + config);
+            return GetPomXPathExprValue(@"//pom:project/pom:build/pom:plugins[./pom:plugin/pom:groupId = 'npanday.plugins' and  ./pom:plugin/pom:artifactId = 'maven-compile-plugin'][1]/pom:plugin/pom:configuration/pom:" + config);
         }
 
         private string PomNamespaceURI
@@ -355,7 +355,7 @@ namespace NPanday.Utils
             {
                 foreach (NPanday.Model.Pom.Plugin plugin in model.build.plugins)
                 {
-                    if ("org.apache.maven.dotnet.plugins".Equals(plugin.groupId)
+                    if ("npanday.plugins".Equals(plugin.groupId)
                         && "maven-compile-plugin".Equals(plugin.artifactId))
                     {
                         compilePlugin = plugin;
@@ -369,7 +369,7 @@ namespace NPanday.Utils
             if (compilePlugin == null)
             {
                 compilePlugin = new NPanday.Model.Pom.Plugin();
-                compilePlugin.groupId = "org.apache.maven.dotnet.plugins";
+                compilePlugin.groupId = "npanday.plugins";
                 compilePlugin.artifactId = "maven-compile-plugin";
                 compilePlugin.extensions = true;
                 plugins.Add(compilePlugin);
@@ -433,7 +433,7 @@ namespace NPanday.Utils
 
 
 
-        // @"//pom:project/pom:build/pom:plugins[./pom:plugin/pom:groupId = 'org.apache.maven.dotnet.plugins' and  ./pom:plugin/pom:artifactId = 'maven-compile-plugin'][1]/pom:plugin/pom:configuration/pom:keyfile"
+        // @"//pom:project/pom:build/pom:plugins[./pom:plugin/pom:groupId = 'npanday.plugins' and  ./pom:plugin/pom:artifactId = 'maven-compile-plugin'][1]/pom:plugin/pom:configuration/pom:keyfile"
 
         public string GetPomXPathExprValue(string xpath_expr)
         {
@@ -902,7 +902,7 @@ namespace NPanday.Utils
                 if (!hasWSDLPlugin)
                 {
                     Plugin webReferencePlugin = addPlugin(model,
-                        "org.apache.maven.dotnet.plugins",
+                        "npanday.plugins",
                         "maven-wsdl-plugin",
                         null,
                         true
@@ -993,7 +993,7 @@ namespace NPanday.Utils
         {
             return (!string.IsNullOrEmpty(plugin.groupId) &&
                                 !string.IsNullOrEmpty(plugin.artifactId) &&
-                                    plugin.groupId.Equals("org.apache.maven.dotnet.plugins") &&
+                                    plugin.groupId.Equals("npanday.plugins") &&
                                         plugin.artifactId.Equals("maven-wsdl-plugin"));
         }
 

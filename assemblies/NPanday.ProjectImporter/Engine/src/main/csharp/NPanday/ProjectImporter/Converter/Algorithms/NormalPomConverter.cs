@@ -44,7 +44,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             // Add NPanday compile plugin 
             Plugin compilePlugin = AddPlugin(
-                "org.apache.maven.dotnet.plugins",
+                "npanday.plugins",
                 "maven-compile-plugin",
                 null,
                 true
@@ -102,7 +102,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (projectDigest.UnitTest)
             {
                 Plugin testPlugin = AddPlugin(
-                    "org.apache.maven.dotnet.plugins",
+                    "npanday.plugins",
                     "maven-test-plugin",
                     null,
                     true

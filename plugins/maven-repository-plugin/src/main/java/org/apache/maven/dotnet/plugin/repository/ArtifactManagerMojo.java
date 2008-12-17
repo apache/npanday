@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.apache.maven.dotnet.plugin.repository;
+package npanday.plugin.repository;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.dotnet.dao.ProjectDao;
+import npanday.dao.ProjectDao;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.project.MavenProject;
 import org.openrdf.repository.sail.SailRepository;
@@ -57,7 +57,7 @@ public class ArtifactManagerMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
+    private npanday.registry.DataAccessObjectRegistry daoRegistry;
 
     /**
      * @component

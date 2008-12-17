@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.plugin.install;
+package npanday.plugin.install;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -24,8 +24,8 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 
-import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.dao.ProjectDao;
+import npanday.artifact.ArtifactContext;
+import npanday.dao.ProjectDao;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.Artifact;
@@ -101,7 +101,7 @@ public class FileInstallerMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.NPandayRepositoryRegistry npandayRegistry;
+    private npanday.NPandayRepositoryRegistry npandayRegistry;
 
     /**
      * The artifact factory component, which is used for creating artifacts.
@@ -113,7 +113,7 @@ public class FileInstallerMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.registry.DataAccessObjectRegistry daoRegistry;
+    private npanday.registry.DataAccessObjectRegistry daoRegistry;
 
     /**
      * @component

@@ -146,7 +146,7 @@ under the License.
       <build> 
         <plugins> 
           <plugin> 
-            <groupId>NPanday.Plugins</groupId>  
+            <groupId>npanday.plugin</groupId>  
             <artifactId>NPanday.Plugin.Devenv.JavaBinding</artifactId>  
             <executions> 
               <execution> 

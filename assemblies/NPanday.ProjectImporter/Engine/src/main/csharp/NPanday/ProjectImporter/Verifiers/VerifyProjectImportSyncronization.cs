@@ -115,7 +115,7 @@ namespace NPanday.ProjectImporter.Verifiers
         {
             Plugin plugin = FindPlugin(
                      model, 
-                     "org.apache.maven.dotnet.plugins",
+                     "npanday.plugins",
                      "maven-test-plugin"
                     );
 

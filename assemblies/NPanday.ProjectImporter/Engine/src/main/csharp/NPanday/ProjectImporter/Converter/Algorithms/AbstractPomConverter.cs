@@ -74,7 +74,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (projectDigest != null && projectDigest.WebReferenceUrls != null && projectDigest.WebReferenceUrls.Length > 0)
             {
                 Plugin webReferencePlugin = AddPlugin(
-                    "org.apache.maven.dotnet.plugins",
+                    "npanday.plugins",
                     "maven-wsdl-plugin",
                     null,
                     true
