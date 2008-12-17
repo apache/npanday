@@ -23,7 +23,7 @@ under the License.
   <defaults>
     <default>
       <key>package</key>
-      <value>org.apache.maven.dotnet.model.compiler.plugins</value>
+      <value>npanday.model.compiler.plugins</value>
     </default>
   </defaults>
   <classes>

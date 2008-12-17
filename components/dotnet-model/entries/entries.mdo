@@ -23,7 +23,7 @@ under the License.
   <defaults>
     <default>
       <key>package</key>
-      <value>org.apache.maven.dotnet.model.entries</value>
+      <value>npanday.model.entries</value>
     </default>
   </defaults>
   <classes>
