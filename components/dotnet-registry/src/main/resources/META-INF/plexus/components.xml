@@ -1,15 +1,15 @@
 <component-set>
   <components>
     <component>
-      <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
-      <implementation>org.apache.maven.dotnet.registry.impl.RepositoryRegistryImpl</implementation>
+      <role>npanday.registry.RepositoryRegistry</role>
+      <implementation>npanday.registry.impl.RepositoryRegistryImpl</implementation>
     </component>
     <component>
-      <role>org.apache.maven.dotnet.registry.DataAccessObjectRegistry</role>
-      <implementation>org.apache.maven.dotnet.registry.impl.DataAccessObjectRegistryImpl</implementation>
+      <role>npanday.registry.DataAccessObjectRegistry</role>
+      <implementation>npanday.registry.impl.DataAccessObjectRegistryImpl</implementation>
       <requirements>
         <requirement>
-          <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+          <role>npanday.registry.RepositoryRegistry</role>
         </requirement>
       </requirements>
     </component>

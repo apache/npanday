@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.registry;
+package npanday.registry;
 
 import java.util.Set;
 

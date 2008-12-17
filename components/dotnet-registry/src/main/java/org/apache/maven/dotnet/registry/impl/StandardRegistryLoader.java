@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.registry.impl;
+package npanday.registry.impl;
 
-import org.apache.maven.dotnet.registry.RegistryLoader;
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.RepositoryLoader;
+import npanday.registry.RegistryLoader;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryLoader;
 
 import java.util.List;
 import java.util.ArrayList;

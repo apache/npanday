@@ -16,13 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.registry.impl;
+package npanday.registry.impl;
 
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.registry.DataAccessObject;
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.DataAccessObjectRegistry;
-import org.apache.maven.dotnet.registry.ConnectionsRepository;
+import npanday.registry.RepositoryRegistry;
+import npanday.registry.DataAccessObject;
+import npanday.registry.Repository;
+import npanday.registry.DataAccessObjectRegistry;
+import npanday.registry.ConnectionsRepository;
 
 import java.util.Set;
 import java.util.HashSet;

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.registry;
+package npanday.registry;
 
 import java.util.Properties;
 import java.util.Hashtable;
@@ -64,7 +64,7 @@ public class PropertyRepository
     }
 
     /**
-     * @see org.apache.maven.dotnet.registry.Repository#load(InputStream inputStream, Hashtable prop)
+     * @see npanday.registry.Repository#load(InputStream inputStream, Hashtable prop)
      */
     public void load( InputStream inputStream, Hashtable prop )
         throws IOException

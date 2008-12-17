@@ -16,13 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.registry.impl;
+package npanday.registry.impl;
 
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.registry.RepositoryLoader;
-import org.apache.maven.dotnet.registry.RegistryLoader;
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.DataAccessObjectRegistry;
+import npanday.registry.RepositoryRegistry;
+import npanday.registry.RepositoryLoader;
+import npanday.registry.RegistryLoader;
+import npanday.registry.Repository;
+import npanday.registry.DataAccessObjectRegistry;
 
 import java.util.Hashtable;
 import java.util.Properties;
@@ -87,7 +87,7 @@ public class RepositoryRegistryImpl
         if ( repositoryLoader == null || registryLoader == null )
         {
             InputStream stream =
-                org.apache.maven.dotnet.registry.RepositoryRegistry.class.getResourceAsStream( "/registry.properties" );
+                npanday.registry.RepositoryRegistry.class.getResourceAsStream( "/registry.properties" );
             if ( stream == null )
             {
                 throw new IOException( "NPANDAY-082-001: Could not find /registry.properties file with the jar" );

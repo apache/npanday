@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.registry.impl;
+package npanday.registry.impl;
 
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.RepositoryLoader;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryLoader;
+import npanday.registry.RepositoryRegistry;
 
 import java.util.Hashtable;
 import java.io.IOException;
