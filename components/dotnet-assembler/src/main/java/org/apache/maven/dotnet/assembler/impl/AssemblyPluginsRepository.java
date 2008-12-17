@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.assembler.impl;
+package npanday.assembler.impl;
 
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.InputStream;
@@ -28,10 +28,10 @@ import java.io.Reader;
 import java.io.InputStreamReader;
 import java.util.*;
 
-import org.apache.maven.dotnet.assembler.AssemblyInfoException;
-import org.apache.maven.dotnet.model.assembly.plugins.AssemblyPlugin;
-import org.apache.maven.dotnet.model.assembly.plugins.AssemblyPluginsModel;
-import org.apache.maven.dotnet.model.assembly.plugins.io.xpp3.AssemblyPluginXpp3Reader;
+import npanday.assembler.AssemblyInfoException;
+import npanday.model.assembly.plugins.AssemblyPlugin;
+import npanday.model.assembly.plugins.AssemblyPluginsModel;
+import npanday.model.assembly.plugins.io.xpp3.AssemblyPluginXpp3Reader;
 
 /**
  * Provides a way for loading the assembly-plugins.xml file and accessing its content.
@@ -88,7 +88,7 @@ public final class AssemblyPluginsRepository
     }
 
     /**
-     * @see Repository#setRepositoryRegistry(org.apache.maven.dotnet.registry.RepositoryRegistry)
+     * @see Repository#setRepositoryRegistry(npanday.registry.RepositoryRegistry)
      */
     public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
     {

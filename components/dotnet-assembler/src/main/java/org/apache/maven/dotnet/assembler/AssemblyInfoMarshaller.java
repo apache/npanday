@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.assembler;
+package npanday.assembler;
 
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.dotnet.model.assembly.plugins.AssemblyPlugin;
+import npanday.model.assembly.plugins.AssemblyPlugin;
 
 /**
  * Provides services for creating an AssemblyInfo class.

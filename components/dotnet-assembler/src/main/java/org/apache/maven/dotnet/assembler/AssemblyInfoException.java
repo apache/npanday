@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.assembler;
+package npanday.assembler;
 
 /**
  * Exception thrown when there is a problem processing the assembly info.

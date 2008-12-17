@@ -1,11 +1,11 @@
 <component-set>
     <components>
         <component>
-            <role>org.apache.maven.dotnet.assembler.AssemblerContext</role>
-            <implementation>org.apache.maven.dotnet.assembler.impl.AssemblerContextImpl</implementation>
+            <role>npanday.assembler.AssemblerContext</role>
+            <implementation>npanday.assembler.impl.AssemblerContextImpl</implementation>
             <requirements>
                 <requirement>
-                    <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+                    <role>npanday.registry.RepositoryRegistry</role>
                 </requirement>
             </requirements>
         </component>

@@ -1,4 +1,4 @@
-package org.apache.maven.dotnet.assembler.impl;
+package npanday.assembler.impl;
 
 import junit.framework.TestCase;
 
@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.apache.maven.dotnet.assembler.AssemblyInfo;
+import npanday.assembler.AssemblyInfo;
 
 public class DefaultAssemblyInfoUnmarshallerTest
     extends TestCase

@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.assembler;
+package npanday.assembler;
 
-import org.apache.maven.dotnet.InitializationException;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.InitializationException;
+import npanday.PlatformUnsupportedException;
 import org.apache.maven.project.MavenProject;
 
 /**

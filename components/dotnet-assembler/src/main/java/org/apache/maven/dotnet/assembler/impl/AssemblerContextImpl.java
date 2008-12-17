@@ -16,22 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.assembler.impl;
+package npanday.assembler.impl;
 
-import org.apache.maven.dotnet.assembler.AssemblerContext;
-import org.apache.maven.dotnet.assembler.AssemblyInfo;
-import org.apache.maven.dotnet.assembler.AssemblyInfoMarshaller;
-import org.apache.maven.dotnet.assembler.AssemblyInfoException;
-import org.apache.maven.dotnet.InitializationException;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.model.assembly.plugins.AssemblyPlugin;
+import npanday.assembler.AssemblerContext;
+import npanday.assembler.AssemblyInfo;
+import npanday.assembler.AssemblyInfoMarshaller;
+import npanday.assembler.AssemblyInfoException;
+import npanday.InitializationException;
+import npanday.PlatformUnsupportedException;
+import npanday.model.assembly.plugins.AssemblyPlugin;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.model.Organization;
 
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.registry.RepositoryRegistry;
 
 import java.io.*;
 
@@ -83,7 +83,7 @@ public final class AssemblerContextImpl
     }
 
     /**
-     * @see org.apache.maven.dotnet.assembler.AssemblerContext#getAssemblyInfo()
+     * @see npanday.assembler.AssemblerContext#getAssemblyInfo()
      */
     public AssemblyInfo getAssemblyInfo()
     {

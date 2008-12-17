@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.assembler.impl;
+package npanday.assembler.impl;
 
-import org.apache.maven.dotnet.assembler.AssemblyInfoMarshaller;
-import org.apache.maven.dotnet.assembler.AssemblyInfo;
-import org.apache.maven.dotnet.model.assembly.plugins.AssemblyPlugin;
+import npanday.assembler.AssemblyInfoMarshaller;
+import npanday.assembler.AssemblyInfo;
+import npanday.model.assembly.plugins.AssemblyPlugin;
 
 import java.io.OutputStream;
 import java.io.IOException;
@@ -45,7 +45,7 @@ final class JavaAssemblyInfoMarshaller
     private AssemblyPlugin plugin;
 
     /**
-     * @see AssemblyInfoMarshaller#marshal(org.apache.maven.dotnet.assembler.AssemblyInfo, org.apache.maven.project.MavenProject,
+     * @see AssemblyInfoMarshaller#marshal(npanday.assembler.AssemblyInfo, org.apache.maven.project.MavenProject,
      *      java.io.OutputStream)
      */
     public void marshal( AssemblyInfo assemblyInfo, MavenProject mavenProject, OutputStream outputStream )
@@ -97,7 +97,7 @@ final class JavaAssemblyInfoMarshaller
     }
 
     /**
-     * @see AssemblyInfoMarshaller#init(org.apache.maven.dotnet.model.assembly.plugins.AssemblyPlugin)
+     * @see AssemblyInfoMarshaller#init(npanday.model.assembly.plugins.AssemblyPlugin)
      */
     public void init( AssemblyPlugin plugin )
     {
