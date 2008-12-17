@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.compiler;
+package npanday.executable.compiler;
 
-import org.apache.maven.dotnet.executable.ExecutableCapability;
+import npanday.executable.ExecutableCapability;
 
 import java.util.List;
 

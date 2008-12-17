@@ -16,16 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.impl;
+package npanday.executable.impl;
 
-import org.apache.maven.dotnet.executable.*;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.RepositoryNotFoundException;
-import org.apache.maven.dotnet.InitializationException;
+import npanday.executable.*;
+import npanday.executable.ExecutionException;
+import npanday.RepositoryNotFoundException;
+import npanday.InitializationException;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.registry.Repository;
+import npanday.registry.RepositoryRegistry;
+import npanday.registry.Repository;
 
 /**
  * Provides an implementation of the repository executable context.

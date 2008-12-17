@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable;
+package npanday.executable;
 
-import org.apache.maven.dotnet.NPandayContext;
-import org.apache.maven.dotnet.InitializationException;
+import npanday.NPandayContext;
+import npanday.InitializationException;
 import org.apache.maven.project.MavenProject;
 
 /**
@@ -34,7 +34,7 @@ public interface RepositoryExecutableContext
      * Returns an instance of NetExecutable for this context.
      *
      * @return an instance of the NetExecutable
-     * @throws org.apache.maven.dotnet.executable.ExecutionException
+     * @throws npanday.executable.ExecutionException
      *          if there is a problem finding an appropriate executable.
      */
     NetExecutable getNetExecutable()
@@ -51,7 +51,7 @@ public interface RepositoryExecutableContext
      * Initializes this context.
      *
      * @param executableConfig the executable config for this context
-     * @throws org.apache.maven.dotnet.InitializationException if the context cannot be initialized
+     * @throws npanday.InitializationException if the context cannot be initialized
      */
     void init( ExecutableConfig executableConfig )
         throws InitializationException;

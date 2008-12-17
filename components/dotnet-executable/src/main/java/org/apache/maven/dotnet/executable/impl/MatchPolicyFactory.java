@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.impl;
+package npanday.executable.impl;
 
-import org.apache.maven.dotnet.executable.ExecutableMatchPolicy;
-import org.apache.maven.dotnet.vendor.Vendor;
-import org.apache.maven.dotnet.executable.ExecutableCapability;
-import org.apache.maven.dotnet.executable.compiler.CompilerCapability;
+import npanday.executable.ExecutableMatchPolicy;
+import npanday.vendor.Vendor;
+import npanday.executable.ExecutableCapability;
+import npanday.executable.compiler.CompilerCapability;
 
 /**
  * Creates executable match policies.

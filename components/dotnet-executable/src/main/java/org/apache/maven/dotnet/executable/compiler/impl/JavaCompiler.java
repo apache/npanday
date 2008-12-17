@@ -1,6 +1,6 @@
-package org.apache.maven.dotnet.executable.compiler.impl;
+package npanday.executable.compiler.impl;
 
-import org.apache.maven.dotnet.executable.ExecutionException;
+import npanday.executable.ExecutionException;
 
 import java.util.List;
 

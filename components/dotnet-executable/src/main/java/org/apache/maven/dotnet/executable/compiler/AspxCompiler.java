@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.compiler.impl;
+package npanday.executable.compiler.impl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,11 +24,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.dotnet.executable.CommandExecutor;
-import org.apache.maven.dotnet.executable.CommandFilter;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
-import org.apache.maven.dotnet.vendor.Vendor;
+import npanday.executable.CommandExecutor;
+import npanday.executable.CommandFilter;
+import npanday.executable.ExecutionException;
+import npanday.executable.compiler.CompilerConfig;
+import npanday.vendor.Vendor;
 
 public class AspxCompiler
     extends BaseCompiler

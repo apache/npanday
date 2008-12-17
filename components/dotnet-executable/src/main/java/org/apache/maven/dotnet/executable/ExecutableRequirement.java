@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable;
+package npanday.executable;
 
-import org.apache.maven.dotnet.vendor.Vendor;
+import npanday.vendor.Vendor;
 
 /**
  * Requirements that the executable plugin must satisfy to be used in the build.

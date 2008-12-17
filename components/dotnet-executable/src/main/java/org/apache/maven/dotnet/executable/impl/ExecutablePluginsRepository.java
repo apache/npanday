@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.impl;
+package npanday.executable.impl;
 
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.InputStream;
@@ -31,11 +31,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.maven.dotnet.model.compiler.plugins.io.xpp3.ExecutablePluginXpp3Reader;
-import org.apache.maven.dotnet.model.compiler.plugins.*;
-import org.apache.maven.dotnet.executable.ExecutableCapability;
-import org.apache.maven.dotnet.executable.CommandCapability;
-import org.apache.maven.dotnet.vendor.Vendor;
+import npanday.model.compiler.plugins.io.xpp3.ExecutablePluginXpp3Reader;
+import npanday.model.compiler.plugins.*;
+import npanday.executable.ExecutableCapability;
+import npanday.executable.CommandCapability;
+import npanday.vendor.Vendor;
 
 /**
  * Provides services for accessing the executable information within the executable-plugins.xml file.

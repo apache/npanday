@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable;
+package npanday.executable;
 
 import org.codehaus.plexus.logging.Logger;
 
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
 
-import org.apache.maven.dotnet.executable.CommandCapability;
+import npanday.executable.CommandCapability;
 
 /**
  * Provides services for filtering command options. A <code>NetExecutable</code> or

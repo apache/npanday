@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.compiler;
+package npanday.executable.compiler;
 
-import org.apache.maven.dotnet.vendor.Vendor;
-import org.apache.maven.dotnet.executable.ExecutableRequirement;
+import npanday.vendor.Vendor;
+import npanday.executable.ExecutableRequirement;
 
 /**
  * Requirements that the compiler plugin must satisfy to be used in the build.

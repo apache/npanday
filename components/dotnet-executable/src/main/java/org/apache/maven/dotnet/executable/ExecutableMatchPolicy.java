@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable;
+package npanday.executable;
 
 /**
  * Provides a way for a developer to implement custom match policies for executables.

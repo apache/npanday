@@ -16,18 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable;
+package npanday.executable;
 
 import org.apache.maven.project.MavenProject;
 
 import java.util.List;
 import java.io.File;
 
-import org.apache.maven.dotnet.vendor.VendorInfo;
-import org.apache.maven.dotnet.executable.compiler.CompilerRequirement;
-import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
-import org.apache.maven.dotnet.executable.compiler.CompilerExecutable;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.vendor.VendorInfo;
+import npanday.executable.compiler.CompilerRequirement;
+import npanday.executable.compiler.CompilerConfig;
+import npanday.executable.compiler.CompilerExecutable;
+import npanday.PlatformUnsupportedException;
 import org.apache.maven.artifact.Artifact;
 
 /**
@@ -55,7 +55,7 @@ public interface NetExecutableFactory
      * @param commands         the user-defined command options to use with the executable
      * @param netHome          the install root of the .NET framework
      * @return the executable that matches the vendor, framework version and profile
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException
+     * @throws npanday.PlatformUnsupportedException
      *          if no executable is found
      */
     NetExecutable getNetExecutableFor( String vendor, String frameworkVersion, String profile, List<String> commands,
@@ -99,7 +99,7 @@ public interface NetExecutableFactory
      * @param project             the maven project
      * @param assemblyPath        an optional parameter for replacing the system assemblies
      * @return the executable for compiling .NET applications
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException
+     * @throws npanday.PlatformUnsupportedException
      *          if no executable is found
      */
     CompilerExecutable getCompilerExecutableFor( CompilerRequirement compilerRequirement, CompilerConfig compilerConfig,

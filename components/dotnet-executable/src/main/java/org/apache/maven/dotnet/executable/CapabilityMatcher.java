@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable;
+package npanday.executable;
 
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.executable.compiler.CompilerRequirement;
-import org.apache.maven.dotnet.executable.compiler.CompilerCapability;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.compiler.CompilerRequirement;
+import npanday.executable.compiler.CompilerCapability;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public interface CapabilityMatcher
      *
      * @param executableRequirement the requirements for the executable
      * @return executable capability for the specified requirement.
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException if the requirements cannot be met by the platform
+     * @throws npanday.PlatformUnsupportedException if the requirements cannot be met by the platform
      *
      */
     ExecutableCapability matchExecutableCapabilityFor( ExecutableRequirement executableRequirement )
@@ -51,7 +51,7 @@ public interface CapabilityMatcher
      * @param executableRequirement the requirements for the executable
      * @param matchPolicies the policies used to specialize the match
      * @return executable capability for the specified requirement and match policies.
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException if the requirements cannot be met by the platform
+     * @throws npanday.PlatformUnsupportedException if the requirements cannot be met by the platform
      *
      */
     ExecutableCapability matchExecutableCapabilityFor( ExecutableRequirement executableRequirement,
@@ -65,7 +65,7 @@ public interface CapabilityMatcher
      *
      * @param compilerRequirement the requirements for the compiler
      * @return compiler capability for the specified requirement.
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException if the requirements cannot be met by the platform
+     * @throws npanday.PlatformUnsupportedException if the requirements cannot be met by the platform
      *
      */
 

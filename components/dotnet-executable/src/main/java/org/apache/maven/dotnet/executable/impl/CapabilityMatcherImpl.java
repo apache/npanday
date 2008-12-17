@@ -16,18 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.impl;
+package npanday.executable.impl;
 
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.executable.*;
-import org.apache.maven.dotnet.executable.compiler.*;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.*;
+import npanday.executable.compiler.*;
 
 import java.util.List;
 import java.util.ArrayList;
 
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.registry.RepositoryRegistry;
 
 /**
  * Provides an implementation of the <code>CapabilityMatcher</code> interface.
@@ -81,7 +81,7 @@ public class CapabilityMatcherImpl
      *
      * @param executableRequirement
      * @return the <code>PlatformCapability</code> for the given vendor and language.
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException
+     * @throws npanday.PlatformUnsupportedException
      *          if the vendor and language (as specified in plugin-compilers.xml)
      *          are not available for the invoking operating system.
      */

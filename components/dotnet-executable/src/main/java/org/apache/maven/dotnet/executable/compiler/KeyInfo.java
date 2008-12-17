@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.compiler;
+package npanday.executable.compiler;
 
 /**
  * Provides services for obtaining information about the key file.

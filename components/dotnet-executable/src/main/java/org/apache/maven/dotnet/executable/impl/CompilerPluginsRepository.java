@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.impl;
+package npanday.executable.impl;
 
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.*;
@@ -28,15 +28,15 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-import org.apache.maven.dotnet.vendor.Vendor;
-import org.apache.maven.dotnet.executable.CommandCapability;
-import org.apache.maven.dotnet.executable.ExecutableCapability;
-import org.apache.maven.dotnet.executable.compiler.CompilerCapability;
-import org.apache.maven.dotnet.model.compiler.plugins.io.xpp3.CompilerPluginXpp3Reader;
-import org.apache.maven.dotnet.model.compiler.plugins.CompilerPluginsModel;
-import org.apache.maven.dotnet.model.compiler.plugins.CompilerPlugin;
-import org.apache.maven.dotnet.model.compiler.plugins.Platform;
-import org.apache.maven.dotnet.model.compiler.plugins.CommandFilter;
+import npanday.vendor.Vendor;
+import npanday.executable.CommandCapability;
+import npanday.executable.ExecutableCapability;
+import npanday.executable.compiler.CompilerCapability;
+import npanday.model.compiler.plugins.io.xpp3.CompilerPluginXpp3Reader;
+import npanday.model.compiler.plugins.CompilerPluginsModel;
+import npanday.model.compiler.plugins.CompilerPlugin;
+import npanday.model.compiler.plugins.Platform;
+import npanday.model.compiler.plugins.CommandFilter;
 
 /**
  * Repository for reading and providing access to the compiler-plugins.xml config file.
@@ -47,7 +47,7 @@ public final class CompilerPluginsRepository
     implements Repository
 {
     /**
-     * List<org.apache.maven.dotnet.model.compiler.plugins.CompilerPlugin> of compiler plugins pulled from the 
+     * List<npanday.model.compiler.plugins.CompilerPlugin> of compiler plugins pulled from the 
      * compiler-plugins.xml file.
      */
     private List compilerPlugins;
@@ -74,7 +74,7 @@ public final class CompilerPluginsRepository
     }
 
     /**
-     * @see Repository#setRepositoryRegistry(org.apache.maven.dotnet.registry.RepositoryRegistry)
+     * @see Repository#setRepositoryRegistry(npanday.registry.RepositoryRegistry)
      */
     public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
     {

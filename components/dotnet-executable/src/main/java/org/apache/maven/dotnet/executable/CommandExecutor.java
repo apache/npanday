@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable;
+package npanday.executable;
 
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.cli.*;

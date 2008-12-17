@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.compiler.impl;
+package npanday.executable.compiler.impl;
 
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
+import npanday.executable.ExecutionException;
+import npanday.executable.compiler.CompilerConfig;
 import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.FileUtils;
 

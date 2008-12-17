@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable;
+package npanday.executable;
 
-import org.apache.maven.dotnet.NPandayContext;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.NPandayContext;
+import npanday.PlatformUnsupportedException;
 
 /**
  * Provides services for executables.
@@ -33,7 +33,7 @@ public interface ExecutableContext
      * Returns an instance of the NetExecutable appropriate for given vendor/profile/frameworkVersion/OS
      *
      * @return an instance of the NetExecutable appropriate for given vendor/profile/frameworkVersion/OS
-     * @throws org.apache.maven.dotnet.executable.ExecutionException
+     * @throws npanday.executable.ExecutionException
      *          if there is a problem finding an appropriate executable.
      */
     NetExecutable getNetExecutable()
@@ -75,7 +75,7 @@ public interface ExecutableContext
      * @param executableRequirement
      * @param executableConfig
      * @param capabilityMatcher
-     * @throws org.apache.maven.dotnet.PlatformUnsupportedException
+     * @throws npanday.PlatformUnsupportedException
      *
      */
     void init( ExecutableRequirement executableRequirement, ExecutableConfig executableConfig,

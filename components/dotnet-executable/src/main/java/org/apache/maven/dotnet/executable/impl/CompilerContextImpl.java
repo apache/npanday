@@ -16,24 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.impl;
+package npanday.executable.impl;
 
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.executable.CapabilityMatcher;
-import org.apache.maven.dotnet.executable.CommandFilter;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.executable.compiler.*;
-import org.apache.maven.dotnet.executable.compiler.InvalidArtifactException;
-import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.artifact.ArtifactException;
-import org.apache.maven.dotnet.ArtifactType;
+import npanday.executable.ExecutionException;
+import npanday.executable.CapabilityMatcher;
+import npanday.executable.CommandFilter;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.compiler.*;
+import npanday.executable.compiler.InvalidArtifactException;
+import npanday.artifact.ArtifactContext;
+import npanday.artifact.ArtifactException;
+import npanday.ArtifactType;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.RepositoryNotFoundException;
-import org.apache.maven.dotnet.vendor.Vendor;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
+import npanday.RepositoryNotFoundException;
+import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.FileUtils;

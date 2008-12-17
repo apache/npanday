@@ -16,13 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.impl;
+package npanday.executable.impl;
 
-import org.apache.maven.dotnet.executable.*;
-import org.apache.maven.dotnet.registry.Repository;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
-import org.apache.maven.dotnet.RepositoryNotFoundException;
+import npanday.executable.*;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
+import npanday.PlatformUnsupportedException;
+import npanday.RepositoryNotFoundException;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LogEnabled;
 

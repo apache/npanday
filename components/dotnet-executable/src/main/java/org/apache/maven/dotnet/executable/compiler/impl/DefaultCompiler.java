@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.compiler.impl;
+package npanday.executable.compiler.impl;
 
 import org.apache.maven.artifact.Artifact;
 
@@ -25,10 +25,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.io.File;
 
-import org.apache.maven.dotnet.executable.CommandFilter;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.vendor.Vendor;
-import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
+import npanday.executable.CommandFilter;
+import npanday.executable.ExecutionException;
+import npanday.vendor.Vendor;
+import npanday.executable.compiler.CompilerConfig;
 
 /**
  * A default compiler that can be used in most cases.

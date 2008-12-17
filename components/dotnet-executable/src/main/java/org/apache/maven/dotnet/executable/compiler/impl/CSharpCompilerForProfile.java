@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.compiler.impl;
+package npanday.executable.compiler.impl;
 
-import org.apache.maven.dotnet.executable.NetExecutable;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.NPandayContext;
-import org.apache.maven.dotnet.executable.compiler.CompilerContext;
+import npanday.executable.NetExecutable;
+import npanday.executable.ExecutionException;
+import npanday.NPandayContext;
+import npanday.executable.compiler.CompilerContext;
 
 import java.util.List;
 import java.io.File;

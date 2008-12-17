@@ -16,15 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.impl;
+package npanday.executable.impl;
 
-import org.apache.maven.dotnet.executable.NetExecutable;
-import org.apache.maven.dotnet.executable.ExecutableContext;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.executable.CommandFilter;
-import org.apache.maven.dotnet.executable.CommandExecutor;
-import org.apache.maven.dotnet.NPandayContext;
-import org.apache.maven.dotnet.vendor.Vendor;
+import npanday.executable.NetExecutable;
+import npanday.executable.ExecutableContext;
+import npanday.executable.ExecutionException;
+import npanday.executable.CommandFilter;
+import npanday.executable.CommandExecutor;
+import npanday.NPandayContext;
+import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
 import java.util.List;

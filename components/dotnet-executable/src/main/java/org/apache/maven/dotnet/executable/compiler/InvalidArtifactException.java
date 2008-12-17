@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.compiler;
+package npanday.executable.compiler;
 
-import org.apache.maven.dotnet.executable.ExecutionException;
+import npanday.executable.ExecutionException;
 
 /**
  * Exception thrown when the framework either does not recognize the target artifact (module, library, exe, winexe) or

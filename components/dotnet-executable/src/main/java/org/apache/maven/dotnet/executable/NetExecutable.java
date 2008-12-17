@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable;
+package npanday.executable;
 
-import org.apache.maven.dotnet.NPandayContext;
-import org.apache.maven.dotnet.vendor.Vendor;
+import npanday.NPandayContext;
+import npanday.vendor.Vendor;
 
 import java.util.List;
 import java.io.File;
@@ -28,7 +28,7 @@ import java.io.File;
  * Provides services for executing programs.
  *
  * @author Shane Isbell
- * @see org.apache.maven.dotnet.executable.compiler.CompilerExecutable
+ * @see npanday.executable.compiler.CompilerExecutable
  */
 public interface NetExecutable
 {
@@ -53,7 +53,7 @@ public interface NetExecutable
     /**
      * Compiles class files.
      *
-     * @throws org.apache.maven.dotnet.executable.ExecutionException
+     * @throws npanday.executable.ExecutionException
      *          if the compiler writes to the standard error stream.
      *          artifact (module, library, exe, winexe) or the target artifact is not valid for the compiler
      */
@@ -64,7 +64,7 @@ public interface NetExecutable
      * Returns the executable file name that this compiler will use to compile the application.
      *
      * @return the executable file name that this compiler will use to compile the application
-     * @throws org.apache.maven.dotnet.executable.ExecutionException
+     * @throws npanday.executable.ExecutionException
      *
      */
     String getExecutable()

@@ -16,15 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.compiler.impl;
+package npanday.executable.compiler.impl;
 
-import org.apache.maven.dotnet.executable.compiler.CompilerContext;
-import org.apache.maven.dotnet.executable.compiler.InvalidArtifactException;
-import org.apache.maven.dotnet.executable.compiler.CompilerExecutable;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.executable.CommandExecutor;
-import org.apache.maven.dotnet.NPandayContext;
-import org.apache.maven.dotnet.vendor.Vendor;
+import npanday.executable.compiler.CompilerContext;
+import npanday.executable.compiler.InvalidArtifactException;
+import npanday.executable.compiler.CompilerExecutable;
+import npanday.executable.ExecutionException;
+import npanday.executable.CommandExecutor;
+import npanday.NPandayContext;
+import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
 import java.io.File;
@@ -58,7 +58,7 @@ abstract class BaseCompiler implements CompilerExecutable
     }
 
     /**
-     * @see org.apache.maven.dotnet.executable.compiler.CompilerExecutable#getCompiledArtifact()
+     * @see npanday.executable.compiler.CompilerExecutable#getCompiledArtifact()
      */
     public File getCompiledArtifact()
         throws InvalidArtifactException
@@ -67,7 +67,7 @@ abstract class BaseCompiler implements CompilerExecutable
     }
 
     /**
-     * @see org.apache.maven.dotnet.executable.compiler.CompilerExecutable#getExecutable()
+     * @see npanday.executable.compiler.CompilerExecutable#getExecutable()
      */
     public String getExecutable()
         throws ExecutionException
@@ -80,7 +80,7 @@ abstract class BaseCompiler implements CompilerExecutable
     }
 
     /**
-     * @see org.apache.maven.dotnet.executable.compiler.CompilerExecutable#getExecutionPath()
+     * @see npanday.executable.compiler.CompilerExecutable#getExecutionPath()
      */
     public File getExecutionPath()
     {
@@ -109,7 +109,7 @@ abstract class BaseCompiler implements CompilerExecutable
     }
 
     /**
-     * @see org.apache.maven.dotnet.executable.compiler.CompilerExecutable#execute()
+     * @see npanday.executable.compiler.CompilerExecutable#execute()
      */
     public void execute()
         throws ExecutionException

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.compiler;
+package npanday.executable.compiler;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
@@ -24,9 +24,9 @@ import org.apache.maven.project.MavenProject;
 import java.util.List;
 import java.io.File;
 
-import org.apache.maven.dotnet.executable.*;
-import org.apache.maven.dotnet.NPandayContext;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.executable.*;
+import npanday.NPandayContext;
+import npanday.PlatformUnsupportedException;
 
 /**
  * Interface defining compiler services.
@@ -124,7 +124,7 @@ public interface CompilerContext
      * Returns an instance of the NetExecutable appropriate for given language/vendor/OS.
      *
      * @return an instance of the NetExecutable appropriate for given language/vendor/OS.
-     * @throws org.apache.maven.dotnet.executable.ExecutionException
+     * @throws npanday.executable.ExecutionException
      *          if there is a problem finding an appropriate executable.
      */
     CompilerExecutable getCompilerExecutable()

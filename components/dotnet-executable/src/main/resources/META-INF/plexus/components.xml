@@ -1,71 +1,71 @@
 <component-set>
     <components>
         <component>
-            <role>org.apache.maven.dotnet.executable.compiler.CompilerContext</role>
-            <implementation>org.apache.maven.dotnet.executable.impl.CompilerContextImpl</implementation>
+            <role>npanday.executable.compiler.CompilerContext</role>
+            <implementation>npanday.executable.impl.CompilerContextImpl</implementation>
             <requirements>
                 <requirement>
-                    <role>org.apache.maven.dotnet.artifact.ArtifactContext</role>
+                    <role>npanday.artifact.ArtifactContext</role>
                 </requirement>
                 <requirement>
-                    <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
-                </requirement>
-            </requirements>
-        </component>
-        <component>
-            <role>org.apache.maven.dotnet.executable.ExecutableContext</role>
-            <implementation>org.apache.maven.dotnet.executable.impl.ExecutableContextImpl</implementation>
-            <requirements>
-                <requirement>
-                    <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+                    <role>npanday.registry.RepositoryRegistry</role>
                 </requirement>
             </requirements>
         </component>
         <component>
-            <role>org.apache.maven.dotnet.executable.RepositoryExecutableContext</role>
-            <implementation>org.apache.maven.dotnet.executable.impl.RepositoryExecutableContextImpl</implementation>
+            <role>npanday.executable.ExecutableContext</role>
+            <implementation>npanday.executable.impl.ExecutableContextImpl</implementation>
             <requirements>
                 <requirement>
-                    <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+                    <role>npanday.registry.RepositoryRegistry</role>
+                </requirement>
+            </requirements>
+        </component>
+        <component>
+            <role>npanday.executable.RepositoryExecutableContext</role>
+            <implementation>npanday.executable.impl.RepositoryExecutableContextImpl</implementation>
+            <requirements>
+                <requirement>
+                    <role>npanday.registry.RepositoryRegistry</role>
                 </requirement>
             </requirements>            
         </component>
         <component>
-            <role>org.apache.maven.dotnet.executable.NetExecutableFactory</role>
-            <implementation>org.apache.maven.dotnet.executable.impl.NetExecutableFactoryImpl</implementation>
+            <role>npanday.executable.NetExecutableFactory</role>
+            <implementation>npanday.executable.impl.NetExecutableFactoryImpl</implementation>
             <requirements>
                 <requirement>
-                    <role>org.apache.maven.dotnet.vendor.StateMachineProcessor</role>
+                    <role>npanday.vendor.StateMachineProcessor</role>
                 </requirement>
                 <requirement>
-                    <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+                    <role>npanday.registry.RepositoryRegistry</role>
                 </requirement>
                     <requirement>
-                    <role>org.apache.maven.dotnet.vendor.VendorInfoRepository</role>
+                    <role>npanday.vendor.VendorInfoRepository</role>
                 </requirement>
                 <requirement>
-                    <role>org.apache.maven.dotnet.executable.CapabilityMatcher</role>
+                    <role>npanday.executable.CapabilityMatcher</role>
                 </requirement>
                 <requirement>
-                    <role>org.apache.maven.dotnet.executable.RepositoryExecutableContext</role>
+                    <role>npanday.executable.RepositoryExecutableContext</role>
                 </requirement>
                 <requirement>
-                    <role>org.apache.maven.dotnet.executable.ExecutableContext</role>
+                    <role>npanday.executable.ExecutableContext</role>
                 </requirement>
                 <requirement>
-                    <role>org.apache.maven.dotnet.executable.compiler.CompilerContext</role>
+                    <role>npanday.executable.compiler.CompilerContext</role>
                 </requirement>
                 <requirement>
-                    <role>org.apache.maven.dotnet.artifact.ArtifactContext</role>
+                    <role>npanday.artifact.ArtifactContext</role>
                 </requirement>
             </requirements>
         </component>        
         <component>
-            <role>org.apache.maven.dotnet.executable.CapabilityMatcher</role>
-            <implementation>org.apache.maven.dotnet.executable.impl.CapabilityMatcherImpl</implementation>
+            <role>npanday.executable.CapabilityMatcher</role>
+            <implementation>npanday.executable.impl.CapabilityMatcherImpl</implementation>
             <requirements>
                 <requirement>
-                    <role>org.apache.maven.dotnet.registry.RepositoryRegistry</role>
+                    <role>npanday.registry.RepositoryRegistry</role>
                 </requirement>
             </requirements>
         </component>

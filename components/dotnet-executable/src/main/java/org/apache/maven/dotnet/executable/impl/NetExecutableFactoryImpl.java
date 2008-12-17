@@ -16,20 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.dotnet.executable.impl;
+package npanday.executable.impl;
 
-import org.apache.maven.dotnet.executable.*;
-import org.apache.maven.dotnet.executable.compiler.CompilerRequirement;
-import org.apache.maven.dotnet.executable.compiler.CompilerConfig;
-import org.apache.maven.dotnet.executable.compiler.CompilerContext;
-import org.apache.maven.dotnet.executable.compiler.CompilerExecutable;
-import org.apache.maven.dotnet.vendor.*;
-import org.apache.maven.dotnet.vendor.IllegalStateException;
-import org.apache.maven.dotnet.registry.RepositoryRegistry;
-import org.apache.maven.dotnet.artifact.ArtifactContext;
-import org.apache.maven.dotnet.PathUtil;
-import org.apache.maven.dotnet.InitializationException;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.executable.*;
+import npanday.executable.compiler.CompilerRequirement;
+import npanday.executable.compiler.CompilerConfig;
+import npanday.executable.compiler.CompilerContext;
+import npanday.executable.compiler.CompilerExecutable;
+import npanday.vendor.*;
+import npanday.vendor.IllegalStateException;
+import npanday.registry.RepositoryRegistry;
+import npanday.artifact.ArtifactContext;
+import npanday.PathUtil;
+import npanday.InitializationException;
+import npanday.PlatformUnsupportedException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.logging.LogEnabled;
@@ -82,8 +82,8 @@ public class NetExecutableFactoryImpl
     }
 
     /**
-     * @see NetExecutableFactory#getCompilerExecutableFor(org.apache.maven.dotnet.executable.compiler.CompilerRequirement,
-     *      org.apache.maven.dotnet.executable.compiler.CompilerConfig, org.apache.maven.project.MavenProject, java.io.File)
+     * @see NetExecutableFactory#getCompilerExecutableFor(npanday.executable.compiler.CompilerRequirement,
+     *      npanday.executable.compiler.CompilerConfig, org.apache.maven.project.MavenProject, java.io.File)
      */
     public CompilerExecutable getCompilerExecutableFor( CompilerRequirement compilerRequirement,
                                                         CompilerConfig compilerConfig, MavenProject project,
@@ -167,7 +167,7 @@ public class NetExecutableFactoryImpl
     }
 
     /**
-     * @see NetExecutableFactory#getPluginLoaderFor(String,String,org.apache.maven.dotnet.vendor.VendorInfo,String,java.io.File,String)
+     * @see NetExecutableFactory#getPluginLoaderFor(String,String,npanday.vendor.VendorInfo,String,java.io.File,String)
      */
     public NetExecutable getPluginLoaderFor( String groupId, String artifactId, VendorInfo vendorInfo,
                                              String localRepository, File parameterFile, String mojoName )
