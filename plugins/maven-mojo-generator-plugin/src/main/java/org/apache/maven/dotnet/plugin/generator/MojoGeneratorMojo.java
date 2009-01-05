@@ -116,7 +116,7 @@ public class MojoGeneratorMojo
             commands.add( "groupId=" + project.getGroupId() );
             commands.add( "artifactId=" + project.getArtifactId() );
             commands.add( "artifactVersion=" + project.getVersion());
-            netExecutableFactory.getNetExecutableFromRepository( "NPanday.Plugins", "NPanday.Plugin.MojoGenerator",
+            netExecutableFactory.getNetExecutableFromRepository( "npanday.plugin", "NPanday.Plugin.MojoGenerator",
                                                                  vendorInfo, localRepository, commands,
                                                                  true ).execute();
         }

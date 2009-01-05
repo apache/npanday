@@ -86,11 +86,11 @@
         compiler-config.<div class="source"><pre>
  &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;&gt;
   &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-  &lt;groupId&gt;NPanday.Plugins&lt;/groupId&gt;
-  &lt;artifactId&gt;NPanday.Plugins&lt;/artifactId&gt;
+  &lt;groupId&gt;npanday.plugin&lt;/groupId&gt;
+  &lt;artifactId&gt;npanday.plugin&lt;/artifactId&gt;
   &lt;packaging&gt;pom&lt;/packaging&gt;
   &lt;version&gt;0.14&lt;/version&gt;
-  &lt;name&gt;NPanday.Plugins&lt;/name&gt;
+  &lt;name&gt;npanday.plugin&lt;/name&gt;
   &lt;build&gt;
     &lt;sourceDirectory&gt;src/main/csharp&lt;/sourceDirectory&gt;
     &lt;testSourceDirectory&gt;src/test/csharp&lt;/testSourceDirectory&gt;

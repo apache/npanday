@@ -1273,7 +1273,7 @@ namespace NPanday.VisualStudio.Addin
         #region cbRunUnitTest_Click(CommandBarButton,bool)
         private void cbRunUnitTest_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(CurrentSelectedProjectPom, "npanday.plugins:maven-test-plugin:test");
+            executeBuildCommand(CurrentSelectedProjectPom, "npanday.plugin:maven-test-plugin:test");
         }
         #endregion
 

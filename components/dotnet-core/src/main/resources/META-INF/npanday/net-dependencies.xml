@@ -1,22 +1,22 @@
 <netDependencies>
   <!--Plugins-->
   <netDependency>
-    <groupId>NPanday.Plugins</groupId>
+    <groupId>npanday.plugin</groupId>
     <artifactId>NPanday.Plugin.Resx</artifactId>
     <type>exe</type>
   </netDependency>
   <netDependency>
-    <groupId>NPanday.Plugins</groupId>
+    <groupId>npanday.plugin</groupId>
     <artifactId>NPanday.Plugin.Settings</artifactId>
     <type>netplugin</type>
   </netDependency>
   <netDependency>
-    <groupId>NPanday.Plugins</groupId>
+    <groupId>npanday.plugin</groupId>
     <artifactId>NPanday.Plugin.Devenv</artifactId>
     <type>netplugin</type>
   </netDependency>
   <netDependency>
-    <groupId>NPanday.Plugins</groupId>
+    <groupId>npanday.plugin</groupId>
     <artifactId>NPanday.Plugin.Addin</artifactId>
     <type>netplugin</type>
   </netDependency>

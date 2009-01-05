@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package npanday.plugins;
+package npanday.plugin;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;

@@ -78,25 +78,25 @@ under the License.
     </dependency>  
     <!--netplugins-->  
     <dependency> 
-      <groupId>NPanday.Plugins</groupId>  
+      <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Addin</artifactId>  
       <version>${pom.version}</version>  
       <type>netplugin</type> 
     </dependency>  
     <dependency> 
-      <groupId>NPanday.Plugins</groupId>  
+      <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Devenv</artifactId>  
       <version>${pom.version}</version>  
       <type>netplugin</type> 
     </dependency>  
     <dependency> 
-      <groupId>NPanday.Plugins</groupId>  
+      <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Resx</artifactId>  
       <version>${pom.version}</version>  
       <type>exe</type> 
     </dependency>  
     <dependency> 
-      <groupId>NPanday.Plugins</groupId>  
+      <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Settings</artifactId>  
       <version>${pom.version}</version>  
       <type>netplugin</type> 

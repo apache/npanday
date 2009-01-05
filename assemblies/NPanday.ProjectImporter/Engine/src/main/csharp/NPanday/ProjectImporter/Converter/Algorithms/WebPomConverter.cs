@@ -119,7 +119,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             
 			
             // Add NPanday compile plugin 
-            Plugin aspxPlugin = AddPlugin("npanday.plugins", "maven-aspx-plugin");
+            Plugin aspxPlugin = AddPlugin("npanday.plugin", "maven-aspx-plugin");
 
 			//Add Project WebReferences
             //AddWebReferences();

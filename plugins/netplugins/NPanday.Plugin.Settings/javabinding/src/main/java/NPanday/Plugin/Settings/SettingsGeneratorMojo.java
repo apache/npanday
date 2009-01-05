@@ -74,7 +74,7 @@ public class SettingsGeneratorMojo
 
     public String getMojoGroupId()
     {
-        return "NPanday.Plugins";
+        return "npanday.plugin";
     }
 
     public String getClassName()
