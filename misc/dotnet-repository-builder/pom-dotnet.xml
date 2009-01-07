@@ -123,7 +123,7 @@ under the License.
     </extensions>  
     <plugins> 
       <plugin> 
-        <groupId>org.apache.maven.dotnet.plugins</groupId>  
+        <groupId>npanday.plugin</groupId>  
         <artifactId>maven-repository-plugin</artifactId>  
         <version>${pom.version}</version>  
         <executions> 

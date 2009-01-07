@@ -9,25 +9,25 @@
       <configuration>
         <phases>
           <validate>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
-            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
+            npanday.plugin:maven-compile-plugin:initialize,
+            npanday.plugin:maven-resolver-plugin:resolve,
             npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>            
           </generate-sources>
           <process-sources>
-            org.apache.maven.dotnet.plugins:maven-aspx-plugin:copy-dependency
+            npanday.plugin:maven-aspx-plugin:copy-dependency
           </process-sources>
           <process-resources>
           </process-resources>
           <compile>
-            org.apache.maven.dotnet.plugins:maven-aspx-plugin:compile
+            npanday.plugin:maven-aspx-plugin:compile
           </compile>
           <test-compile>          
           </test-compile>
           <test></test>
           <package>
-            org.apache.maven.dotnet.plugins:maven-aspx-plugin:package
+            npanday.plugin:maven-aspx-plugin:package
           </package>
           <install>
             org.apache.maven.plugins:maven-install-plugin:install

@@ -9,32 +9,32 @@
       <configuration>
         <phases>
           <validate>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
-            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
+            npanday.plugin:maven-compile-plugin:initialize,
+            npanday.plugin:maven-resolver-plugin:resolve,
             npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
+            npanday.plugin:maven-compile-plugin:generate-assembly-info
           </generate-sources>
           <process-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources
+            npanday.plugin:maven-compile-plugin:process-sources,
+            npanday.plugin:maven-compile-plugin:process-test-sources
           </process-sources>
           <process-resources>
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
-			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
+            npanday.plugin:maven-resgen-plugin:copy-resources,
+            npanday.plugin:maven-resgen-plugin:generate,
+			npanday.plugin:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
+            npanday.plugin:maven-compile-plugin:compile,
           </compile>
           <test-compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+            npanday.plugin:maven-compile-plugin:testCompile
           </test-compile>
-          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
-          <package>org.apache.maven.dotnet.plugins:maven-webapp-plugin:package</package>
+          <test>npanday.plugin:maven-test-plugin:test</test>
+          <package>npanday.plugin:maven-webapp-plugin:package</package>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-webapp-plugin:deploy
+            npanday.plugin:maven-webapp-plugin:deploy
           </deploy>
         </phases>
       </configuration>
@@ -48,34 +48,34 @@
       <configuration>
         <phases>
           <validate>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
-            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
+            npanday.plugin:maven-compile-plugin:initialize,
+            npanday.plugin:maven-resolver-plugin:resolve,
             npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <process-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources
+            npanday.plugin:maven-compile-plugin:process-sources,
+            npanday.plugin:maven-compile-plugin:process-test-sources
           </process-sources>
           <process-resources>
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
-			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
+            npanday.plugin:maven-resgen-plugin:copy-resources,
+            npanday.plugin:maven-resgen-plugin:generate,
+			npanday.plugin:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
+            npanday.plugin:maven-compile-plugin:compile,
           </compile>
           <test-compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+            npanday.plugin:maven-compile-plugin:testCompile
           </test-compile>
-          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
-          <package>org.apache.maven.dotnet.plugins:maven-link-plugin:package</package>
+          <test>npanday.plugin:maven-test-plugin:test</test>
+          <package>npanday.plugin:maven-link-plugin:package</package>
           <install>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            npanday.plugin:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-install-plugin:install,                        
             org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-repository-plugin:convert-artifact,
             org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>
@@ -90,37 +90,37 @@
       <configuration>
         <phases>
           <validate>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
-            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve ,
+            npanday.plugin:maven-compile-plugin:initialize,
+            npanday.plugin:maven-resolver-plugin:resolve ,
             npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
+            npanday.plugin:maven-compile-plugin:generate-assembly-info
           </generate-sources>
           <process-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources
+            npanday.plugin:maven-compile-plugin:process-sources,
+            npanday.plugin:maven-compile-plugin:process-test-sources
           </process-sources>
           <process-resources>
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
-			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
+            npanday.plugin:maven-resgen-plugin:copy-resources,
+            npanday.plugin:maven-resgen-plugin:generate,
+			npanday.plugin:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
+            npanday.plugin:maven-compile-plugin:compile,
           </compile>
           <test-compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+            npanday.plugin:maven-compile-plugin:testCompile
           </test-compile>
-          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
+          <test>npanday.plugin:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            npanday.plugin:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-install-plugin:install,                        
             org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
-            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy
+            npanday.plugin:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-deploy-plugin:deploy
           </deploy>
         </phases>
       </configuration>
@@ -134,40 +134,40 @@
       <configuration>
         <phases>
           <validate>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
-            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve ,
+            npanday.plugin:maven-compile-plugin:initialize,
+            npanday.plugin:maven-resolver-plugin:resolve ,
             npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
+            npanday.plugin:maven-compile-plugin:generate-assembly-info
           </generate-sources>
           <process-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources,
-            org.apache.maven.dotnet.plugins:maven-aspx-plugin:copy-dependency
+            npanday.plugin:maven-compile-plugin:process-sources,
+            npanday.plugin:maven-compile-plugin:process-test-sources,
+            npanday.plugin:maven-aspx-plugin:copy-dependency
           </process-sources>
           <process-resources>
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
-			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
+            npanday.plugin:maven-resgen-plugin:copy-resources,
+            npanday.plugin:maven-resgen-plugin:generate,
+			npanday.plugin:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
-            org.apache.maven.dotnet.plugins:maven-aspx-plugin:compile
+            npanday.plugin:maven-compile-plugin:compile,
+            npanday.plugin:maven-aspx-plugin:compile
           </compile>
           <test-compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+            npanday.plugin:maven-compile-plugin:testCompile
           </test-compile>
-          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
+          <test>npanday.plugin:maven-test-plugin:test</test>
           <package>
-            org.apache.maven.dotnet.plugins:maven-aspx-plugin:package
+            npanday.plugin:maven-aspx-plugin:package
           </package>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install
+            npanday.plugin:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
-            org.apache.maven.dotnet.plugins:maven-deploy-plugin:deploy
+            npanday.plugin:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-deploy-plugin:deploy
           </deploy>
         </phases>
       </configuration>
@@ -181,36 +181,36 @@
       <configuration>
         <phases>
           <validate>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
-            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
+            npanday.plugin:maven-compile-plugin:initialize,
+            npanday.plugin:maven-resolver-plugin:resolve,
             npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
+            npanday.plugin:maven-compile-plugin:generate-assembly-info
           </generate-sources>
           <process-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources
+            npanday.plugin:maven-compile-plugin:process-sources,
+            npanday.plugin:maven-compile-plugin:process-test-sources
           </process-sources>
           <process-resources>
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
-			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
+            npanday.plugin:maven-resgen-plugin:copy-resources,
+            npanday.plugin:maven-resgen-plugin:generate,
+			npanday.plugin:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
+            npanday.plugin:maven-compile-plugin:compile,
           </compile>
           <test-compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+            npanday.plugin:maven-compile-plugin:testCompile
           </test-compile>
-          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
+          <test>npanday.plugin:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            npanday.plugin:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-install-plugin:install,                        
             org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-repository-plugin:convert-artifact,
             org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>
@@ -226,36 +226,36 @@
       <configuration>
         <phases>
           <validate>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
-            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
+            npanday.plugin:maven-compile-plugin:initialize,
+            npanday.plugin:maven-resolver-plugin:resolve,
             npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
+            npanday.plugin:maven-compile-plugin:generate-assembly-info
           </generate-sources>
           <process-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources
+            npanday.plugin:maven-compile-plugin:process-sources,
+            npanday.plugin:maven-compile-plugin:process-test-sources
           </process-sources>
           <process-resources>
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
-			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
+            npanday.plugin:maven-resgen-plugin:copy-resources,
+            npanday.plugin:maven-resgen-plugin:generate,
+			npanday.plugin:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
+            npanday.plugin:maven-compile-plugin:compile,
           </compile>
           <test-compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+            npanday.plugin:maven-compile-plugin:testCompile
           </test-compile>
-          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
+          <test>npanday.plugin:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            npanday.plugin:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-install-plugin:install,                        
             org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-repository-plugin:convert-artifact,
             org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>
@@ -270,37 +270,37 @@
       <configuration>
         <phases>
           <validate>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
-            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
+            npanday.plugin:maven-compile-plugin:initialize,
+            npanday.plugin:maven-resolver-plugin:resolve,
             npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
+            npanday.plugin:maven-compile-plugin:generate-assembly-info
           </generate-sources>
           <process-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources
+            npanday.plugin:maven-compile-plugin:process-sources,
+            npanday.plugin:maven-compile-plugin:process-test-sources
           </process-sources>
           <process-resources>
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
-			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
+            npanday.plugin:maven-resgen-plugin:copy-resources,
+            npanday.plugin:maven-resgen-plugin:generate,
+			npanday.plugin:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
+            npanday.plugin:maven-compile-plugin:compile,
           </compile>
           <test-compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+            npanday.plugin:maven-compile-plugin:testCompile
           </test-compile>
-          <deploy>org.apache.maven.dotnet.plugins:maven-mojo-generator-plugin:generate-bindings</deploy>
-          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
+          <deploy>npanday.plugin:maven-mojo-generator-plugin:generate-bindings</deploy>
+          <test>npanday.plugin:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                       
+            npanday.plugin:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-install-plugin:install,                       
             org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-repository-plugin:convert-artifact,
             org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>
@@ -315,36 +315,36 @@
       <configuration>
         <phases>
           <validate>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
-            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
+            npanday.plugin:maven-compile-plugin:initialize,
+            npanday.plugin:maven-resolver-plugin:resolve,
             npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
+            npanday.plugin:maven-compile-plugin:generate-assembly-info
           </generate-sources>
           <process-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources
+            npanday.plugin:maven-compile-plugin:process-sources,
+            npanday.plugin:maven-compile-plugin:process-test-sources
           </process-sources>
           <process-resources>
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
-			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
+            npanday.plugin:maven-resgen-plugin:copy-resources,
+            npanday.plugin:maven-resgen-plugin:generate,
+			npanday.plugin:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
+            npanday.plugin:maven-compile-plugin:compile,
           </compile>
           <test-compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+            npanday.plugin:maven-compile-plugin:testCompile
           </test-compile>
-          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
+          <test>npanday.plugin:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            npanday.plugin:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-install-plugin:install,                        
             org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-repository-plugin:convert-artifact,
             org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>
@@ -359,36 +359,36 @@
       <configuration>
         <phases>
           <validate>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:initialize,
-            org.apache.maven.dotnet.plugins:maven-resolver-plugin:resolve,
+            npanday.plugin:maven-compile-plugin:initialize,
+            npanday.plugin:maven-resolver-plugin:resolve,
             npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:generate-assembly-info
+            npanday.plugin:maven-compile-plugin:generate-assembly-info
           </generate-sources>
           <process-sources>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-sources,
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:process-test-sources
+            npanday.plugin:maven-compile-plugin:process-sources,
+            npanday.plugin:maven-compile-plugin:process-test-sources
           </process-sources>
           <process-resources>
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:copy-resources,
-            org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate,
-			org.apache.maven.dotnet.plugins:maven-resgen-plugin:generate-existing-resx-to-resource
+            npanday.plugin:maven-resgen-plugin:copy-resources,
+            npanday.plugin:maven-resgen-plugin:generate,
+			npanday.plugin:maven-resgen-plugin:generate-existing-resx-to-resource
           </process-resources>
           <compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:compile,
+            npanday.plugin:maven-compile-plugin:compile,
           </compile>
           <test-compile>
-            org.apache.maven.dotnet.plugins:maven-compile-plugin:testCompile
+            npanday.plugin:maven-compile-plugin:testCompile
           </test-compile>
-          <test>org.apache.maven.dotnet.plugins:maven-test-plugin:test</test>
+          <test>npanday.plugin:maven-test-plugin:test</test>
           <install>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,            
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install,                        
+            npanday.plugin:maven-repository-plugin:convert-artifact,            
+            npanday.plugin:maven-install-plugin:install,                        
             org.apache.maven.plugins:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-repository-plugin:convert-artifact,
             org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>               
         </phases>
@@ -403,10 +403,10 @@
       <configuration>
         <phases>
           <install>
-            org.apache.maven.dotnet.plugins:maven-install-plugin:install
+            npanday.plugin:maven-install-plugin:install
           </install>
           <deploy>
-            org.apache.maven.dotnet.plugins:maven-repository-plugin:convert-artifact,
+            npanday.plugin:maven-repository-plugin:convert-artifact,
             org.apache.maven.plugins:maven-deploy-plugin:deploy
           </deploy>
         </phases>

@@ -34,7 +34,7 @@ Deploying NPanday Artifacts (File System Only)
 
 Generating CS Project Files and Solutions:
  * Go to the directory containing a pom file.
- * type: mvn org.apache.maven.dotnet.plugins:maven-solution-plugin:solution
+ * type: mvn npanday.plugin:maven-solution-plugin:solution
 
  If the project was multi-module, the plugin will pick those up as well.
 
@@ -42,7 +42,7 @@ Setting up the Visual Studio 2005 Addin:
  After building the project with bootstrap-build -DVisualStudio2005
  * Deploy the components/dotnet-service/embedder/target/dotnet-service-embedder.war file on a standard web server
  running port 8080.
- * To generate the Addin for VisualStudio type: mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install
+ * To generate the Addin for VisualStudio type: mvn npanday.plugin:maven-vsinstaller-plugin:install
  * Start the IDE
  * Click on an NPanday project
  * Click on Tools/NPanday Addin
