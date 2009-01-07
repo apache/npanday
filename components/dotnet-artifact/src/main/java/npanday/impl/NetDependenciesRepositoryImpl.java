@@ -93,7 +93,7 @@ public class NetDependenciesRepositoryImpl
         String npandayVersion = (String) properties.get( "npanday.version" );
         for ( NetDependency dependency : netDependencies )
         {
-            if ( dependency.getVersion() == null && dependency.getGroupId().startsWith( "NPanday" ) )
+            if ( dependency.getVersion() == null && dependency.getGroupId().toLowerCase().startsWith( "npanday" ) )
             {
                 dependency.setVersion( npandayVersion );
             }
