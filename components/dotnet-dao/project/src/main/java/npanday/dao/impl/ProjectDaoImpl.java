@@ -992,7 +992,13 @@ public final class ProjectDaoImpl
     
     private String resolveComReferencePath(String name, String classifier) throws Exception
     {
-        String registryPath = "HKEY_CLASSES_ROOT\\TypeLib\\" + classifier + "\\win32\\";
+        String[] classTokens = classifier.split("}");
+        
+        classTokens[1]= classTokens[1].replace( "-", "\\" );
+        
+        String newClassifier = classTokens[0]+"}"+classTokens[1];
+        
+		String registryPath = "HKEY_CLASSES_ROOT\\TypeLib\\" + newClassifier + "\\win32\\";
         int lineNoOfPath = 1 ;
         
         List<String> parameters = new ArrayList<String>();

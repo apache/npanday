@@ -365,59 +365,81 @@ namespace NPanday.VisualStudio.Addin
             bool isSystemPath = false;
             try
             {
-                outputWindowPane.OutputString(mavenConnected.ToString());
                 if (!mavenConnected)
                     return;
 
                 ArtifactContext artifactContext = new ArtifactContext();
                 Artifact.Artifact artifact = new NPanday.Artifact.Artifact();
 
-                bool inMavenRepo = false;
+                //check if reference is in maven repository
+                bool iNPandayRepo = false;
                 try
                 {
                     artifact = artifactContext.GetArtifactRepository().GetArtifact(new FileInfo(pReference.Path));
-                    inMavenRepo = true;
+                    iNPandayRepo = true;
                 }
                 catch
                 {
                 }
 
+                //check if reference is already in pom
                 PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
                 if (pomUtil.IsPomDependency(pReference.Name))
                 {
                     return;
                 }
 
+                //setup default dependecy values
                 string refType = "gac_msil";
                 string refName = pReference.Name;
                 string refToken = pReference.PublicKeyToken;
+                string systemPath = string.Empty;
+                string scope = string.Empty;
 
+                //check  if reference is activex
                 if (pReference.Type == prjReferenceType.prjReferenceTypeActiveX)
                 {
                     refType = "com_reference";
                     if (refName.ToLower().StartsWith("interop."))
                         refName = refName.Substring(8);
-                    refToken = pReference.Identity.Substring(0, pReference.Identity.LastIndexOf(@"\"));
-                    Utils.RepositoryUtility.InstallAssembly(pReference.Path, refName, refName, pReference.Version);
+                    refToken = pReference.Identity.Substring(0, pReference.Identity.LastIndexOf(@"\")).Replace("\\", "-");
                 }
                 else
                 {
-                    GacUtility gac = new GacUtility();
-                    string n = gac.GetAssemblyInfo(pReference.Name);
-                    if (pReference.SourceProject != null)
+                    //if reference is assembly
+                    Assembly a = System.Reflection.Assembly.LoadWithPartialName(pReference.Name);
+
+                    if (a != null)
                     {
+                        if (a.Location.ToLower().IndexOf(@"\gac_32\") >= 0)
+                            refType = "gac_32";
+                        else if (a.Location.ToLower().IndexOf(@"\gac\") >= 0)
+                            refType = "gac";
+
+                        systemPath = a.Location;
+
+                        if (!a.GlobalAssemblyCache)
+                        {
+                            refType = "library";
+                        }
+
+                    }
+                    else
+                    {
+                        systemPath = pReference.Path;
                         refType = "library";
+                        if (!iNPandayRepo)
+                        {
+                            MessageBox.Show(string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
+                                     + "\nReference: {0}"
+                                     + "\nDeploying the Reference, will make the code portable to other machines",
+                             pReference.Name
+                         ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
-                    else if (!inMavenRepo && string.IsNullOrEmpty(n))
-                    {
-                        isSystemPath = true;
-                        MessageBox.Show(string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
-                                                             + "\nReference: {0}"
-                                                             + "\nDeploying the Reference, will make the code portable to other machines",
-                                                     pReference.Name
-                                                 ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning); refType = "library";
-                        //return;
-                    }
+
+                    scope = "system";
+
                 }
 
                 Dependency dep = new Dependency();
@@ -425,21 +447,19 @@ namespace NPanday.VisualStudio.Addin
                 dep.groupId = refName;
                 dep.version = pReference.Version;
                 dep.type = refType;
-                // if condition is for system path dependencies
-                if (isSystemPath)
-                {
-                    dep.systemPath = pReference.Path;
-                    dep.scope = "system";
-                }
-                else
-                {
-                    dep.classifier = refToken;
-                }
+                dep.classifier = refToken;
+
+                if (!string.IsNullOrEmpty(systemPath))
+                    dep.systemPath = systemPath;
+                if (!string.IsNullOrEmpty(scope))
+                    dep.scope = scope;
+
+
                 pomUtil.AddPomDependency(dep);
             }
             catch (Exception e)
             {
-                outputWindowPane.OutputString(e.Message);
+                //outputWindowPane.OutputString(e.Message);
             }
         }
 

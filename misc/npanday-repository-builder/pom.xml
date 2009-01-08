@@ -115,7 +115,12 @@
       <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>  
       <version>0.9-SNAPSHOT</version> 
-    </dependency>  
+    </dependency>
+	<dependency> 
+      <groupId>npanday.plugin</groupId>  
+      <artifactId>NPanday.Plugin.SysRef.JavaBinding</artifactId>  
+      <version>0.9-SNAPSHOT</version> 
+    </dependency>
 
     <!--
     NPANDAY ARCHETYPES

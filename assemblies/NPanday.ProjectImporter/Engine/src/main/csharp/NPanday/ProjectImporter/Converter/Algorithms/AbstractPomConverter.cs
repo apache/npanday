@@ -245,6 +245,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 comDependency.version = comReference.VersionMajor + "." + comReference.VersionMinor + ".0" + ".0";
                 comDependency.type = "com_reference";
                 comDependency.classifier = string.Format("{0}\\{1}.{2}\\{3}", comReference.Guid, convertDecToHex(comReference.VersionMajor), convertDecToHex(comReference.VersionMinor), convertDecToHex(comReference.Lcid));
+                comDependency.classifier = comDependency.classifier.Replace("\\", "-");
                 AddDependency(comDependency);
             }
         }

@@ -26,5 +26,8 @@
     <Compile Include="NPanday\Logging\LogRecord.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
