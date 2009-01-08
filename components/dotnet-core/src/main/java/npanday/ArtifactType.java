@@ -35,7 +35,7 @@ public enum ArtifactType
     VISUAL_STUDIO_ADDIN( "visual-studio-addin", "library", "dll" ),
     SHARP_DEVELOP_ADDIN( "sharp-develop-addin", "library", "dll" ),
     NULL( "null", "null", "null" ),     
-    ASP ( "asp", "library", "dll" );
+    ASP ( "asp", "library", "zip" );
 
     /**
      * The extension used for the artifact(netmodule, dll, exe)

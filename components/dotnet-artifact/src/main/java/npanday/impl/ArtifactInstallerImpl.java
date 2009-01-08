@@ -358,10 +358,11 @@ public class ArtifactInstallerImpl
                 File destFile = PathUtil.getUserAssemblyCacheFileFor( artifact, localRepository );
                                 logger.info(
                     "NPANDAY-001-007: Installing file into repository: File = " + artifact.getFile().getAbsolutePath()
-                        + ", Dest File = " + destFile.getAbsolutePath());
+                        + ", Dest Directory = " + destFile.getParent());
                 try
                 {
-                    FileUtils.copyFile( artifactFile, destFile );
+				    //this is previously using copyFile(File, File)
+                    FileUtils.copyFileToDirectory( artifactFile.getAbsolutePath(), destFile.getParent() );
                 }
                 catch ( IOException e )
                 {

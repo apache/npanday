@@ -71,6 +71,10 @@ public final class DefaultCompiler
             artifactFilePath = f.getAbsolutePath();
         }
 
+        if(artifactFilePath!=null && artifactFilePath.toLowerCase().endsWith(".zip"))
+        {
+        	artifactFilePath = artifactFilePath.substring(0, artifactFilePath.length() - 3) + "dll";
+        }
         
         commands.add( "/out:" + artifactFilePath );
     
