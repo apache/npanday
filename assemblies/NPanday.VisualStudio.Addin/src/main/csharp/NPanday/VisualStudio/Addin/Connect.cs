@@ -487,7 +487,7 @@ namespace NPanday.VisualStudio.Addin
                 System.Threading.Thread.Sleep(1500);
                 e.Init(projectReferenceFolder(CurrentSelectedProject));
                 PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
-                pomUtil.RenameWebReference(e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
+                pomUtil.RenameWebReference(e.ReferenceDirectory, e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
 
             }
             catch (Exception ex)
@@ -502,7 +502,7 @@ namespace NPanday.VisualStudio.Addin
             {
                 e.Init(projectReferenceFolder(CurrentSelectedProject));
                 PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
-                pomUtil.RemoveWebReference(e.Namespace);
+                pomUtil.RemoveWebReference(e.ReferenceDirectory, e.Namespace);
 
             }
             catch (Exception ex)
@@ -1604,13 +1604,13 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
-        public bool RemovePomWebReferenceInfo(string webRefNamespace)
-        {
-            PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
-            pomUtil.RemoveWebReference(webRefNamespace);
-            return true;
+        //public bool RemovePomWebReferenceInfo(string webRefNamespace)
+        //{
+        //    PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+        //    pomUtil.RemoveWebReference(webRefNamespace);
+        //    return true;
 
-        }
+        //}
 
         public bool AddPomWebReferenceInfo(IWebServiceRefInfo webref)
         {
@@ -1692,7 +1692,7 @@ namespace NPanday.VisualStudio.Addin
     public interface IWebServicesRefUtils
     {
         bool ProjectHasWebReferences(Project project);
-        bool RemovePomWebReferenceInfo(string webRefNamespace);
+        //bool RemovePomWebReferenceInfo(string webRefNamespace);
         bool AddPomWebReferenceInfo(IWebServiceRefInfo webref);
         List<IWebServiceRefInfo> GetWebReferences(Project project);
         void UpdateWebReferences(Project project);

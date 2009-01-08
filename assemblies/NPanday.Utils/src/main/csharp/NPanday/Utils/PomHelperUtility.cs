@@ -912,6 +912,63 @@ namespace NPanday.Utils
                     addWebConfiguration(webReferencePlugin, "webreferences", name, path, output);
                 }
             }
+
+            foreach (Plugin plugin in model.build.plugins)
+            {
+                if ("npanday.plugin".Equals(plugin.groupId.ToLower())
+                    && "maven-compile-plugin".Equals(plugin.artifactId.ToLower()))
+                {
+                    if (plugin.configuration == null && plugin.configuration.Any == null)
+                    {
+                        break;
+                    }
+                    XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
+                    for (int count = elems.Length; count-- > 0; )//(XmlElement elem in ((XmlElement[])plugin.configuration.Any))
+                    {
+
+
+                        if ("includeSources".Equals(elems[count].Name))
+                        {
+
+                            XmlDocument xmlDocument = new XmlDocument();
+                            XmlElement elem = xmlDocument.CreateElement("includeSources", @"http://maven.apache.org/POM/4.0.0");
+
+                            //LOOP THROUGH EXISTING AND ADD
+                            //GET .CS FILE AND ADD
+                            foreach (XmlNode n in elems[count].ChildNodes)
+                            {
+                                if ("includeSource".Equals(n.Name))
+                                {
+                                    XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
+
+                                    node.InnerText = n.InnerText;
+                                    elem.AppendChild(node);
+                                }
+                            }
+                            DirectoryInfo fullPath = new FileInfo(Path.Combine(pom.Directory.FullName, path.Trim('\r', ' ', '\n'))).Directory;
+                            foreach (FileInfo file in fullPath.GetFiles("*.cs"))
+                            {
+                                XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, "includeSource", @"http://maven.apache.org/POM/4.0.0");
+
+                                node.InnerText = GetRelativePath(pom.Directory, file);
+                                elem.AppendChild(node);
+                            }
+                            foreach (FileInfo file in fullPath.GetFiles("*.vb"))
+                            {
+                                XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, "includeSource", @"http://maven.apache.org/POM/4.0.0");
+
+                                node.InnerText = GetRelativePath(pom.Directory, file);
+                                elem.AppendChild(node);
+                            }
+                            elems[count] = elem;
+
+                            break;
+                        }
+
+                    }
+                }
+            }
+
             WriteModelToPom(model);
         }
 
@@ -1085,7 +1142,7 @@ namespace NPanday.Utils
         }
         #endregion
         #region RemoveWebReference
-        public void RemoveWebReference(string name)
+        public void RemoveWebReference(string path, string name)
         {
             NPanday.Model.Pom.Model model = ReadPomAsModel();
             if (model != null && model.build != null && model.build.plugins != null)
@@ -1095,6 +1152,42 @@ namespace NPanday.Utils
                     if (isWsdlPlugin(plugin))
                     {
                         removeWebConfiguration(plugin, name);
+                    }
+
+                    if ("npanday.plugin".Equals(plugin.groupId.ToLower())
+                        && "maven-compile-plugin".Equals(plugin.artifactId.ToLower()))
+                    {
+                        XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
+                        for (int count = elems.Length; count-- > 0; )
+                        {
+
+                            if ("includeSources".Equals(elems[count].Name))
+                            {
+
+                                XmlDocument xmlDocument = new XmlDocument();
+                                XmlElement elem = xmlDocument.CreateElement("includeSources", @"http://maven.apache.org/POM/4.0.0");
+
+                                //LOOP THROUGH EXISTING AND ADD IF ITS NOT A WEBREFERENCE
+                                string compareStr = GetRelativePath(pom.Directory, new DirectoryInfo(path));
+                                foreach (XmlNode n in elems[count].ChildNodes)
+                                {
+                                    if ("includeSource".Equals(n.Name))
+                                    {
+                                        if (n.InnerText != null && !n.InnerText.Trim().StartsWith(compareStr))
+                                        {
+                                            XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
+
+                                            node.InnerText = n.InnerText;
+                                            elem.AppendChild(node);
+                                        }
+                                    }
+                                }
+
+                                elems[count] = elem;
+                                WriteModelToPom(model);
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -1154,11 +1247,12 @@ namespace NPanday.Utils
         }
         #endregion
         #region RenameWebReference
-        public void RenameWebReference(string oldName, string newName, string path, string output)
+        public void RenameWebReference(string fullpath, string oldName, string newName, string path, string output)
         {
-			RemoveWebReference(oldName);
-			AddWebReference(newName, path, output);
-        } 
+            string compareStr = Path.Combine(fullpath.Substring(0, fullpath.LastIndexOf("\\")), oldName);
+            RemoveWebReference(compareStr, oldName);
+            AddWebReference(newName, path, output);
+        }
         #endregion
 
     }
