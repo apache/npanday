@@ -21,13 +21,13 @@ under the License.
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <parent> 
     <groupId>NPanday.ProjectImporter</groupId>  
-    <version>0.9-SNAPSHOT</version>  
+    <version>0.9.5</version>  
     <artifactId>NPanday.ImporterProjectParent</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NPanday.ProjectImporter</groupId>  
   <artifactId>NPanday.ProjectImporterEngine</artifactId>  
-  <version>0.9-SNAPSHOT</version>  
+  <version>0.9.5</version>  
   <packaging>library</packaging>  
   <name>NPanday.ProjectImporterEngine</name>  
   <build> 
@@ -65,25 +65,25 @@ under the License.
       <groupId>NPanday.Artifact</groupId>  
       <artifactId>NPanday.Artifact</artifactId>  
       <type>library</type>  
-      <version>0.9-SNAPSHOT</version> 
+      <version>0.9.5</version> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Logging</groupId>  
       <artifactId>NPanday.Logging</artifactId>  
       <type>library</type>  
-      <version>0.9-SNAPSHOT</version> 
+      <version>0.9.5</version> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Model</groupId>  
       <artifactId>NPanday.Model.Pom</artifactId>  
       <type>library</type>  
-      <version>0.9-SNAPSHOT</version> 
+      <version>0.9.5</version> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Utils</groupId>  
       <artifactId>NPanday.Utils</artifactId>  
       <type>library</type>  
-      <version>0.9-SNAPSHOT</version> 
+      <version>0.9.5</version> 
     </dependency>
   </dependencies> 
 </project>

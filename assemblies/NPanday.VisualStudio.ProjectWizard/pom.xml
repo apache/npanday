@@ -21,13 +21,13 @@ under the License.
 <project> 
   <parent> 
     <groupId>NPanday</groupId>  
-    <version>0.9-SNAPSHOT</version>  
+    <version>0.9.5</version>  
     <artifactId>NPanday.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NPanday.VisualStudio</groupId>  
   <artifactId>NPanday.VisualStudio.ProjectWizard</artifactId>  
-  <version>0.9-SNAPSHOT</version>  
+  <version>0.9.5</version>  
   <packaging>library</packaging>  
   <name>NPanday.VisualStudio.ProjectWizard</name>  
   <dependencies> 
