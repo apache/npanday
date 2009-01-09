@@ -53,10 +53,9 @@ namespace NPanday.VisualStudio.Addin
                 txtBrowseDotNetSolutionFile.Text = applicationObject.Solution.FileName;
                 try
                 {                    
-                    string groupId = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion").GetValue("RegisteredOrganization","mycompany").ToString();                        
-                    
-                    groupId = FilterID(groupId) + "." + FilterID(new FileInfo(applicationObject.Solution.FileName).Name.Replace(".sln", ""));
-                    txtGroupId.Text = ConvertToPascalCase(groupId);
+                    string groupId = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion").GetValue("RegisteredOrganization","mycompany").ToString();
+                    groupId = FilterID(groupId) + "." + FilterID(ConvertToPascalCase(new FileInfo(applicationObject.Solution.FileName).Name.Replace(".sln", "")));
+                    txtGroupId.Text = groupId;
                     
                 }
                 catch { /*do nothing*/}

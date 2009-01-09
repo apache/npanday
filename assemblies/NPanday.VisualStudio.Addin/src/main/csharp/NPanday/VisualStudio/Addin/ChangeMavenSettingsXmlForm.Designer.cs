@@ -37,9 +37,10 @@ namespace NPanday.VisualStudio.Addin
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(478, 46);
+            this.btnOk.Location = new System.Drawing.Point(358, 37);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(90, 25);
+            this.btnOk.Size = new System.Drawing.Size(68, 20);
             this.btnOk.TabIndex = 0;
             this.btnOk.Text = "&OK";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -48,9 +49,10 @@ namespace NPanday.VisualStudio.Addin
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(574, 46);
+            this.btnCancel.Location = new System.Drawing.Point(430, 37);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(85, 25);
+            this.btnCancel.Size = new System.Drawing.Size(64, 20);
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -58,25 +60,29 @@ namespace NPanday.VisualStudio.Addin
             // 
             // txtBrowseSettingsXmlFile
             // 
-            this.txtBrowseSettingsXmlFile.Location = new System.Drawing.Point(131, 12);
+            this.txtBrowseSettingsXmlFile.Location = new System.Drawing.Point(98, 10);
+            this.txtBrowseSettingsXmlFile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtBrowseSettingsXmlFile.Name = "txtBrowseSettingsXmlFile";
-            this.txtBrowseSettingsXmlFile.Size = new System.Drawing.Size(415, 22);
+            this.txtBrowseSettingsXmlFile.ReadOnly = true;
+            this.txtBrowseSettingsXmlFile.Size = new System.Drawing.Size(312, 20);
             this.txtBrowseSettingsXmlFile.TabIndex = 2;
             // 
             // lblBrowseSettingsXmlFile
             // 
             this.lblBrowseSettingsXmlFile.AutoSize = true;
-            this.lblBrowseSettingsXmlFile.Location = new System.Drawing.Point(12, 12);
+            this.lblBrowseSettingsXmlFile.Location = new System.Drawing.Point(9, 10);
+            this.lblBrowseSettingsXmlFile.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblBrowseSettingsXmlFile.Name = "lblBrowseSettingsXmlFile";
-            this.lblBrowseSettingsXmlFile.Size = new System.Drawing.Size(113, 17);
+            this.lblBrowseSettingsXmlFile.Size = new System.Drawing.Size(85, 13);
             this.lblBrowseSettingsXmlFile.TabIndex = 3;
             this.lblBrowseSettingsXmlFile.Text = "Settings.xml File:";
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(552, 9);
+            this.btnBrowse.Location = new System.Drawing.Point(414, 7);
+            this.btnBrowse.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(107, 28);
+            this.btnBrowse.Size = new System.Drawing.Size(80, 23);
             this.btnBrowse.TabIndex = 4;
             this.btnBrowse.Text = "&Browse";
             this.btnBrowse.UseVisualStyleBackColor = true;
@@ -85,17 +91,19 @@ namespace NPanday.VisualStudio.Addin
             // ChangeMavenSettingsXmlForm
             // 
             this.AcceptButton = this.btnOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(671, 81);
+            this.ClientSize = new System.Drawing.Size(503, 66);
             this.ControlBox = false;
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.lblBrowseSettingsXmlFile);
             this.Controls.Add(this.txtBrowseSettingsXmlFile);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "ChangeMavenSettingsXmlForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Change Maven settings.xml";
             this.ResumeLayout(false);
             this.PerformLayout();

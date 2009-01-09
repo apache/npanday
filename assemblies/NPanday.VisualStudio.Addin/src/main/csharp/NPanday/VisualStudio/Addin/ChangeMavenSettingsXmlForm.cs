@@ -40,6 +40,13 @@ namespace NPanday.VisualStudio.Addin
             // assign to the textbox value
             if (System.IO.File.Exists(txtBrowseSettingsXmlFile.Text))
             {
+                string[] settingsFileArray = txtBrowseSettingsXmlFile.Text.Split("\\".ToCharArray());
+                string settingsFile = settingsFileArray[settingsFileArray.Length - 1];
+                if (!settingsFile.Equals("settings.xml"))
+                {
+                    MessageBox.Show("Sorry, but you have entered an incorrect settings file.", "Change Maven Settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 settingsXmlFile = txtBrowseSettingsXmlFile.Text;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
