@@ -17,8 +17,13 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             solution.File = solutionFile;
 
             lexan.MoveNext();
-            lexan.Expect(Semantics.EOL);
-            lexan.MoveNext();
+			
+			while(lexan.Current.Token == Semantics.EOL)
+			{
+			    // some sln files contains blank lines before the header values, so its best to recourse it first
+	            lexan.Expect(Semantics.EOL);
+	            lexan.MoveNext();
+			}
 
             lexan.Expect(Semantics.STRING_VALUE);
             solution.Header = lexan.Current.Value;
