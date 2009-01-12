@@ -4,6 +4,10 @@
     <Name>Microsoft Visual Studio</Name>
     <Version>8.0</Version>
   </HostApplication>
+  <HostApplication>
+    <Name>Microsoft Visual Studio</Name>
+    <Version>9.0</Version>
+  </HostApplication>
   <Addin>
     <Assembly>${localRepository}\gac_msil\NPanday.VisualStudio.Addin\${pom.version}__NPanday.VisualStudio\NPanday.VisualStudio.Addin.dll</Assembly>
     <FullClassName>NPanday.VisualStudio.Addin.Connect</FullClassName>

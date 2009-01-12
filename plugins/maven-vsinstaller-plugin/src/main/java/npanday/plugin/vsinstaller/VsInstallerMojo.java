@@ -168,13 +168,19 @@ public class VsInstallerMojo
             }
         }
 
+        writePlugin("2005");
+        writePlugin("2008");
+    }
+
+    private void writePlugin(String version)
+    {
         OutputStreamWriter writer = null;
         try
         {
             String addin =
                 IOUtil.toString( VsInstallerMojo.class.getResourceAsStream( "/template/NPanday.VisualStudio.AddIn" ) );
             File outputFile = new File( System.getProperty( "user.home" ) +
-                "\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn" );
+                "\\My Documents\\Visual Studio " + version + "\\Addins\\NPanday.VisualStudio.AddIn" );
 
             if ( !outputFile.getParentFile().exists() )
             {
