@@ -61,7 +61,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                     case Semantics.STRING_VALUE:
                         break;
                     default:
-                        throw new Exception("Mal-formed Solution File!!!");
+                        throw new Exception("Mal-formed Solution File!");
                 }
             }
 
@@ -133,11 +133,11 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                     case Semantics.STRING_VALUE:
                         break;
                     default:
-                        throw new Exception("Invalid Project Entry!!!");
+                        throw new Exception("Invalid Project Entry!");
                 }
 
             }
-            throw new Exception("Expecting EndProject!!!");
+            throw new Exception("Expecting EndProject!");
         }
 
         private static ProjectSection GetProjectSection(LexicalAnalizer lexan)
@@ -214,13 +214,13 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                     case Semantics.EOL:
                         break;
                     default:
-                        throw new Exception("Invalid ProjectSection Entry!!!");
+                        throw new Exception("Invalid ProjectSection Entry!");
                 }
 
             }
 
 
-            throw new Exception("Expecting EndProjectSection!!!");
+            throw new Exception("Expecting EndProjectSection!");
         }
 
 
@@ -250,13 +250,13 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                     case Semantics.STRING_VALUE:
                         break;
                     default:
-                        throw new Exception("Invalid Global Entry!!!");
+                        throw new Exception("Invalid Global Entry!");
                 }
 
             }
 
 
-            throw new Exception("Expecting EndGlobal!!!");
+            throw new Exception("Expecting EndGlobal!");
         }
 
         private static GlobalSection GetGlobalSection(LexicalAnalizer lexan)
@@ -333,13 +333,13 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                     case Semantics.EOL:
                         break;
                     default:
-                        throw new Exception("Invalid GlobalSection Entry!!!");
+                        throw new Exception("Invalid GlobalSection Entry!");
                 }
 
             }
 
 
-            throw new Exception("Expecting EndGlobalSection!!!");
+            throw new Exception("Expecting EndGlobalSection!");
         }
 
     }

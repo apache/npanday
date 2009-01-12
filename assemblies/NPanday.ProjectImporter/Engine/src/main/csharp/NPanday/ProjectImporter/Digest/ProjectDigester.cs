@@ -83,8 +83,8 @@ namespace NPanday.ProjectImporter.Digest
                         {
                             // this might not be possible
                             string msg = string.Format(
-                                "Missing Project Reference {0} located at {1}!!!"
-                                + "\nNote this might cause Missing Artifact Dependency!!!",
+                                "Missing Project Reference {0} located at {1}!"
+                                + "\nNote this might cause Missing Artifact Dependency!",
                                 projectReference.Name,
                                 projectReference.ProjectFullPath);
                             MessageBox.Show(msg, "Missing Inter-Project Reference:", MessageBoxButtons.OK);
@@ -118,9 +118,9 @@ namespace NPanday.ProjectImporter.Digest
                             MessageBox.Show(
                                 string.Format(
                                 "Please Make sure that Artifact[GroupId: {0}, ArtifactId: {0}] exists in your NPanday Repository, " +
-                                "\n Or an error will occur during NPanday-Build due to Missing Artifact Dependency!!!",
+                                "\n Or an error will occur during NPanday-Build due to Missing Artifact Dependency!",
                                 prjRefDigest.AssemblyName),
-                                "Warning: Posible Dependency Missing!!!",
+                                "Warning: Posible Dependency Missing!",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning
 

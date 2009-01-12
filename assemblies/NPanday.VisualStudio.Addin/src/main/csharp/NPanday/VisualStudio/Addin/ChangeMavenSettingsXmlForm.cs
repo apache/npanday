@@ -69,7 +69,7 @@ namespace NPanday.VisualStudio.Addin
             {
                 string str = "Settings File: "
                     + txtBrowseSettingsXmlFile.Text
-                    + "does not exists!!!";
+                    + "does not exists!";
 
                 MessageBox.Show(str,
                     "Settings File Not Found:",

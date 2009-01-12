@@ -1230,7 +1230,7 @@ namespace NPanday.VisualStudio.Addin
                     }
                     else
                     {
-                        //MessageBox.Show("Parent pom.xml Not Found!!! ",
+                        //MessageBox.Show("Parent pom.xml Not Found! ",
                         //"File Not Found:",
                         //MessageBoxButtons.OK,
                         //MessageBoxIcon.Error);

@@ -30,7 +30,7 @@ namespace NPanday.ProjectImporter.Verifiers
                 }
                 else
                 {
-                    throw new Exception("Project Must be Imported atleast once before Re-Importing!!!");
+                    throw new Exception("Project Must be Imported atleast once before Re-Importing!");
                 }
             }
 
@@ -83,7 +83,7 @@ namespace NPanday.ProjectImporter.Verifiers
 
             if (!parentPomFile.Exists)
             {
-                throw new Exception("Project Must be Imported Atleast once before Re-Importing!!!");
+                throw new Exception("Project Must be Imported Atleast once before Re-Importing!");
             }
 
             NPanday.Model.Pom.Model model = NPanday.Utils.PomHelperUtility.ReadPomAsModel(parentPomFile);

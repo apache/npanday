@@ -929,7 +929,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
 
 
                     default:
-                        throw new Exception(string.Format("Invalid Parse State value: {0} !!!", (int)state));
+                        throw new Exception(string.Format("Invalid Parse State value: {0} !", (int)state));
                         
                 }
 
@@ -1032,7 +1032,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
         {
             if (expected != expect)
             {
-                throw new Exception(string.Format("Expecting {0} but it is {1}!!!", expected, expect));
+                throw new Exception(string.Format("Expecting {0} but it is {1}!", expected, expect));
             }
         }
 
@@ -1051,7 +1051,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             }
             else
             {
-                throw new Exception("String or Quoted String is Expected!!!");
+                throw new Exception("String or Quoted String is Expected!");
             }
         }
 

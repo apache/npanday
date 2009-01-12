@@ -178,7 +178,7 @@ namespace NPanday.Utils
 
             if (!(new FileInfo(pomFile)).Exists)
             {
-                string errStr = string.Format("Error: Pom File {0} not found!!!", pomFile);
+                string errStr = string.Format("Error: Pom File {0} not found!", pomFile);
                 output.OutputString(errStr);
                 throw new Exception(errStr);
             }
@@ -230,7 +230,7 @@ namespace NPanday.Utils
 
             if (this.IsRunning)
             {
-                throw new Exception("A Maven: Process Is still Running!!!");
+                throw new Exception("A Maven: Process Is still Running!");
             }
 
             string pomFile = args[0];
@@ -351,18 +351,18 @@ namespace NPanday.Utils
             int exitCode = process.ExitCode;
             if (exitCode == 0)
             {
-                output.OutputString("\nNPanday Execution is Successful!!!");
+                output.OutputString("\nNPanday Execution is Successful!");
 				DeleteBinDir();
             }
             else
             {
-                output.OutputString("\nNPanday Execution Failed!!!, with exit code: " + exitCode);
+                output.OutputString("\nNPanday Execution Failed!, with exit code: " + exitCode);
                 DeleteBinDir();
             }
             // dont display any failed execution if stop
             //else if (exitCode == -1)
             //{
-            //    output.OutputString("\nNPanday Execution Failed!!!");
+            //    output.OutputString("\nNPanday Execution Failed!");
             //}
         }
     }

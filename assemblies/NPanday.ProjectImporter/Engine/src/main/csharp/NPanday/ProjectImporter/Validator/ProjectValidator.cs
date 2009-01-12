@@ -47,12 +47,12 @@ namespace NPanday.ProjectImporter.Validator
         {
             if (solutionFile == null)
             {
-                throw new NullReferenceException("Solution file must not be null!!!");
+                throw new NullReferenceException("Solution file must not be null!");
             }
 
             if (projectDigests == null)
             {
-                throw new NullReferenceException("Project Digests Must not be null!!!");
+                throw new NullReferenceException("Project Digests Must not be null!");
             }
 
             string solutonDir = Path.GetDirectoryName(Path.GetFullPath(solutionFile));

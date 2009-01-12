@@ -138,7 +138,7 @@ namespace NPanday.VisualStudio.Addin
 
                     string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, "1.0-SNAPSHOT", true);
 
-                    string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!!!\n");
+                    string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
 
 
                     foreach (string pom in generatedPoms)
