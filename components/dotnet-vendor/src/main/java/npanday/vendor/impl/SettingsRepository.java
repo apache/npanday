@@ -157,6 +157,7 @@ public final class SettingsRepository
                     if ( frameworkVersion.equals( framework.getFrameworkVersion().trim() ) )
                     {
                          String sdkRoot = framework.getSdkInstallRoot();
+                         System.out.println("SDK ROOT:" +sdkRoot);
                          if(sdkRoot != null) return new File(sdkRoot );
                     }
                 }
@@ -185,14 +186,15 @@ public final class SettingsRepository
         }
         for ( Vendor v : vendors )
         {
-            if ( vendor.equals( v.getVendorName().trim() ) && vendorVersion.equals( v.getVendorVersion().trim() ) )
+        	if ( vendor.equals( v.getVendorName().trim() ) && vendorVersion.equals( v.getVendorVersion().trim() ) )
             {
                 List<Framework> frameworks = v.getFrameworks();
-                for ( Framework framework : frameworks )
+              
+				for ( Framework framework : frameworks )
                 {
-                    if ( frameworkVersion.equals( framework.getFrameworkVersion().trim() ) )
-                    {
-                        return new File( framework.getInstallRoot() );
+					if ( frameworkVersion.equals( framework.getFrameworkVersion().trim() )) 
+					{
+						return new File( framework.getInstallRoot() );
                     }
                 }
             }

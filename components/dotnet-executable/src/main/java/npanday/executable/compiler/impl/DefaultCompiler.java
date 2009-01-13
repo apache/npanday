@@ -144,6 +144,18 @@ public final class DefaultCompiler
             commands.add( wcfRef + "System.Runtime.Serialization.dll" );
             commands.add( wcfRef + "SMDiagnostics.dll" );
         }
+		
+		if ( compilerContext.getCompilerRequirement().getVendor().equals( Vendor.MICROSOFT ) &&
+            compilerContext.getCompilerRequirement().getFrameworkVersion().equals( "3.5" ) )
+        {
+            String wcfRef = "/reference:" + System.getenv( "SystemRoot" ) +
+                "\\Microsoft.NET\\Framework\\v3.5\\";
+            //TODO: This is a hard-coded path: Don't have a registry value either.
+            commands.add( wcfRef + "Microsoft.Build.Tasks.v3.5.dll" );
+            commands.add( wcfRef + "Microsoft.CompactFramework.Build.Tasks.dll" );
+            commands.add( wcfRef + "Microsoft.Data.Entity.Build.Tasks.dll" );
+            commands.add( wcfRef + "Microsoft.VisualC.STLCLR.dll" );
+        }
 
         if ( compilerContext.getKeyInfo().getKeyFileUri() != null )
         {

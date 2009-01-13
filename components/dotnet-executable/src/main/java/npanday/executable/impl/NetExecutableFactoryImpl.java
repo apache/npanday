@@ -92,7 +92,7 @@ public class NetExecutableFactoryImpl
     {
 
         VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-        vendorInfo.setVendorVersion( compilerRequirement.getVendorVersion() );
+	    vendorInfo.setVendorVersion( compilerRequirement.getVendorVersion() );
         vendorInfo.setFrameworkVersion( compilerRequirement.getFrameworkVersion() );
         vendorInfo.setVendor( compilerRequirement.getVendor() );
         try

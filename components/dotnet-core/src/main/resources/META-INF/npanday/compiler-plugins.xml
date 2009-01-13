@@ -58,8 +58,8 @@
     <language>C_SHARP</language>
     <profile>FULL</profile>
     <frameworkVersions>
-      <frameworkVersion>2.0.50727</frameworkVersion>
-      <frameworkVersion>3.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+	  <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
@@ -110,14 +110,15 @@
     </commandFilter>
   </compilerPlugin>
   <compilerPlugin>
-    <identifier>MS-CS:COMPACT</identifier>
+    <identifier>MS-CS:3.5</identifier>
     <pluginClass>npanday.executable.compiler.impl.CSharpCompilerForProfile</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>csc</executable>
     <language>C_SHARP</language>
     <profile>COMPACT</profile>
     <frameworkVersions>
-      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+	  <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
@@ -125,7 +126,7 @@
         <architecture>x86</architecture>
       </platform>
     </platforms>
-    <defaultAssemblyPath>C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE</defaultAssemblyPath>
+    <defaultAssemblyPath>C:\Program Files\Microsoft.NET\SDK\CompactFramework\v3.5\WindowsCE</defaultAssemblyPath>
     <assemblies>
       <assembly>mscorlib</assembly>
       <assembly>System.Data</assembly>
@@ -137,6 +138,12 @@
       <assembly>System.Windows.Forms</assembly>
       <assembly>Microsoft.WindowsCE.Forms</assembly>
       <assembly>System.Xml</assembly>
+	  <assembly>System.Core</assembly>
+	  <assembly>System.Data.DataSetExtensions</assembly>
+	  <assembly>System.Xml.Linq</assembly>
+	  <assembly>System.ServiceModel</assembly>
+	  <assembly>Microsoft.Transactions.Bridge</assembly>
+	  <assembly>System.Runtime.Serialization</assembly>
     </assemblies>
     <commandFilter>
       <includes>
@@ -189,7 +196,8 @@
     <language>VB</language>
     <profile>FULL</profile>
     <frameworkVersions>
-      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+	  <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
     <platforms>
@@ -251,7 +259,7 @@
     <language>ASP</language>
     <profile>FULL</profile>
     <frameworkVersions>
-      <frameworkVersion>2.0.50727</frameworkVersion>
+	  <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>

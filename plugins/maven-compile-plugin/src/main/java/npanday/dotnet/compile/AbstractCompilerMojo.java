@@ -665,22 +665,21 @@ public abstract class AbstractCompilerMojo
     {
         long startTime = System.currentTimeMillis();
 
-
+		
         if (localRepository == null)
         {
-            localRepository = new File(System.getProperty("user.home"), ".m2/repository");
+            
+			localRepository = new File(System.getProperty("user.home"), ".m2/repository");
         }
-
+       
         initializeDefaults();
-
-
+  
         try
         {
             CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutableFor(getCompilerRequirement(),
                     getCompilerConfig(),
                     project,
                     profileAssemblyPath);
-
             if (!test)
             {
 
