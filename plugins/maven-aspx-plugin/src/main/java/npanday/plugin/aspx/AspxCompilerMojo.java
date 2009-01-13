@@ -48,7 +48,7 @@ public class AspxCompilerMojo
 {
     private static final String DEFAULT_INCLUDES = "**"; //any extension can be made for request handler in ASPX
 
-    private static final String DEFAULT_EXCLUDES = "obj/**, target/**, **/*.pdb, **/*.csproj, **/*.vbproj, **/*.suo, **/*.user, pom.xml, **/*.sln, build.log";
+    private static final String DEFAULT_EXCLUDES = "obj/**, target/**, **/*.pdb, **/*.csproj, **/*.vbproj, **/*.suo, **/*.user,pom.xml, **/*.sln,build.log,PrecompiledApp.config,csproj.user,Properties/**,**.releaseBackup";
 
     /**
      * The maven project.
@@ -222,7 +222,7 @@ public class AspxCompilerMojo
 
         try
         {
-            CompilerExecutable compilerExecutable =
+			CompilerExecutable compilerExecutable =
                 netExecutableFactory.getCompilerExecutableFor( compilerRequirement, compilerConfig, project,
                                                                profileAssemblyPath );
 
