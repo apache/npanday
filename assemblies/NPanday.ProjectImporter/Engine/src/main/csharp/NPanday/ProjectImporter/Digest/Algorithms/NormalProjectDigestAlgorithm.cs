@@ -381,6 +381,10 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                         {
                             projectDigest.SchemaVersion = buildProperty.Value;
                         }
+                        else if ("TargetFrameworkVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            projectDigest.TargetFramework = buildProperty.Value.Substring(1);
+                        }
                         else if ("AppDesignerFolder".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
                         {
                             projectDigest.AppDesignerFolder = buildProperty.Value;

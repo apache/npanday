@@ -120,6 +120,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 			
             // Add NPanday compile plugin 
             Plugin aspxPlugin = AddPlugin("npanday.plugin", "maven-aspx-plugin");
+            AddPluginConfiguration(aspxPlugin, "frameworkVersion", projectDigest.TargetFramework);
 
 			//Add Project WebReferences
             //AddWebReferences();
@@ -135,7 +136,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             if (writePom)
             {
-                PomHelperUtility.WriteModelToPom(new FileInfo(Path.GetDirectoryName(projectDigest.FullFileName) + @"\pom.xml"), Model);
+                PomHelperUtility.WriteModelToPom(new FileInfo(Path.Combine(projectDigest.FullDirectoryName, "pom.xml")), Model);
             }
 
         }

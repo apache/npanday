@@ -49,6 +49,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 null,
                 true
             );
+
+            AddPluginConfiguration(compilePlugin, "frameworkVersion", projectDigest.TargetFramework);
+           
             
 
             if(projectDigest.Language.Equals("vb",StringComparison.OrdinalIgnoreCase))
@@ -133,7 +136,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             
             if (writePom)
             {
-                PomHelperUtility.WriteModelToPom(new FileInfo(Path.GetDirectoryName(projectDigest.FullFileName) + @"\pom.xml"), Model);
+                PomHelperUtility.WriteModelToPom(new FileInfo(Path.Combine(projectDigest.FullDirectoryName, "pom.xml")), Model);
             }
 
         }

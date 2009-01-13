@@ -154,6 +154,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             ps.Name = lexan.Current.Value;
             lexan.MoveNext();
 
+
             lexan.Expect(Semantics.CLOSE_PARENTHESIS);
             lexan.MoveNext();
 

@@ -416,6 +416,13 @@ namespace NPanday.ProjectImporter.Digest.Model
             set { baseApplicationManifest = value; }
         }
 
+        private string targetFramework;
+
+        public string TargetFramework
+        {
+            get { return targetFramework; }
+            set { targetFramework = value; }
+        }
 
 
         private Compile[] compiles;

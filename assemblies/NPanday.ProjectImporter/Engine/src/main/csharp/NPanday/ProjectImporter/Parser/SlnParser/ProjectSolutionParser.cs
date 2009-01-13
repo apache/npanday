@@ -41,7 +41,6 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
-
                 dictionary.Add("ProjectTypeGuid", project.ProjectTypeGUID);
                 dictionary.Add("ProjectType", VisualStudioProjectType.GetVisualStudioProjectType(project.ProjectTypeGUID));
 
@@ -52,11 +51,6 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                 string fullpath = Path.Combine(solutionFile.DirectoryName, project.ProjectPath);
                 dictionary.Add("ProjectFullPath", fullpath);
 
-
-
-
-
-
                 // this is for web projects
                 if ((VisualStudioProjectTypeEnum)dictionary["ProjectType"] == VisualStudioProjectTypeEnum.Web_Site)
                 {
@@ -64,6 +58,14 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                     string[] assemblies = GetWebConfigAssemblies(Path.Combine(fullpath, "web.config"));
                     dictionary.Add("WebConfigAssemblies", assemblies);
 
+                    //get project target framework if available
+                    if (project.ProjectSections.Count > 0)
+                    {
+                        if (project.ProjectSections[0].Map.ContainsKey("TargetFramework"))
+                        {
+                            dictionary.Add("TargetFramework", project.ProjectSections[0].Map["TargetFramework"]);
+                        }
+                    }
 
                     //@001 SERNACIO START retrieving webreference
                     Digest.Model.WebReferenceUrl[] webReferences = getWebReferenceUrls(fullpath);
@@ -188,7 +190,33 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             return null;
         }
 
+        protected string getWebSiteFrameworkVersion(string webconfig)
+        {
+            string xpath = @"//configuration/system.codedom/compilers/compiler";
+            
+            if (!File.Exists(webconfig))
+                return "2.0";
 
+            XmlDocument xdoc = new XmlDocument();
+            xdoc.Load(webconfig);
+            XmlNodeList nodes = xdoc.SelectNodes(xpath);
+            if (nodes.Count > 0)
+            {
+                string v = "2.0";
+                foreach (XmlNode node in nodes[0].ChildNodes)
+                {
+                    if ("CompilerVersion".Equals(node.Attributes[0].Value, StringComparison.OrdinalIgnoreCase))
+                    {
+                        v = node.Attributes[1].Value.Substring(1);
+                        break;
+                    }
+                }
+
+                return v;
+            }
+            else
+                return "2.0";
+        }
 
         protected string[] GetWebConfigAssemblies(string webconfig)
         {

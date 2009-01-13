@@ -27,6 +27,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             projectDigest.ProjectType = (VisualStudioProjectTypeEnum)projectMap["ProjectType"];
             projectDigest.FullFileName = projectMap["ProjectFullPath"].ToString();
             projectDigest.FullDirectoryName = projectDigest.FullFileName;
+            projectDigest.TargetFramework = projectMap["TargetFramework"].ToString();
 
             FileInfo existingPomFile = new FileInfo(Path.Combine(projectDigest.FullDirectoryName, "pom.xml"));
             if(existingPomFile.Exists)
