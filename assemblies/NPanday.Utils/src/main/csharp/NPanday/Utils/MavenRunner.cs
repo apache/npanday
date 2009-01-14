@@ -23,8 +23,14 @@ namespace NPanday.Utils
         System.Threading.Thread outputThread;
         bool running;
         ManualResetEvent outputThreadEvent;
+        public event EventHandler RunnerStopped;
 
 
+        protected void onRunnerStopped()
+        {
+            if (RunnerStopped != null)
+                RunnerStopped(this, new EventArgs());
+        }
 
         public MavenRunner(DTE2 dte2)
         {
@@ -334,6 +340,7 @@ namespace NPanday.Utils
             if (stopCalled)
             {
                 output.OutputString("\nNPanday execution stopped successfully.");
+                onRunnerStopped();
                 return;
             }
 
@@ -359,6 +366,7 @@ namespace NPanday.Utils
                 output.OutputString("\nNPanday Execution Failed!, with exit code: " + exitCode);
                 DeleteBinDir();
             }
+            onRunnerStopped();
             // dont display any failed execution if stop
             //else if (exitCode == -1)
             //{

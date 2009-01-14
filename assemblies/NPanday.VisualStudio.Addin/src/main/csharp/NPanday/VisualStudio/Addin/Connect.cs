@@ -75,11 +75,11 @@ namespace NPanday.VisualStudio.Addin
         public const string MSG_L_NPANDAY_ALREADY_STARTED = "\nNPanday Addin Has Already Started.";
         public const string MSG_L_NPANDAY_ADDIN_STARTED = "\nNPanday Addin Successfully Started.";
         public const string MSG_E_NPANDAY_REMOVE_DEPENDENCY_ERROR = "NPanday Remove Dependency Error:";
-        public const string MSG_Q_STOP_MAVEN_BUILD = "Do you want to stop the Maven Build?";
+        public const string MSG_Q_STOP_MAVEN_BUILD = "Do you want to stop the NPanday Build?";
         public const string MSG_EF_NOT_A_PROJECT_POM = "Not A Project Pom Error: {0} is not a project Pom, the pom is a parent pom type.";
         public const string MSG_EF_NOT_THE_PROJECT_POM = "The Pom may not be the project's Pom: Project Name: {0} is not equal to Pom artifactId: {1}";
         public const string MSG_E_PARENTPOM_NOTFOUND = "parent-pom.xml Not Found";//from Parent pom.xml to paren-pom.xml
-        public const string MSG_E_EXEC_ERROR = "Maven Execution Error: ";
+        public const string MSG_E_EXEC_ERROR = "NPanday Execution Error: ";
         public const string MSG_L_SHUTTING_DOWN_NPANDAY = "\nShutting Down NPanday Visual Studio Addin.";
         public const string MSG_L_SUCCESFULLY_SHUTDOWN = "\nNPanday Successfully Stopped.";//from ShutDown to Stopped
         public const string MSG_D_NPANDAY_BUILD_SYSTEM = "NPanday Build System";
@@ -91,9 +91,13 @@ namespace NPanday.VisualStudio.Addin
         public const string MSG_C_ADD_MAVEN_ARTIFACT = "Add Maven Artifact...";
         public const string MSG_C_CHANGE_MAVEN_SETTING_XML = "Change Maven settings.xml...";
         public const string MSG_C_SET_COMPILE_SIGN_ASSEMBLY_KEY = "Set NPanday Compile Sign Assembly Key...";
-        public const string MSG_C_IMPORT_PROJECT = "NPanday: Import Project";
+        public const string MSG_C_IMPORT_PROJECT = "Generate Solution's POM Information...";
         public const string MSG_C_STOP_MAVEN_BUILD = "Stop Maven Build";
         public const string MSG_C_MAVEN_PHASE = "Maven Phase";
+        public const string MSG_C_CLEAN = "Clean";
+        public const string MSG_C_BUILD = "Build [compile]";
+        public const string MSG_C_TEST = "Test";
+        public const string MSG_C_INSTALL = "Install";
         public const string MSG_C_CLEAN_ALLPROJECT = "All Projects: Clean";
         public const string MSG_C_TEST_ALLPROJECT = "All Projects: Test";
         public const string MSG_C_INSTALL_ALLPROJECT = "All Projects: Install";
@@ -104,10 +108,12 @@ namespace NPanday.VisualStudio.Addin
         public const string MSG_C_TEST_CURRENTPROJECT = "Current Project: Test";
         public const string MSG_C_RUNUNITTEST = "Run Unit Test/s";
         public const string MSG_C_COMPILEANDRUNTEST = "Compile and Run Unit Test/s";
-        public const string MSG_Q_STOPCURRENTBUILD = "A Maven Build is currently running, Do you want to stop the build and proceed to a new Build Execution?";
+        public const string MSG_Q_STOPCURRENTBUILD = "A NPanday Build is currently running, Do you want to stop the build and proceed to a new Build Execution?";
         public const string MSG_C_STOPNPANDAYBUILD = "Stop NPanday Build";
         public const string MSG_C_EXEC_ERROR = "Execution Error:";
         public const string MSG_C_ERROR = "Error";
+        public const string MSG_C_ALL_PROJECTS = "All NPanday Projects";
+        public const string MSG_C_CUR_PROJECT = "Current NPanday Project";
     }
     public class NPandayBuildSystemProperties : System.ComponentModel.ISynchronizeInvoke
     {
@@ -200,6 +206,7 @@ namespace NPanday.VisualStudio.Addin
 
             _applicationObject = (DTE2)application;
             mavenRunner = new MavenRunner(_applicationObject);
+            mavenRunner.RunnerStopped += new EventHandler(mavenRunner_RunnerStopped);
             _addInInstance = (AddIn)addInInst;
             Command command = null;
             mavenConnected = true;
@@ -207,7 +214,7 @@ namespace NPanday.VisualStudio.Addin
             //next two lines add a eventhandler to handle beforeclosing a solution
             globalSolutionEvents = (EnvDTE.SolutionEvents)((Events2)_applicationObject.Events).SolutionEvents;
             globalSolutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler(SolutionEvents_BeforeClosing);
-            globalSolutionEvents.Opened +=new _dispSolutionEvents_OpenedEventHandler(SolutionEvents_Opened);
+            globalSolutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler(SolutionEvents_Opened);
 
             if (connectMode == ext_ConnectMode.ext_cm_UISetup)
             {
@@ -271,6 +278,11 @@ namespace NPanday.VisualStudio.Addin
             {
                 launchNPandayBuildSystem();
             }
+        }
+
+        void mavenRunner_RunnerStopped(object sender, EventArgs e)
+        {
+            stopButton.Enabled = false;
         }
 
         private const string WEB_PROJECT_KIND_GUID = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";
@@ -550,7 +562,7 @@ namespace NPanday.VisualStudio.Addin
             // just to be safe, check if NPanday is already launched
             if (_npandayLaunched)
             {
-                outputWindowPane.OutputString(Messages.MSG_L_NPANDAY_ALREADY_STARTED);
+                //outputWindowPane.OutputString(Messages.MSG_L_NPANDAY_ALREADY_STARTED);
                 return;
             }
 
@@ -608,58 +620,13 @@ namespace NPanday.VisualStudio.Addin
                         ctl.Visible = true;
                         addReferenceControls.Add(ctl);
 
-                        // commented out because configure maven is moved to add maven artifact.
-                        //CommandBarButton ctl1 = (CommandBarButton)
-                        //    commandBar.Controls.Add(MsoControlType.msoControlButton,
-                        //    System.Type.Missing, System.Type.Missing, control.Index, true);
-                        //ctl1.Click +=
-                        //    new _CommandBarButtonEvents_ClickEventHandler(cbShowConfigureRepositoryForm_Click);
-                        //ctl1.Caption = Messages.MSG_C_CONFIGURE_MAVEN_REPO;
-                        //ctl1.Visible = true;
-                        //addReferenceControls.Add(ctl1);
-
-                        // by jan ancajas
-                        CommandBarButton ctlSettingsXml = (CommandBarButton)
-                        commandBar.Controls.Add(MsoControlType.msoControlButton,
-                                                  System.Type.Missing,
-                                                  System.Type.Missing,
-                                                  control.Index,
-                                                  true);
-                        ctlSettingsXml.Click +=
-                            new _CommandBarButtonEvents_ClickEventHandler(cbChangeSettingsXmlForm_Click);
-                        ctlSettingsXml.Caption = Messages.MSG_C_CHANGE_MAVEN_SETTING_XML;
-                        ctlSettingsXml.Visible = true;
-                        addReferenceControls.Add(ctlSettingsXml);
-
-
-
-                        CommandBarButton ctlSignAssembly = (CommandBarButton)
-                        commandBar.Controls.Add(MsoControlType.msoControlButton,
-                                                  System.Type.Missing,
-                                                  System.Type.Missing,
-                                                  control.Index,
-                                                  true);
-                        ctlSignAssembly.Click +=
-                            new _CommandBarButtonEvents_ClickEventHandler(cbSetSignAssemblyForm_Click);
-                        ctlSignAssembly.Caption = Messages.MSG_C_SET_COMPILE_SIGN_ASSEMBLY_KEY;
-                        ctlSignAssembly.Visible = true;
-                        addReferenceControls.Add(ctlSignAssembly);
-
-
-
-                        CommandBarButton ctlProjectImport = (CommandBarButton)
-                        commandBar.Controls.Add(MsoControlType.msoControlButton,
-                                                  System.Type.Missing,
-                                                  System.Type.Missing,
-                                                  control.Index,
-                                                  true);
-                        ctlProjectImport.Click +=
-                            new _CommandBarButtonEvents_ClickEventHandler(cbChangeProjectImportForm_Click);
-                        ctlProjectImport.Caption = Messages.MSG_C_IMPORT_PROJECT;
-                        ctlProjectImport.Visible = true;
-                        addReferenceControls.Add(ctlProjectImport);
-
-
+                    }
+                    else if (control.Caption.Equals("C&onfiguration Manager..."))
+                    {
+                        //add solution menu
+                        createStopBuildMenu(commandBar, control);
+                        createNPandayMenus(commandBar, control);
+                        createAllProjectMenu(commandBar, control);
 
                     }
                     // included build web site to support web site projects
@@ -667,90 +634,20 @@ namespace NPanday.VisualStudio.Addin
                     {
                         // Add the stop maven build button here
 
-                        CommandBarButton stopButton = (CommandBarButton)commandBar.Controls.Add(MsoControlType.msoControlButton,
-                            System.Type.Missing, System.Type.Missing, control.Index + 1, true);
-                        stopButton.Caption = Messages.MSG_C_STOP_MAVEN_BUILD;
-                        stopButton.Visible = true;
-                        stopButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbStopMavenBuild_Click);
-                        buildControls.Add(stopButton);
-
-
-
+                        createStopBuildMenu(commandBar, control);
+                        createNPandayMenus(commandBar, control);
 
                         CommandBarPopup ctl = (CommandBarPopup)
                             commandBar.Controls.Add(MsoControlType.msoControlPopup,
                             System.Type.Missing, System.Type.Missing, control.Index + 1, true);
-                        ctl.Caption = Messages.MSG_C_MAVEN_PHASE;
+                        ctl.Caption = Messages.MSG_C_CUR_PROJECT;
                         ctl.Visible = true;
+
                         buildControls.Add(ctl);
 
+                        createAllProjectMenu(commandBar, control);
 
-
-                        CommandBarButton cleanAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                            System.Type.Missing, System.Type.Missing, 1, true);
-                        cleanAllButton.Caption = Messages.MSG_C_CLEAN_ALLPROJECT;
-                        cleanAllButton.Visible = true;
-                        cleanAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbCleanAll_Click);
-
-
-                        CommandBarButton testAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                            System.Type.Missing, System.Type.Missing, 1, true);
-                        testAllButton.Caption = Messages.MSG_C_TEST_ALLPROJECT;
-                        testAllButton.Visible = true;
-                        testAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbTestAll_Click);
-
-                        CommandBarButton installAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                            System.Type.Missing, System.Type.Missing, 1, true);
-                        installAllButton.Caption = Messages.MSG_C_INSTALL_ALLPROJECT;
-                        installAllButton.Visible = true;
-                        installAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstallAll_Click);
-
-                        CommandBarButton buildAllButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                            System.Type.Missing, System.Type.Missing, 1, true);
-                        buildAllButton.Caption = Messages.MSG_C_BUILD_ALLPROJECT;
-                        buildAllButton.Visible = true;
-                        buildAllButton.FaceId = 645;
-                        buildAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuildAll_Click);
-
-
-
-                        CommandBarButton cleanButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                            System.Type.Missing, System.Type.Missing, 1, true);
-                        cleanButton.Caption = Messages.MSG_C_CLEAN_CURRENTPROJECT;
-                        cleanButton.Visible = true;
-                        cleanButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbClean_Click);
-
-
-
-                        CommandBarButton testButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                            System.Type.Missing, System.Type.Missing, 1, true);
-                        testButton.Caption = Messages.MSG_C_TEST_CURRENTPROJECT;
-                        testButton.Visible = true;
-                        testButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbTest_Click);
-
-                        CommandBarButton installButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                            System.Type.Missing, System.Type.Missing, 1, true);
-                        installButton.Caption = Messages.MSG_C_INSTALL_CURRENTPROJECT;
-                        installButton.Visible = true;
-                        installButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstall_Click);
-
-                        CommandBarButton buildButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
-                            System.Type.Missing, System.Type.Missing, 1, true);
-                        buildButton.Caption = Messages.MSG_C_BUILD_CURRENTPROJECT;
-                        buildButton.Visible = true;
-                        buildButton.FaceId = 645;
-                        buildButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuild_Click);
-
-                        buildControls.Add(buildAllButton);
-                        buildControls.Add(installAllButton);
-                        buildControls.Add(cleanAllButton);
-                        buildControls.Add(testAllButton);
-
-
-                        buildControls.Add(buildButton);
-                        buildControls.Add(installButton);
-                        buildControls.Add(cleanButton);
-                        buildControls.Add(testButton);
+                        createCurrentProjectMenu(ctl);
 
 
                     }
@@ -766,6 +663,155 @@ namespace NPanday.VisualStudio.Addin
 
             if (_applicationObject.Solution != null)
                 attachReferenceEvent();
+        }
+
+        CommandBarButton cleanButton;
+        CommandBarButton testButton;
+        CommandBarButton installButton;
+        CommandBarButton buildButton;
+
+        private void createCurrentProjectMenu(CommandBarPopup ctl)
+        {
+            cleanButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            cleanButton.Caption = Messages.MSG_C_CLEAN;
+            cleanButton.Visible = true;
+            cleanButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbClean_Click);
+
+
+
+            testButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            testButton.Caption = Messages.MSG_C_TEST;
+            testButton.Visible = true;
+            testButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbTest_Click);
+
+            installButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            installButton.Caption = Messages.MSG_C_INSTALL;
+            installButton.Visible = true;
+            installButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstall_Click);
+
+            buildButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            buildButton.Caption = Messages.MSG_C_BUILD;
+            buildButton.Visible = true;
+            buildButton.FaceId = 645;
+            buildButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuild_Click);
+
+            buildControls.Add(buildButton);
+            buildControls.Add(installButton);
+            buildControls.Add(cleanButton);
+            buildControls.Add(testButton);
+        }
+
+        private void createStopBuildMenu(CommandBar commandBar, CommandBarControl control)
+        {
+            stopButton = (CommandBarButton)commandBar.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, control.Index + 1, true);
+            stopButton.Caption = Messages.MSG_C_STOPNPANDAYBUILD;
+            stopButton.Enabled = false;
+            stopButton.Visible = true;
+            stopButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbStopMavenBuild_Click);
+            buildControls.Add(stopButton);
+        }
+
+        CommandBarButton ctlSettingsXml;
+        CommandBarButton ctlSignAssembly;
+        CommandBarButton ctlProjectImport;
+
+        private void createNPandayMenus(CommandBar commandBar, CommandBarControl control)
+        {
+            ctlSettingsXml = (CommandBarButton)
+            commandBar.Controls.Add(MsoControlType.msoControlButton,
+                                      System.Type.Missing,
+                                      System.Type.Missing,
+                                      control.Index + 1,
+                                      true);
+            ctlSettingsXml.Click +=
+                new _CommandBarButtonEvents_ClickEventHandler(cbChangeSettingsXmlForm_Click);
+            ctlSettingsXml.Caption = Messages.MSG_C_CHANGE_MAVEN_SETTING_XML;
+            ctlSettingsXml.Visible = true;
+
+            buildControls.Add(ctlSettingsXml);
+
+            ctlSignAssembly = (CommandBarButton)
+            commandBar.Controls.Add(MsoControlType.msoControlButton,
+                                      System.Type.Missing,
+                                      System.Type.Missing,
+                                      control.Index + 1,
+                                      true);
+            ctlSignAssembly.Click +=
+                new _CommandBarButtonEvents_ClickEventHandler(cbSetSignAssemblyForm_Click);
+            ctlSignAssembly.Caption = Messages.MSG_C_SET_COMPILE_SIGN_ASSEMBLY_KEY;
+            ctlSignAssembly.Visible = true;
+            buildControls.Add(ctlSignAssembly);
+
+            ctlProjectImport = (CommandBarButton)
+            commandBar.Controls.Add(MsoControlType.msoControlButton,
+                                      System.Type.Missing,
+                                      System.Type.Missing,
+                                      control.Index + 1,
+                                      true);
+            ctlProjectImport.Click +=
+                new _CommandBarButtonEvents_ClickEventHandler(cbChangeProjectImportForm_Click);
+            ctlProjectImport.Caption = Messages.MSG_C_IMPORT_PROJECT;
+            ctlProjectImport.Visible = true;
+
+            buildControls.Add(ctlProjectImport);
+        }
+
+        CommandBarPopup ctlAll;
+        CommandBarButton cleanAllButton;
+        CommandBarButton testAllButton;
+        CommandBarButton installAllButton;
+        CommandBarButton buildAllButton;
+
+        private void createAllProjectMenu(CommandBar commandBar, CommandBarControl control)
+        {
+            ctlAll = (CommandBarPopup) commandBar.Controls.Add(MsoControlType.msoControlPopup,
+                System.Type.Missing, System.Type.Missing, control.Index + 1, true);
+            ctlAll.Caption = Messages.MSG_C_ALL_PROJECTS;
+            ctlAll.Visible = true;
+            ctlAll.BeginGroup = true;
+            buildControls.Add(ctlAll);
+
+            cleanAllButton = (CommandBarButton)ctlAll.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            cleanAllButton.Caption = Messages.MSG_C_CLEAN;
+            cleanAllButton.Visible = true;
+            cleanAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbCleanAll_Click);
+
+
+            testAllButton = (CommandBarButton)ctlAll.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            testAllButton.Caption = Messages.MSG_C_TEST;
+            testAllButton.Visible = true;
+            testAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbTestAll_Click);
+
+            installAllButton = (CommandBarButton)ctlAll.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            installAllButton.Caption = Messages.MSG_C_INSTALL;
+            installAllButton.Visible = true;
+            installAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstallAll_Click);
+
+            buildAllButton = (CommandBarButton)ctlAll.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            buildAllButton.Caption = Messages.MSG_C_BUILD;
+            buildAllButton.Visible = true;
+            buildAllButton.FaceId = 645;
+            buildAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuildAll_Click);
+
+            buildControls.Add(buildAllButton);
+            buildControls.Add(installAllButton);
+            buildControls.Add(cleanAllButton);
+            buildControls.Add(testAllButton);
+
+        }
+
+        void buildAllButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
+        {
+            cbBuildAll_Click(Ctrl, ref CancelDefault);
         }
 
         void awfButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
@@ -1111,16 +1157,6 @@ namespace NPanday.VisualStudio.Addin
             UpdateVBProjectsPoms();
             FileInfo pomFile = CurrentSolutionPom;
             PomHelperUtility pomUtility = new PomHelperUtility(pomFile);
-            if (!"pom".Equals(pomUtility.Packaging, StringComparison.OrdinalIgnoreCase))
-            {
-                //DialogResult res = MessageBox.Show(errStr + "\nWould you like to continue building?", "Pom Error:", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-
-                //if (res != DialogResult.Yes)
-                //{
-                //    throw new Exception(errStr);
-                //}
-                //throw new Exception(errStr);
-            }
 
             try
             {
@@ -1148,6 +1184,7 @@ namespace NPanday.VisualStudio.Addin
             }
 
             executeBuildCommand(pomFile, goal);
+
         }
 
         #endregion
@@ -1176,6 +1213,8 @@ namespace NPanday.VisualStudio.Addin
 
                 }
 
+                stopButton.Enabled = true;
+
 
                 if (string.IsNullOrEmpty(ChangeMavenSettingsXmlForm.SettingsXmlFile))
                 {
@@ -1196,7 +1235,7 @@ namespace NPanday.VisualStudio.Addin
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
-
+            //stopButton.Enabled = false;
 
 
         }
@@ -1551,7 +1590,7 @@ namespace NPanday.VisualStudio.Addin
         /// <seealso class='Exec' />
         public void Exec(string commandName, vsCommandExecOption executeOption, ref object varIn, ref object varOut, ref bool handled)
         {
-            outputWindowPane.OutputString(commandName);
+            //outputWindowPane.OutputString(commandName);
             handled = false;
             if (executeOption == vsCommandExecOption.vsCommandExecOptionDoDefault)
             {
@@ -1575,6 +1614,8 @@ namespace NPanday.VisualStudio.Addin
         //private DirectoryInfo baseDirectoryInfo; 
         private MavenRunner mavenRunner;
         private bool _npandayLaunched = false;
+        private CommandBarButton stopButton;
+
 
         List<WebServicesReferenceWatcher> wsRefWatcher = new List<WebServicesReferenceWatcher>();
 
