@@ -21,6 +21,7 @@ namespace NPanday.Utils
     {
 
         private FileInfo pom;
+        GacUtility gacUtil = new GacUtility();
 
         public PomHelperUtility(Solution solution, Project project)
         {
@@ -679,6 +680,17 @@ namespace NPanday.Utils
 
         public void AddPomDependency(NPanday.Model.Pom.Dependency dependency)
         {
+            
+            if ("vb".Equals(NPandayCompilerPluginLanguage))
+            {
+                if (gacUtil.IsVbcRspIncluded(dependency.artifactId))
+                    return;
+            }
+            else 
+            {
+                if (gacUtil.IsCscRspIncluded((dependency.artifactId)))
+                    return;
+            }
             if (IsPomDependency(dependency))
             {
                 throw new Exception(string.Format(

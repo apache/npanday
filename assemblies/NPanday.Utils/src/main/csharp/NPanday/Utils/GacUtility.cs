@@ -40,8 +40,11 @@ namespace NPanday.Utils
 
 
             string msBuildPath = Path.GetDirectoryName(System.Reflection.Assembly.GetAssembly(typeof(string)).Location);
-
-
+            string f35 = Path.GetFullPath(Environment.SystemDirectory + @"\..\Microsoft.NET\Framework\v3.5");
+            if (Directory.Exists(f35))
+            {
+                msBuildPath = f35;
+            }
             try
             {
                 csRsp = File.OpenText(msBuildPath + @"\csc.rsp").ReadToEnd();
