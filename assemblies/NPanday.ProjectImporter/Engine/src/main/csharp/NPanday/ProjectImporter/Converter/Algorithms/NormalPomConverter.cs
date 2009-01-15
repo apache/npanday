@@ -49,9 +49,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 null,
                 true
             );
-
-            AddPluginConfiguration(compilePlugin, "frameworkVersion", projectDigest.TargetFramework);
-           
+            if(!string.IsNullOrEmpty(projectDigest.TargetFramework))
+                AddPluginConfiguration(compilePlugin, "frameworkVersion", projectDigest.TargetFramework);
             
 
             if(projectDigest.Language.Equals("vb",StringComparison.OrdinalIgnoreCase))
