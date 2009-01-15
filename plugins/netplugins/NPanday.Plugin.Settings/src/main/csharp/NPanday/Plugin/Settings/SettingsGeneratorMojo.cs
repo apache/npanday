@@ -105,7 +105,6 @@ namespace NPanday.Plugin.Settings
                 vendors[copyLocation] = dotGnuVendor;
 
             settings.vendors = vendors;
-
             TextWriter writer = new StreamWriter(@outputFile);
             serializer.Serialize(writer, settings);
             writer.Close();
@@ -249,7 +248,7 @@ namespace NPanday.Plugin.Settings
                 vf11.installRoot = dirInfo35.FullName;
                 vf11.frameworkVersion = "3.5";
                 vendorFrameworks[0] = vf11;
-                vf11.sdkInstallRoot = sdkInstallRoot35;
+                vf11.sdkInstallRoot = sdkInstallRoot20;
                 vendor.frameworks = vendorFrameworks;
                 vendors[vendorCounter++] = vendor;
             }
