@@ -260,6 +260,7 @@
     <profile>FULL</profile>
     <frameworkVersions>
 	  <frameworkVersion>2.0.50727</frameworkVersion>
+	  <frameworkVersion>3.5</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
