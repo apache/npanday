@@ -19,7 +19,9 @@
 package npanday.executable.compiler.impl;
 
 import org.apache.maven.artifact.Artifact;
+import org.codehaus.plexus.util.FileUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -186,15 +188,43 @@ public final class DefaultCompiler
         CommandFilter filter = compilerContext.getCommandFilter();
         List<String> filteredCommands = filter.filter( commands );
         
+        //Include Sources code is being copied to temporary folder for the recurse option
+        Date date = new Date();
+        String fileExt = "";
+        String Now =""+date.getDate()+date.getHours()+date.getMinutes()+date.getSeconds();
+        String TempDir = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v2.0.50727\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
+        FileUtils.mkdir(TempDir); 
         
         if(config.getIncludeSources() != null && !config.getIncludeSources().isEmpty() )
         {
             for(String includeSource : config.getIncludeSources())
             {
-                filteredCommands.add(includeSource);
+                String[] sourceTokens = includeSource.split("\\\\");
+                
+                
+                if(fileExt=="")
+                {
+                    String lastToken = sourceTokens[sourceTokens.length-1];
+                    fileExt = lastToken.substring( lastToken.indexOf( '.') );
+                }
+                
+                try
+                {
+                    FileUtils.copyFileToDirectory( includeSource, TempDir );
+                }
+                catch(Exception e)
+                {
+                    System.out.println(e.getMessage());
+                }
+                
+                //part of original code.
+                //filteredCommands.add(includeSource);
             }
+            String recurseCmd = "/recurse:Temporary ASP.NET Files\\NPanday_Temp\\"+Now+"\\*"+fileExt;
+            filteredCommands.add(recurseCmd);
+            
+            
         }
-        
         return filteredCommands;
     }
 
