@@ -23,10 +23,10 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
         static ProjectSolutionParser()
         {
             PROJECT_REFERENCE_REGEX = @"({(?<ProjectReferenceGUID>([^\}])*)}\|(?<ProjectReferenceDll>([^;])*);)";
-            
+
             // gets the directory path of mscorlib using the System.String Type Assembly path
             string msBuildPath = Path.GetDirectoryName(System.Reflection.Assembly.GetAssembly(typeof(string)).Location);
-            BUILD_ENGINE = new Engine(ToolsetDefinitionLocations.Registry);// new Engine(msbBuildPath);
+            BUILD_ENGINE = new Engine(msBuildPath);
         }
 
 
