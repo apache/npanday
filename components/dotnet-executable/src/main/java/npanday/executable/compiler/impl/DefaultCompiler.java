@@ -192,7 +192,41 @@ public final class DefaultCompiler
         Date date = new Date();
         String fileExt = "";
         String Now =""+date.getDate()+date.getHours()+date.getMinutes()+date.getSeconds();
-        String TempDir = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v2.0.50727\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
+        String frameWorkVer = ""+compilerContext.getCompilerRequirement().getFrameworkVersion(); 
+        String TempDir = "";
+        
+        TempDir = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v2.0.50727\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
+        
+        
+        if(frameWorkVer.equals( "3.0" ))
+        {
+            try
+            {
+                FileUtils.mkdir( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files" );
+                FileUtils.mkdir( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files\\NPanday_Temp\\" );
+            }
+            catch(Exception e)
+            {
+                //do nothing
+            }
+            TempDir = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
+        }
+        
+        
+        if(frameWorkVer.equals( "3.5" ))
+        {
+            try
+            {
+                FileUtils.mkdir( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files" );
+                FileUtils.mkdir( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files\\NPanday_Temp\\" );
+            }
+            catch(Exception e)
+            {
+                //do nothing
+            }
+            TempDir = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
+        }
+        
         FileUtils.mkdir(TempDir); 
         
         if(config.getIncludeSources() != null && !config.getIncludeSources().isEmpty() )
