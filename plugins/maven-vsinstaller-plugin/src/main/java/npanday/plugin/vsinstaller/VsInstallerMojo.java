@@ -177,6 +177,12 @@ public class VsInstallerMojo
         OutputStreamWriter writer = null;
         try
         {
+            File addinPath = new File( System.getProperty( "user.home" ) +
+                                        "\\My Documents\\Visual Studio " + version + "\\Addins\\" );
+            if(!addinPath.exists())
+            {
+                return;
+            }
             String addin =
                 IOUtil.toString( VsInstallerMojo.class.getResourceAsStream( "/template/NPanday.VisualStudio.AddIn" ) );
             File outputFile = new File( System.getProperty( "user.home" ) +
