@@ -104,10 +104,10 @@ namespace NPanday.ProjectImporter.ImporterTests
 		
 		public static string[] GetTestPomFiles(string rootPath, string[] actualPomFileLocations)
         {
-            string filename = @"c:\build\shein1.txt";
+            
             List<string> outPut = new List<string>();
             //File.Delete(filename);
-            TextWriter w = new StreamWriter(filename, true);
+            
             if (actualPomFileLocations.Length < 1) return outPut.ToArray();
 
             string basePath = parseBasePath(rootPath, actualPomFileLocations[0]);
