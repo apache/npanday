@@ -288,13 +288,7 @@ public final class DefaultCompiler
                 //filteredCommands.add(includeSource);
             }
             String recurseCmd = "/recurse:Temporary ASP.NET Files\\NPanday_Temp\\"+Now+"\\*"+fileExt;
-            //String recurseCmd = "/recurse:Temporary ASP.NET Files\\NPanday_Temp\\TESTING\\*"+fileExt;
             filteredCommands.add(recurseCmd);
-            //System.out.println(">>>SOURCE DIRECTORY:"+sourceDirectory);
-            //filteredCommands.add( "/recurse:C:\\Projects\\NMaven Sample Projects\\LargeWebApp-Example\\*.*");
-            
-           
-            
             
         }
         return filteredCommands;
