@@ -173,6 +173,7 @@ public final class DefaultCompiler
             commands.addAll( config.getCommands() );
         }
         commands.add( "/warnaserror-" );
+        //commands.add( "/nowarn" );
         if ( compilerContext.getCompilerRequirement().getVendor().equals( Vendor.MONO ) )
         {
             commands.add( "/reference:System.Drawing" );
@@ -189,27 +190,33 @@ public final class DefaultCompiler
         List<String> filteredCommands = filter.filter( commands );
         
         //Include Sources code is being copied to temporary folder for the recurse option
-        Date date = new Date();
+        
         String fileExt = "";
-        String Now =""+date.getDate()+date.getHours()+date.getMinutes()+date.getSeconds();
+        
+        //Date date = new Date();
+        //String Now =""+date.getDate()+date.getHours()+date.getMinutes()+date.getSeconds();
+        
+        String[] sDirTokens = sourceDirectory.split( "\\\\" );
+        String Now =sDirTokens[sDirTokens.length-3];
         String frameWorkVer = ""+compilerContext.getCompilerRequirement().getFrameworkVersion(); 
         String TempDir = "";
         
-        TempDir = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v2.0.50727\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
+        TempDir =  System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v2.0.50727\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
+        //TempDir = System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v2.0.50727\\Temporary ASP.NET Files\\NPanday_Temp\\TESTING";
         
         
         if(frameWorkVer.equals( "3.0" ))
         {
             try
             {
-                FileUtils.mkdir( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files" );
-                FileUtils.mkdir( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files\\NPanday_Temp\\" );
+                FileUtils.mkdir( System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files" );
+                FileUtils.mkdir(  System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files\\NPanday_Temp\\" );
             }
             catch(Exception e)
             {
                 //do nothing
             }
-            TempDir = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
+            TempDir = System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
         }
         
         
@@ -217,34 +224,60 @@ public final class DefaultCompiler
         {
             try
             {
-                FileUtils.mkdir( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files" );
-                FileUtils.mkdir( "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files\\NPanday_Temp\\" );
+                FileUtils.mkdir(  System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files" );
+                FileUtils.mkdir(  System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files\\NPanday_Temp\\" );
             }
             catch(Exception e)
             {
                 //do nothing
             }
-            TempDir = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
+            TempDir = System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
         }
+        
+        try
+        {
+            FileUtils.deleteDirectory( TempDir );
+        }
+        catch(Exception e)
+        {
+            //Does Precautionary delete for tempDir 
+        }
+        
         
         FileUtils.mkdir(TempDir); 
         
         if(config.getIncludeSources() != null && !config.getIncludeSources().isEmpty() )
         {
+            int folderCtr=0;
             for(String includeSource : config.getIncludeSources())
             {
+                
                 String[] sourceTokens = includeSource.split("\\\\");
                 
+                String lastToken = sourceTokens[sourceTokens.length-1];
                 
                 if(fileExt=="")
                 {
-                    String lastToken = sourceTokens[sourceTokens.length-1];
-                    fileExt = lastToken.substring( lastToken.indexOf( '.') );
+                    
+                    String[] extToken = lastToken.split( "\\." );
+                    fileExt = "."+extToken[extToken.length-1];
                 }
                 
                 try
                 {
-                    FileUtils.copyFileToDirectory( includeSource, TempDir );
+                    String fileToCheck = TempDir+"\\"+lastToken;
+                    if(FileUtils.fileExists( fileToCheck ))
+                    {
+                        String subTempDir = TempDir+"\\"+folderCtr+"\\"; 
+                        FileUtils.mkdir( subTempDir );
+                        FileUtils.copyFileToDirectory( includeSource, subTempDir);
+                        folderCtr++;
+                        
+                    }
+                    else
+                    {
+                        FileUtils.copyFileToDirectory( includeSource, TempDir);
+                    }
                 }
                 catch(Exception e)
                 {
@@ -255,7 +288,12 @@ public final class DefaultCompiler
                 //filteredCommands.add(includeSource);
             }
             String recurseCmd = "/recurse:Temporary ASP.NET Files\\NPanday_Temp\\"+Now+"\\*"+fileExt;
+            //String recurseCmd = "/recurse:Temporary ASP.NET Files\\NPanday_Temp\\TESTING\\*"+fileExt;
             filteredCommands.add(recurseCmd);
+            //System.out.println(">>>SOURCE DIRECTORY:"+sourceDirectory);
+            //filteredCommands.add( "/recurse:C:\\Projects\\NMaven Sample Projects\\LargeWebApp-Example\\*.*");
+            
+           
             
             
         }

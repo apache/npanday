@@ -18,12 +18,12 @@
  */
 package npanday.executable.impl;
 
+import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutionException;
 import npanday.executable.CapabilityMatcher;
 import npanday.executable.CommandFilter;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.compiler.*;
-import npanday.executable.compiler.InvalidArtifactException;
 import npanday.artifact.ArtifactContext;
 import npanday.artifact.ArtifactException;
 import npanday.ArtifactType;
@@ -450,16 +450,88 @@ public final class CompilerContextImpl
         }
         
     }
+    
+    /*
+     * Installs the artifact to the gac so that it can be used in aspnet
+     */
+    private void installArtifactGacFile(Artifact artifact)
+    {
+        try
+        {
+            CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+            
+            String executable = "gacutil";
+            List<String> commands = new ArrayList<String>();
+            
+            //searching for the .dll to be installed.
+            String sourceDir =  config.getIncludeSources().get( 0 );
+            String[] sourceDirTokens = sourceDir.split( "\\\\" );
+            String sDir = "";
+            
+            //constructing the directory for the.dll 
+            for(int i=0;i<sourceDirTokens.length-3;i++)
+            {
+                if(sDir.equalsIgnoreCase( "" ))
+                {
+                    sDir = sourceDirTokens[i];
+                }
+                else
+                {
+                    sDir = sDir +"\\"+sourceDirTokens[i];
+                }
+                
+            }
+            
+            String dll = artifact.getArtifactId()+".dll";
+            String dllSysPath ="";
+            List<File> potentialDlls= FileUtils.getFiles( new File(sDir), "**" , null );
+            
+            for(File cFile: potentialDlls)
+            {
+                String pSysPath = cFile.getAbsolutePath(); 
+                String[] pathTokens = pSysPath.split( "\\\\" );
+                if(pathTokens[pathTokens.length-1].equalsIgnoreCase( dll ) ) 
+                {
+                    dllSysPath = cFile.getAbsolutePath();
+                    //break;
+                }
+            }
+            
+            commands.add( "/i "+dllSysPath );
+            commandExecutor.executeCommand( executable, commands);
+        }
+        catch(Exception e)
+        {
+            System.out.println("NPANDAY-000-000: Could not install artifact to GAC artifact:" +artifact.getArtifactId());
+        }
+         
+    }
 
     private void setArtifactGacFile( String gacRoot, Artifact artifact )
         throws PlatformUnsupportedException
     {
         File gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
             artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+        // first check if the artifact is not yet installed
         if ( !gacFile.exists() )
         {
-            throw new PlatformUnsupportedException(
-                "NPANDAY-000-000: Could not find GAC dependency: File = " + gacFile.getAbsolutePath() );
+            installArtifactGacFile(artifact);
+        }
+        // after installing the gac check if it is installed in the system.
+        if ( !gacFile.exists() )
+        {
+            //check for gac_msil
+            gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
+            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
+                                artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+            if ( !gacFile.exists() )
+            {
+                
+                throw new PlatformUnsupportedException(
+                                                       "NPANDAY-000-000: Could not find GAC dependency: File = " + gacFile.getAbsolutePath() );
+            }
+            
+            
         }
         artifact.setFile( gacFile );
     }

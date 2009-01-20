@@ -60,9 +60,25 @@ public class AspxBinDependencyResolver
         {
             try
             {
-                getLog().info( "NPANDAY-000-0000: copying " + dependency.getFile().getAbsolutePath() + " , to " + binDir );
+                 
+				 
+                 String includeSource = ""+dependency.getFile();
+				 
+				 String[] sourceTokens = includeSource.split("\\\\");
+                
+                 String lastToken = sourceTokens[sourceTokens.length-1];
+				 
+				 String fileToCheck = binDir+"\\"+lastToken;
+                 
+				
+				 if(!FileUtils.fileExists( fileToCheck ))
+				 {
+					getLog().info( "NPANDAY-000-0000: copying " + dependency.getFile().getAbsolutePath() + " , to " + binDir );
 
-                FileUtils.copyFileToDirectory( dependency.getFile().getAbsolutePath(), binDir );
+                    FileUtils.copyFileToDirectory( dependency.getFile().getAbsolutePath(), binDir );
+				 }
+				
+				
             }
             catch ( IOException ioe )
             {
