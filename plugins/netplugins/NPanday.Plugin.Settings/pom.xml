@@ -21,21 +21,21 @@ under the License.
 <project> 
   <parent> 
     <groupId>npanday.plugin</groupId>  
-    <version>0.9-SNAPSHOT</version>  
+    <version>0.9.6-RC1</version>  
     <artifactId>npanday.plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Settings</artifactId>  
   <packaging>netplugin</packaging>  
-  <version>0.9-SNAPSHOT</version>  
+  <version>0.9.6-RC1</version>  
   <name>NPanday.Plugin.Settings</name>  
   <dependencies> 
     <dependency> 
       <groupId>NPanday.Plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
       <type>library</type>  
-      <version>0.9-SNAPSHOT</version> 
+      <version>0.9.6-RC1</version> 
     </dependency> 
   </dependencies>  
   <!--

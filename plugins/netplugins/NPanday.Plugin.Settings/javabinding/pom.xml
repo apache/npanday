@@ -3,7 +3,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <parent> 
     <groupId>npanday.plugin</groupId>  
-    <version>0.9-SNAPSHOT</version>  
+    <version>0.9.6-RC1</version>  
     <artifactId>maven-dotnet-plugins</artifactId>  
     <relativePath>../../../pom.xml</relativePath> 
   </parent>  
@@ -16,22 +16,22 @@
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-assembler</artifactId>  
-      <version>0.9-SNAPSHOT</version> 
+      <version>0.9.6-RC1</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-executable</artifactId>  
-      <version>0.9-SNAPSHOT</version> 
+      <version>0.9.6-RC1</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-artifact</artifactId>  
-      <version>0.9-SNAPSHOT</version> 
+      <version>0.9.6-RC1</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-plugin</artifactId>  
-      <version>0.9-SNAPSHOT</version> 
+      <version>0.9.6-RC1</version> 
     </dependency> 
   </dependencies>  
   <distributionManagement> 

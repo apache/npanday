@@ -20,39 +20,39 @@
 <project> 
   <parent> 
     <groupId>NPanday</groupId>  
-    <version>0.9-SNAPSHOT</version>  
+    <version>0.9.6-RC1</version>  
     <artifactId>NPanday.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NPanday.Utils</groupId>  
   <artifactId>NPanday.Utils</artifactId>  
-  <version>0.9-SNAPSHOT</version>  
+  <version>0.9.6-RC1</version>  
   <packaging>library</packaging>  
   <name>NPanday.Utils</name>  
   <dependencies>  
     <dependency> 
       <groupId>NPanday.Logging</groupId>  
       <artifactId>NPanday.Logging</artifactId>  
-      <version>0.9-SNAPSHOT</version>  
+      <version>0.9.6-RC1</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Model</groupId>  
       <artifactId>NPanday.Model.Pom</artifactId>  
-      <version>0.9-SNAPSHOT</version>  
+      <version>0.9.6-RC1</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Artifact</groupId>  
       <artifactId>NPanday.Artifact</artifactId>  
-      <version>0.9-SNAPSHOT</version>  
+      <version>0.9.6-RC1</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Model</groupId>  
       <artifactId>NPanday.Model.Settings</artifactId>  
       <type>library</type>  
-      <version>0.9-SNAPSHOT</version> 
+      <version>0.9.6-RC1</version> 
     </dependency>  
     <dependency> 
       <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
