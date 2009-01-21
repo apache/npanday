@@ -27,7 +27,7 @@ under the License.
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.plugin</groupId>  
-  <artifactId>npanday.plugin</artifactId>  
+  <artifactId>npanday.plugins</artifactId>  
   <packaging>pom</packaging>  
   <version>0.9-SNAPSHOT</version>  
   <name>npanday.plugin</name>  

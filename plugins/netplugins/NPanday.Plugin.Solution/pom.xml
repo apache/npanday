@@ -22,7 +22,7 @@ under the License.
   <parent> 
     <groupId>npanday.plugin</groupId>  
     <version>0.9-SNAPSHOT</version>  
-    <artifactId>npanday.plugin</artifactId> 
+    <artifactId>npanday.plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.plugin</groupId>  
