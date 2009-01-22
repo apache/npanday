@@ -99,6 +99,51 @@ namespace NPanday.Utils
                     Directory.Delete(path, true);
                 }
           
+		        try
+                {
+                    string tempDir20 = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v2.0.50727\\Temporary ASP.NET Files\\NPanday_Temp";
+
+
+                    if (Directory.Exists(tempDir20))
+                    {
+                        Directory.Delete(tempDir20, true);
+                    }
+                }
+                catch (Exception e)
+                { 
+                    //deletes temp directories for compilation
+                }
+
+                try
+                {
+                    string tempDir30 = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files\\NPanday_Temp";
+
+
+                    if (Directory.Exists(tempDir30))
+                    {
+                        Directory.Delete(tempDir30, true);
+                    }
+                }
+                catch (Exception e)
+                {
+                    //deletes temp directories for compilation
+                }
+
+                try
+                {
+                    string tempDir35 = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files\\NPanday_Temp";
+
+
+                    if (Directory.Exists(tempDir35))
+                    {
+                        Directory.Delete(tempDir35, true);
+                    }
+                }
+                catch (Exception e)
+                {
+                    //deletes temp directories for compilation
+                }
+          
 
             
         }
