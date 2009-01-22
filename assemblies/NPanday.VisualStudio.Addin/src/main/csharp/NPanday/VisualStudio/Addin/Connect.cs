@@ -282,7 +282,7 @@ namespace NPanday.VisualStudio.Addin
 
         void mavenRunner_RunnerStopped(object sender, EventArgs e)
         {
-            stopButton.Enabled = false;
+            //stopButton.Enabled = false;
         }
 
         private const string WEB_PROJECT_KIND_GUID = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";
@@ -710,7 +710,7 @@ namespace NPanday.VisualStudio.Addin
             stopButton = (CommandBarButton)commandBar.Controls.Add(MsoControlType.msoControlButton,
                 System.Type.Missing, System.Type.Missing, control.Index + 1, true);
             stopButton.Caption = Messages.MSG_C_STOPNPANDAYBUILD;
-            stopButton.Enabled = false;
+            //stopButton.Enabled = false;
             stopButton.Visible = true;
             stopButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbStopMavenBuild_Click);
             buildControls.Add(stopButton);
@@ -1213,7 +1213,7 @@ namespace NPanday.VisualStudio.Addin
 
                 }
 
-                stopButton.Enabled = true;
+                //stopButton.Enabled = true;
 
 
                 if (string.IsNullOrEmpty(ChangeMavenSettingsXmlForm.SettingsXmlFile))
