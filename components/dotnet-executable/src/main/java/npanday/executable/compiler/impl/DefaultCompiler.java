@@ -287,7 +287,7 @@ public final class DefaultCompiler
                 //part of original code.
                 //filteredCommands.add(includeSource);
             }
-            String recurseCmd = "/recurse:Temporary ASP.NET Files\\NPanday_Temp\\"+Now+"\\*"+fileExt;
+            String recurseCmd = "/recurse:"+TempDir+"\\*"+fileExt;
             filteredCommands.add(recurseCmd);
             
         }
