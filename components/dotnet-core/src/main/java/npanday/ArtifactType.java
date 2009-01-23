@@ -116,7 +116,7 @@ public enum ArtifactType
         {
             return ArtifactType.WINEXE;
         }
-        else if ( packagingName.equals( ArtifactType.NAR.getPackagingType() ) )
+        else if ( packagingName.equals( ArtifactType.LIBRARY.getPackagingType() ) )
         {
             return ArtifactType.LIBRARY;
         }
