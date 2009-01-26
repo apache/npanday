@@ -624,6 +624,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
                 refDependency.version = reference.Version ?? "1.0.0.0";
                 refDependency.classifier = reference.PublicKeyToken;
+				
+				refDependency.scope = "system";
+				System.Reflection.Assembly a = System.Reflection.Assembly.Load(gacUtil.GetAssemblyInfo(reference.Name));
+                refDependency.systemPath = a.Location;
 
                 return refDependency;
 
