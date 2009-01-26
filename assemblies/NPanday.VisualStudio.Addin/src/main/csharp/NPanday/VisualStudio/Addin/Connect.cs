@@ -940,7 +940,7 @@ namespace NPanday.VisualStudio.Addin
             {
                 foreach (CommandBarControl control in commandBar.Controls)
                 {
-                    if (control.Caption.ToLower().Contains("maven"))
+                    if (control.Caption.ToLower().Contains("maven") || control.Caption.ToLower().Contains("npanday") || control.Caption.ToLower().Contains("pom"))
                     {
                         // i dont know what 'false' means. but it works.
                         control.Delete(false);
