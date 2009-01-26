@@ -192,47 +192,14 @@ public final class DefaultCompiler
         //Include Sources code is being copied to temporary folder for the recurse option
         
         String fileExt = "";
-        
-        //Date date = new Date();
-        //String Now =""+date.getDate()+date.getHours()+date.getMinutes()+date.getSeconds();
-        
-        String[] sDirTokens = sourceDirectory.split( "\\\\" );
-        String Now =sDirTokens[sDirTokens.length-3];
         String frameWorkVer = ""+compilerContext.getCompilerRequirement().getFrameworkVersion(); 
         String TempDir = "";
+        String targetDir = ""+compilerContext.getTargetDirectory();
         
-        TempDir =  System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v2.0.50727\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
-        //TempDir = System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v2.0.50727\\Temporary ASP.NET Files\\NPanday_Temp\\TESTING";
-        
-        
-        if(frameWorkVer.equals( "3.0" ))
-        {
-            try
-            {
-                FileUtils.mkdir( System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files" );
-                FileUtils.mkdir(  System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files\\NPanday_Temp\\" );
-            }
-            catch(Exception e)
-            {
-                //do nothing
-            }
-            TempDir = System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
-        }
-        
-        
-        if(frameWorkVer.equals( "3.5" ))
-        {
-            try
-            {
-                FileUtils.mkdir(  System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files" );
-                FileUtils.mkdir(  System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files\\NPanday_Temp\\" );
-            }
-            catch(Exception e)
-            {
-                //do nothing
-            }
-            TempDir = System.getenv( "SystemRoot" )+ "\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files\\NPanday_Temp\\"+Now;
-        }
+        Date date = new Date();
+        String Now =""+date.getDate()+date.getHours()+date.getMinutes()+date.getSeconds();
+               
+        TempDir = targetDir+"\\"+Now;
         
         try
         {
@@ -242,7 +209,6 @@ public final class DefaultCompiler
         {
             //Does Precautionary delete for tempDir 
         }
-        
         
         FileUtils.mkdir(TempDir); 
         
@@ -283,7 +249,6 @@ public final class DefaultCompiler
                 {
                     System.out.println(e.getMessage());
                 }
-                
                 //part of original code.
                 //filteredCommands.add(includeSource);
             }
