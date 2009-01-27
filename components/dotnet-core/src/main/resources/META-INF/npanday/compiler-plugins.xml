@@ -59,6 +59,7 @@
     <profile>FULL</profile>
     <frameworkVersions>
       <frameworkVersion>3.5</frameworkVersion>
+	  <frameworkVersion>3.0</frameworkVersion>
 	  <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
@@ -117,7 +118,8 @@
     <language>C_SHARP</language>
     <profile>COMPACT</profile>
     <frameworkVersions>
-      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>3.0</frameworkVersion>
+	  <frameworkVersion>3.5</frameworkVersion>
 	  <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
@@ -260,6 +262,7 @@
     <profile>FULL</profile>
     <frameworkVersions>
 	  <frameworkVersion>2.0.50727</frameworkVersion>
+	  <frameworkVersion>3.0</frameworkVersion>
 	  <frameworkVersion>3.5</frameworkVersion>
     </frameworkVersions>
     <platforms>

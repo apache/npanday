@@ -383,7 +383,15 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                         }
                         else if ("TargetFrameworkVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
                         {
-                            projectDigest.TargetFramework = buildProperty.Value.Substring(1);
+                            // changed the version to the more specific version
+                            string frameworkVersion = buildProperty.Value.Substring(1);
+                            
+                            if ("2.0".Equals(buildProperty.Value.Substring(1)))
+                            {
+                                frameworkVersion = "2.0.50727";    
+                            }
+
+                            projectDigest.TargetFramework = frameworkVersion;
                         }
                         else if ("AppDesignerFolder".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
                         {

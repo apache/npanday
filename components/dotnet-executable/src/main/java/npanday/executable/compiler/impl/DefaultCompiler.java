@@ -199,7 +199,7 @@ public final class DefaultCompiler
         Date date = new Date();
         String Now =""+date.getDate()+date.getHours()+date.getMinutes()+date.getSeconds();
                
-        TempDir = targetDir+"\\"+Now;
+        TempDir = targetDir+File.separator+Now;
         
         try
         {
@@ -218,7 +218,7 @@ public final class DefaultCompiler
             for(String includeSource : config.getIncludeSources())
             {
                 
-                String[] sourceTokens = includeSource.split("\\\\");
+                String[] sourceTokens = includeSource.split(File.separator+File.separator);
                 
                 String lastToken = sourceTokens[sourceTokens.length-1];
                 
@@ -231,10 +231,10 @@ public final class DefaultCompiler
                 
                 try
                 {
-                    String fileToCheck = TempDir+"\\"+lastToken;
+                    String fileToCheck = TempDir+File.separator+lastToken;
                     if(FileUtils.fileExists( fileToCheck ))
                     {
-                        String subTempDir = TempDir+"\\"+folderCtr+"\\"; 
+                        String subTempDir = TempDir+File.separator+folderCtr+File.separator; 
                         FileUtils.mkdir( subTempDir );
                         FileUtils.copyFileToDirectory( includeSource, subTempDir);
                         folderCtr++;
@@ -252,7 +252,7 @@ public final class DefaultCompiler
                 //part of original code.
                 //filteredCommands.add(includeSource);
             }
-            String recurseCmd = "/recurse:"+TempDir+"\\*"+fileExt;
+            String recurseCmd = "/recurse:"+TempDir+File.separator+"*"+fileExt;
             filteredCommands.add(recurseCmd);
             
         }
