@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace NPanday.VisualStudio.Addin
 {
@@ -118,8 +119,8 @@ namespace NPanday.VisualStudio.Addin
             string userProfile = System.Environment.GetEnvironmentVariable("UserProfile");
             string userProfileM2 = userProfile + @"\.m2";
 
-            string m2Home = System.Environment.GetEnvironmentVariable("M2_HOME");
-            string m2HomeConf = m2Home + @"\conf";
+            string M2 = System.Environment.GetEnvironmentVariable("M2");
+            string m2HomeConf = Path.GetFullPath( Path.Combine( M2,  @"..\conf"));
 
 
             if (System.IO.Directory.Exists(userProfileM2))

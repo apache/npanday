@@ -5,6 +5,10 @@ using System.IO;
 
 using NPanday.Utils;
 using System.Reflection;
+using NPanday.Artifact;
+using NPanday.Model.Setting;
+using System.Windows.Forms;
+using System.Net;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -143,8 +147,89 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         private void SetReferenceFromFile(FileInfo dll)
         {
-            Assembly asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
-            SetAssemblyInfoValues(asm.ToString());
+            Assembly asm;
+            if (dll.Exists)
+            {
+                asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
+            }
+            else
+            {
+                ArtifactContext artifactContext = new ArtifactContext();
+                Artifact.Artifact a = artifactContext.GetArtifactRepository().GetArtifact(dll);
+                
+                if(!a.FileInfo.Directory.Exists)
+                    a.FileInfo.Directory.Create();
+
+                string localRepoPath = artifactContext.GetArtifactRepository().GetLocalRepositoryPath(a, dll.Extension);
+                if (File.Exists(localRepoPath))
+                {
+                    File.Copy(localRepoPath, dll.FullName);
+                    asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
+
+                }
+                else
+                {
+                    if (downloadArtifactFromRemoteRepository(a, dll.Extension))
+                    {
+                        asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                SetAssemblyInfoValues(asm.ToString());
+            }
+        }
+
+        bool downloadArtifactFromRemoteRepository(Artifact.Artifact artifact, string ext)
+        {
+            try
+            {
+                Settings settings = SettingsUtil.ReadSettings(SettingsUtil.GetUserSettingsPath());
+                if (settings == null || settings.profiles == null)
+                {
+                    MessageBox.Show("Cannot add reference of "+ artifact.ArtifactId + ", no valid Remote Repository was found that contained the Artifact to be Resolved. Please add a Remote Repository that contains the Unresolved Artifact.");
+                    return false;
+                }
+                foreach (Profile profile in settings.profiles)
+                {
+                    foreach (Repository repo in profile.repositories)
+                    {
+                        if ("NPanday.id".Equals(repo.id, StringComparison.OrdinalIgnoreCase))
+                        {
+                            ArtifactContext artifactContext = new ArtifactContext();
+                            artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, repo.url, ext);
+                            return downloadArtifact(artifact) ;
+                        }
+                    }
+                }
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
+        bool downloadArtifact(Artifact.Artifact artifact)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                byte[] assembly = client.DownloadData(artifact.RemotePath);
+                FileStream stream = new FileStream(artifact.FileInfo.FullName, FileMode.Create);
+                stream.Write(assembly, 0, assembly.Length);
+                stream.Flush();
+                stream.Close();
+                stream.Dispose();
+                client.Dispose();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 

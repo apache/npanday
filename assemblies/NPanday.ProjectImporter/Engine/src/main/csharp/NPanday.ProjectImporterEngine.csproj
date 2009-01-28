@@ -19,6 +19,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\NPanday.Model\Pom\target\NPanday.Model.Pom.dll</HintPath>
     </Reference>
+    <Reference Include="NPanday.Model.Settings, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\NPanday.Model\Settings\target\NPanday.Model.Settings.dll</HintPath>
+    </Reference>
     <Reference Include="NUnit.Framework">
       <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NUnit.Framework\2.2.8.0__NUnit\NUnit.Framework.dll</HintPath>
     </Reference>

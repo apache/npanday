@@ -31,6 +31,16 @@ namespace NPanday.Artifact
 {
     public sealed class ArtifactRepository
     {
+        public string GetLocalRepositoryPath(Artifact artifact, string ext)
+        {
+            return Path.Combine(localRepository.FullName, string.Format(@"repository\{0}\{1}\{2}\{1}-{2}{3}", artifact.GroupId, artifact.ArtifactId, artifact.Version,ext));
+        }
+
+        public string GetRemoteRepositoryPath(Artifact artifact, string url, string ext)
+        {
+            return string.Format("{0}/{1}/{2}/{3}/{2}-{3}{4}", url, artifact.GroupId, artifact.ArtifactId, artifact.Version, ext);
+        }
+
         public Artifact GetArtifactFor(String uri)
         {
             DirectoryInfo uac = new DirectoryInfo(localRepository.FullName + @"\uac\gac_msil\");

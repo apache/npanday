@@ -80,6 +80,12 @@ under the License.
       <version>0.9-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
+      <groupId>NPanday.Model</groupId>  
+      <artifactId>NPanday.Model.Settings</artifactId>  
+      <type>library</type>  
+      <version>0.9-SNAPSHOT</version> 
+    </dependency>  
+    <dependency> 
       <groupId>NPanday.Utils</groupId>  
       <artifactId>NPanday.Utils</artifactId>  
       <type>library</type>  
