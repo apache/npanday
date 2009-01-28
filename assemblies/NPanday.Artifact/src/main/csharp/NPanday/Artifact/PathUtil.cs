@@ -64,12 +64,12 @@ namespace NPanday.Artifact
 
             List<string> list = new List<string>();
 
-            for (int i = 0; i < parent.Length-1; i++)
+            for (int i = 0; i < parent.Length - 1; i++)
             {
-                 if(!parent[i].Equals(child[i], StringComparison.OrdinalIgnoreCase))
-                 {
-                     throw new Exception(string.Format("Path {0} is not a child path of {1}", path, parentPath));
-                 }
+                if (!parent[i].Equals(child[i], StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new Exception(string.Format("Path {0} is not a child path of {1}", path, parentPath));
+                }
             }
 
 

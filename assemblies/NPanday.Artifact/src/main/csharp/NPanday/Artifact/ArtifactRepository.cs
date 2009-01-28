@@ -112,7 +112,19 @@ namespace NPanday.Artifact
 
         public Artifact GetArtifact(DirectoryInfo uacDirectory, FileInfo artifactFile)
         {
-            string[] tokens = PathUtil.GetRelativePathTokens(uacDirectory, artifactFile);
+            string[] tokens;
+            try
+            {
+                tokens = PathUtil.GetRelativePathTokens(uacDirectory, artifactFile);
+            }
+            catch 
+            {
+                List<string> tk = new List<string>(artifactFile.FullName.Split(@"\".ToCharArray()));
+                tk.RemoveRange(0, tk.Count - 3);
+                tokens = tk.ToArray();
+            }
+            
+            
             
 
             // first file token is the artifact
