@@ -119,8 +119,8 @@ namespace NPanday.VisualStudio.Addin
             string userProfile = System.Environment.GetEnvironmentVariable("UserProfile");
             string userProfileM2 = userProfile + @"\.m2";
 
-            string M2 = System.Environment.GetEnvironmentVariable("M2");
-            string m2HomeConf = Path.GetFullPath( Path.Combine( M2,  @"..\conf"));
+            string M2 = System.Environment.GetEnvironmentVariable("M2_HOME");
+            string m2HomeConf = Path.GetFullPath( Path.Combine( M2,  @"conf"));
 
 
             if (System.IO.Directory.Exists(userProfileM2))

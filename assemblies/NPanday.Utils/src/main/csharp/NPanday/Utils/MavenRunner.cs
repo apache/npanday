@@ -309,7 +309,7 @@ namespace NPanday.Utils
             System.Diagnostics.Process process = new System.Diagnostics.Process();
 
 
-            string mvn_file = Path.Combine(System.Environment.GetEnvironmentVariable("M2"),"mvn.bat");
+            string mvn_file = Path.Combine(System.Environment.GetEnvironmentVariable("M2_HOME"),@"bin\mvn.bat");
            
             output.OutputString("\n------------------------------------------------------------------");
             output.OutputString("\nExecuting Maven");
