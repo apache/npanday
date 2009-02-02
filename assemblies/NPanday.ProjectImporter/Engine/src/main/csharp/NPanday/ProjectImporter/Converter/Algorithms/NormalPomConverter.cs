@@ -123,6 +123,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 			//Add Project WebReferences
             AddWebReferences();
 
+            //Add EmbeddedResources maven-resgen-plugin
+            AddEmbeddedResources();
+            
+
             // Add Project Inter-dependencies
             AddInterProjectDependenciesToList();
 

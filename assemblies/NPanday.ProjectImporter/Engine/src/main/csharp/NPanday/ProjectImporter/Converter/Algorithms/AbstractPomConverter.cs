@@ -64,6 +64,40 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             this.model.build = new NPanday.Model.Pom.Build();
 
         }
+
+        #region AddEmbeddedResources
+        protected void AddEmbeddedResources()
+        {
+            if (projectDigest != null && projectDigest.EmbeddedResources != null && projectDigest.EmbeddedResources.Length > 0)
+            {
+                Plugin embeddedResourcePlugin = AddPlugin(
+                    "npanday.plugin",
+                    "maven-resgen-plugin",
+                    null,
+                    true
+                );
+
+
+                List<Dictionary<string, string>> embeddedResourceList = new List<Dictionary<string, string>>();
+
+                foreach (EmbeddedResource embeddedResource in projectDigest.EmbeddedResources)
+                {
+                    Dictionary<string, string> value = new Dictionary<string, string>();
+                    string sourceFile = embeddedResource.IncludePath;
+                    if (sourceFile == null)
+                        continue;
+
+
+                    value.Add("sourceFile", sourceFile);
+                    value.Add("name", sourceFile.TrimEnd(".resx".ToCharArray()));
+
+                    embeddedResourceList.Add(value);
+                }
+                AddPluginConfiguration(embeddedResourcePlugin, "embeddedResources", embeddedResourceList);
+            }
+        }
+
+        #endregion
         #region AddWebReferences
         /// <summary>
         /// Adds WebReference as Plugin
@@ -156,13 +190,13 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return filtered;
         }
 
-		bool HasSpecialCharacters(string partial)
+        bool HasSpecialCharacters(string partial)
         {
             bool isSpecial = false;
             foreach (char item in partial)
             {
 
-                if ((!Char.IsNumber(item) && !Char.IsLetter(item)) && item != '.' && item != '-' )
+                if ((!Char.IsNumber(item) && !Char.IsLetter(item)) && item != '.' && item != '-')
                 {
                     isSpecial = true;
                 }
@@ -195,8 +229,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 model.groupId = !string.IsNullOrEmpty(groupId) ? FilterID(groupId) : FilterID(projectDigest.AssemblyName);
                 model.version = string.IsNullOrEmpty(version) ? "1.0-SNAPSHOT" : version;
             }
-            
-			string projectName = projectDigest.AssemblyName;
+
+            string projectName = projectDigest.AssemblyName;
             if (HasSpecialCharacters(projectDigest.AssemblyName))
             {
                 string[] projectFullName = projectDigest.FullFileName.Split("\\".ToCharArray());
@@ -218,7 +252,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             }
 
-            
+
             model.artifactId = FilterID(projectName);
 
 
@@ -259,7 +293,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
             return decimalNum;
         }
-        
+
 
         protected bool IsModelHasDependency(Dependency dependency)
         {
@@ -348,7 +382,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
 
             AddDependency(refDependency);
-            
+
 
         }
 
@@ -487,6 +521,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         }
 
+
+
         /// <summary>
         /// Design for WebReferenceUrl
         /// </summary>
@@ -521,19 +557,33 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             XmlDocument xmlDocument = new XmlDocument();
             XmlElement elem = xmlDocument.CreateElement(parentTag, @"http://maven.apache.org/POM/4.0.0");
 
+
+            string childElement = parentTag.Substring(0, parentTag.Length - 1);
             foreach (Dictionary<string, string> property in properties)
             {
 
-                XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, "webreference", @"http://maven.apache.org/POM/4.0.0");
-                XmlNode nodeName = xmlDocument.CreateNode(XmlNodeType.Element, "namespace", @"http://maven.apache.org/POM/4.0.0");
-                XmlNode nodePath = xmlDocument.CreateNode(XmlNodeType.Element, "path", @"http://maven.apache.org/POM/4.0.0");
-                XmlNode nodeOutput = xmlDocument.CreateNode(XmlNodeType.Element, "output", @"http://maven.apache.org/POM/4.0.0");
-                nodeName.InnerText = property["namespace"];
-                nodePath.InnerText = property["path"] != null? property["path"].Replace("\\", "/") : property["path"];
-                nodeOutput.InnerText = property["output"] != null? property["output"].Replace("\\", "/") : property["output"];
-                node.AppendChild(nodeName);
-                node.AppendChild(nodePath);
-                node.AppendChild(nodeOutput);
+                XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, childElement, @"http://maven.apache.org/POM/4.0.0");
+                if ("embeddedResources".Equals(parentTag))
+                {
+                    XmlNode nodeSourceFile = xmlDocument.CreateNode(XmlNodeType.Element, "sourceFile", @"http://maven.apache.org/POM/4.0.0");
+                    XmlNode nodeName = xmlDocument.CreateNode(XmlNodeType.Element, "name", @"http://maven.apache.org/POM/4.0.0");
+                    nodeName.InnerText = property["sourceFile"];
+                    nodeSourceFile.InnerText = property["name"];
+                    node.AppendChild(nodeSourceFile);
+                    node.AppendChild(nodeName);
+                }
+                else
+                {
+                    XmlNode nodeName = xmlDocument.CreateNode(XmlNodeType.Element, "namespace", @"http://maven.apache.org/POM/4.0.0");
+                    XmlNode nodePath = xmlDocument.CreateNode(XmlNodeType.Element, "path", @"http://maven.apache.org/POM/4.0.0");
+                    XmlNode nodeOutput = xmlDocument.CreateNode(XmlNodeType.Element, "output", @"http://maven.apache.org/POM/4.0.0");
+                    nodeName.InnerText = property["namespace"];
+                    nodePath.InnerText = property["path"] != null ? property["path"].Replace("\\", "/") : property["path"];
+                    nodeOutput.InnerText = property["output"] != null ? property["output"].Replace("\\", "/") : property["output"];
+                    node.AppendChild(nodeName);
+                    node.AppendChild(nodePath);
+                    node.AppendChild(nodeOutput);
+                }
                 elem.AppendChild(node);
             }
 
@@ -624,19 +674,19 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
                 refDependency.version = reference.Version ?? "1.0.0.0";
                 refDependency.classifier = reference.PublicKeyToken;
-				
-				refDependency.scope = "system";
-				System.Reflection.Assembly a = System.Reflection.Assembly.Load(gacUtil.GetAssemblyInfo(reference.Name));
+
+                refDependency.scope = "system";
+                System.Reflection.Assembly a = System.Reflection.Assembly.Load(gacUtil.GetAssemblyInfo(reference.Name));
                 refDependency.systemPath = a.Location;
 
                 return refDependency;
 
             }
-            
-            
-            
+
+
+
             // resolve using system path
-            if(!string.IsNullOrEmpty(reference.HintFullPath) && new FileInfo(reference.HintFullPath).Exists)
+            if (!string.IsNullOrEmpty(reference.HintFullPath) && new FileInfo(reference.HintFullPath).Exists)
             {
 
                 // silent for re-import
@@ -648,7 +698,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 //else
                 {
                     //verbose for new-import
-                    if(!reference.Name.Contains("Interop"))
+                    if (!reference.Name.Contains("Interop"))
                     {
                         MessageBox.Show(
                          string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
@@ -657,7 +707,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                              reference.HintFullPath
                          ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
-                    
+
                 }
 
 
@@ -683,9 +733,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             //                reference.Name
             //            ));
             //}
-            
 
-            
+
+
             return null;
 
         }
@@ -713,7 +763,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
 
             return artifactContext.GetArtifactRepository().GetArtifact(new FileInfo(reference.HintFullPath));
-            
+
         }
 
 
@@ -748,7 +798,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 return null;
             }
 
-                
+
         }
 
 
