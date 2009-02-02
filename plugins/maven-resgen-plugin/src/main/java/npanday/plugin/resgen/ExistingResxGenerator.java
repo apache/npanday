@@ -32,6 +32,13 @@ public class ExistingResxGenerator extends AbstractMojo
     private MavenProject project;
     
     /**
+     * Emebedded Resources
+     * 
+     * @parameter expression="${embeddedResources}"
+     */
+    private EmbeddedResource[] embeddedResources;
+    
+    /**
      * The Vendor for the executable. Supports MONO and MICROSOFT: the default value is <code>MICROSOFT</code>. Not
      * case or white-space sensitive.
      *
@@ -71,36 +78,29 @@ public class ExistingResxGenerator extends AbstractMojo
             getLog().info( "NPANDAY-1501-005: Unsupported Plugin" );
             return;
         }
-        
-        File sourceDirectory = new File( project.getBuild().getDirectory(), "/assembly-resources" );
-                
-        if ( !sourceDirectory.exists() )
-        {
-            return;
-        }
-                
+
+        String outputDirectory = project.getBuild().getDirectory();
         //resgen.exe
-        String resourceDirectory = project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator + "resource" ;
+        String resourceDirectory = outputDirectory + File.separator + ASSEMBLY_RESOURCES_DIR + File.separator + "resource" ;
         if ( !FileUtils.fileExists( resourceDirectory ) )
         {
             FileUtils.mkdir( resourceDirectory );        
-        }
+        }       
         
         try
         {
             List commands = null;
-            File sourceFile = null;
-            List<String> includes = new ArrayList<String>();
-            includes.add( "**/*.resx" );
-            String[] files = getResxFiles( project.getBuild().getDirectory() + File.separator + ASSEMBLY_RESOURCES_DIR, includes);
-                        
-            for (String file : files)
+                 
+            for (EmbeddedResource embeddedResource : embeddedResources)
             {   
-                sourceFile = new File( project.getBuild().getSourceDirectory(), file );
-                commands = getCommands(sourceFile, resourceDirectory);
+            	File file = new File(project.getBuild().getSourceDirectory() + File.separator + embeddedResource.getSourceFile());
+            	if(!file.exists()) continue;
+                commands = getCommands(file.getAbsoluteFile(), resourceDirectory, embeddedResource.getName());
+                System.out.println(commands);
                 netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, "RESGEN",commands ,
                                                       netHome ).execute();
             }
+            
         }
         catch ( ExecutionException e )
         {
@@ -113,13 +113,24 @@ public class ExistingResxGenerator extends AbstractMojo
         }        
     }
     
-    private List<String> getCommands( File sourceFile, String resourceDirectory )    throws MojoExecutionException
+    private List<String> getCommands( File sourceFile, String resourceDirectory)    throws MojoExecutionException
+    {
+    	return getCommands(sourceFile, resourceDirectory, null);
+    }
+    
+    private List<String> getCommands( File sourceFile, String resourceDirectory, String name )    throws MojoExecutionException
     {
         List<String> commands = new ArrayList<String>();
                                             
         commands.add( sourceFile.getAbsolutePath() );
-        commands.add( resourceDirectory + File.separator +getFileNameMinusExtension(sourceFile) + ".resources"   );                               
-                
+        if( name != null || "".equals(name))
+        {
+        	commands.add( resourceDirectory + File.separator + name + ".resources"   );
+        }
+        else
+        {
+        	commands.add( resourceDirectory + File.separator + getFileNameMinusExtension(sourceFile) + ".resources"   );                               
+        }       
         return commands;
     }
     
