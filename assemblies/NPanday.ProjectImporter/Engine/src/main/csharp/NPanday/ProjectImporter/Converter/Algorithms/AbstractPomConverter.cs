@@ -89,7 +89,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
                     value.Add("sourceFile", sourceFile);
-                    value.Add("name", sourceFile.TrimEnd(".resx".ToCharArray()));
+                    string a = sourceFile.Substring(0, sourceFile.LastIndexOf(".")).Replace('\\','.');
+                    value.Add("name", sourceFile.Substring(0, sourceFile.LastIndexOf(".")).Replace('\\', '.'));
 
                     embeddedResourceList.Add(value);
                 }
