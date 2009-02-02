@@ -567,8 +567,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 {
                     XmlNode nodeSourceFile = xmlDocument.CreateNode(XmlNodeType.Element, "sourceFile", @"http://maven.apache.org/POM/4.0.0");
                     XmlNode nodeName = xmlDocument.CreateNode(XmlNodeType.Element, "name", @"http://maven.apache.org/POM/4.0.0");
-                    nodeName.InnerText = property["sourceFile"];
-                    nodeSourceFile.InnerText = property["name"];
+                    nodeName.InnerText = property["name"];
+                    nodeSourceFile.InnerText = property["sourceFile"];
                     node.AppendChild(nodeSourceFile);
                     node.AppendChild(nodeName);
                 }
