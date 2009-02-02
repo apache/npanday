@@ -156,8 +156,7 @@ public final class SettingsRepository
                 {
                     if ( frameworkVersion.equals( framework.getFrameworkVersion().trim() ) )
                     {
-                         String sdkRoot = framework.getSdkInstallRoot();
-                         System.out.println("SDK ROOT:" +sdkRoot);
+                         String sdkRoot = framework.getSdkInstallRoot();                         
                          if(sdkRoot != null) return new File(sdkRoot );
                     }
                 }
