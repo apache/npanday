@@ -34,7 +34,7 @@ namespace NPanday.Artifact
 
         public string GetLocalUacPath(Artifact artifact, string ext)
         {
-            return Path.Combine(localRepository.FullName, string.Format(@"repository\uac\gac_msil\{1}\{2}__{0}\{1}{3}", artifact.GroupId, artifact.ArtifactId, artifact.Version, ext));
+            return Path.Combine(localRepository.FullName, string.Format(@"uac\gac_msil\{1}\{2}__{0}\{1}{3}", artifact.GroupId, artifact.ArtifactId, artifact.Version, ext));
         }
 
         public string GetLocalRepositoryPath(Artifact artifact, string ext)

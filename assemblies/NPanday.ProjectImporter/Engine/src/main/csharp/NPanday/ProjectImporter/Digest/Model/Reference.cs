@@ -181,6 +181,10 @@ namespace NPanday.ProjectImporter.Digest.Model
                         else
                         {
                             path = getBinReference(dll.Name);
+                            if (!string.IsNullOrEmpty(path))
+                            {
+                                File.Copy(path, a.FileInfo.FullName);
+                            }
                         }
                     }
                 }
@@ -191,7 +195,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
                 if (string.IsNullOrEmpty(path))
                 {
-                    MessageBox.Show("Cannot find or download the artifact " + dll.Name + ", this will not be included in the pom dependencies.");
+                    MessageBox.Show("Cannot find or download the artifact " + dll.Name + ",  project may not build properly.");
                     return;
                 }
                 bool asmNotLoaded = true;
