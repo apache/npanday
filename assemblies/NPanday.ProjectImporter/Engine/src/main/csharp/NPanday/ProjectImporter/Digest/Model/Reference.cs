@@ -186,6 +186,14 @@ namespace NPanday.ProjectImporter.Digest.Model
                                 File.Copy(path, a.FileInfo.FullName);
                             }
                         }
+                        //copy assembly to repo if not found.
+                        if (!string.IsNullOrEmpty(path) && !File.Exists(localRepoPath))
+                        {
+                            if (!Directory.Exists(Path.GetDirectoryName(localRepoPath)))
+                                Directory.CreateDirectory(Path.GetDirectoryName(localRepoPath));
+
+                            File.Copy(path, localRepoPath);
+                        }
                     }
                 }
                 else
