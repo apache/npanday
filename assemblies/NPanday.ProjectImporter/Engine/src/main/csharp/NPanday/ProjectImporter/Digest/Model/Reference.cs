@@ -147,7 +147,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         private void SetReferenceFromFile(FileInfo dll)
         {
-            Assembly asm;
+            Assembly asm = null ;
             if (dll.Exists)
             {
                 asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
@@ -157,29 +157,95 @@ namespace NPanday.ProjectImporter.Digest.Model
                 ArtifactContext artifactContext = new ArtifactContext();
                 Artifact.Artifact a = artifactContext.GetArtifactRepository().GetArtifact(dll);
                 
-                if(!a.FileInfo.Directory.Exists)
-                    a.FileInfo.Directory.Create();
+                string path = string.Empty;
 
-                string localRepoPath = artifactContext.GetArtifactRepository().GetLocalRepositoryPath(a, dll.Extension);
-                if (File.Exists(localRepoPath))
+                if (!a.FileInfo.Exists)
                 {
-                    File.Copy(localRepoPath, dll.FullName);
-                    asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
+                    if (!a.FileInfo.Directory.Exists)
+                        a.FileInfo.Directory.Create();
 
-                }
-                else
-                {
-                    if (downloadArtifactFromRemoteRepository(a, dll.Extension))
+                    string localRepoPath = artifactContext.GetArtifactRepository().GetLocalRepositoryPath(a, dll.Extension);
+                    if (File.Exists(localRepoPath))
                     {
-                        asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
+                        File.Copy(localRepoPath, a.FileInfo.FullName);
+                        //asm = Assembly.ReflectionOnlyLoadFrom();
+                        path = a.FileInfo.FullName;
                     }
                     else
                     {
-                        return;
+                        if (downloadArtifactFromRemoteRepository(a, dll.Extension))
+                        {
+                            //asm = Assembly.ReflectionOnlyLoadFrom(a.FileInfo.FullName);
+                            path = a.FileInfo.FullName;
+                        }
+                        else
+                        {
+                            path = getBinReference(dll.Name);
+                        }
                     }
                 }
+                else
+                {
+                    path = a.FileInfo.FullName;
+                }
+
+                if (string.IsNullOrEmpty(path))
+                {
+                    MessageBox.Show("Cannot find or download the artifact " + dll.Name + ", this will not be included in the pom dependencies.");
+                    return;
+                }
+                bool asmNotLoaded = true;
+                foreach (Assembly asmm in AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
+                {
+                    if (Path.GetFileNameWithoutExtension(asmm.Location).Equals(Path.GetFileNameWithoutExtension(path)))
+                    {
+                        asm = asmm;
+                        asmNotLoaded = false;
+                        break;
+                    }
+                }
+                if (asmNotLoaded)
+                {
+                    try
+                    {
+                        asm = Assembly.ReflectionOnlyLoadFrom(path);
+
+                    }
+                    catch 
+                    {
+                        
+                        throw;
+                    }
+                }
+
                 SetAssemblyInfoValues(asm.ToString());
+                //asm = null;
             }
+        }
+
+        string getBinReference(string fileName) {
+            string path = Path.Combine(this.IncludeFullPath, @"bin\" + Path.GetFileName(fileName));
+            
+            if (File.Exists(path))
+                return path;
+
+            path = Path.Combine(this.IncludeFullPath, @"bin\debug\" + Path.GetFileName(fileName));
+            if (File.Exists(path))
+                return path;
+
+            path = Path.Combine(this.IncludeFullPath, @"bin\release\" + Path.GetFileName(fileName));
+            if (File.Exists(path))
+                return path;
+
+            path = Path.Combine(this.IncludeFullPath, @"obj\debug\" + Path.GetFileName(fileName));
+            if (File.Exists(path))
+                return path;
+
+            path = Path.Combine(this.IncludeFullPath, @"obj\release\" + Path.GetFileName(fileName));
+            if (File.Exists(path))
+                return path;
+
+            return string.Empty;
         }
 
         bool downloadArtifactFromRemoteRepository(Artifact.Artifact artifact, string ext)

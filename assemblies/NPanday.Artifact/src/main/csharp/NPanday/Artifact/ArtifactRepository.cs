@@ -31,6 +31,12 @@ namespace NPanday.Artifact
 {
     public sealed class ArtifactRepository
     {
+
+        public string GetLocalUacPath(Artifact artifact, string ext)
+        {
+            return Path.Combine(localRepository.FullName, string.Format(@"repository\uac\gac_msil\{1}\{2}__{0}\{1}{3}", artifact.GroupId, artifact.ArtifactId, artifact.Version, ext));
+        }
+
         public string GetLocalRepositoryPath(Artifact artifact, string ext)
         {
             return Path.Combine(localRepository.FullName, string.Format(@"repository\{0}\{1}\{2}\{1}-{2}{3}", artifact.GroupId, artifact.ArtifactId, artifact.Version,ext));
@@ -123,8 +129,8 @@ namespace NPanday.Artifact
                 tk.RemoveRange(0, tk.Count - 3);
                 tokens = tk.ToArray();
             }
-            
-            
+
+            string ext = Path.GetExtension(tokens[2]);            
             
 
             // first file token is the artifact
@@ -138,7 +144,7 @@ namespace NPanday.Artifact
             artifact.ArtifactId = artifactId;
             artifact.Version = version;
             artifact.GroupId = groupId;
-            artifact.FileInfo = artifactFile;
+            artifact.FileInfo = new FileInfo(GetLocalUacPath(artifact, ext));
             return artifact;
         }
 

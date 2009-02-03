@@ -790,7 +790,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 {
                     artifact = GetArtifactFromRepoUsingHintPathVersionNumber(reference);
                 }
-
+                if (artifact == null)
+                {
+                    artifact = artifactContext.GetArtifactRepository().GetArtifact(new FileInfo(reference.HintPath));
+                }
                 return artifact;
             }
             catch
