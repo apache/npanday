@@ -148,16 +148,18 @@ namespace NPanday.ProjectImporter.Digest.Model
         private void SetReferenceFromFile(FileInfo dll)
         {
             Assembly asm = null ;
+            string path = string.Empty;
+
             if (dll.Exists)
             {
-                asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
+                //asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
+                path = dll.FullName;
             }
             else
             {
                 ArtifactContext artifactContext = new ArtifactContext();
                 Artifact.Artifact a = artifactContext.GetArtifactRepository().GetArtifact(dll);
                 
-                string path = string.Empty;
 
                 if (!a.FileInfo.Exists)
                 {
@@ -206,33 +208,26 @@ namespace NPanday.ProjectImporter.Digest.Model
                     MessageBox.Show("Cannot find or download the artifact " + dll.Name + ",  project may not build properly.");
                     return;
                 }
-                bool asmNotLoaded = true;
-                foreach (Assembly asmm in AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
-                {
-                    if (Path.GetFileNameWithoutExtension(asmm.Location).Equals(Path.GetFileNameWithoutExtension(path)))
-                    {
-                        asm = asmm;
-                        asmNotLoaded = false;
-                        break;
-                    }
-                }
-                if (asmNotLoaded)
-                {
-                    try
-                    {
-                        asm = Assembly.ReflectionOnlyLoadFrom(path);
-
-                    }
-                    catch 
-                    {
-                        
-                        throw;
-                    }
-                }
-
-                SetAssemblyInfoValues(asm.ToString());
-                //asm = null;
             }
+
+            bool asmNotLoaded = true;
+            foreach (Assembly asmm in AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
+            {
+                if (Path.GetFileNameWithoutExtension(asmm.Location).Equals(Path.GetFileNameWithoutExtension(path)))
+                {
+                    asm = asmm;
+                    asmNotLoaded = false;
+                    break;
+                }
+            }
+            if (asmNotLoaded)
+            {
+                asm = Assembly.ReflectionOnlyLoadFrom(path);
+            }
+
+            SetAssemblyInfoValues(asm.ToString());
+            //asm = null;
+
         }
 
         string getBinReference(string fileName) {
