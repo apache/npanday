@@ -89,8 +89,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
                     value.Add("sourceFile", sourceFile);
-                    string a = sourceFile.Substring(0, sourceFile.LastIndexOf(".")).Replace('\\','.');
-                    value.Add("name", sourceFile.Substring(0, sourceFile.LastIndexOf(".")).Replace('\\', '.'));
+                    string name = projectDigest.RootNamespace + "." + sourceFile.Substring(0, sourceFile.LastIndexOf(".")).Replace('\\','.');
+                    value.Add("name", name);
 
                     embeddedResourceList.Add(value);
                 }
