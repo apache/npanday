@@ -90,17 +90,32 @@ public class ExistingResxGenerator extends AbstractMojo
         try
         {
             List commands = null;
-                 
             for (EmbeddedResource embeddedResource : embeddedResources)
             {   
             	File file = new File(project.getBuild().getSourceDirectory() + File.separator + embeddedResource.getSourceFile());
             	if(!file.exists()) continue;
                 commands = getCommands(file.getAbsoluteFile(), resourceDirectory, embeddedResource.getName());
-                System.out.println(commands);
                 netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, "RESGEN",commands ,
                                                       netHome ).execute();
             }
-            
+          
+            if(embeddedResources == null)
+            {
+               String sourceDirectory = project.getBasedir().getPath();
+        	   String[] resourceFilenames  = FileUtils.getFilesFromExtension(sourceDirectory, new String[]{"resx"});
+        	
+               for(String resourceFilename : resourceFilenames)
+               {
+            	  File file = new File(resourceFilename);
+            	  if(!file.exists()) continue;
+            	  String name = resourceFilename.substring(sourceDirectory.length() + 1).replace('\\', '.');
+            	  name = project.getArtifactId() + "." + name.substring(0, name.lastIndexOf('.'));
+
+            	  commands = getCommands(file.getAbsoluteFile(), resourceDirectory, name);
+            	  netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, "RESGEN",commands ,
+                         netHome ).execute();
+              }
+            }
         }
         catch ( ExecutionException e )
         {
