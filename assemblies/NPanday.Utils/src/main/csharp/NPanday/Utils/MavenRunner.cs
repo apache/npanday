@@ -21,8 +21,10 @@ namespace NPanday.Utils
         DTE2 dte2;
         bool stopCalled;
         System.Threading.Thread outputThread;
+        System.Threading.Thread outputErrorThread;
         bool running;
         ManualResetEvent outputThreadEvent;
+        ManualResetEvent outputErrorThreadEvent;
         public event EventHandler RunnerStopped;
 
 
@@ -43,6 +45,12 @@ namespace NPanday.Utils
             System.Threading.ThreadStart outputThreadStart = new System.Threading.ThreadStart(OutputThreadDelegate);
             outputThread = new System.Threading.Thread(outputThreadStart);
             outputThread.Start();
+            
+            // create a sepearte worker thread for outputing the Process.StandardError
+            System.Threading.ThreadStart outputErrorThreadStart = new System.Threading.ThreadStart(OutputErrorThreadDelegate);
+            outputErrorThread = new System.Threading.Thread(outputErrorThreadStart);
+            outputErrorThread.Start();
+
         }
 
 		public void ClearOutputWindow()
@@ -99,53 +107,39 @@ namespace NPanday.Utils
                     Directory.Delete(path, true);
                 }
 				
-				try
-                {
-                    string tempDir20 = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v2.0.50727\\Temporary ASP.NET Files\\NPanday_Temp";
-
-
-                    if (Directory.Exists(tempDir20))
-                    {
-                        Directory.Delete(tempDir20, true);
-                    }
-                }
-                catch (Exception e)
-                { 
-                    //deletes temp directories for compilation
-                }
-
-                try
-                {
-                    string tempDir30 = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.0\\Temporary ASP.NET Files\\NPanday_Temp";
-
-
-                    if (Directory.Exists(tempDir30))
-                    {
-                        Directory.Delete(tempDir30, true);
-                    }
-                }
-                catch (Exception e)
-                {
-                    //deletes temp directories for compilation
-                }
-
-                try
-                {
-                    string tempDir35 = "C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\Temporary ASP.NET Files\\NPanday_Temp";
-
-
-                    if (Directory.Exists(tempDir35))
-                    {
-                        Directory.Delete(tempDir35, true);
-                    }
-                }
-                catch (Exception e)
-                {
-                    //deletes temp directories for compilation
-                }
-          
-
             
+        }
+
+        private void OutputErrorThreadDelegate()
+        {
+
+            while (running)
+            {
+                // assign to a local variable to avoid raise exception
+                System.Diagnostics.Process proc = currentProcess;
+
+
+
+                if (!IsRunning)
+                {
+                    // no process, make the thread pasivate to save cpu usage;
+                    outputErrorThreadEvent = new ManualResetEvent(false);
+                    outputErrorThreadEvent.WaitOne();
+                    continue;
+                }
+
+                StreamReader mvnErrorOutput = proc.StandardError;
+                if (mvnErrorOutput.Peek() != 0)
+                {
+                    string value = mvnErrorOutput.ReadLine();
+                    if (!string.IsNullOrEmpty(value) && !"".Equals(value.Trim()))
+                    {
+                        if (!stopCalled)
+                            output.OutputString("\n" + value);
+                    }
+                }
+            }
+
         }
 
 		
@@ -266,6 +260,11 @@ namespace NPanday.Utils
                 {
                     outputThreadEvent.Set();
                 }
+                if (outputErrorThreadEvent != null)
+                {
+                    outputErrorThreadEvent.Set();
+                }
+                
                 
             }
             catch (Exception e)
