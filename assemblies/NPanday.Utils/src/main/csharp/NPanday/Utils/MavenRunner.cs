@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 
 using System.Threading;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 
 
@@ -75,41 +76,102 @@ namespace NPanday.Utils
 
             bool isFlatProject = true;
             
-                string[] directoryPartial = solution.FullName.Split("\\".ToCharArray());
-                string pathPartial = directoryPartial[directoryPartial.Length - 1];
-                string path = solution.FullName.Substring(0, solution.FullName.Length - pathPartial.Length);
-                
-                path = path.Replace("\\", "//");
-                string baseDirectory = path;
-                path = path + "/bin";
+            string[] directoryPartial = solution.FullName.Split("\\".ToCharArray());
+            string pathPartial = directoryPartial[directoryPartial.Length - 1];
+            string path = solution.FullName.Substring(0, solution.FullName.Length - pathPartial.Length);
+            
+            path = path.Replace("\\", "//");
+            string baseDirectory = path;
+            path = path + "/bin";
 
 
-                string[] directories = Directory.GetDirectories(baseDirectory);
-                foreach (string dir in directories)
+            string[] directories = Directory.GetDirectories(baseDirectory);
+            
+            //searching for pom file to determine whether the project is flat or not
+            foreach (string dir in directories)
+            {
+                string[] dirFiles = Directory.GetFiles(dir);
+                foreach (string f in dirFiles)
                 {
-                    string[] dirFiles = Directory.GetFiles(dir);
-                    foreach (string f in dirFiles)
+                    if (f.Contains("pom.xml"))
                     {
-                        if (f.Contains("pom.xml"))
-                        {
-                            isFlatProject = false;
-                            break;
-                        }
-                    }
-                    if (!isFlatProject)
-                    {
+                        isFlatProject = false;
                         break;
                     }
                 }
-
-                if (Directory.Exists(path) && !isFlatProject)
+                if (!isFlatProject)
                 {
-                    Directory.Delete(path, true);
+                    break;
                 }
-				
-            
+            }
+
+            //searching for target folders to delete the temp directories generated
+            foreach (string dir in directories)
+            {
+                //projects
+                string[] dirFolders = Directory.GetDirectories(baseDirectory);
+                foreach (string dirFolder in dirFolders)
+                {
+                    string[] projectFolders = Directory.GetDirectories(dirFolder);
+                    //folders in projects
+                    foreach (string projectFolder in projectFolders)
+                    {
+                        if (projectFolder.Contains("target"))
+                        {
+                            string[] targetFolders = Directory.GetDirectories(projectFolder);
+                            foreach (string targetFolder in targetFolders)
+                            {
+                                string targetChange = targetFolder.Replace("\\", "//");
+
+                                string[] targetPartial = targetChange.Split("//".ToCharArray());
+                                string targetPath = targetPartial[targetPartial.Length - 1];
+
+                                if (IsAllDigit(targetPath))
+                                {
+                                    try
+                                    {
+                                        Directory.Delete(targetChange, true);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        output.OutputString("\n[delete error]"+e.Message);
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!isFlatProject)
+                {
+                    break;
+                }
+            }
+
+            //Delete the temp bin generated
+            if (Directory.Exists(path) && !isFlatProject)
+            {
+                Directory.Delete(path, true);
+            }
+
         }
 
+        // Function To test for temp folder
+        private bool IsAllDigit(String strToCheck)
+        {
+            bool isValid = true;
+            foreach (char item in strToCheck)
+            {
+                if (!Char.IsDigit(item))
+                {
+                    isValid = false;
+                    break;
+                }
+            }
+            return isValid;
+        }
+
+        
         private void OutputErrorThreadDelegate()
         {
 
