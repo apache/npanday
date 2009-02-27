@@ -2,48 +2,37 @@
 
 <project> 
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>org.apache.maven-site</groupId>  
-  <artifactId>npanday-apache-site</artifactId>  
-  <packaging>pom</packaging>  
-  <version>0.9-SNAPSHOT</version>  
-  <name>NPanday</name>  
-  <url>http://incubator.apache.org/npanday</url>  
-  <description>NPanday provides Maven 2.x plugins to support building of .NET applications</description>  
+  
+  <groupId>npanday</groupId>
+  <artifactId>npanday-site</artifactId>  
+  <version>0.9-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>NPanday :: Site</name>
+  <description>NPanday .NET Build Tool</description>
+  <url>http://codeplex.com/npanday</url> 
+  
   <mailingLists> 
     <mailingList> 
       <name>NPanday Dev List</name>  
-      <subscribe>npanday-dev-subscribe@incubator.apache.org</subscribe>  
-      <unsubscribe>npanday-dev-unsubscribe@incubator.apache.org</unsubscribe>  
-      <post>npanday-dev@incubator.apache.org</post>  
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-npanday-dev/</archive>  
+      <post>npanday@discussions.codeplex.com</post>  
       <otherArchives> 
-        <otherArchive>http://www.nabble.com/npanday-dev-f17655.html</otherArchive> 
-      </otherArchives> 
-    </mailingList>  
-    <mailingList> 
-      <name>NPanday Commits List</name>  
-      <subscribe>npanday-commits-subscribe@incubator.apache.org</subscribe>  
-      <unsubscribe>npanday-commits-unsubscribe@incubator.apache.org</unsubscribe>  
-      <post>npanday-commits@incubator.apache.org</post>  
-      <archive>http://mail-archives.apache.org/mod_mbox/incubator-npanday-commits/</archive>  
-      <otherArchives> 
-        <otherArchive>http://www.nabble.com/npanday-commits-f17656.html</otherArchive> 
+        <otherArchive>http://n2.nabble.com/NPanday-Discussions-f1657131.html</otherArchive> 
       </otherArchives> 
     </mailingList> 
   </mailingLists>  
   <scm> 
-    <url>https://svn.apache.org/repos/asf/incubator/npanday/</url>  
-    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/</connection>  
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/trunk</developerConnection>  
-    <tag>REL_0_14_SNAPSHOT</tag> 
+    <url>https://npanday.svn.codeplex.com/svn/</url>  
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/</connection>  
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/</developerConnection>  
+    <tag>REL_0_9_SNAPSHOT</tag> 
   </scm>  
   <organization> 
     <name>NPanday</name>  
-    <url>http://incubator.apache.org/npanday</url> 
+    <url>http://codeplex.com/npanday</url> 
   </organization>  
   <issueManagement> 
-    <system>JIRA Bugtracking</system>  
-    <url>http://jira.codehaus.org/browse/NPANDAY</url> 
+    <system>Codeplex Issue Tracker</system>  
+    <url>http://www.codeplex.com/npanday/WorkItem/List.aspx</url> 
   </issueManagement>  
   <licenses> 
     <license> 
@@ -51,67 +40,102 @@
       <url>LICENSE.txt</url> 
     </license> 
   </licenses>  
-  <developers> 
+  <developers>
     <developer> 
       <name>Brett Porter</name>  
-      <id>brett</id>  
+      <id>brettporter</id>  
       <email>brett@apache.org</email>  
       <roles> 
-        <role>champion</role>  
-        <role>mentor</role> 
+        <role>coordinator</role>  
       </roles> 
     </developer>  
     <developer> 
-      <name>Jason van Zyl</name>  
-      <id>jvanzyl</id>  
-      <email>jvanzyl@apache.org</email>  
+      <name>Melvin Sembrano</name>  
+      <id>melvinsembrano</id>  
+      <email>melvinsembrano@gmail.com</email>  
       <roles> 
-        <role>champion</role>  
-        <role>mentor</role> 
+        <role>coordinator</role>  
       </roles> 
     </developer>  
+    <developer> 
+      <name>Leopoldo Agdeppa</name>  
+      <id>lagdeppa</id>  
+      <email>lagdeppa@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Jan Ancajas</name>  
+      <id>jancajas</id>  
+      <email>jancajas@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Joe Ocaba</name>  
+      <id>jocaba</id>  
+      <email>jocaba@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Shein Ernacio</name>  
+      <id>sernacio</id>  
+      <email>sernacio@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>C?dric</name>  
+      <id>mimil</id>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Marecor Baclay</name>  
+      <id>mbaclay</id>  
+      <email>mbaclay@exist.com</email>  
+      <roles> 
+        <role>QA</role>  
+      </roles> 
+    </developer>  
+    <!--Emeritus Committers-->
     <developer> 
       <name>Shane Isbell</name>  
       <id>sisbell</id>  
       <email>sisbell@apache.org</email>  
       <url>http://jroller.com/page/random7</url>  
-      <roles> 
-        <role>committer</role> 
-      </roles> 
-    </developer>  
+    </developer>      
     <developer> 
-      <name>Dan Fabulich</name>  
-      <id>dfabulich</id>  
-      <email>dfabulich@apache.org</email>  
-      <roles> 
-        <role>committer</role> 
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Chris Stevenson</name>  
-      <id>chrisjs</id>  
-      <email>chrisjs@apache.org</email>  
-      <roles> 
-        <role>committer</role> 
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Trygve Laugstol</name>  
-      <id>trygvis</id>  
-      <email>trygvis@apache.org</email>  
-      <roles> 
-        <role>committer</role> 
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>James Strachan</name>  
-      <id>jstrachan</id>  
-      <email>jstrachan@apache.org</email>  
-      <roles> 
-        <role>committer</role> 
-      </roles> 
-    </developer> 
-  </developers>  
+      <name>Evan Worley</name>  
+      <id>eworley</id>  
+      <email>eworley@apache.org</email>  
+    </developer>        
+    <!--Emeritus Committers-->
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Wendy Smoak</name>
+      <email>wsmoak@apache.org</email>
+    </contributor>
+    <contributor>
+      <name>Lisa Malgeri</name>
+      <email>lisa_malgeri@yahoo.com</email>
+    </contributor>
+    <contributor>
+      <name>Julie McIntyre</name>
+      <email></email>
+    </contributor>
+    <contributor>
+      <name>Jevica Arianne B. Zurbano</name>
+      <email>jevica.arianne@gmail.com</email>
+    </contributor>
+  </contributors>  
   <reporting> 
     <plugins> 
       <plugin> 
@@ -121,12 +145,58 @@
         </configuration> 
       </plugin> 
     </plugins> 
-  </reporting>  
-  <distributionManagement> 
-    <site> 
-      <id>npanday-apache-site</id>  
-      <name>NPanday Site</name>  
-      <url>file://${basedir}/../../www</url> 
-    </site> 
-  </distributionManagement> 
+  </reporting>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>site</id>
+            <phase>package</phase>
+            <goals>
+              <goal>site</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-3</version>
+        <configuration>
+          <descriptor>src/site/assembly/docs.xml</descriptor>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-images</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <copy todir="${basedir}/target/site/images">
+                  <fileset dir="src/site/images" />
+                </copy>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <finalName>npanday-${project.version}</finalName>
+  </build>
 </project>

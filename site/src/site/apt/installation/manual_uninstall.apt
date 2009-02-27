@@ -1,0 +1,48 @@
+ ------
+ Uninstalling Manually
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Uninstalling Manually
+
+  To manually remove the NPanday .NET Build Tool, follow these steps:
+  
+  [[1]] Locate and delete your previous version of the NPanday .NET Build Tool for Visual Studio.
+  It is typically found at the following location, where [user_home] is your home directory:
+  
+  <<<C:\\Documents and Settings\\[user_home]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
+  
+  [[2]] Clear the cache by typing the following in a command shell:
+  
+  <<<C:\\Program Files\\Microsoft Visual Studio 8\\SDK\\v2.0\\Bin\\mscorcfg.msc>>>
+  
+  [[3]] Go to My Computer > AssemblyCache, click View List. Delete the following two files:
+  
+  * <<<Npanday.Model.Pom>>>
+  
+  * <<<NPanday.Plugin>>>
+  
+  []
+  
+  [[4]] Delete the following directories:
+  
+  * <<<C:\\Documents and Settings\\[user_home]\\.m2\\pab>>>
+  
+  * <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac>>>
+  
+  []
+  
+  [[5]] Remove the following file <<<C:\\Documents and Settings\\[user_home]\\.m2\\npanday-settings.xml>>>
+  
+  [[6]] Remove the <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository>>> directory.
+  
+  []
+  
+  <<Note>>: This deletes all artifacts for all your projects, not just the NPanday ones.
+  This is not a problem because when you re-build your projects, Maven will automatically recreate this directory and download the needed jars.
+  The only time this is an issue is if you have manually downloaded jars, such as the Sun jar files.
+  In that case you will have to manually download them again if this directory is removed.
+  
+  

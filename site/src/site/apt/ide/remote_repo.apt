@@ -1,0 +1,56 @@
+ ------
+ Remote Repository Configuration
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Remote Repository Configuration
+
+  A remote Maven repository can be configured using the Visual Studio IDE or it can be configured manually by adding information to the settings file.
+  
+* Automatically Configure a Remote Maven Repository via the IDE
+
+  To access a remote Maven repository you can configure it from within Visual Studio. Visual Studio must be open,
+  the NPanday Build System must be running, and you must have a project loaded. Then:
+  
+  [[1]] Right-click on a project and select Add Maven Artifact... from the menu.
+  
+  [[2]] In the Add Maven Artifact pop-up window, click the Configure Repository tab.
+  
+  [[3]] Select the URL of the repository in the pop-up window.\
+  .
+
+[../images/remote_repo.jpg] Sample configuration for Remote Repository
+
+  [[4]] If the remote repository allows snapshots or released artifacts to be stored there, then check the appropriate box.
+  
+  [[5]] Click Update. This will save the configuration to <<<C:\\Documents and Settings\\[user_home]\\.m2\\settings.xml>>>.
+  To edit multiple repositories, repeat steps 3 to 5 by selecting another repository to be configured form the drop down list.
+  
+  [[6]] Click Close when done configuring the repository.
+  
+  []
+
+* Manually Configure a Remote Maven Repository
+
+  To manually add a remote repository add the following lines to your <<<C:\\Documents and Settings\\[user_home]\\.m2\\settings.xml>>> file
+  replacing the values for the <<< \<repository\> >>> element.
+
++------+
+<profiles>
+  <profile>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+    <repositories>
+      <repository>
+        <releases />
+        <snapshots />
+        <id>npanday.id</id>
+        <url>http://repo1.maven.org/maven2/</url>
+      </repository>
+    </repositories>
+  </profile>
+</profiles>
++------+

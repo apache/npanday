@@ -1,32 +1,77 @@
-About NMaven
+ ------
+ NPanday Overview
+ ------
+ ------
+ 24 Feb 2009
+ ------
 
- NMaven provides Maven 2.x plugins to support building of .NET applications. NMaven is its own framework
- that provides the correct .NET compiler based on the environment (vendor/language/operating system).  This framework
- leverages Maven for the build lifecycle, making it a small, compiler-plugin-framework on top of the larger Maven build-framework.
+Welcome to NPanday Visual Studio Addin
 
-Road Map
+  NPanday provides Maven 2.x plugins to support building of .NET applications.
+  It enables you to use Visual Studio with a Maven-compatible development infrastructure.
+  
+  NPanday is its own framework, the goal of which is to provide a common Maven build environment across .NET compilers
+  (C#, VB), vendors (Microsoft, Novell, DotGNU), and platforms (Windows, Linux). This framework leverages Maven for
+  the build lifecycle, making it a small, compiler-plugin-framework on top of the larger Maven build-framework.
+  
+  NPanday Maven Integration Features support console, window and web based applications as listed
+  below.
+  
+  C# & VB Project supported project types
+  
+  * Windows Application
+  
+  * Class Library
+  
+  * Console Application
+  
+  * Device Application
+  
+  * Crystal Reports Application
+  
+  * ASP .NET Web Application
+  
+  * ASP .Net Web Service Application
+  
+  []
+  
+  Web Site supported project types
+  
+  * ASP.Net Web Site
+  
+  * ASP .NET Web Service
+  
+  []
+  
+  To be more specific, NPanday supported project types are: CSharp (library, executable),
+  VbDotNet (library, executable), Web_Site, and Web_Application.
+  
+  And the combination of types supported are: Web_Site + CSharp, Web_Site +
+  VbDotNet, Web_Application + CSharp, and Web_Application +
+  VbDotNet.
+  
+  NPanday supported project structures are as follows:
+  
+  * Flat Single Module Project
+  
+  * Normal Single Project
+  
+  * Flat Multi Module Project
+  
+  * Normal Multi Module Project
+  
+  []
 
- The primary goal of NMaven is to provide a common Maven build environment across .NET compilers (C#, VB),
- vendors (Microsoft, Novell, DotGNU) and platforms (Windows, Linux). Specific, near-term goals include:
-
- * Browse Maven repository and add/delete dependencies through IDE (VS2005/SharpDevelop)
-
- * Write .NET Maven plugins with Mono (Similar to the one for Microsoft)
-
- * Generate project templates through archetypes
-
- []
-
- Click here for a complete {{{http://docs.codehaus.org/display/MAVENUSER/Roadmap} Road Map }}
+ Click here for more {{{http://www.codeplex.com/npanday} NPanday Information }}
 
 Reporting Bugs/Requesting Features
 
- * {{{http://jira.codehaus.org/browse/NMAVEN} NMaven Issue Tracking}}
+ * {{{http://www.codeplex.com/npanday/WorkItem/List.aspx} NPanday Issue Tracking}}
 
- * {{{mailto:nmaven-dev@incubator.apache.org} Post to Mailing List}}
+ * {{{mailto:npanday@discussions.codeplex.com} Post to Mailing List}}
 
 Site Info
 
  All information contained within this web-site is based on the latest work at
- the {{{https://svn.apache.org/repos/asf/incubator/nmaven/trunk} SVN trunk }}, so all features may not work with the
-  latest stable tag {{{https://svn.apache.org/repos/asf/incubator/nmaven/tags} SVN tags }}
+ the {{{https://npanday.svn.codeplex.com/svn/trunk} SVN trunk }}, so all features may not work with the
+ latest stable tag {{{https://npanday.svn.codeplex.com/svn/tags/} SVN tags }}

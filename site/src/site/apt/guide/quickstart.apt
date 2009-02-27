@@ -1,0 +1,71 @@
+ ------
+ Quick Start Guide
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Quick Start Guide
+
+  This section is provides a quick way to install the NPanday .NET Build Tool and create a sample project.
+  This section does not explain any of the steps - explanations can be found in {{{../installation/index.html} NPanday .NET Built Tool Add-in Installation}}
+  and subsequent sections.
+  
+  <<Note>>: If you are upgrading to a new version of the add-in, we recommend you remove the old installation and start with a “clean” system.
+  Follow the Uninstalling the NPanday .Net Build Tool procedure before installing the new version.
+  
+  [[1]] Make sure your <<<C:\\Documents and Settings\\[user_home]\\.m2\\settings.xml>>> file points to the repository that contains
+  the .NET artifacts, where <<<[user_home]>>> is the home directory of the user performing these steps.
+  
+  [[2]] Set your <<<PATH>>> environment variable to find <<<csc>>> and <<<devenv>>> (the Visual Studio executables). Typically the <<<PATH>>> will be this:
+  
+    <<<PATH=%PATH%;C:\\Program Files\\Microsoft Visual Studio 8\\SDK\\V2.0\\Bin;C:\\WINDOWS\\Microsoft.NET\\Framework\\v2.0.50727;
+    C:\\Program Files\\Microsoft Visual Studio 8\\Common7\\IDE;C:\Program Files\\NUnit 2.4.3\\bin>>>
+    
+    If you are starting Visual Studio from the Windows Start menu, then you need to set the <<<PATH>>> environment variable in the System Properties:
+    
+    Start > My Computer > View System Information > Advanced > Environment variables
+    
+    If you are starting Visual Studio from a command shell using the <<<devenv>>> executable then you can set your <<<PATH>>> on the command line as shown above.
+  
+  [[3]] Create the Visual Studio add-in, by running the <<<maven-vsinstaller-plugin>>> to resolve (and download if needed)
+  all of NPanday's dependencies. Execute the following command from a command shell from any directory:
+  
+    <<<mvn npanday.plugin:maven-vsinstaller-plugin:install>>>
+    
+    The add-in file will be created and put in the user's home directory, here:
+    
+    <<<C:\\Documents and Settings\\[user_home]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
+  
+  [[4]] Start Visual Studio.
+  
+  [[5]] In Visual Studio start the NPanday Build System from Tools>NPanday Build System.
+  You will see the NPanday embedded server starting in the Visual Studio Output pane.
+  
+  [[6]] To verify the add-in is working, create a simple project. Create an empty directory called, for example, <<<npandaytest>>>.
+  
+  [[7]] Go to the directory (<<<npandaytest>>> in our example) and execute:
+  
+    <<<mvn archetype:create -DgroupId=NPanday -DartifactId=NPanday.Test -DarchetypeArtifactId=maven-archetype-dotnet-simple -DarchetypeGroupId=org.apache.maven.dotnet -DarchetypeVersion=[version]>>>
+  
+  [[8]] Go to the <<<NPanday.Test>>> directory (which was created in the previous step) and execute:
+  
+  <<<mvn install>>>
+  
+  <<<mvn clean>>>
+  
+  [[9]] Generate a solution file (also from the NPanday.Test directory):
+  
+  <<<mvn NPanday.Plugins:NPanday.Plugin.Solution.JavaBinding:Solution>>>
+  
+  [[10]] In Visual Studio, click File>Open>Project/Solution. Browse to the <<<NPanday.Test.sln>>> file
+  (under the NPanday.Test directory created in step 4) and select it. Click Open.
+  
+  [[11]] In the Solution Explorer pane in Visual Studio, right-click the <<<NPanday.Test folder>>>. If you get
+  the Security Warning pop-up screen select Load project normally and click OK. You may see
+  this screen twice, so select Load project normally again and click OK the second time as well.
+  
+  [[12]] Select All NPanday Projects > Install. You should see the build running in the Output pane. The artifact, <<<NPanday.Test.dll>>>, will be placed here:
+  
+  <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac\\gac_msil\\NPanday.Test\[version]__NPanday>>>
+   

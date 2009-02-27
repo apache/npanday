@@ -1,0 +1,130 @@
+ ------
+ NPanday .NET Build Tool Installation and Configuration
+ ------
+ ------
+ 24 Feb 2009
+ ------
+
+NPanday .NET Build Tool Installation and Configuration
+
+* Pre-requisites
+  
+  * Remove previous installation: We recommend starting with a “clean” system, so follow the procedure for
+  Uninstalling the NPanday .Net Build Tool before you install  the new version.
+  
+  * Java Runtime Environment (JRE) 1.5 or greater: Must be installed. The <<<JAVA_HOME>>> environment variable
+  must be set to the directory where the JRE is installed, for example, <<<C:\\Program Files\\Java\\jre1.5.0_06.>>>.
+  The Java executable (<<<%JAVA_HOME%\\bin>>>) must also be added to <<<PATH>>>.
+  
+  * Visual Studio 2005 or Visual Studio 2008: Must be installed. However, it must not be running when you install
+  the NPanday add-in. If Visual Studio is currently running on your system, close it before continuing with this
+  NPanday installation and configuration.
+  
+  * Microsoft Service Pack 1: Must be installed. Most of the NPanday build tool features require this.
+  
+  To make sure you have the Service Pack 1, go to <<Visual Studio Help \> About>> menu option. From the About screen,
+  verify that the Service Pack version is enclosed in parenthesis after the Visual Studio Version.
+  
+  Another way to verify the Service Pack installation is to click <<Copy Info>> from the <<About>> screen and paste
+  the information in a text editor. Verify that the SP installation information is in the list.
+
+  For Visual Studio 2005
+
++------------------------------------------+
+Microsoft Visual Studio 2005 Professional
+Edition - ENU Service Pack 1 (KB926601)
++------------------------------------------+
+
+  For Visual Studio 2008
+
++-----------------------------+
+Microsoft Visual Studio 2008
+Version 9.0.30729.1 SP
+Microsoft .NET Framework
+Version 3.5 SP1
++-----------------------------+
+
+  * Visual Studio .NET Framework Software Development Kit (SDK) version 2.0: Must be installed. The SDK usually installs
+  automatically when you install Visual Studio 2005, but you might have to download it separately and put it into the right place.
+  
+  To make sure you have the SDK:
+  
+  Navigate to the following directory on your system:
+  
+  <<<C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0>>>
+  
+  Make sure the \v2.0 directory shown above contains all the pieces of the SDK (for example, the \Bin, \include,
+  \CompactFramework, and \Lib directories, among others).
+  
+  <<Note>>: These are the default directories and it may be installed elsewhere on your system.
+  
+  To install the SDK if you don't already have it:
+  
+  If the directory structure/folder shown above does not exist or is empty, follow these instructions to get the SDK
+  and put it into the correct location.
+  
+  Download the SDK from the following location:
+  
+  {{http://msdn2.microsoft.com/enus/downloads/default.aspx}}
+  
+  <<Note>>: The download places the SDK into a directory similar to the one shown below, instead of under Visual Studio 2005:
+  
+  <<<C:\Program Files\Microsoft.NET\SDK\v2.0\ >>>
+  
+  <<Note>>: It is not necessary to move the SDK after you download it (for example, to the location where Visual Studio puts it).
+  Just make sure your PATH environment variable points to its location, as described in the PATH environment variable
+  prerequisite information, below.
+  
+  * .NET Install Root directory: Must be present. Verify that your system includes the following .NET Install Root directory:
+
+  <<<C:\WINDOWS\Microsoft.NET\Framework\v3.5>>>
+
+  <<Note>>: This directory should be in place by default from your Microsoft installation procedures.
+  If it is not, refer to the appropriate Microsoft documentation for help.
+  
+  * NUnit 2.2 or greater: Must be present for testing your projects. To download and install go to 
+  {{http://nunit.org/index.php?p=download}}. Follow the instructions there for installing it.
+  Add the NUnit bin directory to your PATH (see below).
+  
+  * <<<settings.xml>>> file: Must point to the repository that contains the .NET artifacts. This is typically found inside
+  <<<[M2_HOME]/conf >>> directory, where <<<[M2_HOME]>>> is the Maven installation directory. Or, can also be found in
+  <<<C:/Documents and Settings/[user_home]/.m2>>> where the <<<[user_home]>>> is the home directory of the user performing the installation.
+  
+  * PATH environment variable: Must point to find the following:
+  
+    * The csc executable directory, the default path for which is: <<<C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5>>>
+    
+    * The devenv executable directory, the default path is typically: <<<C:\\Program Files\\Microsoft Visual Studio 9.0\\Common7\\IDE>>>
+    
+    * For testing your projects you will need the nunit-console executable on your path. For example, it can be found here for
+    version 2.4.3 in a default installation: <<<C:\\Program Files\\NUnit 2.4.3\\bin>>>.
+    
+    []
+    
+  Typically, the the <<<PATH>>> environment variable will look similar to this:
+  
++------+
+PATH=%PATH%;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE;C:\WINDOWS\Microsoft.NET\Framework\v3.5;C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft Visual Studio 9\SDK\v3.5\bin;C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin;C:\Program Files\NUnit 2.4.3\bin
++------+
+
+  <<Note>>:To successfully install the NPanday add-in on machines with only Visual Studio 2008 installed, add this in the PATH:
+  <<<C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A\bin>>>.
+  
+  The method you use to set the PATH environment can vary, depending on how you usually launch Visual Studio:
+  
+    * If you are starting Visual Studio from the Windows Start menu, use the following to set the PATH environment variable in the System Properties:
+    <<<Start \> My Computer \> View System Information \> Advanced \> Environment variables>>>
+    
+    * If you are running Visual Studio from a command shell (using the <<<devenv>>> executable), use the command line to set the PATH environment variable.
+    
+    []
+
+* Installing NPanday .NET Build Tool
+
+  * {{{manual.html} Manual Installation}}
+  
+  * {{{installer.html} Visual Studio Addin Installer}}
+  
+  []
+
+* {{{verify.html} Verifying the NPanday .NET Build Tool}}

@@ -1,0 +1,16 @@
+ ------
+ Uninstalling NPanday .NET Build Tool
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Uninstalling NPanday .NET Build Tool
+
+  This section explains how to remove the NPanday .Net Build Tool from your system completely either {{{manual_uninstall.html} manually}}
+  or using the NPanday VS Addin {{{installer_uninstall.html} installers}}.
+  
+  <<Note>>: If you want to install a newer version of the tool, we recommend starting from a “clean” system.
+  Follow this procedure for removing the tool, then perform the {{{index.html} Installing the NPanday .NET Build Tool}} procedure.
+  
+  

@@ -1,35 +1,60 @@
 <project name="NPanday">
   <bannerRight>
-    <src>./images/apache-incubator-logo.png</src>
+    <src>./images/logo-home.png</src>
   </bannerRight>
+  
+  <bannerLeft>
+    <src>.</src>
+  </bannerLeft>
 
   <body>
-    <links>
-      <item name="Project Site" href="http://incubator.apache.org/projects/npanday.html"/>
-      <item name="NPanday" href="http://incubator.apache.org/npanday"/>
-      <item name="NPanday SVN" href="http://svn.apache.org/repos/asf/incubator/npanday/"/>
+    <menu name="General Info">
+      <item name="NPanday Overview" href="index.html"/>
+      <item name="NPanday Release Notes" href="release-notes.html"/>
+      <item name="NPanday FAQs" href="faqs.html"/>
+      <item name="Conventions" href="conventions.html"/>
+    </menu>
+    <menu name="Getting Started">
+      <item name="Installation" href="/installation/index.html" collapsed="true">
+        <item name="Manual Configuration" href="/installation/manual.html"/>
+        <item name="Using the Installer" href="/installation/installer.html"/>
+        <item name="Verifying the Installation" href="/installation/verify.html"/>
+      </item>
+      <item name="Uninstall the NPanday .NET Build Tool" href="/installation/uninstall.html">
+        <item name="Manual Uninstallation" href="/installation/manual_uninstall.html"/>
+        <item name="Uninstall Using the Installer" href="/installation/installer_uninstall.html"/>
+      </item>
+      <item name="Starting/Stopping the Build Tool" href="/guide/build_tool.html"/>
+      <item name="Project Dependencies" href="/guide/dependencies.html"/>
+      <item name="Installing Files Manually" href="/guide/install_file.html"/>
+      <item name="Creating a Simple Project" href="/guide/simple_project.html"/>
+      <item name="Loading Project/Solution" href="/guide/load_project.html"/>
+      <item name="Quick Start" href="/guide/quickstart.html"/>
+    </menu>
+    <menu name="IDE Integration">
+      <item name="Executing Maven Goals" href="/ide/execute_goals.html"/>
+      <item name="Setting Assembly Key" href="/ide/assembly_key.html"/>
+      <item name="Remote Repository Configuration" href="/ide/remote_repo.html"/>
+      <item name="Using Custom Settings" href="/ide/settings.html"/>
+      <item name="Importing Projects" href="/ide/importing.html"/>
+      <item name="Repository Artifacts Management" href="/ide/artifacts.html"/>
+      <item name="Project References" href="/ide/references.html"/>
+      <item name="Web References" href="/ide/web_references.html"/>
+      <item name="Releasing Project" href="/ide/release.html">
+        <item name="Using Command Line" href="/ide/commandline.html"/>
+        <item name="Using Build Management" href="/ide/continuum.html"/>
+      </item>
+      <item name="Integration Test" href="/ide/test.html"/>
+      
+    </menu>
+    <menu name="Developer Documentation">
+    </menu>
+    <menu name="Project Information">
+      <item name="NPanday Site" href="http://www.codeplex.com/npanday"/>
+      <item name="NPanday SVN" href="https://npanday.svn.codeplex.com/svn/"/>
       <item name="Maven" href="http://maven.apache.org/"/>
       <item name="Mono Project" href="http://www.mono-project.com/"/>
       <item name="DotGNU" href="http://dotgnu.org/"/>
-    </links>
-    <menu name="General Info">
-      <item name="About" href="index.html"/>
-      <item name="Configuration" href="environment-configuration.html"/>
-      <item name="Conventions" href="conventions.html"/>
-      <item name="Features" href="features.html"/>
-      <item name="Getting Started" href="getting-started.html"/>
-      <item name="Plugins" href="/plugins/index.html"/>
-      <item name="RDF Repository" href="rdf-repository.html"/>
-    </menu>
-    <menu name="IDE Integration">
-      <item name="Visual Studio" href="/ide/visual-studio.html"/>
-      <item name="Sharp Develop" href="/ide/sharp-develop.html"/>
-    </menu>
-    <menu name="Developer Documentation">
-      <item name="Writing .NET Mojos" href="net-plugins.html"/>
-      <item name="Adding Compilers" href="adding-plugins.html"/>
-      <item name="Adding Executables" href="adding-executables.html"/>
-      <item name="JavaDocs" href="apidocs/index.html"/>
     </menu>
     ${reports}
   </body>

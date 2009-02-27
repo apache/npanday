@@ -1,0 +1,24 @@
+ ------
+ Verifying the NPanday .NET Build Tool Installation
+ ------
+ ------
+ 25 Feb 2009
+ ------
+
+Verifying the NPanday .NET Build Tool Installation
+
+  To verify that the NPanday .NET Build Tool has been configured inside Visual Studio, perform the following instructions:
+  
+  [[1]] Launch Visual Studio 2005 (either from the command line or from the Windows Start> menu).
+  
+  [[2]] From inside Visual Studio, select Tools>NPanday Build System. This automatically starts the embedded Maven Build Server
+  (the add-in) and displays a confirmation in the Visual Studio Output window at the bottom of the Visual Studio screen.
+  
+  You can set Visual Studio to automatically start NPanday Build System upon startup by checking NPanday.VisualStudio.Addin in Tools > Add-in Manager.
+  
+[../images/verify_installation.jpg] NPanday Build System
+
+  After the Maven embedded server starts, you will not see NPanday Build System listed in the Tools menu.
+  That is, until the next time you start Visual Studio.
+  
+  [[3]] You are now ready to create a Solution, so proceed to the next section.

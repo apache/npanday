@@ -1,0 +1,48 @@
+ ------
+ Project Dependencies
+ ------
+ ------
+ 25 Feb 2009
+ ------
+
+Project Dependencies
+
+  This section defines the basic configuration of adding references into the project. To avoid runtime errors,
+  make sure that the library to be loaded does not have conflicting instance(s) and/or is not yet loaded in the .Net Framework.
+  
+  <<Note>>: Adding dependencies should be done using Visual Studio while manually adding is not recommended.
+  If you manually add a dependency and re-import the project in Visual Studio, the recently added dependencies are deleted from the pom.xml file.
+  
+  To add a system scope dependency, add a configuration similar to the following in the project's pom.xml:
+  
++------+
+<dependencies>
+  [...]
+  <dependency>
+    <groupId>artifact_group_id</groupId>
+    <artifactId>my.lib</artifactId>
+    <version>2.2</version>
+    <type>library</type>
+    <scope>system</scope>
+    <systemPath>C:\path\to\your\library.dll</systemPath>
+  </dependency>
+  [...]
+</dependencies>
++------+
+
+  Supply the proper values for the dependency's <<<\<groupId\>>>>, <<<\<artifactId\>>>>, <<<\<version\>>>>,
+  <<<\<type\>>>>, <<<\<scope\>>>>, and <<<\<systemPath\>>>>.
+  Exact match of <<<artifactId>>> and <<<version>>> are required when manually adding dependencies into the project's <<<pom.xml>>>.
+  
+  Dependency Types:
+  
+  * normal – Local repository content artifacts that are added as dependencies.
+  
+  * <<<gac_msil>>> – Artifacts that are installed in the GAC and used as references. Configuration similar to the following is used,
+  <<< \<type\>gac_msil\</type\> >>>
+  
+  * <<<system>>> – Artifact references to standard framework namespaces. Configuration similar to the following is added,
+  <<< \<scope\>system\</scope\> >>> and the <<< \<systemPath\>[path_to_library]\</systemPath\> >>>
+  
+  * <<<com_references>>> – Artifact references to Component Object Model that is installed in the system.
+  Configuration similar to the following is used, <<< \<type\>com_reference\</type\> >>>

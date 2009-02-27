@@ -1,0 +1,83 @@
+ ------
+  NPanday FAQ
+ ------
+ ------
+  25 Feb 2009
+ ------
+
+NPanday Frequently Asked Questions
+
+* Why is NPanday named as such?
+  
+  Since NPanday is a project that builds .NET Applications, we brainstormed for a name that would symbolize a great builder,
+  a builder that would have more freedom from its predecessor.
+  
+  <<<Panday>>> is a bisaya word for carpenter/builder and at the same time <<<Panday>>> is a fictional Filipino comic hero
+  that would fight monsters using a dagger which magically turns into a sword when raised into the sky. The materials of the
+  dagger came from a meteorite that struck down on earth during the reign of the monsters and supernatural beings.
+  <<<Panday>>> fights to bring back freedom and peace to the people once more.
+  
+* What are the requirements needed to run NPanday?
+
+  You would need to install the following:
+  
+  * Nunit
+  
+  * Java 1.5 or higher
+  
+  * Apache Maven 2.0.4 or higher
+  
+  []
+  
+* Do you need to have intensive knowledge on the Apache Maven or Java in order to run NPanday?
+
+  No. Since NPanday aims to run on the back ground. The user will have minimal interaction with Apache Maven.
+  
+* Can NPanday build projects outside of VS since it is a VS Addin?
+
+  Yes. Since NPanday creates a pom file from your corresponding .Net Project you can build your .Net Projects using Apache Maven commands.
+  
+* Why use NPanday when you can build .Net Applications in Visual Studio?
+
+  * NPanday aims for Continuous Integration and Artifact Repository Management for your .Net Applications using Open Source Technology.
+  By using NPanday, you can take advantage of existing development infrastructure that is compatible with Maven.
+  
+* How can a custom <<<settings.xml>>> be used for the Visual Studio Addin?
+  
+  Add the <<< \-DsettingsFile\=\[path_to_custom_settings.xml_file\] >>> parameter when executing
+  <<<mvn npanday.plugin:maven\-vsinstaller\-plugin:install>>>. For example,
+  
+  <<<mvn npanday.plugin:maven\-vsinstaller\-plugin:install \-DsettingsFile\="C:\\settings.xml">>>
+  
+* How do I set the root namespace for a Visual Basic assembly?
+  
+  Add the <<< \<rootNameSpace\> >>> element under <<< \<configuration\> >>> inside the <<<maven-compile-plugin>>> plugin.
+  Just like the following:
+  
++--------------+ 
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+          <artifactId>maven-compile-plugin</artifactId>
+          <extensions>true</extensions>
+          <configuration>
+          <language>VB</language>
+          <rootNameSpace>my.company</rootNameSpace>
+        </configuration>
+      </plugin>
++--------------+
+  
+* Where can I get the NPanday VS Addin installers?
+  
+  {{{http://www.codeplex.com/npanday} NPanday}} VS Addin installers can be downloaded from the NPanday site,
+  under the {{{http://www.codeplex.com/npanday/Release/ProjectReleases.aspx}<<Releases>>}} tab. 
+  
+  In this page, you can see different files to download such as:
+  
+  * <<VS Addin Installer>> - installs the VS Addin
+  
+  * <<VS Addin \+ Repository Installer>> - installs the VS Addin with the NPanday repository
+  
+  * <<Source>> - NPanday source codes for those who want to contribute to the community
+  
+  * <<Repository>> - NPanday repository containing the artifacts commonly used
+

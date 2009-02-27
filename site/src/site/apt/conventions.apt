@@ -1,0 +1,116 @@
+ ------
+ NPanday Conventions
+ ------
+ ------
+ 25 Feb 2009
+ ------
+
+NPanday Conventions
+
+ The following sections describe the conventions used within NPanday itself. This section is useful for developers wishing to
+ contribute to NPanday, as well as developers looking for a baseline for their own projects.
+ These conventions are evolving and subject to change as better ideas emerge: {{{mailto:npanday@discussions.codeplex.com} Got better ideas?}}
+
+ * Artifact ID - specified within the pom - is equivalent to the project's module name.
+
+ Project Structure
+
++------+
+ |-- NPanday.Artifact
+ |   `-- main
+ |       `-- csharp
+ |           `-- NPanday
+ |               `-- Artifact
+ |                   `-- ArtifactContext.cs
+ |                   `-- Artifact.cs
+  `-- pom.xml
++------+
+
+ pom.xml file
+
++------+
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>NPanday.Artifact</groupId>
+  <artifactId>NPanday.Artifact</artifactId>
+  <packaging>library</packaging>
+  <version>0.9</version>
+  <name>NPanday.Artifact</name>
+</project>
++------+
+
+ * If the module does not contain children modules, the Group ID is the same as the artifact ID.
+
++------+
+<project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>NPanday.Artifact</groupId>
+  <artifactId>NPanday.Artifact<artifactId>
+  <packaging>library</packaging>
+  <version>0.9</version>
+  <name>NPanday.Artifact</name>
+</project>
++------+
+
+ * If a module contains children modules, the child module Group ID should either be equivalent to a pluralized
+        parent module Group ID or be a deriviative of the parent module Group ID.
+
++------+
+parent Group ID: NPanday.Model
+child Group ID: NPanday.Model, NPanday.Models or NPanday.Model.VSContent
++------+
+
+ * The directory structure of the source directory (typically src/main/csharp) will follow the same pattern as the group ID.
+
++------+
+ |-- NPanday.Artifact
+ |   `-- main
+ |       `-- csharp
+ |           `-- NPanday
+ |               `-- Artifact
+ |                   `-- ArtifactContext.cs
+ |                   `-- Artifact.cs
+  `-- pom.xml
++------+
+
++------+
+<project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>NPanday.Artifact</groupId>
+  <artifactId>NPanday.Artifact<artifactId>
+  <packaging>library</packaging>
+  <version>0.9</version>
+  <name>NPanday.Artifact</name>
+</project>
++------+
+
+ * If an assembly will only compile under a specific platform, those values should be specified within the compiler-config.
+
++------+
+ <project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>NPanday.Plugins</groupId>
+  <artifactId>NPanday.Plugins</artifactId>
+  <packaging>pom</packaging>
+  <version>0.9</version>
+  <name>NPanday.Plugins</name>
+  <build>
+    <sourceDirectory>src/main/csharp</sourceDirectory>
+    <testSourceDirectory>src/test/csharp</testSourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <vendor>MONO</vendor>
+          <frameworkVersion>2.0.50727</frameworkVersion>
+          <vendorVersion>1.2.3.1</vendorVersion>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++------+
+
+ * Use the default setup within the npanday-settings.xml is to configure cross-platform builds.

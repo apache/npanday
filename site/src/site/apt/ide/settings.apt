@@ -1,0 +1,26 @@
+ ------
+ Using Custom Settings
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Using Custom Settings
+
+  This feature allows the Visual Studio user to customize the location of the <<<settings.xml>>> file that points to the repository of NPanday artifacts.
+  
+  To change the location:
+  
+  [[1]] Right click on the project and select the Change Maven settings.xml...\
+  .
+  
+[../images/change_settings.jpg]
+
+  [[2]] In the pop-up screen, click Browse to browse through the directory location of the <<<settings.xml>>> to use.\
+  .
+
+[../images/settings_location.jpg] Configure settings.xml location
+
+  [[3]] Click OK.
+  
+  

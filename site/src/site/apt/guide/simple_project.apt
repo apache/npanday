@@ -1,0 +1,75 @@
+ ------
+ Creating a Simple Project
+ ------
+ ------
+ 25 Feb 2009
+ ------
+
+Creating a Simple Project
+
+  Before you start this procedure, you must have all {{{../installation/index.html} Pre-requisites}} in place and have
+  successfully completed all steps in the previous section entitled Installing and Verifying NPanday .NET Build Tool.
+  
+  [[1]] Create an empty directory for your project. For example: 
+  
++------+
+  mkdir npandaytest
+  cd npandaytest
++------+
+
+  [[2]] From a command shell go to the directory that contains the POM file, and execute the following command
+  (In the example, execute the command from the <<<npandaytest>>> directory) to create a C# or VB project:
+  
+  For C#: <<<mvn archetype:create -DgroupId=NPanday -DartifactId=NPanday.Test -DarchetypeArtifactId=maven-archetype-dotnet-simple -DarchetypeGroupId=org.apache.maven.dotnet -DarchetypeVersion=[version]>>>
+  
+  For VB: <<<mvn archetype:create -DgroupId=NPanday -DartifactId=NPanday.Test -DarchetypeArtifactId=maven-archetype-vb-simple -DarchetypeGroupId=org.apache.maven.dotnet -DarchetypeVersion=[version]>>>
+  
+  The command creates the project in the NPanday.Test directory, which will now contain the following for a C# project
+  (and a VB project will be similar with a vb directory instead of the csharp directory shown):
+  
++------+
+.
+|-- src
+| `-- main
+|   `-- csharp
+|     `-- Sample
+|       `-- MyApp.cs
+|   `-- resources
+| `-- test
+|   `-- csharp
+`- pom.xml
++------+
+
+  [[3]] From inside the Solution directory (<<<NPanday.Test>>>), execute the following command to build and install the NPanday.Test DLL
+  files into your repository:
+  
+  <<<mvn install>>>
+  
+  The <<<mvn install>>> command typically puts artifacts (installs them) into the repository here, <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository>>>.
+  
+  NPanday installs the artifacts in a .NET local repository, located in <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac>>>.
+  
+  For the <<<NPanday.Test>>> solution the artifact is placed here, <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac\\gac_msil\\NPanday.Test\\1.0-SNAPSHOT__NPanday\NPanday.Test.dll>>>
+  
+  The contents in <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac\\gac_msil>>> SHOULD NOT be manually modified or the project build
+  will fail due to artifacts that are not properly indexed and are not synchronized with the repository. In case the contents have been modified,
+  delete the <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac>>> directory then re-install the project.
+  
+  If the build fails on nunit-console see the {{{../installation/index.html} Pre-requisites}} section for information on
+  installing NUnit 2.2+ and adding it to your PATH.
+  
+  [[4]] Then clean up the target directory and download dependencies by executing:
+  
+  <<<mvn clean>>>
+  
+  [[5]] In a command shell, still from the Solution directory (<<<NPanday.Test>>> in this example), execute the following command
+  to generate the Solution:
+  
+  <<<mvn npanday.plugin:NPanday.Plugin.Solution.JavaBinding:Solution>>>
+  
+  [[6]] This command creates the Solution file (<<<*.sln>>>) that corresponds to the Solution directory you just created.
+  For example, the Solution directory was <<<NPanday.Test>>>, so the Solution file is <<<NPanday.Test.sln>>>.
+  After you execute the command, verify the Solution directory now contains the Solution file.
+  If so, then you are ready to load the project and solution.
+  
+  []

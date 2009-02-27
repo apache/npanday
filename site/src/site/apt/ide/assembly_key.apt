@@ -1,0 +1,26 @@
+ ------
+ Setting Assembly Keys
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Setting Assembly Keys
+
+  Assembly keys are used to uniquely identify the project to be installed in the Global Assembly Cache or also referred to as GAC.
+  
+  To set an assembly key to a project:
+  
+  [[1]] Generate a strong name key by running the command <<<sn -k [filename] .snk>>>
+  
+  [[2]] Right click on the project and select Set NPanday Compile Sign Assembly Key...\
+  .
+  
+[../images/assembly_key.jpg]
+  
+  [[3]] Put the strong name key that was generated in the Assembly Sign Key field.\
+  .
+  
+[../images/set_assembly_key.jpg] Setting assembly sign key
+
+  [[4]] Click OK.

@@ -1,0 +1,49 @@
+ ------
+ Starting and Stopping NPanday .NET Build Tool
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Starting and Stopping NPanday .NET Build Tool
+
+  This section provides a quick-reference for when you need to start and stop the NPanday .NET Build Tool
+  (for example, if you want to start the tool after you have already been inside Visual Studio working,
+  or if you want to stop the tool but keep Visual Studio open).
+
+* Starting the Build Tool
+
+  While you can go from the instructions for opening and loading your Project/Solution to using the NPanday .NET Build Tool with Visual Studio,
+  there are times when you may want to start the tool after you have already been inside Visual Studio working. Also,
+  if you load a new version of the NPanday .NET Build Tool, you should clear Visual Studio's cache before you start the tool.
+  The table, below, explains how to start the tool in each of these situations:
+  
+  If you want to clear Visual Studio's cache of any previous versions of the tool before you start,
+  
+  [[1]] Use the following command to clear Visual Studio's cache of any previous versions of the tool:
+  
+  <<<devenv /ResetAddin NPanday.VisualStudio.Addin>>>
+  
+  [[2]] Open Visual Studio.
+  
+  [[3]] Click Tools > NPanday Build System to load the NPanday add-in.
+  
+  [[4]] Continue by opening your project and then loading your solution, as explained in {{{load_project.html} Loading Project/Solution}}.
+  
+  []
+  
+  If you are starting the NPanday .NET Build Tool from inside Visual Studio:
+  
+  [[1]] Open Visual Studio.
+  
+  [[2]] Click Tools > NPanday Build System to start the Maven embedded server.
+  
+  [[3]] Continue by opening your project and then loading your solution, as explained in {{{load_project.html} Loading Project/Solution}}.
+
+* Stopping the Build Tool
+
+  There are two ways to stop the NPanday .NET Build Tool. The first is to click Tools>Add-in Manager then de-select the checkbox
+  for NPanday .NET Build Tool to stop the Maven embedded server. Another way is to simply exit Visual Studio, which shuts down the Tool
+  and the embedded Maven server automatically.
+  
+  <<Note>>: If an abnormal shutdown of Visual Studio occurs, you must reboot to ensure both the Build Tool and the embedded Maven server have stopped.

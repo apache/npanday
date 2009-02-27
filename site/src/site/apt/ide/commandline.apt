@@ -1,0 +1,37 @@
+ ------
+ Command Line Release
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Command Line Release
+
+  The <<<\<scm\>>>> tag should be configured in the project's <<<pom.xml>>>. It should look similar to the following
+
++------+
+  <scm>
+    <connection>scm:svn:[project_url]</connection>
+    <developerConnection>scm:svn:[project_url]</developerConnection>
+    <url>[URL of the project]</url>
+  </scm>
++------+
+
+  [[1]] Execute the following command from the project directory.
+  
+  <<<mvn clean install or mvn install>>>
+  
+  [[2]] Before starting the release, invoke the release plugin by executing the following command from the project root directory
+  of a single-module project, or from the module directory (that uses references) of a multi-module project.
+  
+  <<<mvn npanday.plugin:NPanday.Plugin.SysRef.JavaBinding:prepare>>>
+  
+  [[3]] Start releasing the project. The following commands prepares and releases the project respectively.
+  
+  <<<mvn release:prepare>>>
+  
+  <<<mvn release:perform>>>
+  
+  For Maven guide, you can refer to {{{http://helpme.morphexchange.com/betterbuildswithmaven} Better Builds with Maven}}.
+  
+  []
