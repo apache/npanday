@@ -121,13 +121,22 @@ namespace NPanday.VisualStudio.Addin
 
             String settingsPath = SettingsUtil.GetUserSettingsPath();
             Settings settings = null;
+
             try
             {
-                settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
+                if (File.Exists(settingsPath))
+                {
+                    settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
+                }
+                else
+                {
+                    MessageBox.Show("Sorry, but no settings.xml file was found in your Local Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
-            catch (Exception ex)
+            catch(Exception)
             {
-                MessageBox.Show("Invalid Settings File: " + ex.Message + ex.StackTrace);
+                //MessageBox.Show("Invalid Settings File: " + ex.Message + ex.StackTrace);
+                MessageBox.Show("Settings.xml could not be read", "Invalid Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -189,7 +198,16 @@ namespace NPanday.VisualStudio.Addin
             Settings settings = null;
             try
             {
-                settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
+                if (File.Exists(settingsPath))
+                {
+                    settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
+                }
+                else
+                {
+                    MessageBox.Show("Sorry, but no settings.xml file was found in your Local Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -197,9 +215,9 @@ namespace NPanday.VisualStudio.Addin
                 return;
             }
 
-            if (settings == null || settings.profiles == null)
+            if (settings.profiles == null)
             {
-                MessageBox.Show("No Profile Found. Configure repository: ");
+                MessageBox.Show("No Profile Found. Please Configure your Repository. ","Repository Configuration",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 return;
             }
 
@@ -210,7 +228,7 @@ namespace NPanday.VisualStudio.Addin
                 //MessageBox.Show("Remote repository not set: Try 'Add Maven Repository' option from menu. Will" +
                 //    " require restart of addin.");
                 //return;
-                MessageBox.Show("Remote repository not yet set: Please set your Remote Repository.");
+                MessageBox.Show("Remote repository not yet set: Please set your Remote Repository.","Repository Configuration",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 return;
             }
 
@@ -365,6 +383,31 @@ namespace NPanday.VisualStudio.Addin
             return nodes;
         }
 
+        //TODO: make a function to check if the url is accessable or not
+        /// <summary>
+        /// Checks if a remote repository url is accessible or not
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        private bool HasRemoteAccess(string url)
+        {
+            WebClient webClient = new WebClient();
+            byte[] page = null;
+            bool hasRemoteAccess;
+
+            try
+            {
+                page = webClient.DownloadData(url);
+                hasRemoteAccess = true;
+            }
+            catch (Exception ex)
+            {
+                hasRemoteAccess = false;
+            }
+            return hasRemoteAccess;
+
+        }
+
         List<TreeNode> getNodesFromRemote(string url)
         {
             List<TreeNode> treeNodes = new List<TreeNode>();
@@ -379,7 +422,8 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Cannot read remote repository: " + url + " " + ex.Message + ex.StackTrace);
+                //MessageBox.Show("Cannot read remote repository: " + url + " " + ex.Message + ex.StackTrace);
+                MessageBox.Show("Cannot read remote repository: " + url,"Configure Repository",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 return treeNodes;
             }
 
@@ -779,18 +823,27 @@ namespace NPanday.VisualStudio.Addin
                                 hasConfiguration = true;
                                 try
                                 {
-                                    Refresh();
-                                    MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
-                                    AddUrl(profile, newRepository);
-                                    prevRepo = RepoCombo.Text;
-                                    RepoCombo.Items.Clear();
-                                    UpdateUrlList();
-                                    RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(repository.url); ;
+                                    if (HasRemoteAccess(RepoCombo.Text))
+                                    {
+                                        Refresh();
+                                        MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
+                                        AddUrl(profile, newRepository);
+                                        prevRepo = RepoCombo.Text;
+                                        RepoCombo.Items.Clear();
+                                        UpdateUrlList();
+                                        RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(repository.url); ;
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        artifactTabControl.SelectedIndex = 2;
+                                    }
                                     break;
                                 }
                                 catch (Exception)
                                 {
                                     MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    artifactTabControl.SelectedIndex = 2;
                                     RepoCombo.Text = string.Empty;
                                 }
 
@@ -821,13 +874,23 @@ namespace NPanday.VisualStudio.Addin
                     writer.Close();
                     try
                     {
-                        Refresh();
-                        prevRepo = RepoCombo.Text;
-                        MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
+                        if (HasRemoteAccess(RepoCombo.Text))
+                        {
+                            Refresh();
+                            prevRepo = RepoCombo.Text;
+                            MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            artifactTabControl.SelectedIndex = 2;
+                            RepoCombo.Text = string.Empty;
+                        }
                     }
                     catch (Exception)
                     {
                         MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        artifactTabControl.SelectedIndex = 2;
                         RepoCombo.Text = string.Empty;
                     }
 
@@ -984,17 +1047,41 @@ namespace NPanday.VisualStudio.Addin
 
         private void artifactTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
+            String settingsPath = SettingsUtil.GetUserSettingsPath();
+        
             if (artifactTabControl.SelectedIndex == 2)
             {
-                UpdateUrlList();
-                addArtifact.Hide();
+                //check if there is an existing settings.xml file 
+                if (settingsPath == null)
+                {
+                    MessageBox.Show("Sorry, but you cannot Configure Remote Repository without a Settings.xml file", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    artifactTabControl.SelectedIndex = 0;
+                }
+                else
+                {
+                    UpdateUrlList();
+                    addArtifact.Hide();
+                }
+            }
+            else if (artifactTabControl.SelectedIndex == 1)
+            {
+                //check if there is an existing settings.xml file 
+                if (settingsPath == null)
+                {
+                    MessageBox.Show("Sorry, but you cannot Access Remote Repository without a Settings.xml file", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    artifactTabControl.SelectedIndex = 0;
+                }
+                else
+                {
+                    ExecuteRepoUpdate();
+                    
+                    treeView1.Focus();
+                    addArtifact.Show();
+                }
             }
             else
             {
-                
-                ExecuteRepoUpdate();
                 localListView.Focus();
-                treeView1.Focus();
                 addArtifact.Show();
             }
             
