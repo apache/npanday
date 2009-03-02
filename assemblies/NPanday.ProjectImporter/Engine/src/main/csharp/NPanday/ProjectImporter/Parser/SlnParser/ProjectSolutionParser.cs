@@ -8,6 +8,7 @@ using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
 using System.Text.RegularExpressions;
 using Microsoft.Build.BuildEngine;
 using System.Xml;
+using System.Windows.Forms;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -29,6 +30,36 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             BUILD_ENGINE = new Engine(msBuildPath);
         }
 
+        /// <summary>
+        /// Unsupported project GUID
+        /// WpfCustomControlLibrary = {C968A6D7-E8DD-4A5B-AE08-CB0CE06B0CF5}
+        /// WpfBrowserApplication   = {12F25641-2540-4B7A-97E7-72FA722017A1}
+        /// WpfControlLibrary       = {44003C12-25E0-477E-8D80-540845649931}
+        /// WcfService              = {72EC2439-1192-4FA1-8378-DF92A3AC699F}
+        /// MvcApplication          = {8BFE4558-546D-4A7F-9F81-C9ED6C262C7A}
+        /// </summary>
+        private string[] UnsupportedProjectTypes = { "{8BFE4558-546D-4A7F-9F81-C9ED6C262C7A}", "{72EC2439-1192-4FA1-8378-DF92A3AC699F}", "{44003C12-25E0-477E-8D80-540845649931}", "{12F25641-2540-4B7A-97E7-72FA722017A1}", "{C968A6D7-E8DD-4A5B-AE08-CB0CE06B0CF5}" };
+
+        /// <summary>
+        /// Determines whether a project is supported or not
+        /// </summary>
+        /// <param name="projectGUID">Project GUID of the target Project</param>
+        /// <returns>Returns true if the project is Unsupported</returns>
+        private bool IsUnsupportedProjectType(string projectGUID)
+        {
+            bool isUnsupported = false;
+
+            foreach(string UPT in UnsupportedProjectTypes)
+            {
+                if(UPT.Equals(projectGUID))    
+                {
+                    isUnsupported = true;
+                    break;
+                }
+            }
+
+            return isUnsupported;
+        }
 
         public List<Dictionary<string, object>> Parse(FileInfo solutionFile)
         {
@@ -36,65 +67,104 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
             NPanday.ProjectImporter.Parser.SlnParser.Model.Solution solution = SolutionFactory.GetSolution(solutionFile);
 
+            String UnsupportedProjectsMessage = string.Empty;
 
             foreach (NPanday.ProjectImporter.Parser.SlnParser.Model.Project project in solution.Projects)
             {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
-                dictionary.Add("ProjectTypeGuid", project.ProjectTypeGUID);
-                dictionary.Add("ProjectType", VisualStudioProjectType.GetVisualStudioProjectType(project.ProjectTypeGUID));
-
-                dictionary.Add("ProjectName", project.ProjectName);
-                dictionary.Add("ProjectPath", project.ProjectPath);
-                dictionary.Add("ProjectGUID", project.ProjectGUID);
-
                 string fullpath = Path.Combine(solutionFile.DirectoryName, project.ProjectPath);
-                dictionary.Add("ProjectFullPath", fullpath);
 
-                // this is for web projects
-                if ((VisualStudioProjectTypeEnum)dictionary["ProjectType"] == VisualStudioProjectTypeEnum.Web_Site)
+                bool isValidProject = true;
+                try
                 {
-
-                    string[] assemblies = GetWebConfigAssemblies(Path.Combine(fullpath, "web.config"));
-                    dictionary.Add("WebConfigAssemblies", assemblies);
-
-                    //get project target framework if available
-                    if (project.ProjectSections.Count > 0)
+                    VisualStudioProjectType.GetVisualStudioProjectType(project.ProjectTypeGUID);
+                    if (IsUnsupportedProjectType(project.ProjectGUID))
                     {
-                        if (project.ProjectSections[0].Map.ContainsKey("TargetFramework"))
+                        isValidProject = false;
+                        UnsupportedProjectsMessage += ", "+project.ProjectName;
+                    }
+                }
+                catch (Exception)
+                {
+                    isValidProject = false;
+                    if (string.Empty.Equals(UnsupportedProjectsMessage))
+                    {
+                        UnsupportedProjectsMessage += project.ProjectName;
+                    }
+                    else
+                    {
+                        UnsupportedProjectsMessage += ", " + project.ProjectName;
+                    }
+                    
+                }
+
+                if (isValidProject)
+                {
+                    dictionary.Add("ProjectType", VisualStudioProjectType.GetVisualStudioProjectType(project.ProjectTypeGUID));
+                    dictionary.Add("ProjectTypeGuid", project.ProjectTypeGUID);
+                    dictionary.Add("ProjectName", project.ProjectName);
+                    dictionary.Add("ProjectPath", project.ProjectPath);
+                    dictionary.Add("ProjectGUID", project.ProjectGUID);
+                    dictionary.Add("ProjectFullPath", fullpath);
+
+                    // this is for web projects
+                    if ((VisualStudioProjectTypeEnum)dictionary["ProjectType"] == VisualStudioProjectTypeEnum.Web_Site)
+                    {
+
+                        string[] assemblies = GetWebConfigAssemblies(Path.Combine(fullpath, "web.config"));
+                        dictionary.Add("WebConfigAssemblies", assemblies);
+
+                        //get project target framework if available
+                        if (project.ProjectSections.Count > 0)
                         {
-                            dictionary.Add("TargetFramework", project.ProjectSections[0].Map["TargetFramework"]);
+                            if (project.ProjectSections[0].Map.ContainsKey("TargetFramework"))
+                            {
+                                dictionary.Add("TargetFramework", project.ProjectSections[0].Map["TargetFramework"]);
+                            }
                         }
+
+                        //@001 SERNACIO START retrieving webreference
+                        Digest.Model.WebReferenceUrl[] webReferences = getWebReferenceUrls(fullpath);
+                        dictionary.Add("WebReferencesUrl", webReferences);
+                        //@001 SERNACIO END retrieving webreference
+
+                        string[] binAssemblies = GetBinAssemblies(Path.Combine(fullpath, @"bin"));
+                        dictionary.Add("BinAssemblies", binAssemblies);
+                        //ParseInnerData(dictionary, match.Groups["projectInnerData"].ToString());
+                        ParseProjectReferences(dictionary, project, solution);
+                    }
+                    // this is for normal projects
+                    else if (
+                        (VisualStudioProjectTypeEnum)dictionary["ProjectType"] == VisualStudioProjectTypeEnum.Windows__CSharp
+                        || (VisualStudioProjectTypeEnum)dictionary["ProjectType"] == VisualStudioProjectTypeEnum.Windows__VbDotNet
+                        )
+                    {
+                        Microsoft.Build.BuildEngine.Project prj = new Microsoft.Build.BuildEngine.Project(BUILD_ENGINE);
+
+                        prj.Load(fullpath);
+
+                        //ParseInnerData(dictionary, match.Groups["projectInnerData"].ToString());
+                        ParseProjectReferences(dictionary, project, solution);
+                        dictionary.Add("Project", prj);
                     }
 
-                    //@001 SERNACIO START retrieving webreference
-                    Digest.Model.WebReferenceUrl[] webReferences = getWebReferenceUrls(fullpath);
-                    dictionary.Add("WebReferencesUrl", webReferences);
-                    //@001 SERNACIO END retrieving webreference
-
-                    string[] binAssemblies = GetBinAssemblies(Path.Combine(fullpath, @"bin"));
-                    dictionary.Add("BinAssemblies", binAssemblies);
-                    //ParseInnerData(dictionary, match.Groups["projectInnerData"].ToString());
-                    ParseProjectReferences(dictionary, project, solution);
                 }
-                // this is for normal projects
-                else if (
-                    (VisualStudioProjectTypeEnum)dictionary["ProjectType"] == VisualStudioProjectTypeEnum.Windows__CSharp
-                    || (VisualStudioProjectTypeEnum)dictionary["ProjectType"] == VisualStudioProjectTypeEnum.Windows__VbDotNet
-                    )
+
+                // Skip projects that are not supported
+                if (dictionary.Count > 0)
                 {
-                    Microsoft.Build.BuildEngine.Project prj = new Microsoft.Build.BuildEngine.Project(BUILD_ENGINE);
-                    prj.Load(fullpath);
-                    //ParseInnerData(dictionary, match.Groups["projectInnerData"].ToString());
-                    ParseProjectReferences(dictionary, project, solution);
-                    dictionary.Add("Project", prj);
+                    list.Add(dictionary);
                 }
-
-                list.Add(dictionary);
-
+                
+            }
+            if (!string.Empty.Equals(UnsupportedProjectsMessage))
+            {
+                string warningMSG = "Project Import Warning: \n Unsupported Project Types: " + UnsupportedProjectsMessage;
+                MessageBox.Show(warningMSG, "Project Import Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
-
+            
             return list;
         }
 

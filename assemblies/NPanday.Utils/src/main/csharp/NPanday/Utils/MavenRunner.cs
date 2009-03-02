@@ -47,7 +47,7 @@ namespace NPanday.Utils
             outputThread = new System.Threading.Thread(outputThreadStart);
             outputThread.Start();
             
-            // create a sepearte worker thread for outputing the Process.StandardError
+            // create a separate worker thread for outputing the Process.StandardError
             System.Threading.ThreadStart outputErrorThreadStart = new System.Threading.ThreadStart(OutputErrorThreadDelegate);
             outputErrorThread = new System.Threading.Thread(outputErrorThreadStart);
             outputErrorThread.Start();
