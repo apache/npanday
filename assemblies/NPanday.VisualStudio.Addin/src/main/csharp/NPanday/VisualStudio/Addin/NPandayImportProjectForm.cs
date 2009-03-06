@@ -120,9 +120,8 @@ namespace NPanday.VisualStudio.Addin
         {
             try
             {
-                if (!"".Equals(txtBrowseDotNetSolutionFile.Text) && System.IO.File.Exists(txtBrowseDotNetSolutionFile.Text)
-                        && (!String.IsNullOrEmpty(txtGroupId.Text.Trim()))
-                       )
+                if (!String.Empty.Equals(txtBrowseDotNetSolutionFile.Text) && System.IO.File.Exists(txtBrowseDotNetSolutionFile.Text)
+                       && (!String.Empty.Equals(txtGroupId.Text.Trim())))
                 {
                     // Generate here                
 

@@ -30,37 +30,6 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             BUILD_ENGINE = new Engine(msBuildPath);
         }
 
-        /// <summary>
-        /// Unsupported project GUID
-        /// WpfCustomControlLibrary = {C968A6D7-E8DD-4A5B-AE08-CB0CE06B0CF5}
-        /// WpfBrowserApplication   = {12F25641-2540-4B7A-97E7-72FA722017A1}
-        /// WpfControlLibrary       = {44003C12-25E0-477E-8D80-540845649931}
-        /// WcfService              = {72EC2439-1192-4FA1-8378-DF92A3AC699F}
-        /// MvcApplication          = {8BFE4558-546D-4A7F-9F81-C9ED6C262C7A}
-        /// </summary>
-        private string[] UnsupportedProjectTypes = { "{8BFE4558-546D-4A7F-9F81-C9ED6C262C7A}", "{72EC2439-1192-4FA1-8378-DF92A3AC699F}", "{44003C12-25E0-477E-8D80-540845649931}", "{12F25641-2540-4B7A-97E7-72FA722017A1}", "{C968A6D7-E8DD-4A5B-AE08-CB0CE06B0CF5}" };
-
-        /// <summary>
-        /// Determines whether a project is supported or not
-        /// </summary>
-        /// <param name="projectGUID">Project GUID of the target Project</param>
-        /// <returns>Returns true if the project is Unsupported</returns>
-        private bool IsUnsupportedProjectType(string projectGUID)
-        {
-            bool isUnsupported = false;
-
-            foreach(string UPT in UnsupportedProjectTypes)
-            {
-                if(UPT.Equals(projectGUID))    
-                {
-                    isUnsupported = true;
-                    break;
-                }
-            }
-
-            return isUnsupported;
-        }
-
         public List<Dictionary<string, object>> Parse(FileInfo solutionFile)
         {
 
@@ -79,10 +48,34 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                 try
                 {
                     VisualStudioProjectType.GetVisualStudioProjectType(project.ProjectTypeGUID);
-                    if (IsUnsupportedProjectType(project.ProjectGUID))
+                    if (!VisualStudioProjectType.VisualStudioProjectSupported(project.ProjectTypeGUID))
                     {
                         isValidProject = false;
-                        UnsupportedProjectsMessage += ", "+project.ProjectName;
+                        if (UnsupportedProjectsMessage == string.Empty)
+                        {
+                            UnsupportedProjectsMessage += project.ProjectName;
+                        }
+                        else
+                        {
+                            UnsupportedProjectsMessage += ", " + project.ProjectName;
+                        }
+                    }
+                    //double checking for MVC/WCF/WPF in c# and vb project types
+                    if (project.ProjectTypeGUID.Equals("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") || project.ProjectTypeGUID.Equals("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}"))
+                    {
+                        //checks specific project GUID
+                        if (!VisualStudioProjectType.VisualStudioProjectSupportedGUID(project.ProjectGUID))
+                        {
+                            isValidProject = false;
+                            if (UnsupportedProjectsMessage == string.Empty)
+                            {
+                                UnsupportedProjectsMessage += project.ProjectName;
+                            }
+                            else
+                            {
+                                UnsupportedProjectsMessage += ", " + project.ProjectName;
+                            }
+                        }
                     }
                 }
                 catch (Exception)
@@ -160,7 +153,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             }
             if (!string.Empty.Equals(UnsupportedProjectsMessage))
             {
-                string warningMSG = "Project Import Warning: \n Unsupported Project Types: " + UnsupportedProjectsMessage;
+                string warningMSG = "Project Import Warning: \n Unsupported Projects: " + UnsupportedProjectsMessage;
                 MessageBox.Show(warningMSG, "Project Import Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }

@@ -133,27 +133,29 @@ namespace NPanday.ProjectImporter.Converter
         {
             if (!__converterAlgorithms.ContainsKey(projectDigest.ProjectType))
             {
-                throw new NotSupportedException("Not Supported Project Type: " + projectDigest.ProjectType );
+                throw new NotSupportedException("Not Supported Project Type: " + projectDigest.ProjectType);
             }
+            else
+           {
 
+               try
+                {
+                    IPomConverter converter = (IPomConverter)System.Activator.CreateInstance(
+                                                    __converterAlgorithms[projectDigest.ProjectType],
+                                                    projectDigest,
+                                                    mainPomFile,
+                                                   parent,
+                                                    groupId
+                                                    );
 
-            try
-            {
-                IPomConverter converter = (IPomConverter)System.Activator.CreateInstance(
-                                                __converterAlgorithms[projectDigest.ProjectType],
-                                                projectDigest,
-                                                mainPomFile,
-                                                parent,
-                                                groupId
-                                                );
+                    converter.ConvertProjectToPomModel();
 
-                converter.ConvertProjectToPomModel();
-
-                return converter.Model;
-            }
-            catch
-            {
-                throw;
+                   return converter.Model;
+                }
+                catch
+                {
+                    throw;
+                }
             }
         }
 
