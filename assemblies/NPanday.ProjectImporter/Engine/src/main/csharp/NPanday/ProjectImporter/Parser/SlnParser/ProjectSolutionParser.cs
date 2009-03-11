@@ -60,23 +60,6 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                             UnsupportedProjectsMessage += ", " + project.ProjectName;
                         }
                     }
-                    //double checking for MVC/WCF/WPF in c# and vb project types
-                    if (project.ProjectTypeGUID.Equals("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") || project.ProjectTypeGUID.Equals("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}"))
-                    {
-                        //checks specific project GUID
-                        if (!VisualStudioProjectType.VisualStudioProjectSupportedGUID(project.ProjectGUID))
-                        {
-                            isValidProject = false;
-                            if (UnsupportedProjectsMessage == string.Empty)
-                            {
-                                UnsupportedProjectsMessage += project.ProjectName;
-                            }
-                            else
-                            {
-                                UnsupportedProjectsMessage += ", " + project.ProjectName;
-                            }
-                        }
-                    }
                 }
                 catch (Exception)
                 {

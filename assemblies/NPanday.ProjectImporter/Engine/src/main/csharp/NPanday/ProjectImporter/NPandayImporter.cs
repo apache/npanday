@@ -14,6 +14,8 @@ using NPanday.ProjectImporter.Converter.Algorithms;
 using NPanday.ProjectImporter.Validator;
 using NPanday.ProjectImporter.ImportProjectStructureAlgorithms;
 using NPanday.ProjectImporter.Parser.SlnParser;
+using System.Windows.Forms;
+
 
 
 /// Author: Leopoldo Lee Agdeppa III
@@ -127,13 +129,47 @@ namespace NPanday.ProjectImporter
             ProjectStructureType structureType = GetProjectStructureType(solutionFile, prjDigests);
 
 
-            if (verifyProjectToImport != null)
+            // Filtering of unsupported project types.
+            String UnsupportedProjectsMessage = string.Empty;
+            
+            List<ProjectDigest> filteredPrjDigests = new List<ProjectDigest>();
+            
+            foreach (ProjectDigest pDigest in prjDigests)
+            {
+                if (PomConverter.__converterAlgorithms.ContainsKey(pDigest.ProjectType))
+                {
+                    filteredPrjDigests.Add(pDigest);
+                }
+                else
+                {
+                    if (UnsupportedProjectsMessage == string.Empty)
+                    {
+                        UnsupportedProjectsMessage += pDigest.FullFileName;
+                    }
+                    else
+                    {
+                        UnsupportedProjectsMessage += ", " + pDigest.FullFileName;
+                    }
+                }
+            }
+
+            if (!string.Empty.Equals(UnsupportedProjectsMessage))
+            {
+                string warningMSG = "Project Import Warning: \n Unsupported Projects: " + UnsupportedProjectsMessage;
+                MessageBox.Show(warningMSG, "Project Import Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            }
+
+            prjDigests = filteredPrjDigests.ToArray();
+
+            if (verifyProjectToImport != null && filteredPrjDigests.Count>0)
             {
                 verifyProjectToImport(ref prjDigests, structureType, solutionFile, ref groupId, ref artifactId, ref version);
             }
 
 
-            return ImportProjectType(structureType, prjDigests, solutionFile, groupId, artifactId, version);
+            //return ImportProjectType(structureType, prjDigests, solutionFile, groupId, artifactId, version);
+            return ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version);
 
         }
 

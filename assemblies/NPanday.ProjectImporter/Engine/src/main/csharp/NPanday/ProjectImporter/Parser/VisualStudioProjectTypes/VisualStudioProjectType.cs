@@ -173,56 +173,14 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
             __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Microsoft_Installer, "54435603-DBB4-11D2-8724-00A0C9A8B90C");
             __visualStudioProjectTypeSupported.Add("54435603-DBB4-11D2-8724-00A0C9A8B90C", false);
 
-            //MvcApplication_CSharp	 {8BFE4558-546D-4A7F-9F81-C9ED6C262C7A}
-            __visualStudioProjectTypes.Add("8BFE4558-546D-4A7F-9F81-C9ED6C262C7A", VisualStudioProjectTypeEnum.MvcApplication_CSharp);
-            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.MvcApplication_CSharp, "8BFE4558-546D-4A7F-9F81-C9ED6C262C7A");
-            __visualStudioProjectTypeSupported.Add("8BFE4558-546D-4A7F-9F81-C9ED6C262C7A", false);
+            //Website_MVC {603C0E0B-DB56-11DC-BE95-000D561079B0}
+            __visualStudioProjectTypes.Add("603C0E0B-DB56-11DC-BE95-000D561079B0", VisualStudioProjectTypeEnum.Website_MVC);
+            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Website_MVC, "603C0E0B-DB56-11DC-BE95-000D561079B0");
+            __visualStudioProjectTypeSupported.Add("603C0E0B-DB56-11DC-BE95-000D561079B0", true);
 
-            //WcfService_CSharp {72EC2439-1192-4FA1-8378-DF92A3AC699F}
-            __visualStudioProjectTypes.Add("72EC2439-1192-4FA1-8378-DF92A3AC699F", VisualStudioProjectTypeEnum.WcfService_CSharp);
-            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.WcfService_CSharp, "72EC2439-1192-4FA1-8378-DF92A3AC699F");
-            __visualStudioProjectTypeSupported.Add("72EC2439-1192-4FA1-8378-DF92A3AC699F", false);
-
-            //WpfControlLibrary_CSharp {44003C12-25E0-477E-8D80-540845649931}
-            __visualStudioProjectTypes.Add("44003C12-25E0-477E-8D80-540845649931", VisualStudioProjectTypeEnum.WpfControlLibrary_CSharp);
-            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.WpfControlLibrary_CSharp, "44003C12-25E0-477E-8D80-540845649931");
-            __visualStudioProjectTypeSupported.Add("44003C12-25E0-477E-8D80-540845649931", false);
-
-            //WpfBrowserApplication_CSharp {12F25641-2540-4B7A-97E7-72FA722017A1}
-            __visualStudioProjectTypes.Add("12F25641-2540-4B7A-97E7-72FA722017A1", VisualStudioProjectTypeEnum.WpfBrowserApplication_CSharp);
-            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.WpfBrowserApplication_CSharp, "12F25641-2540-4B7A-97E7-72FA722017A1");
-            __visualStudioProjectTypeSupported.Add("12F25641-2540-4B7A-97E7-72FA722017A1", false);
-
-            //WpfCustomControlLibrary_CSharp {C968A6D7-E8DD-4A5B-AE08-CB0CE06B0CF5}
-            __visualStudioProjectTypes.Add("C968A6D7-E8DD-4A5B-AE08-CB0CE06B0CF5", VisualStudioProjectTypeEnum.WpfCustomControlLibrary_CSharp);
-            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.WpfCustomControlLibrary_CSharp, "C968A6D7-E8DD-4A5B-AE08-CB0CE06B0CF5");
-            __visualStudioProjectTypeSupported.Add("C968A6D7-E8DD-4A5B-AE08-CB0CE06B0CF5", false);
-
-            //MvcApplication_VB {8D8DAB46-DB23-4502-8948-DCF34D6A51FF}
-            __visualStudioProjectTypes.Add("8D8DAB46-DB23-4502-8948-DCF34D6A51FF", VisualStudioProjectTypeEnum.MvcApplication_VB);
-            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.MvcApplication_VB, "8D8DAB46-DB23-4502-8948-DCF34D6A51FF");
-            __visualStudioProjectTypeSupported.Add("8D8DAB46-DB23-4502-8948-DCF34D6A51FF", false);
-
-            //MvcApplicationTest_VB {55CDCB5B-CC2B-43A5-A550-466D32066F35}
-            __visualStudioProjectTypes.Add("55CDCB5B-CC2B-43A5-A550-466D32066F35", VisualStudioProjectTypeEnum.MvcApplicationTest_VB);
-            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.MvcApplicationTest_VB, "55CDCB5B-CC2B-43A5-A550-466D32066F35");
-            __visualStudioProjectTypeSupported.Add("55CDCB5B-CC2B-43A5-A550-466D32066F35", false);
-
-            //WcfService_VB {79B52CBC-145B-4356-9404-FC5970145EB2}
-            __visualStudioProjectTypes.Add("79B52CBC-145B-4356-9404-FC5970145EB2", VisualStudioProjectTypeEnum.WcfService_VB);
-            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.WcfService_VB, "79B52CBC-145B-4356-9404-FC5970145EB2");
-            __visualStudioProjectTypeSupported.Add("79B52CBC-145B-4356-9404-FC5970145EB2", false);
-
-            //WpfApplication_VB {928ADDCC-90A6-4FEA-8090-6BF3C296131B}
-            __visualStudioProjectTypes.Add("928ADDCC-90A6-4FEA-8090-6BF3C296131B", VisualStudioProjectTypeEnum.WpfApplication_VB);
-            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.WpfApplication_VB, "928ADDCC-90A6-4FEA-8090-6BF3C296131B");
-            __visualStudioProjectTypeSupported.Add("928ADDCC-90A6-4FEA-8090-6BF3C296131B", false);
-
-            //WpfBrowserApplication_VB {F927C28D-3A52-49CD-9FDD-BA8825EFEC6C}
-            __visualStudioProjectTypes.Add("F927C28D-3A52-49CD-9FDD-BA8825EFEC6C", VisualStudioProjectTypeEnum.WpfBrowserApplication_VB);
-            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.WpfBrowserApplication_VB, "F927C28D-3A52-49CD-9FDD-BA8825EFEC6C");
-            __visualStudioProjectTypeSupported.Add("F927C28D-3A52-49CD-9FDD-BA8825EFEC6C", false);
         }
+
+
 
         /// <summary>
         /// Gets the VisualStudioProjectTypeEnum of the given GUID (Global Unique Identifier)

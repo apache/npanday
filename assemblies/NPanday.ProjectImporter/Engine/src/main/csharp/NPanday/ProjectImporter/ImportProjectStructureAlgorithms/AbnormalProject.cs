@@ -23,7 +23,16 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
 
         public override string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, bool writePom)
         {
-            throw new Exception("The Project Structure is malformed or abnormal!, Project Importer Could not support this project Structure.");
+            if (prjDigests.Length.Equals(0))
+            {
+                throw new Exception("Sorry, but there are no Supported Projects Found");
+            }
+            else
+            {
+                throw new Exception("The Project Structure is malformed or abnormal!, Project Importer Could not support this project Structure.");
+            }
+
+            
         }
     }
 }

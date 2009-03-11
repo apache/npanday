@@ -167,63 +167,12 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
         Microsoft_Installer = 33554432,
 
         /// <summary>
-        /// Project Type: MvcApplication C#, 
-        /// GUID: {8BFE4558-546D-4A7F-9F81-C9ED6C262C7A}
+        /// Project Type: Website MVC, 
+        /// GUID: {603c0e0b-db56-11dc-be95-000d561079b0}
         /// </summary>
-        MvcApplication_CSharp = 3,
+        Website_MVC = 3,
 
-        /// <summary>
-        /// Project Type: WcfService C#, 
-        /// GUID: {72EC2439-1192-4FA1-8378-DF92A3AC699F}
-        /// </summary>
-        WcfService_CSharp = 9,
 
-        /// <summary>
-        /// Project Type: WpfControlLibrary C#, 
-        /// GUID: {44003C12-25E0-477E-8D80-540845649931}
-        /// </summary>
-        WpfControlLibrary_CSharp = 18,
-
-        /// <summary>
-        /// Project Type: WpfBrowserApplication C#, 
-        /// GUID: {12F25641-2540-4B7A-97E7-72FA722017A1}
-        /// </summary>
-        WpfBrowserApplication_CSharp = 36,
-
-        /// <summary>
-        /// Project Type: WpfCustomControlLibrary C#, 
-        /// GUID: {C968A6D7-E8DD-4A5B-AE08-CB0CE06B0CF5}
-        /// </summary>
-        WpfCustomControlLibrary_CSharp = 72,
-
-        /// <summary>
-        /// Project Type: MvcApplication VB, 
-        /// GUID: {8D8DAB46-DB23-4502-8948-DCF34D6A51FF}
-        /// </summary>
-        MvcApplication_VB = 144,
-
-        /// <summary>
-        /// Project Type: MvcApplicationTest VB, 
-        /// GUID: {55CDCB5B-CC2B-43A5-A550-466D32066F35}
-        /// </summary>
-        MvcApplicationTest_VB = 288,
-
-        /// <summary>
-        /// Project Type: WcfService VB, 
-        /// GUID: {79B52CBC-145B-4356-9404-FC5970145EB2}
-        /// </summary>
-        WcfService_VB = 576,
-
-        /// <summary>
-        /// Project Type: WpfApplication VB, 
-        /// GUID: {928ADDCC-90A6-4FEA-8090-6BF3C296131B}
-        /// </summary>
-        WpfApplication_VB = 1152,
-
-        /// <summary>
-        /// Project Type: WpfBrowserApplication VB, 
-        /// GUID: {F927C28D-3A52-49CD-9FDD-BA8825EFEC6C}
-        /// </summary>
-        WpfBrowserApplication_VB = 2304,
+                
     }
 }

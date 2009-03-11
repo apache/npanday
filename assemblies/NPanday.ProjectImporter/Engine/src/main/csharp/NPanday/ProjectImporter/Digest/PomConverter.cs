@@ -23,7 +23,7 @@ namespace NPanday.ProjectImporter.Converter
     public class PomConverter
     {
         // Converter Algorithm Registry
-        static Dictionary<VisualStudioProjectTypeEnum, Type> __converterAlgorithms;
+        public static Dictionary<VisualStudioProjectTypeEnum, Type> __converterAlgorithms;
         static PomConverter()
         {
             __converterAlgorithms = new Dictionary<VisualStudioProjectTypeEnum, Type>();
