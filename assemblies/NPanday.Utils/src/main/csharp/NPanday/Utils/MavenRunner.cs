@@ -285,7 +285,7 @@ namespace NPanday.Utils
 
             if (!(new FileInfo(pomFile)).Exists)
             {
-                string errStr = string.Format("Error: Pom File {0} not found!", pomFile);
+                string errStr = string.Format("Pom File {0} not found!", pomFile);
                 output.OutputString(errStr);
                 throw new Exception(errStr);
             }

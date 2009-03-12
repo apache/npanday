@@ -1111,6 +1111,14 @@ namespace NPanday.VisualStudio.Addin
 
             string errStr = null;
 
+            if (pomFile==null)
+            {
+                errStr = string.Format("Pom File {0} not found!", project.FullName.Substring(0,project.FullName.LastIndexOf('\\'))+"\\pom.xml");
+                throw new Exception(errStr);
+            }
+
+            
+
             if ("pom".Equals(pomUtility.Packaging, StringComparison.OrdinalIgnoreCase))
             {
                 errStr = string.Format(Messages.MSG_EF_NOT_A_PROJECT_POM, pomFile);
