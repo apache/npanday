@@ -12,8 +12,11 @@ Executing Maven Goals
   To use the NPanday .NET Build Tool to compile a project and produce a .NET-compliant output:
   
   [[1]] In the Solution Explorer, right-click on the name of the project you want to compile, then select
-  Current NPanday Project > Build to build the selected project. Or, All NPanday Projects > Build to build the
-  parent project and its sub-projects.
+  <<<Current NPanday Project \> Build>>> to build the selected project. Or, <<<All NPanday Projects \> Build>>> to build the
+  parent and its sub-projects.
+  
+  For projects with dependencies from remote repositories, the build might fail. As a workaround, re-import the project then,
+  execute the build goal (<<<Current\ NPanday\ Project\ \>\ Build>>> or <<<All\ NPanday\ Projects\ \>\ Build>>>).
   
   For projects with web references, a dialog box is prompted for updating the Web Services Description Language (<<<wsdl>>>).
   Click Yes to continue with the update, or, No to skip updating.
@@ -48,13 +51,16 @@ Executing Maven Goals
 
   To use the NPanday .NET Build Tool to test a Project:
   
-  [[1]] From the Solution Explorer, right-click on the name of the project you want to test, then select Current NPanday Project > Test
-  to perform the test to the selected project. Or, All NPanday Projects > Test to perform the test to the parent project and its sub-projects.
+  [[1]] From the Solution Explorer, right-click on the name of the project you want to test, then select <<<Current NPanday Project \> Test>>>
+  to perform the test to the selected project. Or, <<<All NPanday Projects \> Test>>> to perform the test to the parent project and its sub-projects.
   
   [[2]] The NPanday .NET Build Tool performs the tests on the project and sends corresponding information to the Output window
   (including a message saying the build was successful). You can scroll up and down in the output window to display all the text.
   
   []
+  
+  <<Note>>: When the test goal output result is not refreshed for C# test project, the project should be reimported, and the value
+  of the test should also be changed. Then, perform <<<Current\ Project:\ Test>>> (or, <<<All NPanday Projects \> Test>>>).
   
 * Install
 

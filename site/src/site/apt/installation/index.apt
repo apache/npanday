@@ -104,7 +104,9 @@ Version 3.5 SP1
   Typically, the the <<<PATH>>> environment variable will look similar to this:
   
 +------+
-PATH=%PATH%;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE;C:\WINDOWS\Microsoft.NET\Framework\v3.5;C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft Visual Studio 9\SDK\v3.5\bin;C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin;C:\Program Files\NUnit 2.4.3\bin
+  PATH=%PATH%;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE;C:\WINDOWS\Microsoft.NET\Framework\v3.5;
+  C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft Visual Studio 9\SDK\v3.5\bin;
+  C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin;C:\Program Files\NUnit 2.4.3\bin
 +------+
 
   <<Note>>:To successfully install the NPanday add-in on machines with only Visual Studio 2008 installed, add this in the PATH:
@@ -118,6 +120,14 @@ PATH=%PATH%;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE;C:\WINDOWS\
     * If you are running Visual Studio from a command shell (using the <<<devenv>>> executable), use the command line to set the PATH environment variable.
     
     []
+    
+  * ASP.NET MVC Release Candidate 2 which can be obtained from
+  {{http://www.microsoft.com/downloads/details.aspx?FamilyID=ee4b2e97-8a72-449a-82d2-2f720d421031&displaylang=en}}.
+  
+  This must be installed to skip the unsupported project types and be able to get the correct project type guid. Otherwise,
+  the projects that are not supported will have a normal c# or vb project type guid and won't be skipped during project <<<Import>>>.
+
+  []
 
 * Installing NPanday .NET Build Tool
 

@@ -17,6 +17,8 @@ Releasing .NET Projects
   The reference (DLL) will be searched from <<<C:\\WINDOWS\\assembly\\GAC_MSIL>>> directory and will be put in
   <<<C:\\WINDOWS\\Temp\\NPanday>>> then renamed following the artifact filename format <<<[artifactId]-[version].[packaging]>>>.
   
+  <<Note>>: The above command should be invoked especially when releasing projects will references to <<<gac>>>.
+  
   After the reference is renamed, it will then be installed in the local repository <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository>>>
   for it to be used when releasing the project.
   

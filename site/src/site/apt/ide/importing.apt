@@ -11,6 +11,9 @@ Importing Projects
   This feature will generate <<<pom.xml>>> files from an existing Visual Studio solution file. The generated <<<pom.xml>>>
   file will contain the latest versions of the artifact dependencies used for the project.
   
+  <<Note>>: ASP.NET MVC should be installed to get the proper behavior when importing projects especially those projects
+  with unsupported project types. (Refer to {{{../installation/index.html} Pre-requisites}} section.)
+  
   [[1]] Right click on the project and select the Generate Solution's POM Information...\
   .
 
@@ -46,6 +49,10 @@ Importing Projects
 
   <<<pom.xml>>> files will be generated for all the projects that are included in the solution file: the parent project and its sub-projects,
   if there are any.
+  
+  <<Note>>: The Units Tests window is not displayed when importing unsupported project types. Hence, an unsupported project type warning is displayed.
+  For multi-module projects with supported and/or unsupported project types, the supported projects are included in the parent pom while
+  for the unsupported project types, these are not included in the parent pom, and a warning is displayed.
   
   For projects with web references, the <<<pom.xml>>> generated will contain <<<maven-wsdl-plugin>>> configuration similar to the following:
 
