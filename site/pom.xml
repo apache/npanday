@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project> 
-  <modelVersion>4.0.0</modelVersion>  
+  <modelVersion>4.0.0</modelVersion>
   
-  <groupId>npanday</groupId>
-  <artifactId>npanday-site</artifactId>  
-  <version>0.9-SNAPSHOT</version>
+  <parent>
+    <groupId>npanday</groupId>
+    <artifactId>npanday-project</artifactId>
+    <version>0.9-SNAPSHOT</version>
+  </parent>
+  <artifactId>npanday-site</artifactId>
   <packaging>pom</packaging>
   <name>NPanday :: Site</name>
   <description>NPanday .NET Build Tool</description>
@@ -150,11 +153,13 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
+        <version>2.0-beta-7</version>
         <executions>
           <execution>
             <id>site</id>
-            <phase>package</phase>
+            <phase>process-resources</phase>
             <goals>
               <goal>site</goal>
             </goals>
@@ -174,25 +179,6 @@
             <goals>
               <goal>single</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-images</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <tasks>
-                <copy todir="${basedir}/target/site/images">
-                  <fileset dir="src/site/images" />
-                </copy>
-              </tasks>
-            </configuration>
           </execution>
         </executions>
       </plugin>

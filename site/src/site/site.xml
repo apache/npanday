@@ -20,7 +20,7 @@
         <item name="Using the Installer" href="/installation/installer.html"/>
         <item name="Verifying the Installation" href="/installation/verify.html"/>
       </item>
-      <item name="Uninstall the NPanday .NET Build Tool" href="/installation/uninstall.html">
+      <item name="Uninstall NPanday" href="/installation/uninstall.html">
         <item name="Manual Uninstallation" href="/installation/manual_uninstall.html"/>
         <item name="Uninstall Using the Installer" href="/installation/installer_uninstall.html"/>
       </item>
@@ -41,14 +41,12 @@
       <item name="Project References" href="/ide/references.html"/>
       <item name="Web References" href="/ide/web_references.html"/>
       <item name="Releasing Project" href="/ide/release.html">
-        <item name="Using Command Line" href="/ide/commandline.html"/>
-        <item name="Using Build Management" href="/ide/continuum.html"/>
+				<item name="Using Command Line" href="/ide/commandline.html"/>
+				<item name="Using Build Management" href="/ide/continuum.html"/>
       </item>
       <item name="Integration Test" href="/ide/test.html"/>
-      
     </menu>
-    <menu name="Developer Documentation">
-    </menu>
+		
     <menu name="Project Information">
       <item name="NPanday Site" href="http://www.codeplex.com/npanday"/>
       <item name="NPanday SVN" href="https://npanday.svn.codeplex.com/svn/"/>

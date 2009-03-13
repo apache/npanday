@@ -1,0 +1,20 @@
+<assembly>
+  <id>docs</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>target/site</directory>
+      <outputDirectory>/npanday/</outputDirectory>
+      <includes>
+        <include>**/*.html</include>
+        <include>**/*.jpg</include>
+        <include>**/*.png</include>
+        <include>**/*.gif</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</assembly>
+
