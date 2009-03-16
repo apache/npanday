@@ -128,6 +128,13 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                     {
                         // Ignore these this are not used by the compiler
                     }
+                    else if (
+                    @"$(MSBuildToolsPath)\Microsoft.CSharp.targets".Equals(import.ProjectPath, StringComparison.OrdinalIgnoreCase)
+                    || @"$(MSBuildToolsPath)\Microsoft.VisualBasic.targets".Equals(import.ProjectPath, StringComparison.OrdinalIgnoreCase)
+                    )
+                    {
+                        // Ignore these this are not used by the compiler
+                    }
                     else
                     {
                         // TODO: check for implimentations for imports

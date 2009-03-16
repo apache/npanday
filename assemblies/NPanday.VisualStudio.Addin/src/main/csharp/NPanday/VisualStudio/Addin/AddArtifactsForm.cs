@@ -345,15 +345,23 @@ namespace NPanday.VisualStudio.Addin
 
         List<TreeNode> getNodesFor(String url)
         {
-            Uri repoUri = new Uri(url);
-            if (repoUri.IsFile)
+            try
             {
-                return getNodesFromLocal(repoUri.LocalPath);
+                Uri repoUri = new Uri(url);
+                if (repoUri.IsFile)
+                {
+                    return getNodesFromLocal(repoUri.LocalPath);
+                }
+                else
+                {
+                    return getNodesFromRemote(url);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return getNodesFromRemote(url);
+                MessageBox.Show("There was a problem with the provided URL. \nStack Trace:"+e.Message,"Get Artifacts from Remote Repository Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
+            return null;
         }
 
         List<TreeNode> getNodesFromLocal(string repoFolder)

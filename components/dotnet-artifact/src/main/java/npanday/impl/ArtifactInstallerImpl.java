@@ -426,8 +426,31 @@ public class ArtifactInstallerImpl
             finally
             {
                 dao.closeConnection();
+				deleteTempDir(pomFile);
             }
         }
+    }
+    
+    /**
+     * background cleaner that deletes the bin folder created besides the solutions file
+     */
+    private void deleteTempDir(File pomFile)
+    {
+        String pomFilePath = pomFile.getAbsolutePath();
+        pomFilePath = pomFilePath.substring( 0, pomFilePath.lastIndexOf( "\\" ) );
+        pomFilePath = pomFilePath.substring( 0, pomFilePath.lastIndexOf( "\\" ) );
+        
+        String binDir= pomFilePath +"\\bin";
+        
+        try
+        {
+            FileUtils.deleteDirectory( binDir);
+        }
+        catch(Exception e)
+        {
+            System.out.println("NPANDAY-001-316: Unable to delete temp bin directory: \nError Stack Trace: "+e.getMessage());
+        }
+           
     }
 
     /**
