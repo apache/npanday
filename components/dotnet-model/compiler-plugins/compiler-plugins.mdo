@@ -54,7 +54,7 @@ under the License.
           <version>1.0.0</version>
           <type>String</type>
           <description>
-            Class name of the compiler. NMaven will pass an instance of this class to the
+            Class name of the compiler. NPanday will pass an instance of this class to the
             requesting plugin.
           </description>
         </field>
