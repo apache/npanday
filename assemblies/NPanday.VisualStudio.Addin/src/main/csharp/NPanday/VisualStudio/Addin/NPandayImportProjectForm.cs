@@ -129,13 +129,14 @@ namespace NPanday.VisualStudio.Addin
 
 
 
-                    string artifactId = FilterID(file.Name.Replace(".sln", "")) + "-parent";
-                    string groupId = FilterID(txtGroupId.Text);
+                    string artifactId = FilterID(ConvertToPascalCase(file.Name.Replace(".sln", ""))) + "-parent";
+                    string groupId = FilterID(ConvertToPascalCase(txtGroupId.Text));
+                    string scmTag = txtSCMTag.Text;
 
                     //NPandayImporter importer = new NPandayImporter(new String[2] {txtBrowseDotNetSolutionFile.Text, "-DgroupId=" + txtGroupId.Text });
                     //importer.GeneratePom();
 
-                    string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, "1.0-SNAPSHOT", true);
+                    string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, "1.0-SNAPSHOT", scmTag, true);
 
                     string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
 
@@ -180,6 +181,21 @@ namespace NPanday.VisualStudio.Addin
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void txtSCMTag_TextChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void txtSCMTag_Click(object sender, EventArgs e)
+        {
+            txtSCMTag.Text = string.Empty;
+        }
+
+        private void txtSCMTag_DoubleClick(object sender, EventArgs e)
+        {
+            txtSCMTag.Text = string.Empty;
         }
 
     }

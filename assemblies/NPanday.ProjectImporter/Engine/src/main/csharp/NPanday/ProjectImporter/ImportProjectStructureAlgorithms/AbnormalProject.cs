@@ -21,7 +21,7 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
     public class AbnormalProject : AbstractProjectAlgorithm
     {
 
-        public override string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, bool writePom)
+        public override string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom)
         {
             if (prjDigests.Length.Equals(0))
             {

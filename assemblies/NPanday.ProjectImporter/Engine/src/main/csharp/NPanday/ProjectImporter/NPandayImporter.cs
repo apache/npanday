@@ -27,7 +27,7 @@ namespace NPanday.ProjectImporter
         #region Import Project Type Strategy Pattern
         // A strategy pattern with a twists, using c# delegates
         
-        delegate string[] ImportProjectTypeDelegate(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, bool writePom);
+        delegate string[] ImportProjectTypeDelegate(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom);
         static Dictionary<ProjectStructureType, ImportProjectTypeDelegate> _importProject;
 
         /// <summary>
@@ -45,9 +45,9 @@ namespace NPanday.ProjectImporter
         }
 
 
-        public static string[] ImportProjectType(ProjectStructureType structureType, ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version)
+        public static string[] ImportProjectType(ProjectStructureType structureType, ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag)
         {
-            return _importProject[structureType](prjDigests, solutionFile, groupId, artifactId, version, true);
+            return _importProject[structureType](prjDigests, solutionFile, groupId, artifactId, version, scmTag, true);
         }
 
         #endregion
@@ -66,7 +66,7 @@ namespace NPanday.ProjectImporter
         /// <returns>An array of generated pom.xml filenames</returns>
         public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version)
         {
-            return ImportProject(solutionFile, groupId, artifactId, version, true);
+            return ImportProject(solutionFile, groupId, artifactId, version, string.Empty,true);
         }
 
         /// <summary>
@@ -78,16 +78,17 @@ namespace NPanday.ProjectImporter
         /// <param name="artifactId">Project Parent Pom Artifact ID, used as a maven artifact ID for the parent pom.xml</param>
         /// <param name="version">Project version, used as a maven version for the entire pom.xmls</param>
         /// <param name="verifyTests">if true, a dialog box for verifying tests will show up and requires user interaction</param>
+        /// <param name="scmTag">generates scm tags if txtboxfield is not empty or null</param>
         /// <returns>An array of generated pom.xml filenames</returns>
-        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, bool verifyTests)
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag,bool verifyTests)
         {
             if (verifyTests)
             {
-                return ImportProject(solutionFile, groupId, artifactId, version, VerifyUnitTestsToUser.VerifyTests);    
+                return ImportProject(solutionFile, groupId, artifactId, version,  scmTag, VerifyUnitTestsToUser.VerifyTests);    
             }
             else
             {
-                return ImportProject(solutionFile, groupId, artifactId, version, null);    
+                return ImportProject(solutionFile, groupId, artifactId, version, scmTag, null);    
             }
             
 
@@ -115,8 +116,9 @@ namespace NPanday.ProjectImporter
         /// <param name="artifactId">Project Parent Pom Artifact ID, used as a maven artifact ID for the parent pom.xml</param>
         /// <param name="version">Project version, used as a maven version for the entire pom.xmls</param>
         /// <param name="verifyProjectToImport">A delegate That will Accept a method for verifying Projects To Import</param>
+        /// <param name="scmTag">adds scm tags to parent pom.xml if not string.empty or null</param>
         /// <returns>An array of generated pom.xml filenames</returns>
-        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, VerifyProjectToImport verifyProjectToImport)
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag,VerifyProjectToImport verifyProjectToImport)
         {
             FileInfo solutionFileInfo = new FileInfo(solutionFile);
 
@@ -169,7 +171,7 @@ namespace NPanday.ProjectImporter
 
 
             //return ImportProjectType(structureType, prjDigests, solutionFile, groupId, artifactId, version);
-            return ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version);
+            return ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag);
 
         }
 
@@ -180,7 +182,7 @@ namespace NPanday.ProjectImporter
 
         public static string[] ReImportProject(string solutionFile)
         {
-            return ImportProject(solutionFile, null, null, null, VerifyProjectImportSyncronization.SyncronizePomValues);    
+            return ImportProject(solutionFile, null, null, null, null, VerifyProjectImportSyncronization.SyncronizePomValues);    
         }
 
         #endregion

@@ -20,7 +20,7 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
 {
     public class FlatSingleModuleProject : AbstractProjectAlgorithm
     {
-        public override string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, bool writePom)
+        public override string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom)
         {
             return GenerateChildPoms(prjDigests, groupId, null, null, writePom);
         }

@@ -20,13 +20,13 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
 {
     public class FlatMultiModuleProject : AbstractProjectAlgorithm
     {
-        public override string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, bool writePom)
+        public override string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom)
         {
             List<string> generatedPoms = new List<string>();
 
             string pomFileName = Path.GetFullPath(Path.GetDirectoryName(solutionFile) + @"\parent-pom.xml");
             // write the parent pom
-            NPanday.Model.Pom.Model mainModel = PomConverter.MakeProjectsParentPomModel(prjDigests, pomFileName, groupId, artifactId, version, true);
+            NPanday.Model.Pom.Model mainModel = PomConverter.MakeProjectsParentPomModel(prjDigests, pomFileName, groupId, artifactId, version, scmTag, true);
             generatedPoms.Add(pomFileName);
 
 

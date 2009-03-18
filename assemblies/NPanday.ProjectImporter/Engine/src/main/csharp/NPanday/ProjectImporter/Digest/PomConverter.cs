@@ -57,7 +57,7 @@ namespace NPanday.ProjectImporter.Converter
         }
 
 
-        public static NPanday.Model.Pom.Model MakeProjectsParentPomModel(ProjectDigest[] projectDigests, string pomFileName, string groupId, string artifactId, string version, bool writePom)
+        public static NPanday.Model.Pom.Model MakeProjectsParentPomModel(ProjectDigest[] projectDigests, string pomFileName, string groupId, string artifactId, string version, string scmTag, bool writePom)
         {
 
             try
@@ -70,6 +70,21 @@ namespace NPanday.ProjectImporter.Converter
                 model.artifactId = artifactId;
                 model.version = version;
                 model.name = string.Format("{0} : {1}", groupId, artifactId);
+
+                if (!string.Empty.Equals(scmTag) || scmTag != null || scmTag != "<OPTIONAL: svn url>")
+                {
+                    scmTag = scmTag.Trim();
+                    if (scmTag.Contains("scm:svn:"))
+                    {
+                        scmTag = scmTag.Remove(scmTag.IndexOf("scm:svn:"), 8);
+                    }
+                    Scm scmHolder = new Scm();
+                    scmHolder.connection = string.Format("scm:svn:{0}",scmTag);
+                    scmHolder.developerConnection = string.Format("scm:svn:{0}", scmTag);
+                    scmHolder.url = scmTag;
+                    model.scm = scmHolder;
+                }
+                
 
                 List<string> modules = new List<string>();
                 foreach (ProjectDigest projectDigest in projectDigests)

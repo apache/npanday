@@ -24,7 +24,7 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
 
         #region IProjectTypeImporter Members
 
-        public abstract string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, bool writePom);
+        public abstract string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version,string scmTag, bool writePom);
 
         #endregion
 

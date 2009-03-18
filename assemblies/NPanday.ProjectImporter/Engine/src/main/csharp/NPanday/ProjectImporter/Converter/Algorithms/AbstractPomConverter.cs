@@ -227,6 +227,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
             else
             {
+                
                 model.groupId = !string.IsNullOrEmpty(groupId) ? FilterID(groupId) : FilterID(projectDigest.AssemblyName);
                 model.version = string.IsNullOrEmpty(version) ? "1.0-SNAPSHOT" : version;
             }
