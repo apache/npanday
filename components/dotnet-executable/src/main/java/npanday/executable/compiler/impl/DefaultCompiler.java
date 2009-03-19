@@ -78,13 +78,13 @@ public final class DefaultCompiler
         	artifactFilePath = artifactFilePath.substring(0, artifactFilePath.length() - 3) + "dll";
         }
         
-        commands.add( "/out:" + artifactFilePath );
+        commands.add( "/out:" + artifactFilePath);
     
 
         commands.add( "/target:" + targetArtifactType );
         if(config.getIncludeSources() == null || config.getIncludeSources().isEmpty() )
         {
-            commands.add( "/recurse:" + sourceDirectory + File.separator + "**" );
+            commands.add( "/recurse:" + sourceDirectory + File.separator + "**");
         }
         if ( modules != null && !modules.isEmpty() )
         {
@@ -109,7 +109,6 @@ public final class DefaultCompiler
                 commands.add( "/reference:" + path );
             }
         }
-
         for ( File file : compilerContext.getEmbeddedResources() )
         {
             commands.add( "/resource:" + file.getAbsolutePath() );
@@ -187,8 +186,8 @@ public final class DefaultCompiler
         }
 
         CommandFilter filter = compilerContext.getCommandFilter();
-        List<String> filteredCommands = filter.filter( commands );
         
+        List<String> filteredCommands = filter.filter( commands );
         //Include Sources code is being copied to temporary folder for the recurse option
         
         String fileExt = "";
@@ -252,15 +251,55 @@ public final class DefaultCompiler
                 //part of original code.
                 //filteredCommands.add(includeSource);
             }
-            String recurseCmd = "/recurse:"+TempDir+File.separator+"*"+fileExt;
+            String recurseCmd = "/recurse:" + TempDir+File.separator + "*" + fileExt + "";
             filteredCommands.add(recurseCmd);
             
         }
+        String responseFilePath = TempDir + File.separator + "responcefile.rsp";
+        try
+    	{
+        	for(String command : filteredCommands)
+        	{
+    	        FileUtils.fileAppend(responseFilePath, escapeCmdParams(command) + " ");
+        	}
+    	} catch (java.io.IOException e) {
+    		throw new ExecutionException( "Error while creating response file for the commands.", e );
+        }
+        filteredCommands.clear();
+        filteredCommands.add("@" + escapeCmdParams(responseFilePath) );
         return filteredCommands;
     }
 
     public void resetCommands( List<String> commands )
     {
 
+    }
+    // escaped to make use of dotnet style of command escapes .
+    // Eg. /define:"CONFIG=\"Debug\",DEBUG=-1,TRACE=-1,_MyType=\"Windows\",PLATFORM=\"AnyCPU\""
+    private String escapeCmdParams(String param)
+    {
+        if(param == null)
+            return null;
+        
+        String str = param;
+        if((param.startsWith("/") || param.startsWith("@")) && param.indexOf(":") > 0)
+        {
+            int delem = param.indexOf(":") + 1;
+            String command = param.substring(0, delem);
+            String value = param.substring(delem);
+            
+            if(value.indexOf(" ") > 0 || value.indexOf("\"") > 0)
+            {
+                value = "\"" + value.replaceAll("\"", "\\\\\"")  + "\"";
+            }
+            
+            str = command + value;
+        }
+        else if(param.indexOf(" ") > 0)
+        {
+            str = "\"" + param  + "\"";
+        }
+        
+        return str;
     }
 }

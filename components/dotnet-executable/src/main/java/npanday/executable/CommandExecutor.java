@@ -215,7 +215,6 @@ public interface CommandExecutor
                              try
                              {
                                  String cmd = this.toString();
-                                 
                                  if ( workingDir == null )
                                  {
                                      //process = Runtime.getRuntime().exec( getShellCommandline(), environment );
@@ -326,6 +325,10 @@ public interface CommandExecutor
                                 }
                                 
                                 str = command + value;
+                            }
+                            else if(param.startsWith("@"))
+                            {
+                            	str = param;
                             }
                             else if(param.indexOf(" ") > 0)
                             {
