@@ -79,7 +79,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
                 List<Dictionary<string, string>> embeddedResourceList = new List<Dictionary<string, string>>();
-
+                
                 foreach (EmbeddedResource embeddedResource in projectDigest.EmbeddedResources)
                 {
                     Dictionary<string, string> value = new Dictionary<string, string>();
@@ -89,13 +89,38 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
                     value.Add("sourceFile", sourceFile);
-                    string name = projectDigest.RootNamespace + "." + sourceFile.Substring(0, sourceFile.LastIndexOf(".")).Replace('\\','.');
-                    value.Add("name", name);
+                    value.Add("name", parseEmbeddedName(projectDigest.RootNamespace, sourceFile));
 
                     embeddedResourceList.Add(value);
                 }
                 AddPluginConfiguration(embeddedResourcePlugin, "embeddedResources", embeddedResourceList);
             }
+        }
+
+        string parseEmbeddedName(string nameSpace, string sourceFilePath)
+        {
+            string returnVal = string.Empty;
+            FileInfo sourceFileInfo = new FileInfo(sourceFilePath);
+            if ("vb".Equals(projectDigest.Language))
+            {
+                returnVal = sourceFileInfo.Name.Replace(".resx", string.Empty);
+            }
+            else if ("csharp".Equals(projectDigest.Language))
+            {
+                foreach (string name in sourceFilePath.Split("\\".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
+                {
+                    if (name.IndexOf(".") < 0)
+                    {
+                        returnVal += name.Trim().Replace(' ', '_') + ".";
+                    }
+                    else
+                    {
+                        returnVal += name.Substring(0, name.LastIndexOf("."));
+                    }
+
+                }
+            }
+            return string.Format("{0}.{1}", nameSpace, returnVal);
         }
 
         #endregion
@@ -227,7 +252,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
             else
             {
-                
                 model.groupId = !string.IsNullOrEmpty(groupId) ? FilterID(groupId) : FilterID(projectDigest.AssemblyName);
                 model.version = string.IsNullOrEmpty(version) ? "1.0-SNAPSHOT" : version;
             }
