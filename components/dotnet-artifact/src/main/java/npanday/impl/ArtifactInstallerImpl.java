@@ -437,7 +437,12 @@ public class ArtifactInstallerImpl
     private void deleteTempDir(File pomFile)
     {
         String pomFilePath = pomFile.getAbsolutePath();
+        
         pomFilePath = pomFilePath.substring( 0, pomFilePath.lastIndexOf( "\\" ) );
+        
+        //get the directory of the current pom file.
+        String pomDirectory = pomFilePath;
+        
         pomFilePath = pomFilePath.substring( 0, pomFilePath.lastIndexOf( "\\" ) );
         
         String binDir= pomFilePath +"\\bin";
@@ -445,12 +450,48 @@ public class ArtifactInstallerImpl
         try
         {
             FileUtils.deleteDirectory( binDir);
+            
+            String targetDir = pomDirectory+"\\target";
+            
+            String[] directories = new File(targetDir).list();
+            
+            for(String dir:directories)
+            {
+                String insideTarget = targetDir+"\\"+dir;
+                if(new File(insideTarget).isDirectory())
+                {
+                    String tempDir = insideTarget.substring( insideTarget.lastIndexOf( "\\" )+1);
+                    
+                    if(isAllDigit(tempDir))
+                    {
+                        
+                        FileUtils.deleteDirectory( insideTarget );
+                        
+                    }
+                }
+                                           
+            }
         }
         catch(Exception e)
         {
             System.out.println("NPANDAY-001-316: Unable to delete temp bin directory: \nError Stack Trace: "+e.getMessage());
         }
            
+    }
+    
+    private boolean isAllDigit(String value)
+    {
+        boolean isValid=true;
+        
+        for(char index:value.toCharArray())
+        {
+           
+            if(!Character.isDigit( index ))
+            {
+                isValid = false;
+            }
+        }
+        return isValid;
     }
 
     /**
