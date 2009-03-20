@@ -152,19 +152,32 @@ namespace NPanday.Artifact
 
         string getVersion(string versionAndGroupDirectoryName)
         {
-            // 1.1.1.1__NMaven.VisualStudio from index 0 to __ is the version number
-            int index = versionAndGroupDirectoryName.IndexOf("__", 0);
-            string str = versionAndGroupDirectoryName.Substring(0, index);
-            return str;
+           try
+            {
+                // 1.1.1.1__NMaven.VisualStudio from index 0 to __ is the version number
+                int index = versionAndGroupDirectoryName.IndexOf("__", 0);
+                string str = versionAndGroupDirectoryName.Substring(0, index);
+                return str;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         string getGroupId(string versionAndGroupDirectoryName)
         {
-            int index = versionAndGroupDirectoryName.IndexOf("__", 0) + 2;
-            // 1.1.1.1__NMaven.VisualStudio from (next to index of __) to last is the groupid
-            string str = versionAndGroupDirectoryName.Substring(index, (versionAndGroupDirectoryName.Length - index));
-            return str;
-
+            try
+            {
+                int index = versionAndGroupDirectoryName.IndexOf("__", 0) + 2;
+                // 1.1.1.1__NMaven.VisualStudio from (next to index of __) to last is the groupid
+                string str = versionAndGroupDirectoryName.Substring(index, (versionAndGroupDirectoryName.Length - index));
+                return str;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         #endregion

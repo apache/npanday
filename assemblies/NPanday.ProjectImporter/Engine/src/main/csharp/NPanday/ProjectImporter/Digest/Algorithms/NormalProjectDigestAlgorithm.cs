@@ -153,147 +153,126 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                 {
                     if (!buildItem.IsImported)
                     {
-                        if ("ProjectReference".Equals(buildItem.Name))
+                        
+                        switch (buildItem.Name)
                         {
-                            ProjectReference prjRef = new ProjectReference(projectBasePath);
+                            case "ProjectReference":
+                                ProjectReference prjRef = new ProjectReference(projectBasePath);
+                                prjRef.ProjectPath = buildItem.Include;
+                                prjRef.Name = GetProjectAssemblyName(Path.GetFullPath(prjRef.ProjectFullPath));
+                                projectReferences.Add(prjRef);
+                                break;
+                            case "Reference":
+                                Reference reference = new Reference(projectBasePath, gac);
+                                string hintPath = buildItem.GetMetadata("HintPath");
+                                if (!string.IsNullOrEmpty(hintPath))
+                                {
+                                    reference.HintPath = Path.GetFullPath(Path.Combine(projectBasePath, hintPath));
+                                }
+                                if (string.IsNullOrEmpty(reference.HintPath) || !(new FileInfo(reference.HintPath).Exists))
+                                {
+                                    reference.AssemblyInfo = buildItem.Include;
+                                }
+                                if ("NUnit.Framework".Equals(reference.Name, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    reference.Name = "NUnit.Framework";
+                                    projectDigest.UnitTest = true;
+                                }
+                                if (!string.IsNullOrEmpty(reference.Name))
+                                {
+                                    references.Add(reference);
+                                }
+                                break;
+                            case "Compile":
+                                Compile compile = new Compile(projectBasePath);
+                                compile.IncludePath = buildItem.Include;
+                                compile.AutoGen = buildItem.GetMetadata("AutoGen");
+                                compile.DesignTimeSharedInput = buildItem.GetMetadata("DesignTimeSharedInput");
+                                compile.DependentUpon = buildItem.GetMetadata("DependentUpon");
+                                compile.DesignTime = buildItem.GetMetadata("DesignTime");
+                                compile.SubType = buildItem.GetMetadata("SubType");
+                                compiles.Add(compile);
+                                break;
+                            case "None":
+                                None none = new None(projectBasePath);
+                                none.IncludePath = buildItem.Include;
+
+                                none.Link = buildItem.GetMetadata("Link");
+
+                                none.Generator = buildItem.GetMetadata("Generator");
+                                none.LastGenOutput = buildItem.GetMetadata("LastGenOutput");
+                                none.DependentUpon = buildItem.GetMetadata("DependentUpon");
+
+                                nones.Add(none);
+                                break;
+                            case "WebReferenceUrl":
+                                WebReferenceUrl web = new WebReferenceUrl();
+                                web.UrlBehavior = buildItem.GetMetadata("UrlBehavior");
+                                web.RelPath = buildItem.GetMetadata("RelPath");
+                                web.UpdateFromURL = buildItem.GetMetadata("UpdateFromURL");
+                                web.ServiceLocationURL = buildItem.GetMetadata("ServiceLocationURL");
+                                web.CachedDynamicPropName = buildItem.GetMetadata("CachedDynamicPropName");
+                                web.CachedAppSettingsObjectName = buildItem.GetMetadata("CachedAppSettingsObjectName");
+                                web.CachedSettingsPropName = buildItem.GetMetadata("CachedSettingsPropName");
+                                webReferenceUrls.Add(web);
+                                break;
+                            case "COMReference":
+                                ComReference comRef = new ComReference();
+                                comRef.Include = buildItem.Include;
+                                comRef.Guid = buildItem.GetMetadata("Guid");
+                                comRef.VersionMajor = buildItem.GetMetadata("VersionMajor");
+                                comRef.VersionMinor = buildItem.GetMetadata("VersionMinor");
+                                comRef.Lcid = buildItem.GetMetadata("Lcid");
+                                comRef.Isolated = buildItem.GetMetadata("Isolated");
+                                comRef.WrapperTool = buildItem.GetMetadata("WrapperTool");
+                                comReferenceList.Add(comRef);
+                                break;
+                            case "Content":
+                                Content content = new Content(projectBasePath);
+                                content.IncludePath = buildItem.Include;
+                                contents.Add(content);
+                                break;
+                            case "Folder":
+                                Folder folder = new Folder(projectBasePath);
+                                folder.IncludePath = buildItem.Include;
+                                folders.Add(folder);
+                                break;
+                            case "WebReferences":
+                                WebReferences webReferences = new WebReferences(projectBasePath);
+                                webReferences.IncludePath = buildItem.Include;
+                                webReferencesList.Add(webReferences);
+                                break;
+                            case "EmbeddedResource":
+                                EmbeddedResource embeddedResource = new EmbeddedResource(projectBasePath);
+                                embeddedResource.IncludePath = buildItem.Include;
+
+                                embeddedResource.DependentUpon = buildItem.GetMetadata("DependentUpon");
+                                embeddedResource.SubType = buildItem.GetMetadata("SubType");
+                                embeddedResource.Generator = buildItem.GetMetadata("Generator");
+                                embeddedResource.LastGenOutput = buildItem.GetMetadata("LastGenOutput");
+
+                                embeddedResources.Add(embeddedResource);
+                                break;
+                            case "BootstrapperPackage":
+                                BootstrapperPackage bootstrapperPackage = new BootstrapperPackage(projectBasePath);
+                                bootstrapperPackage.IncludePath = buildItem.Include;
+                                bootstrapperPackage.Visible = buildItem.GetMetadata("Visible");
+                                bootstrapperPackage.ProductName = buildItem.GetMetadata("ProductName");
+                                bootstrapperPackage.Install = buildItem.GetMetadata("Install");
 
 
-                            prjRef.ProjectPath = buildItem.Include;
-                            prjRef.Name = GetProjectAssemblyName(Path.GetFullPath(prjRef.ProjectFullPath));
-                            projectReferences.Add(prjRef);
+                                bootstrapperPackages.Add(bootstrapperPackage);
+                                break;
+                            case "Import":
+                                globalNamespaceImports.Add(buildItem.Include);
+                                break;
+                            case "BaseApplicationManifest":
+                                projectDigest.BaseApplicationManifest = buildItem.Include;
+                                break;
+                           default:
+                                Console.WriteLine("Unhandled ItemGroup: " + buildItem.Name);
+                                break;
                         }
-                        else if ("Reference".Equals(buildItem.Name))
-                        {
-                            Reference reference = new Reference(projectBasePath, gac);
-                            string hintPath = buildItem.GetMetadata("HintPath");
-                            if (!string.IsNullOrEmpty(hintPath))
-                                reference.HintPath = Path.GetFullPath(Path.Combine(projectBasePath, hintPath)); 
-                            if (string.IsNullOrEmpty(reference.HintPath) || !(new FileInfo(reference.HintPath).Exists))
-                            {
-                                reference.AssemblyInfo = buildItem.Include;
-                            }
-
-                            if("NUnit.Framework".Equals(reference.Name, StringComparison.OrdinalIgnoreCase))
-                            {
-                                reference.Name = "NUnit.Framework";
-                                projectDigest.UnitTest = true;
-                            }
-
-                            if (!string.IsNullOrEmpty(reference.Name))
-                            {
-                                references.Add(reference);
-                            }
-                        }
-                        else if ("Compile".Equals(buildItem.Name))
-                        {
-                            Compile compile = new Compile(projectBasePath);
-                            compile.IncludePath = buildItem.Include;
-
-                            compile.AutoGen = buildItem.GetMetadata("AutoGen");
-                            compile.DesignTimeSharedInput = buildItem.GetMetadata("DesignTimeSharedInput");
-                            compile.DependentUpon = buildItem.GetMetadata("DependentUpon");
-                            compile.DesignTime = buildItem.GetMetadata("DesignTime");
-                            compile.SubType = buildItem.GetMetadata("SubType");
-
-                           
-
-
-                            compiles.Add(compile);
-                        }
-
-                        else if ("None".Equals(buildItem.Name))
-                        {
-                            None none = new None(projectBasePath);
-                            none.IncludePath = buildItem.Include;
-
-
-                            none.Link = buildItem.GetMetadata("Link");
-
-                            none.Generator = buildItem.GetMetadata("Generator");
-                            none.LastGenOutput = buildItem.GetMetadata("LastGenOutput");
-                            none.DependentUpon = buildItem.GetMetadata("DependentUpon");
-
-                            nones.Add(none);
-                        }
-                        else if ("WebReferenceUrl".Equals(buildItem.Name))
-                        {
-                            WebReferenceUrl web = new WebReferenceUrl();
-                            web.UrlBehavior = buildItem.GetMetadata("UrlBehavior");
-                            web.RelPath = buildItem.GetMetadata("RelPath");
-                            web.UpdateFromURL = buildItem.GetMetadata("UpdateFromURL");
-                            web.ServiceLocationURL = buildItem.GetMetadata("ServiceLocationURL");
-                            web.CachedDynamicPropName = buildItem.GetMetadata("CachedDynamicPropName");
-                            web.CachedAppSettingsObjectName = buildItem.GetMetadata("CachedAppSettingsObjectName");
-                            web.CachedSettingsPropName = buildItem.GetMetadata("CachedSettingsPropName");
-                            webReferenceUrls.Add(web);
-                        }
-                        else if ("COMReference".Equals(buildItem.Name))
-                        {
-                            ComReference comRef = new ComReference();
-                            comRef.Include = buildItem.Include;
-                            comRef.Guid = buildItem.GetMetadata("Guid");
-                            comRef.VersionMajor = buildItem.GetMetadata("VersionMajor");
-                            comRef.VersionMinor = buildItem.GetMetadata("VersionMinor");
-                            comRef.Lcid = buildItem.GetMetadata("Lcid");
-                            comRef.Isolated = buildItem.GetMetadata("Isolated");
-                            comRef.WrapperTool = buildItem.GetMetadata("WrapperTool");
-                            comReferenceList.Add(comRef);
-                        }
-                        else if ("Content".Equals(buildItem.Name))
-                        {
-                            Content content = new Content(projectBasePath);
-                            content.IncludePath = buildItem.Include;
-                            contents.Add(content);
-                        }
-                        else if ("Folder".Equals(buildItem.Name))
-                        {
-                            Folder folder = new Folder(projectBasePath);
-                            folder.IncludePath = buildItem.Include;
-                            folders.Add(folder);
-                        }
-                        else if ("WebReferences".Equals(buildItem.Name))
-                        {
-                            WebReferences webReferences = new WebReferences(projectBasePath);
-                            webReferences.IncludePath = buildItem.Include;
-                            webReferencesList.Add(webReferences);
-                        }
-                        else if ("EmbeddedResource".Equals(buildItem.Name))
-                        {
-                            EmbeddedResource embeddedResource = new EmbeddedResource(projectBasePath);
-                            embeddedResource.IncludePath = buildItem.Include;
-                            
-                            embeddedResource.DependentUpon = buildItem.GetMetadata("DependentUpon");
-                            embeddedResource.SubType = buildItem.GetMetadata("SubType");
-                            embeddedResource.Generator = buildItem.GetMetadata("Generator");
-                            embeddedResource.LastGenOutput = buildItem.GetMetadata("LastGenOutput");
-
-
-                            embeddedResources.Add(embeddedResource);
-                        }
-                        else if ("BootstrapperPackage".Equals(buildItem.Name))
-                        {
-                            BootstrapperPackage bootstrapperPackage = new BootstrapperPackage(projectBasePath);
-                            bootstrapperPackage.IncludePath = buildItem.Include;
-                            bootstrapperPackage.Visible = buildItem.GetMetadata("Visible");
-                            bootstrapperPackage.ProductName = buildItem.GetMetadata("ProductName");
-                            bootstrapperPackage.Install = buildItem.GetMetadata("Install");
-
-
-                            bootstrapperPackages.Add(bootstrapperPackage);
-                        }
-                        else if ("Import".Equals(buildItem.Name))
-                        {
-                            globalNamespaceImports.Add(buildItem.Include);
-                        }
-                        else if ("BaseApplicationManifest".Equals(buildItem.Name))
-                        {
-                            projectDigest.BaseApplicationManifest = buildItem.Include;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Unhandled ItemGroup: " + buildItem.Name);
-                        }
-
                     }
                 }
             }
