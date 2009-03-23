@@ -5,6 +5,6 @@
   <groupId>npanday</groupId>  
   <artifactId>vsinstaller</artifactId>  
   <packaging>library</packaging>  
-  <version>0.9-SNAPSHOT</version>  
+  <version>1.0.0-RC1</version>  
   <name>vsinstaller</name> 
 </project>
