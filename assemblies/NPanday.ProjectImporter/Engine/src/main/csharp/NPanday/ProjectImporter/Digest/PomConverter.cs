@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 
 
+
 using NPanday.ProjectImporter.Digest;
 using NPanday.ProjectImporter.Digest.Model;
 using NPanday.Utils;
@@ -71,13 +72,28 @@ namespace NPanday.ProjectImporter.Converter
                 model.version = version;
                 model.name = string.Format("{0} : {1}", groupId, artifactId);
 
-                if (!string.Empty.Equals(scmTag) || scmTag != null || scmTag != "<OPTIONAL: svn url>")
+                if (scmTag.Contains("scm:svn:"))
+                {
+                    scmTag = scmTag.Remove(scmTag.IndexOf("scm:svn:"), 8);
+                }
+
+                Uri repoUri;
+                bool isValidUrl = true;
+                try
+                { 
+                    repoUri = new Uri(scmTag);
+                }
+                catch(Exception)
+                {
+                    isValidUrl=false;
+                    MessageBox.Show(string.Format("SCM Tag was not added, because the url {0} was not accessible",scmTag), "NPanday Project Import", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                
+                
+                if (!string.Empty.Equals(scmTag) && scmTag != null && !scmTag.ToUpper().Contains("OPTIONAL") && isValidUrl)
                 {
                     scmTag = scmTag.Trim();
-                    if (scmTag.Contains("scm:svn:"))
-                    {
-                        scmTag = scmTag.Remove(scmTag.IndexOf("scm:svn:"), 8);
-                    }
+                    
                     Scm scmHolder = new Scm();
                     scmHolder.connection = string.Format("scm:svn:{0}",scmTag);
                     scmHolder.developerConnection = string.Format("scm:svn:{0}", scmTag);
