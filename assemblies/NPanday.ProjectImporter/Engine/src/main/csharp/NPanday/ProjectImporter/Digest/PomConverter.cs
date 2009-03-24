@@ -72,6 +72,11 @@ namespace NPanday.ProjectImporter.Converter
                 model.version = version;
                 model.name = string.Format("{0} : {1}", groupId, artifactId);
 
+                if (scmTag.ToUpper().Contains("OPTIONAL"))
+                {
+                    scmTag = string.Empty;
+                }
+
                 if (scmTag.Contains("scm:svn:"))
                 {
                     scmTag = scmTag.Remove(scmTag.IndexOf("scm:svn:"), 8);
@@ -80,8 +85,12 @@ namespace NPanday.ProjectImporter.Converter
                 Uri repoUri;
                 bool isValidUrl = true;
                 try
-                { 
-                    repoUri = new Uri(scmTag);
+                {
+                    if (!scmTag.Equals(string.Empty))
+                    {
+                        repoUri = new Uri(scmTag);
+                    }
+                    
                 }
                 catch(Exception)
                 {
@@ -90,7 +99,7 @@ namespace NPanday.ProjectImporter.Converter
                 }
                 
                 
-                if (!string.Empty.Equals(scmTag) && scmTag != null && !scmTag.ToUpper().Contains("OPTIONAL") && isValidUrl)
+                if (!string.Empty.Equals(scmTag) && scmTag != null && isValidUrl)
                 {
                     scmTag = scmTag.Trim();
                     
