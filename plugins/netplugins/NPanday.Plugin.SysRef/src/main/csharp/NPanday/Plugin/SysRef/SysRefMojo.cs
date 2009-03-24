@@ -29,6 +29,7 @@ using NPanday.Plugin;
 using NPanday.Model.Pom;
 using NPanday.Model;
 using NPanday.Artifact;
+using System.Reflection;
 
 namespace NPanday.Plugin.SysRef
 {
@@ -189,57 +190,59 @@ namespace NPanday.Plugin.SysRef
             {
                 if (dependency.systemPath == null || dependency.systemPath == string.Empty)
                 {
-                    return;
+                    Assembly a = System.Reflection.Assembly.LoadWithPartialName(dependency.artifactId);
+
+                    dependency.systemPath = a.Location;
                 }
-                else
+                
+                
+                string sourceFile = dependency.systemPath;
+
+                sourceFile = sourceFile.Replace("\\", "/");
+
+                string directory = localRepository.Replace("\\", "/");
+
+
+                //Creating of Directories
+
+                directory = directory + "/" + dependency.groupId;
+
+
+                if (!Directory.Exists(directory))
                 {
-                    string sourceFile = dependency.systemPath;
-
-                    sourceFile = sourceFile.Replace("\\", "/");
-
-                    string directory = localRepository.Replace("\\", "/");
-
-
-                    //Creating of Directories
-
-                    directory = directory + "/" + dependency.groupId;
-
-
-                    if (!Directory.Exists(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-
-                    }
-
-                    directory = directory + "/" + dependency.artifactId;
-
-
-                    if (!Directory.Exists(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
-
-                    directory = directory + "/" + dependency.version;
-
-
-                    if (!Directory.Exists(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
-
-
-                    string newDll = dependency.artifactId + "-" + dependency.version + "-" + dependency.classifier + "." + dependency.type;
-
-                    string destinationFile = localRepository + "\\" + dependency.groupId + "\\" + dependency.artifactId + "\\" + dependency.version + "\\" + newDll;
-
-                    destinationFile = destinationFile.Replace("\\", "/");
-
-                    if (!File.Exists(destinationFile))
-                    {
-                        File.Copy(sourceFile, destinationFile);
-                    }
+                    Directory.CreateDirectory(directory);
 
                 }
+
+                directory = directory + "/" + dependency.artifactId;
+
+
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                directory = directory + "/" + dependency.version;
+
+
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+
+                string newDll = dependency.artifactId + "-" + dependency.version + "-" + dependency.classifier + "." + dependency.type;
+
+                string destinationFile = localRepository + "\\" + dependency.groupId + "\\" + dependency.artifactId + "\\" + dependency.version + "\\" + newDll;
+
+                destinationFile = destinationFile.Replace("\\", "/");
+
+                if (!File.Exists(destinationFile))
+                {
+                    File.Copy(sourceFile, destinationFile);
+                }
+
+            
             }
             catch (Exception exe)
             {
