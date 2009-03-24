@@ -94,7 +94,7 @@ namespace NPanday.ProjectImporter.ImporterTests
             string solutionFile = Path.Combine(ProjectImporterTestFixture.SampleProjectsPath, SolutionFileRelativePath);
             try
             {
-                generatedPomFiles = NPandayImporter.ImportProject(solutionFile, GroupId, ArtifactId, "1.2.3-SNAPSHOT", false);
+                generatedPomFiles = NPandayImporter.ImportProject(solutionFile, GroupId, ArtifactId, "1.2.3-SNAPSHOT", string.Empty, false);
 
             }
             catch (Exception e)
