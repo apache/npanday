@@ -71,6 +71,10 @@ namespace NPanday.ProjectImporter.Converter
                 model.artifactId = artifactId;
                 model.version = version;
                 model.name = string.Format("{0} : {1}", groupId, artifactId);
+                if (scmTag == null)
+                {
+                    scmTag = string.Empty;
+                }
 
                 if (scmTag.ToUpper().Contains("OPTIONAL"))
                 {
