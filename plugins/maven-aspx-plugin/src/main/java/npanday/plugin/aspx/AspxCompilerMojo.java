@@ -222,7 +222,7 @@ public class AspxCompilerMojo
 
         try
         {
-			CompilerExecutable compilerExecutable =
+        	CompilerExecutable compilerExecutable =
                 netExecutableFactory.getCompilerExecutableFor( compilerRequirement, compilerConfig, project,
                                                                profileAssemblyPath );
 
@@ -247,7 +247,7 @@ public class AspxCompilerMojo
 
         File webappDir = new File( outputDirectory, project.getArtifactId() );
         webappDir.mkdirs();
-
+        
         try
         {
             /* delete the target folder copied by aspnet compiler */
@@ -256,10 +256,10 @@ public class AspxCompilerMojo
             /* keep only the files needed to run the app */
             List<File> allFiles = FileUtils.getFiles( tmpDir, "**", null );
             List<File> filesToKeep = FileUtils.getFiles( tmpDir, DEFAULT_INCLUDES, DEFAULT_EXCLUDES );
-
-            for ( File file : allFiles )
+        	
+        	for ( File file : allFiles )
             {
-                if ( !filesToKeep.contains( file ) )
+                if ( !filesToKeep.contains( file ) || "App_global.asax.dll".equals(file.getName()) || "App_global.asax.compiled".equals(file.getName()))
                 {
                     file.delete();
                     deleteDirectoryIfEmpty( file.getParentFile() );
@@ -291,6 +291,31 @@ public class AspxCompilerMojo
         // throw new MojoExecutionException( "Unable to copy compiled files to target folder", e );
         // }
 
+        //copy .asax to target file
+        try
+        {
+        	List<File> fileList = FileUtils.getFiles(project.getBasedir(), "*.asax", null);
+        	for(File file : fileList)
+            {
+                try
+                {
+            	    String fileName = file.getAbsolutePath().substring((int)project.getBasedir().getAbsolutePath().length());
+            		FileUtils.copyFile(new File(file.getAbsolutePath()), new File(webappDir.getAbsolutePath() + fileName));
+            		getLog().info("Copying " + fileName.substring(1) + " to " + webappDir.getAbsolutePath() );
+                }
+                catch ( IOException e )
+                {
+                    throw new MojoExecutionException( "Unable to copy asax file " + file.getAbsolutePath() + " to " +
+                            webappDir.getAbsolutePath(), e );
+                }
+            }
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Unable to retrieve asax file", e );
+        }
+       
+        
         try
         {
             FileUtils.deleteDirectory( tmpDir );
