@@ -130,35 +130,28 @@ namespace NPanday.Artifact
                 tokens = tk.ToArray();
             }
 
-            string artifactId;
-            string groupId;
-            string version;
-
-            Artifact artifact = new Artifact();
-
+           
             //artifact for system path
-            if (!artifactFile.FullName.Contains(uacDirectory.ToString()))
+            if (!artifactFile.FullName.Contains(".m2"))
             {
                 return null;
             }
-            else
-            {
-                string ext = Path.GetExtension(tokens[2]);
+
+            string ext = Path.GetExtension(tokens[2]);
 
 
-                // first file token is the artifact
-                // eg. NPanday.VisualStudio.Addin\1.1.1.1__NMaven.VisualStudio\NPanday.VisualStudio.Addin.dll
-                artifactId = tokens[0];
-                groupId = getGroupId(tokens[1]);
-                version = getVersion(tokens[1]);
-                
-                artifact.FileInfo = new FileInfo(GetLocalUacPath(artifact, ext));
-            }
+            // first file token is the artifact
+            // eg. NPanday.VisualStudio.Addin\1.1.1.1__NMaven.VisualStudio\NPanday.VisualStudio.Addin.dll
+            string artifactId = tokens[0];
+            string groupId = getGroupId(tokens[1]);
+            string version = getVersion(tokens[1]);
 
+
+            Artifact artifact = new Artifact();
             artifact.ArtifactId = artifactId;
             artifact.Version = version;
             artifact.GroupId = groupId;
-
+            artifact.FileInfo = new FileInfo(GetLocalUacPath(artifact, ext));
             return artifact;
         }
 

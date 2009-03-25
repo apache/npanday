@@ -388,7 +388,10 @@ namespace NPanday.VisualStudio.Addin
                 try
                 {
                     artifact = artifactContext.GetArtifactRepository().GetArtifact(new FileInfo(pReference.Path));
-                    iNPandayRepo = true;
+                    if (artifact != null)
+                    {
+                        iNPandayRepo = true;
+                    }
                 }
                 catch
                 {
@@ -459,8 +462,10 @@ namespace NPanday.VisualStudio.Addin
                 dep.groupId = refName;
                 dep.version = pReference.Version;
                 dep.type = refType;
-                dep.classifier = refToken;
+                
 
+                if (!string.IsNullOrEmpty(refToken))
+                    dep.classifier = refToken;
                 if (!string.IsNullOrEmpty(systemPath))
                     dep.systemPath = systemPath;
                 if (!string.IsNullOrEmpty(scope))

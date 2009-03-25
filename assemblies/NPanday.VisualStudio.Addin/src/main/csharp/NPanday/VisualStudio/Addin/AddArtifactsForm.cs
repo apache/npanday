@@ -131,6 +131,7 @@ namespace NPanday.VisualStudio.Addin
                 else
                 {
                     MessageBox.Show("Sorry, but no settings.xml file was found in your Local Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
             }
             catch(Exception)
@@ -1063,6 +1064,7 @@ namespace NPanday.VisualStudio.Addin
                 if (settingsPath == null)
                 {
                     MessageBox.Show("Sorry, but you cannot Configure Remote Repository without a Settings.xml file", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    AddArtifactsForm.ActiveForm.Hide();
                     artifactTabControl.SelectedIndex = 0;
                 }
                 else
