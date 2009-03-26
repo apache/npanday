@@ -22,7 +22,7 @@ under the License.
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NPanday.Test2</groupId>  
   <artifactId>NPanday.Test2.Test1</artifactId>  
-  <version>0.9-SNAPSHOT</version>  
+  <version>1.0.0-RC4</version>  
   <name>NPanday.Test2.Test1</name>  
   <description/> 
 </project>
