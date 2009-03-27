@@ -5,7 +5,7 @@
   <groupId>org.apache.maven.it</groupId>  
   <artifactId>it0032</artifactId>  
   <packaging>library</packaging>  
-  <version>0.9-SNAPSHOT</version>  
+  <version>1.0-SNAPSHOT</version>  
   <name>it0032</name>  
   <dependencies> 
     <dependency> 
