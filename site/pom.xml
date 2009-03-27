@@ -5,7 +5,7 @@
   <groupId>npanday</groupId>
   <artifactId>npanday-site</artifactId>
   <packaging>pom</packaging>
-	<version>1.0.0-RC4</version>  
+	<version>1.0.0</version>  
   <name>NPanday :: Site</name>
   <description>NPanday .NET Build Tool</description>
   <url>http://codeplex.com/npanday</url> 

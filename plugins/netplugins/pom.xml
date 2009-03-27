@@ -21,7 +21,7 @@ under the License.
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <parent> 
     <groupId>NPanday.Project</groupId>  
-    <version>1.0.0-RC4</version>  
+    <version>1.0.0</version>  
     <artifactId>NPanday.Project</artifactId>  
     <relativePath>../../pom-dotnet.xml</relativePath> 
   </parent>  
@@ -29,7 +29,7 @@ under the License.
   <groupId>npanday.plugin</groupId>  
   <artifactId>npanday.plugins</artifactId>  
   <packaging>pom</packaging>  
-  <version>1.0.0-RC4</version>  
+  <version>1.0.0</version>  
   <name>npanday.plugin</name>  
   <modules> 
     <module>NPanday.Plugin.Addin</module>  

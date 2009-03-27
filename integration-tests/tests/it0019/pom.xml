@@ -5,7 +5,7 @@
   <groupId>org.apache.maven.it</groupId>  
   <artifactId>it0019</artifactId>  
   <packaging>library</packaging>  
-  <version>1.0.0-RC4</version>  
+  <version>1.0.0</version>  
   <name>it0019</name>  
   <build> 
     <sourceDirectory>src/main/csharp</sourceDirectory>  

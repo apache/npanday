@@ -21,13 +21,13 @@ under the License.
 <project> 
   <parent> 
     <groupId>npanday.plugin</groupId>  
-    <version>1.0.0-RC4</version>  
+    <version>1.0.0</version>  
     <artifactId>npanday.plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Resx</artifactId>  
   <packaging>exe</packaging>  
-  <version>1.0.0-RC4</version>  
+  <version>1.0.0</version>  
   <name>NPanday.Plugin.ResX</name> 
 </project>
