@@ -21,33 +21,33 @@ under the License.
 <project> 
   <parent> 
     <groupId>npanday.plugin</groupId>  
-    <version>1.0-SNAPSHOT</version>  
+    <version>1.1-SNAPSHOT</version>  
     <artifactId>npanday.plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.SysRef</artifactId>  
   <packaging>netplugin</packaging>  
-  <version>1.0-SNAPSHOT</version>  
+  <version>1.1-SNAPSHOT</version>  
   <name>NPanday.Plugin.SysRef</name>  
   <dependencies> 
     <dependency> 
       <groupId>NPanday.Artifact</groupId>  
       <artifactId>NPanday.Artifact</artifactId>  
-      <version>1.0-SNAPSHOT</version>  
+      <version>1.1-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Model</groupId>  
       <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
       <type>library</type>  
-      <version>1.0-SNAPSHOT</version> 
+      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
       <type>library</type>  
-      <version>1.0-SNAPSHOT</version> 
+      <version>1.1-SNAPSHOT</version> 
     </dependency> 
   </dependencies> 
 </project>

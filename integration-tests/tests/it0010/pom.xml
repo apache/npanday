@@ -5,14 +5,14 @@
   <groupId>org.apache.maven.it</groupId>  
   <artifactId>it0010</artifactId>  
   <packaging>library</packaging>  
-  <version>1.0-SNAPSHOT</version>  
+  <version>1.1-SNAPSHOT</version>  
   <name>it0010</name>  
   <dependencies> 
     <dependency> 
       <groupId>org.apache.maven.it</groupId>  
       <artifactId>it0001</artifactId>  
       <type>module</type>  
-      <version>1.0-SNAPSHOT</version> 
+      <version>1.1-SNAPSHOT</version> 
     </dependency> 
   </dependencies>  
   <build> 
