@@ -51,6 +51,7 @@ using NPanday.VisualStudio.Logging;
 using NPanday.Model.Setting;
 using NPanday.Model.Pom;
 
+
 using NPanday.Utils;
 using System.Runtime.CompilerServices;
 using VSLangProj80;
@@ -297,8 +298,143 @@ namespace NPanday.VisualStudio.Addin
             return (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0);
         }
 
+        void InsertKeyTag(string filePath, string key)
+        {
+            try
+            {
+                StreamReader reader = new StreamReader(filePath);
+                List<String> contents = new List<string>();
+
+                string temp = reader.ReadLine();
+                contents.Add(temp);
+
+                while (temp != null)
+                {
+                    temp = reader.ReadLine();
+                    if (temp != null)
+                    {
+                        contents.Add(temp);
+                        string includeSources = "</includeSources>";
+                        if (temp.Contains(includeSources))
+                        {
+                            string keyNode = temp.Substring(0, temp.IndexOf(includeSources));
+                            keyNode += string.Format("<keyfile>{0}</keyfile>", key);
+                            contents.Add(keyNode);
+                        }
+                    }
+                }
+                reader.Close();
+
+                TextWriter writer = new StreamWriter(filePath);
+
+                foreach (string item in contents)
+                {
+                    writer.WriteLine(item);
+                }
+
+                writer.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+
+        }
+
+        void SigningEvents_SignatureAdded()
+        {
+            Solution2 solution = (Solution2)_applicationObject.Solution;
+            string pomFilePath = string.Empty;
+            foreach (Project project in solution.Projects)
+            {
+                String key = string.Empty;
+                XmlDocument doc = new XmlDocument();
+                bool isSigned = false;
+                try
+                {
+                    //Reading the project file
+                    doc.Load(project.FullName);
+
+                    //construct the path for the pom file and check for file existance.
+                    //return if file does not exist.
+                    pomFilePath = project.FullName.Substring(0, project.FullName.LastIndexOf("\\"));
+                    pomFilePath += "\\pom.xml";
+                    if (!File.Exists(pomFilePath))
+                    {
+                        return;
+                    }
+                    XmlNodeList keyFileList = doc.GetElementsByTagName("AssemblyOriginatorKeyFile");
+                    XmlNodeList signBoolList = doc.GetElementsByTagName("SignAssembly");
+
+                    foreach (XmlNode item in signBoolList)
+                    {
+                        if (item.InnerText.Equals("true"))
+                        {
+                            isSigned = true;
+                        }
+                    }
+
+                    if (isSigned)
+                    {
+                        foreach (XmlNode item in keyFileList)
+                        {
+                            key = item.InnerText;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                try
+                {
+                    //read pom
+                    doc.Load(pomFilePath);
+
+                    XmlNodeList pluginList = doc.GetElementsByTagName("plugin");
+                    XmlNode configurationNode = null;
+
+                    foreach (XmlNode item in pluginList)
+                    {
+                        if (item.InnerText.Contains("maven-compile-plugin"))
+                        {
+                           configurationNode = item.LastChild;
+                        }
+                    }
+
+                    //isSigned adding keyfile tag
+                    if (!configurationNode.InnerText.Contains(".snk") && key!=string.Empty)
+                    {
+                        //add keyfile tag
+                        InsertKeyTag(pomFilePath,key);
+                    }
+
+                    //!isSigned removing keyfile tag
+                    if (configurationNode.InnerText.Contains(".snk") && !isSigned )
+                    { 
+                        //delete keyfile tag
+                        configurationNode.RemoveChild(configurationNode.LastChild);
+
+                        XmlTextWriter txtwriter = new XmlTextWriter(pomFilePath, null);
+
+                        txtwriter.Formatting = Formatting.Indented;
+                        txtwriter.Indentation = 2;
+                        doc.Save(txtwriter);
+                        txtwriter.Close();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+        }
+
         void attachReferenceEvent()
         {
+            SigningEvents_SignatureAdded();
+
             //References
             referenceEvents = new List<ReferencesEvents>();
             Solution2 solution = (Solution2)_applicationObject.Solution;
@@ -1095,6 +1231,8 @@ namespace NPanday.VisualStudio.Addin
 
         private void SaveAllDocuments()
         {
+            SigningEvents_SignatureAdded();
+
             if (saveAllControl == null)
             {
                 saveAllControl = GetSaveAllControl();

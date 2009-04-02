@@ -63,6 +63,9 @@ import org.codehaus.plexus.util.cli.Commandline;
 import org.codehaus.plexus.util.cli.DefaultConsumer;
 import org.codehaus.plexus.util.cli.StreamConsumer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.codehaus.plexus.util.FileUtils;
+
+
 
 import java.util.logging.Logger;
 import java.util.Set;
@@ -77,11 +80,18 @@ import java.io.FileReader;
 import java.io.EOFException;
 import java.net.URISyntaxException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 public final class ProjectDaoImpl
     implements ProjectDao
 {
 
-    private String className;
+	private String className;
 
     private String id;
 
@@ -616,6 +626,7 @@ public final class ProjectDaoImpl
                                 + ".xml" );
                         tmpFile.deleteOnExit();
                         pomArtifact.setFile( tmpFile );
+						
 
                         try
                         {
@@ -796,7 +807,7 @@ public final class ProjectDaoImpl
                                                            List<ArtifactRepository> artifactRepositories )
         throws IOException
     {
-        return storeProjectAndResolveDependencies( ProjectFactory.createProjectFrom( model, pomFileDirectory ),
+		return storeProjectAndResolveDependencies( ProjectFactory.createProjectFrom( model, pomFileDirectory ),
                                                    localArtifactRepository, artifactRepositories );
     }
 
@@ -1040,6 +1051,42 @@ public final class ProjectDaoImpl
 
         return null;
     }
+	
+	private List<String> readPomAttribute(String pomFileLoc, String tag)
+	{
+		List<String> attributes=new ArrayList<String>();
+		
+		try 
+		{
+            File file = new File(pomFileLoc);
+            
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(file);
+            doc.getDocumentElement().normalize();
+                        
+			NodeList nodeLst = doc.getElementsByTagName(tag);
+	
+            for (int s = 0; s < nodeLst.getLength(); s++) 
+			{
+                Node currentNode = nodeLst.item(s);
+				
+				NodeList childrenList = currentNode.getChildNodes();
+								
+				for (int i = 0; i < childrenList.getLength(); i++)
+				{
+					Node child = childrenList.item(i);
+					attributes.add(child.getNodeValue());
+				}
+            }
+		} 
+		catch (Exception e) 
+		{
+            
+        }
+		
+		return attributes;
+	}
     
     private List<String> getInteropParameters( String interopAbsolutePath, String comRerefenceAbsolutePath, String namespace )
     {
@@ -1047,8 +1094,74 @@ public final class ProjectDaoImpl
         parameters.add( comRerefenceAbsolutePath );
         parameters.add( "/out:" + interopAbsolutePath );        
         parameters.add( "/namespace:" + namespace );
-
-        return parameters;
+		
+		try
+		{
+			//beginning code for checking of strong name key or signing of projects
+			String key = "";
+			String keyfile =  "";
+			String currentWorkingDir = System.getProperty("user.dir");
+		
+		
+			//Check if Parent pom
+			List<String> modules = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","module");
+			if(!modules.isEmpty())
+			{
+				//check if there is a matching dependency with the namespace
+				for(String child : modules)
+				{
+					//check each module pom file if there is existing keyfile
+					String tempDir = currentWorkingDir+File.separator+child;
+					try
+					{
+						List<String> keyfiles = readPomAttribute(tempDir+"\\pom.xml","keyfile");
+					if(keyfiles.get(0)!=null)
+					{
+						//PROBLEM WITH MULTIMODULES
+						boolean hasComRef = false;
+						List<String> dependencies = readPomAttribute(tempDir+"\\pom.xml","groupId");
+						for(String item : dependencies)
+						{
+							if(item.equals(namespace))
+							{
+								hasComRef = true;
+								break;
+							}
+						}
+						if(hasComRef)
+						{
+							key = keyfiles.get(0);
+							currentWorkingDir = tempDir;
+						}
+					}
+					}
+					catch(Exception e)
+					{
+					}
+					
+					
+				}
+			}
+			else
+			{
+				//not a parent pom, so read project pom file for keyfile value
+				
+				List<String> keyfiles = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","keyfile");
+				key = keyfiles.get(0);
+			}
+			if(key!="")
+			{
+				keyfile = currentWorkingDir+File.separator+key;
+				parameters.add( "/keyfile:"+keyfile);
+			}
+			//end code for checking of strong name key or signing of projects
+		}
+		catch(Exception ex)
+		{
+		}
+		
+		
+		return parameters;
     }
     
     private File getTempDirectory()
