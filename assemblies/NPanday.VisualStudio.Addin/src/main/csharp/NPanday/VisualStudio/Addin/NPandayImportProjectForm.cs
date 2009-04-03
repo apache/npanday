@@ -54,6 +54,7 @@ namespace NPanday.VisualStudio.Addin
                 try
                 {                    
                     string groupId = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion").GetValue("RegisteredOrganization","mycompany").ToString();
+                    groupId = ConvertToPascalCase(groupId);
                     groupId = FilterID(groupId) + "." + FilterID(ConvertToPascalCase(new FileInfo(applicationObject.Solution.FileName).Name.Replace(".sln", "")));
                     txtGroupId.Text = groupId;
                     
