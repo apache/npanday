@@ -336,6 +336,18 @@ public class AspxCompilerMojo
         getLog().info( "NPANDAY-000-000: Setting the target file: " + targetFile );
         project.getArtifact().setFile( new File( targetFile ) );
 
+		//Delete Bin Folder
+        String binDir = project.getBuild().getSourceDirectory()+File.separator + "Bin";
+        try
+        {
+        	FileUtils.deleteDirectory(binDir);
+        	getLog().info("Bin folder deleted: " + binDir);
+        }
+        catch(IOException e)
+        {
+        	getLog().info("Failed to delete Bin folder: " + binDir + " : " + e.getMessage());
+        }
+		
     }
 
     private List<String> getCommands( File tmpDir )
