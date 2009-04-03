@@ -255,7 +255,12 @@ namespace NPanday.ProjectImporter.Digest.Model
             return string.Empty;
         }
 
-        bool downloadArtifactFromRemoteRepository(Artifact.Artifact artifact, string ext)
+        public static bool DownloadArtifact(Artifact.Artifact artifact)
+        {
+            return downloadArtifactFromRemoteRepository(artifact, artifact.FileInfo.Extension);
+        }
+
+        static bool downloadArtifactFromRemoteRepository(Artifact.Artifact artifact, string ext)
         {
             try
             {
@@ -285,7 +290,7 @@ namespace NPanday.ProjectImporter.Digest.Model
             }
         }
 
-        bool downloadArtifact(Artifact.Artifact artifact)
+        static bool downloadArtifact(Artifact.Artifact artifact)
         {
             try
             {

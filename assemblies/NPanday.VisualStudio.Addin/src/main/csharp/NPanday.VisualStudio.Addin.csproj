@@ -79,6 +79,7 @@
     <Compile Include="NPanday\VisualStudio\Addin\NPandaySignAssembly.Designer.cs">
       <DependentUpon>NPandaySignAssembly.cs</DependentUpon>
     </Compile>
+    <Compile Include="NPanday\VisualStudio\Addin\ReferenceManager.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\RemoveArtifactsForm.cs">
       <SubType>Form</SubType>
     </Compile>

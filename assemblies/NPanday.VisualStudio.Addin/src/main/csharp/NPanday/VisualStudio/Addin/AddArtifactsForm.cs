@@ -679,9 +679,12 @@ namespace NPanday.VisualStudio.Addin
         void addLocalArtifact(LocalArtifactItem item)
         {
             NPanday.Artifact.Artifact artifact = item.Artifact;
-
             if (project.Object is VSProject)
             {
+                IReferenceManager refMgr = new ReferenceManager();
+                refMgr.Initialize((VSLangProj80.VSProject2)project.Object);
+                artifact = refMgr.Add(new ReferenceInfo(artifact));
+
                 if (!addVSProjectReference(artifact, item.Text))
                     return;
             }

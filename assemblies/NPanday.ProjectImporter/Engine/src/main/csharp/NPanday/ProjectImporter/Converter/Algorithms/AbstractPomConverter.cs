@@ -723,8 +723,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 //}
                 //else
                 {
+                    string prjRefPath = Path.Combine(projectDigest.FullDirectoryName, ".references");
                     //verbose for new-import
-                    if (!reference.Name.Contains("Interop"))
+                    if (!reference.HintFullPath.ToLower().StartsWith(prjRefPath.ToLower()) && !reference.Name.Contains("Interop"))
                     {
                         MessageBox.Show(
                          string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."

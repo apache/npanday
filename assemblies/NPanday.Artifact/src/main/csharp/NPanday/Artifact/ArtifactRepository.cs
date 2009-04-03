@@ -114,7 +114,15 @@ namespace NPanday.Artifact
             return GetArtifact(uacDirectory, artifactFile);
         }
 
-
+        public Artifact GetArtifact(NPanday.Model.Pom.Dependency dependency)
+        {
+            Artifact artifact = new Artifact();
+            artifact.ArtifactId = dependency.artifactId;
+            artifact.GroupId = dependency.groupId;
+            artifact.Version = dependency.version;
+            artifact.FileInfo = new FileInfo( GetLocalRepositoryPath(artifact, ".dll"));
+            return artifact;
+        }
 
         public Artifact GetArtifact(DirectoryInfo uacDirectory, FileInfo artifactFile)
         {

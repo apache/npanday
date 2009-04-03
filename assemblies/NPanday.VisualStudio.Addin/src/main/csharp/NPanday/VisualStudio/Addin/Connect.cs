@@ -810,9 +810,16 @@ namespace NPanday.VisualStudio.Addin
         CommandBarButton testButton;
         CommandBarButton installButton;
         CommandBarButton buildButton;
+        CommandBarButton resetReferenceButton;
 
         private void createCurrentProjectMenu(CommandBarPopup ctl)
         {
+            resetReferenceButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            resetReferenceButton.Visible = true;
+            resetReferenceButton.Caption = "Resync References";
+            resetReferenceButton.Click += new _CommandBarButtonEvents_ClickEventHandler(resetReferenceButton_Click);
+
             cleanButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
                 System.Type.Missing, System.Type.Missing, 1, true);
             cleanButton.Caption = Messages.MSG_C_CLEAN;
@@ -840,10 +847,34 @@ namespace NPanday.VisualStudio.Addin
             buildButton.FaceId = 645;
             buildButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuild_Click);
 
+
             buildControls.Add(buildButton);
             buildControls.Add(installButton);
             buildControls.Add(cleanButton);
             buildControls.Add(testButton);
+            buildControls.Add(resetReferenceButton);
+        }
+
+        void resetReferenceButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
+        {
+            try
+            {
+                IReferenceManager refmanager = new ReferenceManager();
+                refmanager.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
+                refmanager.Initialize((VSProject2)CurrentSelectedProject.Object);
+                
+                refmanager.ResyncArtifacts();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Reset References", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        void refmanager_OnError(object sender, ReferenceErrorEventArgs e)
+        {
+            outputWindowPane.OutputString("\nERROR   : "+ e.Message);
         }
 
         private void createStopBuildMenu(CommandBar commandBar, CommandBarControl control)
@@ -907,15 +938,23 @@ namespace NPanday.VisualStudio.Addin
         CommandBarButton testAllButton;
         CommandBarButton installAllButton;
         CommandBarButton buildAllButton;
+        CommandBarButton resetAllButton;
 
         private void createAllProjectMenu(CommandBar commandBar, CommandBarControl control)
         {
+
             ctlAll = (CommandBarPopup) commandBar.Controls.Add(MsoControlType.msoControlPopup,
                 System.Type.Missing, System.Type.Missing, control.Index + 1, true);
             ctlAll.Caption = Messages.MSG_C_ALL_PROJECTS;
             ctlAll.Visible = true;
             ctlAll.BeginGroup = true;
             buildControls.Add(ctlAll);
+
+            resetAllButton = (CommandBarButton)ctlAll.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            resetAllButton.Visible = true;
+            resetAllButton.Caption = "Resync References";
+            resetAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(resetAllButton_Click);
 
             cleanAllButton = (CommandBarButton)ctlAll.Controls.Add(MsoControlType.msoControlButton,
                 System.Type.Missing, System.Type.Missing, 1, true);
@@ -947,7 +986,31 @@ namespace NPanday.VisualStudio.Addin
             buildControls.Add(installAllButton);
             buildControls.Add(cleanAllButton);
             buildControls.Add(testAllButton);
+            buildControls.Add(resetAllButton);
+        }
 
+        void resetAllButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
+        {
+            if (_applicationObject.Solution != null)
+            {
+                Solution2 solution = (Solution2)_applicationObject.Solution;
+                foreach (Project project in solution.Projects)
+                {
+                    if (!IsWebProject(project))
+                    {
+                        IReferenceManager mgr = new ReferenceManager();
+                        mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(mgr_OnError);
+                        mgr.Initialize((VSProject2)project.Object);
+                        mgr.ResyncArtifacts();
+                        mgr = null;
+                    }
+                }
+            }
+        }
+
+        void mgr_OnError(object sender, ReferenceErrorEventArgs e)
+        {
+            
         }
 
         void buildAllButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
