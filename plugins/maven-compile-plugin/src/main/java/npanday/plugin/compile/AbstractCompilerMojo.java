@@ -31,8 +31,21 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.Set;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import java.util.List;
 
 /**
  * Abstract Class for compile mojos for both test-compile and compile.
@@ -659,14 +672,178 @@ public abstract class AbstractCompilerMojo
         execute(false);
     }
 
+	private List<String> readPomAttribute(String pomFileLoc, String tag)
+	{
+		List<String> attributes=new ArrayList<String>();
+		
+		try 
+		{
+            File file = new File(pomFileLoc);
+            
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(file);
+            doc.getDocumentElement().normalize();
+                        
+			NodeList nodeLst = doc.getElementsByTagName(tag);
+	
+            for (int s = 0; s < nodeLst.getLength(); s++) 
+			{
+                Node currentNode = nodeLst.item(s);
+				
+				NodeList childrenList = currentNode.getChildNodes();
+								
+				for (int i = 0; i < childrenList.getLength(); i++)
+				{
+					Node child = childrenList.item(i);
+					attributes.add(child.getNodeValue());
+				}
+            }
+		} 
+		catch (Exception e) 
+		{
+            e.printStackTrace();
+        }
+		
+		return attributes;
+	}
+	
+	private String getContents(File aFile) 
+	{
+		StringBuilder contents = new StringBuilder();
+		
+		try 
+		{
+		  BufferedReader input =  new BufferedReader(new FileReader(aFile));
+		  try 
+		  {
+			String line = null; //not declared within while loop
+			
+			while (( line = input.readLine()) != null)
+			{
+			  contents.append(line);
+			  contents.append(System.getProperty("line.separator"));
+			}
+		  }
+		  finally 
+		  {
+			input.close();
+		  }
+		}
+		catch (Exception ex)
+		{
+		  ex.printStackTrace();
+		}
+    
+		return contents.toString();
+	}
 
+	private void setContents(File aFile, String aContents) throws Exception
+	{
+		if (aFile == null) 
+		{
+		  throw new Exception("File should not be null.");
+		}
+		if (!aFile.exists()) {
+		  throw new Exception ("File does not exist: " + aFile);
+		}
+		if (!aFile.isFile()) {
+		  throw new Exception("Should not be a directory: " + aFile);
+		}
+		if (!aFile.canWrite()) {
+		  throw new Exception("File cannot be written: " + aFile);
+		}
+
+		//use buffering
+		Writer output = new BufferedWriter(new FileWriter(aFile));
+		try {
+		  //FileWriter always assumes default encoding is OK!
+		  output.write( aContents );
+		}
+		finally {
+		  output.close();
+		}
+	}
+
+	private void updateProjectVersion(String assemblyInfoFile, String ver)
+	{
+		try
+		{
+			String contents = getContents(new File(assemblyInfoFile));
+			contents = contents.substring(0,contents.indexOf("[assembly: AssemblyVersion(")) 
+			+ "[assembly: AssemblyVersion(\""+ver+"\")]"
+			+"\n[assembly: AssemblyFileVersion(\""+ver+"\")]";
+			setContents(new File(assemblyInfoFile),contents);
+		}
+		catch(Exception e)
+		{
+			System.out.println("[Error] Problem with updating project version");
+		}
+		
+	}
+    
+	private void updateAssemblyInfoVersion()
+	{
+		try
+		{
+			String currentWorkingDir = System.getProperty("user.dir");
+			List<String> versions = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","version");
+			String ver = versions.get(0);
+			
+			//filter -SNAPSHOT
+			if(ver.endsWith("-SNAPSHOT"))
+			{
+				ver = ver.charAt(0)+".0.0.0";
+			}
+					
+			//child pom
+			if(versions.size()>1)
+			{
+				String assemblyInfoFile = currentWorkingDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
+				updateProjectVersion(assemblyInfoFile,ver);
+			}
+			//parent pom
+			else
+			{
+				List<String> modules = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","module");
+				if(!modules.isEmpty())
+				{
+					//check if there is a matching dependency with the namespace
+					for(String child : modules)
+					{
+						//check each module pom file if there is existing keyfile
+						String tempDir = currentWorkingDir+File.separator+child;
+						try
+						{
+							String assemblyInfoFile = tempDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
+							updateProjectVersion(assemblyInfoFile,ver);
+						}
+						catch(Exception e)
+						{
+						}
+						
+						
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("[ERROR]UpdateAssemblyInfo -- Encountered a Problem during updating the AssemblyInfo.cs File");
+		}
+		
+		
+	}
+	
     protected void execute(boolean test)
             throws MojoExecutionException
     {
         long startTime = System.currentTimeMillis();
 
+		//Modifies the AssemblyInfo.cs files to match the version of the pom
+		updateAssemblyInfoVersion();
 		
-        if (localRepository == null)
+		if (localRepository == null)
         {
             
 			localRepository = new File(System.getProperty("user.home"), ".m2/repository");
