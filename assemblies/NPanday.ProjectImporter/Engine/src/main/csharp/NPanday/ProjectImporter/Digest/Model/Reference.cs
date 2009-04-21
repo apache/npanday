@@ -20,7 +20,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         #region Constructors
 
-        public Reference(string projectBasePath, GacUtility gac)
+        public Reference(string projectBasePath, GacUtility gac) 
             : base(projectBasePath)
         {
             this.gac = gac;
@@ -30,17 +30,17 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         #region Properties
 
-        private GacUtility gac;
+        private GacUtility gac; 
         public GacUtility GacUtility
         {
-            get
+            get 
             {
                 if (gac == null)
                 {
                     gac = new GacUtility();
                 }
-
-                return gac;
+ 
+                return gac; 
             }
         }
 
@@ -55,15 +55,15 @@ namespace NPanday.ProjectImporter.Digest.Model
         public string HintPath
         {
             get { return hintPath; }
-            set
+            set 
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     return;
                 }
 
-                hintPath = value;
-                SetReferenceFromFile(value);
+                hintPath = value; 
+                SetReferenceFromFile(value); 
             }
         }
 
@@ -147,7 +147,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         private void SetReferenceFromFile(FileInfo dll)
         {
-            Assembly asm = null;
+            Assembly asm = null ;
             string path = string.Empty;
 
             if (dll.Exists)
@@ -159,52 +159,51 @@ namespace NPanday.ProjectImporter.Digest.Model
             {
                 ArtifactContext artifactContext = new ArtifactContext();
                 Artifact.Artifact a = artifactContext.GetArtifactRepository().GetArtifact(dll);
-
+                
                 if (a != null)
-                {
-                    if (!a.FileInfo.Exists)
+				{
+					if (!a.FileInfo.Exists)
                     {
-                        if (!a.FileInfo.Directory.Exists)
-                            a.FileInfo.Directory.Create();
+						if (!a.FileInfo.Directory.Exists)
+							a.FileInfo.Directory.Create();
 
-                        string localRepoPath = artifactContext.GetArtifactRepository().GetLocalRepositoryPath(a, dll.Extension);
-                        if (File.Exists(localRepoPath))
-                        {
-                            File.Copy(localRepoPath, a.FileInfo.FullName);
-                            //asm = Assembly.ReflectionOnlyLoadFrom();
-                            path = a.FileInfo.FullName;
-                        }
-                        else
-                        {
-                            if (downloadArtifactFromRemoteRepository(a, dll.Extension))
-                            {
-                                //asm = Assembly.ReflectionOnlyLoadFrom(a.FileInfo.FullName);
-                                path = a.FileInfo.FullName;
-                            }
-                            else
-                            {
-                                path = getBinReference(dll.Name);
-                                if (!string.IsNullOrEmpty(path))
-                                {
-                                    File.Copy(path, a.FileInfo.FullName);
-                                }
-                            }
-                            //copy assembly to repo if not found.
-                            if (!string.IsNullOrEmpty(path) && !File.Exists(localRepoPath))
-                            {
-                                if (!Directory.Exists(Path.GetDirectoryName(localRepoPath)))
-                                    Directory.CreateDirectory(Path.GetDirectoryName(localRepoPath));
+						string localRepoPath = artifactContext.GetArtifactRepository().GetLocalRepositoryPath(a, dll.Extension);
+						if (File.Exists(localRepoPath))
+						{
+							File.Copy(localRepoPath, a.FileInfo.FullName);
+							//asm = Assembly.ReflectionOnlyLoadFrom();
+							path = a.FileInfo.FullName;
+						}
+						else
+						{
+							if (downloadArtifactFromRemoteRepository(a, dll.Extension))
+							{
+								//asm = Assembly.ReflectionOnlyLoadFrom(a.FileInfo.FullName);
+								path = a.FileInfo.FullName;
+							}
+							else
+							{
+								path = getBinReference(dll.Name);
+								if (!string.IsNullOrEmpty(path))
+								{
+									File.Copy(path, a.FileInfo.FullName);
+								}
+							}
+							//copy assembly to repo if not found.
+							if (!string.IsNullOrEmpty(path) && !File.Exists(localRepoPath))
+							{
+								if (!Directory.Exists(Path.GetDirectoryName(localRepoPath)))
+									Directory.CreateDirectory(Path.GetDirectoryName(localRepoPath));
 
-                                File.Copy(path, localRepoPath);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        path = a.FileInfo.FullName;
-                    }
-                }
-
+								File.Copy(path, localRepoPath);
+							}
+						}
+					}
+					else
+					{
+						path = a.FileInfo.FullName;
+					}
+				}
                 if (a != null || string.IsNullOrEmpty(path))
                 {
                     MessageBox.Show("Cannot find or download the artifact " + dll.Name + ",  project may not build properly.");
@@ -232,10 +231,9 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         }
 
-        string getBinReference(string fileName)
-        {
+        string getBinReference(string fileName) {
             string path = Path.Combine(this.IncludeFullPath, @"bin\" + Path.GetFileName(fileName));
-
+            
             if (File.Exists(path))
                 return path;
 
@@ -270,7 +268,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                 Settings settings = SettingsUtil.ReadSettings(SettingsUtil.GetUserSettingsPath());
                 if (settings == null || settings.profiles == null)
                 {
-                    MessageBox.Show("Cannot add reference of " + artifact.ArtifactId + ", no valid Remote Repository was found that contained the Artifact to be Resolved. Please add a Remote Repository that contains the Unresolved Artifact.");
+                    MessageBox.Show("Cannot add reference of "+ artifact.ArtifactId + ", no valid Remote Repository was found that contained the Artifact to be Resolved. Please add a Remote Repository that contains the Unresolved Artifact.");
                     return false;
                 }
                 foreach (Profile profile in settings.profiles)
@@ -281,13 +279,13 @@ namespace NPanday.ProjectImporter.Digest.Model
                         {
                             ArtifactContext artifactContext = new ArtifactContext();
                             artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, repo.url, ext);
-                            return downloadArtifact(artifact);
+                            return downloadArtifact(artifact) ;
                         }
                     }
                 }
                 return true;
             }
-            catch
+            catch 
             {
                 return false;
             }
