@@ -770,10 +770,18 @@ public abstract class AbstractCompilerMojo
 		try
 		{
 			String contents = getContents(new File(assemblyInfoFile));
-			contents = contents.substring(0,contents.indexOf("[assembly: AssemblyVersion(")) 
-			+ "[assembly: AssemblyVersion(\""+ver+"\")]"
-			+"\n[assembly: AssemblyFileVersion(\""+ver+"\")]";
-			setContents(new File(assemblyInfoFile),contents);
+			
+			//check for version
+			String checkVersion = "AssemblyVersion(\""+ver+"\")]";
+			
+			//modify AssemblyFileInfo if version is different in the pom.
+			if(contents.lastIndexOf(checkVersion)==-1)
+			{
+				contents = contents.substring(0,contents.indexOf("[assembly: AssemblyVersion(")) 
+				+ "[assembly: AssemblyVersion(\""+ver+"\")]"
+				+"\n[assembly: AssemblyFileVersion(\""+ver+"\")]";
+				setContents(new File(assemblyInfoFile),contents);
+			}
 		}
 		catch(Exception e)
 		{
