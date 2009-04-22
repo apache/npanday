@@ -23,22 +23,23 @@
       </item>
       <item name="Uninstall NPanday" href="/installation/uninstall.html" collapsed="true">
         <item name="Manual Uninstallation" href="/installation/manual_uninstall.html"/>
-        <item name="Uninstall Using the Installer" href="/installation/installer_uninstall.html"/>
+        <item name="Uninstall with Installer" href="/installation/installer_uninstall.html"/>
       </item>
-      <item name="Starting/Stopping the Build Tool" href="/guide/build_tool.html"/>
+      <item name="Using the Build Tool" href="/guide/build_tool.html"/>
       <item name="Project Dependencies" href="/guide/dependencies.html"/>
       <item name="Installing Files Manually" href="/guide/install_file.html"/>
       <item name="Creating a Simple Project" href="/guide/simple_project.html"/>
       <item name="Loading Project/Solution" href="/guide/load_project.html"/>
       <item name="Quick Start" href="/guide/quickstart.html"/>
+	  <item name="Portability" href="/guide/portability.html"/>
     </menu>
     <menu name="IDE Integration">
       <item name="Executing Maven Goals" href="/ide/execute_goals.html"/>
       <item name="Setting Assembly Key" href="/ide/assembly_key.html"/>
-      <item name="Remote Repository Configuration" href="/ide/remote_repo.html"/>
+      <item name="Remote Repository" href="/ide/remote_repo.html"/>
       <item name="Using Custom Settings" href="/ide/settings.html"/>
       <item name="Importing Projects" href="/ide/importing.html"/>
-      <item name="Repository Artifacts Management" href="/ide/artifacts.html"/>
+      <item name="Repository Artifacts" href="/ide/artifacts.html"/>
       <item name="Project References" href="/ide/references.html"/>
       <item name="Web References" href="/ide/web_references.html"/>
       <item name="Releasing Project" href="/ide/release.html" collapsed="true">
