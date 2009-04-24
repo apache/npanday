@@ -1217,13 +1217,10 @@ namespace NPanday.VisualStudio.Addin
         }
 
 
-        /// <summary>
-        /// Updates the pomfile configuration on its rootnamespace
-        /// </summary>
-        private void UpdateVBProjectsPoms()
+        private void UpdateVBProject(FileInfo pomFile)
         {
-            FileInfo pomFile = CurrentSelectedProjectPom;
             PomHelperUtility pomUtility = new PomHelperUtility(pomFile);
+
             if (pomUtility.NPandayCompilerPluginLanguage == "vb" || pomUtility.NPandayCompilerPluginLanguage == "VB")
             {
 
@@ -1260,6 +1257,45 @@ namespace NPanday.VisualStudio.Addin
 
                 fs.Close();
             }
+        }
+
+        /// <summary>
+        /// Updates the pomfile configuration on its rootnamespace
+        /// </summary>
+        private void UpdateVBProjectsPoms()
+        {
+            FileInfo pomFile = CurrentSelectedProjectPom;
+
+            if (CurrentSelectedProject == null)
+            {
+                Solution2 solution = (Solution2)_applicationObject.Solution;
+                string pomFilePath = string.Empty;
+                foreach (Project project in solution.Projects)
+                {
+                    try
+                    {
+                        //construct the path for the pom file and check for file existance.
+                        //return if file does not exist.
+                        pomFilePath = project.FullName.Substring(0, project.FullName.LastIndexOf("\\"));
+                        pomFilePath += "\\pom.xml";
+                        if (File.Exists(pomFilePath))
+                        {
+                            pomFile = new FileInfo(pomFilePath);
+                            UpdateVBProject(pomFile);
+                        }
+                    }
+                    catch(Exception)
+                    {
+                    }
+                }
+            }
+            else
+            {
+                UpdateVBProject(pomFile);
+            }
+            
+
+            
             SaveAllDocuments();
         }
 
