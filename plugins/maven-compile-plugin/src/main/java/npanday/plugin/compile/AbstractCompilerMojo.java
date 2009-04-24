@@ -47,6 +47,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import java.util.List;
 
+
 /**
  * Abstract Class for compile mojos for both test-compile and compile.
  *
@@ -756,7 +757,8 @@ public abstract class AbstractCompilerMojo
 
 		//use buffering
 		Writer output = new BufferedWriter(new FileWriter(aFile));
-		try {
+		try 
+		{
 		  //FileWriter always assumes default encoding is OK!
 		  output.write( aContents );
 		}
@@ -808,6 +810,10 @@ public abstract class AbstractCompilerMojo
 			if(versions.size()>1)
 			{
 				String assemblyInfoFile = currentWorkingDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
+				if(!FileUtils.fileExists(assemblyInfoFile))
+				{
+					assemblyInfoFile = currentWorkingDir+File.separator+"My Project"+File.separator+"AssemblyInfo.vb";
+				}
 				updateProjectVersion(assemblyInfoFile,ver);
 			}
 			//parent pom
@@ -824,6 +830,10 @@ public abstract class AbstractCompilerMojo
 						try
 						{
 							String assemblyInfoFile = tempDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
+							if(!FileUtils.fileExists(assemblyInfoFile))
+							{
+								assemblyInfoFile = tempDir+File.separator+"My Project"+File.separator+"AssemblyInfo.vb";
+							}
 							updateProjectVersion(assemblyInfoFile,ver);
 						}
 						catch(Exception e)
@@ -849,7 +859,15 @@ public abstract class AbstractCompilerMojo
         long startTime = System.currentTimeMillis();
 
 		//Modifies the AssemblyInfo.cs files to match the version of the pom
-		updateAssemblyInfoVersion();
+		try
+		{
+			updateAssemblyInfoVersion();
+		}
+		catch(Exception e)
+		{
+		
+		}
+		
 		
 		if (localRepository == null)
         {
