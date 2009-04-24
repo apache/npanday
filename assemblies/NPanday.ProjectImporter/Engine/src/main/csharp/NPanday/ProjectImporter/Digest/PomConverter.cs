@@ -60,7 +60,7 @@ namespace NPanday.ProjectImporter.Converter
 
         public static NPanday.Model.Pom.Model MakeProjectsParentPomModel(ProjectDigest[] projectDigests, string pomFileName, string groupId, string artifactId, string version, string scmTag, bool writePom)
         {
-
+            string errorPrj = string.Empty;
             try
             {
                 NPanday.Model.Pom.Model model = new NPanday.Model.Pom.Model();
@@ -114,7 +114,6 @@ namespace NPanday.ProjectImporter.Converter
                     model.scm = scmHolder;
                 }
                 
-
                 List<string> modules = new List<string>();
                 foreach (ProjectDigest projectDigest in projectDigests)
                 {
@@ -130,6 +129,7 @@ namespace NPanday.ProjectImporter.Converter
                     if (string.IsNullOrEmpty(moduleDir))
                     {
                         moduleDir = ".";
+                        errorPrj += prjDir;
                     }
                     modules.Add(moduleDir);
 
@@ -145,7 +145,8 @@ namespace NPanday.ProjectImporter.Converter
             }
             catch
             {
-                throw;
+                throw new Exception("Project Import Error!\nProject Importer failed with project "+errorPrj
+                                   +" please check your directory structure.");
             }
 
             
