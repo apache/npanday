@@ -204,7 +204,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 						path = a.FileInfo.FullName;
 					}
 				}
-                if (a != null || string.IsNullOrEmpty(path))
+                if (a == null || string.IsNullOrEmpty(path))
                 {
                     MessageBox.Show("Cannot find or download the artifact " + dll.Name + ",  project may not build properly.");
                     return;
