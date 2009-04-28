@@ -779,10 +779,26 @@ public abstract class AbstractCompilerMojo
 			//modify AssemblyFileInfo if version is different in the pom.
 			if(contents.lastIndexOf(checkVersion)==-1)
 			{
-				contents = contents.substring(0,contents.indexOf("[assembly: AssemblyVersion(")) 
-				+ "[assembly: AssemblyVersion(\""+ver+"\")]"
-				+"\n[assembly: AssemblyFileVersion(\""+ver+"\")]";
-				setContents(new File(assemblyInfoFile),contents);
+				try
+				{
+					contents = contents.substring(0,contents.indexOf("[assembly: AssemblyVersion(")) 
+					+ "[assembly: AssemblyVersion(\""+ver+"\")]"
+					+"\n[assembly: AssemblyFileVersion(\""+ver+"\")]";
+					setContents(new File(assemblyInfoFile),contents);
+				}
+				// thrown exception if the project type is vb
+				catch(Exception e)
+				{
+					if(contents.lastIndexOf(checkVersion)==-1)
+					{
+						contents = contents.substring(0,contents.indexOf("' <Assembly: AssemblyVersion(\"1.0.*\")> ")) 
+						+"' <Assembly: AssemblyVersion(\"1.0.*\")> \n "
+						+"\n<Assembly: AssemblyVersion(\""+ver+"\")>"
+						+"\n<Assembly: AssemblyFileVersion(\""+ver+"\")>";
+						setContents(new File(assemblyInfoFile),contents);
+					}
+					
+				}	
 			}
 		}
 		catch(Exception e)
