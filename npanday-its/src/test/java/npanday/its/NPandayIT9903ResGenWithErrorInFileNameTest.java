@@ -36,7 +36,7 @@ public class NPandayIT9903ResGenWithErrorInFileNameTest
         File testDir = ResourceExtractor.simpleExtractResources( getClass(), "/npanday-9903" );
         Verifier verifier = getVerifier( testDir );
         verifier.executeGoal( "install" );
-        verifier.assertFilePresent( new File( "npanday-9903", getAssemblyFile( "npanday-9903", "1.0.0", "dll" ) ).getAbsolutePath() );
+        verifier.assertFilePresent( new File( testDir, "npanday-9903/" + getAssemblyFile( "npanday-9903", "1.0.0", "zip" ) ).getAbsolutePath() );
         verifier.verifyErrorFreeLog();
         verifier.resetStreams();
     }
