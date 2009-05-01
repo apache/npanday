@@ -103,10 +103,14 @@ public class DefaultNetExecutable
                 ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Command = " +
                 commands, e );
         }
-        if ( commandExecutor.getStandardOut().contains( "error" ) )
-        {
-            throw new ExecutionException( "NPANDAY-070-001: Command = " + commands );
-        }
+        
+        // This check is too broad, as seen in Issue #9903
+        // I have not been able to identify an error it is trying to catch that is not already reported by the exit code above
+        //
+        //if ( commandExecutor.getStandardOut().contains( "error" ) )
+        //{
+        //    throw new ExecutionException( "NPANDAY-070-001: Command = " + commands );
+        //}
     }
 
     public String getExecutable()
