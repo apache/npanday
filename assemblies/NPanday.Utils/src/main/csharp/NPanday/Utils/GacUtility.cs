@@ -21,22 +21,28 @@ namespace NPanday.Utils
         {
             Process p = new Process();
 
-            p.StartInfo.FileName = "gacutil.exe";
-            p.StartInfo.Arguments = "/l";
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.ErrorDialog = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.StartInfo.RedirectStandardOutput = true; 
-            p.Start();
+            try
+            {
+                p.StartInfo.FileName = "gacutil.exe";
+                p.StartInfo.Arguments = "/l";
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.ErrorDialog = false;
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.RedirectStandardOutput = true; 
+                p.Start();
 
+                System.IO.StreamReader oReader2 = p.StandardOutput;
+    
+                gacs = oReader2.ReadToEnd();
+    
+                oReader2.Close();
 
-            System.IO.StreamReader oReader2 = p.StandardOutput;
-
-            gacs = oReader2.ReadToEnd();
-
-            oReader2.Close();
-
-            p.WaitForExit();
+                p.WaitForExit();
+            }
+            catch ( Exception exception )
+            {
+                throw new Exception( "Unable to execute gacutil - check that your PATH has been set correctly (Message: " + exception.Message + ")" );
+            }
 
 
             string msBuildPath = Path.GetDirectoryName(System.Reflection.Assembly.GetAssembly(typeof(string)).Location);
