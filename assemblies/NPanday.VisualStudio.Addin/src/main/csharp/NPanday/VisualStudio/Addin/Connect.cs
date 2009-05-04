@@ -583,7 +583,7 @@ namespace NPanday.VisualStudio.Addin
                         {
                             MessageBox.Show(string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
                                      + "\nReference: {0}"
-                                     + "\nDeploying the Reference, will make the code portable to other machines",
+                                     + "\nDeploying the reference to a Repository, will make the code portable to other machines",
                              pReference.Name
                          ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
