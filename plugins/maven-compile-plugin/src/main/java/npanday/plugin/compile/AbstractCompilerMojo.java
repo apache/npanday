@@ -774,7 +774,7 @@ public abstract class AbstractCompilerMojo
 			String contents = getContents(new File(assemblyInfoFile));
 			
 			//check for version
-			String checkVersion = "AssemblyVersion(\""+ver+"\")]";
+			String checkVersion = "AssemblyVersion(\""+ver+"\")";
 			
 			//modify AssemblyFileInfo if version is different in the pom.
 			if(contents.lastIndexOf(checkVersion)==-1)

@@ -56,10 +56,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             this.groupId = FilterID(groupId);
             this.version = parent != null ? parent.version : null;
 
-
-
             this.gacUtil = new GacUtility();
             this.model = new NPanday.Model.Pom.Model();
+            
             // Add build Tag
             this.model.build = new NPanday.Model.Pom.Build();
 
@@ -188,11 +187,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return relPath.Replace("\\", ".");
         }
         #endregion
-        public abstract void ConvertProjectToPomModel(bool writePom);
+        public abstract void ConvertProjectToPomModel(bool writePom, string scmTag);
 
-        public void ConvertProjectToPomModel()
+        public void ConvertProjectToPomModel(string scmTag)
         {
-            ConvertProjectToPomModel(true);
+            ConvertProjectToPomModel(true,scmTag);
         }
 
         private string FilterID(string partial)

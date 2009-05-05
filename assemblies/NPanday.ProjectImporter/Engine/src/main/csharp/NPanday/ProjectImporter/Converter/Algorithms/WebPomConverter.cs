@@ -110,14 +110,23 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         }
 
 		
-        public override void ConvertProjectToPomModel(bool writePom)
+        public override void ConvertProjectToPomModel(bool writePom, string scmTag)
         {
             GenerateHeader("asp");
 
 
             Model.build.sourceDirectory = ".";
-            
-			
+
+            if (scmTag != null && scmTag != string.Empty && Model.parent == null)
+            {
+                Scm scmHolder = new Scm();
+                scmHolder.connection = string.Format("scm:svn:{0}", scmTag);
+                scmHolder.developerConnection = string.Format("scm:svn:{0}", scmTag);
+                scmHolder.url = scmTag;
+
+                Model.scm = scmHolder;
+            }
+
             // Add NPanday compile plugin 
             Plugin aspxPlugin = AddPlugin("npanday.plugin", "maven-aspx-plugin");
             if(!string.IsNullOrEmpty(projectDigest.TargetFramework))

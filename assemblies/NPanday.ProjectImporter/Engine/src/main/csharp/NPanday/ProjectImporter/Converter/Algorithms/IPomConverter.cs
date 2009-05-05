@@ -16,8 +16,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 {
     public interface IPomConverter
     {
-        void ConvertProjectToPomModel(bool writePom);
-        void ConvertProjectToPomModel();
+        void ConvertProjectToPomModel(bool writePom, string scmTag);
+        void ConvertProjectToPomModel(string scmTag);
 
         NPanday.Model.Pom.Model Model
         {

@@ -33,7 +33,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
 
-        public override void ConvertProjectToPomModel(bool writePom)
+        public override void ConvertProjectToPomModel(bool writePom, string scmTag)
         {
 
             
@@ -41,6 +41,19 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
             Model.build.sourceDirectory = GetSourceDir();
+
+            //Add SCM Tag
+            if (scmTag != null && scmTag != string.Empty && Model.parent==null)
+            {
+                Scm scmHolder = new Scm();
+                scmHolder.connection = string.Format("scm:svn:{0}", scmTag);
+                scmHolder.developerConnection = string.Format("scm:svn:{0}", scmTag);
+                scmHolder.url = scmTag;
+
+                Model.scm = scmHolder;
+            }
+
+
 
             // Add NPanday compile plugin 
             Plugin compilePlugin = AddPlugin(

@@ -1219,43 +1219,73 @@ namespace NPanday.VisualStudio.Addin
 
         private void UpdateVBProject(FileInfo pomFile)
         {
-            PomHelperUtility pomUtility = new PomHelperUtility(pomFile);
-
-            if (pomUtility.NPandayCompilerPluginLanguage == "vb" || pomUtility.NPandayCompilerPluginLanguage == "VB")
+            try
             {
+                PomHelperUtility pomUtility = new PomHelperUtility(pomFile);
 
-                string rootNamespace = string.Empty;
-                string startUp = string.Empty;
-
-                string projectPath = pomFile.DirectoryName + "\\" + pomUtility.ArtifactId + ".vbproj";
-
-                FileStream fs = new FileStream(projectPath, FileMode.Open, FileAccess.Read,
-                                   FileShare.ReadWrite);
-                XmlDocument xmldoc = new XmlDocument();
-                xmldoc.Load(fs);
-                XmlNodeList nodelist = xmldoc.GetElementsByTagName("PropertyGroup");
-
-                foreach (XmlNode xmlnode in nodelist)
+                if (pomUtility.NPandayCompilerPluginLanguage == "vb" || pomUtility.NPandayCompilerPluginLanguage == "VB")
                 {
 
-                    XmlNodeList childNodeLlists = xmlnode.ChildNodes;
-                    foreach (XmlNode child in childNodeLlists)
+                    string rootNamespace = string.Empty;
+                    string startUp = string.Empty;
+
+                    string projectPath = pomFile.DirectoryName + "\\" + pomUtility.ArtifactId + ".vbproj";
+
+                    FileStream fs = new FileStream(projectPath, FileMode.Open, FileAccess.Read,
+                                       FileShare.ReadWrite);
+                    XmlDocument xmldoc = new XmlDocument();
+                    xmldoc.Load(fs);
+                    XmlNodeList nodelist = xmldoc.GetElementsByTagName("PropertyGroup");
+
+                    foreach (XmlNode xmlnode in nodelist)
                     {
-                        if (child.Name.Equals("StartupObject"))
+
+                        XmlNodeList childNodeLlists = xmlnode.ChildNodes;
+                        foreach (XmlNode child in childNodeLlists)
                         {
-                            startUp = child.InnerText;
-                        }
-                        if (child.Name.Equals("RootNamespace"))
-                        {
-                            rootNamespace = child.InnerText;
-                            break;
+                            if (child.Name.Equals("StartupObject"))
+                            {
+                                startUp = child.InnerText;
+                            }
+                            if (child.Name.Equals("RootNamespace"))
+                            {
+                                rootNamespace = child.InnerText;
+                                break;
+                            }
                         }
                     }
-                }
-                pomUtility.SetNPandayCompilerPluginConfigurationValue("rootNamespace", rootNamespace);
-                pomUtility.SetNPandayCompilerPluginConfigurationValue("main", startUp);
+                    string pomRootNameSpace = string.Empty;
 
-                fs.Close();
+                    StreamReader reader = new StreamReader(pomFile.FullName);
+
+                    string temp = reader.ReadLine();
+
+                    while (temp != null)
+                    {
+                        if (temp.Contains("rootNamespace"))
+                        {
+                            temp = temp.Replace("<rootNamespace>", "");
+                            temp = temp.Replace("</rootNamespace>", "");
+                            pomRootNameSpace = temp;
+                            pomRootNameSpace = pomRootNameSpace.Trim();
+                        }
+                        temp = reader.ReadLine();
+                    }
+                    reader.Close();
+
+                    if (!pomRootNameSpace.Equals(rootNamespace))
+                    {
+                        pomUtility.SetNPandayCompilerPluginConfigurationValue("rootNamespace", rootNamespace);
+                        pomUtility.SetNPandayCompilerPluginConfigurationValue("main", startUp);
+                    }
+                    
+
+                    fs.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error Updating VB Project");
             }
         }
 

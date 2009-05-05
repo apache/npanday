@@ -121,7 +121,7 @@ namespace NPanday.VisualStudio.Addin
             // 
             this.txtSCMTag.Location = new System.Drawing.Point(118, 6);
             this.txtSCMTag.Name = "txtSCMTag";
-            this.txtSCMTag.Size = new System.Drawing.Size(219, 20);
+            this.txtSCMTag.Size = new System.Drawing.Size(396, 20);
             this.txtSCMTag.TabIndex = 13;
             this.txtSCMTag.Text = "<OPTIONAL: svn url>";
             this.txtSCMTag.DoubleClick += new System.EventHandler(this.txtSCMTag_DoubleClick);

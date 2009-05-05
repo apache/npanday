@@ -154,7 +154,7 @@ namespace NPanday.ProjectImporter.Converter
 
 
 
-        public static NPanday.Model.Pom.Model[] ConvertProjectsToPomModels(ProjectDigest[] projectDigests, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePoms)
+        public static NPanday.Model.Pom.Model[] ConvertProjectsToPomModels(ProjectDigest[] projectDigests, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePoms, string scmTag)
         {
             try
             {
@@ -163,7 +163,8 @@ namespace NPanday.ProjectImporter.Converter
                 List<NPanday.Model.Pom.Model> models = new List<NPanday.Model.Pom.Model>();
                 foreach (ProjectDigest projectDigest in projectDigests)
                 {
-                    NPanday.Model.Pom.Model model = ConvertProjectToPomModel(projectDigest, mainPomFile, parent, groupId, writePoms);
+                    NPanday.Model.Pom.Model model = ConvertProjectToPomModel(projectDigest, mainPomFile, parent, groupId, writePoms,scmTag);
+                    
                     models.Add(model);
                 }
                 return models.ToArray();
@@ -174,7 +175,7 @@ namespace NPanday.ProjectImporter.Converter
             }
         }
 
-        public static NPanday.Model.Pom.Model ConvertProjectToPomModel(ProjectDigest projectDigest, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePom)
+        public static NPanday.Model.Pom.Model ConvertProjectToPomModel(ProjectDigest projectDigest, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePom, string scmTag)
         {
             if (!__converterAlgorithms.ContainsKey(projectDigest.ProjectType))
             {
@@ -193,7 +194,7 @@ namespace NPanday.ProjectImporter.Converter
                                                     groupId
                                                     );
 
-                    converter.ConvertProjectToPomModel();
+                    converter.ConvertProjectToPomModel(scmTag);
 
                    return converter.Model;
                 }

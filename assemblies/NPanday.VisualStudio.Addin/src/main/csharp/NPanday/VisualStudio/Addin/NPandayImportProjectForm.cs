@@ -15,6 +15,7 @@ using Microsoft.Win32;
 
 
 using NPanday.ProjectImporter;
+using System.Xml;
 
 namespace NPanday.VisualStudio.Addin
 {
@@ -57,6 +58,11 @@ namespace NPanday.VisualStudio.Addin
                     groupId = ConvertToPascalCase(groupId);
                     groupId = FilterID(groupId) + "." + FilterID(ConvertToPascalCase(new FileInfo(applicationObject.Solution.FileName).Name.Replace(".sln", "")));
                     txtGroupId.Text = groupId;
+                    string scmTag =  getSCMTag(applicationObject.Solution.FileName);
+                    if(scmTag!=string.Empty && scmTag!=null)
+                    {
+                        txtSCMTag.Text = scmTag;
+                    }
                     
                 }
                 catch { /*do nothing*/}
@@ -117,6 +123,43 @@ namespace NPanday.VisualStudio.Addin
             }
 
         }
+
+        private string getSCMTag(string filePath)
+        {
+            string pomFilePath = string.Empty;
+            string scmTag = string.Empty;
+            try
+            {
+                
+                //construct the path for the pom file and check for file existance.
+                //return if file does not exist.
+                pomFilePath = filePath.Substring(0, filePath.LastIndexOf("\\"));
+                pomFilePath += "\\pom.xml";
+                if (!File.Exists(pomFilePath))
+                {
+                    return scmTag;
+                }
+
+                XmlDocument doc = new XmlDocument();
+                doc.Load(pomFilePath);
+
+                XmlNodeList devCon = doc.GetElementsByTagName("developerConnection");
+                
+                foreach (XmlNode item in devCon)
+                {
+                    scmTag = item.InnerText;
+                }
+                
+               
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return scmTag;
+        }
+
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             try
@@ -128,11 +171,44 @@ namespace NPanday.VisualStudio.Addin
 
                     FileInfo file = new FileInfo(txtBrowseDotNetSolutionFile.Text);
 
-
-
                     string artifactId = FilterID(ConvertToPascalCase(file.Name.Replace(".sln", ""))) + "-parent";
                     string groupId = FilterID(ConvertToPascalCase(txtGroupId.Text));
                     string scmTag = txtSCMTag.Text;
+
+                    if (scmTag == null)
+                    {
+                        scmTag = string.Empty;
+                    }
+
+                    if (scmTag.ToUpper().Contains("OPTIONAL"))
+                    {
+                        scmTag = string.Empty;
+                    }
+
+                    if (scmTag.Contains("scm:svn:"))
+                    {
+                        scmTag = scmTag.Remove(scmTag.IndexOf("scm:svn:"), 8);
+                    }
+
+                    Uri repoUri;
+                    try
+                    {
+                        if (!scmTag.Equals(string.Empty))
+                        {
+                            repoUri = new Uri(scmTag);
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        scmTag = string.Empty;
+                        txtSCMTag.Text = "<OPTIONAL: svn url>";
+                        MessageBox.Show(string.Format("SCM Tag was not added, because the url {0} was not accessible", scmTag), "NPanday Project Import", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+
+
+
+
 
                     //NPandayImporter importer = new NPandayImporter(new String[2] {txtBrowseDotNetSolutionFile.Text, "-DgroupId=" + txtGroupId.Text });
                     //importer.GeneratePom();
@@ -191,7 +267,8 @@ namespace NPanday.VisualStudio.Addin
 
         private void txtSCMTag_Click(object sender, EventArgs e)
         {
-            txtSCMTag.Text = string.Empty;
+            //removed of clearing scmTag in order for users to verify the scmtag generated
+            //txtSCMTag.Text = string.Empty;
         }
 
         private void txtSCMTag_DoubleClick(object sender, EventArgs e)

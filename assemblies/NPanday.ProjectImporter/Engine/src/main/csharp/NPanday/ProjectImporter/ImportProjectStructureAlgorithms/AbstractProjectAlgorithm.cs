@@ -30,12 +30,12 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
 
         #region Helper Methods
 
-        public string[] GenerateChildPoms(ProjectDigest[] prjDigests, string groupId, string parentPomFilename, NPanday.Model.Pom.Model parentPomModel, bool writePom)
+        public string[] GenerateChildPoms(ProjectDigest[] prjDigests, string groupId, string parentPomFilename, NPanday.Model.Pom.Model parentPomModel, bool writePom,string scmTag)
         {
             List<string> generatedPoms = new List<string>();
 
             // make the child pom
-            NPanday.Model.Pom.Model[] models = PomConverter.ConvertProjectsToPomModels(prjDigests, parentPomFilename, parentPomModel, groupId, writePom);
+            NPanday.Model.Pom.Model[] models = PomConverter.ConvertProjectsToPomModels(prjDigests, parentPomFilename, parentPomModel, groupId, writePom, scmTag);
 
             if (models != null && models.Length > 0)
             {

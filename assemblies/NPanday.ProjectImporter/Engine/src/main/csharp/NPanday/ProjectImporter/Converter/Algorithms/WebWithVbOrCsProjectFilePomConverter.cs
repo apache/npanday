@@ -29,11 +29,23 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         {
         }
 
-        public override void ConvertProjectToPomModel(bool writePom)
+        public override void ConvertProjectToPomModel(bool writePom, string scmTag)
         {
             // just call the base, but dont write it we still need some minor adjustments for it
-            base.ConvertProjectToPomModel(false);
+            base.ConvertProjectToPomModel(false,scmTag);
             Model.packaging = "asp";
+
+            // Write SCMTag
+            if (scmTag != null && scmTag != string.Empty && Model.parent == null)
+            {
+                Scm scmHolder = new Scm();
+                scmHolder.connection = string.Format("scm:svn:{0}", scmTag);
+                scmHolder.developerConnection = string.Format("scm:svn:{0}", scmTag);
+                scmHolder.url = scmTag;
+
+                Model.scm = scmHolder;
+            }
+
 
             Model.build.sourceDirectory = ".";
 

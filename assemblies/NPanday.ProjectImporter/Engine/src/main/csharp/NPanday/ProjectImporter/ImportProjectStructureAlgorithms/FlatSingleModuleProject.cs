@@ -22,7 +22,7 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
     {
         public override string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom)
         {
-            return GenerateChildPoms(prjDigests, groupId, null, null, writePom);
+            return GenerateChildPoms(prjDigests, groupId, null, null, writePom, scmTag);
         }
     }
 }

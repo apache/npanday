@@ -35,7 +35,7 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
 
 
             generatedPoms.AddRange(
-                GenerateChildPoms(prjDigests, groupId, pomFileName, mainModel, writePom)
+                GenerateChildPoms(prjDigests, groupId, pomFileName, mainModel, writePom, scmTag)
             );
 
             return generatedPoms.ToArray();
