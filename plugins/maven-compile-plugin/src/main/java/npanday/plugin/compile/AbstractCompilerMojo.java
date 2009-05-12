@@ -769,8 +769,21 @@ public abstract class AbstractCompilerMojo
 
 	private void updateProjectVersion(String assemblyInfoFile, String ver)
 	{
+		String hasUpdated = "";
+		boolean hasAssemblyInfo = true;
 		try
 		{
+			System.out.println("[INFO] ------------------------------------------------------------------------");
+			System.out.println("[INFO] Updating Assembly Info Version :");
+			System.out.println("[INFO] Assembly Info File: "+assemblyInfoFile);
+			System.out.println("[INFO] ------------------------------------------------------------------------");
+			//returns if assemblyInfoFile does not exist
+			if(!FileUtils.fileExists(assemblyInfoFile))
+			{
+				System.out.println("[INFO] No Assembly Info File found");
+				hasAssemblyInfo = false;
+				return;
+			}
 			String contents = getContents(new File(assemblyInfoFile));
 			
 			//check for version
@@ -785,6 +798,7 @@ public abstract class AbstractCompilerMojo
 					+ "[assembly: AssemblyVersion(\""+ver+"\")]"
 					+"\n[assembly: AssemblyFileVersion(\""+ver+"\")]";
 					setContents(new File(assemblyInfoFile),contents);
+					hasUpdated = "[INFO] Successfully updated assembly info to version "+ver;
 				}
 				// thrown exception if the project type is vb
 				catch(Exception e)
@@ -796,16 +810,27 @@ public abstract class AbstractCompilerMojo
 						+"\n<Assembly: AssemblyVersion(\""+ver+"\")>"
 						+"\n<Assembly: AssemblyFileVersion(\""+ver+"\")>";
 						setContents(new File(assemblyInfoFile),contents);
+						hasUpdated = "[INFO] Successfully updated assembly info to version "+ver;
 					}
-					
-				}	
+				}
 			}
 		}
 		catch(Exception e)
 		{
 			System.out.println("[Error] Problem with updating project version");
 		}
-		
+		finally
+		{
+			if(hasUpdated=="" && hasAssemblyInfo)
+			{
+				System.out.println("[INFO] Pom Version & Assembly Info Version are SYNCHRONIZED.");
+			}
+			else
+			{
+				System.out.println(hasUpdated);
+			}
+			System.out.println("[INFO] ------------------------------------------------------------------------");					
+		}
 	}
     
 	private void updateAssemblyInfoVersion()
@@ -815,26 +840,32 @@ public abstract class AbstractCompilerMojo
 			String currentWorkingDir = System.getProperty("user.dir");
 			List<String> versions = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","version");
 			String ver = versions.get(0);
-			
 			//filter -SNAPSHOT
-			if(ver.endsWith("-SNAPSHOT"))
+			try
 			{
-				ver = ver.charAt(0)+".0.0.0";
+				ver = ver.substring(0,ver.indexOf("-SNAPSHOT"));
 			}
-					
+			catch(Exception e)
+			{
+				//catch execption if no -SNAPSHOT In version
+			}
+			
 			//child pom
 			if(versions.size()>1)
 			{
+				System.out.println("child"+versions.size());
 				String assemblyInfoFile = currentWorkingDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
+				
 				if(!FileUtils.fileExists(assemblyInfoFile))
 				{
 					assemblyInfoFile = currentWorkingDir+File.separator+"My Project"+File.separator+"AssemblyInfo.vb";
 				}
-				updateProjectVersion(assemblyInfoFile,ver);
+				updateProjectVersion(assemblyInfoFile,ver);				
 			}
 			//parent pom
 			else
 			{
+				System.out.println("parent"+versions.size());
 				List<String> modules = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","module");
 				if(!modules.isEmpty())
 				{
@@ -846,24 +877,34 @@ public abstract class AbstractCompilerMojo
 						try
 						{
 							String assemblyInfoFile = tempDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
+							
 							if(!FileUtils.fileExists(assemblyInfoFile))
 							{
 								assemblyInfoFile = tempDir+File.separator+"My Project"+File.separator+"AssemblyInfo.vb";
 							}
-							updateProjectVersion(assemblyInfoFile,ver);
+							updateProjectVersion(assemblyInfoFile,ver);		
 						}
 						catch(Exception e)
 						{
 						}
-						
-						
 					}
+				}
+				//check if flatsingle module
+				else
+				{
+					String assemblyInfoFile = currentWorkingDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
+				
+					if(!FileUtils.fileExists(assemblyInfoFile))
+					{
+						assemblyInfoFile = currentWorkingDir+File.separator+"My Project"+File.separator+"AssemblyInfo.vb";
+					}
+					updateProjectVersion(assemblyInfoFile,ver);
 				}
 			}
 		}
 		catch(Exception e)
 		{
-			System.out.println("[ERROR]UpdateAssemblyInfo -- Encountered a Problem during updating the AssemblyInfo.cs File");
+			System.out.println("[ERROR]UpdateAssemblyInfo -- Encountered a Problem during updateAssemblyInfoVersion");
 		}
 		
 		
