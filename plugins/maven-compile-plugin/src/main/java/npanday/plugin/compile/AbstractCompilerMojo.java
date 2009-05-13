@@ -769,14 +769,9 @@ public abstract class AbstractCompilerMojo
 
 	private void updateProjectVersion(String assemblyInfoFile, String ver)
 	{
-		String hasUpdated = "";
 		boolean hasAssemblyInfo = true;
 		try
 		{
-			System.out.println("[INFO] ------------------------------------------------------------------------");
-			System.out.println("[INFO] Updating Assembly Info Version :");
-			System.out.println("[INFO] Assembly Info File: "+assemblyInfoFile);
-			System.out.println("[INFO] ------------------------------------------------------------------------");
 			//returns if assemblyInfoFile does not exist
 			if(!FileUtils.fileExists(assemblyInfoFile))
 			{
@@ -798,7 +793,6 @@ public abstract class AbstractCompilerMojo
 					+ "[assembly: AssemblyVersion(\""+ver+"\")]"
 					+"\n[assembly: AssemblyFileVersion(\""+ver+"\")]";
 					setContents(new File(assemblyInfoFile),contents);
-					hasUpdated = "[INFO] Successfully updated assembly info to version "+ver;
 				}
 				// thrown exception if the project type is vb
 				catch(Exception e)
@@ -810,7 +804,6 @@ public abstract class AbstractCompilerMojo
 						+"\n<Assembly: AssemblyVersion(\""+ver+"\")>"
 						+"\n<Assembly: AssemblyFileVersion(\""+ver+"\")>";
 						setContents(new File(assemblyInfoFile),contents);
-						hasUpdated = "[INFO] Successfully updated assembly info to version "+ver;
 					}
 				}
 			}
@@ -818,18 +811,6 @@ public abstract class AbstractCompilerMojo
 		catch(Exception e)
 		{
 			System.out.println("[Error] Problem with updating project version");
-		}
-		finally
-		{
-			if(hasUpdated=="" && hasAssemblyInfo)
-			{
-				System.out.println("[INFO] Pom Version & Assembly Info Version are SYNCHRONIZED.");
-			}
-			else
-			{
-				System.out.println(hasUpdated);
-			}
-			System.out.println("[INFO] ------------------------------------------------------------------------");					
 		}
 	}
     
@@ -853,7 +834,6 @@ public abstract class AbstractCompilerMojo
 			//child pom
 			if(versions.size()>1)
 			{
-				System.out.println("child"+versions.size());
 				String assemblyInfoFile = currentWorkingDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
 				
 				if(!FileUtils.fileExists(assemblyInfoFile))
@@ -865,7 +845,6 @@ public abstract class AbstractCompilerMojo
 			//parent pom
 			else
 			{
-				System.out.println("parent"+versions.size());
 				List<String> modules = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","module");
 				if(!modules.isEmpty())
 				{

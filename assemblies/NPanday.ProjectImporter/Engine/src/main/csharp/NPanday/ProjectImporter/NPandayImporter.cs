@@ -105,6 +105,24 @@ namespace NPanday.ProjectImporter
         /// <param name="version"></param>
         public delegate void VerifyProjectToImport(ref ProjectDigest[] projectDigests, ProjectStructureType structureType, string solutionFile, ref string groupId,ref string artifactId,ref string version);
 
+        private static bool HasValidFolderStructure(List<Dictionary<string, object>> projectList)
+        {
+            bool isValid = true;
+            foreach (Dictionary<string,object> project in projectList)
+            {
+                string holder;
+                if (project.ContainsKey("ProjectFullPath"))
+                { 
+                    holder = (string)project["ProjectFullPath"];
+                    if (holder.Contains("..\\"))
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            return isValid;
+        }
 
         /// <summary>
         /// Imports a specified Visual Studio Projects in a Solution to an NPanday Pom,
@@ -124,6 +142,11 @@ namespace NPanday.ProjectImporter
 
             List<Dictionary<string, object>> list = ParseSolution(solutionFileInfo);
 
+            //Checks for Invalid folder structure
+            if (!HasValidFolderStructure(list))
+            {
+                throw new Exception("The Project Importer Failed, Project Directory may not be supported");
+            }
 
             ProjectDigest[] prjDigests = DigestProjects(list);
 
