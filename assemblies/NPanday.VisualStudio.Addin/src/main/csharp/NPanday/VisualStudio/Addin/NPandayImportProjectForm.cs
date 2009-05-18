@@ -273,7 +273,8 @@ namespace NPanday.VisualStudio.Addin
 
         private void txtSCMTag_DoubleClick(object sender, EventArgs e)
         {
-            txtSCMTag.Text = string.Empty;
+            //removed of clearing scmTag in order for users to verify the scmtag generated
+            //txtSCMTag.Text = string.Empty;
         }
 
     }
