@@ -271,8 +271,12 @@ namespace NPanday.ProjectImporter.Digest.Model
                     MessageBox.Show("Cannot add reference of "+ artifact.ArtifactId + ", no valid Remote Repository was found that contained the Artifact to be Resolved. Please add a Remote Repository that contains the Unresolved Artifact.");
                     return false;
                 }
+                List<string> activeProfiles = new List<string>();
+                activeProfiles.AddRange(settings.activeProfiles);
                 foreach (Profile profile in settings.profiles)
                 {
+                    if(!activeProfiles.Contains(profile.id))
+                        continue;
                     foreach (Repository repo in profile.repositories)
                     {
                         if ("NPanday.id".Equals(repo.id, StringComparison.OrdinalIgnoreCase))
