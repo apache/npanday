@@ -1216,119 +1216,6 @@ namespace NPanday.VisualStudio.Addin
             return false;
         }
 
-
-        private void UpdateVBProject(FileInfo pomFile)
-        {
-            try
-            {
-                PomHelperUtility pomUtility = new PomHelperUtility(pomFile);
-
-                if (pomUtility.NPandayCompilerPluginLanguage == "vb" || pomUtility.NPandayCompilerPluginLanguage == "VB")
-                {
-
-                    string rootNamespace = string.Empty;
-                    string startUp = string.Empty;
-
-                    string projectPath = pomFile.DirectoryName + "\\" + pomUtility.ArtifactId + ".vbproj";
-
-                    FileStream fs = new FileStream(projectPath, FileMode.Open, FileAccess.Read,
-                                       FileShare.ReadWrite);
-                    XmlDocument xmldoc = new XmlDocument();
-                    xmldoc.Load(fs);
-                    XmlNodeList nodelist = xmldoc.GetElementsByTagName("PropertyGroup");
-
-                    foreach (XmlNode xmlnode in nodelist)
-                    {
-
-                        XmlNodeList childNodeLlists = xmlnode.ChildNodes;
-                        foreach (XmlNode child in childNodeLlists)
-                        {
-                            if (child.Name.Equals("StartupObject"))
-                            {
-                                startUp = child.InnerText;
-                            }
-                            if (child.Name.Equals("RootNamespace"))
-                            {
-                                rootNamespace = child.InnerText;
-                                break;
-                            }
-                        }
-                    }
-                    string pomRootNameSpace = string.Empty;
-
-                    StreamReader reader = new StreamReader(pomFile.FullName);
-
-                    string temp = reader.ReadLine();
-
-                    while (temp != null)
-                    {
-                        if (temp.Contains("rootNamespace"))
-                        {
-                            temp = temp.Replace("<rootNamespace>", "");
-                            temp = temp.Replace("</rootNamespace>", "");
-                            pomRootNameSpace = temp;
-                            pomRootNameSpace = pomRootNameSpace.Trim();
-                        }
-                        temp = reader.ReadLine();
-                    }
-                    reader.Close();
-
-                    if (!pomRootNameSpace.Equals(rootNamespace))
-                    {
-                        pomUtility.SetNPandayCompilerPluginConfigurationValue("rootNamespace", rootNamespace);
-                        pomUtility.SetNPandayCompilerPluginConfigurationValue("main", startUp);
-                    }
-                    
-
-                    fs.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error Updating VB Project");
-            }
-        }
-
-        /// <summary>
-        /// Updates the pomfile configuration on its rootnamespace
-        /// </summary>
-        private void UpdateVBProjectsPoms()
-        {
-            FileInfo pomFile = CurrentSelectedProjectPom;
-
-            if (CurrentSelectedProject == null)
-            {
-                Solution2 solution = (Solution2)_applicationObject.Solution;
-                string pomFilePath = string.Empty;
-                foreach (Project project in solution.Projects)
-                {
-                    try
-                    {
-                        //construct the path for the pom file and check for file existance.
-                        //return if file does not exist.
-                        pomFilePath = project.FullName.Substring(0, project.FullName.LastIndexOf("\\"));
-                        pomFilePath += "\\pom.xml";
-                        if (File.Exists(pomFilePath))
-                        {
-                            pomFile = new FileInfo(pomFilePath);
-                            UpdateVBProject(pomFile);
-                        }
-                    }
-                    catch(Exception)
-                    {
-                    }
-                }
-            }
-            else
-            {
-                UpdateVBProject(pomFile);
-            }
-            
-
-            
-            SaveAllDocuments();
-        }
-
         private CommandBarControl GetSaveAllControl()
         {
             CommandBarControl saveCtrl = null;
@@ -1376,7 +1263,6 @@ namespace NPanday.VisualStudio.Addin
         private void NPandayBuildSelectedProject(String goal)
         {
             SaveAllDocuments();
-            UpdateVBProjectsPoms();
             FileInfo pomFile = CurrentSelectedProjectPom;
             Project project = CurrentSelectedProject;
             PomHelperUtility pomUtility = new PomHelperUtility(pomFile);
@@ -1394,10 +1280,6 @@ namespace NPanday.VisualStudio.Addin
             if ("pom".Equals(pomUtility.Packaging, StringComparison.OrdinalIgnoreCase))
             {
                 errStr = string.Format(Messages.MSG_EF_NOT_A_PROJECT_POM, pomFile);
-            }
-            else if (!IsWebProject(project) && !pomUtility.ArtifactId.Equals(NPandayImportProjectForm.FilterID(project.Name), StringComparison.OrdinalIgnoreCase))
-            {
-                errStr = string.Format(Messages.MSG_EF_NOT_THE_PROJECT_POM, project.Name, pomUtility.ArtifactId);
             }
 
             if (!string.IsNullOrEmpty(errStr))
@@ -1434,7 +1316,6 @@ namespace NPanday.VisualStudio.Addin
         private void NPandayBuildAllProjects(String goal)
         {
             SaveAllDocuments();
-            UpdateVBProjectsPoms();
             FileInfo pomFile = CurrentSolutionPom;
             PomHelperUtility pomUtility = new PomHelperUtility(pomFile);
 
