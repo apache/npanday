@@ -201,9 +201,11 @@ namespace NPanday.VisualStudio.Addin
                     }
                     catch (Exception)
                     {
-                        scmTag = string.Empty;
-                        txtSCMTag.Text = "<OPTIONAL: svn url>";
-                        MessageBox.Show(string.Format("SCM Tag was not added, because the url {0} was not accessible", scmTag), "NPanday Project Import", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        DialogResult answer = MessageBox.Show(string.Format("WARNING: SCM Tag {0} was Not Accessible, \nWould you still like to Proceed with the Project Import?", scmTag), "Project Import Warning", MessageBoxButtons.YesNo,MessageBoxIcon.Warning);
+                        if (answer == DialogResult.No)
+                        {
+                            return;
+                        }
                     }
 
 
