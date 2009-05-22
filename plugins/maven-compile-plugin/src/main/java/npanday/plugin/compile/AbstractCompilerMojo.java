@@ -769,14 +769,12 @@ public abstract class AbstractCompilerMojo
 
 	private void updateProjectVersion(String assemblyInfoFile, String ver)
 	{
-		boolean hasAssemblyInfo = true;
 		try
 		{
 			//returns if assemblyInfoFile does not exist
 			if(!FileUtils.fileExists(assemblyInfoFile))
 			{
 				System.out.println("[INFO] No Assembly Info File found");
-				hasAssemblyInfo = false;
 				return;
 			}
 			String contents = getContents(new File(assemblyInfoFile));
@@ -820,10 +818,19 @@ public abstract class AbstractCompilerMojo
 		{
 			String currentWorkingDir = System.getProperty("user.dir");
 			List<String> versions = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","version");
+			List<String> modules = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","module");
 			String ver = versions.get(0);
 			//filter -SNAPSHOT
 			try
 			{
+				//check if it is a parent pom
+				if(modules.size()>0)
+				{
+					if(versions.size()>1)
+					{
+						ver = versions.get(versions.size()-1);
+					}
+				}
 				ver = ver.substring(0,ver.indexOf("-SNAPSHOT"));
 			}
 			catch(Exception e)
@@ -832,7 +839,7 @@ public abstract class AbstractCompilerMojo
 			}
 			
 			//child pom
-			if(versions.size()>1)
+			if(modules.size()>1)
 			{
 				String assemblyInfoFile = currentWorkingDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
 				
@@ -845,7 +852,7 @@ public abstract class AbstractCompilerMojo
 			//parent pom
 			else
 			{
-				List<String> modules = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","module");
+				//List<String> modules = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","module");
 				if(!modules.isEmpty())
 				{
 					//check if there is a matching dependency with the namespace
