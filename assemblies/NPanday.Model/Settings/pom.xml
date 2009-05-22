@@ -21,7 +21,7 @@ under the License.
 <project> 
   <parent> 
     <groupId>NPanday</groupId>  
-    <version>1.1-SNAPSHOT</version>  
+    <version>1.0.1-RC2</version>  
     <artifactId>NPanday.Assemblies</artifactId>  
     <relativePath>..\..\pom.xml</relativePath> 
   </parent>  
@@ -29,7 +29,7 @@ under the License.
   <groupId>NPanday.Model</groupId>  
   <artifactId>NPanday.Model.Settings</artifactId>  
   <packaging>library</packaging>  
-  <version>1.1-SNAPSHOT</version>  
+  <version>1.0.1-RC2</version>  
   <name>NPanday.Model.Settings</name>  
   <build> 
     <sourceDirectory>src/main/csharp</sourceDirectory>  

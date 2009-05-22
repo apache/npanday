@@ -22,14 +22,14 @@ under the License.
    
   <parent> 
     <groupId>NPanday.Project</groupId>  
-    <version>1.1-SNAPSHOT</version>  
+    <version>1.0.1-RC2</version>  
     <artifactId>NPanday.Project</artifactId>  
     <relativePath>../pom-dotnet.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NPanday</groupId>  
   <artifactId>NPanday.Assemblies</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
+  <version>1.0.1-RC2</version>  
   <packaging>pom</packaging>  
   <name>NPanday.Assemblies</name>  
   <url>http://codeplex.com/npanday</url>  
