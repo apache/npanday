@@ -21,14 +21,14 @@ under the License.
 <project> 
   <parent> 
     <groupId>npanday.plugin</groupId>  
-    <version>1.1-SNAPSHOT</version>  
+    <version>1.0.1</version>  
     <artifactId>npanday.plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Solution</artifactId>  
   <packaging>netplugin</packaging>  
-  <version>1.1-SNAPSHOT</version>  
+  <version>1.0.1</version>  
   <name>NPanday.Plugin.Solution</name>  
   <dependencies> 
     <dependency> 
@@ -41,19 +41,19 @@ under the License.
       <groupId>NPanday.Artifact</groupId>  
       <artifactId>NPanday.Artifact</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
+      <version>1.0.1</version> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Model</groupId>  
       <artifactId>NPanday.Model.Pom</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
+      <version>1.0.1</version> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
+      <version>1.0.1</version> 
     </dependency> 
   </dependencies> 
 </project>

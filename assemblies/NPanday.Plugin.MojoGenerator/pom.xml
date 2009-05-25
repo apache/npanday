@@ -21,13 +21,13 @@ under the License.
 <project> 
   <parent> 
     <groupId>NPanday</groupId>  
-    <version>1.1-SNAPSHOT</version>  
+    <version>1.0.1</version>  
     <artifactId>NPanday.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NPanday.Plugin</groupId>  
   <artifactId>NPanday.Plugin.MojoGenerator</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
+  <version>1.0.1</version>  
   <packaging>exe</packaging>  
   <name>NPanday.Plugin.MojoGenerator</name>  
   <dependencies> 
@@ -35,7 +35,7 @@ under the License.
       <groupId>NPanday.Plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
+      <version>1.0.1</version> 
     </dependency> 
   </dependencies> 
 </project>

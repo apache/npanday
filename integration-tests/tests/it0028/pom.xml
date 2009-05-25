@@ -5,7 +5,7 @@
   <groupId>org.apache.maven.it</groupId>  
   <artifactId>it0028</artifactId>  
   <packaging>library</packaging>  
-  <version>1.1-SNAPSHOT</version>  
+  <version>1.0.1</version>  
   <name>it0028</name>  
   <build> 
     <sourceDirectory>src/main/csharp</sourceDirectory>  
@@ -25,7 +25,7 @@
     <dependency> 
       <groupId>org.apache.maven.it</groupId>  
       <artifactId>it0026</artifactId>  
-      <version>1.1-SNAPSHOT</version>  
+      <version>1.0.1</version>  
       <type>library</type> 
     </dependency> 
   </dependencies>  

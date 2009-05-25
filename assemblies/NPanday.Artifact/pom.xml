@@ -21,13 +21,13 @@ under the License.
 <project> 
   <parent> 
     <groupId>NPanday</groupId>  
-    <version>1.1-SNAPSHOT</version>  
+    <version>1.0.1</version>  
     <artifactId>NPanday.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NPanday.Artifact</groupId>  
   <artifactId>NPanday.Artifact</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
+  <version>1.0.1</version>  
   <packaging>library</packaging>  
   <name>NPanday.Artifact</name>  
   <dependencies> 
@@ -35,13 +35,13 @@ under the License.
       <groupId>NPanday.Model</groupId>  
       <artifactId>NPanday.Model.Pom</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
+      <version>1.0.1</version> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Model</groupId>  
       <artifactId>NPanday.Model.Settings</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
+      <version>1.0.1</version> 
     </dependency>  
     <dependency> 
       <groupId>NUnit</groupId>  
