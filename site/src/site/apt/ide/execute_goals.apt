@@ -155,3 +155,42 @@ Executing Maven Goals
     </vendors>
   </npandaySettings>
 +------+
+
+* NPanday's Maven Phase Algorithm
+
+  Algorithm that differs the Visual Studio Execution from Console Command.
+  
+  [[1]] All Project - Is trigerred when the user right click in the solution explorer and select <<<All NPanday Projects \> Build>>> or <<<All NPanday Projects \> Clean>>> or <<<All NPanday Projects \> Test>>> or All NPanday Projects \> Install>>>
+
+        [[A]] Save All Documents that are open in Visual Studio.
+
+        [[B]] Retrieve the solution that is open in Visual Studio.
+
+        [[C]] Loop through all the projects in the solution.
+
+        [[D]] Check if it has a Web Reference, if it has it will update the Web Reference.
+
+        [[E]] Execute the pom.xml of the solution may it be Build/Clean/Test/Install.
+
+        []
+
+
+  [[2]] Current Project - Is Triggered when the user right click in the solution explorer and select <<<Current NPanday Project \> Build>>> or <<<Current NPanday Project \> Clean>>> or <<<Current NPanday Project \> Test>>> or <<<Current NPanday Project \> Install>>>
+
+        [[A]] Save All Documents that are open in Visual Studio.
+
+        [[B]] Retrieve CURRENT pom.xml and CURRENT project.
+        
+              [[a]] If pom.xml does not exist, set errorMsg to "Pom Not Found" Error.
+              
+              [[b]] If the packaging in the pom.xml is "pom", set errorMsg to "Pom may not be Project's Pom" Error.
+              
+              []
+              
+        [[C]] Check if it has a Web Reference, if it has it will update the Web Reference.
+        
+        [[D]] Execute the pom.xml of the solution may it be Build/Clean/Test/Install.
+        
+        []
+        
+  []
