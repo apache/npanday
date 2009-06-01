@@ -1094,7 +1094,6 @@ public final class ProjectDaoImpl
         parameters.add( comRerefenceAbsolutePath );
         parameters.add( "/out:" + interopAbsolutePath );        
         parameters.add( "/namespace:" + namespace );
-		
 		try
 		{
 			//beginning code for checking of strong name key or signing of projects

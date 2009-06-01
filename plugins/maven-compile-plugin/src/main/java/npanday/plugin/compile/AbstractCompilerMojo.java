@@ -858,7 +858,6 @@ public abstract class AbstractCompilerMojo
 					//check if there is a matching dependency with the namespace
 					for(String child : modules)
 					{
-						//check each module pom file if there is existing keyfile
 						String tempDir = currentWorkingDir+File.separator+child;
 						try
 						{
