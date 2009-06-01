@@ -923,7 +923,7 @@ namespace NPanday.VisualStudio.Addin
                     else
                     {
                         List<NPanday.Model.Setting.Profile> profiles = new List<NPanday.Model.Setting.Profile>();
-                        profiles.AddRan ge(settings.profiles);
+                        profiles.AddRange(settings.profiles);
                         profiles.Add(profile1);
                         settings.profiles = profiles.ToArray();
                     }
