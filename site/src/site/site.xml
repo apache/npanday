@@ -8,14 +8,14 @@
   </bannerLeft>
 
   <body>
-    <menu name="General Info">
+    <menu name="General Info" collapsed="true">
       <item name="NPanday Overview" href="index.html"/>
       <item name="NPanday Release Notes" href="release-notes.html"/>
       <item name="NPanday FAQs" href="faqs.html"/>
       <item name="NPanday Workarounds" href="workarounds.html"/>
       <item name="Conventions" href="conventions.html"/>
     </menu>
-    <menu name="Getting Started">
+    <menu name="Getting Started" collapsed="true">
       <item name="Installation" href="/installation/index.html" collapsed="true">
         <item name="Manual Configuration" href="/installation/manual.html"/>
         <item name="Using the Installer" href="/installation/installer.html"/>
@@ -33,7 +33,7 @@
       <item name="Quick Start" href="/guide/quickstart.html"/>
 	  <item name="Portability" href="/guide/portability.html"/>
     </menu>
-    <menu name="IDE Integration">
+    <menu name="IDE Integration" collapsed="true">
       <item name="Executing Maven Goals" href="/ide/execute_goals.html"/>
       <item name="Setting Assembly Key" href="/ide/assembly_key.html"/>
       <item name="Remote Repository" href="/ide/remote_repo.html"/>
@@ -49,7 +49,7 @@
       <item name="Integration Test" href="/ide/test.html"/>
     </menu>
 		
-    <menu name="Project Information">
+    <menu name="Project Information" collapsed="true">
       <item name="NPanday Site" href="http://www.codeplex.com/npanday"/>
       <item name="NPanday SVN" href="https://npanday.svn.codeplex.com/svn/"/>
       <item name="Maven" href="http://maven.apache.org/"/>
