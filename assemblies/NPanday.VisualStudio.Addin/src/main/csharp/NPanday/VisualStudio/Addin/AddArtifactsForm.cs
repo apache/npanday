@@ -767,19 +767,24 @@ namespace NPanday.VisualStudio.Addin
 
         private void UpdateRepositoryFor(NPanday.Model.Setting.Profile profile, NPanday.Model.Setting.Repository repository)
         {
-            NPanday.Model.Setting.Activation activation = new NPanday.Model.Setting.Activation();
-            activation.activeByDefault = true;
-            profile.activation = activation;
+            repository.url = RepoCombo.Text;   
+            
+            //if (!UrlExists(profile, repository))
+            //{
 
-            repository.url = RepoCombo.Text;
-            repository.id = "NPanday.id";
+                NPanday.Model.Setting.Activation activation = new NPanday.Model.Setting.Activation();
+                activation.activeByDefault = true;
+                profile.activation = activation;
 
-            NPanday.Model.Setting.RepositoryPolicy releasesPolicy = new NPanday.Model.Setting.RepositoryPolicy();
-            NPanday.Model.Setting.RepositoryPolicy snapshotsPolicy = new NPanday.Model.Setting.RepositoryPolicy();
-            releasesPolicy.enabled = checkBoxRelease.Checked;
-            snapshotsPolicy.enabled = checkBoxSnapshot.Checked;
-            repository.releases = releasesPolicy;
-            repository.snapshots = snapshotsPolicy;
+                repository.id = "NPanday.id";
+            
+                NPanday.Model.Setting.RepositoryPolicy releasesPolicy = new NPanday.Model.Setting.RepositoryPolicy();
+                NPanday.Model.Setting.RepositoryPolicy snapshotsPolicy = new NPanday.Model.Setting.RepositoryPolicy();
+                releasesPolicy.enabled = checkBoxRelease.Checked;
+                snapshotsPolicy.enabled = checkBoxSnapshot.Checked;
+                repository.releases = releasesPolicy;
+                repository.snapshots = snapshotsPolicy;            
+            //}
         }
 
         private void update_Click(object sender, EventArgs e)
@@ -876,8 +881,17 @@ namespace NPanday.VisualStudio.Addin
 
                                     if (isValidRepo)
                                     {
-                                        //writes to the settings.xml
-                                        UpdateRepositoryFor(profile, repository);
+                                        Model.Setting.Repository newRepo = new NPanday.Model.Setting.Repository();
+
+                                        newRepo.url = RepoCombo.Text;
+
+                                        if (!UrlExists(profile, newRepo))
+                                        {
+                                            //writes to the settings.xml
+                                            UpdateRepositoryFor(profile, repository);
+                                            
+                                        }
+
                                         serializer.Serialize(writer, settings);
                                         writer.Close();
 
