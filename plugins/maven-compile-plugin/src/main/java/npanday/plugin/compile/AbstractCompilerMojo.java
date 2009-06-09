@@ -780,16 +780,14 @@ public abstract class AbstractCompilerMojo
 			String contents = getContents(new File(assemblyInfoFile));
 			
 			//check for version
-			String checkVersion = "AssemblyVersion(\""+ver+"\")";
-			
+			String checkVersion = "AssemblyFileVersion(\""+ver+"\")";
 			//modify AssemblyFileInfo if version is different in the pom.
 			if(contents.lastIndexOf(checkVersion)==-1)
 			{
 				try
 				{
-					contents = contents.substring(0,contents.indexOf("[assembly: AssemblyVersion(")) 
-					+ "[assembly: AssemblyVersion(\""+ver+"\")]"
-					+"\n[assembly: AssemblyFileVersion(\""+ver+"\")]";
+					contents = contents.substring(0,contents.indexOf("[assembly: AssemblyFileVersion(")) 
+					+"[assembly: AssemblyFileVersion(\""+ver+"\")]";
 					setContents(new File(assemblyInfoFile),contents);
 				}
 				// thrown exception if the project type is vb
@@ -797,10 +795,8 @@ public abstract class AbstractCompilerMojo
 				{
 					if(contents.lastIndexOf(checkVersion)==-1)
 					{
-						contents = contents.substring(0,contents.indexOf("' <Assembly: AssemblyVersion(\"1.0.*\")> ")) 
-						+"' <Assembly: AssemblyVersion(\"1.0.*\")> \n "
-						+"\n<Assembly: AssemblyVersion(\""+ver+"\")>"
-						+"\n<Assembly: AssemblyFileVersion(\""+ver+"\")>";
+						contents = contents.substring(0,contents.indexOf("<Assembly: AssemblyFileVersion(")) 
+						+"<Assembly: AssemblyFileVersion(\""+ver+"\")>";
 						setContents(new File(assemblyInfoFile),contents);
 					}
 				}
@@ -808,7 +804,7 @@ public abstract class AbstractCompilerMojo
 		}
 		catch(Exception e)
 		{
-			System.out.println("[Error] Problem with updating project version");
+			System.out.println("[Error] Problem with updating Project File Version");
 		}
 	}
     
@@ -837,9 +833,8 @@ public abstract class AbstractCompilerMojo
 			{
 				//catch execption if no -SNAPSHOT In version
 			}
-			
 			//child pom
-			if(modules.size()>1)
+			if(modules.size()==0)
 			{
 				String assemblyInfoFile = currentWorkingDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
 				
