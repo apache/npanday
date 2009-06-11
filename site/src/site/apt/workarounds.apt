@@ -7,9 +7,13 @@
 
 NPanday List of Workarounds
 
-    * Re-Importing a Project loses some references. Make sure that the added artifacts can be found in <<<gac>>>
+	* NPanday generated output files have matching versions of that specified in the project's pom.xml version. 
+	If the output file does not match that of the pom.xml you need to specify the version of the maven-compile-plugin 
+	to the match that of the version of the NPanday that you are using.
+	
+	* Re-Importing a Project loses some references. Make sure that the added artifacts can be found in <<<gac>>>
     and/or local and/or remote repository, if not it won't be added in the pom though it is present in the References of VS.
-    
+	
     * Visual Basic Test goal errors can be due to incompatibilities between NPanday and the NUnit version used in the project.
     Changing the version of NUnit dependency in the project's <<<pom.xml>>> to <<< \<version\><<2.2.9.0>>\</version\> >>>
     will run the project successfully.
@@ -29,6 +33,7 @@ NPanday List of Workarounds
     * Test goal output result is not refreshed for C# test project. To make this work, reimport the project and change the value
     of the test. Then, perform <<<Current\ Project:\ Test>>>.
 
+	
     * Addin Error with Test Goal is encountered. Verification can be done in two ways as listed below. 
     
       [[I]] Use ProjectImporter. This creates two separate NPanday projects.

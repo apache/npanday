@@ -137,12 +137,12 @@ public final class DefaultCompiler
             String wcfRef = "/reference:" + System.getenv( "SystemRoot" ) +
                 "\\Microsoft.NET\\Framework\\v3.0\\Windows Communication Foundation\\";
             //TODO: This is a hard-coded path: Don't have a registry value either.
-            commands.add( wcfRef + "System.ServiceModel.dll" );
+            //commands.add( wcfRef + "System.ServiceModel.dll" );
             commands.add( wcfRef + "Microsoft.Transactions.Bridge.dll" );
             commands.add( wcfRef + "Microsoft.Transactions.Bridge.Dtc.dll" );
             commands.add( wcfRef + "System.ServiceModel.Install.dll" );
             commands.add( wcfRef + "System.ServiceModel.WasHosting.dll" );
-            commands.add( wcfRef + "System.Runtime.Serialization.dll" );
+            //commands.add( wcfRef + "System.Runtime.Serialization.dll" );
             commands.add( wcfRef + "SMDiagnostics.dll" );
         }
 		

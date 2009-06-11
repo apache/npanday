@@ -143,9 +143,7 @@
 	  <assembly>System.Core</assembly>
 	  <assembly>System.Data.DataSetExtensions</assembly>
 	  <assembly>System.Xml.Linq</assembly>
-	  <assembly>System.ServiceModel</assembly>
 	  <assembly>Microsoft.Transactions.Bridge</assembly>
-	  <assembly>System.Runtime.Serialization</assembly>
     </assemblies>
     <commandFilter>
       <includes>
