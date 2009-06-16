@@ -703,7 +703,7 @@ public abstract class AbstractCompilerMojo
 		} 
 		catch (Exception e) 
 		{
-            e.printStackTrace();
+            System.out.println("[ERROR] readPomAttribute encountered error, there is a problem with the parsing of the pomfile");
         }
 		
 		return attributes;
@@ -733,7 +733,7 @@ public abstract class AbstractCompilerMojo
 		}
 		catch (Exception ex)
 		{
-		  ex.printStackTrace();
+		  System.out.println("[ERROR] Could not get the contents of the given file: "+aFile);
 		}
     
 		return contents.toString();
@@ -780,7 +780,7 @@ public abstract class AbstractCompilerMojo
 			String contents = getContents(new File(assemblyInfoFile));
 			
 			//check for version
-			String checkVersion = "AssemblyFileVersion(\""+ver+"\")";
+			String checkVersion = "AssemblyFileVersion(\""+ver;
 			//modify AssemblyFileInfo if version is different in the pom.
 			if(contents.lastIndexOf(checkVersion)==-1)
 			{
@@ -807,6 +807,24 @@ public abstract class AbstractCompilerMojo
 			System.out.println("[Error] Problem with updating Project File Version");
 		}
 	}
+	
+	private String filterVersion(String version)
+	{
+		StringBuffer newVersion = new StringBuffer();
+		char[] ver = version.toCharArray();
+		for(char c : ver)
+		{
+			if(c!= '.' && !new Character(c).isDigit(c))
+			{
+				break;
+			}
+			else
+			{
+				newVersion.append(c);
+			}
+		}
+		return newVersion.toString();
+	}
     
 	private void updateAssemblyInfoVersion()
 	{
@@ -827,7 +845,7 @@ public abstract class AbstractCompilerMojo
 						ver = versions.get(versions.size()-1);
 					}
 				}
-				ver = ver.substring(0,ver.indexOf("-SNAPSHOT"));
+				ver = filterVersion(ver);
 			}
 			catch(Exception e)
 			{
@@ -835,7 +853,17 @@ public abstract class AbstractCompilerMojo
 			}
 			//child pom
 			if(modules.size()==0)
-			{
+			{	
+				//added just in case flat single module has been added a parent tag manually
+				List<String> parent = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","parent");
+				List<String> files = FileUtils.getFiles(new File(currentWorkingDir),"*.csproj,*.sln,*.vbproj","",false);
+				//if(FileUtils.fileExists(currentWorkingDir+File.separator+"*.csproj") && FileUtils.fileExists(currentWorkingDir+File.separator+"*.sln"))
+				if(files.size()==2 && parent.size()>0)
+				{
+					ver = versions.get(1);
+					ver = filterVersion(ver);
+				}
+					
 				String assemblyInfoFile = currentWorkingDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
 				
 				if(!FileUtils.fileExists(assemblyInfoFile))
@@ -873,10 +901,11 @@ public abstract class AbstractCompilerMojo
 				else
 				{
 					String assemblyInfoFile = currentWorkingDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
-				
+					
 					if(!FileUtils.fileExists(assemblyInfoFile))
 					{
 						assemblyInfoFile = currentWorkingDir+File.separator+"My Project"+File.separator+"AssemblyInfo.vb";
+					
 					}
 					updateProjectVersion(assemblyInfoFile,ver);
 				}
