@@ -187,14 +187,38 @@ namespace NPanday.ProjectImporter
 
             prjDigests = filteredPrjDigests.ToArray();
 
-            if (verifyProjectToImport != null && filteredPrjDigests.Count>0)
+            //check first for if project is valid
+            //try
+            //{
+              //  return 
+            
+            string[] result =ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag);
+
+            if (result != null)
             {
-                verifyProjectToImport(ref prjDigests, structureType, solutionFile, ref groupId, ref artifactId, ref version);
+                if (verifyProjectToImport != null && filteredPrjDigests.Count > 0)
+                {
+                    verifyProjectToImport(ref prjDigests, structureType, solutionFile, ref groupId, ref artifactId, ref version);
+                }
+                return result;
             }
+
+            else
+            {
+                MessageBox.Show("The Project Importer Failed, Project Directory may not be supported");
+                return null;
+            }
+            //}
+
+            //catch
+            //{
+              //  throw new Exception("The Project Importer Failed, Project Directory may not be supported");
+            //}
 
 
             //return ImportProjectType(structureType, prjDigests, solutionFile, groupId, artifactId, version);
-            return ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag);
+            
+            //return ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag);
 
         }
 
