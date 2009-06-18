@@ -808,6 +808,49 @@ public abstract class AbstractCompilerMojo
 		}
 	}
 	
+	private boolean hasArtifactVersion(File aFile) 
+	{
+		StringBuilder contents = new StringBuilder();
+		boolean hasVersion = false;
+		int verCtr=0;
+		int buildFlag=0;
+		try 
+		{
+		  BufferedReader input =  new BufferedReader(new FileReader(aFile));
+		  try 
+		  {
+			String line = null; //not declared within while loop
+			
+			while (( line = input.readLine()) != null)
+			{
+			  if(line.indexOf("<version>")!=-1)
+			  {
+				verCtr++;
+			  }
+			  if(line.indexOf("<build>")!=-1)
+			  {
+				break;
+			  }
+			}
+			
+			if(verCtr==2)
+			{
+				hasVersion = true;
+			}
+		  }
+		  finally 
+		  {
+			input.close();
+		  }
+		}
+		catch (Exception ex)
+		{
+		  
+		}
+    
+		return hasVersion;
+	}
+	
 	private String filterVersion(String version)
 	{
 		StringBuffer newVersion = new StringBuffer();
@@ -831,36 +874,28 @@ public abstract class AbstractCompilerMojo
 		try
 		{
 			String currentWorkingDir = System.getProperty("user.dir");
-			List<String> versions = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","version");
+			String ver = "";
 			List<String> modules = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","module");
-			String ver = versions.get(0);
-			//filter -SNAPSHOT
-			try
-			{
-				//check if it is a parent pom
-				if(modules.size()>0)
-				{
-					if(versions.size()>1)
-					{
-						ver = versions.get(versions.size()-1);
-					}
-				}
-				ver = filterVersion(ver);
-			}
-			catch(Exception e)
-			{
-				//catch execption if no -SNAPSHOT In version
-			}
-			//child pom
+			
+			
+			//child pom or flat single module without parent tags
 			if(modules.size()==0)
 			{	
-				//added just in case flat single module has been added a parent tag manually
+				//get versions in specific project path if executed with CURRENT project option
+				List<String> versions = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","version");
+				ver = versions.get(0);
+				
+				//added checking for flat single modules with parent pom
 				List<String> parent = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","parent");
 				List<String> files = FileUtils.getFiles(new File(currentWorkingDir),"*.csproj,*.sln,*.vbproj","",false);
-				//if(FileUtils.fileExists(currentWorkingDir+File.separator+"*.csproj") && FileUtils.fileExists(currentWorkingDir+File.separator+"*.sln"))
-				if(files.size()==2 && parent.size()>0)
+								
+				if(hasArtifactVersion(new File(currentWorkingDir+File.separator+"pom.xml")))
 				{
 					ver = versions.get(1);
+					ver = filterVersion(ver);
+				}
+				else
+				{
 					ver = filterVersion(ver);
 				}
 					
@@ -875,20 +910,35 @@ public abstract class AbstractCompilerMojo
 			//parent pom
 			else
 			{
-				//List<String> modules = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","module");
 				if(!modules.isEmpty())
 				{
 					//check if there is a matching dependency with the namespace
 					for(String child : modules)
 					{
-						String tempDir = currentWorkingDir+File.separator+child;
+						String childDir = currentWorkingDir+File.separator+child;
+						
+						//get versions in parent path if executed with ALL project option
+						List<String> versions = readPomAttribute(childDir+File.separator+"pom.xml","version");
+						ver = versions.get(0);
+				
+						//checking if artifact has its own version
+						if(hasArtifactVersion(new File(childDir+File.separator+"pom.xml")))
+						{
+							ver = versions.get(1);
+							ver = filterVersion(ver);
+						}
+						else
+						{
+							ver = filterVersion(ver);
+						}
+							
 						try
 						{
-							String assemblyInfoFile = tempDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
+							String assemblyInfoFile = childDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
 							
 							if(!FileUtils.fileExists(assemblyInfoFile))
 							{
-								assemblyInfoFile = tempDir+File.separator+"My Project"+File.separator+"AssemblyInfo.vb";
+								assemblyInfoFile = childDir+File.separator+"My Project"+File.separator+"AssemblyInfo.vb";
 							}
 							updateProjectVersion(assemblyInfoFile,ver);		
 						}
@@ -896,18 +946,6 @@ public abstract class AbstractCompilerMojo
 						{
 						}
 					}
-				}
-				//check if flatsingle module
-				else
-				{
-					String assemblyInfoFile = currentWorkingDir+File.separator+"Properties"+File.separator+"AssemblyInfo.cs";
-					
-					if(!FileUtils.fileExists(assemblyInfoFile))
-					{
-						assemblyInfoFile = currentWorkingDir+File.separator+"My Project"+File.separator+"AssemblyInfo.vb";
-					
-					}
-					updateProjectVersion(assemblyInfoFile,ver);
 				}
 			}
 		}
