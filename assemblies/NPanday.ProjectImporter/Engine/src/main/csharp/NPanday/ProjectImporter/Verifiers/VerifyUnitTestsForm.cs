@@ -51,8 +51,9 @@ namespace NPanday.ProjectImporter.Verifiers
             chkListTestUnits.Items.Clear();
             foreach (ProjectDigest projectDigest in projectDigets)
             {
-                chkListTestUnits.Items.Add(projectDigest, projectDigest.UnitTest);
-                
+                String[] projectNameTokens = projectDigest.FullFileName.Split("\\".ToCharArray());
+                String projectName = projectNameTokens[projectNameTokens.Length-1];
+                chkListTestUnits.Items.Add(projectName.Substring(0,projectName.IndexOf(".")), projectDigest.UnitTest);
             }
         }
 
