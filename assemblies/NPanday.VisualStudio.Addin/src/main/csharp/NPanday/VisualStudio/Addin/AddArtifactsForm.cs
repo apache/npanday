@@ -805,6 +805,10 @@ namespace NPanday.VisualStudio.Addin
             {
                 bool hasConfiguration = false;
                 XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Setting.Settings));
+
+                Model.Setting.Repository newRepo = new NPanday.Model.Setting.Repository();
+                newRepo.url = RepoCombo.Text;
+
                 if (settingsPath == null)
                 {
                     settingsPath = SettingsUtil.GetUserSettingsPath();
@@ -836,85 +840,80 @@ namespace NPanday.VisualStudio.Addin
                                 newRepository.snapshots = repository.snapshots;
                                 newRepository.url = repository.url;
 
-                                UpdateRepositoryFor(profile, repository);
+                                if (!UrlExists(profile, newRepo) && (HasRemoteAccess(newRepo.url)))
+                                {
+                                    UpdateRepositoryFor(profile, repository);
+                                }
+
                                 serializer.Serialize(writer, settings);
                                 writer.Close();
+
                                 hasConfiguration = true;
-                                try
+
+                               if (HasRemoteAccess(RepoCombo.Text))
                                 {
-                                    if (HasRemoteAccess(RepoCombo.Text))
-                                    {
-                                        Refresh();
-                                        MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
-                                        AddUrl(profile, newRepository);
-                                        prevRepo = RepoCombo.Text;
-                                        RepoCombo.Items.Clear();
-                                        UpdateUrlList();
-                                        RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(repository.url); ;
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                        artifactTabControl.SelectedIndex = 2;
-                                    }
+                                    Refresh();
+                                    MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
+                                    AddUrl(profile, newRepository);
+                                    prevRepo = RepoCombo.Text;
+                                    RepoCombo.Items.Clear();
+                                    UpdateUrlList();
+                                    RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(repository.url);
                                     break;
                                 }
-                                catch (Exception)
+                                else
                                 {
                                     MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     artifactTabControl.SelectedIndex = 2;
-                                    RepoCombo.Text = string.Empty;
+                                    RepoCombo.Text = newRepository.url;
+                                    break;
                                 }
-
-
                             }
                         }
                     }
                 }
                 if (!hasConfiguration)
                 {
-                    NPanday.Model.Setting.Profile profile1 = new NPanday.Model.Setting.Profile();
-                    NPanday.Model.Setting.Repository repository1 = new NPanday.Model.Setting.Repository();
-                    profile1.repositories = new NPanday.Model.Setting.Repository[] { repository1 };
-                    UpdateRepositoryFor(profile1, repository1);
+                    
+                    if (HasRemoteAccess(RepoCombo.Text))
+                    {
 
-                    if (settings.profiles == null)
-                    {
-                        settings.profiles = new NPanday.Model.Setting.Profile[] { profile1 };
-                    }
-                    else
-                    {
-                        List<NPanday.Model.Setting.Profile> profiles = new List<NPanday.Model.Setting.Profile>();
-                        profiles.AddRange(settings.profiles);
-                        profiles.Add(profile1);
-                        settings.profiles = profiles.ToArray();
-                    }
-                    serializer.Serialize(writer, settings);
-                    writer.Close();
-                    try
-                    {
-                        if (HasRemoteAccess(RepoCombo.Text))
+                        NPanday.Model.Setting.Profile profile1 = new NPanday.Model.Setting.Profile();
+                        NPanday.Model.Setting.Repository repository1 = new NPanday.Model.Setting.Repository();
+                        profile1.repositories = new NPanday.Model.Setting.Repository[] { repository1 };
+                        UpdateRepositoryFor(profile1, repository1);
+
+                        if (settings.profiles == null)
                         {
-                            Refresh();
-                            prevRepo = RepoCombo.Text;
-                            MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
+                            settings.profiles = new NPanday.Model.Setting.Profile[] { profile1 };
                         }
                         else
                         {
-                            MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            artifactTabControl.SelectedIndex = 2;
-                            RepoCombo.Text = string.Empty;
+                            List<NPanday.Model.Setting.Profile> profiles = new List<NPanday.Model.Setting.Profile>();
+                            profiles.AddRange(settings.profiles);
+                            profiles.Add(profile1);
+                            settings.profiles = profiles.ToArray();
                         }
+                        serializer.Serialize(writer, settings);
+                        writer.Close();
+
+
+                        Refresh();
+                        prevRepo = RepoCombo.Text;
+                        MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
                     }
-                    catch (Exception)
+                    else
                     {
                         MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         artifactTabControl.SelectedIndex = 2;
                         RepoCombo.Text = string.Empty;
+                        serializer.Serialize(writer, settings);
+                        writer.Close();
                     }
-
                 }
+
             }
+            
             else
             {
                 MessageBox.Show("Sorry, Repository cannot be blank.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
