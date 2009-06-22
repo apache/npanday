@@ -275,8 +275,8 @@ namespace NPanday.ProjectImporter.Digest.Model
                 activeProfiles.AddRange(settings.activeProfiles);
                 foreach (Profile profile in settings.profiles)
                 {
-                    if(!activeProfiles.Contains(profile.id))
-                        continue;
+                    //if(!activeProfiles.Contains(profile.id))
+                    //    continue;
                     foreach (Repository repo in profile.repositories)
                     {
                         if ("NPanday.id".Equals(repo.id, StringComparison.OrdinalIgnoreCase))
@@ -287,7 +287,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                         }
                     }
                 }
-                return true;
+                return false;
             }
             catch 
             {
@@ -301,6 +301,10 @@ namespace NPanday.ProjectImporter.Digest.Model
             {
                 WebClient client = new WebClient();
                 byte[] assembly = client.DownloadData(artifact.RemotePath);
+                if (!artifact.FileInfo.Directory.Exists) 
+                {
+                    artifact.FileInfo.Directory.Create();
+                }
                 FileStream stream = new FileStream(artifact.FileInfo.FullName, FileMode.Create);
                 stream.Write(assembly, 0, assembly.Length);
                 stream.Flush();

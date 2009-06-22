@@ -134,11 +134,14 @@ namespace NPanday.VisualStudio.Addin
         void getReferencesFromPom()
         {
             Artifact.ArtifactRepository repository = new NPanday.Artifact.ArtifactContext().GetArtifactRepository();
-           NPanday.Model.Pom.Model m = NPanday.Utils.PomHelperUtility.ReadPomAsModel(new FileInfo(pomFile));
-           foreach (Dependency d in m.dependencies)
-           {
-               CopyArtifact(repository.GetArtifact(d));
-           }
+            NPanday.Model.Pom.Model m = NPanday.Utils.PomHelperUtility.ReadPomAsModel(new FileInfo(pomFile));
+            if (m.dependencies != null)
+            {
+                foreach (Dependency d in m.dependencies)
+                {
+                    CopyArtifact(repository.GetArtifact(d));
+                }
+            }
         }
 
         bool pomExist()

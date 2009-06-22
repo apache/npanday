@@ -167,7 +167,11 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 string hintPath = buildItem.GetMetadata("HintPath");
                                 if (!string.IsNullOrEmpty(hintPath))
                                 {
-                                    reference.HintPath = Path.GetFullPath(Path.Combine(projectBasePath, hintPath));
+                                    string fullHint = Path.Combine(projectBasePath, hintPath);
+                                    if(File.Exists(fullHint))
+                                        reference.HintPath = Path.GetFullPath(fullHint);
+                                    else
+                                        reference.HintPath = fullHint;
                                 }
                                 if (string.IsNullOrEmpty(reference.HintPath) || !(new FileInfo(reference.HintPath).Exists))
                                 {
