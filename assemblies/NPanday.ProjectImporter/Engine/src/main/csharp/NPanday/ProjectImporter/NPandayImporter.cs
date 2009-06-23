@@ -138,6 +138,9 @@ namespace NPanday.ProjectImporter
         /// <returns>An array of generated pom.xml filenames</returns>
         public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag,VerifyProjectToImport verifyProjectToImport)
         {
+        
+            string[] result = null;
+
             FileInfo solutionFileInfo = new FileInfo(solutionFile);
 
             List<Dictionary<string, object>> list = ParseSolution(solutionFileInfo);
@@ -186,25 +189,16 @@ namespace NPanday.ProjectImporter
             }
 
             prjDigests = filteredPrjDigests.ToArray();
-            
-            string[] result =ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag);
 
+            result =ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag);
 
-            //check if project is valid
-            if (result != null)
+            if (verifyProjectToImport != null && filteredPrjDigests.Count > 0)
             {
-                if (verifyProjectToImport != null && filteredPrjDigests.Count > 0)
-                {
-                    verifyProjectToImport(ref prjDigests, structureType, solutionFile, ref groupId, ref artifactId, ref version);
-                }
-                return result;
+               verifyProjectToImport(ref prjDigests, structureType, solutionFile, ref groupId, ref artifactId, ref version);
             }
+                
+            return result;
 
-            else
-            {
-                MessageBox.Show("The Project Importer Failed, Project Directory may not be supported");
-                return null;
-            }
         }
 
         #endregion
