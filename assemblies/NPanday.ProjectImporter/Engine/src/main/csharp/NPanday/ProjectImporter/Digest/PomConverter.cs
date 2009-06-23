@@ -129,7 +129,7 @@ namespace NPanday.ProjectImporter.Converter
                     if (string.IsNullOrEmpty(moduleDir))
                     {
                         moduleDir = ".";
-                        errorPrj += prjDir;
+                        errorPrj += projectDigest.FullFileName;
                     }
                     modules.Add(moduleDir);
 
@@ -145,8 +145,8 @@ namespace NPanday.ProjectImporter.Converter
             }
             catch
             {
-                throw new Exception("Project Import Error!\nProject Importer failed with project "+errorPrj
-                                   +" please check your directory structure.");
+                throw new Exception("Project Importer failed with project "+errorPrj
+                                   +" Project directory structure may not be supported.");
             }
 
             
