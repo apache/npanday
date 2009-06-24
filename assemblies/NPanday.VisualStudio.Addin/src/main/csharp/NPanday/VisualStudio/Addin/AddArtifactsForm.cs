@@ -180,7 +180,10 @@ namespace NPanday.VisualStudio.Addin
                 {
                     if (repository.id.Equals("NPanday.id"))
                     {
-                        RepoCombo.SelectedIndex = RepoCombo.Items.Add(repository.url);
+                        if (!RepoCombo.Items.Contains(repository.url))
+                        {
+                            RepoCombo.SelectedIndex = RepoCombo.Items.Add(repository.url);
+                        }
                     }
                 }
             }
