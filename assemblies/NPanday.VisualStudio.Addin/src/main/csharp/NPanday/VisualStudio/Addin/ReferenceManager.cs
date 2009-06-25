@@ -116,13 +116,19 @@ namespace NPanday.VisualStudio.Addin
 
         static string copyToReferenceFolder(Artifact.Artifact artifact, string referenceFolder)
         {
+            //modified artifactFolder to match the .dll searched in NPanday.ProjectImporter.Digest.Model.Reference.cs
             string artifactFolder = Path.Combine(referenceFolder, string.Format("{0}\\{1}-{2}", artifact.GroupId, artifact.ArtifactId, artifact.Version));
+            //string artifactFolder = Path.Combine(referenceFolder, string.Format("{0}\\{1}", artifact.GroupId, artifact.ArtifactId));
+            
             DirectoryInfo di = new DirectoryInfo(artifactFolder);
             if (!di.Exists)
             {
                 di.Create();
             }
-            string artifactFileName = Path.Combine(artifactFolder, artifact.FileInfo.Name);
+            
+            //string artifactFileName = Path.Combine(artifactFolder, artifact.FileInfo.Name);
+            string artifactFileName = Path.Combine(artifactFolder, artifact.ArtifactId+".dll");
+            
             if (!File.Exists(artifactFileName))
             {
                 File.Copy(artifact.FileInfo.FullName, artifactFileName);

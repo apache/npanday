@@ -708,7 +708,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             }
 
-
+            bool isPathReference = false;
 
             // resolve using system path
             if (!string.IsNullOrEmpty(reference.HintFullPath) && new FileInfo(reference.HintFullPath).Exists)
@@ -732,6 +732,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                                      + "\nDeploying the reference to a Repository, will make the code portable to other machines",
                              reference.HintFullPath
                          ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                        isPathReference = true;
                     }
 
                 }
@@ -740,27 +742,34 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 // uncomment this if systemPath is supported
 
                 Dependency refDependency = new Dependency();
-                refDependency.artifactId = reference.Name;
-                refDependency.groupId = reference.Name;
-                refDependency.version = reference.Version ?? "1.0.0.0";
-                refDependency.type = "library";
-                refDependency.scope = "system";
-                refDependency.systemPath = reference.HintFullPath;
 
+                if (!isPathReference)
+                {
+                    refDependency.artifactId = reference.Name;
+                   
+                    //get version from the name above the last path
+                    string[] pathTokens = reference.HintFullPath.Split("\\\\".ToCharArray());
+                    refDependency.groupId = pathTokens[pathTokens.Length - 3];
+                    refDependency.version = pathTokens[pathTokens.Length-2].Replace(reference.Name+"-","") ?? "1.0.0.0";
+                    //refDependency.version = reference.Version ?? "1.0.0.0";
+                    
+                    refDependency.type = "library";
+                    //refDependency.scope = "system";
+                    //refDependency.systemPath = reference.HintFullPath;
+
+                }
+                else
+                {
+                    refDependency.artifactId = reference.Name;
+                    refDependency.groupId = reference.Name;
+                    refDependency.version = reference.Version ?? "1.0.0.0";
+                    refDependency.type = "library";
+                    refDependency.scope = "system";
+                    refDependency.systemPath = reference.HintFullPath;
+                }
+                
                 return refDependency;
             }
-            //if (string.IsNullOrEmpty(reference.HintFullPath) && !string.IsNullOrEmpty(reference.Name))
-            //{
-            //    MessageBox.Show(
-            //            string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
-            //                        + "\nReference: {0}"
-            //                        + "\nPlease Install it in your GAC or your Maven Repository."
-            //                        + "\nInstalling Reference to your Maven Repository, will make the code portable to other machines",
-            //                reference.Name
-            //            ));
-            //}
-
-
 
             return null;
 

@@ -150,6 +150,7 @@ namespace NPanday.ProjectImporter.Digest.Model
             Assembly asm = null ;
             string path = string.Empty;
 
+            //if (dll.Exists)
             if (dll.Exists)
             {
                 //asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
@@ -311,6 +312,19 @@ namespace NPanday.ProjectImporter.Digest.Model
                 stream.Close();
                 stream.Dispose();
                 client.Dispose();
+                
+
+                string artifactDir = GetLocalUacPath(artifact, artifact.FileInfo.Extension);
+                
+                if(!Directory.Exists(Path.GetDirectoryName(artifactDir)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(artifactDir));
+                }
+                if (!File.Exists(artifactDir))
+                {
+                    File.Copy(artifact.FileInfo.FullName, artifactDir);
+                }
+                
                 return true;
             }
             catch
@@ -318,6 +332,12 @@ namespace NPanday.ProjectImporter.Digest.Model
                 return false;
             }
         }
+
+        public static string GetLocalUacPath(Artifact.Artifact artifact, string ext)
+        {
+            return Path.Combine(Directory.GetParent(SettingsUtil.GetLocalRepositoryPath()).FullName, string.Format(@"uac\gac_msil\{1}\{2}__{0}\{1}{3}", artifact.GroupId, artifact.ArtifactId, artifact.Version, ext));
+        }
+        
 
 
         private void SetAssemblyInfoValues(string assemblyInfo)
