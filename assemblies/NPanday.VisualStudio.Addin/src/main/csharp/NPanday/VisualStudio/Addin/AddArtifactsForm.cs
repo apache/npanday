@@ -71,7 +71,7 @@ namespace NPanday.VisualStudio.Addin
         {
             //InitializeForm();
             InitializeComponent();
-            addArtifact.Hide();
+            addArtifact.Show();
             // localListView.View = View.Details;
             #region Initialize Configuration Repo
             settingsPath = SettingsUtil.GetUserSettingsPath();
@@ -92,7 +92,7 @@ namespace NPanday.VisualStudio.Addin
             this.logger = logger;
             InitializeForm();
             InitializeComponent();
-            addArtifact.Hide();
+            addArtifact.Visible = true;
             localListView.View = View.Details;           
             artifactContext = container;
             this.pom = pom;
@@ -112,6 +112,7 @@ namespace NPanday.VisualStudio.Addin
 
         private void Refresh()
         {
+            localListView.Items.Clear();
             localArtifacts = artifactContext.GetArtifactRepository().GetArtifacts();
             foreach (NPanday.Artifact.Artifact artifact in localArtifacts)
             {
@@ -191,6 +192,7 @@ namespace NPanday.VisualStudio.Addin
 
         private void AddArtifactsForm_Load(object sender, EventArgs e)
         {
+            localListView.Items.Clear();
             localArtifacts = artifactContext.GetArtifactRepository().GetArtifacts();
             foreach (NPanday.Artifact.Artifact artifact in localArtifacts)
             {
@@ -257,6 +259,10 @@ namespace NPanday.VisualStudio.Addin
                     if (repository.id.Equals("NPanday.id"))
                     {
                         RepoCombo.SelectedIndex = RepoCombo.Items.Add(repository.url);
+                        if (artifactTabControl.SelectedIndex != 3)
+                        {
+                            addArtifact.Show();
+                        }
                     }
                 }
             }
