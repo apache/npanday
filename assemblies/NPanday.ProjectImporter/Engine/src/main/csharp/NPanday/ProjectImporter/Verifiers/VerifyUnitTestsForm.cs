@@ -53,7 +53,19 @@ namespace NPanday.ProjectImporter.Verifiers
             {
                 String[] projectNameTokens = projectDigest.FullFileName.Split("\\".ToCharArray());
                 String projectName = projectNameTokens[projectNameTokens.Length-1];
-                chkListTestUnits.Items.Add(projectName.Substring(0,projectName.IndexOf(".")), projectDigest.UnitTest);
+                
+                //instances where in the project name has added \\ at the end of the full file name
+                if (projectName.Equals(string.Empty))
+                {
+                    projectName = projectNameTokens[projectNameTokens.Length - 2];
+                }
+
+                if (projectName.Contains("."))
+                { 
+                    projectName = projectName.Substring(0,projectName.IndexOf("."));
+                }
+
+                chkListTestUnits.Items.Add(projectName, projectDigest.UnitTest);
             }
         }
 
