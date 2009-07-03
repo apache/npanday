@@ -54,6 +54,7 @@ namespace NPanday.VisualStudio.Addin
         private Project project;
         private NPanday.Logging.Logger logger;
         private FileInfo pom;
+        private WebClient webClient = new WebClient();
         bool _remoteRepoChanged = false;
 
 
@@ -413,27 +414,45 @@ namespace NPanday.VisualStudio.Addin
         /// <returns></returns>
         private bool HasRemoteAccess(string url)
         {
-            WebClient webClient = new WebClient();
             byte[] page = null;
-            bool hasRemoteAccess;
+            bool hasRemoteAccess = false;
 
-            try
+            while (true)
             {
-                page = webClient.DownloadData(url);
-                hasRemoteAccess = true;
-            }
-            catch (Exception ex)
-            {
-                hasRemoteAccess = false;
+                try
+                {
+                    page = webClient.DownloadData(url);
+                    hasRemoteAccess = true;
+                    break;
+                }
+                catch (WebException ex)
+                {
+                    // ask for user credentials then try again
+                    if ((ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        LoginForm dialog = new LoginForm();
+                        if (dialog.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(dialog.Username) && !string.IsNullOrEmpty(dialog.Username))
+                        {
+                            CredentialCache cache = new CredentialCache();
+                            cache.Add(new Uri(url), "Basic", new NetworkCredential(dialog.Username, dialog.Password));
+                            webClient.Credentials = cache;
+                            continue;
+                        }
+                    }
+                    
+                    break;
+                }
+                catch (Exception)
+                {
+                    break;
+                }
             }
             return hasRemoteAccess;
-
         }
 
         List<TreeNode> getNodesFromRemote(string url)
         {
             List<TreeNode> treeNodes = new List<TreeNode>();
-            WebClient webClient = new WebClient();
 
             byte[] page = null;
 
@@ -442,7 +461,7 @@ namespace NPanday.VisualStudio.Addin
             {
                 page = webClient.DownloadData(url);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //MessageBox.Show("Cannot read remote repository: " + url + " " + ex.Message + ex.StackTrace);
                 MessageBox.Show("Cannot read remote repository: " + url,"Configure Repository",MessageBoxButtons.OK,MessageBoxIcon.Warning);
@@ -522,7 +541,6 @@ namespace NPanday.VisualStudio.Addin
 
         private Boolean isValidRemoteRepositoryUrl(String repoUrl)
         {
-            WebClient webClient = new WebClient();
             byte[] page = null;
 
             try
@@ -750,14 +768,13 @@ namespace NPanday.VisualStudio.Addin
             {
                 if (!File.Exists(artifact.FileInfo.FullName))
                 {
-                    WebClient client = new WebClient();
-                    byte[] assembly = client.DownloadData(uri);
+                    byte[] assembly = webClient.DownloadData(uri);
                     FileStream stream = new FileStream(artifact.FileInfo.FullName, FileMode.Create);
                     stream.Write(assembly, 0, assembly.Length);
                     stream.Flush();
                     stream.Close();
                     stream.Dispose();
-                    client.Dispose();
+                    webClient.Dispose();
                 }
                 //make sure that file is properly closed before adding it to the reference
                 System.Threading.Thread.Sleep(1000);
