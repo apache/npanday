@@ -15,14 +15,24 @@ namespace NPanday.VisualStudio.Addin
             InitializeComponent();
         }
 
-        public string Username { get; set; }
+        private string _username;
+        public string Username 
+        {
+            get { return _username; }
+            set { _username = value; }
+        }
 
-        public string Password { get; set; }
+        private string _password;
+        public string Password 
+        { 
+            get { return _password; }
+            set { _password = value; }
+        }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            Username = txtUsername.Text;
-            Password = txtPassword.Text;
+            _username = txtUsername.Text;
+            _password = txtPassword.Text;
             this.DialogResult = DialogResult.OK;
         }
 
