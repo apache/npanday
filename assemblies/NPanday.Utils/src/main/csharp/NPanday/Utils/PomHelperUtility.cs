@@ -249,8 +249,9 @@ namespace NPanday.Utils
             if (string.IsNullOrEmpty(namespaceUri))
             {
                 xmlDocument.DocumentElement.SetAttribute("xmlns", "http://maven.apache.org/POM/4.0.0");
+                xmlDocument.Save(pomfile.FullName);
             }
-            xmlDocument.Save(pomfile.FullName);
+            
 
 
             XmlReader reader = XmlReader.Create(pomfile.FullName);

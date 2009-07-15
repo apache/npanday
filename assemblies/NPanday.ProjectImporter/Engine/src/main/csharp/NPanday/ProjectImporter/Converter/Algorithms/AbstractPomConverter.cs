@@ -698,12 +698,28 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 }
 
                 refDependency.version = reference.Version ?? "1.0.0.0";
-                refDependency.classifier = reference.PublicKeyToken;
+                
 
                 refDependency.scope = "system";
                 System.Reflection.Assembly a = System.Reflection.Assembly.Load(gacUtil.GetAssemblyInfo(reference.Name));
+
+
+                if (reference.PublicKeyToken != null)
+                {
+                    refDependency.classifier = reference.PublicKeyToken;
+                }
+                else
+                {
+                    int start = a.FullName.IndexOf("PublicKeyToken=");
+                    int length = (a.FullName.Length)-start;
+                    refDependency.classifier = a.FullName.Substring(start,length);
+                    refDependency.classifier = refDependency.classifier.Replace("PublicKeyToken=", "");
+                }
+                
+
                 refDependency.systemPath = a.Location;
 
+                
                 return refDependency;
 
             }
