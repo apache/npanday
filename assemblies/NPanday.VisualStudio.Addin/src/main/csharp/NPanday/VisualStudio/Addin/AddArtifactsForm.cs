@@ -111,7 +111,7 @@ namespace NPanday.VisualStudio.Addin
             this.ResumeLayout(false);
         }
 
-        private void Refresh()
+        private void refresh()
         {
             localListView.Items.Clear();
             localArtifacts = artifactContext.GetArtifactRepository().GetArtifacts();
@@ -123,45 +123,7 @@ namespace NPanday.VisualStudio.Addin
                 localListView.Items.Add(item);
             }
 
-            String settingsPath = SettingsUtil.GetUserSettingsPath();
-            Settings settings = null;
-
-            try
-            {
-                if (File.Exists(settingsPath))
-                {
-                    settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
-                }
-                else
-                {
-                    MessageBox.Show("Sorry, but no settings.xml file was found in your Local Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-            }
-            catch(Exception)
-            {
-                //MessageBox.Show("Invalid Settings File: " + ex.Message + ex.StackTrace);
-                MessageBox.Show("Settings.xml could not be read", "Invalid Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (settings == null || settings.profiles == null)
-            {
-                MessageBox.Show("No Profile Found. Configure repository: ");
-                return;
-            }
-
-            String url = getRepositoryUrl();
-
-            if (url == null)
-            {
-                //MessageBox.Show("Remote repository not set: Try 'Add Maven Repository' option from menu. Will" +
-                //    " require restart of addin.");
-                //return;
-                MessageBox.Show("Remote repository not yet set: Please set your Remote Repository.");
-                ConfigureTab.Focus();
-                return;
-            }
+            String url = RepoCombo.Text;
 
             SetUnsafeHttpHeaderParsing();
 
@@ -169,26 +131,6 @@ namespace NPanday.VisualStudio.Addin
             treeView1.Nodes.Clear();
             treeView1.Nodes.AddRange(treeNodes.ToArray());
             treeView1.MouseClick += new System.Windows.Forms.MouseEventHandler(treeView_MouseUp);
-
-
-            if (settings == null || settings.profiles == null)
-            {
-                return;
-            }
-
-            foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
-            {
-                foreach (NPanday.Model.Setting.Repository repository in profile.repositories)
-                {
-                    if (repository.id.Equals("NPanday.id"))
-                    {
-                        if (!RepoCombo.Items.Contains(repository.url))
-                        {
-                            RepoCombo.SelectedIndex = RepoCombo.Items.Add(repository.url);
-                        }
-                    }
-                }
-            }
         }
 
         private void AddArtifactsForm_Load(object sender, EventArgs e)
@@ -234,9 +176,6 @@ namespace NPanday.VisualStudio.Addin
 
             if (url == null)
             {
-                //MessageBox.Show("Remote repository not set: Try 'Add Maven Repository' option from menu. Will" +
-                //    " require restart of addin.");
-                //return;
                 MessageBox.Show("Remote repository not yet set: Please set your Remote Repository.","Repository Configuration",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 return;
             }
@@ -247,26 +186,8 @@ namespace NPanday.VisualStudio.Addin
             treeView1.Nodes.AddRange(treeNodes.ToArray());
             treeView1.MouseClick += new System.Windows.Forms.MouseEventHandler(treeView_MouseUp);
 
-
-            if (settings == null || settings.profiles == null)
-            {
-                return;
-            }
-
-            foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
-            {
-                foreach (NPanday.Model.Setting.Repository repository in profile.repositories)
-                {
-                    if (repository.id.Equals("NPanday.id"))
-                    {
-                        RepoCombo.SelectedIndex = RepoCombo.Items.Add(repository.url);
-                        if (artifactTabControl.SelectedIndex != 3)
-                        {
-                            addArtifact.Show();
-                        }
-                    }
-                }
-            }
+            updateUrlList();
+            RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(url);
 
             _remoteRepoChanged = false;
         }
@@ -412,42 +333,41 @@ namespace NPanday.VisualStudio.Addin
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        private bool HasRemoteAccess(string url)
+        private void verifyRemoteAccess(string url)
         {
-            byte[] page = null;
-            bool hasRemoteAccess = false;
-
             while (true)
             {
                 try
                 {
-                    page = webClient.DownloadData(url);
-                    hasRemoteAccess = true;
+                    webClient.DownloadData(url);
                     break;
                 }
                 catch (WebException ex)
                 {
                     // ask for user credentials then try again
-                    if ((ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.Unauthorized)
+                    if (ex.Response != null && (ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.Unauthorized)
                     {
                         LoginForm dialog = new LoginForm();
-                        if (dialog.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(dialog.Username) && !string.IsNullOrEmpty(dialog.Username))
+                        if (dialog.ShowDialog(this) == DialogResult.OK)
                         {
                             CredentialCache cache = new CredentialCache();
                             cache.Add(new Uri(url), "Basic", new NetworkCredential(dialog.Username, dialog.Password));
                             webClient.Credentials = cache;
                             continue;
                         }
+
+                        throw new Exception("Sorry, but you are not authorized to access the specified URL.");
                     }
-                    
-                    break;
+                    else
+                    {
+                        throw new Exception("Sorry, but you have entered an invalid URL for the Remote Repository.");
+                    }
                 }
                 catch (Exception)
                 {
-                    break;
+                    throw new Exception("Sorry, but you have entered an invalid URL for the Remote Repository.");
                 }
             }
-            return hasRemoteAccess;
         }
 
         List<TreeNode> getNodesFromRemote(string url)
@@ -580,12 +500,14 @@ namespace NPanday.VisualStudio.Addin
 
             foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
             {
-                foreach (NPanday.Model.Setting.Repository repository in profile.repositories)
+                if ("NPanday.id".Equals(profile.id))
                 {
-                    if (repository.id.Equals("NPanday.id"))
+                    if (profile.repositories.Length > 0)
                     {
-                        return repository.url;
+                        return profile.repositories[0].url;
                     }
+                    
+                    break;
                 }
             }
             return null;
@@ -800,14 +722,11 @@ namespace NPanday.VisualStudio.Addin
 
         }
 
-        private void UpdateRepositoryFor(NPanday.Model.Setting.Profile profile, NPanday.Model.Setting.Repository repository)
+        private void updateRepositoryFor(NPanday.Model.Setting.Profile profile, NPanday.Model.Setting.Repository repository)
         {
             NPanday.Model.Setting.Activation activation = new NPanday.Model.Setting.Activation();
             activation.activeByDefault = true;
             profile.activation = activation;
-
-            repository.url = RepoCombo.Text;
-            repository.id = "NPanday.id";
 
             NPanday.Model.Setting.RepositoryPolicy releasesPolicy = new NPanday.Model.Setting.RepositoryPolicy();
             NPanday.Model.Setting.RepositoryPolicy snapshotsPolicy = new NPanday.Model.Setting.RepositoryPolicy();
@@ -815,34 +734,42 @@ namespace NPanday.VisualStudio.Addin
             snapshotsPolicy.enabled = checkBoxSnapshot.Checked;
             repository.releases = releasesPolicy;
             repository.snapshots = snapshotsPolicy;
+            repository.id = repository.url;
         }
 
         private void update_Click(object sender, EventArgs e)
         {
-            ExecuteRepoUpdate();
-
+            executeRepoUpdate();
         }
 
         private string prevRepo=string.Empty;
 
-        private void ExecuteRepoUpdate()
+        private void executeRepoUpdate()
         {
             if (prevRepo.Equals(RepoCombo.Text))
             {
                 return;
             }
-            if (!string.IsNullOrEmpty(RepoCombo.Text))
+
+            if (string.IsNullOrEmpty(RepoCombo.Text))
             {
-                bool hasConfiguration = false;
+                MessageBox.Show("Sorry, Repository cannot be blank.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                bool profileExists = false;
                 XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Setting.Settings));
+                TextWriter writer;
 
-                Model.Setting.Repository newRepo = new NPanday.Model.Setting.Repository();
-                newRepo.url = RepoCombo.Text;
+                string selectedUrl = RepoCombo.Text;
 
+                // get system path of settings.xml
                 if (settingsPath == null)
                 {
                     settingsPath = SettingsUtil.GetUserSettingsPath();
                 }
+
+                // load settings.xml
                 if (settings == null)
                 {
                     try
@@ -855,116 +782,100 @@ namespace NPanday.VisualStudio.Addin
                     }
                 }
 
-                TextWriter writer = null;
-
+                // verify if URL is accessible
+                try
+                {
+                    verifyRemoteAccess(selectedUrl);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    artifactTabControl.SelectedIndex = 2;
+                    RepoCombo.Text = string.Empty;
+                    return;
+                }
+                
+                // look for "NPanday.id" profile
                 if (settings.profiles != null)
                 {
                     foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
                     {
-                        foreach (NPanday.Model.Setting.Repository repository in profile.repositories)
+                        if ("NPanday.id".Equals(profile.id))
                         {
-                            if (repository.id.Equals("NPanday.id"))
+                            profileExists = true;
+                            NPanday.Model.Setting.Repository selectedRepo = getRepositoryFromProfile(profile, selectedUrl);
+                            
+                            // if found, remove then add
+                            if (selectedRepo != null)
                             {
-                                Model.Setting.Repository newRepository = new NPanday.Model.Setting.Repository();
-                                newRepository.id = repository.id;
-                                newRepository.releases = repository.releases;
-                                newRepository.snapshots = repository.snapshots;
-                                newRepository.url = repository.url;
-
-                                if (!UrlExists(profile, newRepo) && (HasRemoteAccess(newRepo.url)))
-                                {
-                                    UpdateRepositoryFor(profile, repository);
-                                }
-
-                                writer = new StreamWriter(settingsPath);
-
-                                hasConfiguration = true;
-
-                               if (HasRemoteAccess(RepoCombo.Text))
-                                {
-                                    //Refresh();
-                                   if(!UrlExists(profile, newRepo))
-                                   {
-                                       profile.repositories[profile.repositories.Length] = newRepo;
-                                        //AddUrl(profile, newRepository);
-                                   }
-                                    prevRepo = RepoCombo.Text;
-                                    MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
-                                    //break;
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                    artifactTabControl.SelectedIndex = 2;
-                                    RepoCombo.Text = newRepository.url;
-                                    //break;
-                                }
-
-                                serializer.Serialize(writer, settings);
-                                writer.Close();
-                                RepoCombo.Items.Clear();
-                                UpdateUrlList();
-                                RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(repository.url);
+                                removeRepositoryFromProfile(selectedRepo, profile);
+                                updateRepositoryFor(profile, selectedRepo);
                             }
+                            else
+                            {
+                                selectedRepo = new NPanday.Model.Setting.Repository();
+                                selectedRepo.url = selectedUrl;
+                                updateRepositoryFor(profile, selectedRepo);
+                            }
+                            addRepositoryToProfile(selectedRepo, profile);
+
+                            MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
+
+                            prevRepo = selectedUrl;
+                            writer = new StreamWriter(settingsPath);
+                            serializer.Serialize(writer, settings);
+                            writer.Close();
+
+                            break;
                         }
                     }
                 }
-                if (!hasConfiguration)
+
+                // add new profile if not found
+                if (!profileExists)
                 {
+                    // create new profile
+                    NPanday.Model.Setting.Profile newProfile = new NPanday.Model.Setting.Profile();
+                    newProfile.id = "NPanday.id";
+
+                    // create new repo
+                    NPanday.Model.Setting.Repository newRepo = new NPanday.Model.Setting.Repository();
+                    newRepo.url = selectedUrl;
+                    updateRepositoryFor(newProfile, newRepo);
+                    newProfile.repositories = new NPanday.Model.Setting.Repository[] { newRepo };
                     
-                    if (HasRemoteAccess(RepoCombo.Text))
+                    if (settings.profiles == null)
                     {
-
-                        NPanday.Model.Setting.Profile profile1 = new NPanday.Model.Setting.Profile();
-                        NPanday.Model.Setting.Repository repository1 = new NPanday.Model.Setting.Repository();
-                        profile1.repositories = new NPanday.Model.Setting.Repository[] { repository1 };
-                        UpdateRepositoryFor(profile1, repository1);
-
-                        if (settings.profiles == null)
-                        {
-                            settings.profiles = new NPanday.Model.Setting.Profile[] { profile1 };
-                        }
-                        else
-                        {
-                            List<NPanday.Model.Setting.Profile> profiles = new List<NPanday.Model.Setting.Profile>();
-                            profiles.AddRange(settings.profiles);
-                            profiles.Add(profile1);
-                            settings.profiles = profiles.ToArray();
-                        }
-                        
-                        writer = new StreamWriter(settingsPath);
-                        serializer.Serialize(writer, settings);
-                        writer.Close();
-
-
-                        //Refresh();
-                        prevRepo = RepoCombo.Text;
-                        MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
+                        settings.profiles = new NPanday.Model.Setting.Profile[] { newProfile };
                     }
                     else
                     {
-                        MessageBox.Show("Sorry, but you have entered an invalid URL for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        artifactTabControl.SelectedIndex = 2;
-                        RepoCombo.Text = string.Empty;
-                        writer = new StreamWriter(settingsPath);
-                        serializer.Serialize(writer, settings);
-                        writer.Close();
+                        List<NPanday.Model.Setting.Profile> profiles = new List<NPanday.Model.Setting.Profile>();
+                        profiles.AddRange(settings.profiles);
+                        profiles.Add(newProfile);
+                        settings.profiles = profiles.ToArray();
                     }
+                    
+                    writer = new StreamWriter(settingsPath);
+                    serializer.Serialize(writer, settings);
+                    writer.Close();
+
+                    prevRepo = selectedUrl;
+                    MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
                 }
 
-                Refresh();
+                
+                RepoCombo.Items.Clear();
+                updateUrlList();
+                RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(selectedUrl);
 
-            }
-            
-            else
-            {
-                MessageBox.Show("Sorry, Repository cannot be blank.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                refresh();
             }
         }
 
-        private void UpdateUrlList()
+        private void updateUrlList()
         {
-            List<string> urls = GetUrls();
+            List<string> urls = getUrls();
             foreach (string item in urls)
             {
                 if (!RepoCombo.Items.Contains(item))
@@ -974,68 +885,48 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
-        private void AddUrl(NPanday.Model.Setting.Profile profile, NPanday.Model.Setting.Repository repository)
+        private void addRepositoryToProfile(NPanday.Model.Setting.Repository repository, NPanday.Model.Setting.Profile profile)
         {
-
-            XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Setting.Settings));
-            if (settingsPath == null)
-            {
-                settingsPath = SettingsUtil.GetUserSettingsPath();
-            }
-            if (settings == null)
-            {
-                try
-                {
-                    settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
-                }
-                catch (Exception err)
-                {
-                    MessageBox.Show(err.Message + err.StackTrace);
-                }
-            }
-
-            TextWriter writer = new StreamWriter(settingsPath);
-
-
+            // activate profile
             NPanday.Model.Setting.Activation activation = new NPanday.Model.Setting.Activation();
             activation.activeByDefault = true;
             profile.activation = activation;
 
-
-
-            List<NPanday.Model.Setting.Repository> repositories = new List<NPanday.Model.Setting.Repository>();
-
-            bool urlExist = UrlExists(profile, repository);
-
-            if (!urlExist)
+            // add repository to profile
+            if (profile.repositories == null)
             {
-                
+                profile.repositories = new NPanday.Model.Setting.Repository[] { repository };
+            }
+            else
+            {
+                List<NPanday.Model.Setting.Repository> repositories = new List<NPanday.Model.Setting.Repository>();
                 repositories.AddRange(profile.repositories);
-                repositories.Add(repository);
+                repositories.Insert(0,repository);
                 profile.repositories = repositories.ToArray();
             }
-
-            serializer.Serialize(writer, settings);
-            writer.Close();
-
-
         }
 
-        private bool UrlExists(NPanday.Model.Setting.Profile profile, NPanday.Model.Setting.Repository repository)
+        private void removeRepositoryFromProfile(NPanday.Model.Setting.Repository repository, NPanday.Model.Setting.Profile profile)
         {
-            bool urlExist = false;
+            List<NPanday.Model.Setting.Repository> repositories = new List<NPanday.Model.Setting.Repository>();
+            repositories.AddRange(profile.repositories);
+            repositories.Remove(repository);
+            profile.repositories = repositories.ToArray();
+        }
+
+        private NPanday.Model.Setting.Repository getRepositoryFromProfile(NPanday.Model.Setting.Profile profile, string url)
+        {
             foreach (NPanday.Model.Setting.Repository repo in profile.repositories)
             {
-                if (repo.url.Equals(repository.url))
+                if (url.Equals(repo.url))
                 {
-                    urlExist = true;
-                    break;
+                    return repo;
                 }
             }
-            return urlExist;
+            return null;
         }
 
-        private List<string> GetUrls()
+        private List<string> getUrls()
         {
             if (settingsPath == null)
             {
@@ -1122,7 +1013,7 @@ namespace NPanday.VisualStudio.Addin
                 }
                 else
                 {
-                    UpdateUrlList();
+                    updateUrlList();
                     addArtifact.Hide();
                 }
             }
@@ -1139,7 +1030,7 @@ namespace NPanday.VisualStudio.Addin
                     if (_remoteRepoChanged)
                     {
                         _remoteRepoChanged = false;
-                        ExecuteRepoUpdate();
+                        executeRepoUpdate();
                     }
 
                     treeView1.Focus();
