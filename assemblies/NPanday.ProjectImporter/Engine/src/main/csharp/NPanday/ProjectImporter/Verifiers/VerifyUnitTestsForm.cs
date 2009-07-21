@@ -60,9 +60,17 @@ namespace NPanday.ProjectImporter.Verifiers
                     projectName = projectNameTokens[projectNameTokens.Length - 2];
                 }
 
-                if (projectName.Contains("."))
-                { 
-                    projectName = projectName.Substring(0,projectName.IndexOf("."));
+                if (projectName.Contains(".csproj") || projectName.Contains(".vbproj"))
+                {
+                    if (projectName.Contains(".csproj"))
+                    {
+                        projectName = projectName.Substring(0, projectName.LastIndexOf(".csproj"));
+                    }
+                    else
+                    {
+                        projectName = projectName.Substring(0, projectName.LastIndexOf(".vbproj"));
+                    }
+                    
                 }
 
                 chkListTestUnits.Items.Add(projectName, projectDigest.UnitTest);
