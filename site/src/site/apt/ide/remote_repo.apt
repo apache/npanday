@@ -34,23 +34,46 @@ Remote Repository Configuration
 
 * Manually Configure a Remote Maven Repository
 
-  To manually add a remote repository add the following lines to your <<<C:\\Documents and Settings\\[user_home]\\.m2\\settings.xml>>> file
-  replacing the values for the <<< \<repository\> >>> element.
+  To manually add a remote repository, add the following lines in your <<<C:\\Documents and Settings\\[user_home]\\.m2\\settings.xml>>> file 
+  within the <<< \<profiles\> >>> <<< \</profiles\> >>> tag.  Modify the values for the <<< \<repository\> >>> and <<< \<id\> >>>elements
+  with the repository url you want to access.
 
 +------+
-<profiles>
-  <profile>
-    <activation>
-      <activeByDefault>true</activeByDefault>
-    </activation>
-    <repositories>
-      <repository>
-        <releases />
-        <snapshots />
-        <id>npanday.id</id>
-        <url>http://repo1.maven.org/maven2/</url>
-      </repository>
-    </repositories>
-  </profile>
-</profiles>
+<profile>
+  <activation>
+	<activeByDefault>true</activeByDefault>
+  </activation>
+  <repositories>
+	<repository>
+	  <releases>
+		<enabled>false</enabled>
+	  </releases>
+	  <snapshots>
+		<enabled>false</enabled>
+	  </snapshots>
+	  <id>http://repo1.maven.org/maven2/</id>
+	  <url>http://repo1.maven.org/maven2/</url>
+	</repository>
+  </repositories>
+  <id>NPanday.id</id>
+</profile>
++------+
+
+  If the remote repository allows the snapshots or release artifacts to be stored then add the following lines:
+
++------+
+<profile>
+  <activation>
+	<activeByDefault>true</activeByDefault>
+  </activation>
+  <repositories>
+	<repository>
+	  <releases />
+	  <snapshots />
+	  <id>http://repo1.maven.org/maven2/</id>
+	  <url>http://repo1.maven.org/maven2/</url>
+	</repository>
+  </repositories>
+  <id>NPanday.id</id>
+</profile>
 +------+
