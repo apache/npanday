@@ -370,6 +370,21 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
+        private void verifyFileProtocol(string url)
+        {
+            string chkDir = url.Replace("file:///", "");
+            if (Directory.Exists(chkDir))
+            {
+
+            }
+            else
+            {
+                MessageBox.Show("Sorry, but you have entered an invalid Directory for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                artifactTabControl.SelectedIndex = 2;
+                RepoCombo.Text = string.Empty;
+            }
+        }
+
         List<TreeNode> getNodesFromRemote(string url)
         {
             List<TreeNode> treeNodes = new List<TreeNode>();
@@ -785,7 +800,15 @@ namespace NPanday.VisualStudio.Addin
                 // verify if URL is accessible
                 try
                 {
-                    verifyRemoteAccess(selectedUrl);
+
+                    if (RepoCombo.Text.Contains("file:///"))
+                    {
+                        verifyFileProtocol(selectedUrl);
+                    }
+                    else
+                    {
+                        verifyRemoteAccess(selectedUrl);
+                    }
                 }
                 catch (Exception ex)
                 {
