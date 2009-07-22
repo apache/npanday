@@ -10,7 +10,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
 {
     public sealed class SolutionParser
     {
-        public delegate List<Dictionary<string, object>> ParserAlgoDelegate(System.IO.FileInfo solutionFile);
+        public delegate List<Dictionary<string, object>> ParserAlgoDelegate(System.IO.FileInfo solutionFile, ref string warningMsg);
 
         static ParserAlgoDelegate[] ALGORITHMS = 
         {
@@ -18,13 +18,13 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
         };
 
 
-        public static List<Dictionary<string, object>> ParseSolution(FileInfo solutionFile)
+        public static List<Dictionary<string, object>> ParseSolution(FileInfo solutionFile, ref string warningMsg)
         {
             List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
 
             foreach (ParserAlgoDelegate algo in ALGORITHMS)
             {
-               list.AddRange(algo(solutionFile));
+               list.AddRange(algo(solutionFile, ref warningMsg));
             }
 
             return list;

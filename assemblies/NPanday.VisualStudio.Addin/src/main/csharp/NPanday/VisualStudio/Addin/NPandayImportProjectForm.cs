@@ -162,6 +162,7 @@ namespace NPanday.VisualStudio.Addin
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
+            string warningMsg = string.Empty;
             try
             {
                 if (!String.Empty.Equals(txtBrowseDotNetSolutionFile.Text) && System.IO.File.Exists(txtBrowseDotNetSolutionFile.Text)
@@ -201,21 +202,10 @@ namespace NPanday.VisualStudio.Addin
                     }
                     catch (Exception)
                     {
-                        DialogResult answer = MessageBox.Show(string.Format("WARNING: SCM Tag {0} was Not Accessible, \nWould you still like to Proceed with the Project Import?", scmTag), "Project Import Warning", MessageBoxButtons.YesNo,MessageBoxIcon.Warning);
-                        if (answer == DialogResult.No)
-                        {
-                            return;
-                        }
+                        warningMsg = string.Format("\n    SCM Tag {0} was not accessible", scmTag);
                     }
 
-
-
-
-
-                    //NPandayImporter importer = new NPandayImporter(new String[2] {txtBrowseDotNetSolutionFile.Text, "-DgroupId=" + txtGroupId.Text });
-                    //importer.GeneratePom();
-
-                    string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, "1.0-SNAPSHOT", scmTag, true);
+                    string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, "1.0-SNAPSHOT", scmTag, true, ref warningMsg);
 
                     string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
 
@@ -223,6 +213,11 @@ namespace NPanday.VisualStudio.Addin
                     foreach (string pom in generatedPoms)
                     {
                         str = str + string.Format("\n    Generated Pom XML File: {0} ", pom);
+                    }
+
+                    if (!string.IsNullOrEmpty(warningMsg))
+                    {
+                        str = string.Format("{0}\n\nwith Warning(s):{1}", str, warningMsg);
                     }
 
                     MessageBox.Show(str, "NPanday Import Done:");

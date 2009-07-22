@@ -64,9 +64,9 @@ namespace NPanday.ProjectImporter
         /// <param name="artifactId">Project Parent Pom Artifact ID, used as a maven artifact ID for the parent pom.xml</param>
         /// <param name="version">Project version, used as a maven version for the entire pom.xmls</param>
         /// <returns>An array of generated pom.xml filenames</returns>
-        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version)
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, ref string warningMsg)
         {
-            return ImportProject(solutionFile, groupId, artifactId, version, string.Empty,true);
+            return ImportProject(solutionFile, groupId, artifactId, version, string.Empty, true, ref warningMsg);
         }
 
         /// <summary>
@@ -80,15 +80,15 @@ namespace NPanday.ProjectImporter
         /// <param name="verifyTests">if true, a dialog box for verifying tests will show up and requires user interaction</param>
         /// <param name="scmTag">generates scm tags if txtboxfield is not empty or null</param>
         /// <returns>An array of generated pom.xml filenames</returns>
-        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag,bool verifyTests)
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag,bool verifyTests, ref string warningMsg)
         {
             if (verifyTests)
             {
-                return ImportProject(solutionFile, groupId, artifactId, version,  scmTag, VerifyUnitTestsToUser.VerifyTests);    
+                return ImportProject(solutionFile, groupId, artifactId, version,  scmTag, VerifyUnitTestsToUser.VerifyTests, ref warningMsg);    
             }
             else
             {
-                return ImportProject(solutionFile, groupId, artifactId, version, scmTag, null);    
+                return ImportProject(solutionFile, groupId, artifactId, version, scmTag, null, ref warningMsg);    
             }
             
 
@@ -136,14 +136,14 @@ namespace NPanday.ProjectImporter
         /// <param name="verifyProjectToImport">A delegate That will Accept a method for verifying Projects To Import</param>
         /// <param name="scmTag">adds scm tags to parent pom.xml if not string.empty or null</param>
         /// <returns>An array of generated pom.xml filenames</returns>
-        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag,VerifyProjectToImport verifyProjectToImport)
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag,VerifyProjectToImport verifyProjectToImport, ref string warningMsg)
         {
         
             string[] result = null;
 
             FileInfo solutionFileInfo = new FileInfo(solutionFile);
 
-            List<Dictionary<string, object>> list = ParseSolution(solutionFileInfo);
+            List<Dictionary<string, object>> list = ParseSolution(solutionFileInfo, ref warningMsg);
 
             //Checks for Invalid folder structure
             if (HasValidFolderStructure(list)!=string.Empty)
@@ -151,7 +151,7 @@ namespace NPanday.ProjectImporter
                 throw new Exception("Project Importer failed with project " + HasValidFolderStructure(list) + "  Project Directory may not be supported");
             }
 
-            ProjectDigest[] prjDigests = DigestProjects(list);
+            ProjectDigest[] prjDigests = DigestProjects(list, ref warningMsg);
 
 
             ProjectStructureType structureType = GetProjectStructureType(solutionFile, prjDigests);
@@ -183,9 +183,7 @@ namespace NPanday.ProjectImporter
 
             if (!string.Empty.Equals(UnsupportedProjectsMessage))
             {
-                string warningMSG = "Project Import Warning: \n Unsupported Projects: " + UnsupportedProjectsMessage;
-                MessageBox.Show(warningMSG, "Project Import Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
+                warningMsg = string.Format("{0}\n    Unsupported Projects: {1}", warningMsg, UnsupportedProjectsMessage);
             }
 
             prjDigests = filteredPrjDigests.ToArray();
@@ -206,9 +204,9 @@ namespace NPanday.ProjectImporter
 
         #region Re-Import Project Entry
 
-        public static string[] ReImportProject(string solutionFile)
+        public static string[] ReImportProject(string solutionFile, ref string warningMsg)
         {
-            return ImportProject(solutionFile, null, null, null, null, VerifyProjectImportSyncronization.SyncronizePomValues);    
+            return ImportProject(solutionFile, null, null, null, null, VerifyProjectImportSyncronization.SyncronizePomValues, ref warningMsg);    
         }
 
         #endregion
@@ -222,9 +220,9 @@ namespace NPanday.ProjectImporter
         /// </summary>
         /// <param name="solutionFile">the full path of the *.sln (visual studio solution) file you want to parse</param>
         /// <returns></returns>
-        public static List<Dictionary<string, object>> ParseSolution(FileInfo solutionFile)
+        public static List<Dictionary<string, object>> ParseSolution(FileInfo solutionFile, ref string warningMsg)
         {
-            return SolutionParser.ParseSolution(solutionFile);
+            return SolutionParser.ParseSolution(solutionFile, ref warningMsg);
         }
 
         /// <summary>
@@ -233,9 +231,9 @@ namespace NPanday.ProjectImporter
         /// </summary>
         /// <param name="projects">list retured from ParseSolution</param>
         /// <returns></returns>
-        public static ProjectDigest[] DigestProjects(List<Dictionary<string, object>> projects)
+        public static ProjectDigest[] DigestProjects(List<Dictionary<string, object>> projects, ref string warningMsg)
         {
-            return ProjectDigester.DigestProjects(projects);
+            return ProjectDigester.DigestProjects(projects, ref warningMsg);
         }
 
 

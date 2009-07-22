@@ -99,7 +99,7 @@ namespace NPanday.ProjectImporter.Converter
                 catch(Exception)
                 {
                     isValidUrl=false;
-                    MessageBox.Show(string.Format("SCM Tag was not added, because the url {0} was not accessible",scmTag), "NPanday Project Import", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //MessageBox.Show(string.Format("SCM Tag was not added, because the url {0} was not accessible",scmTag), "NPanday Project Import", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 
                 

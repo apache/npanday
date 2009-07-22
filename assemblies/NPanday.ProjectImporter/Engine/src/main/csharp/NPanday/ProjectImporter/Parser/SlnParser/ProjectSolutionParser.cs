@@ -30,7 +30,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             BUILD_ENGINE = new Engine(msBuildPath);
         }
 
-        public List<Dictionary<string, object>> Parse(FileInfo solutionFile)
+        public List<Dictionary<string, object>> Parse(FileInfo solutionFile, ref string warningMsg)
         {
 
             List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
@@ -136,9 +136,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             }
             if (!string.Empty.Equals(UnsupportedProjectsMessage))
             {
-                string warningMSG = "Project Import Warning: \n Unsupported Projects: " + UnsupportedProjectsMessage;
-                MessageBox.Show(warningMSG, "Project Import Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
+                warningMsg = string.Format("{0}\n    Unsupported Projects: {1}", warningMsg, UnsupportedProjectsMessage);
             }
             
             return list;

@@ -1241,8 +1241,9 @@ namespace NPanday.VisualStudio.Addin
 
         private void AutoImport()
         {
+            string warningMsg = string.Empty;
             Solution2 solution = (Solution2)_applicationObject.Solution;
-            ProjectImporter.NPandayImporter.ReImportProject(solution.FullName);
+            ProjectImporter.NPandayImporter.ReImportProject(solution.FullName, ref warningMsg);
         }
 
         private void SaveAllDocuments()

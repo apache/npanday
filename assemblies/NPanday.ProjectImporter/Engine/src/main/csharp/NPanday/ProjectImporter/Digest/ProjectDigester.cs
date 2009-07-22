@@ -56,7 +56,7 @@ namespace NPanday.ProjectImporter.Digest
 
         
 
-        public static ProjectDigest[] DigestProjects(List<Dictionary<string, object>> projects)
+        public static ProjectDigest[] DigestProjects(List<Dictionary<string, object>> projects, ref string warningMsg)
         {
             List<ProjectDigest> projectDigests = new List<ProjectDigest>();
             Dictionary<string, ProjectDigest> projDigestDictionary = new Dictionary<string, ProjectDigest>();
@@ -82,12 +82,12 @@ namespace NPanday.ProjectImporter.Digest
                         if (prjRef == null)
                         {
                             // this might not be possible
-                            string msg = string.Format(
-                                "Missing Project Reference {0} located at {1}!"
-                                + "\nNote this might cause Missing Artifact Dependency!",
+                            warningMsg = string.Format(
+                            "{0}\n    Missing Project Reference {1} located at {2}!"+
+                            "\n        Note this might cause Missing Artifact Dependency!", 
+                                warningMsg,
                                 projectReference.Name,
                                 projectReference.ProjectFullPath);
-                            MessageBox.Show(msg, "Missing Inter-Project Reference:", MessageBoxButtons.OK);
                             continue;
                         }
 
@@ -115,21 +115,13 @@ namespace NPanday.ProjectImporter.Digest
                         }
                         else
                         {
-                            MessageBox.Show(
-                                string.Format(
-                                "Please Make sure that Artifact[GroupId: {0}, ArtifactId: {0}] exists in your NPanday Repository, " +
-                                "\n Or an error will occur during NPanday-Build due to Missing Artifact Dependency!",
-                                prjRefDigest.AssemblyName),
-                                "Warning: Posible Dependency Missing!",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning
-
-                                );
+                            warningMsg = string.Format(
+                                "{0}\n    Please Make sure that Artifact[GroupId: {1}, ArtifactId: {1}] exists in your NPanday Repository, " +
+                                "\n        Or an error will occur during NPanday-Build due to Missing Artifact Dependency!",
+                                warningMsg, prjRefDigest.AssemblyName);
                         }
-
                     }
                 }
-
             }
 
             // add tobe included
