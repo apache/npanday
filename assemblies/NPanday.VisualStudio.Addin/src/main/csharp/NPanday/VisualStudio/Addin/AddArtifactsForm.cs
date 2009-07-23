@@ -58,6 +58,7 @@ namespace NPanday.VisualStudio.Addin
         bool _remoteRepoChanged = false;
 
 
+
         #region configure repo
         
         private Settings settings;
@@ -357,6 +358,7 @@ namespace NPanday.VisualStudio.Addin
                         }
 
                         throw new Exception("Sorry, but you are not authorized to access the specified URL.");
+
                     }
                     else
                     {
@@ -379,9 +381,7 @@ namespace NPanday.VisualStudio.Addin
             }
             else
             {
-                MessageBox.Show("Sorry, but you have entered an invalid Directory for the Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                artifactTabControl.SelectedIndex = 2;
-                RepoCombo.Text = string.Empty;
+                throw new Exception("Sorry, but you have entered an invalid URL for the Remote Repository.");
             }
         }
 
@@ -817,7 +817,7 @@ namespace NPanday.VisualStudio.Addin
                     RepoCombo.Text = string.Empty;
                     return;
                 }
-                
+
                 // look for "NPanday.id" profile
                 if (settings.profiles != null)
                 {
@@ -827,7 +827,7 @@ namespace NPanday.VisualStudio.Addin
                         {
                             profileExists = true;
                             NPanday.Model.Setting.Repository selectedRepo = getRepositoryFromProfile(profile, selectedUrl);
-                            
+
                             // if found, remove then add
                             if (selectedRepo != null)
                             {
@@ -866,7 +866,7 @@ namespace NPanday.VisualStudio.Addin
                     newRepo.url = selectedUrl;
                     updateRepositoryFor(newProfile, newRepo);
                     newProfile.repositories = new NPanday.Model.Setting.Repository[] { newRepo };
-                    
+
                     if (settings.profiles == null)
                     {
                         settings.profiles = new NPanday.Model.Setting.Profile[] { newProfile };
@@ -878,7 +878,7 @@ namespace NPanday.VisualStudio.Addin
                         profiles.Add(newProfile);
                         settings.profiles = profiles.ToArray();
                     }
-                    
+
                     writer = new StreamWriter(settingsPath);
                     serializer.Serialize(writer, settings);
                     writer.Close();
@@ -887,12 +887,13 @@ namespace NPanday.VisualStudio.Addin
                     MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
                 }
 
-                
+
                 RepoCombo.Items.Clear();
                 updateUrlList();
                 RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(selectedUrl);
 
-                refresh();
+                refresh(); 
+
             }
         }
 
