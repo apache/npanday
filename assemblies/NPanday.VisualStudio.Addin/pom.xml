@@ -21,51 +21,51 @@ under the License.
 <project> 
   <parent> 
     <groupId>NPanday</groupId>  
-    <version>1.1-SNAPSHOT</version>  
+    <version>1.0.2-RC1</version>  
     <artifactId>NPanday.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>NPanday.VisualStudio</groupId>  
   <artifactId>NPanday.VisualStudio.Addin</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
+  <version>1.0.2-RC1</version>  
   <packaging>visual-studio-addin</packaging>  
   <name>NPanday.VisualStudio.Addin</name>  
   <dependencies>
     <dependency> 
       <groupId>NPanday.Plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
-      <version>1.1-SNAPSHOT</version>  
+      <version>1.0.2-RC1</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Logging</groupId>  
       <artifactId>NPanday.Logging</artifactId>  
-      <version>1.1-SNAPSHOT</version>  
+      <version>1.0.2-RC1</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Model</groupId>  
       <artifactId>NPanday.Model.Pom</artifactId>  
-      <version>1.1-SNAPSHOT</version>  
+      <version>1.0.2-RC1</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.VisualStudio</groupId>  
       <artifactId>NPanday.VisualStudio</artifactId>  
-      <version>1.1-SNAPSHOT</version>  
+      <version>1.0.2-RC1</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Artifact</groupId>  
       <artifactId>NPanday.Artifact</artifactId>  
-      <version>1.1-SNAPSHOT</version>  
+      <version>1.0.2-RC1</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Model</groupId>  
       <artifactId>NPanday.Model.Settings</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
+      <version>1.0.2-RC1</version> 
     </dependency>  
     <dependency> 
       <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
@@ -126,14 +126,14 @@ under the License.
     <dependency> 
       <groupId>NPanday.ProjectImporter</groupId>  
       <artifactId>NPanday.ProjectImporterEngine</artifactId>  
-      <version>1.1-SNAPSHOT</version>  
+      <version>1.0.2-RC1</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NPanday.Utils</groupId>  
       <artifactId>NPanday.Utils</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
+      <version>1.0.2-RC1</version> 
     </dependency> 
   </dependencies>  
   <profiles> 
