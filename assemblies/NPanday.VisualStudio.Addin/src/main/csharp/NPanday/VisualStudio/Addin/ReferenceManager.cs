@@ -141,9 +141,11 @@ namespace NPanday.VisualStudio.Addin
         {
             Artifact.ArtifactRepository repository = new NPanday.Artifact.ArtifactContext().GetArtifactRepository();
             NPanday.Model.Pom.Model m = NPanday.Utils.PomHelperUtility.ReadPomAsModel(new FileInfo(pomFile));
-            if (m.dependencies != null)
+            
+            foreach (Dependency d in m.dependencies)
             {
-                foreach (Dependency d in m.dependencies)
+                // artifacts from remote repository only
+                if (d.systemPath == null)
                 {
                     CopyArtifact(repository.GetArtifact(d));
                 }

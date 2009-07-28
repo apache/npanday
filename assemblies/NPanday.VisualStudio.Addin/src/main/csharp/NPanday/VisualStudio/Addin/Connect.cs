@@ -709,20 +709,18 @@ namespace NPanday.VisualStudio.Addin
 
             Window win = _applicationObject.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);
             OutputWindow outputWindow = (OutputWindow)win.Object;
-            OutputWindowPane outputPane = null;
             OutputWindowPanes panes = outputWindow.OutputWindowPanes;
 
             // Reuse the existing pane (if it exists)
             Boolean paneExists = false;
-            for (int i = 1; i <= panes.Count; i++)
+            foreach(OutputWindowPane outputPane in panes)
             {
-                outputPane = panes.Item(i);
                 if (outputPane.Name == "NPanday Build System")
                 {
                     paneExists = true;
                     outputWindowPane = outputPane;
+                    break;
                 }
-
             }
             if (!paneExists)
             {
@@ -1697,6 +1695,24 @@ namespace NPanday.VisualStudio.Addin
         private void cbChangeProjectImportForm_Click(CommandBarButton btn, ref bool Cancel)
         {
             SaveAllDocuments();
+            outputWindowPane.OutputString("\nRe-syncing artifacts...");
+            try
+            {
+                resetAllButton_Click(btn, ref Cancel);
+                outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("no valid pom file."))
+                {
+                    outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
+                }
+                else
+                {
+                    outputWindowPane.OutputString(string.Format("ERROR! [{0}]", DateTime.Now.ToString("hh:mm tt")));
+                    throw;
+                }
+            }
             NPandayImportProjectForm frm = new NPandayImportProjectForm(_applicationObject);
             frm.ShowDialog();
         }
