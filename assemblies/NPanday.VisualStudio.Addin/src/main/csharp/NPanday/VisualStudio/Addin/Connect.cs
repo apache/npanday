@@ -855,6 +855,7 @@ namespace NPanday.VisualStudio.Addin
 
         void resetReferenceButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
         {
+            outputWindowPane.OutputString("\nRe-syncing artifacts...");
             try
             {
                 IReferenceManager refmanager = new ReferenceManager();
@@ -862,10 +863,11 @@ namespace NPanday.VisualStudio.Addin
                 refmanager.Initialize((VSProject2)CurrentSelectedProject.Object);
                 
                 refmanager.ResyncArtifacts();
-
+                outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
             }
             catch (Exception ex)
             {
+                outputWindowPane.OutputString(string.Format("ERROR! [{0}]", DateTime.Now.ToString("hh:mm tt")));
                 MessageBox.Show(ex.Message, "Reset References", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -989,19 +991,35 @@ namespace NPanday.VisualStudio.Addin
 
         void resetAllButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
         {
-            if (_applicationObject.Solution != null)
+            outputWindowPane.OutputString("\nRe-syncing artifacts...");
+            try
             {
-                Solution2 solution = (Solution2)_applicationObject.Solution;
-                foreach (Project project in solution.Projects)
+                if (_applicationObject.Solution != null)
                 {
-                    if (!IsWebProject(project))
+                    Solution2 solution = (Solution2)_applicationObject.Solution;
+                    foreach (Project project in solution.Projects)
                     {
-                        IReferenceManager mgr = new ReferenceManager();
-                        mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(mgr_OnError);
-                        mgr.Initialize((VSProject2)project.Object);
-                        mgr.ResyncArtifacts();
-                        mgr = null;
+                        if (!IsWebProject(project))
+                        {
+                            IReferenceManager mgr = new ReferenceManager();
+                            mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(mgr_OnError);
+                            mgr.Initialize((VSProject2)project.Object);
+                            mgr.ResyncArtifacts();
+                            mgr = null;
+                        }
                     }
+                }
+                outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("no valid pom file."))
+                {
+                    outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
+                }
+                else
+                {
+                    outputWindowPane.OutputString(string.Format("ERROR! [{0}]\n\n{1}\n\n", ex.Message, ex.StackTrace));
                 }
             }
         }
@@ -1695,24 +1713,7 @@ namespace NPanday.VisualStudio.Addin
         private void cbChangeProjectImportForm_Click(CommandBarButton btn, ref bool Cancel)
         {
             SaveAllDocuments();
-            outputWindowPane.OutputString("\nRe-syncing artifacts...");
-            try
-            {
-                resetAllButton_Click(btn, ref Cancel);
-                outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("no valid pom file."))
-                {
-                    outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
-                }
-                else
-                {
-                    outputWindowPane.OutputString(string.Format("ERROR! [{0}]", DateTime.Now.ToString("hh:mm tt")));
-                    throw;
-                }
-            }
+            resetAllButton_Click(btn, ref Cancel);
             NPandayImportProjectForm frm = new NPandayImportProjectForm(_applicationObject);
             frm.ShowDialog();
         }
