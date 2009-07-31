@@ -56,6 +56,7 @@ namespace NPanday.VisualStudio.Addin
         private FileInfo pom;
         private WebClient webClient = new WebClient();
         bool _remoteRepoChanged = false;
+        public bool fileProtocol = false;
 
 
 
@@ -681,8 +682,9 @@ namespace NPanday.VisualStudio.Addin
             String repoUrl = getRepositoryUrl();
             if (node.IsFileSystem)
             {
-                Uri repoUri = new Uri(repoUrl);
-                paths = uri.Substring(repoUri.LocalPath.Length).Replace(@"\",@"/");
+                //Uri repoUri = new Uri(repoUrl);
+                //paths = uri.Substring(repoUri.LocalPath.Length).Replace(@"\",@"/");
+                paths = uri;
             }
             else 
             {

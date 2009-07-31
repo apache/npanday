@@ -49,30 +49,47 @@ namespace NPanday.Artifact
 
         public Artifact GetArtifactFor(String uri)
         {
+            Artifact artifact = new Artifact();
+
             DirectoryInfo uac = new DirectoryInfo(localRepository.FullName + @"\uac\gac_msil\");
 
             String[] tokens = uri.Split("/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             int size = tokens.Length;
             if (size < 3)
             {
-                throw new IOException("Invalid Artifact Path = " + uri);
-            }
-            Artifact artifact = new Artifact();
-            artifact.ArtifactId = tokens[size - 3];
-            StringBuilder buffer = new StringBuilder();
-            for (int i = 0; i < size - 3; i++)
-            {
-                buffer.Append(tokens[i]);
-                if (i != size - 4)
+                System.Reflection.Assembly a = System.Reflection.Assembly.LoadFile(uri);
+                string[] info = a.FullName.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                artifact.ArtifactId = info[0];
+                artifact.GroupId = info[0];
+                artifact.Version = info[1].Split(new char[] { '='})[1];
+                artifact.Extension = tokens[0].Split(new char[] { '.' })[1];
+
+                if (artifact.Version == null)
                 {
-                    buffer.Append(".");
-                }
+                    artifact.Version = "1.0.0.0";
+                }                
             }
-            artifact.GroupId = buffer.ToString();
-            artifact.Version = tokens[size - 2];
-            artifact.Extension = tokens[size - 1].Split(".".ToCharArray())[1];
+
+            else
+            {
+                artifact.ArtifactId = tokens[size - 3];
+                StringBuilder buffer = new StringBuilder();
+                for (int i = 0; i < size - 3; i++)
+                {
+                    buffer.Append(tokens[i]);
+                    if (i != size - 4)
+                    {
+                        buffer.Append(".");
+                    }
+                }
+                artifact.GroupId = buffer.ToString();
+                artifact.Version = tokens[size - 2];
+                String[] extToken = tokens[size - 1].Split(".".ToCharArray());
+                artifact.Extension = extToken[extToken.Length - 1];
+            }
+
             artifact.FileInfo = new FileInfo(uac.FullName + artifact.ArtifactId + @"\" +
-                artifact.Version + "__" + artifact.GroupId + @"\" + artifact.ArtifactId + ".dll" );
+                    artifact.Version + "__" + artifact.GroupId + @"\" + artifact.ArtifactId + ".dll");
             return artifact;
         }
 
