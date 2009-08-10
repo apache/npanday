@@ -39,7 +39,7 @@ namespace NPanday.Artifact
 
         public string GetLocalRepositoryPath(Artifact artifact, string ext)
         {
-            return Path.Combine(localRepository.FullName, string.Format(@"repository\{0}\{1}\{2}\{1}-{2}{3}", artifact.GroupId, artifact.ArtifactId, artifact.Version,ext));
+            return Path.Combine(localRepository.FullName, string.Format(@"repository\{0}\{1}\{2}\{1}-{2}{3}", artifact.GroupId.Replace(@".",@"\"), artifact.ArtifactId, artifact.Version,ext));
         }
 
         public string GetRemoteRepositoryPath(Artifact artifact, string url, string ext)

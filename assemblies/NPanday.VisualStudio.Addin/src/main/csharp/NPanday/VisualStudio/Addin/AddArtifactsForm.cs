@@ -889,6 +889,8 @@ namespace NPanday.VisualStudio.Addin
                     MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
                 }
 
+                // make NPanday.id profile active
+                addActiveProfile("NPanday.id");
 
                 RepoCombo.Items.Clear();
                 updateUrlList();
@@ -896,6 +898,35 @@ namespace NPanday.VisualStudio.Addin
 
                 refresh(); 
 
+            }
+        }
+
+        private void addActiveProfile(string profileID)
+        {
+            bool isActive = false;
+            if (settings.activeProfiles == null)
+            {
+                settings.activeProfiles = new string[] { profileID };
+                isActive = true;
+            }
+            else
+            {
+                foreach (string id in settings.activeProfiles)
+                {
+                    if (id == profileID)
+                    {
+                        isActive = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!isActive)
+            {
+                string[] newActiveProfiles = new string[settings.activeProfiles.Length + 1];
+                settings.activeProfiles.CopyTo(newActiveProfiles, 0);
+                newActiveProfiles[settings.activeProfiles.Length] = profileID;
+                settings.activeProfiles = newActiveProfiles;
             }
         }
 

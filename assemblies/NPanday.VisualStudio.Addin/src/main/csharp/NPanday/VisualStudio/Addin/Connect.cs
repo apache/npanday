@@ -298,6 +298,18 @@ namespace NPanday.VisualStudio.Addin
             return (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0);
         }
 
+        private const string FOLDER_KIND_GUID = "{66A26720-8FB5-11D2-AA7E-00C04F688DDE}";
+
+        public static bool IsFolder(Project project)
+        {
+            // make sure there's a project item
+            if (project == null)
+                return false;
+
+            // compare the project kind to the folder guid
+            return (String.Compare(project.Kind, FOLDER_KIND_GUID, true) == 0);
+        }
+
         void InsertKeyTag(string filePath, string key)
         {
             try
@@ -861,7 +873,6 @@ namespace NPanday.VisualStudio.Addin
                 IReferenceManager refmanager = new ReferenceManager();
                 refmanager.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
                 refmanager.Initialize((VSProject2)CurrentSelectedProject.Object);
-                
                 refmanager.ResyncArtifacts();
                 outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
             }
@@ -874,7 +885,7 @@ namespace NPanday.VisualStudio.Addin
 
         void refmanager_OnError(object sender, ReferenceErrorEventArgs e)
         {
-            outputWindowPane.OutputString("\nERROR   : "+ e.Message);
+            outputWindowPane.OutputString("\nERROR: "+ e.Message);
         }
 
         private void createStopBuildMenu(CommandBar commandBar, CommandBarControl control)
@@ -999,10 +1010,10 @@ namespace NPanday.VisualStudio.Addin
                     Solution2 solution = (Solution2)_applicationObject.Solution;
                     foreach (Project project in solution.Projects)
                     {
-                        if (!IsWebProject(project))
+                        if (!IsWebProject(project) && !IsFolder(project))
                         {
                             IReferenceManager mgr = new ReferenceManager();
-                            mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(mgr_OnError);
+                            mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
                             mgr.Initialize((VSProject2)project.Object);
                             mgr.ResyncArtifacts();
                             mgr = null;
@@ -1022,11 +1033,6 @@ namespace NPanday.VisualStudio.Addin
                     outputWindowPane.OutputString(string.Format("ERROR! [{0}]\n\n{1}\n\n", ex.Message, ex.StackTrace));
                 }
             }
-        }
-
-        void mgr_OnError(object sender, ReferenceErrorEventArgs e)
-        {
-            
         }
 
         void buildAllButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)

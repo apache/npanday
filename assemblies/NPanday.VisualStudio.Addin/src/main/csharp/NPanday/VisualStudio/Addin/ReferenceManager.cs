@@ -147,7 +147,7 @@ namespace NPanday.VisualStudio.Addin
                 foreach (Dependency d in m.dependencies)
                 {
                     // artifacts from remote repository only
-                    if (d.systemPath == null)
+                    if (d.classifier == null)
                     {
                         CopyArtifact(repository.GetArtifact(d));
                     }
