@@ -55,18 +55,15 @@ namespace NPanday.VisualStudio.Addin
         private NPanday.Logging.Logger logger;
         private FileInfo pom;
         private WebClient webClient = new WebClient();
-        bool _remoteRepoChanged = false;
         public bool fileProtocol = false;
 
-
-
-        #region configure repo
-        
+        private string settingsPath;
         private Settings settings;
-        private String settingsPath;
+        private string defaultProfileID = "NPanday.id";
+        private NPanday.Model.Setting.Profile defaultProfile;
+        private NPanday.Model.Setting.Repository selectedRepo;
+        private string prevSelectedRepoUrl = string.Empty;
         
-        #endregion
-
         /// <summary>
         /// For Testing
         /// </summary>
@@ -75,18 +72,6 @@ namespace NPanday.VisualStudio.Addin
             //InitializeForm();
             InitializeComponent();
             addArtifact.Show();
-            // localListView.View = View.Details;
-            #region Initialize Configuration Repo
-            settingsPath = SettingsUtil.GetUserSettingsPath();
-            try
-            {
-                settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message + e.StackTrace);
-            }
-            #endregion
         }
 
         public AddArtifactsForm(Project project, ArtifactContext container, Logger logger, FileInfo pom)
@@ -101,6 +86,20 @@ namespace NPanday.VisualStudio.Addin
             this.pom = pom;
         }
 
+        public static void SetUnsafeHttpHeaderParsing()
+        {
+            Assembly assembly = Assembly.GetAssembly(typeof(System.Net.Configuration.SettingsSection));
+            Type settingsSectionType = assembly.GetType("System.Net.Configuration.SettingsSectionInternal");
+
+            object settingsSection = settingsSectionType.InvokeMember("Section",
+                BindingFlags.Static | BindingFlags.GetProperty | BindingFlags.NonPublic,
+                null, null, new object[] { });
+
+            FieldInfo fieldInfo = settingsSectionType.GetField("useUnsafeHeaderParsing",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            fieldInfo.SetValue(settingsSection, true);
+        }
+
         private void InitializeForm()
         {
             this.SuspendLayout();
@@ -113,126 +112,90 @@ namespace NPanday.VisualStudio.Addin
             this.ResumeLayout(false);
         }
 
-        private void refresh()
-        {
-            localListView.Items.Clear();
-            localArtifacts = artifactContext.GetArtifactRepository().GetArtifacts();
-            foreach (NPanday.Artifact.Artifact artifact in localArtifacts)
-            {
-                LocalArtifactItem item = new LocalArtifactItem(new string[] {
-                    artifact.ArtifactId, artifact.Version}, -1);
-                item.Artifact = artifact;
-                localListView.Items.Add(item);
-            }
-
-            String url = RepoCombo.Text;
-
-            SetUnsafeHttpHeaderParsing();
-
-            List<TreeNode> treeNodes = getNodesFor(url);
-            treeView1.Nodes.Clear();
-            treeView1.Nodes.AddRange(treeNodes.ToArray());
-            treeView1.MouseClick += new System.Windows.Forms.MouseEventHandler(treeView_MouseUp);
-        }
-
         private void AddArtifactsForm_Load(object sender, EventArgs e)
         {
-            localListView.Items.Clear();
-            localArtifacts = artifactContext.GetArtifactRepository().GetArtifacts();
-            foreach (NPanday.Artifact.Artifact artifact in localArtifacts)
-            {
-                LocalArtifactItem item = new LocalArtifactItem(new string[] {
-                    artifact.ArtifactId, artifact.Version}, -1);
-                item.Artifact = artifact;
-                localListView.Items.Add(item);
-            }
+            localListView_Refresh();
+            loadSettings();
 
-            String settingsPath = SettingsUtil.GetUserSettingsPath();
-            Settings settings = null;
-            try
-            {
-                if (File.Exists(settingsPath))
-                {
-                    settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
-                }
-                else
-                {
-                    MessageBox.Show("Sorry, but no settings.xml file was found in your Local Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Invalid Settings File: " + ex.Message + ex.StackTrace);
-                return;
-            }
-
-            if (settings.profiles == null)
+            if (settings.profiles == null || settings.profiles.Length < 1)
             {
                 MessageBox.Show("No Profile Found. Please Configure your Repository. ","Repository Configuration",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 return;
             }
 
-            String url = getRepositoryUrl();
+            defaultProfile = getDefaultProfile();
+            selectedRepo = getDefaultRepository();
 
-            if (url == null)
+            if (selectedRepo == null || string.IsNullOrEmpty(selectedRepo.url))
             {
-                MessageBox.Show("Remote repository not yet set: Please set your Remote Repository.","Repository Configuration",MessageBoxButtons.OK,MessageBoxIcon.Warning);
-                return;
+                MessageBox.Show("Remote repository not yet set: Please set your Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                remoteTreeView_Refresh();
             }
 
+            if (selectedRepo == null)
+            {
+                repoCombo_Refresh(null);
+            }
+            else
+            {
+                repoCombo_Refresh(selectedRepo.url);
+            }
+        }
+
+        private void localListView_Refresh()
+        {
+            localListView.Items.Clear();
+            localArtifacts = artifactContext.GetArtifactRepository().GetArtifacts();
+            foreach (NPanday.Artifact.Artifact artifact in localArtifacts)
+            {
+                LocalArtifactItem item = new LocalArtifactItem(new string[] {
+                    artifact.ArtifactId, artifact.Version}, -1);
+                item.Artifact = artifact;
+                localListView.Items.Add(item);
+            }
+        }
+
+        private void remoteTreeView_Refresh()
+        {
             SetUnsafeHttpHeaderParsing();
 
-            List<TreeNode> treeNodes = getNodesFor(url);
+            treeView1.Nodes.Clear();
+            List<TreeNode> treeNodes = getNodesFor(selectedRepo.url);
             treeView1.Nodes.AddRange(treeNodes.ToArray());
             treeView1.MouseClick += new System.Windows.Forms.MouseEventHandler(treeView_MouseUp);
 
-            updateUrlList();
-            RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(url);
-
-            _remoteRepoChanged = false;
+            prevSelectedRepoUrl = selectedRepo.url;
         }
 
-        private void addArtifact_Click(object sender, EventArgs e)
+        private bool isSelectedRepoModified()
         {
-            try
+            if (selectedRepo == null)
             {
-                ListView.SelectedListViewItemCollection selectedItems = localListView.SelectedItems;
-                if (selectedItems != null)
-                {
-                    foreach (ListViewItem item in selectedItems)
-                    {
-                        addLocalArtifact(item as LocalArtifactItem);
-                    }
-                }
-
-                if (treeView1.SelectedNode != null)
-                {
-
-                    RemoteArtifactNode treeNode = treeView1.SelectedNode as RemoteArtifactNode;
-
-                    if (treeNode.IsAssembly)
-                    {
-                        addRemoteArtifact(treeNode);
-                    }
-                    else
-                    {
-                        MessageBox.Show(this, string.Format("Cannot add {0} not an artifact assembly.", treeNode.FullPath), this.Text);
-                        return;
-                    }
-                }
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.Message, "NPanday Add Dependency Error:");
-                return;
+                return false;
             }
 
-            this.Close();
+            if (selectedRepo.snapshots == null || selectedRepo.releases == null ||
+                checkBoxSnapshot.Checked != selectedRepo.snapshots.enabled || checkBoxRelease.Checked != selectedRepo.releases.enabled)
+            {
+                return true;
+            }
+
+            // check if URL is already in NPanday.id profile
+            foreach (NPanday.Model.Setting.Repository repo in defaultProfile.repositories)
+            {
+                if (repo.url == RepoCombo.Text)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
-        private Boolean IsIncluded(String name, String uri)
+        private bool isIncluded(string name, string uri)
         {
             if (name.StartsWith(".") || name.Equals("Parent Directory") || name.Equals("Terms of Use"))
             {
@@ -246,8 +209,8 @@ namespace NPanday.VisualStudio.Addin
             
             if (uri.Contains("."))
             {
-                String[] tokens = name.Split(".".ToCharArray());
-                String extension = tokens[tokens.Length -1];
+                string[] tokens = name.Split(".".ToCharArray());
+                string extension = tokens[tokens.Length - 1];
                 if (extension.Equals("txt") || extension.Equals("pom") ||
                     extension.Equals("md5") || extension.Equals("sha1") ||
                     extension.Equals("xml") || extension.Equals("tar") ||
@@ -265,12 +228,12 @@ namespace NPanday.VisualStudio.Addin
             return true;
         }
 
-        private Boolean IsDirectory(String name)
+        private bool isDirectory(string name)
         {
             if (name.Contains("."))
             {
-                String[] tokens = name.Split(".".ToCharArray());
-                String extension = tokens[tokens.Length - 1];
+                string[] tokens = name.Split(".".ToCharArray());
+                string extension = tokens[tokens.Length - 1];
    
                 if (extension.Equals("dll") || extension.Equals("jar") ||
                     extension.Equals("exe"))
@@ -281,60 +244,6 @@ namespace NPanday.VisualStudio.Addin
             return true;
         }
 
-        List<TreeNode> getNodesFor(String url)
-        {
-            try
-            {
-                Uri repoUri = new Uri(url);
-                if (repoUri.IsFile)
-                {
-                    return getNodesFromLocal(repoUri.LocalPath);
-                }
-                else
-                {
-                    return getNodesFromRemote(url);
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("There was a problem with the provided URL. \nStack Trace:"+e.Message,"Get Artifacts from Remote Repository Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
-            }
-            return null;
-        }
-
-        List<TreeNode> getNodesFromLocal(string repoFolder)
-        {
-            List<TreeNode> nodes = new List<TreeNode>();
-            if (!Directory.Exists(repoFolder))
-            {
-                MessageBox.Show(this, "Local repository path not found.", "Local Repository");
-                return nodes;
-            }
-
-            foreach (FileSystemInfo fsi in (new DirectoryInfo(repoFolder).GetFileSystemInfos()))
-            {
-                if (fsi is FileInfo) 
-                {
-                    string ext = Path.GetExtension(fsi.FullName).ToLower();
-                    if (ext != ".dll" && ext != ".exe" && ext != ".netmodule" && ext != ".ocx")
-                        continue;
-                }
-                RemoteArtifactNode node = new RemoteArtifactNode(fsi.Name);
-                node.IsFileSystem = true;
-                node.ArtifactUrl = Path.Combine(repoFolder, fsi.Name);
-                node.IsAssembly = (fsi is FileInfo);
-                nodes.Add(node);
-            }
-
-            return nodes;
-        }
-
-        //TODO: make a function to check if the url is accessable or not
-        /// <summary>
-        /// Checks if a remote repository url is accessible or not
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
         private void verifyRemoteAccess(string url)
         {
             while (true)
@@ -376,11 +285,7 @@ namespace NPanday.VisualStudio.Addin
         private void verifyFileProtocol(string url)
         {
             string chkDir = url.Replace("file:///", "");
-            if (Directory.Exists(chkDir))
-            {
-
-            }
-            else
+            if (!Directory.Exists(chkDir))
             {
                 throw new Exception("Sorry, but you have entered an invalid URL for the Remote Repository.");
             }
@@ -400,24 +305,22 @@ namespace NPanday.VisualStudio.Addin
             catch (Exception)
             {
                 //MessageBox.Show("Cannot read remote repository: " + url + " " + ex.Message + ex.StackTrace);
-                MessageBox.Show("Cannot read remote repository: " + url,"Configure Repository",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                MessageBox.Show("Cannot read remote repository: " + url, "Configure Repository", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return treeNodes;
             }
 
-
-            String pattern =
-                (@"<a[^>]*href\s*=\s*[\""\']?(?<URI>[^""'>\s]*)[\""\']?[^>]*>(?<Name>[^<]+|.*?)?<");
+            string pattern = (@"<a[^>]*href\s*=\s*[\""\']?(?<URI>[^""'>\s]*)[\""\']?[^>]*>(?<Name>[^<]+|.*?)?<");
             MatchCollection matches = Regex.Matches(Encoding.ASCII.GetString(page), pattern, RegexOptions.IgnoreCase);
 
             // treeView1.ImageList = imageList1;
             foreach (Match match in matches)
             {
-                String name = match.Groups["Name"].Value;
-                String uri = match.Groups["URI"].Value;
-                if (IsIncluded(name, uri))
+                string name = match.Groups["Name"].Value;
+                string uri = match.Groups["URI"].Value;
+                if (isIncluded(name, uri))
                 {
                     RemoteArtifactNode node = new RemoteArtifactNode(name);  // new TreeNode(name);
-                    if (!IsDirectory(name))
+                    if (!isDirectory(name))
                     {
                         node.ImageIndex = 1;
                     }
@@ -438,44 +341,9 @@ namespace NPanday.VisualStudio.Addin
                 }
             }
             return treeNodes;
-
         }
 
-        private void treeView_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                Point point = new Point(e.X, e.Y);
-                RemoteArtifactNode node = treeView1.GetNodeAt(point) as RemoteArtifactNode;
-                if (node.IsAssembly)
-                    return;
-
-                List<TreeNode> treeNodes = getNodesFor( node.ArtifactUrl);
-                node.Nodes.Clear();
-                node.Nodes.AddRange(treeNodes.ToArray());
-            }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        public static void SetUnsafeHttpHeaderParsing()
-        {
-            Assembly assembly = Assembly.GetAssembly(typeof(System.Net.Configuration.SettingsSection));
-            Type settingsSectionType = assembly.GetType("System.Net.Configuration.SettingsSectionInternal");
-
-            object settingsSection = settingsSectionType.InvokeMember("Section",
-                BindingFlags.Static | BindingFlags.GetProperty | BindingFlags.NonPublic, 
-                null, null, new object[] { });
-
-            FieldInfo fieldInfo = settingsSectionType.GetField("useUnsafeHeaderParsing",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            fieldInfo.SetValue(settingsSection, true);
-        }
-
-        private Boolean isValidRemoteRepositoryUrl(String repoUrl)
+        private bool isValidRemoteRepositoryUrl(string repoUrl)
         {
             byte[] page = null;
 
@@ -491,66 +359,14 @@ namespace NPanday.VisualStudio.Addin
             return true;
         }
 
-        /*
-         * e.g.: Castle/./Castle.Core/./2.0-rc2/./Castle.Core-2.0-rc2.dll
-         * transform it to: Castle/Castle.Core/2.0-rc2/Castle.Core-2.0-rc2.dll
-         * 
-        */
-        private String normalizePath(String path)
+        private string normalizePath(string path)
         {
+            //
+            // e.g.: Castle/./Castle.Core/./2.0-rc2/./Castle.Core-2.0-rc2.dll
+            // transform it to: Castle/Castle.Core/2.0-rc2/Castle.Core-2.0-rc2.dll
+            // 
+            //
             return path.Replace("/./", "/");
-        }
-
-        private String getRepositoryUrl()
-        {
-            Settings settings = null;
-            String settingsPath = SettingsUtil.GetUserSettingsPath();
-            try
-            {
-                settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message + e.StackTrace);
-            }
-
-            foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
-            {
-                if ("NPanday.id".Equals(profile.id))
-                {
-                    if (profile.repositories.Length > 0)
-                    {
-                        return profile.repositories[0].url;
-                    }
-                    
-                    break;
-                }
-            }
-            return null;
-        }
-
-        private void localListView_DoubleClick(object sender, EventArgs e)
-        {
-            try
-            {
-                LocalArtifactItem item = localListView.SelectedItems[0] as LocalArtifactItem;
-
-                addLocalArtifact(item);
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, ex.Message, "Add Artifacts");
-            }
-        }
-
-        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            RemoteArtifactNode node = e.Node as RemoteArtifactNode;
-            if (node.IsAssembly)
-            {
-                addRemoteArtifact(node);
-            }
         }
 
         void addArtifactToPom(Artifact.Artifact artifact)
@@ -579,7 +395,6 @@ namespace NPanday.VisualStudio.Addin
                 MessageBox.Show(this, "A version of artifact is already added to the project, please remove it first before adding this version.", this.Text);
                 return false;
             }
-
 
             try
             {
@@ -649,7 +464,6 @@ namespace NPanday.VisualStudio.Addin
         {
             NPanday.Artifact.Artifact artifact = item.Artifact;
             addReferenceToProject(ref artifact, item.Text);
-            
         }
 
         private void addReferenceToProject(ref NPanday.Artifact.Artifact artifact, string text)
@@ -677,9 +491,9 @@ namespace NPanday.VisualStudio.Addin
 
         void addRemoteArtifact(RemoteArtifactNode node)
         {
-            String uri = node.ArtifactUrl;
-            String paths;
-            String repoUrl = getRepositoryUrl();
+            string uri = node.ArtifactUrl;
+            string paths;
+            string repoUrl = selectedRepo.url;
             if (node.IsFileSystem)
             {
                 //Uri repoUri = new Uri(repoUrl);
@@ -739,71 +553,24 @@ namespace NPanday.VisualStudio.Addin
 
         }
 
-        private void updateRepositoryFor(NPanday.Model.Setting.Profile profile, NPanday.Model.Setting.Repository repository)
-        {
-            NPanday.Model.Setting.Activation activation = new NPanday.Model.Setting.Activation();
-            activation.activeByDefault = true;
-            profile.activation = activation;
-
-            NPanday.Model.Setting.RepositoryPolicy releasesPolicy = new NPanday.Model.Setting.RepositoryPolicy();
-            NPanday.Model.Setting.RepositoryPolicy snapshotsPolicy = new NPanday.Model.Setting.RepositoryPolicy();
-            releasesPolicy.enabled = checkBoxRelease.Checked;
-            snapshotsPolicy.enabled = checkBoxSnapshot.Checked;
-            repository.releases = releasesPolicy;
-            repository.snapshots = snapshotsPolicy;
-            repository.id = repository.url;
-        }
-
-        private void update_Click(object sender, EventArgs e)
-        {
-            executeRepoUpdate();
-        }
-
-        private string prevRepo=string.Empty;
-
         private void executeRepoUpdate()
         {
-            if (prevRepo.Equals(RepoCombo.Text))
-            {
-                return;
-            }
-
             if (string.IsNullOrEmpty(RepoCombo.Text))
             {
                 MessageBox.Show("Sorry, Repository cannot be blank.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
-                bool profileExists = false;
                 XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Setting.Settings));
                 TextWriter writer;
 
                 string selectedUrl = RepoCombo.Text;
 
-                // get system path of settings.xml
-                if (settingsPath == null)
-                {
-                    settingsPath = SettingsUtil.GetUserSettingsPath();
-                }
-
-                // load settings.xml
-                if (settings == null)
-                {
-                    try
-                    {
-                        settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
-                    }
-                    catch (Exception err)
-                    {
-                        MessageBox.Show(err.Message + err.StackTrace);
-                    }
-                }
-
                 // verify if URL is accessible
                 try
                 {
 
-                    if (RepoCombo.Text.Contains("file:///"))
+                    if (selectedUrl.Contains("file:///"))
                     {
                         verifyFileProtocol(selectedUrl);
                     }
@@ -820,84 +587,69 @@ namespace NPanday.VisualStudio.Addin
                     return;
                 }
 
-                // look for "NPanday.id" profile
-                if (settings.profiles != null)
+                if (defaultProfile == null)
                 {
-                    foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
-                    {
-                        if ("NPanday.id".Equals(profile.id))
-                        {
-                            profileExists = true;
-                            NPanday.Model.Setting.Repository selectedRepo = getRepositoryFromProfile(profile, selectedUrl);
-
-                            // if found, remove then add
-                            if (selectedRepo != null)
-                            {
-                                removeRepositoryFromProfile(selectedRepo, profile);
-                                updateRepositoryFor(profile, selectedRepo);
-                            }
-                            else
-                            {
-                                selectedRepo = new NPanday.Model.Setting.Repository();
-                                selectedRepo.url = selectedUrl;
-                                updateRepositoryFor(profile, selectedRepo);
-                            }
-                            addRepositoryToProfile(selectedRepo, profile);
-
-                            MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
-
-                            prevRepo = selectedUrl;
-                            writer = new StreamWriter(settingsPath);
-                            serializer.Serialize(writer, settings);
-                            writer.Close();
-
-                            break;
-                        }
-                    }
+                    defaultProfile = getDefaultProfile();
                 }
 
-                // add new profile if not found
-                if (!profileExists)
+                // if NPanday profile is not found, create it
+                if (defaultProfile != null)
+                {
+                    selectedRepo = getRepositoryFromProfile(defaultProfile, selectedUrl);
+
+                    // if found, remove then add
+                    if (selectedRepo != null)
+                    {
+                        removeRepositoryFromProfile(selectedRepo, defaultProfile);
+                        updateRepository(defaultProfile, selectedRepo);
+                    }
+                    else
+                    {
+                        selectedRepo = new NPanday.Model.Setting.Repository();
+                        selectedRepo.url = selectedUrl;
+                        updateRepository(defaultProfile, selectedRepo);
+                    }
+                    addRepositoryToProfile(selectedRepo, defaultProfile);
+                }
+                else
                 {
                     // create new profile
-                    NPanday.Model.Setting.Profile newProfile = new NPanday.Model.Setting.Profile();
-                    newProfile.id = "NPanday.id";
+                    defaultProfile = new NPanday.Model.Setting.Profile();
+                    defaultProfile.id = defaultProfileID;
 
                     // create new repo
                     NPanday.Model.Setting.Repository newRepo = new NPanday.Model.Setting.Repository();
                     newRepo.url = selectedUrl;
-                    updateRepositoryFor(newProfile, newRepo);
-                    newProfile.repositories = new NPanday.Model.Setting.Repository[] { newRepo };
+                    updateRepository(defaultProfile, newRepo);
+                    defaultProfile.repositories = new NPanday.Model.Setting.Repository[] { newRepo };
 
                     if (settings.profiles == null)
                     {
-                        settings.profiles = new NPanday.Model.Setting.Profile[] { newProfile };
+                        settings.profiles = new NPanday.Model.Setting.Profile[] { defaultProfile };
                     }
                     else
                     {
                         List<NPanday.Model.Setting.Profile> profiles = new List<NPanday.Model.Setting.Profile>();
                         profiles.AddRange(settings.profiles);
-                        profiles.Add(newProfile);
+                        profiles.Add(defaultProfile);
                         settings.profiles = profiles.ToArray();
                     }
 
-                    writer = new StreamWriter(settingsPath);
-                    serializer.Serialize(writer, settings);
-                    writer.Close();
-
-                    prevRepo = selectedUrl;
-                    MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
+                    selectedRepo = newRepo;
                 }
 
                 // make NPanday.id profile active
-                addActiveProfile("NPanday.id");
+                addActiveProfile(defaultProfileID);
 
-                RepoCombo.Items.Clear();
-                updateUrlList();
-                RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(selectedUrl);
+                // write to Settings.xml
+                writer = new StreamWriter(settingsPath);
+                serializer.Serialize(writer, settings);
+                writer.Close();
 
-                refresh(); 
-
+                // do not specify SelectedUrl to suppress SelectedIndexChanged event
+                repoCombo_Refresh(null);
+                MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
+                //localListView_Refresh(); 
             }
         }
 
@@ -930,94 +682,116 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
-        private void updateUrlList()
+        private void repoCombo_Refresh(string selectedUrl)
         {
-            List<string> urls = getUrls();
-            foreach (string item in urls)
+            RepoCombo.Items.Clear();
+            foreach (NPanday.Model.Setting.Repository repo in getAllRepositories())
             {
-                if (!RepoCombo.Items.Contains(item))
+                if (!RepoCombo.Items.Contains(repo.url))
                 {
-                    RepoCombo.Items.Add(item);
-                }
-            }
-        }
-
-        private void addRepositoryToProfile(NPanday.Model.Setting.Repository repository, NPanday.Model.Setting.Profile profile)
-        {
-            // activate profile
-            NPanday.Model.Setting.Activation activation = new NPanday.Model.Setting.Activation();
-            activation.activeByDefault = true;
-            profile.activation = activation;
-
-            // add repository to profile
-            if (profile.repositories == null)
-            {
-                profile.repositories = new NPanday.Model.Setting.Repository[] { repository };
-            }
-            else
-            {
-                List<NPanday.Model.Setting.Repository> repositories = new List<NPanday.Model.Setting.Repository>();
-                repositories.AddRange(profile.repositories);
-                repositories.Insert(0,repository);
-                profile.repositories = repositories.ToArray();
-            }
-        }
-
-        private void removeRepositoryFromProfile(NPanday.Model.Setting.Repository repository, NPanday.Model.Setting.Profile profile)
-        {
-            List<NPanday.Model.Setting.Repository> repositories = new List<NPanday.Model.Setting.Repository>();
-            repositories.AddRange(profile.repositories);
-            repositories.Remove(repository);
-            profile.repositories = repositories.ToArray();
-        }
-
-        private NPanday.Model.Setting.Repository getRepositoryFromProfile(NPanday.Model.Setting.Profile profile, string url)
-        {
-            foreach (NPanday.Model.Setting.Repository repo in profile.repositories)
-            {
-                if (url.Equals(repo.url))
-                {
-                    return repo;
-                }
-            }
-            return null;
-        }
-
-        private List<string> getUrls()
-        {
-            if (settingsPath == null)
-            {
-                settingsPath = SettingsUtil.GetUserSettingsPath();
-            }
-            if (settings == null)
-            {
-                try
-                {
-                    settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
-                }
-                catch (Exception err)
-                {
-                    MessageBox.Show(err.Message + err.StackTrace);
+                    RepoCombo.Items.Add(repo.url);
                 }
             }
 
-            List<string> urls = new List<string>();
-            foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
+            if (RepoCombo.Items.Count > 0 && !string.IsNullOrEmpty(selectedUrl))
             {
-                foreach (NPanday.Model.Setting.Repository repository in profile.repositories)
+                RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(selectedUrl);
+            }
+        }
+
+        private void repoCheckboxes_Refresh()
+        {
+            checkBoxRelease.Checked = (selectedRepo.releases != null)? selectedRepo.releases.enabled: false;
+            checkBoxSnapshot.Checked = (selectedRepo.snapshots != null)? selectedRepo.snapshots.enabled: false;
+        }
+
+        #region GUI Events
+
+        private void localListView_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                LocalArtifactItem item = localListView.SelectedItems[0] as LocalArtifactItem;
+
+                addLocalArtifact(item);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Add Artifacts");
+            }
+        }
+
+        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            RemoteArtifactNode node = e.Node as RemoteArtifactNode;
+            if (node.IsAssembly)
+            {
+                addRemoteArtifact(node);
+            }
+        }
+
+        private void treeView_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Point point = new Point(e.X, e.Y);
+                RemoteArtifactNode node = treeView1.GetNodeAt(point) as RemoteArtifactNode;
+                if (node.IsAssembly)
+                    return;
+
+                List<TreeNode> treeNodes = getNodesFor(node.ArtifactUrl);
+                node.Nodes.Clear();
+                node.Nodes.AddRange(treeNodes.ToArray());
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void addArtifact_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ListView.SelectedListViewItemCollection selectedItems = localListView.SelectedItems;
+                if (selectedItems != null)
                 {
-                    //if (repository.id.Equals("NPanday.id"))
+                    foreach (ListViewItem item in selectedItems)
                     {
-                        if (!urls.Contains(repository.url))
-                        {
-                            urls.Add(repository.url);
-                        }
+                        addLocalArtifact(item as LocalArtifactItem);
+                    }
+                }
+
+                if (treeView1.SelectedNode != null)
+                {
+
+                    RemoteArtifactNode treeNode = treeView1.SelectedNode as RemoteArtifactNode;
+
+                    if (treeNode.IsAssembly)
+                    {
+                        addRemoteArtifact(treeNode);
+                    }
+                    else
+                    {
+                        MessageBox.Show(this, string.Format("Cannot add {0} not an artifact assembly.", treeNode.FullPath), this.Text);
+                        return;
                     }
                 }
             }
-            return urls;
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "NPanday Add Dependency Error:");
+                return;
+            }
+
+            this.Close();
         }
 
+        private void update_Click(object sender, EventArgs e)
+        {
+            executeRepoUpdate();
+        }
 
         private void RepoListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1051,47 +825,51 @@ namespace NPanday.VisualStudio.Addin
 
         private void RepoCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _remoteRepoChanged = true;
-            addArtifact.Hide();
+            selectedRepo = getRepository(RepoCombo.Text);
+            repoCheckboxes_Refresh();
         }
 
         private void artifactTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            String settingsPath = SettingsUtil.GetUserSettingsPath();
-        
             if (artifactTabControl.SelectedIndex == 2)
             {
-                //check if there is an existing settings.xml file 
-                if (settingsPath == null)
-                {
-                    MessageBox.Show("Sorry, but you cannot Configure Remote Repository without a Settings.xml file", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    AddArtifactsForm.ActiveForm.Hide();
-                    artifactTabControl.SelectedIndex = 0;
-                }
-                else
-                {
-                    updateUrlList();
-                    addArtifact.Hide();
-                }
+                RepoCombo.Focus();
+                addArtifact.Hide();
             }
             else if (artifactTabControl.SelectedIndex == 1)
             {
                 //check if there is an existing settings.xml file 
-                if (settingsPath == null)
+                if (settings == null)
+                {
+                    loadSettings();
+                }
+
+                if (settings == null)
                 {
                     MessageBox.Show("Sorry, but you cannot Access Remote Repository without a Settings.xml file", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     artifactTabControl.SelectedIndex = 0;
                 }
                 else
                 {
-                    if (_remoteRepoChanged)
+                    if (selectedRepo == null)
                     {
-                        _remoteRepoChanged = false;
-                        executeRepoUpdate();
+                        selectedRepo = getDefaultRepository();
                     }
 
-                    treeView1.Focus();
-                    addArtifact.Show();
+                    if (selectedRepo != null)
+                    {
+                        if (isSelectedRepoModified())
+                        {
+                            executeRepoUpdate();
+                        }
+
+                        if (prevSelectedRepoUrl != selectedRepo.url)
+                        {
+                            remoteTreeView_Refresh();
+                        }
+                        treeView1.Focus();
+                        addArtifact.Show();
+                    }
                 }
             }
             else
@@ -1099,8 +877,236 @@ namespace NPanday.VisualStudio.Addin
                 localListView.Focus();
                 addArtifact.Show();
             }
-            
         }
+
+        #endregion
+
+        #region GUI Operations
+
+        List<TreeNode> getNodesFor(string url)
+        {
+            try
+            {
+                Uri repoUri = new Uri(url);
+                if (repoUri.IsFile)
+                {
+                    return getNodesFromLocal(repoUri.LocalPath);
+                }
+                else
+                {
+                    return getNodesFromRemote(url);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("There was a problem with the provided URL. \nStack Trace:" + e.Message, "Get Artifacts from Remote Repository Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
+        }
+
+        List<TreeNode> getNodesFromLocal(string repoFolder)
+        {
+            List<TreeNode> nodes = new List<TreeNode>();
+            if (!Directory.Exists(repoFolder))
+            {
+                MessageBox.Show(this, "Local repository path not found.", "Local Repository");
+                return nodes;
+            }
+
+            foreach (FileSystemInfo fsi in (new DirectoryInfo(repoFolder).GetFileSystemInfos()))
+            {
+                if (fsi is FileInfo)
+                {
+                    string ext = Path.GetExtension(fsi.FullName).ToLower();
+                    if (ext != ".dll" && ext != ".exe" && ext != ".netmodule" && ext != ".ocx")
+                        continue;
+                }
+                RemoteArtifactNode node = new RemoteArtifactNode(fsi.Name);
+                node.IsFileSystem = true;
+                node.ArtifactUrl = Path.Combine(repoFolder, fsi.Name);
+                node.IsAssembly = (fsi is FileInfo);
+                nodes.Add(node);
+            }
+
+            return nodes;
+        }
+
+        #endregion
+
+        #region Settings.xml Operations
+
+        private void loadSettings()
+        {
+            settingsPath = SettingsUtil.GetUserSettingsPath();
+            try
+            {
+                if (File.Exists(settingsPath))
+                {
+                    settings = SettingsUtil.ReadSettings(new FileInfo(settingsPath));
+                }
+                else
+                {
+                    MessageBox.Show("Sorry, but no settings.xml file was found in your Local Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Invalid Settings File: " + ex.Message + ex.StackTrace);
+                return;
+            }
+        }
+
+        private NPanday.Model.Setting.Profile getDefaultProfile()
+        {
+            if (settings == null)
+            {
+                loadSettings();
+            }
+
+            if (settings != null)
+            {
+                foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
+                {
+                    if (defaultProfileID.Equals(profile.id))
+                    {
+                        return profile;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private NPanday.Model.Setting.Repository getRepository(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return null;
+            }
+
+            if (defaultProfile == null)
+            {
+                defaultProfile = getDefaultProfile();
+            }
+
+            // extract from NPanday repositories first
+            if (defaultProfile != null)
+            {
+                foreach (NPanday.Model.Setting.Repository repo in defaultProfile.repositories)
+                {
+                    if (url.Equals(repo.url))
+                    {
+                        return repo;
+                    }
+                }
+            }
+
+            // extract from NON-NPanday repositories
+            foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
+            {
+                if (profile.id != defaultProfileID)
+                {
+                    foreach (NPanday.Model.Setting.Repository repo in profile.repositories)
+                    {
+                        if (url.Equals(repo.url))
+                        {
+                            return repo;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private NPanday.Model.Setting.Repository getDefaultRepository()
+        {
+            if (defaultProfile == null)
+            {
+                defaultProfile = getDefaultProfile();
+            }
+
+            if (defaultProfile != null && defaultProfile.repositories.Length > 0)
+            {
+                return defaultProfile.repositories[0];
+            }
+            return null;
+        }
+
+        private List<NPanday.Model.Setting.Repository> getAllRepositories()
+        {
+            List<NPanday.Model.Setting.Repository> repos = new List<NPanday.Model.Setting.Repository>();
+
+            if (defaultProfile == null)
+            {
+                defaultProfile = getDefaultProfile();
+            }
+
+            foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
+            {
+                repos.AddRange(profile.repositories);
+            }
+            return repos;
+        }
+
+        private NPanday.Model.Setting.Repository getRepositoryFromProfile(NPanday.Model.Setting.Profile profile, string url)
+        {
+            foreach (NPanday.Model.Setting.Repository repo in profile.repositories)
+            {
+                if (url.Equals(repo.url))
+                {
+                    return repo;
+                }
+            }
+            return null;
+        }
+
+        private void addRepositoryToProfile(NPanday.Model.Setting.Repository repository, NPanday.Model.Setting.Profile profile)
+        {
+            // activate profile
+            NPanday.Model.Setting.Activation activation = new NPanday.Model.Setting.Activation();
+            activation.activeByDefault = true;
+            profile.activation = activation;
+
+            // add repository to profile
+            if (profile.repositories == null)
+            {
+                profile.repositories = new NPanday.Model.Setting.Repository[] { repository };
+            }
+            else
+            {
+                List<NPanday.Model.Setting.Repository> repositories = new List<NPanday.Model.Setting.Repository>();
+                repositories.AddRange(profile.repositories);
+                repositories.Insert(0, repository);
+                profile.repositories = repositories.ToArray();
+            }
+        }
+
+        private void removeRepositoryFromProfile(NPanday.Model.Setting.Repository repository, NPanday.Model.Setting.Profile profile)
+        {
+            List<NPanday.Model.Setting.Repository> repositories = new List<NPanday.Model.Setting.Repository>();
+            repositories.AddRange(profile.repositories);
+            repositories.Remove(repository);
+            profile.repositories = repositories.ToArray();
+        }
+
+        private void updateRepository(NPanday.Model.Setting.Profile profile, NPanday.Model.Setting.Repository repository)
+        {
+            NPanday.Model.Setting.Activation activation = new NPanday.Model.Setting.Activation();
+            activation.activeByDefault = true;
+            profile.activation = activation;
+
+            NPanday.Model.Setting.RepositoryPolicy releasesPolicy = new NPanday.Model.Setting.RepositoryPolicy();
+            NPanday.Model.Setting.RepositoryPolicy snapshotsPolicy = new NPanday.Model.Setting.RepositoryPolicy();
+            releasesPolicy.enabled = checkBoxRelease.Checked;
+            snapshotsPolicy.enabled = checkBoxSnapshot.Checked;
+            repository.releases = releasesPolicy;
+            repository.snapshots = snapshotsPolicy;
+            repository.id = repository.url;
+        }
+
+        #endregion
     }
 
     class LocalArtifactItem : ListViewItem
