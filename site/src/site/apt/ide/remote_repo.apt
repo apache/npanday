@@ -30,6 +30,9 @@ Remote Repository Configuration
   
   [[6]] Click Close when done configuring the repository.
   
+  NOTE: The repository is stored in a profile NPanday.id this profile is then added into the activeProfiles list as soon as
+  an NPanday remote repository is added. 
+ 
   []
 
 * Manually Configure a Remote Maven Repository
@@ -40,22 +43,22 @@ Remote Repository Configuration
 
 +------+
 <profile>
-  <activation>
-	<activeByDefault>true</activeByDefault>
-  </activation>
-  <repositories>
-	<repository>
-	  <releases>
-		<enabled>false</enabled>
-	  </releases>
-	  <snapshots>
-		<enabled>false</enabled>
-	  </snapshots>
-	  <id>http://repo1.maven.org/maven2/</id>
-	  <url>http://repo1.maven.org/maven2/</url>
-	</repository>
-  </repositories>
-  <id>NPanday.id</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>http://repo1.maven.org/maven2/</id>
+          <url>http://repo1.maven.org/maven2/</url>
+        </repository>
+      </repositories>
+      <id>NPanday.id</id>
 </profile>
 +------+
 
@@ -63,17 +66,17 @@ Remote Repository Configuration
 
 +------+
 <profile>
-  <activation>
-	<activeByDefault>true</activeByDefault>
-  </activation>
-  <repositories>
-	<repository>
-	  <releases />
-	  <snapshots />
-	  <id>http://repo1.maven.org/maven2/</id>
-	  <url>http://repo1.maven.org/maven2/</url>
-	</repository>
-  </repositories>
-  <id>NPanday.id</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <releases/>
+          <snapshots/>
+          <id>http://repo1.maven.org/maven2/</id>
+          <url>http://repo1.maven.org/maven2/</url>
+        </repository>
+      </repositories>
+      <id>NPanday.id</id>
 </profile>
 +------+
