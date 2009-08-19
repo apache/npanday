@@ -5,7 +5,7 @@
   <artifactId>it0033</artifactId>
   <packaging>exe</packaging>
   <name>vb-source-with-csharp-test-source</name>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.0.2-RC3</version>
   <build>
     <sourceDirectory>src\main\vb</sourceDirectory>
     <testSourceDirectory>src\test\csharp</testSourceDirectory>

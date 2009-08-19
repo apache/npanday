@@ -5,7 +5,7 @@
   <groupId>org.apache.maven.it</groupId>  
   <artifactId>it0030</artifactId>  
   <packaging>library</packaging>  
-  <version>1.1-SNAPSHOT</version>  
+  <version>1.0.2-RC3</version>  
   <name>it0030</name>  
   <build> 
     <sourceDirectory>src/main/csharp</sourceDirectory>  
@@ -25,13 +25,13 @@
     <dependency> 
       <groupId>org.apache.maven.it</groupId>  
       <artifactId>it0029</artifactId>  
-      <version>1.1-SNAPSHOT</version>  
+      <version>1.0.2-RC3</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.maven.it</groupId>  
       <artifactId>it0028</artifactId>  
-      <version>1.1-SNAPSHOT</version>  
+      <version>1.0.2-RC3</version>  
       <type>library</type> 
     </dependency> 
   </dependencies>  

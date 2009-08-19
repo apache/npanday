@@ -5,7 +5,7 @@
   <groupId>NPanday.IT</groupId>
   <artifactId>NPanday.IT.0001</artifactId>  
   <packaging>library</packaging>
-  <version>1.1-SNAPSHOT</version>  
+  <version>1.0.2-RC3</version>  
   <name>it0001</name>  
   <build> 
     <sourceDirectory>src/main/csharp</sourceDirectory>  

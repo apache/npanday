@@ -4,7 +4,7 @@
   <artifactId>it0036</artifactId>
   <groupId>org.apache.maven.it</groupId>
   <packaging>exe</packaging>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.0.2-RC3</version>
   <name>SourceProcessorMojo and TestSourceProcessorMojo - tests</name>
   <build>
     <sourceDirectory>src/main/vb</sourceDirectory>
