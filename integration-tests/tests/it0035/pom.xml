@@ -4,7 +4,7 @@
   <artifactId>it0035</artifactId>
   <groupId>org.apache.maven.it</groupId>
   <packaging>exe</packaging>
-  <version>1.0.2-RC3</version>
+  <version>1.0.2</version>
   <name>org.apache.maven.it : it0035</name>
   <build>
     <sourceDirectory>src/main/vb</sourceDirectory>

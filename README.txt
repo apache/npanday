@@ -26,8 +26,8 @@ Deploying NPanday Artifacts (File System Only)
     set deploy.directory=${remoteRepository}
     bootstrap-build.bat
 * Due to a bug with not being able to use snapshots with an executables exe.config file, you will need to do this
-  next step manually: Copy ${localRepository}\NPanday\Plugins\NPanday.Plugin.Resx\1.0.2-RC3\NPanday.Plugin.Resx.exe.config to
-  ${remoteRepository}\NPanday\Plugins\NPanday.Plugin.Resx\1.0.2-RC3\NPanday.Plugin.Resx.exe.config
+  next step manually: Copy ${localRepository}\NPanday\Plugins\NPanday.Plugin.Resx\1.0.2\NPanday.Plugin.Resx.exe.config to
+  ${remoteRepository}\NPanday\Plugins\NPanday.Plugin.Resx\1.0.2\NPanday.Plugin.Resx.exe.config
 
  To set up a remote repository accessible to others, you can transfer the contents of ${remoteRepository}
  from your file system to a web server.

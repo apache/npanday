@@ -4,11 +4,11 @@
   <parent>
     <groupId>npanday</groupId>  
     <artifactId>npanday-project</artifactId>  
-    <version>1.0.2-RC3</version>
+    <version>1.0.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>npanday</groupId>
-  <version>1.0.2-RC3</version>
+  <version>1.0.2</version>
   <artifactId>dotnet-repository-builder</artifactId>
   <packaging>pom</packaging>
   <dependencies>

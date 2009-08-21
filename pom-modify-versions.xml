@@ -29,7 +29,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pom-plugin</artifactId>
-        <version>1.0.2-RC3</version>
+        <version>1.0.2</version>
         <executions>
           <execution>
             <configuration>
