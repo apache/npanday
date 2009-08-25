@@ -1,0 +1,33 @@
+ -----
+ Introduction
+ -----
+
+NPanday WiX Plugin
+
+ The {{{http://wix.sourceforge.net}Windows Installer XML (WiX)}} is a toolset that builds {{{http://en.wikipedia.org/wiki/Windows_Installer}Windows installation 
+ packages}} from XML source code. The toolset supports a command line environment that developers may integrate into 
+ their build processes to build MSI and MSM setup packages.
+
+ The NPanday WiX plugin makes it easy to integrate WiX into your NPanday build process.
+
+ The plugin has been developed and tested with WiX version 3.0.5419.0.  It should also work with other versions of WiX, assuming that your .wxs files
+ are compatible with the version of WiX that is available on your PATH.
+
+ The integration tests for this plugin are based on the excellent tutorial at
+ {{{http://www.tramontana.co.hu/wix/}http://www.tramontana.co.hu/wix/}}.
+
+* Goals Overview
+
+ The WiX plugin has several goals:
+
+ * {{{candle-mojo.html}candle}} converts a WiX XML (.wxs) file into a WiX Object (.wixobj) file.
+
+ * {{{light-mojo.html}light}} converts a WiX Object (.wixobj) file into an installation package (.msi file).
+
+* Usage
+
+ Instructions on how to use the WiX plugin goals:
+
+ * {{{usage/candle.html}Create a WiX object file with candle}}
+
+ * {{{usage/light.html}Create an installation package (.msi file) with light}}

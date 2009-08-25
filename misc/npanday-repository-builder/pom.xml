@@ -97,6 +97,11 @@
       <artifactId>maven-xsp-plugin</artifactId>
       <version>1.1-SNAPSHOT</version>
     </dependency>
+	<dependency>
+      <groupId>npanday.plugin</groupId>
+      <artifactId>wix-maven-plugin</artifactId>
+      <version>1.1-SNAPSHOT</version>
+    </dependency>
 
     <!--
     NPANDAY NETPLUGINS

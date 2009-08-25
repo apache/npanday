@@ -1,0 +1,60 @@
+ -----
+ Light Mojo Usage
+ -----
+
+Light Mojo Usage
+
+ Brief examples on how to use the light goal.
+
+* The <<<light>>> mojo
+
+ If you want to convert a single WiX Object (.wixobj) file into a MSI (.msi) file, use this configuration in your pom:
+
++---+
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>npanday-wix-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <objectFile>Sample.wixobj</objectFile>
+        </configuration>
+      </plugin>
+    </plugins>
+  ...
+  </build>
+...
+</project>
++---+
+
+ If you want to convert multiple WiX Object (.wixobj) files into a MSI (.msi) file, use this configuration in your pom:
+
++---+
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>wix-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <objectFiles>
+            <objectFile>Sample.wixobj</objectFile>
+            <objectFile>Another.wixobj</objectFile>
+          </objectFiles>
+          <outputFile>SampleInstaller.msi</outputFile>
+        </configuration>
+      </plugin>
+    </plugins>
+  ...
+  </build>
+...
+</project>
++---+
+
+
+ Generally this will be done in a separate module with pom packaging.

@@ -1,0 +1,35 @@
+ -----
+ Candle Mojo Usage
+ -----
+
+Candle Mojo Usage
+
+ Brief examples on how to use the candle goal.
+
+* The <<<candle>>> mojo
+
+ If you want to convert a WiX Source (.wxs) file into a WiX Object (.wixobj) file, use this configuration in your pom:
+
++---+
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>wix-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <sourceFiles>
+            <sourceFile>Sample.wxs</sourceFile>
+          </sourceFiles>
+        </configuration>
+      </plugin>
+    </plugins>
+  ...
+  </build>
+...
+</project>
++---+
+
+ Generally this will be done in a separate module with pom packaging.
