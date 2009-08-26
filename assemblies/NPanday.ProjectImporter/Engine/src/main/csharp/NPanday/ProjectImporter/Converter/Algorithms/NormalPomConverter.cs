@@ -83,7 +83,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             //AddPluginConfiguration(compilePlugin, "noconfig", "true");
             AddPluginConfiguration(compilePlugin, "imports", "import", projectDigest.GlobalNamespaceImports);
 
-
             // add include list for the compiling
             DirectoryInfo baseDir = new DirectoryInfo(Path.GetDirectoryName(projectDigest.FullFileName));
             List<string> compiles = new List<string>();
@@ -91,10 +90,24 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             {
                 string compilesFile = PomHelperUtility.GetRelativePath(baseDir, new FileInfo(compile.IncludeFullPath));
                 compiles.Add(compilesFile);
+
+                // if it's a xaml file, include the auto-generated file in object\Debug\
+                if (compilesFile.EndsWith(".xaml.cs") || compilesFile.EndsWith(".xaml.vb"))
+                { 
+                    string gFile = @"obj\Debug\";
+                    if (compilesFile.EndsWith(".cs"))
+                        gFile += Path.GetFileName(compilesFile).Replace(".xaml.cs", ".g.cs");
+                    else
+                        gFile += Path.GetFileName(compilesFile).Replace(".xaml.vb", ".g.vb");
+
+                    string gFullPath = compile.IncludeFullPath.Replace(compilesFile, gFile);
+                    if (File.Exists(gFullPath))
+                        compiles.Add(gFile);
+                    else
+                        throw new Exception("Unable to locate XAML auto-generated code. Please run Build in Visual Studio first.");
+                }
             }
             AddPluginConfiguration(compilePlugin, "includeSources", "includeSource", compiles.ToArray());
-
-
             
 
             if ("true".Equals(projectDigest.SignAssembly, StringComparison.OrdinalIgnoreCase)

@@ -1010,7 +1010,7 @@ namespace NPanday.VisualStudio.Addin
                     Solution2 solution = (Solution2)_applicationObject.Solution;
                     foreach (Project project in solution.Projects)
                     {
-                        if (!IsWebProject(project) && !IsFolder(project))
+                        if (!IsWebProject(project) && !IsFolder(project) && project.Object != null)
                         {
                             IReferenceManager mgr = new ReferenceManager();
                             mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);

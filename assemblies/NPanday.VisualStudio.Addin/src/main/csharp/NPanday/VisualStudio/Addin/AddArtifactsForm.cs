@@ -184,11 +184,14 @@ namespace NPanday.VisualStudio.Addin
             }
 
             // check if URL is already in NPanday.id profile
-            foreach (NPanday.Model.Setting.Repository repo in defaultProfile.repositories)
+            if (defaultProfile != null)
             {
-                if (repo.url == RepoCombo.Text)
+                foreach (NPanday.Model.Setting.Repository repo in defaultProfile.repositories)
                 {
-                    return false;
+                    if (repo.url == RepoCombo.Text)
+                    {
+                        return false;
+                    }
                 }
             }
 
