@@ -2,10 +2,10 @@ import java.io.*;
 
 try
 {
-    File file = new File( basedir, "Sample.wixobj" );
+    File file = new File( basedir, "Sample.msi" );
     if ( !file.isFile() )
     {
-        System.err.println( "Could not find WiX Object File: " + file );
+        System.err.println( "Could not find installation package: " + file );
         return false;
     }
 }
