@@ -118,6 +118,11 @@ under the License.
         <role>QA</role>  
       </roles> 
     </developer>  
+    <developer>
+      <name>Wendy Smoak</name>
+      <id>wsmoak</id>
+      <email>wsmoak@gmail.com</email>
+    </developer> 
     <!--Emeritus Committers-->
     <developer> 
       <name>Shane Isbell</name>  
