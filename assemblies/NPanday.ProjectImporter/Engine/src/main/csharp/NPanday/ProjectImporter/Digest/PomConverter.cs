@@ -56,19 +56,19 @@ namespace NPanday.ProjectImporter.Converter
               );
             __converterAlgorithms.Add(
                 VisualStudioProjectTypeEnum.Windows_Presentation_Foundation__WPF | VisualStudioProjectTypeEnum.Windows__CSharp,
-                typeof(WebWithVbOrCsProjectFilePomConverter)
+                typeof(NormalPomConverter)
               );
             __converterAlgorithms.Add(
                 VisualStudioProjectTypeEnum.Windows_Presentation_Foundation__WPF | VisualStudioProjectTypeEnum.Windows__VbDotNet,
-                typeof(WebWithVbOrCsProjectFilePomConverter)
+                typeof(NormalPomConverter)
               );
             __converterAlgorithms.Add(
                 VisualStudioProjectTypeEnum.Windows_Communication_Foundation__WCF | VisualStudioProjectTypeEnum.Windows__CSharp,
-                typeof(WebWithVbOrCsProjectFilePomConverter)
+                typeof(NormalPomConverter)
               );
             __converterAlgorithms.Add(
                 VisualStudioProjectTypeEnum.Windows_Communication_Foundation__WCF | VisualStudioProjectTypeEnum.Windows__VbDotNet,
-                typeof(WebWithVbOrCsProjectFilePomConverter)
+                typeof(NormalPomConverter)
               );
         }
 

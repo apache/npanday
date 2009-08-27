@@ -104,7 +104,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     if (File.Exists(gFullPath))
                         compiles.Add(gFile);
                     else
-                        throw new Exception("Unable to locate XAML auto-generated code. Please run Build in Visual Studio first.");
+                    {
+                        // ensure that the auto-generated file is needed by the app to build
+                        string xamlFilename = Path.GetFileNameWithoutExtension(compilesFile);
+                        if (File.Exists(compile.IncludeFullPath.Replace(Path.GetFileName(compilesFile), xamlFilename)))
+                            throw new Exception("Unable to locate XAML auto-generated code. Please run Build in Visual Studio first.");
+                    }
                 }
             }
             AddPluginConfiguration(compilePlugin, "includeSources", "includeSource", compiles.ToArray());
