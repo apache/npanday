@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>IT003-parent</artifactId>
+    <groupId>Npanday.examples</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>..\pom.xml</relativePath>
+  </parent>
+  <artifactId>TestAppInstaller</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>NPanday WiX Plugin Integation Test 003</name>
+  <description>
+    Simple integration test to execute candle and light 
+    in a multi-module project.
+  </description>
+
+<!-- Uncomment once IT003.wxs is created
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>wix-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <sourceFiles>
+            <sourceFile>IT003.wxs</sourceFile>
+          </sourceFiles>
+          <objectFiles>
+            <objectFile>IT003.wixobj</objectFile>
+          </objectFiles>
+        </configuration>
+        <executions>
+          <execution>
+            <id>wix</id>
+            <goals>
+              <goal>candle</goal>
+              <goal>light</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+-->
+</project>
