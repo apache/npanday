@@ -48,7 +48,9 @@
               <pomIncludes>
                 <pomInclude>*/pom.xml</pomInclude>
               </pomIncludes>
-              <localRepositoryPath>target/local-repo</localRepositoryPath>
+              <!-- Can't use localRepositoryPath or -Dmaven.repo.local with NPanday
+              See http://npanday.codeplex.com/WorkItem/View.aspx?WorkItemId=10557
+              <localRepositoryPath>target/local-repo</localRepositoryPath> -->
               <postBuildHookScript>verify.bsh</postBuildHookScript>
             </configuration>
             <executions>
