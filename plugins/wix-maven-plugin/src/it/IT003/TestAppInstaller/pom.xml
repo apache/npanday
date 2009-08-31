@@ -16,7 +16,6 @@
     in a multi-module project.
   </description>
 
-<!-- Uncomment once IT003.wxs is created
   <build>
     <plugins>
       <plugin>
@@ -28,7 +27,7 @@
             <sourceFile>IT003.wxs</sourceFile>
           </sourceFiles>
           <objectFiles>
-            <objectFile>IT003.wixobj</objectFile>
+            <objectFile>../IT003.wixobj</objectFile>
           </objectFiles>
         </configuration>
         <executions>
@@ -43,5 +42,4 @@
       </plugin>
     </plugins>
   </build>
--->
 </project>

@@ -1,9 +1,8 @@
 import java.io.*;
 
-/*
 try
 {
-    File file = new File( basedir, "TestAppInstaller/App.msi" );
+    File file = new File( basedir, "IT003.msi" );
     if ( !file.isFile() )
     {
         System.err.println( "Could not find installation package: " + file );
@@ -15,6 +14,5 @@ catch( Throwable t )
     t.printStackTrace();
     return false;
 }
-*/
 
 return true;

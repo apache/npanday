@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="cb1d6666-f119-422f-85ec-4e8ba23abdae" Name="TestAppInstaller" Language="1033" Version="1.0.0.0" Manufacturer="TestAppInstaller" UpgradeCode="0cf2357c-84c4-4a6e-8837-21b00a611e7f">
+    <Package InstallerVersion="200" Compressed="yes" />
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLLOCATION" Name="TestAppInstaller">
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Component Id="TestApplication.exe" Guid="1459B0B5-63DF-4F65-80E8-BD7ADEDA5BC5" DiskId="1">
+        <CreateFolder></CreateFolder>
+        <RemoveFolder Id="RemoveTESTAPP" On="uninstall"/>
+        <File Id="TestApplication.exe" Name="TestApplication.exe" Source="TestApplication\target\TestApplication.exe" Checksum="yes" Vital="yes" DiskId="1" />
+        <RegistryKey Root="HKCU" Key="Software\American Express\TestApplication" Action="createAndRemoveOnUninstall">
+          <RegistryValue Name="Version" Value="[ProductVersion]" Type="string" KeyPath="yes"></RegistryValue>
+        </RegistryKey>
+      </Component>
+      <Component Id="TestLibrary.dll" Guid="48EB3CA2-83E9-475a-B282-1164C30435AE" DiskId="1">
+        <CreateFolder></CreateFolder>
+        <RemoveFolder Id="RemoveTESTLIB" On="uninstall"/>
+        <File Id="TestLibrary.dll" Name="TestLibrary.dll" Source="TestLibrary\target\TestLibrary.dll" Checksum="yes" Vital="yes" DiskId="1" />
+       <RegistryKey Root="HKCU" Key="Software\American Express\TestLibrary" Action="createAndRemoveOnUninstall">
+          <RegistryValue Name="Version" Value="[ProductVersion]" Type="string" KeyPath="yes"></RegistryValue>
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+      <Feature Id="ProductFeature" Title="TestAppInstaller" Level="1">
+      <ComponentRef Id="TestApplication.exe"></ComponentRef>
+      <ComponentRef Id="TestLibrary.dll"></ComponentRef>
+    </Feature>
+  </Product>
+</Wix>
+
