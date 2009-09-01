@@ -96,9 +96,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 { 
                     string gFile = @"obj\Debug\";
                     if (compilesFile.EndsWith(".cs"))
-                        gFile += Path.GetFileName(compilesFile).Replace(".xaml.cs", ".g.cs");
+                        gFile += compilesFile.Replace(".xaml.cs", ".g.cs");
                     else
-                        gFile += Path.GetFileName(compilesFile).Replace(".xaml.vb", ".g.vb");
+                        gFile += compilesFile.Replace(".xaml.vb", ".g.vb");
 
                     string gFullPath = compile.IncludeFullPath.Replace(compilesFile, gFile);
                     if (File.Exists(gFullPath))
