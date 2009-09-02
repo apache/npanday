@@ -41,6 +41,12 @@ public class CandleMojo
      * @required
      */
     private File[] sourceFiles;
+    
+    /**
+     * Output file
+     * @parameter expression="${outputDirectory}"
+	 */
+    private File outputDirectory;
 
     public void execute()
         throws MojoExecutionException
@@ -57,7 +63,20 @@ public class CandleMojo
         }
 
         try {
-          String line = "candle " + paths;
+          String line = "candle -nologo "; 
+          if(outputDirectory != null)
+          {
+            if (!outputDirectory.exists()) 
+            {
+              outputDirectory.mkdir();
+              line = line + "-out " + outputDirectory.getAbsolutePath() + "\\";
+            }
+            else
+            {
+              line = line + "-out " + outputDirectory.getAbsolutePath() + "\\";
+            }
+          }
+          line += " " + paths;
           CommandLine commandLine = CommandLine.parse(line);
           DefaultExecutor executor = new DefaultExecutor();
           int exitValue = executor.execute(commandLine);

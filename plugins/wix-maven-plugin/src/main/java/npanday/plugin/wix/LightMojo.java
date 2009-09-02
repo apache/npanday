@@ -46,7 +46,19 @@ public class LightMojo
      * Output file
      * @parameter expression="${outputFile}"
      */
-    private String outputFile;
+    private File outputFile;
+
+    /**
+     * Location of the WiX localization files.
+     * @parameter expression="${localizationFiles}"
+     */
+    private File[] localizationFiles;
+
+     /**
+     * Output file
+     * @parameter expression="${outputDirectory}"
+     */
+    private File outputDirectory;
 
     public void execute()
         throws MojoExecutionException
@@ -63,11 +75,28 @@ public class LightMojo
           }
         }
 
+        if(localizationFiles.length > 0)
+        {
+          paths += "-loc ";
+          for (int x = 0; x < localizationFiles.length; x++) {
+            File f = localizationFiles[x];
+            if ( !f.exists() )
+            {
+               throw new MojoExecutionException( "Localization file does not exist " + objectFiles[x] );
+            } else {
+               paths = paths + localizationFiles[x].getAbsolutePath() + " ";
+            }
+          }
+        }
+        
         try {
           String line = "light " + paths;
           
           if (outputFile != null) {
-        	  line = line + " -o " + outputFile;
+            line = line + " -o " + outputFile.getAbsolutePath();
+          }
+          else if (outputDirectory != null) {
+            line = line + " -out " + outputDirectory.getAbsolutePath() + "\\";
           }
           
           CommandLine commandLine = CommandLine.parse(line);
