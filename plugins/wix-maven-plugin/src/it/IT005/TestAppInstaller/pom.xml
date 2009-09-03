@@ -23,7 +23,7 @@
         <version>1.0-SNAPSHOT</version>
         <configuration>
           <sourceFiles>
-            <sourceFile>IT005.wxs</sourceFile>
+            <sourceFile>src/main/wix/IT005.wxs</sourceFile>
           </sourceFiles>
           <outputDirectory>target</outputDirectory>
           <objectFiles>
