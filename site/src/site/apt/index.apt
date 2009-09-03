@@ -32,6 +32,10 @@ Welcome to NPanday Visual Studio Addin
   * ASP .NET Web Application
   
   * ASP .Net Web Service Application
+    
+  * Windows Presentation Foundation (WPF)
+    
+  * Windows Communication Foundation (WCF)
   
   []
   
@@ -44,11 +48,14 @@ Welcome to NPanday Visual Studio Addin
   []
   
   To be more specific, NPanday supported project types are: CSharp (library, executable),
-  VbDotNet (library, executable), Web_Site, and Web_Application.
+  VbDotNet (library, executable), Web_Site, and Web_Application,
+  Windows_Presentation_Foundation__WPF, Windows_Communication_Foundation__WCF.
   
   And the combination of types supported are: Web_Site + CSharp, Web_Site +
   VbDotNet, Web_Application + CSharp, and Web_Application +
-  VbDotNet.
+  VbDotNet, Windows_Presentation_Foundation__WPF + CSharp,
+  Windows_Presentation_Foundation__WPF + VbDotNet, Windows_Communication_Foundation__WCF +
+  CSharp, Windows_Communication_Foundation__WCF + VbDotNet.
   
   NPanday supported project structures are as follows:
   
