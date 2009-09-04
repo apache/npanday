@@ -146,7 +146,7 @@ namespace NPanday.ProjectImporter.Converter
                         moduleDir = ".";
                         errorPrj += projectDigest.FullFileName;
                     }
-                    modules.Add(moduleDir);
+                    modules.Add(moduleDir.Replace(@"\","/"));
 
                 }
 
