@@ -28,6 +28,8 @@ NPanday WiX Plugin
 
  Instructions on how to use the WiX plugin goals:
 
+ * {{{usage/index.html}Complete example}}
+
  * {{{usage/candle.html}Create a WiX object file with candle}}
 
  * {{{usage/light.html}Create an installation package (.msi file) with light}}
