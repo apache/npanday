@@ -53,6 +53,11 @@ final class MatchPolicyFactory
                 String p = executableCapability.getProfile().toLowerCase().trim();
                 return ( profile.toLowerCase().trim().equals( p ) );
             }
+
+            public String toString()
+            {
+                return "ExecutableMatchPolicy[profile: '" + profile + "']";
+            }
         };
     }
 
@@ -70,6 +75,11 @@ final class MatchPolicyFactory
             {
                 String os = executableCapability.getOperatingSystem().toLowerCase().trim();
                 return ( operatingSystem.toLowerCase().trim().contains( os ) );
+            }
+
+            public String toString()
+            {
+                return "ExecutableMatchPolicy[operatingSystem: '" + operatingSystem + "']";
             }
         };
     }
@@ -95,6 +105,11 @@ final class MatchPolicyFactory
                 }
                 return false;
             }
+
+            public String toString()
+            {
+                return "ExecutableMatchPolicy[frameworkVersion: '" + frameworkVersion + "']";
+            }
         };
     }
 
@@ -112,6 +127,11 @@ final class MatchPolicyFactory
             {
                 return vendor.getVendorName().toLowerCase().trim()
                     .contains( executableCapability.getVendor().getVendorName().toLowerCase().trim() );
+            }
+
+            public String toString()
+            {
+                return "ExecutableMatchPolicy[vendor: '" + vendor + "']";
             }
         };
     }
@@ -134,6 +154,11 @@ final class MatchPolicyFactory
                 }
                 CompilerCapability capability = (CompilerCapability) executableCapability;
                 return language.toLowerCase().trim().equals( capability.getLanguage().toLowerCase().trim() );
+            }
+
+            public String toString()
+            {
+                return "ExecutableMatchPolicy[language: '" + language + "']";
             }
         };
     }

@@ -146,6 +146,7 @@ public class CapabilityMatcherImpl
             boolean match = executableMatchPolicy.match( executableCapability );
             if ( !match )
             {
+                logger.debug( "Failed to match policy: " + executableMatchPolicy );
                 return false;
             }
         }
