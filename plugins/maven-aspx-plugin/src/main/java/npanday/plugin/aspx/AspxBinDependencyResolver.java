@@ -32,60 +32,53 @@ import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Maven Mojo for copying ASPx project dependencies to sourceDirectory\Bin folder
- * 
+ *
  * @goal copy-dependency
  * @phase process-sources
  * @description Maven Mojo for copying ASPx project dependencies to sourceDirectory\Bin folder
  */
 public class AspxBinDependencyResolver
-    extends AbstractMojo
-{
+        extends AbstractMojo {
     /**
-     * The maven project.
-     * 
-     * @parameter expression="${project}"
+     * The dependencies.
+     *
+     * @parameter expression="${project.dependencyArtifacts}"
      * @required
      */
-    private MavenProject project;
+    private Set<Artifact> dependencies;
+
+    /**
+     * The bin directory.
+     *
+     * @parameter default-value="${project.build.sourceDirectory}/Bin"
+     * @required
+     */
+    private File binDir;
 
     public void execute()
-        throws MojoExecutionException, MojoFailureException
-    {
-        Set<Artifact> dependencies = project.getDependencyArtifacts();
+            throws MojoExecutionException, MojoFailureException {
+        for (Artifact dependency : dependencies) {
+            try {
+                String filename = dependency.getArtifactId() + "." + dependency.getArtifactHandler().getExtension();
+                File targetFile = new File(binDir, filename);
 
-        // project.getDependencyArtifacts();
-        String binDir = project.getBuild().getSourceDirectory() + File.separator + "Bin";
+                if (!targetFile.exists()) {
+                    getLog().info("NPANDAY-000-0000: copying " + dependency.getFile().getAbsolutePath() + " to " + targetFile);
 
-        for ( Artifact dependency : dependencies )
-        {
-            try
-            {
-                 
-				 
-                 String includeSource = ""+dependency.getFile();
-				 
-				 String[] sourceTokens = includeSource.split("\\\\");
-                
-                 String lastToken = sourceTokens[sourceTokens.length-1];
-				 
-				 String fileToCheck = binDir+"\\"+lastToken;
-                 
-				
-				 if(!FileUtils.fileExists( fileToCheck ))
-				 {
-					getLog().info( "NPANDAY-000-0000: copying " + dependency.getFile().getAbsolutePath() + " , to " + binDir );
-
-                    FileUtils.copyFileToDirectory( dependency.getFile().getAbsolutePath(), binDir );
-				 }
-				
-				
+                    FileUtils.copyFile(dependency.getFile(), targetFile);
+                }
             }
-            catch ( IOException ioe )
-            {
-                throw new MojoExecutionException( "NPANDAY-000-0000: Error copying dependency " + dependency, ioe );
+            catch (IOException ioe) {
+                throw new MojoExecutionException("NPANDAY-000-0000: Error copying dependency " + dependency, ioe);
             }
         }
-
     }
 
+    public void setBinDir(File binDir) {
+        this.binDir = binDir;
+    }
+
+    public void setDependencies(Set<Artifact> dependencies) {
+        this.dependencies = dependencies;
+    }
 }
