@@ -555,7 +555,9 @@ namespace NPanday.VisualStudio.Addin
                 //setup default dependecy values
                 string refType = "gac_msil";
                 string refName = pReference.Name;
+                string refGroupId = pReference.Name;
                 string refToken = pReference.PublicKeyToken;
+                string refVersion = pReference.Version;
                 string systemPath = string.Empty;
                 string scope = string.Empty;
 
@@ -566,6 +568,7 @@ namespace NPanday.VisualStudio.Addin
                     if (refName.ToLower().StartsWith("interop."))
                         refName = refName.Substring(8);
                     refToken = pReference.Identity.Substring(0, pReference.Identity.LastIndexOf(@"\")).Replace("\\", "-");
+                    refGroupId = refName;
                 }
                 else
                 {
@@ -579,16 +582,32 @@ namespace NPanday.VisualStudio.Addin
                         else if (a.Location.ToLower().IndexOf(@"\gac\") >= 0)
                             refType = "gac";
 
+                        scope = "system";
                         systemPath = a.Location;
 
                         if (!a.GlobalAssemblyCache)
                         {
                             refType = "library";
                         }
+                    }
+                    else if (pReference.SourceProject != null && pReference.ContainingProject.DTE.Solution.FullName == pReference.SourceProject.DTE.Solution.FullName)
+                    {
+                        // if intra-project reference, let's mimic Add Maven Artifact
 
+                        // TODO: below will force VS build the referenced project, let's disable this for awhile
+                        //pReference.SourceProject.DTE.ExecuteCommand("ClassViewContextMenus.ClassViewProject.Build", string.Empty);
+
+                        string solutionName = Path.GetFileNameWithoutExtension(pReference.ContainingProject.DTE.Solution.FileName);
+                        refGroupId = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion").GetValue("RegisteredOrganization", "mycompany").ToString();
+                        refGroupId = NPandayImportProjectForm.ConvertToPascalCase(refGroupId);
+                        refGroupId = NPandayImportProjectForm.FilterID(refGroupId) + "." + NPandayImportProjectForm.FilterID(NPandayImportProjectForm.ConvertToPascalCase(solutionName));
+
+                        refVersion = "1.0-SNAPSHOT";
+                        refType = "library";
                     }
                     else
                     {
+                        scope = "system";
                         systemPath = pReference.Path;
                         refType = "library";
                         if (!iNPandayRepo)
@@ -600,15 +619,12 @@ namespace NPanday.VisualStudio.Addin
                          ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
-
-                    scope = "system";
-
                 }
 
                 Dependency dep = new Dependency();
                 dep.artifactId = refName;
-                dep.groupId = refName;
-                dep.version = pReference.Version;
+                dep.groupId = refGroupId;
+                dep.version = refVersion;
                 dep.type = refType;
                 
 

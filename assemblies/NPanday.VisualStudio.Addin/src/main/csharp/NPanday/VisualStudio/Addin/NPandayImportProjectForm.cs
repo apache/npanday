@@ -71,7 +71,7 @@ namespace NPanday.VisualStudio.Addin
 
         }
 
-        static string ConvertToPascalCase(string str)
+        public static string ConvertToPascalCase(string str)
         {
             if (string.IsNullOrEmpty(str))
             {
@@ -191,14 +191,17 @@ namespace NPanday.VisualStudio.Addin
                         scmTag = scmTag.Remove(scmTag.IndexOf("scm:svn:"), 8);
                     }
 
-                    Uri repoUri;
                     try
                     {
                         if (!scmTag.Equals(string.Empty))
                         {
-                            repoUri = new Uri(scmTag);
-                        }
+                            if (!scmTag.Contains(@"://"))
+                                scmTag = string.Format(@"http://{0}", scmTag);
 
+                            System.Net.WebClient webClient = new System.Net.WebClient();
+                            webClient.DownloadData(new Uri(scmTag));
+                            //repoUri = new Uri(scmTag);
+                        }
                     }
                     catch (Exception)
                     {

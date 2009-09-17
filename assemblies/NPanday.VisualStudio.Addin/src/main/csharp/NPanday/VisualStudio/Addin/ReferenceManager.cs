@@ -4,6 +4,8 @@ using System.Text;
 using System.IO;
 using NPanday.Model.Pom;
 using System.Windows.Forms;
+using EnvDTE;
+using EnvDTE80;
 
 namespace NPanday.VisualStudio.Addin
 {
@@ -38,6 +40,7 @@ namespace NPanday.VisualStudio.Addin
         bool initialized = false;
         string pomFile;
         string projectPath;
+        Solution solution;
 
         #region IReferenceManager Members
 
@@ -61,6 +64,7 @@ namespace NPanday.VisualStudio.Addin
 
         public void Initialize(VSLangProj80.VSProject2 project)
         {
+            solution = project.Project.DTE.Solution;
             projectPath = Path.GetDirectoryName(project.Project.FileName);
             referenceFolder = Path.Combine( projectPath,".references");
             pomFile =  Path.Combine(projectPath, "pom.xml");
@@ -146,13 +150,35 @@ namespace NPanday.VisualStudio.Addin
             {
                 foreach (Dependency d in m.dependencies)
                 {
+                    // check if intra-project reference and copy
                     // artifacts from remote repository only
-                    if (d.classifier == null)
+                    if (!isIntraProject(d) && d.classifier == null)
                     {
                         CopyArtifact(repository.GetArtifact(d));
                     }
                 }
             }
+        }
+
+        bool isIntraProject(Dependency d)
+        {
+            // get the groupID of the current solution
+            string groupId = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion").GetValue("RegisteredOrganization", "mycompany").ToString();
+            groupId = NPandayImportProjectForm.ConvertToPascalCase(groupId);
+            groupId = NPandayImportProjectForm.FilterID(groupId) + "." + Path.GetFileNameWithoutExtension(solution.FullName);
+
+            if (d.groupId == groupId)
+            {
+                foreach (Project project in solution.Projects)
+                {
+                    if (d.artifactId == project.Name)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         bool pomExist()
