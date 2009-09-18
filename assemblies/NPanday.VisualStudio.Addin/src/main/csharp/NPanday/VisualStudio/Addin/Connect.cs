@@ -597,11 +597,8 @@ namespace NPanday.VisualStudio.Addin
                         // TODO: below will force VS build the referenced project, let's disable this for awhile
                         //pReference.SourceProject.DTE.ExecuteCommand("ClassViewContextMenus.ClassViewProject.Build", string.Empty);
 
-                        string solutionName = Path.GetFileNameWithoutExtension(pReference.ContainingProject.DTE.Solution.FileName);
-                        refGroupId = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion").GetValue("RegisteredOrganization", "mycompany").ToString();
-                        refGroupId = NPandayImportProjectForm.ConvertToPascalCase(refGroupId);
-                        refGroupId = NPandayImportProjectForm.FilterID(refGroupId) + "." + NPandayImportProjectForm.FilterID(NPandayImportProjectForm.ConvertToPascalCase(solutionName));
-
+                        NPanday.Model.Pom.Model solutionPOM = NPanday.Utils.PomHelperUtility.ReadPomAsModel(CurrentSolutionPom);
+                        refGroupId = solutionPOM.groupId;
                         refVersion = "1.0-SNAPSHOT";
                         refType = "library";
                     }

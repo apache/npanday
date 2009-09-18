@@ -152,7 +152,7 @@ namespace NPanday.VisualStudio.Addin
                 {
                     // check if intra-project reference and copy
                     // artifacts from remote repository only
-                    if (!isIntraProject(d) && d.classifier == null)
+                    if (!isIntraProject(m, d) && d.classifier == null)
                     {
                         CopyArtifact(repository.GetArtifact(d));
                     }
@@ -160,15 +160,12 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
-        bool isIntraProject(Dependency d)
+        bool isIntraProject(NPanday.Model.Pom.Model m, Dependency d)
         {
-            // get the groupID of the current solution
-            string groupId = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion").GetValue("RegisteredOrganization", "mycompany").ToString();
-            groupId = NPandayImportProjectForm.ConvertToPascalCase(groupId);
-            groupId = NPandayImportProjectForm.FilterID(groupId) + "." + Path.GetFileNameWithoutExtension(solution.FullName);
-
-            if (d.groupId == groupId)
+            if (d.groupId == m.parent.groupId)
             {
+                // loop through VS projects (instead of modules in parent POM) because
+                // we need real-time list of project names in the solution
                 foreach (Project project in solution.Projects)
                 {
                     if (d.artifactId == project.Name)
