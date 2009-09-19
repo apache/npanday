@@ -58,22 +58,6 @@ under the License.
       <version>2.0-beta5</version> 
     </dependency> 
   </dependencies>  
-  <build> 
-    <resources> 
-      <resource> 
-        <directory>src/main/resources</directory>  
-        <targetPath>/</targetPath> 
-      </resource> 
-    </resources>  
-    <testResources> 
-      <testResource> 
-        <directory>src/test/resources</directory>  
-        <includes> 
-          <include>*</include> 
-        </includes> 
-      </testResource> 
-    </testResources> 
-  </build>  
   <reporting> 
     <plugins> 
       <plugin> 
