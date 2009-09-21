@@ -172,7 +172,7 @@ public class RepositoryAssemblerMojo
 
         ArtifactRepository localArtifactRepository =
             new DefaultArtifactRepository( "local", "file://" + localRepository, layout );
-        ArtifactRepository deploymentRepository = repositoryFactory.createDeploymentArtifactRepository( null,
+        ArtifactRepository deploymentRepository = repositoryFactory.createDeploymentArtifactRepository( "npanday.deploy",
                                                                                                         "file://" +
                                                                                                             project.getBuild().getDirectory() + File.separator +
                                                                                                             outputDirectory,
