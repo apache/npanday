@@ -598,8 +598,22 @@ namespace NPanday.VisualStudio.Addin
                         //pReference.SourceProject.DTE.ExecuteCommand("ClassViewContextMenus.ClassViewProject.Build", string.Empty);
 
                         NPanday.Model.Pom.Model solutionPOM = NPanday.Utils.PomHelperUtility.ReadPomAsModel(CurrentSolutionPom);
+                        NPanday.Model.Pom.Model projectPOM = NPanday.Utils.PomHelperUtility.ReadPomAsModel(CurrentSelectedProjectPom);
+                        
                         refGroupId = solutionPOM.groupId;
-                        refVersion = "1.0-SNAPSHOT";
+
+                        if (projectPOM.version != null && projectPOM.version!="0.0.0.0")
+                        {
+                            refVersion = projectPOM.version;
+                        }
+                        else if ((solutionPOM.version != null && solutionPOM.version != "0.0.0.0"))
+                        {
+                            refVersion = solutionPOM.version;
+                        }
+                        else
+                        {
+                            refVersion = "1.0-SNAPSHOT";
+                        }
                         refType = "library";
                     }
                     else
