@@ -119,3 +119,23 @@ Importing Projects
   
   <<Note>>: This feature does not support cultured esx files such as <<<eu-US>>>, <<<it>>>, <<<jp>>>, <<<de>>>, <<<eu-UK>>>, and even custom culture.
   
+*Importing WPF/WCF Projects with XAML files
+
+  If the project you are Importing is a WPF/WCF project and it contains a XAML file the MSBuildPlugin will be automatically added into that project's pom file.
+ 
++------+ 
+  <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
+  </plugin>
++------+
+  
+  This will generate the needed *.g.cs/*.g.vb files that are needed for those XAML files. 

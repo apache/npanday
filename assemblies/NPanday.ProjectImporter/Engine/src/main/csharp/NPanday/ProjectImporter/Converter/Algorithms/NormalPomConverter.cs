@@ -86,6 +86,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // add include list for the compiling
             DirectoryInfo baseDir = new DirectoryInfo(Path.GetDirectoryName(projectDigest.FullFileName));
             List<string> compiles = new List<string>();
+            bool msBuildPluginAdded = false;
             foreach (Compile compile in projectDigest.Compiles)
             {
                 string compilesFile = PomHelperUtility.GetRelativePath(baseDir, new FileInfo(compile.IncludeFullPath));
@@ -94,6 +95,15 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 // if it's a xaml file, include the auto-generated file in object\Debug\
                 if (compilesFile.EndsWith(".xaml.cs") || compilesFile.EndsWith(".xaml.vb"))
                 { 
+                    //add the MsBuild plugin to auto generate the .g.cs/g.vb files
+                    if (!msBuildPluginAdded)
+                    {
+                        Plugin msBuildPlugin = AddPlugin("npanday.plugin", "NPanday.Plugin.Msbuild.JavaBinding", null, true);
+                        AddPluginExecution(msBuildPlugin, "compile", "validate");
+                        msBuildPluginAdded = true;
+                    }
+                    
+
                     string gFile = @"obj\Debug\";
                     if (compilesFile.EndsWith(".cs"))
                         gFile += compilesFile.Replace(".xaml.cs", ".g.cs");
@@ -101,15 +111,18 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                         gFile += compilesFile.Replace(".xaml.vb", ".g.vb");
 
                     string gFullPath = compile.IncludeFullPath.Replace(compilesFile, gFile);
-                    if (File.Exists(gFullPath))
-                        compiles.Add(gFile);
-                    else
+                    
+                    compiles.Add(gFile);
+                        
+                    
+                    //Removed because MsBuild plugin assures that the needed files will be present.
+                    /*else
                     {
                         // ensure that the auto-generated file is needed by the app to build
                         string xamlFilename = Path.GetFileNameWithoutExtension(compilesFile);
                         if (File.Exists(compile.IncludeFullPath.Replace(Path.GetFileName(compilesFile), xamlFilename)))
                             throw new Exception("Unable to locate XAML auto-generated code. Please run Build in Visual Studio first.");
-                    }
+                    }*/
                 }
             }
             AddPluginConfiguration(compilePlugin, "includeSources", "includeSource", compiles.ToArray());

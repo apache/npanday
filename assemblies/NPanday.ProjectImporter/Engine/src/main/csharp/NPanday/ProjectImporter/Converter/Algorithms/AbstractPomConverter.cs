@@ -441,9 +441,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             plugin.artifactId = artifactId;
             plugin.version = version;
             plugin.extensions = extensions;
-
-
+            
             plugins.Add(plugin);
+            
 
             model.build.plugins = plugins.ToArray();
 

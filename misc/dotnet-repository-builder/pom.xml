@@ -89,9 +89,10 @@
     </dependency>
 
     <!--netplugins-->
+	
 	<dependency>
       <groupId>npanday.plugin</groupId>
-      <artifactId>NPanday.Plugin.SysRef</artifactId>
+      <artifactId>NPanday.Plugin.Msbuild</artifactId>
       <version>${pom.version}</version>
       <type>netplugin</type>
     </dependency>

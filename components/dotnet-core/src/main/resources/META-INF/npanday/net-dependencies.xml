@@ -25,6 +25,11 @@
     <artifactId>NPanday.Plugin.SysRef</artifactId>
     <type>netplugin</type>
   </netDependency>
+  <netDependency>
+    <groupId>npanday.plugin</groupId>
+    <artifactId>NPanday.Plugin.Msbuild</artifactId>
+    <type>netplugin</type>
+  </netDependency>
   <!--IDE-->
   <netDependency>
     <groupId>NPanday.VisualStudio</groupId>

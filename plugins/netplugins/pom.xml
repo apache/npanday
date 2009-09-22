@@ -36,7 +36,8 @@ under the License.
     <module>NPanday.Plugin.Devenv</module>  
     <module>NPanday.Plugin.Resx</module>  
     <module>NPanday.Plugin.Settings</module>
-	<module>NPanday.Plugin.SysRef</module>		
+	<module>NPanday.Plugin.SysRef</module>
+	<module>NPanday.Plugin.Msbuild</module>			
   </modules>  
   <profiles> 
     <profile> 
