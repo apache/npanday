@@ -139,3 +139,5 @@ Importing Projects
 +------+
   
   This will generate the needed *.g.cs/*.g.vb files that are needed for those XAML files. 
+   
+   Note: The user would encounter double dependency errors, if the project was created with 3.0 .net framework. We suggest that you change your framework to 3.5 and then delete the references that are already included as defaults in NPanday. This will then allow your project to run successfully.
