@@ -274,15 +274,16 @@ namespace NPanday.ProjectImporter.Digest.Model
                 }
                 List<string> activeProfiles = new List<string>();
                 activeProfiles.AddRange(settings.activeProfiles);
+                
                 foreach (Profile profile in settings.profiles)
                 {
-                    if ("NPanday.id".Equals(profile.id))
+                    if (activeProfiles.Contains(profile.id))
                     {
                         foreach (Repository repo in profile.repositories)
                         {
                             ArtifactContext artifactContext = new ArtifactContext();
                             artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, repo.url, ext);
-                            
+
                             if (downloadArtifact(artifact))
                             {
                                 return true;
@@ -291,7 +292,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                         break;
                     }
                 }
-                return false;
+                return false;                
             }
             catch 
             {
