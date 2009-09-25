@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>WIXLocalizationExample-parent</artifactId>
+    <groupId>Npanday.examples.WIXLocalizationExample</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>..\pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>WIXLocalizationExample</artifactId>
+  <packaging>winexe</packaging>
+  <name>Npanday.examples.WIXLocalizationExample : WIXLocalizationExample</name>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <frameworkVersion>3.5</frameworkVersion>
+          <includeSources>
+            <includeSource>Form1.cs</includeSource>
+            <includeSource>Form1.Designer.cs</includeSource>
+            <includeSource>Program.cs</includeSource>
+            <includeSource>Properties\AssemblyInfo.cs</includeSource>
+            <includeSource>Properties\Resources.Designer.cs</includeSource>
+            <includeSource>Properties\Settings.Designer.cs</includeSource>
+          </includeSources>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>maven-resgen-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <embeddedResources>
+            <embeddedResource>
+              <sourceFile>Properties\Resources.resx</sourceFile>
+              <name>WIXLocalizationExample.Properties.Resources</name>
+            </embeddedResource>
+          </embeddedResources>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

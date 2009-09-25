@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>WIXLocalizationExample-parent</artifactId>
+    <groupId>Npanday.examples.WIXLocalizationExample</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>..\pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>LocalizationInstaller</artifactId>
+  <packaging>pom</packaging>
+  <name>Npanday.examples.WIXLocalizationExample : LocalizationInstaller</name>
+  <description>
+    Simple integration test to execute candle on a sample .wxs file.
+    Based on tutorial at http://www.tramontana.co.hu/wix/
+  </description>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <outputDirectory>.references</outputDirectory>
+          <stripVersion>true</stripVersion>
+          <excludeTransitive>true</excludeTransitive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>unpack-dependencies</id>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>wix-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <extensions>true</extensions>
+        <configuration>
+          <sourceFiles>
+            <sourceFile>Product.wxs</sourceFile>
+          </sourceFiles>
+          <outputDirectory>target</outputDirectory>
+          <objectFiles>
+            <objectFile>target\Product.wixobj</objectFile>
+          </objectFiles>
+          <outputFile>target\IT007.msi</outputFile>
+          <localizationFiles>
+            <localizationFile>Setup-en-us.wxl</localizationFile>
+          </localizationFiles>
+        </configuration>
+        <executions>
+          <execution>
+            <id>create-wixobj-files</id>
+            <goals>
+              <goal>candle</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>create-msi-files</id>
+            <goals>
+              <goal>light</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

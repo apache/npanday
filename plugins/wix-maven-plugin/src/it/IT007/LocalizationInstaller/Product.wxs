@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="e20acb67-c755-4f4c-8009-87375463dfcc" Name="LocalizationInstaller" Language="1033" Version="1.0.0.0" Manufacturer="LocalizationInstaller" UpgradeCode="14ca9649-c014-4ac4-afd3-dc2a84ba0999">
+		<Package InstallerVersion="200" Compressed="yes" />
+
+		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLLOCATION" Name="LocalizationInstaller">
+				</Directory>
+			</Directory>
+		</Directory>
+
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Component Id="WIXLocalizationExample.exe" Guid="3dba1a12-627c-4d95-a9c5-021934bf4647" DiskId="1">
+        <CreateFolder></CreateFolder>
+        <RemoveFolder Id="RemoveINSTALLLOCATION" On="uninstall"/>
+        <File Id="WIXLocalizationExample.exe" Name="WIXLocalizationExample" Source="WIXLocalizationExample\target\WIXLocalizationExample.exe" Checksum="yes" Vital="yes" DiskId="1" />
+      </Component>
+    </DirectoryRef>
+
+		<Feature Id="ProductFeature" Title="LocalizationInstaller" Level="1">
+      <ComponentRef Id="WIXLocalizationExample.exe"/>
+		</Feature>
+
+    <Condition Message="=!(loc.LaunchCondition_AllUsers)">
+      NOT ALLUSERS
+    </Condition>
+	</Product>
+</Wix>
