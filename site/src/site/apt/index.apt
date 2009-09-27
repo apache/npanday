@@ -5,14 +5,15 @@
  24 Feb 2009
  ------
 
-Welcome to NPanday Visual Studio Addin
+Welcome to NPanday
 
-  NPanday provides Maven 2.x plugins to support building of .NET applications.
+  NPanday provides Maven 2.x plugins to support building .NET applications at the command
+  line or in your IDE.
   It enables you to use Visual Studio with a Maven-compatible development infrastructure.
   
   NPanday is its own framework, the goal of which is to provide a common Maven build environment across .NET compilers
   (C#, VB), vendors (Microsoft, Novell, DotGNU), and platforms (Windows, Linux). This framework leverages Maven for
-  the build lifecycle, making it a small, compiler-plugin-framework on top of the larger Maven build-framework.
+  the build lifecycle, making it a small compiler-plugin-framework on top of the larger Maven build-framework.
   
   NPanday Maven Integration Features support console, window and web based applications as listed
   below.
@@ -77,8 +78,6 @@ Reporting Bugs/Requesting Features
 
  * {{{mailto:npanday@discussions.codeplex.com} Post to Mailing List}}
 
-Site Info
+PDF
 
- All information contained within this web-site is based on the latest work at
- the {{{https://npanday.svn.codeplex.com/svn/trunk} SVN trunk }}, so all features may not work with the
- latest stable tag {{{https://npanday.svn.codeplex.com/svn/tags/} SVN tags }}
+ This documentation is also available in a {{{./npanday.pdf} single pdf}}.

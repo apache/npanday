@@ -1,0 +1,8 @@
+<document outputName="npanday">
+
+ <meta>
+   <title>NPanday ${project.version}</title>
+   <author>The NPanday Team</author>
+ </meta>
+
+</document>
