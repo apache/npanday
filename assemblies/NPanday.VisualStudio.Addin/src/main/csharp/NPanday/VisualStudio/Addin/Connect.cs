@@ -288,14 +288,30 @@ namespace NPanday.VisualStudio.Addin
 
         private const string WEB_PROJECT_KIND_GUID = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";
 
+        private const string WEB_APPLICATION_KIND_GUID = "{349C5851-65DF-11DA-9384-00065B846F21}";
+
         public static bool IsWebProject(Project project)
         {
+            bool isWebProject = false;
             // make sure there's a project item
             if (project == null)
-                return false;
+            {
+                return isWebProject;
+            } 
 
             // compare the project kind to the web project guid
-            return (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0);
+            if (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0)
+            {
+                isWebProject = true;
+            }
+
+            // compare the project kind to the web project guid
+            if (String.Compare(project.Kind, WEB_APPLICATION_KIND_GUID, true) == 0)
+            {
+                isWebProject = true;
+            }
+
+            return (isWebProject);
         }
 
         private const string FOLDER_KIND_GUID = "{66A26720-8FB5-11D2-AA7E-00C04F688DDE}";
@@ -483,32 +499,36 @@ namespace NPanday.VisualStudio.Addin
                             += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
                         classProject.Events2.ReferencesEvents.ReferenceAdded += new _dispReferencesEvents_ReferenceAddedEventHandler(ReferencesEvents_ReferenceAdded);
 
-                        ProjectItem webReferenceFolder = classProject.WebReferencesFolder;
-                        if (webReferenceFolder == null)
+                        if(IsWebProject(project))
                         {
-                            webReferenceFolder = classProject.CreateWebReferencesFolder();
-                        }
-                        referenceFolder = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
-                        //attach web references watcher
-                        try
-                        {
-                            if (!string.IsNullOrEmpty(referenceFolder))
+                            ProjectItem webReferenceFolder = classProject.WebReferencesFolder;
+                            if (webReferenceFolder == null)
                             {
-                                string wsPath = referenceFolder;
-                                WebServicesReferenceWatcher wsw = new WebServicesReferenceWatcher(wsPath);
-                                wsw.Created += new EventHandler<WebReferenceEventArgs>(wsw_Created);
-                                wsw.Deleted += new EventHandler<WebReferenceEventArgs>(wsw_Deleted);
-                                wsw.Renamed += new EventHandler<WebReferenceEventArgs>(wsw_Renamed);
-                                wsw.Start();
-                                this.wsRefWatcher.Add(wsw);
+                                webReferenceFolder = classProject.CreateWebReferencesFolder();
                             }
+                            referenceFolder = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
+                            //attach web references watcher
+                            try
+                            {
+                                if (!string.IsNullOrEmpty(referenceFolder))
+                                {
+                                    string wsPath = referenceFolder;
+                                    WebServicesReferenceWatcher wsw = new WebServicesReferenceWatcher(wsPath);
+                                    wsw.Created += new EventHandler<WebReferenceEventArgs>(wsw_Created);
+                                    wsw.Deleted += new EventHandler<WebReferenceEventArgs>(wsw_Deleted);
+                                    wsw.Renamed += new EventHandler<WebReferenceEventArgs>(wsw_Renamed);
+                                    wsw.Start();
+                                    this.wsRefWatcher.Add(wsw);
+                                }
 
-                        }
-                        catch (Exception ex)
-                        {
+                            }
+                            catch (Exception ex)
+                            {
 
-                            throw ex;
+                                throw ex;
+                            }
                         }
+                        
                     }
                     catch
                     {
