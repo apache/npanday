@@ -22,6 +22,7 @@ namespace NPanday.VisualStudio.Addin
     public partial class NPandayImportProjectForm : Form
     {
         private DTE2 applicationObject;
+        private OutputWindowPane outputWindowPane;
 
 		public static string FilterID(string partial)
         {
@@ -97,9 +98,13 @@ namespace NPanday.VisualStudio.Addin
             return strBuild.ToString();
         }
 
+        public void SetOutputWindowPane(OutputWindowPane pane)
+        {
+            outputWindowPane = pane;
+        }
+
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-
             OpenFileDialog ofd = new OpenFileDialog();
 
             if (!"".Equals(txtBrowseDotNetSolutionFile.Text) && System.IO.File.Exists(txtBrowseDotNetSolutionFile.Text))
@@ -208,10 +213,10 @@ namespace NPanday.VisualStudio.Addin
                         warningMsg = string.Format("\n    SCM Tag {0} was not accessible", scmTag);
                     }
 
+                    validateSolutionStructure();
+                    resyncAllArtifacts();
                     string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, "1.0-SNAPSHOT", scmTag, true, ref warningMsg);
-
                     string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
-
 
                     foreach (string pom in generatedPoms)
                     {
@@ -277,5 +282,118 @@ namespace NPanday.VisualStudio.Addin
             //txtSCMTag.Text = string.Empty;
         }
 
+        private void resyncAllArtifacts()
+        {
+            if (applicationObject.Solution != null)
+            {
+                Solution2 solution = (Solution2)applicationObject.Solution;
+                IList<IReferenceManager> refManagers = new List<IReferenceManager>();
+                foreach (Project project in solution.Projects)
+                {
+                    if (!isWebProject(project) && !isFolder(project) && project.Object != null)
+                    {
+                        IReferenceManager mgr = new ReferenceManager();
+                        try
+                        {
+                            mgr.Initialize((VSLangProj80.VSProject2)project.Object);
+                            refManagers.Add(mgr);
+                        }
+                        catch
+                        {
+                            // suppressing...
+                        }
+                    }
+                }
+
+                // if POM file exists in any of the projects, commence resync
+                if (refManagers.Count > 0)
+                {
+                    refManagerHasError = false;
+                    outputWindowPane.OutputString("\n[INFO] Re-syncing artifacts... ");
+                    try
+                    {
+                        foreach (IReferenceManager mgr in refManagers)
+                        {
+                            mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
+                            mgr.ResyncArtifacts();
+                        }
+
+                        if (!refManagerHasError)
+                        {
+                            outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (refManagerHasError)
+                        {
+                            outputWindowPane.OutputString(string.Format("\n[WARNING] {0}\n\n{1}\n\n", ex.Message, ex.StackTrace));
+                        }
+                        else
+                        {
+                            outputWindowPane.OutputString(string.Format("failed: {0}\n\n{1}\n\n", ex.Message, ex.StackTrace));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void validateSolutionStructure()
+        {
+            Solution2 solution = (Solution2)applicationObject.Solution;
+            string solutionDir = Path.GetDirectoryName(solution.FullName);
+            bool isFlatSingleModule = (solution.Projects.Count == 1 
+                && Path.GetExtension(solution.Projects.Item(1).FullName).EndsWith("proj")
+                && solutionDir == Path.GetDirectoryName(solution.Projects.Item(1).FullName));
+
+            foreach (Project project in solution.Projects)
+            {
+                string projPath = string.Empty;
+                try { projPath = project.FullName; }
+                catch { } //missing project, do nothing
+
+                if (Path.GetExtension(projPath).EndsWith("proj"))
+                {
+                    string projDir = Path.GetDirectoryName(projPath);
+                    if ((isFlatSingleModule && solutionDir == projDir) || (!isFlatSingleModule && solutionDir == Path.GetDirectoryName(projDir)))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        throw new Exception("Project Importer failed with project " + project.Name + ". Project directory structure may not be supported.");
+                    }
+                }
+            }
+        }
+
+        private bool refManagerHasError = false;
+        void refmanager_OnError(object sender, ReferenceErrorEventArgs e)
+        {
+            refManagerHasError = true;
+            outputWindowPane.OutputString("\n[WARNING] " + e.Message);
+        }
+
+        private const string WEB_PROJECT_KIND_GUID = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";
+        private static bool isWebProject(Project project)
+        {
+            // make sure there's a project item
+            if (project == null)
+                return false;
+
+            // compare the project kind to the web project guid
+            return (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0);
+        }
+
+        private const string FOLDER_KIND_GUID = "{66A26720-8FB5-11D2-AA7E-00C04F688DDE}";
+        private static bool isFolder(Project project)
+        {
+            // make sure there's a project item
+            if (project == null)
+                return false;
+
+            // compare the project kind to the folder guid
+            return (String.Compare(project.Kind, FOLDER_KIND_GUID, true) == 0);
+        }
     }
 }

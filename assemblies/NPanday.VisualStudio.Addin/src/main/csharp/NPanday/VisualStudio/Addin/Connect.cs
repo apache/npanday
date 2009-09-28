@@ -894,25 +894,43 @@ namespace NPanday.VisualStudio.Addin
 
         void resetReferenceButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
         {
-            outputWindowPane.OutputString("\nRe-syncing artifacts...");
+            refManagerHasError = false;
+            outputWindowPane.OutputString(string.Format("\n[INFO] Re-syncing artifacts in {0} project... ", CurrentSelectedProject.Name));
             try
             {
                 IReferenceManager refmanager = new ReferenceManager();
                 refmanager.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
                 refmanager.Initialize((VSProject2)CurrentSelectedProject.Object);
                 refmanager.ResyncArtifacts();
-                outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
+
+                if (!refManagerHasError)
+                {
+                    outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
+                }
             }
             catch (Exception ex)
             {
-                outputWindowPane.OutputString(string.Format("ERROR! [{0}]", DateTime.Now.ToString("hh:mm tt")));
-                MessageBox.Show(ex.Message, "Reset References", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (refManagerHasError)
+                {
+                    outputWindowPane.OutputString(string.Format("\n[WARNING] {0}", ex.Message));
+                }
+                else
+                {
+                    outputWindowPane.OutputString(string.Format("failed: {0}", ex.Message));
+                }
+
+                if (!ex.Message.Contains("no valid pom file"))
+                {
+                    outputWindowPane.OutputString(string.Format("\n\n{0}\n\n", ex.StackTrace));
+                }
             }
         }
 
+        bool refManagerHasError = false;
         void refmanager_OnError(object sender, ReferenceErrorEventArgs e)
         {
-            outputWindowPane.OutputString("\nERROR: "+ e.Message);
+            refManagerHasError = true;
+            outputWindowPane.OutputString("\n[WARNING] "+ e.Message);
         }
 
         private void createStopBuildMenu(CommandBar commandBar, CommandBarControl control)
@@ -1029,7 +1047,8 @@ namespace NPanday.VisualStudio.Addin
 
         void resetAllButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
         {
-            outputWindowPane.OutputString("\nRe-syncing artifacts...");
+            refManagerHasError = false;
+            outputWindowPane.OutputString("\n[INFO] Re-syncing artifacts in all projects... ");
             try
             {
                 if (_applicationObject.Solution != null)
@@ -1047,17 +1066,25 @@ namespace NPanday.VisualStudio.Addin
                         }
                     }
                 }
-                outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("no valid pom file."))
+                if (!refManagerHasError)
                 {
                     outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
                 }
+            }
+            catch (Exception ex)
+            {
+                if (refManagerHasError)
+                {
+                    outputWindowPane.OutputString(string.Format("\n[WARNING] {0}", ex.Message));
+                }
                 else
                 {
-                    outputWindowPane.OutputString(string.Format("ERROR! [{0}]\n\n{1}\n\n", ex.Message, ex.StackTrace));
+                    outputWindowPane.OutputString(string.Format("failed: {0}", ex.Message));
+                }
+
+                if (!ex.Message.Contains("no valid pom file"))
+                {
+                    outputWindowPane.OutputString(string.Format("\n\n{0}\n\n", ex.StackTrace));
                 }
             }
         }
@@ -1696,15 +1723,21 @@ namespace NPanday.VisualStudio.Addin
                 FileInfo currentPom = this.CurrentSelectedProjectPom;
                 if (currentPom == null)
                 {
-                    DialogResult result = MessageBox.Show("Pom file not found, do you want to import the projects first before adding Maven Artifact?", "Add Maven Artifact", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    DialogResult result = MessageBox.Show("Pom file not found, do you want to import the projects first before adding Maven Artifact?", "Add Maven Artifact", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                     if (result == DialogResult.Cancel)
                         return;
-                    else if (result == DialogResult.Yes)
+                    else if (result == DialogResult.OK)
                     {
                         SaveAllDocuments();
                         NPandayImportProjectForm frm = new NPandayImportProjectForm(_applicationObject);
                         frm.ShowDialog();
                         currentPom = this.CurrentSelectedProjectPom;
+
+                        // if import failed
+                        if (currentPom == null)
+                        {
+                            return;
+                        }
                     }
                 }
                 AddArtifactsForm form = new AddArtifactsForm(project, container, logger, currentPom);
@@ -1746,8 +1779,8 @@ namespace NPanday.VisualStudio.Addin
         private void cbChangeProjectImportForm_Click(CommandBarButton btn, ref bool Cancel)
         {
             SaveAllDocuments();
-            resetAllButton_Click(btn, ref Cancel);
             NPandayImportProjectForm frm = new NPandayImportProjectForm(_applicationObject);
+            frm.SetOutputWindowPane(outputWindowPane);
             frm.ShowDialog();
         }
         #endregion

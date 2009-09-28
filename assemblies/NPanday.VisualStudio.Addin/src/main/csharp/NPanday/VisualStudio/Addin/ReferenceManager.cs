@@ -17,11 +17,11 @@ namespace NPanday.VisualStudio.Addin
     public interface IReferenceManager
     {
         Artifact.Artifact Add(IReferenceInfo reference);
-        bool Remove(IReferenceInfo reference);
+        void Remove(IReferenceInfo reference);
         void Initialize(VSLangProj80.VSProject2 project);
         string ReferenceFolder { get; }
-        bool CopyArtifact(Artifact.Artifact artifact);
-        bool ResyncArtifacts();
+        void CopyArtifact(Artifact.Artifact artifact);
+        void ResyncArtifacts();
         event EventHandler<ReferenceErrorEventArgs> OnError;
     }
 
@@ -57,7 +57,7 @@ namespace NPanday.VisualStudio.Addin
             return a;
         }
 
-        public bool Remove(IReferenceInfo reference)
+        public void Remove(IReferenceInfo reference)
         {
             throw new Exception("The method or operation is not implemented.");
         }
@@ -86,7 +86,7 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
-        public bool CopyArtifact(Artifact.Artifact artifact)
+        public void CopyArtifact(Artifact.Artifact artifact)
         {
             if (!initialized)
                 throw new Exception("Reference manager not initialized.");
@@ -98,20 +98,18 @@ namespace NPanday.VisualStudio.Addin
                     ReferenceErrorEventArgs e = new ReferenceErrorEventArgs();
                     e.Message = string.Format("Unable to get the artifact {0} from any of your repositories.", artifact.ArtifactId);
                     onError(e);
-                    return false;
+                    return;
                 }
             }
 
             copyToReferenceFolder(artifact, referenceFolder);
-            return true;
         }
 
-        public bool ResyncArtifacts()
+        public void ResyncArtifacts()
         {
             if (!initialized)
                 throw new Exception("Reference manager not initialized.");
             getReferencesFromPom();
-            return false;
         }
 
         #endregion
