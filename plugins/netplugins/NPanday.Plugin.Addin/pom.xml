@@ -32,19 +32,19 @@ under the License.
   <name>NPanday.Plugin.Addin</name>  
   <dependencies> 
     <dependency> 
-      <groupId>NPanday.Artifact</groupId>  
+      <groupId>npanday.artifact</groupId>  
       <artifactId>NPanday.Artifact</artifactId>  
       <version>1.1-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
-      <groupId>NPanday.Model</groupId>  
+      <groupId>npanday.model</groupId>  
       <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
       <type>library</type>  
       <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>NPanday.Plugin</groupId>  
+      <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
       <type>library</type>  
       <version>1.1-SNAPSHOT</version> 

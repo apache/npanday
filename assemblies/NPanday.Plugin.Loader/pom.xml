@@ -20,19 +20,19 @@ under the License.
 -->
 <project> 
   <parent> 
-    <groupId>NPanday</groupId>  
+    <groupId>npanday</groupId>  
     <version>1.1-SNAPSHOT</version>  
     <artifactId>NPanday.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>NPanday.Plugin</groupId>  
+  <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Loader</artifactId>  
   <version>1.1-SNAPSHOT</version>  
   <packaging>exe</packaging>  
   <name>NPanday.Plugin.Loader</name>  
   <dependencies> 
     <dependency> 
-      <groupId>NPanday.Plugin</groupId>  
+      <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
       <type>library</type>  
       <version>1.1-SNAPSHOT</version> 

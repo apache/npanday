@@ -20,13 +20,13 @@ under the License.
 -->
 <project> 
   <parent> 
-    <groupId>NPanday</groupId>  
+    <groupId>npanday</groupId>  
     <version>1.1-SNAPSHOT</version>  
     <artifactId>NPanday.Assemblies</artifactId>  
     <relativePath>../../pom.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>NPanday.Model</groupId>  
+  <groupId>npanday.model</groupId>  
   <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
   <version>1.1-SNAPSHOT</version>  
   <packaging>library</packaging>  
