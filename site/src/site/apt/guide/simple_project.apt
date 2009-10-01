@@ -20,9 +20,9 @@ Creating a Simple Project
   [[2]] From a command shell go to the directory that contains the POM file, and execute the following command
   (In the example, execute the command from the <<<npandaytest>>> directory) to create a C# or VB project:
   
-  For C#: <<<mvn archetype:create -DgroupId=NPanday -DartifactId=NPanday.Test -DarchetypeArtifactId=maven-archetype-dotnet-simple -DarchetypeGroupId=org.apache.maven.dotnet -DarchetypeVersion=[version]>>>
+  For C#: <<<mvn archetype:create -DgroupId=npanday -DartifactId=NPanday.Test -DarchetypeArtifactId=maven-archetype-dotnet-simple -DarchetypeGroupId=org.apache.maven.dotnet -DarchetypeVersion=[version]>>>
   
-  For VB: <<<mvn archetype:create -DgroupId=NPanday -DartifactId=NPanday.Test -DarchetypeArtifactId=maven-archetype-vb-simple -DarchetypeGroupId=org.apache.maven.dotnet -DarchetypeVersion=[version]>>>
+  For VB: <<<mvn archetype:create -DgroupId=npanday -DartifactId=NPanday.Test -DarchetypeArtifactId=maven-archetype-vb-simple -DarchetypeGroupId=org.apache.maven.dotnet -DarchetypeVersion=[version]>>>
   
   The command creates the project in the NPanday.Test directory, which will now contain the following for a C# project
   (and a VB project will be similar with a vb directory instead of the csharp directory shown):

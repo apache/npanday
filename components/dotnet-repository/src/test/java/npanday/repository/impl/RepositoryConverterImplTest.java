@@ -40,13 +40,13 @@ public class RepositoryConverterImplTest
         ProjectDao dao = this.createProjectDao( repository );
 
         Project project = new Project();
-        project.setGroupId( "NPanday.Model" );
+        project.setGroupId( "npanday.model" );
         project.setArtifactId( "NPanday.Model.Pom" );
         project.setVersion( "1.0" );
         project.setArtifactType( "library" );
         project.setPublicKeyTokenId( "abc" );
 
-        ProjectDependency test2 = createProjectDependency( "NPanday", "NPanday.Test", "1.0" );
+        ProjectDependency test2 = createProjectDependency( "npanday", "NPanday.Test", "1.0" );
         test2.setArtifactType( "library" );
         project.addProjectDependency( test2 );
 
@@ -69,7 +69,7 @@ public class RepositoryConverterImplTest
                                                                           project.getVersion(),
                                                                           project.getArtifactType(), "abc" );
         File artifactFile = new File( testRepo.getParentFile(),
-                                      "/uac/gac_msil/NPanday.Model.Pom/1.0__NPanday.Model/NPanday.Model.Pom.dll" );
+                                      "/uac/gac_msil/NPanday.Model.Pom/1.0__npanday.model/NPanday.Model.Pom.dll" );
 
         artifact.setFile( artifactFile );
         try
@@ -82,10 +82,10 @@ public class RepositoryConverterImplTest
         }
         this.exportRepositoryToRdf( "testConvertArtifact-rdf.xml", testRepo, repository );
 
-        assertTrue( new File( testRepo, "/NPanday/Model/NPanday.Model.Pom/1.0/NPanday.Model.Pom-1.0-abc.dll" ).exists() );
-        assertTrue( new File( testRepo, "/NPanday/Model/NPanday.Model.Pom/1.0/NPanday.Model.Pom-1.0.pom" ).exists() );
-        assertFalse( new File( testRepo, "/NPanday/NPanday.Test/1.0/NPanday.Test-1.0.dll" ).exists() );
-        assertFalse( new File( testRepo, "/NPanday/NPanday.Test/1.0/NPanday.Test-1.0.pom" ).exists() );
+        assertTrue( new File( testRepo, "/npanday/model/NPanday.Model.Pom/1.0/NPanday.Model.Pom-1.0-abc.dll" ).exists() );
+        assertTrue( new File( testRepo, "/npanday/model/NPanday.Model.Pom/1.0/NPanday.Model.Pom-1.0.pom" ).exists() );
+        assertFalse( new File( testRepo, "/npanday/NPanday.Test/1.0/NPanday.Test-1.0.dll" ).exists() );
+        assertFalse( new File( testRepo, "/npanday/NPanday.Test/1.0/NPanday.Test-1.0.pom" ).exists() );
     }
 
     public void testConvert()
@@ -97,13 +97,13 @@ public class RepositoryConverterImplTest
         ProjectDao dao = this.createProjectDao( repository );
 
         Project project = new Project();
-        project.setGroupId( "NPanday.Model" );
+        project.setGroupId( "npanday.model" );
         project.setArtifactId( "NPanday.Model.Pom" );
         project.setVersion( "1.0" );
         project.setArtifactType( "library" );
         project.setPublicKeyTokenId( "abc" );
 
-        ProjectDependency test2 = createProjectDependency( "NPanday", "NPanday.Test", "1.0" );
+        ProjectDependency test2 = createProjectDependency( "npanday", "NPanday.Test", "1.0" );
         test2.setArtifactType( "library" );
         project.addProjectDependency( test2 );
 
@@ -130,10 +130,10 @@ public class RepositoryConverterImplTest
         }
         this.exportRepositoryToRdf( "testConvert-rdf.xml", testRepo, repository );
 
-        assertTrue( new File( testRepo, "/NPanday/Model/NPanday.Model.Pom/1.0/NPanday.Model.Pom-1.0-abc.dll" ).exists() );
-        assertTrue( new File( testRepo, "/NPanday/Model/NPanday.Model.Pom/1.0/NPanday.Model.Pom-1.0.pom" ).exists() );
-        assertTrue( new File( testRepo, "/NPanday/NPanday.Test/1.0/NPanday.Test-1.0.dll" ).exists() );
-        assertTrue( new File( testRepo, "/NPanday/NPanday.Test/1.0/NPanday.Test-1.0.pom" ).exists() );
+        assertTrue( new File( testRepo, "/npanday/model/NPanday.Model.Pom/1.0/NPanday.Model.Pom-1.0-abc.dll" ).exists() );
+        assertTrue( new File( testRepo, "/npanday/model/NPanday.Model.Pom/1.0/NPanday.Model.Pom-1.0.pom" ).exists() );
+        assertTrue( new File( testRepo, "/npanday/NPanday.Test/1.0/NPanday.Test-1.0.dll" ).exists() );
+        assertTrue( new File( testRepo, "/npanday/NPanday.Test/1.0/NPanday.Test-1.0.pom" ).exists() );
     }
 
     private ProjectDependency createProjectDependency( String groupId, String artifactId, String version )

@@ -46,7 +46,7 @@ Quick Start Guide
   
   [[7]] Go to the directory (<<<npandaytest>>> in our example) and execute:
   
-    <<<mvn archetype:create -DgroupId=NPanday -DartifactId=NPanday.Test -DarchetypeArtifactId=maven-archetype-dotnet-simple -DarchetypeGroupId=org.apache.maven.dotnet -DarchetypeVersion=[version]>>>
+    <<<mvn archetype:create -DgroupId=npanday -DartifactId=NPanday.Test -DarchetypeArtifactId=maven-archetype-dotnet-simple -DarchetypeGroupId=org.apache.maven.dotnet -DarchetypeVersion=[version]>>>
   
   [[8]] Go to the <<<NPanday.Test>>> directory (which was created in the previous step) and execute:
   
