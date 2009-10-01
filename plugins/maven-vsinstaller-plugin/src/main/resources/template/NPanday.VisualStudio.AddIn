@@ -9,7 +9,7 @@
     <Version>9.0</Version>
   </HostApplication>
   <Addin>
-    <Assembly>${localRepository}\gac_msil\NPanday.VisualStudio.Addin\${pom.version}__NPanday.VisualStudio\NPanday.VisualStudio.Addin.dll</Assembly>
+    <Assembly>${localRepository}\gac_msil\NPanday.VisualStudio.Addin\${pom.version}__npanday.visualstudio\NPanday.VisualStudio.Addin.dll</Assembly>
     <FullClassName>NPanday.VisualStudio.Addin.Connect</FullClassName>
     <FriendlyName>NPanday.VisualStudio.Addin</FriendlyName>
     <Description>NPanday provides Maven 2.x plugins to support building of .NET applications</Description>
