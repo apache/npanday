@@ -178,7 +178,8 @@ namespace NPanday.VisualStudio.Addin
                     FileInfo file = new FileInfo(txtBrowseDotNetSolutionFile.Text);
 
                     string artifactId = FilterID(ConvertToPascalCase(file.Name.Replace(".sln", ""))) + "-parent";
-                    string groupId = FilterID(ConvertToPascalCase(txtGroupId.Text));
+                    //string groupId = FilterID(ConvertToPascalCase(txtGroupId.Text));
+                    string groupId = FilterID(txtGroupId.Text);
                     string scmTag = txtSCMTag.Text;
 
                     if (scmTag == null)
