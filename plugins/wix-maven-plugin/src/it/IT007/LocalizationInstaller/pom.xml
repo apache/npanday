@@ -15,7 +15,7 @@
     Simple integration test to execute candle on a sample .wxs file.
     Based on tutorial at http://www.tramontana.co.hu/wix/
   </description>
-  <!--<build>
+  <build>
     <sourceDirectory>./</sourceDirectory>
     <plugins>
       <plugin>
@@ -71,5 +71,5 @@
         </executions>
       </plugin>
     </plugins>
-  </build>-->
+  </build>
 </project>
