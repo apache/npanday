@@ -73,5 +73,5 @@
 		</site> 
 	  </distributionManagement> 
     </profile>
-  </profiles> 
+  </profiles>
 </project>
