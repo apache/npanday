@@ -164,8 +164,7 @@ namespace NPanday.VisualStudio.Addin
 
             treeView1.Nodes.Clear();
             List<TreeNode> treeNodes = getNodesFor(selectedRepo.url);
-            treeView1.Nodes.AddRange(treeNodes.ToArray());
-            treeView1.MouseClick += new System.Windows.Forms.MouseEventHandler(treeView_MouseUp);
+            treeView1.Nodes.AddRange(treeNodes.ToArray());            
 
             prevSelectedRepoUrl = selectedRepo.url;
         }
@@ -320,6 +319,13 @@ namespace NPanday.VisualStudio.Addin
             {
                 string name = match.Groups["Name"].Value;
                 string uri = match.Groups["URI"].Value;
+
+                // this will convert absolute URI to relative
+                if (uri.ToLower().StartsWith("http"))
+                {
+                    uri = Regex.Replace(uri, url, "", RegexOptions.IgnoreCase);
+                }
+
                 if (isIncluded(name, uri))
                 {
                     RemoteArtifactNode node = new RemoteArtifactNode(name);  // new TreeNode(name);
@@ -733,21 +739,6 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
-        private void treeView_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                Point point = new Point(e.X, e.Y);
-                RemoteArtifactNode node = treeView1.GetNodeAt(point) as RemoteArtifactNode;
-                if (node.IsAssembly)
-                    return;
-
-                List<TreeNode> treeNodes = getNodesFor(node.ArtifactUrl);
-                node.Nodes.Clear();
-                node.Nodes.AddRange(treeNodes.ToArray());
-            }
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -808,6 +799,14 @@ namespace NPanday.VisualStudio.Addin
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            RemoteArtifactNode node = e.Node as RemoteArtifactNode;
+            if (node.IsAssembly)
+                return;
+
+            List<TreeNode> treeNodes = getNodesFor(node.ArtifactUrl);
+            node.Nodes.Clear();
+            node.Nodes.AddRange(treeNodes.ToArray());
+
             addArtifact.Show();
         }
 
