@@ -69,13 +69,6 @@
           </plugin>
         </plugins>
       </build>
-        <distributionManagement> 
-          <site> 
-            <id>npanday-apache-site</id>  
-            <name>NPanday Site</name>  
-            <url>file://${basedir}/../../../www/plugins/wix-maven-plugin</url> 
-          </site> 
-        </distributionManagement> 
     </profile>
   </profiles>
 </project>
