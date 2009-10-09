@@ -251,10 +251,13 @@ namespace NPanday.Utils
                 xmlDocument.DocumentElement.SetAttribute("xmlns", "http://maven.apache.org/POM/4.0.0");
                 xmlDocument.Save(pomfile.FullName);
             }
-            
 
+            XmlTextReader reader = new XmlTextReader(pomfile.FullName);
 
-            XmlReader reader = XmlReader.Create(pomfile.FullName);
+            reader.WhitespaceHandling = WhitespaceHandling.Significant;
+            reader.Normalization = true;
+            reader.XmlResolver = null;
+
             XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Pom.Model));
 
             if (!serializer.CanDeserialize(reader))
