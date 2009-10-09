@@ -51,7 +51,7 @@ under the License.
     <module>maven-xsd-plugin</module>  
     <module>maven-xsp-plugin</module>  
     <module>maven-wsdl-plugin</module> 
-	<module>wix-maven-plugin</module>
+	<!--<module>wix-maven-plugin</module>-->
   </modules>  
   <dependencies> 
     <dependency> 
