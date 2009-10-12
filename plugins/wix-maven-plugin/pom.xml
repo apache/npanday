@@ -29,7 +29,7 @@
       <version>1.0</version>
     </dependency>
   </dependencies>
-  <!--<reporting>
+  <reporting>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -51,11 +51,11 @@
               <cloneProjectsTo>target/it</cloneProjectsTo>
               <pomIncludes>
                 <pomInclude>*/pom.xml</pomInclude>
-              </pomIncludes>-->
+              </pomIncludes>
               <!-- Can't use localRepositoryPath or -Dmaven.repo.local with NPanday
               See http://npanday.codeplex.com/WorkItem/View.aspx?WorkItemId=10557
               <localRepositoryPath>target/local-repo</localRepositoryPath> -->
-             <!-- <postBuildHookScript>verify.bsh</postBuildHookScript>
+              <postBuildHookScript>verify.bsh</postBuildHookScript>
             </configuration>
             <executions>
               <execution>
@@ -70,5 +70,5 @@
         </plugins>
       </build>
     </profile>
-  </profiles>-->
+  </profiles>
 </project>
