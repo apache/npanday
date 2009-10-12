@@ -477,17 +477,12 @@ namespace NPanday.VisualStudio.Addin
 
                 if (IsWebProject(project))
                 {
-                    // not needed anymore
-
-                    //VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
-                    //string binPath = Path.Combine(website.Project.FullName, "Bin");
-                    //if(!Directory.Exists(binPath))
-                    //{
-                    //    Directory.CreateDirectory(binPath);
-                    //}
-                    //WebsiteAssemblyReferenceWatcher webw = new WebsiteAssemblyReferenceWatcher(binPath);
-                    //webw.Deleted += new FileSystemEventHandler(webw_Deleted);
-                    //webw.Start();
+                    VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
+                    referenceFolder = Path.Combine(website.Project.FullName, "App_WebReferences");
+                    if (!Directory.Exists(referenceFolder))
+                    {
+                        Directory.CreateDirectory(referenceFolder);
+                    }
                 }
                 else
                 {
@@ -499,42 +494,39 @@ namespace NPanday.VisualStudio.Addin
                             += new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
                         classProject.Events2.ReferencesEvents.ReferenceAdded += new _dispReferencesEvents_ReferenceAddedEventHandler(ReferencesEvents_ReferenceAdded);
 
-                        if(IsWebProject(project))
+                        ProjectItem webReferenceFolder = classProject.WebReferencesFolder;
+                        if (webReferenceFolder == null)
                         {
-                            ProjectItem webReferenceFolder = classProject.WebReferencesFolder;
-                            if (webReferenceFolder == null)
-                            {
-                                webReferenceFolder = classProject.CreateWebReferencesFolder();
-                            }
-                            referenceFolder = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
-                            //attach web references watcher
-                            try
-                            {
-                                if (!string.IsNullOrEmpty(referenceFolder))
-                                {
-                                    string wsPath = referenceFolder;
-                                    WebServicesReferenceWatcher wsw = new WebServicesReferenceWatcher(wsPath);
-                                    wsw.Created += new EventHandler<WebReferenceEventArgs>(wsw_Created);
-                                    wsw.Deleted += new EventHandler<WebReferenceEventArgs>(wsw_Deleted);
-                                    wsw.Renamed += new EventHandler<WebReferenceEventArgs>(wsw_Renamed);
-                                    wsw.Start();
-                                    this.wsRefWatcher.Add(wsw);
-                                }
-
-                            }
-                            catch (Exception ex)
-                            {
-
-                                throw ex;
-                            }
+                            webReferenceFolder = classProject.CreateWebReferencesFolder();
                         }
-                        
+                        referenceFolder = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
                     }
                     catch
                     {
                         //  not a csproj / vbproj file. Could be a solution folder. skip it.
                         continue;
                     }
+                }
+
+                //attach web references watcher
+                try
+                {
+                    if (!string.IsNullOrEmpty(referenceFolder))
+                    {
+                        string wsPath = referenceFolder;
+                        WebServicesReferenceWatcher wsw = new WebServicesReferenceWatcher(wsPath);
+                        wsw.Created += new EventHandler<WebReferenceEventArgs>(wsw_Created);
+                        wsw.Deleted += new EventHandler<WebReferenceEventArgs>(wsw_Deleted);
+                        wsw.Renamed += new EventHandler<WebReferenceEventArgs>(wsw_Renamed);
+                        wsw.Start();
+                        this.wsRefWatcher.Add(wsw);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
                 }
 
             }
@@ -745,15 +737,28 @@ namespace NPanday.VisualStudio.Addin
 
         string projectReferenceFolder(Project project)
         {
-            VSProject2 vsProject = (VSProject2)project.Object;
-
-            ProjectItem webReferenceFolder = vsProject.WebReferencesFolder;
-            if (webReferenceFolder == null)
+            string wsPath = null;
+            if (IsWebProject(project))
             {
-                webReferenceFolder = vsProject.CreateWebReferencesFolder();
+                VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
+                wsPath = Path.Combine(website.Project.FullName, "App_WebReferences");
+                if (!Directory.Exists(wsPath))
+                {
+                    Directory.CreateDirectory(wsPath);
+                }
             }
+            else
+            {
+                VSProject2 vsProject = (VSProject2)project.Object;
 
-            string wsPath = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
+                ProjectItem webReferenceFolder = vsProject.WebReferencesFolder;
+                if (webReferenceFolder == null)
+                {
+                    webReferenceFolder = vsProject.CreateWebReferencesFolder();
+                }
+
+                wsPath = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
+            }
             return wsPath;
         }
 

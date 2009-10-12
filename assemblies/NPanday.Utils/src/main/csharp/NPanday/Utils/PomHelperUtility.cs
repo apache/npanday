@@ -279,7 +279,12 @@ namespace NPanday.Utils
 
 		public bool IsWebReferenceEmpty()
         {
-            string[] directories = Directory.GetDirectories(pom.DirectoryName + "/Web References");
+            string[] directories;
+            if (Directory.Exists(pom.DirectoryName + "/Web References"))
+                directories = Directory.GetDirectories(pom.DirectoryName + "/Web References");
+            else
+                directories = Directory.GetDirectories(pom.DirectoryName + "/App_WebReferences");
+
             bool isEmpty = false;
             if (directories.Length == 0)
             {
