@@ -44,18 +44,6 @@
       </plugin>
       <plugin>
         <groupId>npanday.plugin</groupId>
-        <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>
-        <extensions>true</extensions>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>npanday.plugin</groupId>
         <artifactId>maven-resgen-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>

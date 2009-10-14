@@ -24,37 +24,37 @@ using System.Reflection;
 
 namespace NPanday.Plugin
 {
-	/// <summary>
-	/// Allows loading of .NET Maven Plugins (and its dependencies) into a separate application domain.
-	/// </summary>
-	public sealed class PluginDomainManager : AppDomainManager
-	{
-		/// <summary>
-		/// Default constructor
-		/// </summary>
-		public PluginDomainManager() : base()
-		{
-			Console.WriteLine("Creating Plugin Domain Manager");
-		}
-		
-		/// <summary>
-		/// Loads the specified .NET Maven plugin into the plugin domain 
-		/// </summary>
-		/// <param name="assemblyFile">The .NET Maven plugin</param>
-		public void LoadPlugin(FileInfo assemblyFile)
-		{
-			
-			Assembly assembly = null;
-			try 
-			{
-				string assemblyName = assemblyFile.Name.TrimEnd(assemblyFile.Extension.ToCharArray());
-				assembly = AppDomain.CurrentDomain.Load(assemblyName);				
-			}
-			catch(FileNotFoundException e)
-			{
-				Console.WriteLine("FNE: " + e.Message);
-				return;
-			}
-		}
-	}
+    /// <summary>
+    /// Allows loading of .NET Maven Plugins (and its dependencies) into a separate application domain.
+    /// </summary>
+    public sealed class PluginDomainManager : AppDomainManager
+    {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public PluginDomainManager() : base()
+        {
+            Console.WriteLine("Creating Plugin Domain Manager");
+        }
+        
+        /// <summary>
+        /// Loads the specified .NET Maven plugin into the plugin domain 
+        /// </summary>
+        /// <param name="assemblyFile">The .NET Maven plugin</param>
+        public void LoadPlugin(FileInfo assemblyFile)
+        {
+            
+            Assembly assembly = null;
+            try 
+            {
+                string assemblyName = assemblyFile.Name.Replace(assemblyFile.Extension,"");
+                assembly = AppDomain.CurrentDomain.Load(assemblyName);                
+            }
+            catch(FileNotFoundException e)
+            {
+                Console.WriteLine("FNE: " + e.Message);
+                return;
+            }
+        }
+    }
 }

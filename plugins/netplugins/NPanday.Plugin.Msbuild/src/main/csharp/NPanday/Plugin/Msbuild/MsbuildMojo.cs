@@ -44,9 +44,7 @@ namespace NPanday.Plugin.Msbuild
 		{
 		}
 
-		[FieldAttribute("repository", Expression = "${settings.localRepository}", Type = "java.lang.String")]
-		public String localRepository;
-
+		
 		[FieldAttribute("mavenProject", Expression = "${project}", Type = "org.apache.maven.project.MavenProject")]
 		public NPanday.Model.Pom.Model mavenProject;
 
