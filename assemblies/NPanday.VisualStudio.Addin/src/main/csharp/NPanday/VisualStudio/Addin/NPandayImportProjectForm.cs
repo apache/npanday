@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-
+using System.Text.RegularExpressions;
 
 using Extensibility;
 using EnvDTE;
@@ -204,14 +204,28 @@ namespace NPanday.VisualStudio.Addin
                             if (!scmTag.Contains(@"://"))
                                 scmTag = string.Format(@"http://{0}", scmTag);
 
-                            System.Net.WebClient webClient = new System.Net.WebClient();
-                            webClient.DownloadData(new Uri(scmTag));
+                            Regex urlValidator = new Regex(@"^((ht|f)tp(s?)\:\/\/|~/|/)?([\w]+:\w+@)?([a-zA-Z]{1}([\w\-]+\.)+([\w]{2,5}))(:[\d]{1,5})?((/?\w+/)+|/?)(\w+\.[\w]{3,4})?((\?\w+=\w+)?(&\w+=\w+)*)?");
+                            if (!urlValidator.IsMatch(scmTag))
+                                throw new Exception(string.Format("SCM tag {0} is incorrect format", scmTag));
+
+                            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest) System.Net.WebRequest.Create(scmTag);
+                            request.Method = "GET";
+                            System.Net.WebResponse response = request.GetResponse();
+                            if (response.ResponseUri.AbsoluteUri.Contains("url=")) // verify if just forwarded to a external DNS server (e.g. openDNS.com)
+                                throw new Exception(string.Format("SCM tag {0} is not accessible", scmTag));
                             //repoUri = new Uri(scmTag);
                         }
                     }
-                    catch (Exception)
+                    catch
                     {
-                        warningMsg = string.Format("\n    SCM Tag {0} was not accessible", scmTag);
+                        if (DialogResult.Yes == MessageBox.Show(string.Format("SCM tag {0} was not accessible, would you still like to proceed with Project import?", scmTag), "SCM Tag", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                        {
+                            warningMsg = string.Format("\n    SCM tag was not added, because the url {0} was not accessible", scmTag);
+                        }
+                        else
+                        {
+                            return;
+                        }
                     }
 
                     validateSolutionStructure();

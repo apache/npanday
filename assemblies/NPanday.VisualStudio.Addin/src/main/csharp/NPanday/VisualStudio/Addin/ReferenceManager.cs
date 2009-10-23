@@ -160,7 +160,8 @@ namespace NPanday.VisualStudio.Addin
 
         bool isIntraProject(NPanday.Model.Pom.Model m, Dependency d)
         {
-            if (d.groupId == m.parent.groupId)
+            string pomGroupId = (m.parent != null) ? m.parent.groupId : m.groupId;
+            if (d.groupId == pomGroupId)
             {
                 // loop through VS projects (instead of modules in parent POM) because
                 // we need real-time list of project names in the solution
