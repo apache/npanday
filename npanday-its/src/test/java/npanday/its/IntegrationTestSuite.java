@@ -29,7 +29,7 @@ public class IntegrationTestSuite
         
         suite.addTestSuite( NPandayIT9903ResGenWithErrorInFileNameTest.class );
 		suite.addTestSuite( NPandayITClassLibWithWebReferenceTest.class );
-		suite.addTestSuite( NPandayITWebReferencTest.class );
+		suite.addTestSuite( NPandayITWebApplicationTest.class );
 		suite.addTestSuite( NPandayITConsoleApplicationTest.class );
 		
         return suite;

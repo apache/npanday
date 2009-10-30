@@ -22,19 +22,21 @@ import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.apache.maven.it.util.ResourceExtractor;
 
-public class NPandayITWebReferencTest
+public class NPandayITWebApplicationTest
     extends AbstractNPandayIntegrationTestCase
 {
-    public NPandayITWebReferencTest()
+    public NPandayITWebApplicationTest()
     {
         super( "(1.0,)" ); // 1.0.1+
     }
     
-    public void testResGenWithErrorInFileName()
+    public void testWebApplicationProject()
         throws Exception
     {
         File testDir = ResourceExtractor.simpleExtractResources( getClass(), "/WebAppExample" );
         Verifier verifier = getVerifier( testDir );
-        verifier.executeGoal( "install" );
+        verifier.executeGoal( "test" );
+        verifier.verifyErrorFreeLog();
+        verifier.resetStreams();		
     }
 }

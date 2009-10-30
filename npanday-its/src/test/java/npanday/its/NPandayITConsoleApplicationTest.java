@@ -30,11 +30,13 @@ public class NPandayITConsoleApplicationTest
         super( "(1.0,)" ); // 1.0.1+
     }
     
-    public void testResGenWithErrorInFileName()
+    public void testConsoleApplication()
         throws Exception
     {
         File testDir = ResourceExtractor.simpleExtractResources( getClass(), "/ConsoleApplicationEx" );
         Verifier verifier = getVerifier( testDir );
         verifier.executeGoal( "install" );
+        verifier.verifyErrorFreeLog();
+        verifier.resetStreams();		
     }
 }

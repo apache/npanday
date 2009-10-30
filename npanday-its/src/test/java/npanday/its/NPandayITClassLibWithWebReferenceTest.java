@@ -30,11 +30,13 @@ public class NPandayITClassLibWithWebReferenceTest
         super( "(1.0,)" ); // 1.0.1+
     }
     
-    public void testResGenWithErrorInFileName()
+    public void testClassLibraryWithWebReference()
         throws Exception
     {
         File testDir = ResourceExtractor.simpleExtractResources( getClass(), "/ClassLibraryWithWebReference" );
         Verifier verifier = getVerifier( testDir );
-        verifier.executeGoal( "install" );
+        verifier.executeGoal( "test" );
+        verifier.verifyErrorFreeLog();
+        verifier.resetStreams();		
     }
 }
