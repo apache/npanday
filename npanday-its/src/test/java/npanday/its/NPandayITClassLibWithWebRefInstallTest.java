@@ -22,22 +22,22 @@ import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.apache.maven.it.util.ResourceExtractor;
 
-public class NPandayITConsoleApplicationTest
+public class NPandayITClassLibWithWebRefInstallTest
     extends AbstractNPandayIntegrationTestCase
 {
-    public NPandayITConsoleApplicationTest()
+    public NPandayITClassLibWithWebRefInstallTest()
     {
         super( "(1.0,)" ); // 1.0.1+
     }
     
-    public void testConsoleApplication()
+    public void testClassLibWithWebRefInstall()
         throws Exception
     {
-        File testDir = ResourceExtractor.simpleExtractResources( getClass(), "/ConsoleApplicationEx" );
+        File testDir = ResourceExtractor.simpleExtractResources( getClass(), "/ClassLibraryWithWebReference" );
         Verifier verifier = getVerifier( testDir );
         verifier.executeGoal( "install" );
-        verifier.assertFilePresent( new File( testDir, "ConsoleApplicationEx/" + getAssemblyFile( "ConsoleApplicationEx", "1.0.0", "exe" ) ).getAbsolutePath() );		
+        verifier.assertFilePresent( new File( testDir, "ClassLibraryWithWebReference/" + getAssemblyFile( "ClassLibraryWithWebReference", "1.0.0", "dll" ) ).getAbsolutePath() );
         verifier.verifyErrorFreeLog();
-        verifier.resetStreams();		
+        verifier.resetStreams();
     }
 }

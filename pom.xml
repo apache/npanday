@@ -350,4 +350,12 @@ under the License.
       </dependency> 
     </dependencies> 
   </dependencyManagement>  
+  <profiles>
+    <profile>
+	  <id>integrationTests</id>
+	  <modules>
+	    <module>npanday-its</module>
+	  </modules>
+	</profile>
+  </profiles>
 </project>

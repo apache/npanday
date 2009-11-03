@@ -28,8 +28,10 @@ public class IntegrationTestSuite
         TestSuite suite = new TestSuite();
         
         suite.addTestSuite( NPandayIT9903ResGenWithErrorInFileNameTest.class );
-		suite.addTestSuite( NPandayITClassLibWithWebReferenceTest.class );
+		suite.addTestSuite( NPandayITWebAppInstallTest.class );
 		suite.addTestSuite( NPandayITWebApplicationTest.class );
+		suite.addTestSuite( NPandayITClassLibWithWebRefInstallTest.class );
+		suite.addTestSuite( NPandayITClassLibWithWebReferenceTest.class );
 		suite.addTestSuite( NPandayITConsoleApplicationTest.class );
 		suite.addTestSuite( NPandayITIntraProjectDependencyTest.class );
 		suite.addTestSuite( NPandayITWithResourceFileTest.class );
