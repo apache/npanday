@@ -31,6 +31,8 @@ public class IntegrationTestSuite
 		suite.addTestSuite( NPandayITClassLibWithWebReferenceTest.class );
 		suite.addTestSuite( NPandayITWebApplicationTest.class );
 		suite.addTestSuite( NPandayITConsoleApplicationTest.class );
+		suite.addTestSuite( NPandayITIntraProjectDependencyTest.class );
+		suite.addTestSuite( NPandayITWithResourceFileTest.class );
 		
         return suite;
     }
