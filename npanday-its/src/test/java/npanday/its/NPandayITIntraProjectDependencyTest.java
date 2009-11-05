@@ -36,7 +36,6 @@ public class NPandayITIntraProjectDependencyTest
         File testDir = ResourceExtractor.simpleExtractResources( getClass(), "/IntraProjectDependency" );
         Verifier verifier = getVerifier( testDir );
 		verifier.executeGoal( "install" );
-        verifier.executeGoal( "test" );
         //verifier.assertFilePresent( new File( testDir, "npanday-9903/" + getAssemblyFile( "npanday-9903", "1.0.0", "zip" ) ).getAbsolutePath() );
         verifier.verifyErrorFreeLog();
         verifier.resetStreams();
