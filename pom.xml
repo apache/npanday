@@ -354,7 +354,7 @@ under the License.
     <profile>
 	  <id>integrationTests</id>
 	  <modules>
-	    <module>npanday-its</module>
+	    <module>npanday-it-runner</module>
 	  </modules>
 	</profile>
   </profiles>

@@ -26,8 +26,39 @@ under the License.
     <version>1.1-SNAPSHOT</version>
     <artifactId>npanday-project</artifactId>
   </parent>
+  
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>npanday-its</artifactId>
+  <artifactId>npanday-it-runner</artifactId>
+  
+  <name>Integration Test Executor</name>
+
+  
+  <scm> 
+    <url>https://npanday.svn.codeplex.com/svn/trunk/npanday-it-runner</url>  
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/npanday-it-runner</connection>  
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/npanday-it-runner</developerConnection>  
+  </scm> 
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.shared</groupId>
+      <artifactId>maven-verifier</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+	  <groupId>npanday</groupId>
+	  <artifactId>npanday-its</artifactId>
+	  <classifier>tests</classifier>
+	  <scope>test</scope>	  
+      <version>1.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>    
+  
   <build>
     <plugins>
       <plugin>
@@ -55,18 +86,6 @@ under the License.
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.maven.shared</groupId>
-      <artifactId>maven-verifier</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-artifact</artifactId>
-      <version>2.0</version>
-    </dependency>
-  </dependencies>
   <properties>
     <npanday.version>${project.version}</npanday.version>
   </properties>
