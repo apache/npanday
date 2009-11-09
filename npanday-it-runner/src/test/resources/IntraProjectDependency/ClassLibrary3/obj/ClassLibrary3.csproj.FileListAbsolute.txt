@@ -1,9 +1,0 @@
-D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary3\obj\Debug\ResolveAssemblyReference.cache
-D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary3\bin\Debug\ClassLibrary3.dll
-D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary3\bin\Debug\ClassLibrary3.pdb
-D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary3\bin\Debug\ClassLibrary1.dll
-D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary3\bin\Debug\ClassLibrary2.dll
-D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary3\bin\Debug\ClassLibrary2.pdb
-D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary3\obj\Debug\ClassLibrary3.dll
-D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary3\obj\Debug\ClassLibrary3.pdb
-D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary3\bin\Debug\NUnit.Framework.dll
