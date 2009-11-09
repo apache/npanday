@@ -1,0 +1,7 @@
+D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary2\bin\Debug\ClassLibrary2.dll
+D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary2\bin\Debug\ClassLibrary2.pdb
+D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary2\bin\Debug\ClassLibrary1.dll
+D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary2\bin\Debug\ClassLibrary1.pdb
+D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary2\obj\Debug\ResolveAssemblyReference.cache
+D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary2\obj\Debug\ClassLibrary2.dll
+D:\projects\npanday\codeplex\npanday-its\src\test\resources\IntraProjectDependecy\ClassLibrary2\obj\Debug\ClassLibrary2.pdb

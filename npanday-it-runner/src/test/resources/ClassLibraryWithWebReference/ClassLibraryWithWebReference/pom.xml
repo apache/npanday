@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+	<artifactId>ClassLibraryWithWebReference-parent</artifactId>
+    <groupId>NPanday.IT</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>..\pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>ClassLibraryWithWebReference</artifactId>
+  <packaging>library</packaging>
+  <name>NPanday.IT : ClassLibraryWithWebReference</name>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <includeSources>
+            <includeSource>Class1.cs</includeSource>
+            <includeSource>Properties\AssemblyInfo.cs</includeSource>
+            <includeSource>Properties\Settings.Designer.cs</includeSource>
+            <includeSource>Web References\webService\Reference.cs</includeSource>
+          </includeSources>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>maven-test-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <integrationTest>true</integrationTest>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>maven-wsdl-plugin</artifactId>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>wsdl</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <webreferences>
+            <webreference>
+              <namespace>webService</namespace>
+              <path>Web References/webService/diomedestoragelegacytransfer.wsdl</path>
+              <output>Web References/webService/</output>
+            </webreference>
+          </webreferences>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>NUnit</groupId>
+      <artifactId>NUnit.Framework</artifactId>
+      <version>2.2.8.0</version>
+      <type>library</type>
+    </dependency>
+  </dependencies>
+</project>
