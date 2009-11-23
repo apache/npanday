@@ -726,16 +726,23 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Add Artifacts");
+                MessageBox.Show(this, ex.Message, "NPanday Add Dependency Error:");
             }
         }
 
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            RemoteArtifactNode node = e.Node as RemoteArtifactNode;
-            if (node.IsAssembly)
+            try
             {
-                addRemoteArtifact(node);
+                RemoteArtifactNode node = e.Node as RemoteArtifactNode;
+                if (node.IsAssembly)
+                {
+                    addRemoteArtifact(node);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "NPanday Add Dependency Error:");
             }
         }
 
