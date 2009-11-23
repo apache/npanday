@@ -50,13 +50,6 @@ under the License.
       <artifactId>maven-artifact</artifactId>
       <version>2.0</version>
     </dependency>
-    <dependency>
-	  <groupId>npanday</groupId>
-	  <artifactId>npanday-its</artifactId>
-	  <classifier>tests</classifier>
-	  <scope>test</scope>	  
-      <version>1.1-SNAPSHOT</version>
-    </dependency>
   </dependencies>    
   
   <build>
@@ -91,6 +84,30 @@ under the License.
 		  <source>1.5</source>
 		  <target>1.5</target>
         </configuration>
+      </plugin>	 
+	  <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack-IT-projects</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <overWrite>true</overWrite>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>npanday.its</groupId>
+                  <artifactId>npanday-its</artifactId>
+                  <version>${npanday.version}</version>
+                  <type>jar</type>
+                  <outputDirectory>${project.build.directory}/npanday-it-runner/src/test/resources</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>	  
     </plugins>
   </build>
