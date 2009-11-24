@@ -54,7 +54,7 @@ under the License.
       <groupId>npanday.its</groupId>
       <artifactId>npanday-its</artifactId>
       <version>${npanday.version}</version>
-      <classifier>tests</classifier>
+       <classifier>tests</classifier>
     </dependency>
   </dependencies>    
   
@@ -109,7 +109,7 @@ under the License.
                   <version>${npanday.version}</version>
 				  <classifier>tests</classifier>				  
                   <type>jar</type>
-                  <outputDirectory>${project.build.directory}/npanday-it-runner/src/test/resources</outputDirectory>
+                  <outputDirectory>${project.basedir}/src/test/resources</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>
