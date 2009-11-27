@@ -1746,7 +1746,7 @@ namespace NPanday.VisualStudio.Addin
             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
             {
                 FileInfo currentPom = this.CurrentSelectedProjectPom;
-                if (currentPom == null)
+                if (currentPom == null || Path.GetDirectoryName(currentPom.FullName) != Path.GetDirectoryName(project.FullName))
                 {
                     DialogResult result = MessageBox.Show("Pom file not found, do you want to import the projects first before adding Maven Artifact?", "Add Maven Artifact", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                     if (result == DialogResult.Cancel)
@@ -1755,11 +1755,12 @@ namespace NPanday.VisualStudio.Addin
                     {
                         SaveAllDocuments();
                         NPandayImportProjectForm frm = new NPandayImportProjectForm(_applicationObject);
+                        frm.SetOutputWindowPane(outputWindowPane);
                         frm.ShowDialog();
                         currentPom = this.CurrentSelectedProjectPom;
 
                         // if import failed
-                        if (currentPom == null)
+                        if (currentPom == null || Path.GetDirectoryName(currentPom.FullName) != Path.GetDirectoryName(project.FullName))
                         {
                             return;
                         }

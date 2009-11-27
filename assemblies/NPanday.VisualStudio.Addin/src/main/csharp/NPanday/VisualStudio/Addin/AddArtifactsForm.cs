@@ -388,9 +388,9 @@ namespace NPanday.VisualStudio.Addin
                     pomUtil.AddPomDependency(artifact.GroupId, artifact.ArtifactId, artifact.Version);
                 }
             }
-            catch (Exception err1)
+            catch (Exception err)
             {
-                MessageBox.Show(err1.Message, "NPanday Add Dependency Error:");
+                MessageBox.Show(this, err.Message, "NPanday Add Dependency Warning:", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -726,7 +726,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "NPanday Add Dependency Error:");
+                MessageBox.Show(this, ex.Message, "NPanday Add Dependency Warning:", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -742,7 +742,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "NPanday Add Dependency Error:");
+                MessageBox.Show(this, ex.Message, "NPanday Add Dependency Warning:", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -782,7 +782,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message, "NPanday Add Dependency Error:");
+                MessageBox.Show(this, err.Message, "NPanday Add Dependency Warning:", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
