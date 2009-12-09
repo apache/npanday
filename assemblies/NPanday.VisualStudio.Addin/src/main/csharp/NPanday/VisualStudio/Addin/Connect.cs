@@ -1768,7 +1768,12 @@ namespace NPanday.VisualStudio.Addin
                 }
                 AddArtifactsForm form = new AddArtifactsForm(project, container, logger, currentPom);
                 form.Show();
-                break;
+
+                if (form.settings == null)
+                {
+                    form.Close();
+                    break;
+                }
             }
         }
         #endregion

@@ -58,7 +58,8 @@ namespace NPanday.VisualStudio.Addin
         public bool fileProtocol = false;
 
         private string settingsPath;
-        private Settings settings;
+        //private Settings settings;
+        public Settings settings;
         private string defaultProfileID = "NPanday.id";
         private NPanday.Model.Setting.Profile defaultProfile;
         private NPanday.Model.Setting.Repository selectedRepo;
@@ -117,32 +118,38 @@ namespace NPanday.VisualStudio.Addin
             localListView_Refresh();
             loadSettings();
 
-            if (settings.profiles == null || settings.profiles.Length < 1)
-            {
-                MessageBox.Show("No Profile Found. Please Configure your Repository. ","Repository Configuration",MessageBoxButtons.OK,MessageBoxIcon.Warning);
-                return;
-            }
+            
 
-            defaultProfile = getDefaultProfile();
-            selectedRepo = getDefaultRepository();
+                if (settings != null && (settings.profiles == null || settings.profiles.Length < 1))
+                {
+                    MessageBox.Show("No Profile Found. Please Configure your Repository. ", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-            if (selectedRepo == null || string.IsNullOrEmpty(selectedRepo.url))
-            {
-                MessageBox.Show("Remote repository not yet set: Please set your Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                remoteTreeView_Refresh();
-            }
+                if (settings != null)
+                {
+                    defaultProfile = getDefaultProfile();
+                    selectedRepo = getDefaultRepository();
 
-            if (selectedRepo == null)
-            {
-                repoCombo_Refresh(null);
-            }
-            else
-            {
-                repoCombo_Refresh(selectedRepo.url);
-            }
+                    if (selectedRepo == null || string.IsNullOrEmpty(selectedRepo.url))
+                    {
+                        MessageBox.Show("Remote repository not yet set: Please set your Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        remoteTreeView_Refresh();
+                    }
+
+                    if (selectedRepo == null)
+                    {
+                        repoCombo_Refresh(null);
+                    }
+                    else
+                    {
+                        repoCombo_Refresh(selectedRepo.url);
+                    }
+                }
+            
         }
 
         private void localListView_Refresh()
@@ -955,14 +962,14 @@ namespace NPanday.VisualStudio.Addin
                 }
                 else
                 {
-                    MessageBox.Show("Sorry, but no settings.xml file was found in your Local Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Sorry, but no settings.xml file was found in your Local Repository.", "Error", MessageBoxButtons.OK,MessageBoxIcon.Warning);
                     return;
                 }
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Invalid Settings File: " + ex.Message + ex.StackTrace);
+                MessageBox.Show("Invalid Settings File: Check your settings.xml file.", "Configuration Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
         }
