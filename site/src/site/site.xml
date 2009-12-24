@@ -13,6 +13,7 @@
       <item name="NPanday Release Notes" href="release-notes.html"/>
       <item name="NPanday FAQs" href="faqs.html"/>
       <item name="NPanday Workarounds" href="workarounds.html"/>
+      <item name="NPanday Plugins" href="plugins/index.html"/>
       <item name="Conventions" href="conventions.html"/>
     </menu>
     <menu name="Getting Started" collapse="true">

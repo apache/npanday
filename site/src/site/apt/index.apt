@@ -7,7 +7,7 @@
 
 Welcome to NPanday
 
-  NPanday provides Maven 2.x plugins to support building .NET applications at the command
+  NPanday provides {{{./plugins/}Maven 2.x plugins}} to support building .NET applications at the command
   line or in your IDE.
   It enables you to use Visual Studio with a Maven-compatible development infrastructure.
   
