@@ -198,4 +198,10 @@
     </plugins>
     <finalName>npanday-${project.version}</finalName>
   </build>
+  <distributionManagement>
+      <site>
+          <id>npanday.site</id>
+          <url>${npanday.site.url}/docs/npanday-${project.version}</url>
+      </site>
+  </distributionManagement>
 </project>
