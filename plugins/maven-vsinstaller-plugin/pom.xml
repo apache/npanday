@@ -30,13 +30,6 @@ under the License.
   <packaging>maven-plugin</packaging>  
   <name>maven-vsinstaller-plugin</name>  
   <description>Maven Plugin for .NET: Installs the Visual Studio 2005 Addin</description>  
-  <distributionManagement> 
-    <site> 
-      <id>npanday-apache-site</id>  
-      <name>NPanday Site</name>  
-      <url>file://${basedir}/../../../www/plugins/maven-vsinstaller-plugin</url> 
-    </site> 
-  </distributionManagement>  
   <build> 
     <resources> 
       <resource> 

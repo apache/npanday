@@ -36,11 +36,4 @@ under the License.
       <artifactId>plexus-archiver</artifactId> 
     </dependency> 
   </dependencies>  
-  <distributionManagement> 
-    <site> 
-      <id>npanday-apache-site</id>  
-      <name>NPanday Site</name>  
-      <url>file://${basedir}/../../../www/plugins/maven-webapp-plugin</url> 
-    </site> 
-  </distributionManagement> 
 </project>

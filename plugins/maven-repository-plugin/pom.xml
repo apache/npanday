@@ -42,11 +42,4 @@ under the License.
       <version>1.1-SNAPSHOT</version> 
     </dependency> 
   </dependencies>  
-  <distributionManagement> 
-    <site> 
-      <id>npanday-apache-site</id>  
-      <name>NPanday Site</name>  
-      <url>file://${basedir}/../../../www/plugins/maven-repository-plugin</url> 
-    </site> 
-  </distributionManagement> 
 </project>

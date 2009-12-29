@@ -117,9 +117,9 @@ under the License.
   </reporting>  
   <distributionManagement> 
     <site> 
-      <id>npanday-apache-site</id>  
+      <id>npanday.site</id>
       <name>NPanday Site</name>  
-      <url>file://${basedir}/../../www</url> 
+      <url>${npanday.site.url}/docs/npanday-${project.version}/plugins</url>
     </site> 
-  </distributionManagement> 
+  </distributionManagement>
 </project>

@@ -50,11 +50,4 @@ under the License.
       </exclusions>
     </dependency>
   </dependencies>
-  <distributionManagement>
-    <site>
-      <id>npanday-apache-site</id>
-      <name>NPanday Site</name>
-      <url>file://${basedir}/../../../www/plugins/maven-aspx-plugin</url>
-    </site>
-  </distributionManagement>
 </project>

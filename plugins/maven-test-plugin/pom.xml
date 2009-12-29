@@ -30,11 +30,4 @@ under the License.
   <packaging>maven-plugin</packaging>  
   <name>maven-test-plugin</name>  
   <description>Maven Plugin for .NET: Tests class files with NUnit</description>  
-  <distributionManagement> 
-    <site> 
-      <id>npanday-apache-site</id>  
-      <name>NPanday Site</name>  
-      <url>file://${basedir}/../../../www/plugins/maven-test-plugin</url> 
-    </site> 
-  </distributionManagement> 
 </project>
