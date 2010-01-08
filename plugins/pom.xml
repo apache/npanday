@@ -119,7 +119,7 @@ under the License.
     <site> 
       <id>npanday.site</id>
       <name>NPanday Site</name>  
-      <url>${npanday.site.url}/docs/npanday-${project.version}/plugins</url>
+      <url>${npanday.site.url}/docs/${project.version}/plugins</url>
     </site> 
   </distributionManagement>
 </project>
