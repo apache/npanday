@@ -201,7 +201,7 @@
   <distributionManagement>
       <site>
           <id>npanday.site</id>
-          <url>${npanday.site.url}/docs/npanday-${project.version}</url>
+          <url>${npanday.site.url}/docs/${project.version}</url>
       </site>
   </distributionManagement>
 </project>
