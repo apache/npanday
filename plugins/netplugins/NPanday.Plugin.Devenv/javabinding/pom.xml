@@ -12,6 +12,7 @@
   <artifactId>NPanday.Plugin.Devenv.JavaBinding</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>NPanday.Plugin.Devenv.JavaBinding</name>  
+  <description>Plugin for setting up the environment when developing using NPanday Addin in Visual Studio</description>  
   <dependencies> 
     <dependency> 
       <groupId>npanday</groupId>  

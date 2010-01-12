@@ -28,7 +28,8 @@ under the License.
   <groupId>npanday.plugin</groupId>  
   <artifactId>maven-dotnet-plugins</artifactId>  
   <packaging>pom</packaging>  
-  <name>maven-dotnet-plugins</name>  
+  <name>maven-dotnet-plugins</name>
+  <description>Plugins for .NET interoperability</description>  
   <modules> 
     <module>netplugins/NPanday.Plugin.Addin/javabinding</module>  
     <module>netplugins/NPanday.Plugin.Devenv/javabinding</module>  

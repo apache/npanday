@@ -11,7 +11,8 @@
   <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Addin.JavaBinding</artifactId>  
   <packaging>maven-plugin</packaging>  
-  <name>NPanday.Plugin.Addin.JavaBinding</name>  
+  <name>NPanday.Plugin.Addin.JavaBinding</name>
+  <description>Plugin for NPanday Addin for Visual Studio IDE</description>
   <dependencies> 
     <dependency> 
       <groupId>npanday</groupId>  
