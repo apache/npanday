@@ -37,10 +37,9 @@ under the License.
     </mailingList>  
   </mailingLists>  
   <scm> 
-    <url>https://npanday.svn.codeplex.com/svn/</url>  
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/</connection>  
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/</developerConnection>  
-    <tag>REL_0_9_SNAPSHOT</tag> 
+    <url>https://npanday.svn.codeplex.com/svn/trunk/dotnet</url>  
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/dotnet</connection>  
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/dotnet</developerConnection>  
   </scm>  
   <organization> 
     <name>NPanday</name>  

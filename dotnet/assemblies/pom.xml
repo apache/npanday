@@ -38,40 +38,28 @@ under the License.
     <module>NPanday.Model/Settings</module>  
     <module>NPanday.Model/AutomationExtensibility</module>
     <module>NPanday.Logging</module> 
-	<module>NPanday.Artifact</module> 
+    <module>NPanday.Artifact</module> 
     <module>NPanday.Plugin</module>
     <module>NPanday.Plugin.MojoGenerator</module>	
     <module>NPanday.Plugin.Loader</module>  
     <module>NPanday.Plugin.Runner</module>  
     <module>NPanday.Utils</module>
-    <module>NPanday.ProjectImporter</module> 
-  </modules>  
-  <profiles> 
-    <profile> 
-      <id>VisualStudio2005</id>
-      <activation> 
-        <property> 
-          <name>VisualStudio2005</name>
-        </property>
-      </activation>  
-      <modules> 
-        <module>NPanday.VisualStudio</module>  
-        <module>NPanday.VisualStudio.Addin</module>  
-        <module>NPanday.VisualStudio.ProjectWizard</module> 
-      </modules>  
-      <build> 
-        <plugins> 
-          <plugin> 
-            <groupId>npanday.plugin</groupId>  
-            <artifactId>maven-compile-plugin</artifactId>  
-            <extensions>true</extensions>  
-            <configuration> 
-              <vendor>MICROSOFT</vendor>  
-              <frameworkVersion>2.0.50727</frameworkVersion> 
-            </configuration> 
-          </plugin> 
-        </plugins> 
-      </build> 
-    </profile> 
-  </profiles> 
+    <module>NPanday.ProjectImporter</module>
+    <module>NPanday.VisualStudio</module>  
+    <module>NPanday.VisualStudio.Addin</module>  
+    <module>NPanday.VisualStudio.ProjectWizard</module>
+  </modules>
+  <build> 
+    <plugins> 
+      <plugin> 
+        <groupId>npanday.plugin</groupId>  
+        <artifactId>maven-compile-plugin</artifactId>  
+        <extensions>true</extensions>  
+        <configuration> 
+          <vendor>MICROSOFT</vendor>  
+          <frameworkVersion>2.0.50727</frameworkVersion> 
+        </configuration> 
+      </plugin> 
+    </plugins> 
+  </build>  
 </project>

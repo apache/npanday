@@ -235,7 +235,7 @@ under the License.
               <artifactId>qdox</artifactId>
               <version>1.9.2</version>
             </dependency>
-          </dependencies>	
+          </dependencies>    
         </plugin>
         <plugin> 
           <groupId>org.codehaus.modello</groupId>  
@@ -365,10 +365,22 @@ under the License.
   </dependencyManagement>  
   <profiles>
     <profile>
-	  <id>integrationTests</id>
-	  <modules>
-	    <module>npanday-it-runner</module>
-	  </modules>
-	</profile>
+      <id>integrationTests</id>
+      <modules>
+        <module>npanday-it-runner</module>
+      </modules>
+    </profile>
   </profiles>
+   <distributionManagement>
+    <snapshotRepository>
+      <id>npanday-snapshots</id>
+      <name>npanday-snapshots</name>
+      <url>${npanday.deploy.repo.snapshots}</url>
+    </snapshotRepository>
+    <repository>
+      <id>npanday-releases</id>
+      <name>npanday-releases</name>
+      <url>${npanday.deploy.repo.releases}</url>
+    </repository>
+  </distributionManagement>
 </project>
