@@ -25,9 +25,8 @@ under the License.
     <artifactId>maven-dotnet-plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.plugin</groupId>  
   <artifactId>maven-resgen-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
-  <name>maven-resgen-plugin</name>  
+  <name>NPanday :: ResGen Maven Plugin</name>  
   <description>Maven Plugin for .NET: Generates assembly resources</description>  
 </project>

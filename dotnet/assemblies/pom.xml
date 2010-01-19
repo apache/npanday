@@ -21,23 +21,18 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
    
   <parent> 
-    <groupId>npanday.project</groupId>  
+    <groupId>npanday</groupId>  
     <version>1.1-SNAPSHOT</version>  
     <artifactId>NPanday.Project</artifactId>
-    <relativePath>../pom.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
   <artifactId>NPanday.Assemblies</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
   <packaging>pom</packaging>  
-  <name>NPanday.Assemblies</name>  
-  <url>http://codeplex.com/npanday</url>  
-  <description>NPanday provides Maven 2.x plugins to support building of .NET applications</description>  
+  <name>NPanday :: .NET Assemblies</name>  
   <modules>
-    <module>NPanday.Model/Pom</module>  
-    <module>NPanday.Model/Settings</module>  
-    <module>NPanday.Model/AutomationExtensibility</module>
+    <module>NPanday.Model.Pom</module>  
+    <module>NPanday.Model.Settings</module>  
+    <module>NPanday.Model.AutomationExtensibility</module>
     <module>NPanday.Logging</module> 
     <module>NPanday.Artifact</module> 
     <module>NPanday.Plugin</module>
@@ -50,17 +45,4 @@ under the License.
     <module>NPanday.VisualStudio.Addin</module>  
     <module>NPanday.VisualStudio.ProjectWizard</module>
   </modules>
-  <build> 
-    <plugins> 
-      <plugin> 
-        <groupId>npanday.plugin</groupId>  
-        <artifactId>maven-compile-plugin</artifactId>  
-        <extensions>true</extensions>  
-        <configuration> 
-          <vendor>MICROSOFT</vendor>  
-          <frameworkVersion>2.0.50727</frameworkVersion> 
-        </configuration> 
-      </plugin> 
-    </plugins> 
-  </build>  
 </project>

@@ -25,9 +25,8 @@ under the License.
     <artifactId>maven-dotnet-plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.plugin</groupId>  
   <artifactId>maven-resolver-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
-  <name>maven-resolver-plugin</name>  
+  <name>NPanday :: Resolver Maven Plugin</name>  
   <description>Maven Plugin for .NET: Resolves Artifacts</description>  
 </project>

@@ -20,7 +20,7 @@ under the License.
 -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <parent> 
-    <groupId>npanday.project</groupId>  
+    <groupId>npanday</groupId>  
     <version>1.1-SNAPSHOT</version>  
     <artifactId>NPanday.Project</artifactId>  
     <relativePath>../../dotnet/pom.xml</relativePath> 
@@ -29,25 +29,13 @@ under the License.
   <groupId>npanday.plugin</groupId>  
   <artifactId>npanday.plugins</artifactId>  
   <packaging>pom</packaging>  
-  <version>1.1-SNAPSHOT</version>  
-  <name>npanday.plugin</name>  
+  <name>NPanday :: .NET Plugins</name>  
   <modules> 
     <module>NPanday.Plugin.Addin</module>  
     <module>NPanday.Plugin.Devenv</module>  
     <module>NPanday.Plugin.Resx</module>  
     <module>NPanday.Plugin.Settings</module>
-	<module>NPanday.Plugin.SysRef</module>
-	<module>NPanday.Plugin.Msbuild</module>			
+    <module>NPanday.Plugin.SysRef</module>
+    <module>NPanday.Plugin.Msbuild</module>            
   </modules>  
-  <profiles> 
-    <profile> 
-      <activation> 
-        <property> 
-          <name>VisualStudio2005</name> 
-        </property> 
-      </activation>  
-      <modules> 
-      </modules> 
-    </profile> 
-  </profiles> 
 </project>

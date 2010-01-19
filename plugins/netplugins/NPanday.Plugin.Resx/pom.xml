@@ -25,9 +25,7 @@ under the License.
     <artifactId>npanday.plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Resx</artifactId>  
   <packaging>exe</packaging>  
-  <version>1.1-SNAPSHOT</version>  
-  <name>NPanday.Plugin.ResX</name> 
+  <name>NPanday :: ResX Plugin</name>
 </project>

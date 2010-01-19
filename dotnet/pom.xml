@@ -26,136 +26,14 @@ under the License.
     <relativePath>../pom.xml</relativePath> 
   </parent>
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.project</groupId>  
   <artifactId>NPanday.Project</artifactId>  
   <packaging>pom</packaging>  
-  <version>1.1-SNAPSHOT</version>  
-  <name>NPanday.Project</name>  
-  <url>http://incubator.apache.org/npanday</url>  
-  <description>NPanday provides Maven 2.x plugins to support building of .NET applications</description>  
-  <mailingLists> 
-    <mailingList> 
-      <name>NPanday Dev List</name>  
-      <post>npanday@discussions.codeplex.com</post>  
-      <otherArchives> 
-        <otherArchive>http://n2.nabble.com/NPanday-Discussions-f1657131.html</otherArchive> 
-      </otherArchives> 
-    </mailingList>  
-  </mailingLists>  
-  <scm> 
-    <url>https://npanday.svn.codeplex.com/svn/trunk/dotnet</url>  
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/dotnet</connection>  
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/dotnet</developerConnection>  
-  </scm>  
-  <organization> 
-    <name>NPanday</name>  
-    <url>http://codeplex.com/npanday</url> 
-  </organization>  
-  <issueManagement> 
-    <system>Codeplex Issue Tracker</system>  
-    <url>http://www.codeplex.com/npanday/WorkItem/List.aspx</url> 
-  </issueManagement>  
-  <licenses> 
-    <license> 
-      <name>Apache 2.0</name>  
-      <url>LICENSE.txt</url> 
-    </license> 
-  </licenses>  
-  <developers> 
-    <developer> 
-      <name>Brett Porter</name>  
-      <id>brettporter</id>  
-      <email>brett@apache.org</email>  
-      <roles> 
-        <role>coordinator</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Melvin Sembrano</name>  
-      <id>melvinsembrano</id>  
-      <email>melvinsembrano@gmail.com</email>  
-      <roles> 
-        <role>coordinator</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Leopoldo Agdeppa</name>  
-      <id>lagdeppa</id>  
-      <email>lagdeppa@exist.com</email>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Jan Ancajas</name>  
-      <id>jancajas</id>  
-      <email>jancajas@exist.com</email>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Joe Ocaba</name>  
-      <id>jocaba</id>  
-      <email>jocaba@exist.com</email>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Shein Ernacio</name>  
-      <id>sernacio</id>  
-      <email>sernacio@exist.com</email>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Cédric</name>  
-      <id>mimil</id>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Maricor Baclay</name>  
-      <id>mbaclay</id>  
-      <email>mbaclay@exist.com</email>  
-      <roles> 
-        <role>QA</role>  
-      </roles> 
-    </developer>  
-    <!--Emeritus Committers-->
-    <developer> 
-      <name>Shane Isbell</name>  
-      <id>sisbell</id>  
-      <email>sisbell@apache.org</email>  
-      <url>http://jroller.com/page/random7</url>  
-    </developer>      
-    <developer> 
-      <name>Evan Worley</name>  
-      <id>eworley</id>  
-      <email>eworley@apache.org</email>  
-    </developer>        
-    <!--Emeritus Committers-->
-  </developers>  
+  <name>NPanday :: .NET Projects</name>  
   <modules> 
     <module>assemblies</module>  
     <module>../plugins/netplugins</module> 
   </modules>  
   <build> 
-    <extensions> 
-      <extension> 
-        <groupId>org.apache.maven.wagon</groupId>  
-        <artifactId>wagon-ssh-external</artifactId>  
-        <version>1.0-beta-2</version> 
-      </extension>  
-      <extension> 
-        <groupId>org.apache.maven.wagon</groupId>  
-        <artifactId>wagon-webdav</artifactId>  
-        <version>1.0-beta-2</version> 
-      </extension> 
-    </extensions>  
     <sourceDirectory>src/main/csharp</sourceDirectory>  
     <testSourceDirectory>src/test/csharp</testSourceDirectory>  
     <plugins> 
@@ -167,13 +45,6 @@ under the License.
           <frameworkVersion>2.0.50727</frameworkVersion> 
         </configuration> 
       </plugin>  
-      <plugin> 
-        <groupId>org.apache.maven.plugins</groupId>  
-        <artifactId>maven-release-plugin</artifactId>  
-        <configuration> 
-          <tagBase>https://npanday.svn.codeplex.com/svn/tags</tagBase> 
-        </configuration> 
-      </plugin> 
     </plugins> 
   </build>  
   <dependencyManagement> 
@@ -227,6 +98,61 @@ under the License.
         <type>library</type>  
         <scope>test</scope> 
       </dependency> 
+
+      <dependency> 
+        <groupId>npanday.model</groupId>  
+        <artifactId>NPanday.Model.Pom</artifactId>  
+        <version>1.1-SNAPSHOT</version>
+        <type>library</type>  
+      </dependency>  
+      <dependency> 
+        <groupId>npanday.model</groupId>  
+        <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
+        <version>1.1-SNAPSHOT</version>
+        <type>library</type>  
+      </dependency>  
+      <dependency> 
+        <groupId>npanday.model</groupId>  
+        <artifactId>NPanday.Model.Settings</artifactId>  
+        <version>1.1-SNAPSHOT</version>
+        <type>library</type>  
+      </dependency>  
+      <dependency> 
+        <groupId>npanday.logging</groupId>  
+        <artifactId>NPanday.Logging</artifactId>  
+        <version>1.1-SNAPSHOT</version>
+        <type>library</type>  
+      </dependency>  
+      <dependency> 
+        <groupId>npanday.artifact</groupId>  
+        <artifactId>NPanday.Artifact</artifactId>  
+        <version>1.1-SNAPSHOT</version>
+        <type>library</type>  
+      </dependency>  
+      <dependency> 
+        <groupId>npanday.utils</groupId>  
+        <artifactId>NPanday.Utils</artifactId>  
+        <version>1.1-SNAPSHOT</version>
+        <type>library</type>  
+      </dependency>  
+      <dependency> 
+        <groupId>npanday.plugin</groupId>  
+        <artifactId>NPanday.Plugin</artifactId>  
+        <version>1.1-SNAPSHOT</version>
+        <type>library</type>  
+      </dependency>  
+      <dependency> 
+        <groupId>npanday.projectimporter</groupId>  
+        <artifactId>NPanday.ProjectImporterEngine</artifactId>  
+        <version>1.1-SNAPSHOT</version>
+        <type>library</type>  
+      </dependency>  
+      <dependency> 
+        <groupId>npanday.visualstudio</groupId>  
+        <artifactId>NPanday.VisualStudio</artifactId>  
+        <version>1.1-SNAPSHOT</version>
+        <type>library</type>  
+      </dependency>  
     </dependencies> 
   </dependencyManagement> 
 </project>

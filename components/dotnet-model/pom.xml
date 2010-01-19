@@ -25,10 +25,9 @@ under the License.
     <artifactId>dotnet-components</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
   <artifactId>dotnet-model</artifactId>  
   <packaging>pom</packaging>  
-  <name>dotnet-model</name>  
+  <name>NPanday :: Model</name>  
   <modules> 
     <module>assembly-plugins</module>  
     <module>compiler-plugins</module>  

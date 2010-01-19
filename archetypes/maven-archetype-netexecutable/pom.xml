@@ -7,7 +7,6 @@
     <artifactId>dotnet-archetypes</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
   <artifactId>maven-archetype-netexecutable</artifactId>  
-  <name>maven-archetype-netexecutable</name> 
+  <name>NPanday :: NetExecutable Archetype</name> 
 </project>

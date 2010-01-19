@@ -23,14 +23,12 @@ under the License.
     <groupId>npanday</groupId>  
     <version>1.1-SNAPSHOT</version>  
     <artifactId>NPanday.Assemblies</artifactId>  
-    <relativePath>../../pom.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.model</groupId>  
   <artifactId>NPanday.Model.Pom</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
   <packaging>library</packaging>  
-  <name>NPanday.Model.Pom</name>  
+  <name>NPanday :: .NET Model :: POM</name>  
   <build> 
     <plugins> 
       <plugin> 
@@ -47,29 +45,31 @@ under the License.
           <xsdFile>${basedir}/Pom.xsd</xsdFile> 
         </configuration> 
       </plugin>  
-      <plugin> 
-        <groupId>npanday.plugin</groupId>  
-        <artifactId>maven-compile-plugin</artifactId>  
-        <extensions>true</extensions>  
-        <configuration> 
-          <keyfile>sample.snk</keyfile> 
-        </configuration> 
-      </plugin>  
-      <plugin> 
-        <groupId>npanday.plugin</groupId>  
-        <artifactId>maven-install-plugin</artifactId>  
-        <extensions>true</extensions>  
-        <configuration> 
-          <isGacInstall>true</isGacInstall> 
-        </configuration> 
-      </plugin> 
-      <plugin> 
-        <groupId>npanday.plugin</groupId>  
-        <artifactId>maven-deploy-plugin</artifactId>  
-        <configuration> 
-          <classifier>4b435f4d76e2f0e6</classifier>
-        </configuration> 
-      </plugin> 
-    </plugins> 
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin> 
+          <groupId>npanday.plugin</groupId>  
+          <artifactId>maven-compile-plugin</artifactId>  
+          <configuration> 
+            <keyfile>sample.snk</keyfile> 
+          </configuration> 
+        </plugin>  
+        <plugin> 
+          <groupId>npanday.plugin</groupId>  
+          <artifactId>maven-install-plugin</artifactId>  
+          <configuration> 
+            <isGacInstall>true</isGacInstall> 
+          </configuration> 
+        </plugin> 
+        <plugin> 
+          <groupId>npanday.plugin</groupId>  
+          <artifactId>maven-deploy-plugin</artifactId>  
+          <configuration> 
+            <classifier>4b435f4d76e2f0e6</classifier>
+          </configuration> 
+        </plugin> 
+      </plugins>
+    </pluginManagement>
   </build> 
 </project>

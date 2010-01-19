@@ -25,11 +25,10 @@ under the License.
     <artifactId>maven-dotnet-plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.plugin</groupId>  
   <artifactId>maven-vsinstaller-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
-  <name>maven-vsinstaller-plugin</name>  
-  <description>Maven Plugin for .NET: Installs the Visual Studio 2005 Addin</description>  
+  <name>NPanday :: Visual Studio Addin Installer Maven Plugin</name>  
+  <description>Maven Plugin for .NET: Installs the Visual Studio Addin</description>  
   <build> 
     <resources> 
       <resource> 

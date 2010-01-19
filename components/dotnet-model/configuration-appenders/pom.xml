@@ -25,9 +25,8 @@ under the License.
     <artifactId>dotnet-model</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
   <artifactId>dotnet-model-configuration-appenders</artifactId>  
-  <name>dotnet-model-configuration-appenders</name>  
+  <name>NPanday :: Model :: Configuration Appenders</name>  
   <description/>  
   <build> 
     <plugins> 
@@ -41,11 +40,4 @@ under the License.
       </plugin> 
     </plugins> 
   </build>  
-  <distributionManagement> 
-    <site> 
-      <id>npanday-site</id>  
-      <name>NPanday Site</name>  
-      <url>scp://shell.sourceforge.net//home/groups/n/nm/npanday/htdocs/components/npanday-model/npanday-compile-plugin</url> 
-    </site> 
-  </distributionManagement> 
 </project>

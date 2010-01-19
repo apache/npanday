@@ -25,10 +25,9 @@ under the License.
     <artifactId>maven-dotnet-plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.plugin</groupId>  
   <artifactId>maven-webapp-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
-  <name>maven-webapp-plugin</name>  
+  <name>NPanday :: Webapp Maven Plugin</name>  
   <description>Maven Plugin for .NET: Packages and deploys web applications</description>  
   <dependencies> 
     <dependency> 

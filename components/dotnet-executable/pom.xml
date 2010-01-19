@@ -25,35 +25,28 @@ under the License.
     <artifactId>dotnet-components</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
   <artifactId>dotnet-executable</artifactId>  
-  <name>dotnet-executable</name>  
-  <description>NPanday</description>  
+  <name>NPanday :: Executable</name>  
   <dependencies> 
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-core</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-artifact</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-model-executable-plugins</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-model-compiler-plugins</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-vendor</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency> 
   </dependencies> 
 </project>

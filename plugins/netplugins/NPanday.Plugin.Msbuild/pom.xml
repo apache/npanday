@@ -25,30 +25,25 @@ under the License.
     <artifactId>npanday.plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Msbuild</artifactId>  
   <packaging>netplugin</packaging>  
-  <version>1.1-SNAPSHOT</version>  
-  <name>NPanday.Plugin.Msbuild</name>
+  <name>NPanday :: Msbuild Plugin</name>
   <description>Maven Plugin for .NET: Generates needed files for WPF and WCF projects</description>  
   <dependencies> 
     <dependency> 
       <groupId>npanday.artifact</groupId>  
       <artifactId>NPanday.Artifact</artifactId>  
-      <version>1.1-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>npanday.model</groupId>  
       <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency> 
   </dependencies> 
  </project>

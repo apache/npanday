@@ -27,9 +27,8 @@ under the License.
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.visualstudio</groupId>  
   <artifactId>NPanday.VisualStudio.ProjectWizard</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
   <packaging>library</packaging>  
-  <name>NPanday.VisualStudio.ProjectWizard</name>  
+  <name>NPanday :: VisualStudio Project Wizard</name>  
   <dependencies> 
     <dependency> 
       <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>  
@@ -42,44 +41,40 @@ under the License.
       <groupId>EnvDTE</groupId>  
       <artifactId>EnvDTE</artifactId>  
       <type>gac</type>  
-      <version>8.0.0.0</version>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency>  
     <dependency> 
       <groupId>EnvDTE80</groupId>  
       <artifactId>EnvDTE80</artifactId>  
       <type>gac</type>  
-      <version>8.0.0.0</version>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency>  
-    <!--remmove-->  
+    <!-- TODO: remove? -->  
     <dependency> 
       <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
       <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
       <type>gac</type>  
-      <version>8.0.0.0</version>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency> 
   </dependencies>  
   <build> 
-    <plugins> 
-      <plugin> 
-        <groupId>npanday.plugin</groupId>  
-        <artifactId>maven-compile-plugin</artifactId>  
-        <extensions>true</extensions>  
-        <configuration> 
-          <frameworkVersion>2.0.50727</frameworkVersion>  
-          <keyfile>sample.snk</keyfile> 
-        </configuration> 
-      </plugin>  
-      <plugin> 
-        <groupId>npanday.plugin</groupId>  
-        <artifactId>maven-install-plugin</artifactId>  
-        <extensions>true</extensions>  
-        <configuration> 
-          <isGacInstall>true</isGacInstall> 
-        </configuration> 
-      </plugin> 
-    </plugins> 
+    <pluginManagement>
+      <plugins> 
+        <plugin> 
+          <groupId>npanday.plugin</groupId>  
+          <artifactId>maven-compile-plugin</artifactId>  
+          <configuration> 
+            <keyfile>sample.snk</keyfile> 
+          </configuration> 
+        </plugin>  
+        <plugin> 
+          <groupId>npanday.plugin</groupId>  
+          <artifactId>maven-install-plugin</artifactId>  
+          <configuration> 
+            <isGacInstall>true</isGacInstall> 
+          </configuration> 
+        </plugin> 
+      </plugins> 
+    </pluginManagement>
   </build> 
 </project>

@@ -25,10 +25,9 @@ under the License.
     <artifactId>npanday-project</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
   <artifactId>dotnet-archetypes</artifactId>  
   <packaging>pom</packaging>  
-  <name>dotnet</name>  
+  <name>NPanday :: Archetypes</name>  
   <modules> 
     <module>maven-archetype-dotnet-simple</module>  
     <module>maven-archetype-netexecutable</module> 

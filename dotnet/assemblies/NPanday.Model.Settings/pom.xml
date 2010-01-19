@@ -23,33 +23,10 @@ under the License.
     <groupId>npanday</groupId>  
     <version>1.1-SNAPSHOT</version>  
     <artifactId>NPanday.Assemblies</artifactId>  
-    <relativePath>..\..\pom.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.model</groupId>  
   <artifactId>NPanday.Model.Settings</artifactId>  
   <packaging>library</packaging>  
-  <version>1.1-SNAPSHOT</version>  
-  <name>NPanday.Model.Settings</name>  
-  <build> 
-    <sourceDirectory>src/main/csharp</sourceDirectory>  
-    <plugins> 
-      <!--
-       <plugin>
-         <groupId>npanday.plugin</groupId>
-         <artifactId>maven-xsd-plugin</artifactId>
-         <executions>
-           <execution>
-             <goals>
-               <goal>xsd</goal>
-             </goals>
-           </execution>
-         </executions>
-         <configuration>
-           <xsdFile>${basedir}/src/main/xsd/Settings.xsd</xsdFile>
-         </configuration>
-       </plugin>
-     --> 
-    </plugins> 
-  </build> 
+  <name>NPanday :: .NET Model :: Settings</name>  
 </project>

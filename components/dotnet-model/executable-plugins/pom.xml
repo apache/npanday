@@ -25,10 +25,8 @@ under the License.
     <artifactId>dotnet-model</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
   <artifactId>dotnet-model-executable-plugins</artifactId>  
-  <name>dotnet-model-executable-plugins</name>  
-  <description>Executable Model</description>  
+  <name>NPanday :: Model :: Executable Plugins</name>  
   <build> 
     <plugins> 
       <plugin> 
@@ -41,11 +39,4 @@ under the License.
       </plugin> 
     </plugins> 
   </build>  
-  <distributionManagement> 
-    <site> 
-      <id>npanday-apache-site</id>  
-      <name>NPanday Site</name>  
-      <url>file://${basedir}/../../../../www/components/dotnet-model/executable-plugins</url> 
-    </site> 
-  </distributionManagement> 
 </project>

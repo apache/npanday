@@ -25,9 +25,8 @@ under the License.
     <artifactId>dotnet-model</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
   <artifactId>dotnet-model-assembly-plugins</artifactId>  
-  <name>dotnet-model-assembly-plugins</name>  
+  <name>NPanday :: Model :: Assembly Plugins</name>  
   <description>Assembly model used for reading in information about assembly info marshallers.</description>  
   <build> 
     <resources> 
@@ -46,11 +45,4 @@ under the License.
       </plugin> 
     </plugins> 
   </build>  
-  <distributionManagement> 
-    <site> 
-      <id>npanday-apache-site</id>  
-      <name>NPanday Site</name>  
-      <url>file://${basedir}/../../../../www/components/dotnet-model/assembly-plugins</url> 
-    </site> 
-  </distributionManagement> 
 </project>

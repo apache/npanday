@@ -25,27 +25,11 @@ under the License.
     <artifactId>NPanday.ImporterProjectParent</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.projectimporter</groupId>  
   <artifactId>NPanday.ProjectImporterConsole</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
   <packaging>exe</packaging>  
-  <name>NPanday.ProjectImporterConsole</name>  
+  <name>NPanday :: Project Importer :: Console</name>  
   <build> 
-    <extensions> 
-      <extension> 
-        <groupId>org.apache.maven.wagon</groupId>  
-        <artifactId>wagon-webdav</artifactId>  
-        <version>1.0-beta-2</version> 
-      </extension> 
-    </extensions>  
-    <sourceDirectory>src/main/csharp</sourceDirectory>  
-    <testSourceDirectory>src/test/csharp</testSourceDirectory>  
     <plugins> 
-      <plugin> 
-        <groupId>npanday.plugin</groupId>  
-        <artifactId>maven-compile-plugin</artifactId>  
-        <extensions>true</extensions> 
-      </plugin>  
       <plugin> 
         <artifactId>maven-assembly-plugin</artifactId>  
         <configuration> 
@@ -60,14 +44,13 @@ under the License.
     <dependency> 
       <groupId>npanday.projectimporter</groupId>  
       <artifactId>NPanday.ProjectImporterEngine</artifactId>  
-      <version>1.1-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>NUnit</groupId>  
       <artifactId>NUnit.Framework</artifactId>  
       <type>library</type>  
-      <version>2.2.8.0</version> 
-    </dependency> 
+      <scope>test</scope>
+    </dependency>  
   </dependencies> 
 </project>

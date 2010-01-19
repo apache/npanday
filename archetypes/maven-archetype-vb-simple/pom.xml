@@ -7,7 +7,6 @@
     <artifactId>dotnet-archetypes</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
   <artifactId>maven-archetype-vb-simple</artifactId>  
-  <name>maven-archetype-vb-simple</name> 
+  <name>NPanday :: Simple VB Archetype</name> 
 </project>

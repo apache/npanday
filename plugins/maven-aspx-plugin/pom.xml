@@ -27,16 +27,14 @@ under the License.
     <artifactId>maven-dotnet-plugins</artifactId>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>npanday.plugin</groupId>
   <artifactId>maven-aspx-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <name>maven-aspx-plugin</name>
+  <name>NPanday :: ASPX Maven Plugin</name>
   <description>Maven Plugin for .NET: Precompiles aspx pages</description>
   <dependencies>
     <dependency>
       <groupId>npanday</groupId>
       <artifactId>dotnet-registry</artifactId>
-      <version>1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>

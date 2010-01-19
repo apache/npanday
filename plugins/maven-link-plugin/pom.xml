@@ -25,9 +25,8 @@ under the License.
     <artifactId>maven-dotnet-plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.plugin</groupId>  
   <artifactId>maven-link-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
-  <name>maven-link-plugin</name>  
+  <name>NPanday :: Link Maven Plugin</name>  
   <description>Maven Plugin for .NET: Uses AssemblyLinker utility for linking, embedding and adding resources to an assembly.</description>  
 </project>

@@ -27,27 +27,24 @@ under the License.
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.artifact</groupId>  
   <artifactId>NPanday.Artifact</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
   <packaging>library</packaging>  
-  <name>NPanday.Artifact</name>  
+  <name>NPanday :: .NET Artifact</name>  
   <dependencies> 
     <dependency> 
       <groupId>npanday.model</groupId>  
       <artifactId>NPanday.Model.Pom</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday.model</groupId>  
       <artifactId>NPanday.Model.Settings</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>NUnit</groupId>  
       <artifactId>NUnit.Framework</artifactId>  
       <type>library</type>  
-      <version>2.2.8.0</version> 
-    </dependency> 
+      <scope>test</scope>
+    </dependency>  
   </dependencies> 
 </project>

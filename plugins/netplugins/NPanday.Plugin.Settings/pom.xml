@@ -25,56 +25,14 @@ under the License.
     <artifactId>npanday.plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Settings</artifactId>  
   <packaging>netplugin</packaging>  
-  <version>1.1-SNAPSHOT</version>  
-  <name>NPanday.Plugin.Settings</name>  
+  <name>NPanday :: Settings Plugin</name>  
   <dependencies> 
     <dependency> 
       <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency> 
   </dependencies>  
-  <!--
-  <profiles>
-    <profile>
-      <activation>
-        <property>
-          <name>version</name>
-          <value>1.1</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>npanday.plugin</groupId>
-            <artifactId>maven-compile-plugin</artifactId>
-            <extensions>true</extensions>
-            <configuration>
-              <frameworkVersion>1.1.4322</frameworkVersion>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>npanday.plugin</groupId>
-            <artifactId>maven-xsd-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>xsd</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <xsdFile>npanday-settings.xsd</xsdFile>
-              <frameworkVersion>1.1.4322</frameworkVersion>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-  --> 
 </project>

@@ -25,10 +25,9 @@ under the License.
     <artifactId>maven-dotnet-plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.plugin</groupId>  
   <artifactId>maven-install-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
-  <name>maven-install-plugin</name>  
+  <name>NPanday :: Install Maven Plugin</name>  
   <description>Maven Plugin for .NET: Installs compiled artifacts into the local repository.</description>  
   <dependencies> 
     <dependency> 

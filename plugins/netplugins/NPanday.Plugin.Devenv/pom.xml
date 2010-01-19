@@ -25,17 +25,14 @@ under the License.
     <artifactId>npanday.plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Devenv</artifactId>  
   <packaging>netplugin</packaging>  
-  <version>1.1-SNAPSHOT</version>  
-  <name>NPanday.Plugin.Devenv</name>  
+  <name>NPanday :: Devenv Plugin</name>
   <dependencies> 
     <dependency> 
       <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency> 
   </dependencies> 
 </project>

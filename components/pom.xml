@@ -25,17 +25,14 @@ under the License.
     <artifactId>npanday-project</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
   <artifactId>dotnet-components</artifactId>  
   <packaging>pom</packaging>  
-  <name>dotnet-components</name>  
-  <url>http://www.codeplex.com/npanday</url>  
-  <description>NPanday provides Maven 2.x plugins to support building of .NET applications</description>  
+  <name>NPanday :: Java Components</name>  
   <modules> 
     <module>dotnet-artifact</module>  
     <module>dotnet-assembler</module>  
     <module>dotnet-core</module>  
-    <module>dotnet-dao/project</module>  
+    <module>dotnet-dao-project</module>  
     <module>dotnet-executable</module>
     <module>dotnet-model</module>  
     <module>dotnet-plugin</module>  
@@ -58,11 +55,4 @@ under the License.
       </repositories> 
     </profile> 
   </profiles>  
-  <distributionManagement> 
-    <site> 
-      <id>npanday-apache-site</id>  
-      <name>NPanday Site</name>  
-      <url>file://${basedir}/../../www</url> 
-    </site> 
-  </distributionManagement> 
 </project>

@@ -27,15 +27,13 @@ under the License.
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Loader</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
   <packaging>exe</packaging>  
-  <name>NPanday.Plugin.Loader</name>  
+  <name>NPanday :: .NET Plugin Loader</name>  
   <dependencies> 
     <dependency> 
       <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
       <type>library</type>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency> 
   </dependencies> 
 </project>

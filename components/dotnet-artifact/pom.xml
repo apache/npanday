@@ -25,9 +25,8 @@ under the License.
     <artifactId>dotnet-components</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
   <artifactId>dotnet-artifact</artifactId>  
-  <name>dotnet-artifact</name>  
+  <name>NPanday :: Artifact</name>  
   <description/>  
   <dependencies> 
     <dependency> 
@@ -41,17 +40,14 @@ under the License.
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-dao-project</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-model-netdependency</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-core</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency> 
   </dependencies>  
   <build> 

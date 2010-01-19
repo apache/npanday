@@ -23,32 +23,10 @@ under the License.
     <groupId>npanday</groupId>  
     <version>1.1-SNAPSHOT</version>  
     <artifactId>NPanday.Assemblies</artifactId>  
-    <relativePath>../../pom.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.model</groupId>  
   <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
   <packaging>library</packaging>  
-  <name>NPanday.Model.AutomationExtensibility</name>  
-  <!--
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>npanday.plugin</groupId>
-        <artifactId>maven-xsd-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>xsd</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <xsdFile>${basedir}/AutomationExtensibility.xsd</xsdFile>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  --> 
+  <name>NPanday :: .NET Model :: AutomationExtensibility</name>  
 </project>

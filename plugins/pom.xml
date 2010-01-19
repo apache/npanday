@@ -28,14 +28,13 @@ under the License.
   <groupId>npanday.plugin</groupId>  
   <artifactId>maven-dotnet-plugins</artifactId>  
   <packaging>pom</packaging>  
-  <name>maven-dotnet-plugins</name>
-  <description>Plugins for .NET interoperability</description>  
+  <name>NPanday :: Maven Plugins</name>
   <modules> 
     <module>netplugins/NPanday.Plugin.Addin/javabinding</module>  
     <module>netplugins/NPanday.Plugin.Devenv/javabinding</module>  
     <module>netplugins/NPanday.Plugin.Settings/javabinding</module>
     <module>netplugins/NPanday.Plugin.SysRef/javabinding</module>
-	<module>netplugins/NPanday.Plugin.Msbuild/javabinding</module>	
+    <module>netplugins/NPanday.Plugin.Msbuild/javabinding</module>	
     <module>maven-compile-plugin</module>
     <module>maven-aspx-plugin</module>    
     <module>maven-deploy-plugin</module>  
@@ -52,33 +51,28 @@ under the License.
     <module>maven-xsd-plugin</module>  
     <module>maven-xsp-plugin</module>  
     <module>maven-wsdl-plugin</module> 
-	<module>wix-maven-plugin</module>
+    <module>wix-maven-plugin</module>
   </modules>  
   <dependencies> 
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-assembler</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-dao-project</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-executable</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-artifact</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-plugin</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -86,13 +80,6 @@ under the License.
     </dependency>
   </dependencies>  
   <build> 
-    <pluginManagement> 
-      <plugins> 
-        <plugin> 
-          <artifactId>maven-release-plugin</artifactId> 
-        </plugin> 
-      </plugins> 
-    </pluginManagement>  
     <plugins> 
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>  

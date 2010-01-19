@@ -25,9 +25,8 @@ under the License.
     <artifactId>maven-dotnet-plugins</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday.plugin</groupId>  
   <artifactId>maven-test-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
-  <name>maven-test-plugin</name>  
+  <name>NPanday :: Test Maven Plugin</name>  
   <description>Maven Plugin for .NET: Tests class files with NUnit</description>  
 </project>

@@ -27,7 +27,6 @@ under the License.
   <modelVersion>4.0.0</modelVersion>  
   <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Runner</artifactId>  
-  <version>1.1-SNAPSHOT</version>  
   <packaging>exe</packaging>  
-  <name>NPanday.Plugin.Runner</name> 
+  <name>NPanday :: .NET Plugin Runner</name> 
 </project>

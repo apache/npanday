@@ -11,28 +11,24 @@
   <groupId>npanday.plugin</groupId>  
   <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>  
   <packaging>maven-plugin</packaging>  
-  <name>NPanday.Plugin.Msbuild.JavaBinding</name>
+  <name>NPanday :: MSBuild Plugin (Java Binding)</name>
   <description>Plugin that will process .NET project files</description>
   <dependencies> 
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-assembler</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-executable</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-artifact</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-plugin</artifactId>  
-      <version>1.1-SNAPSHOT</version> 
     </dependency> 
   </dependencies>
 </project>

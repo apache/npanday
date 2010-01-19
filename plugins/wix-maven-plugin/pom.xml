@@ -6,11 +6,9 @@
     <artifactId>maven-dotnet-plugins</artifactId> 
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>npanday.plugin</groupId>
   <artifactId>wix-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <name>wix-maven-plugin Maven Mojo</name>
-  <url>http://maven.apache.org</url>
+  <name>NPanday :: WiX Maven Plugin</name>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -18,26 +16,11 @@
       <version>2.0</version>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-exec</artifactId>
       <version>1.0</version>
     </dependency>
   </dependencies>
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-plugin-plugin</artifactId>
-        <version>2.4.3</version>
-      </plugin>
-    </plugins>
-  </reporting>
   <profiles>
     <profile>
       <id>its</id>
