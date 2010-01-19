@@ -138,6 +138,7 @@ under the License.
     <module>archetypes</module>  
     <module>plugins</module>  
     <module>dotnet</module>
+    <!-- must appear before the second repository builder that includes it -->
     <module>misc/dotnet-repository-builder</module>
     <module>misc/npanday-repository-builder</module>
   </modules>  

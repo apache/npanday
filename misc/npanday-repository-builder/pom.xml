@@ -5,13 +5,12 @@
     <groupId>npanday</groupId>  
     <artifactId>npanday-project</artifactId>  
     <version>1.1-SNAPSHOT</version> 
+    <relativePath>../../pom.xml</relativePath>
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>npanday</groupId>  
-  <version>1.1-SNAPSHOT</version>  
   <artifactId>npanday-repository-builder</artifactId>  
   <packaging>pom</packaging>
-  <name>NPanday Repository Builder</name>  
+  <name>NPanday :: Repository Builder</name>  
   <dependencies> 
 
     <!--
@@ -153,16 +152,7 @@
   </dependencies>  
   <build>
     <plugins>   
-      <plugin>  
-        <artifactId>maven-release-plugin</artifactId>  
-        <version>2.0-beta-7</version>  
-        <configuration>  
-          <tagBase>https://npanday.svn.codeplex.com/svn/branches/npanday-M1/</tagBase>  
-          <preparationGoals>clean</preparationGoals>  
-          <goals>clean</goals>  
-        </configuration>  
-      </plugin>
-      <!-- START OF ORIGINAL PACKAGING
+      <!-- Incorporate the .NET repository just built -->
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.0</version>
@@ -204,7 +194,6 @@
           </execution>
         </executions>
       </plugin>
-      END OF ORIGINAL PACKAGING-->
     </plugins>
   </build>
 </project>

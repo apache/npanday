@@ -5,73 +5,72 @@
     <groupId>npanday</groupId>  
     <artifactId>npanday-project</artifactId>  
     <version>1.1-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>npanday</groupId>
-  <version>1.1-SNAPSHOT</version>
   <artifactId>dotnet-repository-builder</artifactId>
-  <name>NPanday DotNet Repository Builder</name>
+  <name>NPanday :: .NET Repository Builder</name>
   <packaging>pom</packaging>
   <dependencies>
     <!--assemblies-->
     <dependency>
       <groupId>npanday.artifact</groupId>
       <artifactId>NPanday.Artifact</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>npanday.logging</groupId>
       <artifactId>NPanday.Logging</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>npanday.model</groupId>
       <artifactId>NPanday.Model.Pom</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>npanday.model</groupId>
       <artifactId>NPanday.Model.AutomationExtensibility</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Loader</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>exe</type>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.MojoGenerator</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>exe</type>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Runner</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>exe</type>
     </dependency>
     <dependency>
       <groupId>npanday.visualstudio</groupId>
       <artifactId>NPanday.VisualStudio</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>library</type>
     </dependency>
     <dependency>
       <groupId>npanday.visualstudio</groupId>
       <artifactId>NPanday.VisualStudio.Addin</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>visual-studio-addin</type>
     </dependency>
 
@@ -80,37 +79,37 @@
 	<dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Msbuild</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>netplugin</type>
     </dependency>
 	<dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.SysRef</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>netplugin</type>
     </dependency>
 	<dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Addin</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>netplugin</type>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Devenv</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>netplugin</type>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Resx</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>exe</type>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Settings</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <type>netplugin</type>
     </dependency>
     <dependency>
@@ -143,13 +142,25 @@
       <type>library</type>  
       <version>2.0-rc2</version> 
     </dependency> 
+    <dependency> 
+      <groupId>npanday.visualstudio</groupId>  
+      <artifactId>NPanday.VisualStudio</artifactId>  
+      <version>${project.version}</version>  
+      <type>library</type> 
+    </dependency>  
+    <dependency> 
+      <groupId>npanday.visualstudio</groupId>  
+      <artifactId>NPanday.VisualStudio.Addin</artifactId>  
+      <version>${project.version}</version>  
+      <type>visual-studio-addin</type> 
+    </dependency>  
   </dependencies>
   <build>
     <plugins>
       <plugin>
         <groupId>npanday.plugin</groupId>
         <artifactId>maven-repository-plugin</artifactId>
-        <version>${pom.version}</version>
+        <version>${project.version}</version>
         <configuration>
           <outputDirectory>npanday-repository</outputDirectory>
         </configuration>
@@ -174,7 +185,7 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>target/dotnet-repository-builder.tar.gz</file>
+                  <file>${project.build.directory}/dotnet-repository-builder.tar.gz</file>
                   <type>tar.gz</type>
                   <classifier>bin</classifier>
                 </artifact>
