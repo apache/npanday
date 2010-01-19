@@ -33,6 +33,7 @@ under the License.
     <dependency> 
       <groupId>npanday.logging</groupId>  
       <artifactId>NPanday.Logging</artifactId>  
+      <version>1.1-SNAPSHOT</version>  
       <type>library</type> 
     </dependency>  
     <dependency> 

@@ -32,50 +32,59 @@
     <dependency> 
       <groupId>npanday.logging</groupId>  
       <artifactId>NPanday.Logging</artifactId>  
+      <version>1.1-SNAPSHOT</version>
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>npanday.model</groupId>  
       <artifactId>NPanday.Model.Pom</artifactId>  
+      <version>1.1-SNAPSHOT</version>
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>npanday.artifact</groupId>  
       <artifactId>NPanday.Artifact</artifactId>  
+      <version>1.1-SNAPSHOT</version>
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>npanday.model</groupId>  
       <artifactId>NPanday.Model.Settings</artifactId>  
+      <version>1.1-SNAPSHOT</version>
       <type>library</type>  
     </dependency>  
     <dependency> 
       <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
       <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
+      <version>8.0.0.0</version>  
       <type>gac</type>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency>  
     <dependency> 
       <groupId>EnvDTE</groupId>  
       <artifactId>EnvDTE</artifactId>  
+      <version>8.0.0.0</version>  
       <type>gac</type>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency>  
     <dependency> 
       <groupId>EnvDTE80</groupId>  
       <artifactId>EnvDTE80</artifactId>  
+      <version>8.0.0.0</version>  
       <type>gac</type>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency>  
     <dependency> 
       <groupId>Microsoft.Build.Engine</groupId>  
       <artifactId>Microsoft.Build.Engine</artifactId>  
+      <version>2.0.0.0</version>  
       <type>gac_msil</type>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency>  
     <dependency> 
       <groupId>Extensibility</groupId>  
       <artifactId>Extensibility</artifactId>  
+      <version>7.0.3300.0</version>  
       <type>gac</type>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency>  

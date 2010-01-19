@@ -67,6 +67,7 @@ under the License.
       </plugins>
     </pluginManagement>
   </build>  
+  <!-- TODO: the current NPanday libraries won't apply these properly, so we had to repeat them in the POMs as well -->
   <dependencyManagement> 
     <dependencies> 
       <dependency> 

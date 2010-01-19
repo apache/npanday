@@ -40,12 +40,14 @@ under the License.
     <dependency> 
       <groupId>EnvDTE</groupId>  
       <artifactId>EnvDTE</artifactId>  
+      <version>8.0.0.0</version>  
       <type>gac</type>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency>  
     <dependency> 
       <groupId>EnvDTE80</groupId>  
       <artifactId>EnvDTE80</artifactId>  
+      <version>8.0.0.0</version>  
       <type>gac</type>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency>  
@@ -53,6 +55,7 @@ under the License.
     <dependency> 
       <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
       <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
+      <version>8.0.0.0</version>  
       <type>gac</type>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency> 
