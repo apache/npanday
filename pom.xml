@@ -40,8 +40,8 @@ under the License.
     <mavenVersion>2.0.9</mavenVersion>  
   </properties>  
   <scm> 
-    <connection>https://npanday.svn.codeplex.com/svn/trunk/</connection>
-    <developerConnection>https://npanday.svn.codeplex.com/svn/trunk/</developerConnection>
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</connection>
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</developerConnection>
     <url>https://npanday.svn.codeplex.com/svn/trunk/</url>
   </scm>  
   <organization> 
