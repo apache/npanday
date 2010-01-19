@@ -10,6 +10,7 @@
   <groupId>npanday</groupId>
   <version>1.1-SNAPSHOT</version>
   <artifactId>dotnet-repository-builder</artifactId>
+  <name>NPanday DotNet Repository Builder</name>
   <packaging>pom</packaging>
   <dependencies>
     <!--assemblies-->

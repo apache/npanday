@@ -35,10 +35,9 @@ under the License.
     </mailingList>  
   </mailingLists>  
   <scm> 
-    <url>https://npanday.svn.codeplex.com/svn/</url>  
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/</connection>  
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/</developerConnection>  
-    <tag>REL_0_9_SNAPSHOT</tag> 
+    <url>https://npanday.svn.codeplex.com/svn/trunk</url>  
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk</connection>  
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk</developerConnection>  
   </scm>  
   <organization> 
     <name>NPanday</name>  
@@ -141,6 +140,9 @@ under the License.
     <module>components</module>  
     <module>archetypes</module>  
     <module>plugins</module>  
+    <module>dotnet</module>
+    <module>misc/dotnet-repository-builder</module>
+    <module>misc/npanday-repository-builder</module>
   </modules>  
   <repositories> 
     <repository> 
@@ -177,6 +179,17 @@ under the License.
       </extension> 
     </extensions>  
     <plugins> 
+      <plugin> 
+        <groupId>org.apache.maven.plugins</groupId>      
+        <artifactId>maven-release-plugin</artifactId>  
+        <version>2.0-beta-7</version>  
+        <configuration>  
+          <tagBase>https://npanday.svn.codeplex.com/svn/releases/</tagBase>  
+          <useReleaseProfile>false</useReleaseProfile>
+          <goals>deploy</goals>  
+          <preparationGoals>clean install</preparationGoals>  
+        </configuration>  
+      </plugin>
       <plugin> 
         <artifactId>maven-javadoc-plugin</artifactId>  
         <configuration> 

@@ -136,7 +136,7 @@ under the License.
   </developers>  
   <modules> 
     <module>assemblies</module>  
-    <module>plugins/netplugins</module> 
+    <module>../plugins/netplugins</module> 
   </modules>  
   <build> 
     <extensions> 
