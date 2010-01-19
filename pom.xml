@@ -153,6 +153,7 @@ under the License.
           <useReleaseProfile>false</useReleaseProfile>
           <goals>deploy</goals>  
           <preparationGoals>clean install</preparationGoals>  
+          <autoVersionSubmodules>true</autoVersionSubmodules>
         </configuration>  
       </plugin>
       <plugin> 
