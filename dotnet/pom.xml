@@ -48,6 +48,24 @@ under the License.
         </configuration> 
       </plugin>  
     </plugins> 
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>npanday.plugin</groupId>
+          <artifactId>maven-resolver-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>npanday.plugin</groupId>
+          <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>  
   <dependencyManagement> 
     <dependencies> 

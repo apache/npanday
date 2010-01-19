@@ -108,12 +108,15 @@ public class NetDependencyResolverMojo
      */
     private ArtifactContext artifactContext;
 
+    /** @parameter default-value="false" */
+    private boolean skip;
+
     public void execute()
         throws MojoExecutionException
     {
         long startTime = System.currentTimeMillis();
 
-        if ( System.getProperty( "bootstrap" ) != null )
+        if ( skip )
         {
             return;
         }

@@ -117,6 +117,9 @@ public class SettingsGeneratorMojo
         return frameworkVersion;
     }
 
+    /** @parameter default-value="false" */
+    private boolean skip;
+
     public boolean preExecute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -125,7 +128,7 @@ public class SettingsGeneratorMojo
             return false;
         }
 
-        if ( System.getProperty( "bootstrap" ) != null )
+        if ( skip )
         {
             return false;
         }

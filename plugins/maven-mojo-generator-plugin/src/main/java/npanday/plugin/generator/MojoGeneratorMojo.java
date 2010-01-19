@@ -91,10 +91,13 @@ public class MojoGeneratorMojo
      */
     private npanday.executable.NetExecutableFactory netExecutableFactory;
 
+    /** @parameter default-value="false" */
+    private boolean skip;
+
     public void execute()
         throws MojoExecutionException
     {
-        if ( System.getProperty( "bootstrap" ) != null )
+        if ( skip )
         {
             return;
         }
