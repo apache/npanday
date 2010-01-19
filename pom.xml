@@ -33,11 +33,20 @@ under the License.
         <otherArchive>http://n2.nabble.com/NPanday-Discussions-f1657131.html</otherArchive> 
       </otherArchives> 
     </mailingList>  
-  </mailingLists>  
+  </mailingLists>
+  <properties> 
+    <moduleName>npanday</moduleName>  
+    <moduleVersion>1.1</moduleVersion>  
+    <url>https://npanday.svn.codeplex.com/svn/trunk/</url>
+    <scmUrl>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</scmUrl>
+    <mavenVersion>2.0.9</mavenVersion>  
+    <jettyVersion>6.1.5</jettyVersion>  
+    <xfireVersion>1.2.5</xfireVersion>
+  </properties>  
   <scm> 
-    <url>https://npanday.svn.codeplex.com/svn/trunk</url>  
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk</connection>  
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk</developerConnection>  
+    <url>${url}</url>  
+    <connection>${scmUrl}</connection>  
+    <developerConnection>${scmUrl}</developerConnection>  
   </scm>  
   <organization> 
     <name>NPanday</name>  
@@ -69,7 +78,15 @@ under the License.
       <roles> 
         <role>coordinator</role>  
       </roles> 
-    </developer>  
+    </developer>
+    <developer> 
+      <name>Joe Ocaba</name>  
+      <id>jocaba</id>  
+      <email>jocaba@exist.com</email>  
+      <roles> 
+        <role>coordinator</role>  
+      </roles> 
+    </developer>     
     <developer> 
       <name>Leopoldo Agdeppa</name>  
       <id>lagdeppa</id>  
@@ -85,15 +102,7 @@ under the License.
       <roles> 
         <role>developer</role>  
       </roles> 
-    </developer>  
-    <developer> 
-      <name>Joe Ocaba</name>  
-      <id>jocaba</id>  
-      <email>jocaba@exist.com</email>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
+    </developer>
     <developer> 
       <name>Shein Ernacio</name>  
       <id>sernacio</id>  
@@ -273,12 +282,7 @@ under the License.
       <version>3.8.1</version>  
       <scope>test</scope> 
     </dependency> 
-  </dependencies>  
-  <properties> 
-    <mavenVersion>2.0.9</mavenVersion>  
-    <jettyVersion>6.1.5</jettyVersion>  
-    <xfireVersion>1.2.5</xfireVersion> 
-  </properties>  
+  </dependencies>
   <dependencyManagement> 
     <dependencies> 
       <dependency> 
