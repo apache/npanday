@@ -393,4 +393,25 @@ under the License.
       <url>http://repo.npanday.org/archiva/repository/npanday-releases</url>
     </repository>
   </distributionManagement>
+  <!-- TODO: need to get these into central after 1.1 -->
+  <pluginRepositories>
+    <pluginRepository>
+      <id>npanday.releases</id>
+      <name>NPanday Releases Repository</name>
+      <url>http://repo.npanday.org/archiva/repository/npanday-releases</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+  <repositories>
+    <repository>
+      <id>npanday.releases</id>
+      <name>NPanday Releases Repository</name>
+      <url>http://repo.npanday.org/archiva/repository/npanday-releases</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 </project>
