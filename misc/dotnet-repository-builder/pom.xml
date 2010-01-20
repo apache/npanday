@@ -74,20 +74,19 @@
     </dependency>
 
     <!--netplugins-->
-	
-	<dependency>
+    <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Msbuild</artifactId>
       <version>${project.version}</version>
       <type>netplugin</type>
     </dependency>
-	<dependency>
+    <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.SysRef</artifactId>
       <version>${project.version}</version>
       <type>netplugin</type>
     </dependency>
-	<dependency>
+    <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Addin</artifactId>
       <version>${project.version}</version>
@@ -117,6 +116,7 @@
       <version>2.2.8.0</version>
       <type>library</type>
     </dependency>
+<!--
     <dependency> 
       <groupId>Castle</groupId>  
       <artifactId>Castle.Windsor</artifactId>  
@@ -141,6 +141,7 @@
       <type>library</type>  
       <version>2.0-rc2</version> 
     </dependency> 
+-->
     <dependency> 
       <groupId>npanday.visualstudio</groupId>  
       <artifactId>NPanday.VisualStudio</artifactId>  
