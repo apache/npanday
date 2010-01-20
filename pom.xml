@@ -36,9 +36,6 @@ under the License.
       </otherArchives> 
     </mailingList>  
   </mailingLists>
-  <properties> 
-    <mavenVersion>2.0.9</mavenVersion>  
-  </properties>  
   <scm> 
     <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</connection>
     <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</developerConnection>
@@ -85,7 +82,7 @@ under the License.
       </roles> 
     </developer>     
     <developer> 
-      <name>Cédric</name>  
+      <name>Cï¿½dric</name>  
       <id>mimil</id>  
       <roles> 
         <role>developer</role>  
@@ -383,16 +380,21 @@ under the License.
       </modules>
     </profile>
   </profiles>
+  <properties> 
+    <mavenVersion>2.0.9</mavenVersion>  
+    <npanday.snapshots.url>http://repo.npanday.org/archiva/repository/npanday-snapshots</npanday.snapshots.url>
+    <npanday.releases.url>http://repo.npanday.org/archiva/repository/npanday-releases</npanday.releases.url>
+  </properties>  
   <distributionManagement>
     <snapshotRepository>
       <id>npanday.snapshots</id>
       <name>NPanday Snapshots Repository</name>
-      <url>http://repo.npanday.org/archiva/repository/npanday-snapshots</url>
+      <url>${npanday.snapshots.url}</url>
     </snapshotRepository>
     <repository>
       <id>npanday.releases</id>
       <name>NPanday Releases Repository</name>
-      <url>http://repo.npanday.org/archiva/repository/npanday-releases</url>
+      <url>${npanday.releases.url}</url>
     </repository>
   </distributionManagement>
   <!-- TODO: need to get these into central after 1.1 -->
