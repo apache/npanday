@@ -2,149 +2,20 @@
 
 <project> 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>npanday</groupId>
+  <parent>
+    <groupId>npanday</groupId>
+    <artifactId>npanday-project</artifactId>
+    <version>1.2-SNAPSHOT</version>
+  </parent>
   <artifactId>npanday-site</artifactId>
   <packaging>pom</packaging>
-	<version>1.1-SNAPSHOT</version>  
   <name>NPanday :: Site</name>
-  <description>NPanday .NET Build Tool</description>
-  <url>http://codeplex.com/npanday</url> 
   
-  <mailingLists> 
-    <mailingList> 
-      <name>NPanday Dev List</name>  
-      <post>npanday@discussions.codeplex.com</post>  
-      <otherArchives> 
-        <otherArchive>http://n2.nabble.com/NPanday-Discussions-f1657131.html</otherArchive> 
-      </otherArchives> 
-    </mailingList> 
-  </mailingLists>  
   <scm> 
-    <url>https://npanday.svn.codeplex.com/svn/</url>  
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/</connection>  
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/</developerConnection>  
-    <tag>REL_0_9_SNAPSHOT</tag> 
+    <url>https://npanday.svn.codeplex.com/svn/trunk</url>  
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk</connection>  
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk</developerConnection>  
   </scm>  
-  <organization> 
-    <name>NPanday</name>  
-    <url>http://codeplex.com/npanday</url> 
-  </organization>  
-  <issueManagement> 
-    <system>Codeplex Issue Tracker</system>  
-    <url>http://www.codeplex.com/npanday/WorkItem/List.aspx</url> 
-  </issueManagement>  
-  <licenses> 
-    <license> 
-      <name>Apache 2.0</name>  
-      <url>LICENSE.txt</url> 
-    </license> 
-  </licenses>  
-  <developers>
-    <developer> 
-      <name>Brett Porter</name>  
-      <id>brettporter</id>  
-      <email>brett@apache.org</email>  
-      <roles> 
-        <role>coordinator</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Melvin Sembrano</name>  
-      <id>melvinsembrano</id>  
-      <email>melvinsembrano@gmail.com</email>  
-      <roles> 
-        <role>coordinator</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Leopoldo Agdeppa</name>  
-      <id>lagdeppa</id>  
-      <email>lagdeppa@exist.com</email>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Jan Ancajas</name>  
-      <id>jancajas</id>  
-      <email>jancajas@exist.com</email>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Joe Ocaba</name>  
-      <id>jocaba</id>  
-      <email>jocaba@exist.com</email>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Shein Ernacio</name>  
-      <id>sernacio</id>  
-      <email>sernacio@exist.com</email>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>C?dric</name>  
-      <id>mimil</id>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Marecor Baclay</name>  
-      <id>mbaclay</id>  
-      <email>mbaclay@exist.com</email>  
-      <roles> 
-        <role>QA</role>  
-      </roles> 
-    </developer>  
-    <!--Emeritus Committers-->
-    <developer> 
-      <name>Shane Isbell</name>  
-      <id>sisbell</id>  
-      <email>sisbell@apache.org</email>  
-      <url>http://jroller.com/page/random7</url>  
-    </developer>      
-    <developer> 
-      <name>Evan Worley</name>  
-      <id>eworley</id>  
-      <email>eworley@apache.org</email>  
-    </developer>        
-    <!--Emeritus Committers-->
-  </developers>
-  <contributors>
-    <contributor>
-      <name>Wendy Smoak</name>
-      <email>wsmoak@apache.org</email>
-    </contributor>
-    <contributor>
-      <name>Lisa Malgeri</name>
-      <email>lisa_malgeri@yahoo.com</email>
-    </contributor>
-    <contributor>
-      <name>Julie McIntyre</name>
-      <email></email>
-    </contributor>
-    <contributor>
-      <name>Jevica Arianne B. Zurbano</name>
-      <email>jevica.arianne@gmail.com</email>
-    </contributor>
-  </contributors>  
-  <reporting> 
-    <plugins> 
-      <plugin> 
-        <artifactId>maven-javadoc-plugin</artifactId>  
-        <configuration> 
-          <aggregate>true</aggregate> 
-        </configuration> 
-      </plugin> 
-    </plugins> 
-  </reporting>
   
   <build>
     <plugins>
@@ -211,9 +82,9 @@
     </extensions>
   </build>
   <distributionManagement>
-      <site>
-          <id>npanday.site</id>
-          <url>scm:svn:https://npanday.svn.codeplex.com/svn/docs/${project.version}</url>
-      </site>
+    <site>
+      <id>npanday.site</id>
+      <url>scm:svn:https://npanday.svn.codeplex.com/svn/docs/${project.version}</url>
+    </site>
   </distributionManagement>
 </project>
