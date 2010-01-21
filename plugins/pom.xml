@@ -89,6 +89,18 @@ under the License.
         </configuration> 
       </plugin> 
     </plugins> 
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-scm</artifactId>
+        <version>1.0-beta-6</version>
+      </extension>
+      <extension>
+        <groupId>org.apache.maven.scm</groupId>
+        <artifactId>maven-scm-provider-svnexe</artifactId>
+        <version>1.1</version>
+      </extension>
+    </extensions>
   </build>  
   <reporting> 
     <plugins> 
@@ -107,7 +119,7 @@ under the License.
     <site> 
       <id>npanday.site</id>
       <name>NPanday Site</name>  
-      <url>${npanday.site.url}/docs/${project.version}/plugins</url>
+      <url>scm:svn:https://npanday.svn.codeplex.com/svn/docs/${project.version}/plugins</url>
     </site> 
   </distributionManagement>
 </project>
