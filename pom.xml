@@ -149,6 +149,7 @@ under the License.
           <tagBase>https://npanday.svn.codeplex.com/svn/releases/</tagBase>  
           <useReleaseProfile>false</useReleaseProfile>
           <goals>deploy</goals>  
+          <arguments>-Pnpanday-release</arguments>
           <preparationGoals>clean install</preparationGoals>  
           <autoVersionSubmodules>true</autoVersionSubmodules>
         </configuration>  
@@ -158,24 +159,6 @@ under the License.
         <configuration> 
           <aggregate>true</aggregate> 
         </configuration> 
-      </plugin>  
-      <plugin> 
-        <artifactId>maven-assembly-plugin</artifactId>  
-        <inherited>false</inherited>  
-        <configuration> 
-          <descriptor>src/assembly/src.xml</descriptor>  
-          <outputDirectory>target</outputDirectory> 
-          <finalName>npanday-${project.version}</finalName>
-        </configuration> 
-        <executions> 
-          <execution> 
-            <id>make-assembly</id>  
-            <phase>package</phase>  
-            <goals> 
-              <goal>single</goal> 
-            </goals> 
-          </execution> 
-        </executions> 
       </plugin>  
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>  
@@ -378,6 +361,31 @@ under the License.
       <modules>
         <module>npanday-it-runner</module>
       </modules>
+    </profile>
+    <profile>
+      <id>npanday-release</id>
+      <build>
+        <plugins> 
+          <plugin> 
+            <artifactId>maven-assembly-plugin</artifactId>  
+            <inherited>false</inherited>  
+            <configuration> 
+              <descriptor>src/assembly/src.xml</descriptor>  
+              <outputDirectory>target</outputDirectory> 
+              <finalName>npanday-${project.version}</finalName>
+            </configuration> 
+            <executions> 
+              <execution> 
+                <id>make-assembly</id>  
+                <phase>package</phase>  
+                <goals> 
+                  <goal>single</goal> 
+                </goals> 
+              </execution> 
+            </executions> 
+          </plugin>  
+        </plugins> 
+      </build>
     </profile>
   </profiles>
   <properties> 
