@@ -699,14 +699,25 @@ public final class ProjectDaoImpl
                                     + e.getMessage() + ", Path = " + pomArtifact.getFile().getAbsolutePath() );
                             }
 
-                            if ( !( model.getGroupId().equals( projectDependency.getGroupId() )
-                                && model.getArtifactId().equals( projectDependency.getArtifactId() ) && model.getVersion().equals(
+                            // small hack for not doing inheritence
+                            String g = model.getGroupId();
+                            if ( g == null )
+                            {
+                                g = model.getParent().getGroupId();
+                            }
+                            String v = model.getVersion();
+                            if ( v == null )
+                            {
+                                v = model.getParent().getVersion();
+                            }
+                            if ( !( g.equals( projectDependency.getGroupId() )
+                                && model.getArtifactId().equals( projectDependency.getArtifactId() ) && v.equals(
                                                                                                                                    projectDependency.getVersion() ) ) )
                             {
                                 throw new IOException(
                                                        "NPANDAY-180-017: Model parameters do not match project dependencies parameters: Model: "
-                                                           + model.getGroupId() + ":" + model.getArtifactId() + ":"
-                                                           + model.getVersion() + ", Project: "
+                                                           + g + ":" + model.getArtifactId() + ":"
+                                                           + v + ", Project: "
                                                            + projectDependency.getGroupId() + ":"
                                                            + projectDependency.getArtifactId() + ":"
                                                            + projectDependency.getVersion() );
