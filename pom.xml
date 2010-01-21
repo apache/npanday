@@ -165,7 +165,7 @@ under the License.
         <configuration> 
           <descriptor>src/assembly/src.xml</descriptor>  
           <outputDirectory>target</outputDirectory> 
-          <finalName>npanday</finalName>
+          <finalName>npanday-${project.version}</finalName>
         </configuration> 
         <executions> 
           <execution> 
