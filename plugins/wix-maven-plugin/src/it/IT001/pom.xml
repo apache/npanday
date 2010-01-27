@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>npanday.examples</groupId>
   <artifactId>IT001</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>NPanday WiX Plugin Integation Test 001</name>
   <description>
@@ -16,7 +16,7 @@
       <plugin>
         <groupId>npanday.plugin</groupId>
         <artifactId>wix-maven-plugin</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
         <configuration>
           <sourceFiles>
             <sourceFile>Sample.wxs</sourceFile>

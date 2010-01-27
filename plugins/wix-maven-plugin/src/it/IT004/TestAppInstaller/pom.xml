@@ -4,7 +4,7 @@
   <parent>
     <artifactId>IT004-parent</artifactId>
     <groupId>Npanday.examples</groupId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <relativePath>..\pom.xml</relativePath>
   </parent>
   <artifactId>TestAppInstaller</artifactId>
@@ -20,7 +20,7 @@
       <plugin>
         <groupId>npanday.plugin</groupId>
         <artifactId>wix-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
         <configuration>
           <sourceFiles>
             <sourceFile>IT004.wxs</sourceFile>
