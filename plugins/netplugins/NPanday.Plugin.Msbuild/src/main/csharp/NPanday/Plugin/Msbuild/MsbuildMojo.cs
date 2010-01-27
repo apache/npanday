@@ -53,10 +53,18 @@ namespace NPanday.Plugin.Msbuild
 			return this.GetType();
 		}
 
-        private void GenerateDependency(string projectName)
+        public override void Execute()
         {
+				if(mavenProject==null)
+				{
+					throw new Exception( "Maven project could not be found by the MSBuild plugin" );
+				}
+				else
+				{
+                Console.WriteLine("[INFO] Executing MsBuild Plugin");
             Directory.SetCurrentDirectory(mavenProject.build.sourceDirectory);
             
+            string projectName = mavenProject.artifactId;
             if (File.Exists(projectName + ".csproj"))
             {
                 projectName += ".csproj";
@@ -66,45 +74,15 @@ namespace NPanday.Plugin.Msbuild
                 projectName += ".vbproj";
             }
             ProcessStartInfo processStartInfo =
-               new ProcessStartInfo("msbuild", projectName);
-            processStartInfo.UseShellExecute = true;
-            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            System.Diagnostics.Process.Start(processStartInfo);
-
-        }
-
-		private void ExecuteMsBuild()
-		{
-            try
+               new ProcessStartInfo("msbuild", "/v:m " + projectName);
+            processStartInfo.UseShellExecute = false;
+            Process p = System.Diagnostics.Process.Start(processStartInfo);
+            p.WaitForExit();
+            if ( p.ExitCode != 0 )
             {
-                Console.WriteLine("[INFO] Executing MsBuild Plugin");
-                GenerateDependency(mavenProject.artifactId);
-                Console.WriteLine("[INFO] Successfully Executed MsBuild Plugin");
+                throw new Exception( "MSBuild exited with code: " + p.ExitCode );
             }
-            catch (Exception exe)
-            {
-                Console.WriteLine("[ERROR] Failed to Execute MsBuild \n"+exe.Message);
-            }
-		}
-
-
-        public override void Execute()
-        {
-            try
-            {
-				if(mavenProject==null)
-				{
-					Console.WriteLine("[ERROR] Project was not found by MsBuild Plugin");
 				}
-				else
-				{
-                    ExecuteMsBuild();        
-				}
-            }
-            catch (Exception exe)
-            {
-                Console.WriteLine(exe.Message);
-            }
         }
     }
 }

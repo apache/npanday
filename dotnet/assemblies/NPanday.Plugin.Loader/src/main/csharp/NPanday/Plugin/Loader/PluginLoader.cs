@@ -106,7 +106,14 @@ namespace NPanday.Plugin.Loader
 			                                                               assemblyFile, 
 			                                                               paramFile,
 			                                                               applicationDomain);
+                    try {
 			abstractMojo.Execute();
+                    }
+                    catch ( Exception e )
+                    {
+                        Console.WriteLine("Exception occcurred: " + e );
+                        return 1;
+                    }
             return 0;
 			
 		}
