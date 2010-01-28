@@ -55,6 +55,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPanday.Utils", "..\NPanday
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPanday.Model.Settings", "..\NPanday.Model.Settings\src\main\csharp\NPanday.Model.Settings.csproj", "{F905C7DA-9D1D-488D-9084-99D7969C2BDD}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,6 +104,10 @@ Global
 		{CAA4864F-F4C8-4024-8535-8B8C112307CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAA4864F-F4C8-4024-8535-8B8C112307CE}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{CAA4864F-F4C8-4024-8535-8B8C112307CE}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{F905C7DA-9D1D-488D-9084-99D7969C2BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F905C7DA-9D1D-488D-9084-99D7969C2BDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F905C7DA-9D1D-488D-9084-99D7969C2BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F905C7DA-9D1D-488D-9084-99D7969C2BDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
