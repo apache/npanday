@@ -33,6 +33,17 @@ namespace NPanday.Model.Setting
 {
     #region SettingsUtil
 
+    // helper class to ignore namespaces when de-serializing
+    public class NamespaceIgnorantXmlTextReader : XmlTextReader
+    {
+        public NamespaceIgnorantXmlTextReader(System.IO.TextReader reader) : base(reader) { }
+
+        public override string NamespaceURI
+        {
+            get { return ""; }
+        }
+    }
+
     public static class SettingsUtil
     {
         #region GetDefaultSettingsPath()
@@ -189,15 +200,13 @@ namespace NPanday.Model.Setting
                 throw new ArgumentNullException("fileInfo");
             }
 
-            XmlReader reader = null;
+            TextReader reader = null;
             try
             {
-                reader = XmlReader.Create(fileInfo.FullName);
+                reader = new System.IO.StreamReader(fileInfo.FullName);
                 XmlSerializer serializer = new XmlSerializer(typeof(Settings));
 
-                return (serializer.CanDeserialize(reader))
-                    ? (Settings)serializer.Deserialize(reader)
-                    : null;
+                return (Settings)serializer.Deserialize(new NamespaceIgnorantXmlTextReader(reader));
             }
             finally
             {

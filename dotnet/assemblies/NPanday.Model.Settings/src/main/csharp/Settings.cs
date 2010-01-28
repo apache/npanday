@@ -20,8 +20,8 @@ namespace NPanday.Model.Setting {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="")]
-    [System.Xml.Serialization.XmlRootAttribute("settings", Namespace="", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute()]
+    [System.Xml.Serialization.XmlRootAttribute("settings", IsNullable = false)]
     public partial class Settings {
         
         private string localRepositoryField;
