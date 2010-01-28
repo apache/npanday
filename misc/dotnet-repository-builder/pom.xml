@@ -32,6 +32,13 @@
     </dependency>
     <dependency>
       <groupId>npanday.model</groupId>
+      <artifactId>NPanday.Model.Pom</artifactId>
+      <version>${project.version}</version>
+      <type>library</type>
+      <classifier>4b435f4d76e2f0e6</classifier>
+    </dependency>
+    <dependency>
+      <groupId>npanday.model</groupId>
       <artifactId>NPanday.Model.AutomationExtensibility</artifactId>
       <version>${project.version}</version>
       <type>library</type>
@@ -41,6 +48,13 @@
       <artifactId>NPanday.Plugin</artifactId>
       <version>${project.version}</version>
       <type>library</type>
+    </dependency>
+    <dependency>
+      <groupId>npanday.plugin</groupId>
+      <artifactId>NPanday.Plugin</artifactId>
+      <version>${project.version}</version>
+      <type>library</type>
+      <classifier>4b435f4d76e2f0e6</classifier>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
