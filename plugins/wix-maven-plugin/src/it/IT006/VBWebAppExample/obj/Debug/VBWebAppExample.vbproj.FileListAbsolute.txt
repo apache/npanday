@@ -1,0 +1,12 @@
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\bin\VBWebAppExample.dll
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\bin\VBWebAppExample.pdb
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\bin\VBWebAppExample.xml
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\bin\VBAppDll.dll
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\bin\VBAppDll.pdb
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\bin\VBAppDll.xml
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\obj\Debug\ResolveAssemblyReference.cache
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\obj\Debug\VBWebAppExample.Resources.resources
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\obj\Debug\VBWebAppExample.vbproj.GenerateResource.Cache
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\obj\Debug\VBWebAppExample.dll
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\obj\Debug\VBWebAppExample.xml
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBWebAppExample\obj\Debug\VBWebAppExample.pdb

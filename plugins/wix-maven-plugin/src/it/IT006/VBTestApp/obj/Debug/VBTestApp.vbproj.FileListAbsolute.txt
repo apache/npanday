@@ -1,0 +1,14 @@
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\bin\Debug\VBTestApp.dll
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\bin\Debug\VBTestApp.pdb
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\bin\Debug\VBTestApp.xml
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\bin\Debug\NUnit.Framework.dll
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\bin\Debug\VBAppDll.dll
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\bin\Debug\VBAppDll.pdb
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\bin\Debug\VBAppDll.xml
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\bin\Debug\NUnit.Framework.xml
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\obj\Debug\ResolveAssemblyReference.cache
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\obj\Debug\VBTestApp.Resources.resources
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\obj\Debug\VBTestApp.vbproj.GenerateResource.Cache
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\obj\Debug\VBTestApp.dll
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\obj\Debug\VBTestApp.xml
+C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBTestApp\obj\Debug\VBTestApp.pdb
