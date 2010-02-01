@@ -33,7 +33,10 @@ namespace NPanday.Model.Setting
 {
     #region SettingsUtil
 
-    // helper class to ignore namespaces when de-serializing
+    // An XmlTextReader that overrides the namespaces to always be empty, effectively ignoring them when deserializing
+    // This avoids inconsistencies in Maven settings.xml files that sometimes include the namespace declaration and
+    // sometimes omit it
+    // See http://stackoverflow.com/questions/870293/can-i-make-xmlserializer-ignore-the-namespace-on-deserialization
     public class NamespaceIgnorantXmlTextReader : XmlTextReader
     {
         public NamespaceIgnorantXmlTextReader(System.IO.TextReader reader) : base(reader) { }
