@@ -1,0 +1,55 @@
+ -----
+ Available Plugins
+ -----
+ -----
+ -----
+
+Available Plugins
+
+The following plugins are shipped along with each NPanday release:
+
+ * {{{./maven-aspx-plugin}<<<aspx>>>}}
+
+ * {{{./maven-compile-plugin}<<<compile>>>}}
+
+ * {{{./maven-deploy-plugin}<<<deploy>>>}}
+
+ * {{{./maven-fxcop-plugin}<<<fxcop>>>}}
+
+ * {{{./maven-install-plugin}<<<install>>>}}
+
+ * {{{./maven-link-plugin}<<<link>>>}}
+
+ * {{{./maven-mojo-generator-plugin}<<<mojo-generator>>>}}
+
+ * {{{./maven-repository-plugin}<<<repository>>>}}
+
+ * {{{./maven-resgen-plugin}<<<resgen>>>}}
+
+ * {{{./maven-resolver-plugin}<<<resolver>>>}}
+
+ * {{{./maven-test-plugin}<<<test>>>}}
+
+ * {{{./maven-vsinstaller-plugin}<<<vsinstaller>>>}}
+
+ * {{{./maven-webapp-plugin}<<<webapp>>>}}
+
+ * {{{./wix-maven-plugin}<<<wix>>>}}
+
+ * {{{./maven-wsdl-plugin}<<<wsdl>>>}}
+
+ * {{{./maven-xsd-plugin}<<<xsd>>>}}
+
+ * {{{./maven-xsp-plugin}<<<xsp>>>}}
+
+ * NPanday.Plugin.Addin.JavaBinding
+
+ * NPanday.Plugin.Devenv.JavaBinding
+
+ * NPanday.Plugin.Msbuild.JavaBinding
+
+ * NPanday.Plugin.Settings.JavaBinding
+
+ * NPanday.Plugin.SysRef.JavaBinding
+
+~~ TODO:  docs for plugins in the 'netplugins' subdirectory?
