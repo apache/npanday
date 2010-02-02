@@ -12,7 +12,7 @@
   <name>Npanday.examples : WixMSI</name>
   <description>
     Simple integration test to execute candle on a sample .wxs file.
-    Based on tutorial at http://www.tramontana.co.hu/wix/
+    Based on tutorial at http://www.tramontana.co.hu/wix/ 
   </description>
   <build>
     <sourceDirectory>./</sourceDirectory>
