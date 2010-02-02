@@ -9,7 +9,8 @@
   </parent>
   <artifactId>npanday-site</artifactId>
   <packaging>pom</packaging>
-  <name>NPanday :: Site</name>
+  <name>NPanday</name>
+  <url>http://www.npanday.org/docs/${project.version}</url>
   
   <scm> 
     <url>https://npanday.svn.codeplex.com/svn/trunk</url>  

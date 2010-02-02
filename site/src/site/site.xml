@@ -1,10 +1,14 @@
 <project name="NPanday">
   <bannerRight>
+    <name>CodePlex</name>
     <src>./images/logo-home.png</src>
+    <href>http://www.codeplex.com/</href>
   </bannerRight>
   
   <bannerLeft>
-    <src>.</src>
+    <name>NPanday</name>
+    <src>./images/NPanday.png</src>
+    <href>/</href>
   </bannerLeft>
 
   <body>
