@@ -15,6 +15,11 @@ Project Dependencies
   A remote repository must be configured before attempting to use this feature. Please see the
   {{{./configureRepository.html} Remote Repository}} section for instructions.
 
+  <<Note>>: Adding dependencies should be done using Visual Studio while manually adding is not recommended. At this
+  time, the Visual Studio add-in will not detect changes to the Maven dependencies and add them to your Visual Studio
+  project. If you manually add a dependency and re-import the project in Visual Studio, the recently added dependencies
+  are deleted from the <<<pom.xml>>> file.
+
 * Adding Maven Artifacts
 
   Adding a Maven artifact allows you to refer to a DLL or other dependency that may not yet be installed on the local

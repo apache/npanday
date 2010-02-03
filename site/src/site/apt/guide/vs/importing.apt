@@ -168,4 +168,4 @@ Importing Projects
 
   This section has described how to import a project, and the nuances of various different supported project types.
 
-  You can now read on about {{{./test.html} working with unit tests}}, or go back to the {{{./index.html} index}}.
+  You can now read on about {{{./executeGoals.html} executing Maven goals}}, or go back to the {{{./index.html} index}}.

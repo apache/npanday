@@ -5,7 +5,7 @@
  25 Feb 2009
  ------
 
-~~TODO move to VS directory
+~~TODO move to Maven directory
 
 Project Dependencies
 
@@ -13,11 +13,6 @@ Project Dependencies
   make sure that the library to be loaded does not have conflicting instance(s) and/or is not yet loaded in the .NET 
   Framework.
   
-  <<Note>>: Adding dependencies should be done using Visual Studio while manually adding is not recommended. At this
-  time, the Visual Studio add-in will not detect changes to the Maven dependencies and add them to your Visual Studio
-  project. If you manually add a dependency and re-import the project in Visual Studio, the recently added dependencies
-  are deleted from the <<<pom.xml>>> file.
-
   Dependency Types:
 
   * normal - Local repository content artifacts that are added as dependencies.

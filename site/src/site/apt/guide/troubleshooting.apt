@@ -86,3 +86,12 @@ C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin
 
   <<Note>>: To successfully install the NPanday add-in on machines with only Visual Studio 2008 installed, add this in 
   the PATH: <<<C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A\bin>>>.
+
+* Clearing the Visual Studio Add-in Cache
+
+  If you want to clear Visual Studio's cache of any previous versions of the tool before you start Visual Studio, run
+  the following command:
+
+----
+devenv /ResetAddin NPanday.VisualStudio.Addin
+----

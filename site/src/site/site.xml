@@ -32,7 +32,6 @@
       <item name="NPanday Plugins" href="/plugins/index.html"/>
     </menu>
     <menu name="Getting Started" collapse="true">
-      <item name="Using the Build Tool" href="/guide/build_tool.html"/>
       <item name="Project Dependencies" href="/guide/dependencies.html"/>
       <item name="Installing Files Manually" href="/guide/install_file.html"/>
       <item name="Creating a Simple Project" href="/guide/simple_project.html"/>
@@ -40,7 +39,6 @@
 	  <item name="Portability" href="/guide/portability.html"/>
     </menu>
     <menu name="IDE Integration" collapse="true">
-      <item name="Executing Maven Goals" href="/ide/execute_goals.html"/>
       <item name="Setting Assembly Key" href="/ide/assembly_key.html"/>
       <item name="Remote Repository" href="/ide/remote_repo.html"/>
       <item name="Using Custom Settings" href="/ide/settings.html"/>

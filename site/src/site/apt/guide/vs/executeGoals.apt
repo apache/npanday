@@ -1,0 +1,214 @@
+ ------
+ Executing Maven Goals
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Executing Maven Goals
+
+  As we learned in the quick-start tutorial, it is possible to run Maven goals from within Visual Studio using NPanday.
+  This section explores the concept of the build lifecycle in more detail.
+
+* Compile
+
+  In the Solution Explorer, right-click on the name of the project you want to compile, then select
+  <<<Current NPanday Project \> Build>>> to build the selected project. Or, <<<All NPanday Projects \> Build>>> to build
+  the parent and its sub-projects.
+  
+  <Note:> In some circumstances, Maven is currently unable to build (compile) without installing the project first. As a
+  workaround, execute <<<All NPanday Projects \> Install>>> first before <<<All NPanday Projects \> Build [compile]>>>.
+
+  For projects with dependencies from remote repositories, the build might fail. As a workaround, re-import the project
+  then, execute the build goal (<<<Current\ NPanday\ Project\ \>\ Build>>> or <<<All\ NPanday\ Projects\ \>\ Build>>>).
+  
+  For projects with web references, a dialog box is prompted for updating the Web Services Description Language
+  (<<<wsdl>>>). Click Yes to continue with the update, or, No to skip updating.
+
+[../../images/vs/webservice_update.jpg]
+
+  The NPanday .NET Build Tool performs the compile on the project and sends corresponding information to the Output
+  window (including a message saying the build was successful). You can scroll up and down in the output window to
+  display all the text.
+  
+  You can also execute the normal Visual Studio build on your projects. To invoke Maven to perform
+  <<<build>>>/<<<install>>>/<<<test>>>/<<<clean>>>, you must select the option from the All NPanday Projects or Current
+  NPanday Project sub-menu.
+  
+  When compiling a web application project, the NPanday .NET Build Tool performs an extra step by calling the
+  <<<Aspnet_compiler>>> to validate the ASP section of the project. The Build Tool performs this step right after
+  calling the CSharp compiler and Visual Basic compiler.
+  
+* Test
+
+  To use the NPanday .NET Build Tool to test a Project:
+  
+      [[1]] From the Solution Explorer, right-click on the name of the project you want to test, then select
+      <<<Current NPanday Project \> Test>>> to perform the test to the selected project. Or,
+      <<<All NPanday Projects \> Test>>> to perform the test to the parent project and its sub-projects.
+
+      [[2]] The NPanday .NET Build Tool performs the tests on the project and sends corresponding information to the
+      Output window (including a message saying the build was successful). You can scroll up and down in the output
+      window to display all the text.
+
+      []
+  
+  <<Note>>: When the test goal output result is not refreshed for C# test project, the project should be reimported, and
+  the value of the test should also be changed. Then, perform <<<Current\ Project:\ Test>>> (or,
+  <<<All NPanday Projects \> Test>>>).
+  
+* Install
+
+  From the Solution Explorer, right-click on the name of the project you want to build, then select Current NPanday
+  Project > Install to install the selected project. Or, All NPanday Projects > Install to install the parent project
+  and its sub-projects.
+  
+  The NPanday .NET Build Tool installs the artifacts into your local repository. For web projects with POM as packaging,
+  the <<<target>>> directory is not created and only the parent <<<pom.xml>>> is put in the local repository which is
+  the default behavior.
+  
+  For web application projects, the project zip file is produced during this phase, specifically during the
+  <<<package>>> phase.
+  
+  Corresponding information is sent to the Output window (including a message saying the build was successful).
+  You can scroll up and down in the output window to display all the text.
+  
+  Next, verify the artifacts were placed into the .NET local repository under the following path:
+  <<< C:\\Documents and Settings\\[user_home]\\.m2\\uac\\[gac_architecture]\\artifactId\Version__GroupId >>>
+  
+  For example:
+  <<< C:\\Documents and Settings\\[user_home]\\.m2\\uac\\gac_msil\\NPanday.Test\\1.0__NPanday >>>
+  
+  The following explains what each element in the path means:
+
+      * <<<[user_home]>>> The user's home directory.
+
+      * <<<gac_architecture>>> The architecture type such as <<<gac_msil>>>, <<<gac_32>>>, etc.
+
+      * <<<artifactId>>> This is similar to the Maven <<<artifactId>>>. It is equivalent to the project's module name.
+      In the example above, the artifactId is <<<NPanday.Test>>>.
+
+      * <<<Version__GroupId>>> The version of the artifact and the group it is in.
+      In the example above the version is <<<1.0>>> and the GroupId is <<<NPanday>>>.
+
+      []
+  
+  The contents in C:\\Documents and Settings\\[user_home]\\.m2\\uac\\gac_msil SHOULD NOT be manually modified or the
+  project build will fail due to artifacts that are not properly indexed and are not synchronized with the repository.
+  In case the contents have been modified, delete the C:\\Documents and Settings\\[user_home]\\.m2\\uac directory then
+  re-install the project.
+  
+  Finally, Verify that the following are also created under the following paths:
+  
+      * <<<C:\\Documents and Settings\\[user_home]\\.m2\\pab>>>
+
+      * <<<C:\\Documents and Settings\\[user_home]\\.m2\\npanday-settings.xml>>>
+
+      []
+  
+  Contents of npanday-settings.xml looks similar to the following:
+  
++------+
+  <?xml version="1.0" encoding="utf-8"?>
+  <npandaySettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <operatingSystem>
+      Microsoft Windows NT 5.1.2600 Service Pack 2
+    </operatingSystem>
+    <defaultSetup>
+      <vendorName>MICROSOFT</vendorName>
+      <vendorVersion>2.0.50727</vendorVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </defaultSetup>
+    <vendors>
+      <vendor>
+        <vendorName>MICROSOFT</vendorName>
+        <vendorVersion>1.1.4322</vendorVersion>
+        <frameworks>
+          <framework>
+          <frameworkVersion>1.1.4322</frameworkVersion>
+            <installRoot>
+              C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322
+            </installRoot>
+          </framework>
+        </frameworks>
+      </vendor>
+      <vendor>
+        <vendorName>MICROSOFT</vendorName>
+        <vendorVersion>2.0.50727</vendorVersion>
+        <frameworks>
+          <framework>
+          <frameworkVersion>2.0.50727</frameworkVersion>
+            <installRoot>
+              C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727
+            </installRoot>
+            <sdkInstallRoot>
+              C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\
+            </sdkInstallRoot>
+          </framework>
+        </frameworks>
+      </vendor>
+    </vendors>
+  </npandaySettings>
++------+
+
+* Clean
+
+  To use the NPanday .NET Build Tool to clean a project (removes the <<<target\\ >>> directory containing the files that
+  were generated at build-time from the project's working directory):
+
+      [[1]] From the Solution Explorer, right-click on the name of the project you want to clean, then select Current
+            NPanday Project > Clean to clean the selected project. Or, All NPanday Projects > Clean to perform the clean
+            goal to the parent project and its sub-projects.
+
+      [[2]] The NPanday .NET Build Tool performs the clean on the project and sends corresponding information to the
+            Output window (including a message saying the build was successful). You can scroll up and down in the
+            output window to display all the text.
+
+      []
+
+* NPanday's Maven Phase Algorithm
+
+  Algorithm that differs the Visual Studio Execution from Console Command.
+  
+  [[1]] All Project - Is triggered when the user right click in the solution explorer and select
+       <<<All NPanday Projects \> Build>>> or <<<All NPanday Projects \> Clean>>> or <<<All NPanday Projects \> Test>>>
+       or All NPanday Projects \> Install>>>
+
+        [[A]] Save All Documents that are open in Visual Studio.
+
+        [[B]] Retrieve the solution that is open in Visual Studio.
+
+        [[C]] Loop through all the projects in the solution.
+
+        [[D]] Check if it has a Web Reference, if it has it will update the Web Reference.
+
+        [[E]] Execute the pom.xml of the solution may it be Build/Clean/Test/Install.
+
+        []
+
+
+  [[2]] Current Project - Is Triggered when the user right click in the solution explorer and select
+        <<<Current NPanday Project \> Build>>> or <<<Current NPanday Project \> Clean>>> or
+        <<<Current NPanday Project \> Test>>> or <<<Current NPanday Project \> Install>>>
+
+        [[A]] Save All Documents that are open in Visual Studio.
+
+        [[B]] Retrieve CURRENT pom.xml and CURRENT project.
+        
+              [[a]] If pom.xml does not exist, set errorMsg to "Pom Not Found" Error.
+              
+              [[b]] If the packaging in the pom.xml is "pom", set errorMsg to "Pom may not be Project's Pom" Error.
+              
+              []
+              
+        [[C]] Check if it has a Web Reference, if it has it will update the Web Reference.
+        
+        [[D]] Execute the pom.xml of the solution may it be Build/Clean/Test/Install.
+        
+        []
+        
+  []
+
+* Summary
+
+  Continue on to , or return to the {{{./index.html} index}}.

@@ -22,6 +22,8 @@ Using the NPanday Visual Studio Add-in
 
 * Contents
 
+~~ TODO: add testing?
+
   * {{{./quickstart.html} Quick Start Guide}} - starting a new project and making it buildable by Maven
 
   * {{{./references.html} Working with references}} - how adding references impacts the project, and how it works with
@@ -32,7 +34,8 @@ Using the NPanday Visual Studio Add-in
   * {{{./importing.html} Creating Maven POM's from Visual Studio projects}} - more detail on the import process covered
     in the quick start guide, including different project types supported
 
-  * {{{./test.html} Unit testing}} - how to work with unit tests (using NUnit) in NPanday
+  * {{{./executeGoals.html} Executing Maven Goals}} - more detail on the integration of the Maven lifecycle with
+    Visual Studio by the NPanday Add-in
 
   * ~~TODO ...?
 
