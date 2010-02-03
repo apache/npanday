@@ -1,0 +1,74 @@
+ ------
+ Remote Repository Configuration
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Remote Repository Configuration
+
+  A remote Maven repository can be configured using the Visual Studio IDE or it can be configured manually by adding
+  information to the Maven settings file.
+  
+* Automatically Configure a Remote Maven Repository via the IDE
+
+  To access a remote Maven repository you can configure it from within Visual Studio. Visual Studio must be open,
+  the NPanday Build System must be running, and you must have a project loaded. Then:
+  
+      [[1]] Right-click on a project and select Add Maven Artifact... from the menu.
+
+      [[2]] In the Add Maven Artifact pop-up window, click the Configure Repository tab.
+
+      [[3]] Select the URL of the repository in the pop-up window.
+
+      [[4]] If the remote repository allows snapshots or released artifacts to be stored there, then check the
+            appropriate box.
+
+      [[5]] Click Update. This will save the configuration to
+            <<<C:\\Documents and Settings\\[user_home]\\.m2\\settings.xml>>>. To edit multiple repositories, repeat
+            steps 3 to 5 by selecting another repository to be configured form the drop down list.
+
+      [[6]] Click Close when done configuring the repository.
+
+      []
+
+[../../images/vs/remote_repo.jpg] Sample configuration for Remote Repository
+
+  <<NOTE:>> The repository is stored in a profile NPanday.id this profile is then added into the activeProfiles list in
+  <<<settings.xml>>> as soon as an NPanday remote repository is added. 
+ 
+* Manually Configure a Remote Maven Repository
+
+  To manually add a remote repository, add the following lines in your
+  <<<C:\\Documents and Settings\\[user_home]\\.m2\\settings.xml>>> file within the <<< \<profiles\> >>>
+  <<< \</profiles\> >>> tag.  Modify the values for the <<< \<repository\> >>> and <<< \<id\> >>>elements
+  with the repository url you want to access.
+
++------+
+<profile>
+  <activation>
+    <activeByDefault>true</activeByDefault>
+  </activation>
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>http://repo1.maven.org/maven2/</id>
+      <url>http://repo1.maven.org/maven2/</url>
+    </repository>
+  </repositories>
+  <id>NPanday.id</id>
+</profile>
++------+
+
+  You should change the values of <<<enabled>>> for each of the artifact types, dependencing on whether the
+  repository contains that type of version.
+
+* Summary
+
+  The next configuration options are the {{{./settings.html} Maven settings}} themselves. You can also return to the
+  {{{./index.html} index}}.

@@ -45,7 +45,7 @@ Using the NPanday Visual Studio Add-in
   * {{{./configureRepository.html} Configuring a Remote Repository}} - the steps necessary to have a remote repository
     for downloading Maven artifacts from
 
-  * ~~TODO configuration
+  * {{{./settings.html} Maven settings}} - how to configure an alternate Maven settings file
 
   * ~~TODO MAVEN
 
