@@ -55,5 +55,5 @@ Web References
   <<<pom.xml>>> changes handled by NPanday behind the scenes. You may, out of interest, want to review the POM after
   the addition of a web reference.
 
-  In the next section we revisit {{{./importing.html} importing a project into Maven}}. Other topics are available on
-  the {{{./index.html} index}}.
+  Having understood references, the next topic is maintaining them across different checkouts in the document
+  {{{./resyncReferences.html} making project files portable}}. You can also return to the {{{./index.html} index}}.

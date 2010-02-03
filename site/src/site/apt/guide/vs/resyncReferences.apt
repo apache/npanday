@@ -5,8 +5,6 @@
  22 April 2009
  ------
 
-~~TODO  move to VS section
-
 Making VS Project Files Portable
 
    To be able to make VS project files portable, NPanday 1.1 provides the Resync References functionality.
@@ -20,3 +18,6 @@ Making VS Project Files Portable
    Intra-project references are skipped on Resync. Since this behavior was just applied recently in Version 1.0.2,
    old POMs with intra-project references might generate an error during Resync or Import. To fix this, remove the
    reference and add it back again. Or simply delete the POM and re-import the project.
+
+   In the next section we revisit {{{./importing.html} importing a project into Maven}}. Other topics are available on
+   the {{{./index.html} index}}.

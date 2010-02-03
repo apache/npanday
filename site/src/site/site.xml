@@ -35,7 +35,6 @@
       <item name="Project Dependencies" href="/guide/dependencies.html"/>
       <item name="Installing Files Manually" href="/guide/install_file.html"/>
       <item name="Creating a Simple Project" href="/guide/simple_project.html"/>
-	  <item name="Portability" href="/guide/portability.html"/>
     </menu>
     <menu name="IDE Integration" collapse="true">
       <item name="Setting Assembly Key" href="/ide/assembly_key.html"/>

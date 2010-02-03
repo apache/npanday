@@ -31,6 +31,9 @@ Using the NPanday Visual Studio Add-in
 
   * {{{./webReferences.html} Working with web references}} - how web references in a web application work with NPanday
 
+  * {{{./resyncReferences.html} Keeping references in sync}} - how to ensure project files are portable and references
+    are always available
+
   * {{{./importing.html} Creating Maven POM's from Visual Studio projects}} - more detail on the import process covered
     in the quick start guide, including different project types supported
 
