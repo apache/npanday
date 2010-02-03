@@ -40,12 +40,12 @@ Using the NPanday Visual Studio Add-in
   * {{{./executeGoals.html} Executing Maven Goals}} - more detail on the integration of the Maven lifecycle with
     Visual Studio by the NPanday Add-in
 
-  * ~~TODO ...?
-
-  * ~~TODO configuration
+  * {{{./assemblyKey.html} Setting the Assembly Key}} - how to set a strong name on your build using NPanday 
 
   * {{{./configureRepository.html} Configuring a Remote Repository}} - the steps necessary to have a remote repository
     for downloading Maven artifacts from
+
+  * ~~TODO configuration
 
   * ~~TODO MAVEN
 

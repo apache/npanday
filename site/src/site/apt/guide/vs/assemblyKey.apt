@@ -1,0 +1,32 @@
+ ------
+ Setting Assembly Keys
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Setting Assembly Keys
+
+  Assembly keys are used to uniquely identify the project to be installed in the Global Assembly Cache or also referred to as GAC.
+  
+  To set an assembly key to a project, generate a strong name key by running the command
+
+----
+sn -k [filename] .snk
+----
+  
+  Right click on the project and select <Set NPanday Compile Sign Assembly Key...>
+
+[../../images/vs/assembly_key.jpg]
+  
+  Put the strong name key that was generated in the Assembly Sign Key field.
+
+[../../images/vs/set_assembly_key.jpg] Setting assembly sign key
+
+* Summary
+
+  We have now covered much of the functionality of NPanday Visual Studio Add-in. In subsequent sections of the guide,
+  we will examine the available configuration options.
+
+  The next topic is {{{./configureRepository.html} Configuring the remote repository}}, or you can return to the
+  {{{./index.html} index}}.
