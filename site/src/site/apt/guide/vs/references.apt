@@ -1,0 +1,143 @@
+ ------
+ Project Dependencies
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+~~TODO convert to example style with a working example like NUnit, rather than this reference style (or perhaps put that in the QS guide?)
+
+Project Dependencies
+
+  This feature allows the Visual Studio user to browse managed repositories and add and delete Maven dependencies to and
+  from the repositories from within the Visual Studio IDE.
+
+  A remote repository must be configured before attempting to use this feature. Please see the
+  {{{./configureRepository.html} Remote Repository}} section for instructions.
+
+* Adding Maven Artifacts
+
+  Adding a Maven artifact allows you to refer to a DLL or other dependency that may not yet be installed on the local
+  machine. This is done by consulting a Maven <remote repository> for available dependencies, and adding a reference
+  to the Maven <<<pom.xml>>>.
+
+  When adding an artifact dependency into a web site project, there will be no changes in the <<<pom.xml>>>. This is
+  because the artifacts are put directly into the project's <<<bin\\>>> directory (one is created when this is missing),
+  thus, <<< \<dependencies\> >>> in the <<<pom.xml>>> is not needed.
+
+  To add an artifact:
+
+      [[1]] Right-click on a project and select Add Maven Artifact... from the menu.
+
+      [[2]] In the Add Maven Artifact pop-up window there are tabs for each repository you have configured.
+      Click the tab for the repository in which the desired artifact is located.
+
+      [[3]] Scroll to select the desired artifact (must be a <<<DLL>>> file, not a <<<JAR>>> nor an <<<OCX>>> file):
+
+      [[4]] Click Add to add the selected artifact and exit the form. Or, double click on the artifact to be added.
+            Repeat this step to add multiple artifacts. Then, click Close to exit the form.
+
+      []
+
+[../../images/vs/add_artifact.jpg] Add Maven Artifact screen
+
+  The artifacts will be added as a reference to the project and added as a dependency in the POM file. It is
+  also downloaded to the <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac>>> directory.
+
+** COM References
+
+  When attempting to add an <<<.ocx>>> file into the repository, a warning message similar to the following will be
+  displayed:
+
+[../../images/vs/com_reference.jpg] COM reference error message
+
+  See below for adding COM references directly.
+
+* Adding References
+
+  You can also add traditional references to the project and have NPanday translate them into Maven dependencies.
+
+  To add references to the project:
+
+  [[1]] Right click on the project that you want to add a reference to.
+
+  [[2]] Select Add Reference... from the menu list.
+
+  [[3]] Select the tab to which the reference belongs (<<.NET>>, <<COM>>, <<Projects>>). Or, Browse to look for the
+        specific artifact to be reference and Recent for artifacts recently accessed.
+
+  [[4]] Select the references to be added from the list as shown in the figure above. Scroll to select the desired object reference.
+
+  [[5]] Click OK.
+
+  []
+
+[../../images/vs/references_list.jpg] Sample display of list of references
+
+  NPanday will take care of adding the reference to the Maven POM automatically. In most cases this will also be made
+  available on any other system building from the Maven project. In the case of an inter-project dependency, it will
+  rely on the project being built on the target machine before the project that has the dependency on it - but all that
+  is needed here is to build the whole solution as Maven will then take care of the correct ordering.
+
+  However, some references are non-portable when they are added.
+
+** Non-portable References
+
+  When adding a COM reference, the actual reference (DLL) is copied to <<<C:\\WINDOWS\\assembly\\GAC_MSIL>>>.
+  Wherein, the path to the reference found in this directory is used as the reference's <<< \<systemPath\> >>> in the
+  <<<pom.xml>>>. References such as this rely on the given DLL being available at the same location on each machine.
+
+  When adding an artifact reference that is not installed in the system, NPanday will prompt a warning
+  message then adds the reference in the <<<pom.xml>>> as a system scope dependency.
+
+[../../images/vs/dependency_error.jpg] Reference not installed in the system
+
+  However, the above warning message is not displayed for web site projects even if the artifact reference to be added
+  is not installed in the system. This is because the artifact references for web projects are directly added in the project's
+  <<<bin\\>>> directory (one is created when this is missing), thus, no need to add it in the <<<pom.xml>>>.
+  
+  The following POM snippet shows a system dependency:
+  
++------+
+  <dependency>
+    <groupId>artifact_group_id</groupId>
+    <artifactId>my.lib</artifactId>
+    <version>2.2</version>
+    <type>library</type>
+    <scope>system</scope>
+    <systemPath>C:\path\to\your\library.dll</systemPath>
+  </dependency>
++------+
+
+* Removing Artifacts and References
+
+  The Remove Artifact feature removes the artifact as a reference to the project and as a dependency in the POM file.
+
+  To remove an artifact, you can select the artifacts to remove and click the Delete key. This works for both Visual
+  Basic and C# projects.
+
+  Alternatively, to remove Visual Basic project artifact:
+
+      [[1]] Right-click on a project and select Properties from the menu.
+
+      [[2]] Click on the References tab, and select the desired artifact.
+
+      [[3]] Click Remove.
+
+      []
+
+  Alternatively, to remove C# project artifact:
+
+      [[1]] Inside the project, browse through the References folder.
+
+      [[2]] Right click on the desired artifact and select Remove.
+    
+      []
+
+* Summary
+
+  This has covered all options for adding one of Maven's most powerful features - dependency resolution - to your
+  .NET projects by using NPanday.
+
+  In the next section we revisit {{{./importing.html} importing a project into Maven}}. Other topics are available on
+  the {{{./index.html} index}}.

@@ -27,6 +27,9 @@ Using the NPanday Visual Studio Add-in
   * {{{./references.html} Working with references}} - how adding references impacts the project, and how it works with
     Maven depedencies
 
+  * {{{./importing.html} Creating Maven POM's from Visual Studio projects}} - more detail on the import process covered
+    in the quick start guide
+
   * ~~TODO ...?
 
   * {{{./project-types.html} Working with specific project types}} - how to work with different project types such as
@@ -35,6 +38,9 @@ Using the NPanday Visual Studio Add-in
   * ~~TODO ...?
 
   * ~~TODO configuration
+
+  * {{{./configureRepository.html} Configuring a Remote Repository}} - the steps necessary to have a remote repository
+    for downloading Maven artifacts from
 
   * ~~TODO MAVEN
 
