@@ -44,8 +44,6 @@
       <item name="Setting Assembly Key" href="/ide/assembly_key.html"/>
       <item name="Remote Repository" href="/ide/remote_repo.html"/>
       <item name="Using Custom Settings" href="/ide/settings.html"/>
-      <item name="Importing Projects" href="/ide/importing.html"/>
-      <item name="Web References" href="/ide/web_references.html"/>
       <item name="Releasing Project" href="/ide/release.html" collapse="true">
 				<item name="Using Command Line" href="/ide/commandline.html"/>
 				<item name="Using Build Management" href="/ide/continuum.html"/>

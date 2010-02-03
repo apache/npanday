@@ -1,0 +1,59 @@
+ ------
+ Web References
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Web References
+
+  Web references are artifacts that refer to the web service. These are usually in web format.
+  
+  The following procedures in adding, renaming, and deleting web references assumes that the project in which the web
+  references will be added, renamed, or deleted has an existing <<<pom.xml>>> file from a previous import. Executing the
+  following procedures will also make changes to the <<<pom.xml>>> file of the project.
+
+  Luckily these procedures are identical to normal Visual Studio development.
+
+* Adding Web References
+
+      [[1]] Right click on the project that you want to add a web reference to.
+
+      [[2]] Select Add Web Reference... from the menu list.
+
+      [[3]] Select the web service you want to add, or you can choose to type the URL.
+
+      [[4]] Supply a Name for the reference. This will be used to call the reference later in your code.
+
+      []
+
+[../../images/vs/web-reference.png]
+
+* Renaming Web References
+
+      [[1]] Right click on the web reference of the project application that you want to rename. Or, right click on the folder containing the
+      wsdl file of the web service of the web project that you want to rename.
+
+      [[2]] Select Rename.
+
+      [[3]] Supply the new Name for the reference. This will be used to call the reference later in your code.
+
+      []
+
+* Removing Web References
+
+      [[1]] Right click on the web reference of the project application that you want to delete. Or, right click on the folder where
+      the wsdl file of the web service of the web project that you want to delete.
+
+      [[2]] Select Delete.
+
+      []
+
+* Summary
+
+  As you can see, working with web references is very familiar - all of the procedures are the same, with the
+  <<<pom.xml>>> changes handled by NPanday behind the scenes. You may, out of interest, want to review the POM after
+  the addition of a web reference.
+
+  In the next section we revisit {{{./importing.html} importing a project into Maven}}. Other topics are available on
+  the {{{./index.html} index}}.

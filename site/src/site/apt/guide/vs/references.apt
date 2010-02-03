@@ -139,5 +139,8 @@ Project Dependencies
   This has covered all options for adding one of Maven's most powerful features - dependency resolution - to your
   .NET projects by using NPanday.
 
+  The next section continues with {{{./webReferences.html} web references}}. You can also go back to the
+  {{{./index.html} index}}.
+
   In the next section we revisit {{{./importing.html} importing a project into Maven}}. Other topics are available on
   the {{{./index.html} index}}.

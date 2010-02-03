@@ -48,11 +48,12 @@ Quick Start Guide
 
 [../../images/vs/import-dialog.png]
 
-  We'll look at this in more detail shortly, but for now accept the default settings. NPanday will inform you that it
-  has created two <<<pom.xml>>> files: one for the solution, and one for the class library project. These files won't
-  appear in the Solution Explorer - NPanday keeps them hidden as they don't need to be modified directly. However, they
-  should be checked into your source control system to ensure that they can be used by other developers and the
-  shared build infrastructure. In the next section we will take a closer look at the POM files.
+  We'll look at this in more detail shortly, but for now accept the default settings, and do likewise on the next dialog
+  asking about test projects. Finally, NPanday will inform you that it has created two <<<pom.xml>>> files: one for the
+  solution, and one for the class library project. These files won't appear in the Solution Explorer - NPanday keeps
+  them hidden as they don't need to be modified directly. However, they should be checked into your source control
+  system to ensure that they can be used by other developers and the shared build infrastructure. In the next section we
+  will take a closer look at the POM files.
 
 ** About the POM file
 

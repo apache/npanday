@@ -27,13 +27,12 @@ Using the NPanday Visual Studio Add-in
   * {{{./references.html} Working with references}} - how adding references impacts the project, and how it works with
     Maven depedencies
 
+  * {{{./webReferences.html} Working with web references}} - how web references in a web application work with NPanday
+
   * {{{./importing.html} Creating Maven POM's from Visual Studio projects}} - more detail on the import process covered
-    in the quick start guide
+    in the quick start guide, including different project types supported
 
-  * ~~TODO ...?
-
-  * {{{./project-types.html} Working with specific project types}} - how to work with different project types such as
-    Web site projects.
+  * {{{./test.html} Unit testing}} - how to work with unit tests (using NUnit) in NPanday
 
   * ~~TODO ...?
 
