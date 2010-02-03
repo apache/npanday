@@ -5,10 +5,18 @@
  22 April 2009
  ------
 
+~~TODO  move to VS section
+
 Making VS Project Files Portable
 
-   To be able to make VS project files portable, NPanday 1.1 provides the Resync References functionality. This will synchronize the references so that the project will still run in other user's machine. Added references will be stored in hidden folder named ".references". When the project is used in other user's machine, the Resync References functionality will download and store the references in the ".references" folder.
+   To be able to make VS project files portable, NPanday 1.1 provides the Resync References functionality.
+   This will synchronize the references so that the project will still run in other user's machine. Added references
+   will be stored in hidden folder named ".references". When the project is used in other user's machine, the Resync
+   References functionality will download and store the references in the ".references" folder.
 
-   To use Resync References button, right click on the project and go to 'All NPanday Projects' or 'Current NPanday Project' in the context menu and select 'Resync References'.
+   To use Resync References button, right click on the project and go to 'All NPanday Projects' or 'Current NPanday
+   Project' in the context menu and select 'Resync References'.
 
-   Intra-project references are skipped on Resync. Since this behavior was just applied recently in Version 1.0.2, old POMs with intra-project references might generate an error during Resync or Import. To fix this, remove the reference and add it back again. Or simply delete the POM and re-import the project.
+   Intra-project references are skipped on Resync. Since this behavior was just applied recently in Version 1.0.2,
+   old POMs with intra-project references might generate an error during Resync or Import. To fix this, remove the
+   reference and add it back again. Or simply delete the POM and re-import the project.

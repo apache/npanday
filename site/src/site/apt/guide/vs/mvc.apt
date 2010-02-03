@@ -1,0 +1,16 @@
+ ----
+ ASP.NET MVC Projects
+ ----
+ ----
+ 3 February 2010
+ ----
+
+ASP.NET MVC Projects
+
+  As of NPanday 1.1, MVC projects are not support for import as Maven projects from the Visual Studio Add-in.
+  However, in some situations they may be incorrectly imported as a normal C# or VB project.
+
+  To avoid this problem, make sure you have installed ASP.NET MVC Release Candidate 2 which can be obtained from
+  {{http://www.microsoft.com/downloads/details.aspx?FamilyID=ee4b2e97-8a72-449a-82d2-2f720d421031&displaylang=en}}.
+
+  This must be installed to skip the unsupported project types and be able to get the correct project type GUID.

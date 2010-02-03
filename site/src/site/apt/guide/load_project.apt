@@ -5,9 +5,11 @@
  25 Feb 2009
  ------
 
+~~TODO  move to VS section
+
 Loading Project/Solution
 
-  This section explains how to load and use NPanday.
+  This section explains how to load and use NPanday from Visual Studio.
   
   [[1]] If it is not running, start Visual Studio from your shortcut Menu or the Windows Start menu.
   

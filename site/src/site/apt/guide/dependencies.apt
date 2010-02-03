@@ -5,14 +5,38 @@
  25 Feb 2009
  ------
 
+~~TODO move to VS directory
+
 Project Dependencies
 
   This section defines the basic configuration of adding references into the project. To avoid runtime errors,
-  make sure that the library to be loaded does not have conflicting instance(s) and/or is not yet loaded in the .Net Framework.
+  make sure that the library to be loaded does not have conflicting instance(s) and/or is not yet loaded in the .NET 
+  Framework.
   
-  <<Note>>: Adding dependencies should be done using Visual Studio while manually adding is not recommended.
-  If you manually add a dependency and re-import the project in Visual Studio, the recently added dependencies are deleted from the pom.xml file.
-  
+  <<Note>>: Adding dependencies should be done using Visual Studio while manually adding is not recommended. At this
+  time, the Visual Studio add-in will not detect changes to the Maven dependencies and add them to your Visual Studio
+  project. If you manually add a dependency and re-import the project in Visual Studio, the recently added dependencies
+  are deleted from the <<<pom.xml>>> file.
+
+  Dependency Types:
+
+  * normal - Local repository content artifacts that are added as dependencies.
+
+  * <<<gac_msil>>> - Artifacts that are installed in the GAC and used as references. Configuration similar to the following is used,
+  <<< \<type\>gac_msil\</type\> >>>
+
+  * <<<system>>> - Artifact references to standard framework namespaces. Configuration similar to the following is added,
+  <<< \<scope\>system\</scope\> >>> and the <<< \<systemPath\>[path_to_library]\</systemPath\> >>>
+
+  * <<<com_references>>> - Artifact references to Component Object Model that is installed in the system.
+  Configuration similar to the following is used, <<< \<type\>com_reference\</type\> >>>
+
+  []
+
+~~TODO discuss adding normal references, including inter-project dependencies
+
+* Adding System Scope Dependencies
+
   To add a system scope dependency, add a configuration similar to the following in the project's pom.xml:
   
 +------+
@@ -32,17 +56,32 @@ Project Dependencies
 
   Supply the proper values for the dependency's <<<\<groupId\>>>>, <<<\<artifactId\>>>>, <<<\<version\>>>>,
   <<<\<type\>>>>, <<<\<scope\>>>>, and <<<\<systemPath\>>>>.
-  Exact match of <<<artifactId>>> and <<<version>>> are required when manually adding dependencies into the project's <<<pom.xml>>>.
+  Exact match of <<<artifactId>>> and <<<version>>> are required when manually adding dependencies into the project's
+  <<<pom.xml>>>.
+
+  Note that in general system dependencies are not recommended as they may be located elsewhere on a different machine.
+  If they are required, you may mitigate this problem by using a property value that can be set differently on
+  another system:
+
++------+
+<dependencies>
+  [...]
+  <dependency>
+    <groupId>artifact_group_id</groupId>
+    <artifactId>my.lib</artifactId>
+    <version>2.2</version>
+    <type>library</type>
+    <scope>system</scope>
+    <systemPath>${some.property}\library.dll</systemPath>
+  </dependency>
+  [...]
+</dependencies>
+[...]
+<properties>
+  <some.property>C:\path\to\your</some.property>
+</properties>
++------+
+
+  The other system can then override it with <<<mvn -Dsome.property=c:\another\path ...>>> or by adding it to Maven's
+  <<<settings.xml>>> file.
   
-  Dependency Types:
-  
-  * normal – Local repository content artifacts that are added as dependencies.
-  
-  * <<<gac_msil>>> – Artifacts that are installed in the GAC and used as references. Configuration similar to the following is used,
-  <<< \<type\>gac_msil\</type\> >>>
-  
-  * <<<system>>> – Artifact references to standard framework namespaces. Configuration similar to the following is added,
-  <<< \<scope\>system\</scope\> >>> and the <<< \<systemPath\>[path_to_library]\</systemPath\> >>>
-  
-  * <<<com_references>>> – Artifact references to Component Object Model that is installed in the system.
-  Configuration similar to the following is used, <<< \<type\>com_reference\</type\> >>>

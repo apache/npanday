@@ -5,6 +5,8 @@
  26 Feb 2009
  ------
 
+~~TODO move the VS section
+
 Executing Maven Goals
 
 * Compile
@@ -15,6 +17,9 @@ Executing Maven Goals
   <<<Current NPanday Project \> Build>>> to build the selected project. Or, <<<All NPanday Projects \> Build>>> to build the
   parent and its sub-projects.
   
+  <Note:> Maven is currently unable to build (compile) without installing the project first. As a workaround,
+  execute <<<All NPanday Projects \> Install>>> first before <<<All NPanday Projects \> Build [compile]>>>.
+
   For projects with dependencies from remote repositories, the build might fail. As a workaround, re-import the project then,
   execute the build goal (<<<Current\ NPanday\ Project\ \>\ Build>>> or <<<All\ NPanday\ Projects\ \>\ Build>>>).
   

@@ -5,6 +5,8 @@
  26 Feb 2009
  ------
 
+~~ TODO: move the maven section
+
 Command Line Release
 
   The <<<\<scm\>>>> tag should be configured in the project's <<<pom.xml>>>. It should look similar to the following

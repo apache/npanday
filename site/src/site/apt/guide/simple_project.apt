@@ -5,6 +5,8 @@
  25 Feb 2009
  ------
 
+~~TODO: move to maven section
+
 Creating a Simple Project
 
   Before you start this procedure, you must have all {{{../installation/index.html} Pre-requisites}} in place and have
@@ -73,3 +75,33 @@ Creating a Simple Project
   If so, then you are ready to load the project and solution.
   
   []
+
+  ~~TODO: blend in
+
+  [[6]] To verify the add-in is working, create a simple project. Create an empty directory called, for example, <<<npandaytest>>>.
+
+  [[7]] Go to the directory (<<<npandaytest>>> in our example) and execute:
+
+    <<<mvn archetype:create -DgroupId=npanday -DartifactId=NPanday.Test -DarchetypeArtifactId=maven-archetype-dotnet-simple -DarchetypeGroupId=org.apache.maven.dotnet -DarchetypeVersion=[version]>>>
+
+  [[8]] Go to the <<<NPanday.Test>>> directory (which was created in the previous step) and execute:
+
+  <<<mvn install>>>
+
+  <<<mvn clean>>>
+
+  [[9]] Generate a solution file (also from the NPanday.Test directory):
+
+  <<<mvn NPanday.Plugins:NPanday.Plugin.Solution.JavaBinding:Solution>>>
+
+  [[10]] In Visual Studio, click File>Open>Project/Solution. Browse to the <<<NPanday.Test.sln>>> file
+  (under the NPanday.Test directory created in step 4) and select it. Click Open.
+
+  [[11]] In the Solution Explorer pane in Visual Studio, right-click the <<<NPanday.Test folder>>>. If you get
+  the Security Warning pop-up screen select Load project normally and click OK. You may see
+  this screen twice, so select Load project normally again and click OK the second time as well.
+
+  [[12]] Select All NPanday Projects > Install. You should see the build running in the Output pane. The artifact, <<<NPanday.Test.dll>>>, will be placed here:
+
+  <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac\\gac_msil\\NPanday.Test\[version]__NPanday>>>
+

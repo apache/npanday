@@ -12,12 +12,6 @@
   <name>NPanday</name>
   <url>http://www.npanday.org/docs/${project.version}</url>
   
-  <scm> 
-    <url>https://npanday.svn.codeplex.com/svn/trunk</url>  
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk</connection>  
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk</developerConnection>  
-  </scm>  
-  
   <build>
     <plugins>
       <plugin>
@@ -62,6 +56,13 @@
               <goal>pdf</goal>
             </goals>
           </execution>
+          <execution>
+            <id>bundled-pdf</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>pdf</goal>
+            </goals>
+          </execution>
         </executions>
         <configuration>
           <outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
@@ -82,10 +83,57 @@
       </extension>
     </extensions>
   </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.1.2</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+              <report>cim</report>
+              <report>issue-tracking</report>
+              <report>mailing-list</report>
+              <report>license</report>
+              <report>project-team</report>
+              <report>scm</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <anonymousConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</anonymousConnection>
+          <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</developerConnection>
+          <webAccessUrl>https://npanday.svn.codeplex.com/svn/trunk/</webAccessUrl>
+          <checkoutDirectoryName>npanday</checkoutDirectoryName>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
   <distributionManagement>
     <site>
       <id>npanday.site</id>
       <url>scm:svn:https://npanday.svn.codeplex.com/svn/docs/${project.version}</url>
     </site>
   </distributionManagement>
+  <profiles>
+    <profile>
+      <id>linkcheck</id>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-linkcheck-plugin</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <configuration>
+              <excludedLinks>
+                <excludedLink>*/plugins/*</excludedLink>
+              </excludedLinks>
+            </configuration>
+          </plugin>
+        </plugins>
+      </reporting>
+    </profile>
+  </profiles>
 </project>

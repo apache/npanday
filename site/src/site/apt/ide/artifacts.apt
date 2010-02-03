@@ -5,6 +5,8 @@
  26 Feb 2009
  ------
 
+~~TODO move the VS section
+
 Managing Repository Artifacts
 
   This feature allows the Visual Studio user to browse managed repositories and add and delete Maven dependencies to and from

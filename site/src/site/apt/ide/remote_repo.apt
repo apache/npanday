@@ -5,6 +5,8 @@
  26 Feb 2009
  ------
 
+~~TODO move the VS section
+
 Remote Repository Configuration
 
   A remote Maven repository can be configured using the Visual Studio IDE or it can be configured manually by adding information to the settings file.

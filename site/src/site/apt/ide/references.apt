@@ -5,6 +5,8 @@
  26 Feb 2009
  ------
 
+~~TODO move the VS section, compare to dependencies document
+
 Project Dependencies
 
   This section provides instructions on adding system installed artifacts as references to the project.

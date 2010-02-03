@@ -5,6 +5,8 @@
  25 Feb 2009
  ------
 
+~~TODO move to Maven guide, but link from VS dependencies reference
+
 Installing Files Manually
 
   This section provides procedures on installing a file manually into the local repository. In this process,

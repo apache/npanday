@@ -1,0 +1,152 @@
+ ------
+ NPanday .NET Build Tool Installation and Configuration
+ ------
+ ------
+ 24 Feb 2009
+ ------
+
+Pre-requisites
+
+  Running NPanday's Maven plugins requires the following on your system:
+
+    * Maven 2.0.9 or above (see {{{http://maven.apache.org/download.html} Maven's download page}} for instructions).
+
+    * Java Runtime Environment (JRE) 1.5 or greater. Also, the <<<JAVA_HOME>>> environment variable
+      must be set to the directory where the JRE is installed, for example, <<<C:\\Program Files\\Java\\jre1.5.0_06>>>.
+      The <<<java>>> executable must also be available on your path.
+
+    * Visual Studio 2005 (SP1) or the .NET 2.0 SDK for developing .NET 2.0 applications and libraries
+
+    * Visual Studio 2008 (SP1) or the Windows 7 SDK for .NET 3.5 SP1 for developing .NET 3.5 (and earlier) applications and
+      libraries
+
+  If you later have problems relating to being unable to find the SDK, refer to the
+  {{{../troubleshooting.html} Troubleshooting}} section. 
+
+Preparation
+
+  Before installing NPanday, you may need to do some further preparation.
+
+* Removing a Previous Version
+
+  While it is generally safe to install the new version without uninstalling the previous version, to ensure a clean
+  system you may want to follow the {{{./uninstall.html} Uninstalling NPanday}} instructions.
+
+* Set the PATH
+
+  All Maven commands must be run with the PATH set for the .NET SDKs. This can usually be achieved by
+  starting the appropriate command prompt shortcuts supplied with the SDK or Visual Studio.
+
+  In addition, at present the NPanday Add-in runs Maven directly and so also requires that all the SDKs are already on
+  the path - something which is not usually the case when Visual Studio is run.
+
+  The method you use to set the PATH environment can vary, depending on how you usually launch Visual Studio:
+
+    * If you are starting Visual Studio from the Windows Start menu, use the following to set the PATH environment variable in the System Properties:
+    <<<Start \> My Computer \> View System Information \> Advanced \> Environment variables>>>. The variable must have all the additional elements
+    that are added when you run the Visual Studio Command Prompt.
+
+    * From within the Visual Studio Command Prompt, you can start Visual Studio using the <<<devenv>>> command.
+
+    []
+
+Obtaining NPanday
+
+  NPanday releases are made available in two locations:
+
+    * {{{http://npanday.codeplex.com/Release/ProjectReleases.aspx} NPanday Download page}} - for downloading a full
+      repository to install locally
+
+    * {{{http://repo.npanday.org/archiva/} NPanday Release Repository}} - for downloading directly from Maven
+
+  As of NPanday 1.1, the release is only made available as a Maven binary repository, or a source distribution.
+  For information on how to build the project from source, see {{{../../developers/building.html} Building from Source}}
+  in the Developer's Guide.
+
+  In this guide, we will use the repository downloaded from the NPanday download page.
+
+  ~~TODO: additional guides for using the existing repositories
+
+Installing NPanday's Maven Plugins
+
+  Whether you are using just the Visual Studio integration or the full set of capabilities, you must have the Maven
+  environment installed.
+
+  For the purposes of this guide, we will copy the artifacts to our local environment only - however in most developer
+  groups you will host the repository on a shared server that all developers can use to obtain the correct release.
+
+  After downloading the binary repository, unpack the contents (you may need a 3rd party application to expand the
+  <<<tar.gz>> format on Windows). Next, copy the contents of <<<repository/releases>>> from the archive to
+  <<<%HOMEDRIVE%%HOMEPATH%\\.m2\\repository>>>. This is the default <local repository> of a Maven installation if it
+  has not been modified in Maven's <<<settings.xml>>>.
+
+  For example, you may end up with a structure containing
+  <<<C:\\Documents and Settings\\User\\.m2\\repository\\npanday\\npanday-project\\1.1\\npanday-project-1.1.pom>>>.
+
+  To confirm your installation, run the following command, replacing <<<1.1>>> with the version you are installing:
+
+----
+mvn help:describe -DgroupId=npanday.plugin -DartifactId=maven-vsinstaller-plugin -Dversion=1.1
+----
+
+  If successful, you should receive the following output:
+
+----
+Name: NPanday :: Visual Studio Addin Installer Maven Plugin
+Description: Maven Plugin for .NET: Installs the Visual Studio Addin
+Group Id: npanday.plugin
+Artifact Id: maven-vsinstaller-plugin
+Version: 1.1
+Goal Prefix: vsinstaller
+
+This plugin has 1 goal:
+
+vsinstaller:install
+  Description: Installs Visual Studio 2005 addin.
+----
+
+  ~~TODO: add a troubleshooting guide and reference here in case it all goes wrong
+
+* Getting Started with Maven
+
+  If you don't intend to use the Visual Studio Add-in, you can now {{{../maven/index.html} get started using Maven}}. 
+
+Installing the Visual Studio Add-in
+
+  To install the Add-in, first ensure that Visual Studio is not running.
+
+  Next, from a command prompt with the path set as indicated above, run the following command:
+
+----
+mvn npanday.plugin:maven-vsinstaller-plugin:[version]:install
+----
+
+  <<Note:>> On Windows Vista, Windows 7 and above, you will need to run the command as an administrator. This can be
+            done by starting the command prompt using the <Run as administrator> option.
+
+  After running the <<<maven-vsinstaller-plugin>>> the add-in will be located here:
+  <<<C:\\Documents and Settings\\[user_home]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
+  (or equivalent for Visual Studio 2008).
+
+  To verify that the NPanday .NET Build Tool has been configured inside Visual Studio, perform the following instructions:
+
+  [[1]] Launch Visual Studio (either from the command line or from the Windows Start> menu).
+
+  [[2]] From inside Visual Studio, select Tools>NPanday Build System. This automatically starts NPanday and displays a
+        confirmation in the Visual Studio Output window at the bottom of the Visual Studio screen.
+
+  []
+
+[../../images/verify_installation.jpg] NPanday Build System
+
+  You can also set Visual Studio to automatically start NPanday Build System upon startup by checking
+  NPanday.VisualStudio.Addin in Tools > Add-in Manager.
+
+  After it starts, you will not see NPanday Build System listed in the Tools menu, until the next time you start Visual
+  Studio.
+
+* Getting Started with the Visual Studio Add-in
+
+  You can now start Visual Studio and test the Add-in. The next section of this guide will focus on
+  {{{../vs/index.html} using the Visual Studio Add-in}}.
+

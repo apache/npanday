@@ -7,6 +7,10 @@
 
 NPanday Conventions
 
+~~ TODO: set a title for identifiers, since there are other conventions. Adjust to simplify - one group for whole project,
+~~ plus subgroup for plugins and one for visual studio. Take a note that some don't follow convention now and are
+~~ retained for legacy reasons, but will be refactored away in future
+
  The following sections describe the conventions used within NPanday itself. This section is useful for developers wishing to
  contribute to NPanday, as well as developers looking for a baseline for their own projects.
  These conventions are evolving and subject to change as better ideas emerge: {{{mailto:npanday@discussions.codeplex.com} Got better ideas?}}

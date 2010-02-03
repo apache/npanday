@@ -5,6 +5,8 @@
  26 Feb 2009
  ------
 
+~~TODO move the VS section
+
 Setting Assembly Keys
 
   Assembly keys are used to uniquely identify the project to be installed in the Global Assembly Cache or also referred to as GAC.

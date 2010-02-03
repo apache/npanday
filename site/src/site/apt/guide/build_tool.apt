@@ -5,6 +5,8 @@
  26 Feb 2009
  ------
 
+~~TODO: move to VS directory
+
 Starting and Stopping NPanday .NET Build Tool
 
   This section provides a quick-reference for when you need to start and stop the NPanday .NET Build Tool
@@ -13,10 +15,10 @@ Starting and Stopping NPanday .NET Build Tool
 
 * Starting the Build Tool
 
-  While you can go from the instructions for opening and loading your Project/Solution to using the NPanday .NET Build Tool with Visual Studio,
-  there are times when you may want to start the tool after you have already been inside Visual Studio working. Also,
-  if you load a new version of the NPanday .NET Build Tool, you should clear Visual Studio's cache before you start the tool.
-  The table, below, explains how to start the tool in each of these situations:
+  While you can go from the instructions for opening and loading your Project/Solution to using the NPanday .NET Build
+  Tool with Visual Studio, there are times when you may want to start the tool after you have already been inside Visual
+  Studio working. Also, if you load a new version of the NPanday .NET Build Tool, you should clear Visual Studio's cache
+  before you start the tool. The table, below, explains how to start the tool in each of these situations.
   
   If you want to clear Visual Studio's cache of any previous versions of the tool before you start,
   
@@ -28,7 +30,8 @@ Starting and Stopping NPanday .NET Build Tool
   
   [[3]] Click Tools > NPanday Build System to load the NPanday add-in.
   
-  [[4]] Continue by opening your project and then loading your solution, as explained in {{{load_project.html} Loading Project/Solution}}.
+  [[4]] Continue by opening your project and then loading your solution, as explained in
+        {{{load_project.html} Loading Project/Solution}}.
   
   []
   
@@ -38,12 +41,15 @@ Starting and Stopping NPanday .NET Build Tool
   
   [[2]] Click Tools > NPanday Build System to start the Maven embedded server.
   
-  [[3]] Continue by opening your project and then loading your solution, as explained in {{{load_project.html} Loading Project/Solution}}.
+  [[3]] Continue by opening your project and then loading your solution, as explained in
+        {{{load_project.html} Loading Project/Solution}}.
+
+  Once the tool is started you will be able to view it's output by selecting it from the dropdown in the Visual Studio
+  Output window.
 
 * Stopping the Build Tool
 
-  There are two ways to stop the NPanday .NET Build Tool. The first is to click Tools>Add-in Manager then de-select the checkbox
-  for NPanday .NET Build Tool to stop the Maven embedded server. Another way is to simply exit Visual Studio, which shuts down the Tool
-  and the embedded Maven server automatically.
+  There are two ways to stop the NPanday .NET Build Tool. The first is to click Tools > Add-in Manager then de-select
+  the checkbox for NPanday .NET Build Tool. Another way is to simply exit Visual Studio, which shuts down the Tool
+  automatically.
   
-  <<Note>>: If an abnormal shutdown of Visual Studio occurs, you must reboot to ensure both the Build Tool and the embedded Maven server have stopped.

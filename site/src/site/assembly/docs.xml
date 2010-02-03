@@ -8,12 +8,6 @@
     <fileSet>
       <directory>target/site</directory>
       <outputDirectory>/npanday/</outputDirectory>
-      <includes>
-        <include>**/*.html</include>
-        <include>**/*.jpg</include>
-        <include>**/*.png</include>
-        <include>**/*.gif</include>
-      </includes>
     </fileSet>
   </fileSets>
 </assembly>

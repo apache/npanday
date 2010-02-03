@@ -5,6 +5,8 @@
  26 Feb 2009
  ------
 
+~~TODO move the VS section
+
 Using Custom Settings
 
   This feature allows the Visual Studio user to customize the location of the <<<settings.xml>>> file that points to the repository of NPanday artifacts.

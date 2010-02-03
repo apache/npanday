@@ -5,6 +5,8 @@
  26 Feb 2009
  ------
 
+~~TODO move to the maven section, compare to other release docs
+
 Releasing .NET Projects
 
   This section provides details in preparing .Net projects with references (DLLs) for release. The procedures for

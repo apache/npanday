@@ -11,25 +11,27 @@
     <href>/</href>
   </bannerLeft>
 
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-classic-skin</artifactId>
+    <version>1.0</version>
+  </skin>
+
+  <publishDate position="right" format="d MMM yyyy" />
+  <version position="right" />
   <body>
+    <breadcrumbs>
+      <item name="NPanday Home" href="http://npanday.codeplex.com/" />
+      <item name="NPanday ${project.version}" href="/" />
+    </breadcrumbs>
+
     <menu name="General Info" collapse="true">
-      <item name="NPanday Overview" href="index.html"/>
-      <item name="NPanday Release Notes" href="release-notes.html"/>
-      <item name="NPanday FAQs" href="faqs.html"/>
-      <item name="NPanday Workarounds" href="workarounds.html"/>
-      <item name="NPanday Plugins" href="plugins/index.html"/>
-      <item name="Conventions" href="conventions.html"/>
+      <item name="NPanday Overview" href="/index.html"/>
+      <item name="NPanday Release Notes" href="/release-notes.html"/>
+      <item name="NPanday FAQs" href="/faqs.html"/>
+      <item name="NPanday Plugins" href="/plugins/index.html"/>
     </menu>
     <menu name="Getting Started" collapse="true">
-      <item name="Installation" href="/installation/index.html" collapse="true">
-        <item name="Manual Configuration" href="/installation/manual.html"/>
-        <item name="Using the Installer" href="/installation/installer.html"/>
-        <item name="Verifying the Installation" href="/installation/verify.html"/>
-      </item>
-      <item name="Uninstall NPanday" href="/installation/uninstall.html" collapse="true">
-        <item name="Manual Uninstallation" href="/installation/manual_uninstall.html"/>
-        <item name="Uninstall with Installer" href="/installation/installer_uninstall.html"/>
-      </item>
       <item name="Using the Build Tool" href="/guide/build_tool.html"/>
       <item name="Project Dependencies" href="/guide/dependencies.html"/>
       <item name="Installing Files Manually" href="/guide/install_file.html"/>
@@ -54,13 +56,11 @@
       <item name="Integration Test" href="/ide/test.html"/>
     </menu>
 		
-    <menu name="Project Information" collapse="true">
-      <item name="NPanday Site" href="http://www.codeplex.com/npanday"/>
-      <item name="NPanday SVN" href="https://npanday.svn.codeplex.com/svn/"/>
-      <item name="Maven" href="http://maven.apache.org/"/>
-      <item name="Mono Project" href="http://www.mono-project.com/"/>
-      <item name="DotGNU" href="http://dotgnu.org/"/>
-    </menu>
     ${reports}
+
+    <menu name="Resources">
+      <item name="Apache Maven" href="http://maven.apache.org/" />
+      <item name="NPanday on CodePlex" href="http://npanday.codeplex.com/" />
+    </menu>
   </body>
 </project>

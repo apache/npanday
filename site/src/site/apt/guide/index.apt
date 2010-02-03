@@ -1,0 +1,32 @@
+ -----
+ NPanday User's Guide
+ -----
+ Brett Porter
+ -----
+ 3 Feb 2010
+ -----
+
+NPanday User's Guide
+
+  This guide is broken into the following sections:
+
+    * {{{#Introduction} Introduction}} - How NPanday works
+
+    * {{{./installation/index.html} Installation}} - How to download and install an NPanday release
+
+    * {{{./vs/index.html} Visual Studio Add-in User's Guide}} - for Visual Studio users
+
+    * {{{./maven/index.html} Maven Command Line Users's Guide}} - for Maven users or Visual Studio users wishing to
+                                                                  run builds outside of Visual Studio, or customize the
+                                                                  generated POM
+
+    * {{{/plugins/index.html} Maven Plugin Reference}} - reference for Maven users constructing POMs by hand
+
+    * {{{./troubleshooting.html} Troubleshooting}} - for when it all goes wrong
+
+  If you are looking for a particular reference, you can skip to those sections now. If you are new to NPanday or Maven,
+  continue reading the introduction.
+
+* {Introduction}
+
+  ~~TODO write the introduction if nothing else from the guide is useful

@@ -7,7 +7,7 @@
 
 Uninstalling Manually
 
-  To manually remove the NPanday .NET Build Tool, follow these steps:
+  To remove the NPanday .NET Build Tool, follow these steps:
   
   [[1]] Locate and delete your previous version of the NPanday .NET Build Tool for Visual Studio.
   It is typically found at the following location, where [user_home] is your home directory:
@@ -20,29 +20,33 @@ Uninstalling Manually
   
   [[3]] Go to My Computer > AssemblyCache, click View List. Delete the following two files:
   
-  * <<<Npanday.Model.Pom>>>
-  
-  * <<<NPanday.Plugin>>>
-  
-  []
-  
+          * <<<Npanday.Model.Pom>>>
+
+          * <<<NPanday.Plugin>>>
+
+          []
+
   [[4]] Delete the following directories:
   
-  * <<<C:\\Documents and Settings\\[user_home]\\.m2\\pab>>>
-  
-  * <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac>>>
-  
-  []
+          * <<<C:\\Documents and Settings\\[user_home]\\.m2\\pab>>>
+
+          * <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac>>>
+
+          []
   
   [[5]] Remove the following file <<<C:\\Documents and Settings\\[user_home]\\.m2\\npanday-settings.xml>>>
   
-  [[6]] Remove the <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository>>> directory.
+  [[6]] Remove the following file <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository\\npanday.artifacts.resolved>>>
+
+  [[7]] Remove the <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository\npanday>>> directory
   
   []
   
-  <<Note>>: This deletes all artifacts for all your projects, not just the NPanday ones.
-  This is not a problem because when you re-build your projects, Maven will automatically recreate this directory and download the needed jars.
-  The only time this is an issue is if you have manually downloaded jars, such as the Sun jar files.
-  In that case you will have to manually download them again if this directory is removed.
-  
+  An alternative to step 3 is to run the following commands from the command prompt as an administrator:
+
+----
+gacutil /u NPanday.Model.Pom
+gacutil /u NPanday.Plugin
+----
+
   

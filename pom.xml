@@ -30,7 +30,8 @@ under the License.
   <mailingLists> 
     <mailingList> 
       <name>NPanday Discussion List</name>  
-      <post>npanday@discussions.codeplex.com</post>  
+      <post>npanday@discussions.codeplex.com</post>
+      <archive>http://npanday.codeplex.com/Thread/List.aspx</archive>
       <otherArchives> 
         <otherArchive>http://n2.nabble.com/NPanday-Discussions-f1657131.html</otherArchive> 
       </otherArchives> 
@@ -48,7 +49,11 @@ under the License.
   <issueManagement> 
     <system>Codeplex Issue Tracker</system>  
     <url>http://www.codeplex.com/npanday/WorkItem/List.aspx</url> 
-  </issueManagement>  
+  </issueManagement>
+  <ciManagement>
+    <system>continuum</system>
+    <url>http://ci.npanday.org/continuum/</url>
+  </ciManagement>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>

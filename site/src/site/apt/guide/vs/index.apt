@@ -1,0 +1,43 @@
+ ----
+ Using the NPanday Visual Studio Add-in
+ ----
+ ----
+ 3 February 2010
+ ----
+
+Using the NPanday Visual Studio Add-in
+
+  By this point, you should have NPanday successfully installed as shown in the
+  {{{../installation/index.html} Installation instructions}}, and have Visual Studio started with the NPanday Build Tool
+  running.
+
+  This guide will walk you through a basic introduction to the Visual Studio Add-in, how to use it for typical project
+  tasks, and what configuration options are available. Finally, we will discuss the use cases where you might need to
+  manipulate the Maven POM directly and other advanced use cases.
+
+  After completing this guide, you may want to read the guide to
+  {{{../devinfra/index.html} Using NPanday with your Maven Development Infrastructure}}.
+
+  If you encounter any problems, don't forget to consult the {{{../troubleshooting.html} Troubleshooting guide}}.
+
+* Contents
+
+  * {{{./quickstart.html} Quick Start Guide}} - starting a new project and making it buildable by Maven
+
+  * {{{./references.html} Working with references}} - how adding references impacts the project, and how it works with
+    Maven depedencies
+
+  * ~~TODO ...?
+
+  * {{{./project-types.html} Working with specific project types}} - how to work with different project types such as
+    Web site projects.
+
+  * ~~TODO ...?
+
+  * ~~TODO configuration
+
+  * ~~TODO MAVEN
+
+  []
+
+  
