@@ -37,7 +37,6 @@
       <item name="Installing Files Manually" href="/guide/install_file.html"/>
       <item name="Creating a Simple Project" href="/guide/simple_project.html"/>
       <item name="Loading Project/Solution" href="/guide/load_project.html"/>
-      <item name="Quick Start" href="/guide/quickstart.html"/>
 	  <item name="Portability" href="/guide/portability.html"/>
     </menu>
     <menu name="IDE Integration" collapse="true">
@@ -47,7 +46,6 @@
       <item name="Using Custom Settings" href="/ide/settings.html"/>
       <item name="Importing Projects" href="/ide/importing.html"/>
       <item name="Repository Artifacts" href="/ide/artifacts.html"/>
-      <item name="Project References" href="/ide/references.html"/>
       <item name="Web References" href="/ide/web_references.html"/>
       <item name="Releasing Project" href="/ide/release.html" collapse="true">
 				<item name="Using Command Line" href="/ide/commandline.html"/>
