@@ -87,13 +87,6 @@ under the License.
       <type>gac</type>  
       <classifier>b03f5f7f11d50a3a</classifier> 
     </dependency>  
-    <dependency>
-      <groupId>Microsoft.Build.Engine</groupId>
-      <artifactId>Microsoft.Build.Engine</artifactId>
-      <version>2.0.0.0</version>
-      <type>gac_msil</type>
-      <classifier>b03f5f7f11d50a3a</classifier>
-    </dependency>
     <dependency> 
       <groupId>Extensibility</groupId>  
       <artifactId>Extensibility</artifactId>  
