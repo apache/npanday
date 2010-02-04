@@ -153,8 +153,9 @@ public class MsbuildMojo
             {
                 Artifact a = (Artifact) artifact;
 
-                String path = a.getGroupId() + "/" + a.getFile().getName() + "/" + a.getArtifactId() + "." +
-                    a.getArtifactHandler().getExtension();
+                String path =
+                    a.getGroupId() + "/" + a.getArtifactId() + "-" + a.getVersion() + "/" + a.getArtifactId() + "." +
+                        a.getArtifactHandler().getExtension();
                 File targetFile = new File( referencesDirectory, path );
 
                 if ( !targetFile.exists() )
