@@ -73,8 +73,10 @@ namespace NPanday.Plugin.Msbuild
             {
                 projectName += ".vbproj";
             }
+            // must use /v:q here, as /v:m and above report the csc command, that includes '/errorprompt', which
+            // erroneously triggers the NPANDAY-063-001 error
             ProcessStartInfo processStartInfo =
-               new ProcessStartInfo("msbuild", "/v:m " + projectName);
+               new ProcessStartInfo("msbuild", "/v:q " + projectName);
             processStartInfo.UseShellExecute = false;
             Process p = System.Diagnostics.Process.Start(processStartInfo);
             p.WaitForExit();
