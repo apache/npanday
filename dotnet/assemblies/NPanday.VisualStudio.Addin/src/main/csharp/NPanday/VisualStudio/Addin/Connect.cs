@@ -250,6 +250,11 @@ namespace NPanday.VisualStudio.Addin
                 CommandBarControl toolsControl = menuBarCommandBar.Controls[toolsMenuName];
                 CommandBarPopup toolsPopup = (CommandBarPopup)toolsControl;
 
+                if ( toolsPopup == null )
+                {
+                    MessageBox.Show( "Will skip adding control, as the tools popup could not be found with name '" + toolsMenuName + "'" );
+                }
+
                 //This try/catch block can be duplicated if you wish to add multiple commands to be handled by your Add-in,
                 //  just make sure you also update the QueryStatus/Exec method to include the new command names.
                 try
@@ -266,12 +271,17 @@ namespace NPanday.VisualStudio.Addin
                     {
                         command.AddControl(toolsPopup.CommandBar, 1);
                     }
+                    else
+                    {
+                        MessageBox.Show("Skipped adding control as the NPanday start command could not be found." );
+                    }
                 }
-                catch (System.ArgumentException)
+                catch (System.ArgumentException ex)
                 {
                     //If we are here, then the exception is probably because a command with that name
                     //  already exists. If so there is no need to recreate the command and we can
                     //  safely ignore the exception.
+                    MessageBox.Show(ex.Message, "Exception adding NPanday to the Tools menu");
                 }
 
             }
