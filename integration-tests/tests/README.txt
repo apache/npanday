@@ -1,4 +1,3 @@
-it0003: CS-MS: Verify that .netmodules are not a compile-time transitive dependency.
 it0004: CS-MS: Run an NUnit test that uses libraries and run-time transitive .netmodule dependencies.
 it0005: CS-MS: Build a webapp and deploy it
 it0006: PATH: Generate a class binding from a schema
