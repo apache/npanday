@@ -1,2 +1,0 @@
-target/it0001.netmodule
-target/it0002.dll
