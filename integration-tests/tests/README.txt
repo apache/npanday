@@ -1,5 +1,3 @@
-it0001: CS-MS: Build a .netmodule
-it0002: CS-MS: Build a library that is dependent on a .netmodule
 it0003: CS-MS: Verify that .netmodules are not a compile-time transitive dependency.
 it0004: CS-MS: Run an NUnit test that uses libraries and run-time transitive .netmodule dependencies.
 it0005: CS-MS: Build a webapp and deploy it
