@@ -1,6 +1,0 @@
-target/it0005.dll
-target/it0005.nar
-target/it0005/test.aspx
-target/test-deploy/it0005/test.aspx
-target/test-deploy/it0005/bin/it0001.netmodule
-target/test-deploy/it0005/bin/it0002.dll
