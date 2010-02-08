@@ -1,2 +1,0 @@
-target/it0006.dll
-target/build-sources/StockingHandlers_1_0.cs
