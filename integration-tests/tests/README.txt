@@ -1,6 +1,3 @@
-it0008: PATH: Generate a WSDL (not included)
-it0009: Removed
-it0010: VB-MS: Build a library that is dependent on a .netmodule
 it0011: CS-MONO: Build a library that is dependent on a .netmodule 
 it0012: CS-GNU: Build a .netmodule
 it0013: CS-GNU: Build a library that is dependent on a .netmodule (Disabled: option yet not supported).
