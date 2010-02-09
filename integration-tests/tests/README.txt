@@ -10,6 +10,5 @@ it0018: CS-MS-v1.1: Build a library with version 1.1 of the framework (verify ma
 it0019: CS-MS-Compact: Build a library with the COMPACT framework (windows only)
 
 To confirm migration:
-it0033: Verifies main source using vb, test  source using csharp.
 it0035: Verifies rootnamespace configuration for VB project
 it0036: Verifies that non-source code files should not be copied to target\build-sources,target\build-test-sources directory
