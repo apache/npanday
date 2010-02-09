@@ -8,6 +8,3 @@ it0016: CS-GNU: Build a library that is dependent on another library
 it0017: CS-GNU:  Run an NUnit test that uses library dependencies.
 it0018: CS-MS-v1.1: Build a library with version 1.1 of the framework (verify manually by looking at the dll manifest)
 it0019: CS-MS-Compact: Build a library with the COMPACT framework (windows only)
-
-To confirm migration:
-it0036: Verifies that non-source code files should not be copied to target\build-sources,target\build-test-sources directory
