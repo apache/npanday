@@ -10,7 +10,6 @@ it0018: CS-MS-v1.1: Build a library with version 1.1 of the framework (verify ma
 it0019: CS-MS-Compact: Build a library with the COMPACT framework (windows only)
 
 To confirm migration:
-it0021: VB: Resource generation for VB
 it0022: Signing of an assembly (verify manually by looking for the signature in the manifest)
 it0023: CS-MS: .NET 3.0 compiling
 it0024: CS-MS: .NET 3.0 NUnit
