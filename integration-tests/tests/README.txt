@@ -1,3 +1,4 @@
+ITs that aren't migrated as NPanday support is out of date:
 it0011: CS-MONO: Build a library that is dependent on a .netmodule 
 it0012: CS-GNU: Build a .netmodule
 it0013: CS-GNU: Build a library that is dependent on a .netmodule (Disabled: option yet not supported).
@@ -7,7 +8,8 @@ it0016: CS-GNU: Build a library that is dependent on another library
 it0017: CS-GNU:  Run an NUnit test that uses library dependencies.
 it0018: CS-MS-v1.1: Build a library with version 1.1 of the framework (verify manually by looking at the dll manifest)
 it0019: CS-MS-Compact: Build a library with the COMPACT framework (windows only)
-it0020: CS-MS-Resources: Generate resource file and embed into assembly
+
+To confirm migration:
 it0021: VB: Resource generation for VB
 it0022: Signing of an assembly (verify manually by looking for the signature in the manifest)
 it0023: CS-MS: .NET 3.0 compiling
@@ -18,6 +20,5 @@ it0029: Deploys a non-snapshot dll to a remote repo
 it0030: Pulls a snapshot dll and non-snapshot dll from a remote repo
 it0032: Verifies that compile plugin processes excludes and testExcludes elements from the pom
 it0033: Verifies main source using vb, test  source using csharp.
-it0034:
 it0035: Verifies rootnamespace configuration for VB project
 it0036: Verifies that non-source code files should not be copied to target\build-sources,target\build-test-sources directory

@@ -1,3 +1,0 @@
-target/it0020.dll
-target/assembly-resources/it0020.resx
-target/assembly-resources/resource/it0020.resources
