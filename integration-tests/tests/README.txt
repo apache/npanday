@@ -10,7 +10,6 @@ it0018: CS-MS-v1.1: Build a library with version 1.1 of the framework (verify ma
 it0019: CS-MS-Compact: Build a library with the COMPACT framework (windows only)
 
 To confirm migration:
-it0030: Pulls a snapshot dll and non-snapshot dll from a remote repo
 it0032: Verifies that compile plugin processes excludes and testExcludes elements from the pom
 it0033: Verifies main source using vb, test  source using csharp.
 it0035: Verifies rootnamespace configuration for VB project
