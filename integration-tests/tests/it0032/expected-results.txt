@@ -1,2 +1,0 @@
-target/it0032.dll
-target/test-assemblies/it0032-test.dll
