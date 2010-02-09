@@ -10,8 +10,6 @@ it0018: CS-MS-v1.1: Build a library with version 1.1 of the framework (verify ma
 it0019: CS-MS-Compact: Build a library with the COMPACT framework (windows only)
 
 To confirm migration:
-it0023: CS-MS: .NET 3.0 compiling
-it0024: CS-MS: .NET 3.0 NUnit
 it0027: Compiling CS with flat directory structure
 it0028: Deploys a snapshot dll to a remote repo
 it0029: Deploys a non-snapshot dll to a remote repo
