@@ -170,6 +170,9 @@ namespace NPanday.VisualStudio.Addin
         //to hold eventhandler for solution
         private static EnvDTE.SolutionEvents globalSolutionEvents;
 
+        //to hold eventhandler for projects
+        private static EnvDTE.ProjectItemsEvents projectItemsEvents;
+
         void SolutionEvents_BeforeClosing()
         {
             mavenRunner.ClearOutputWindow();
@@ -183,6 +186,114 @@ namespace NPanday.VisualStudio.Addin
                 attachReferenceEvent();
             }
         }
+
+        //to hold eventhandler for projectItemsEvents
+        void ProjectItemEvents_ItemAdded(ProjectItem projectItem)
+        {
+            if (_applicationObject != null && projectItem!= null)
+            {
+                PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+
+                //determine which plugin the projectItem belongs to
+
+                if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
+                {
+                    //change addpluginConfiguration to accept xmlElement instead
+                    pomUtil.AddMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", projectItem.Name);
+                }
+
+                if (projectItem.Name.Contains(".resx"))
+                {
+                    string resxName = projectItem.ContainingProject.Name + "." + projectItem.Name.Replace(".resx", "");
+
+                    //check if resx plugin already exists
+                    if (!pomUtil.HasPlugin("npanday.plugin", "maven-resgen-plugin"))
+                    {
+                        try
+                        {
+                            XmlDocument xmlDocument = new XmlDocument();
+
+                            PluginConfiguration pluginConf = new PluginConfiguration();
+
+                            XmlElement nodeCollection = xmlDocument.CreateElement("embeddedResources", @"http://maven.apache.org/POM/4.0.0");
+                            //XmlNode nodeCollection = xmlDocument.CreateNode(XmlNodeType.Element, "embeddededResources", @"http://maven.apache.org/POM/4.0.0");
+                            XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, "embeddededResource", @"http://maven.apache.org/POM/4.0.0");
+                            XmlNode nodeSrc = xmlDocument.CreateNode(XmlNodeType.Element, "sourceFile", @"http://maven.apache.org/POM/4.0.0");
+                            XmlNode nodeName = xmlDocument.CreateNode(XmlNodeType.Element, "name", @"http://maven.apache.org/POM/4.0.0");
+
+                            nodeSrc.InnerText = projectItem.Name;
+                            nodeName.InnerText = resxName;
+                            node.AppendChild(nodeSrc);
+                            node.AppendChild(nodeName);
+                            nodeCollection.AppendChild(node);
+                            List<XmlElement> anyHolder = new List<XmlElement>();
+                            anyHolder.Add(nodeCollection);
+                            pluginConf.Any = anyHolder.ToArray();
+
+                            pomUtil.AddPlugin("npanday.plugin", "maven-resgen-plugin", null, true, pluginConf);
+                        }
+                        catch (Exception e)
+                        {
+                            //Suppressed Exception for malfored pom
+                        }
+
+                    }
+                    //add plugin conifguration
+                    else
+                    {
+                        pomUtil.AddMavenResxPluginConfiguration("npanday.plugin", "maven-resgen-plugin", "embeddedResources", "embeddedResource", projectItem.Name, resxName);
+                    }
+                }
+            }
+        }
+
+        void ProjectItemEvents_ItemRemoved(ProjectItem projectItem)
+        {
+            if (_applicationObject != null && projectItem != null)
+            {
+                if (_applicationObject != null && projectItem != null)
+                {
+                    PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+
+                    if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
+                    {
+                        //change addpluginConfiguration to accept xmlElement instead
+                        pomUtil.RemoveMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", projectItem.Name);
+                    }
+
+                    if (projectItem.Name.Contains(".resx"))
+                    {
+                        string resxName = projectItem.ContainingProject.Name + "." + projectItem.Name.Replace(".resx", "");
+                        pomUtil.RemoveMavenResxPluginConfiguration("npanday.plugin", "maven-resgen-plugin", "embeddedResources", "embeddedResource", projectItem.Name, resxName);
+                    }
+                }
+            }
+
+        }
+
+        void ProjectItemEvents_ItemRenamed(ProjectItem projectItem, string oldName)
+        {
+            if (_applicationObject != null && projectItem != null)
+            {
+                PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+
+                if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
+                {
+                    //change addpluginConfiguration to accept xmlElement instead
+                    pomUtil.RenameMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource",oldName, projectItem.Name);
+                }
+
+                if (projectItem.Name.Contains(".resx"))
+                {
+                    string resxName = projectItem.ContainingProject.Name + "." + projectItem.Name.Replace(".resx", "");
+                    string oldResxName = projectItem.ContainingProject.Name+"."+oldName.Replace(".resx","");
+                    pomUtil.RenameMavenResxPluginConfiguration("npanday.plugin", "maven-resgen-plugin", "embeddedResources", "embeddedResource", oldName, oldResxName ,projectItem.Name,resxName);
+                }
+            }
+
+        }
+
+
 
         #endregion
         static bool projectRefEventLoaded;
@@ -216,6 +327,11 @@ namespace NPanday.VisualStudio.Addin
             globalSolutionEvents = (EnvDTE.SolutionEvents)((Events2)_applicationObject.Events).SolutionEvents;
             globalSolutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler(SolutionEvents_BeforeClosing);
             globalSolutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler(SolutionEvents_Opened);
+
+            projectItemsEvents = (EnvDTE.ProjectItemsEvents)((Events2)_applicationObject.Events).ProjectItemsEvents;
+            projectItemsEvents.ItemAdded += new _dispProjectItemsEvents_ItemAddedEventHandler(ProjectItemEvents_ItemAdded);
+            projectItemsEvents.ItemRemoved += new _dispProjectItemsEvents_ItemRemovedEventHandler(ProjectItemEvents_ItemRemoved);
+            projectItemsEvents.ItemRenamed += new _dispProjectItemsEvents_ItemRenamedEventHandler(ProjectItemEvents_ItemRenamed);
 
             if (connectMode == ext_ConnectMode.ext_cm_UISetup)
             {

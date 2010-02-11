@@ -89,6 +89,52 @@ namespace NPanday.Utils
             }
         }
 
+        public bool HasPlugin(string pluginGroupId,string pluginArtifactId)
+        { 
+            NPanday.Model.Pom.Model model = ReadPomAsModel();
+
+            foreach (Plugin plugin in model.build.plugins)
+            {
+                if (pluginGroupId.Equals(plugin.groupId.ToLower())
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void AddPlugin(string groupId, string artifactId, string version, bool extensions,PluginConfiguration pluginConf)
+        {
+            NPanday.Model.Pom.Model model = ReadPomAsModel();
+
+            List<NPanday.Model.Pom.Plugin> plugins = new List<NPanday.Model.Pom.Plugin>();
+            if (model.build.plugins != null)
+            {
+                plugins.AddRange(model.build.plugins);
+            }
+
+            // Add NPanday compile plugin 
+            NPanday.Model.Pom.Plugin plugin = new NPanday.Model.Pom.Plugin();
+            plugin.groupId = groupId;
+            plugin.artifactId = artifactId;
+            plugin.version = version;
+            plugin.extensions = extensions;
+            
+            if (pluginConf != null)
+            {
+                plugin.configuration = pluginConf;
+            }
+
+            plugins.Add(plugin);
+
+
+            model.build.plugins = plugins.ToArray();
+
+            WriteModelToPom(model);
+
+        }
+
 
 
 
@@ -1018,6 +1064,371 @@ namespace NPanday.Utils
 
         }
 
+        public void AddMavenCompilePluginConfiguration(string pluginGroupId,string pluginArtifactId, string confPropCollection,string confProp, string confPropVal)
+        {
+            NPanday.Model.Pom.Model model = ReadPomAsModel();
+            
+                foreach (Plugin plugin in model.build.plugins)
+                {
+                    XmlDocument xmlDocument = new XmlDocument();
+
+                    if (pluginGroupId.Equals(plugin.groupId.ToLower())
+                        && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                    {
+                        if (plugin.configuration == null && plugin.configuration.Any == null)
+                        {
+                            return;
+                        }
+                        XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
+                        for (int count = elems.Length; count-- > 0; )
+                        {
+                            if (confPropCollection.Equals(elems[count].Name))
+                            {
+                                XmlElement elem = xmlDocument.CreateElement(confPropCollection, @"http://maven.apache.org/POM/4.0.0");
+
+                                //Loop throught existing item and
+                                //append everything including the newly added item
+                                foreach (XmlNode n in elems[count].ChildNodes)
+                                {
+                                    if (confProp.Equals(n.Name))
+                                    {
+                                        XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
+                                        node.InnerText = n.InnerText;
+                                        elem.AppendChild(node);
+                                    }
+                                }
+
+                                XmlNode nodeAdded = xmlDocument.CreateNode(XmlNodeType.Element, confProp, @"http://maven.apache.org/POM/4.0.0");
+
+                                nodeAdded.InnerText = confPropVal;
+                                elem.AppendChild(nodeAdded);
+                                elems[count] = elem;
+
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                WriteModelToPom(model);    
+            
+        }
+
+        public void RenameMavenCompilePluginConfiguration(string pluginGroupId, string pluginArtifactId, string confPropCollection, string confProp, string confPropVal, string newPropVal)
+        {
+            NPanday.Model.Pom.Model model = ReadPomAsModel();
+
+            foreach (Plugin plugin in model.build.plugins)
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+
+                if (pluginGroupId.Equals(plugin.groupId.ToLower())
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                {
+                    if (plugin.configuration == null && plugin.configuration.Any == null)
+                    {
+                        return;
+                    }
+                    XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
+                    for (int count = elems.Length; count-- > 0; )
+                    {
+                        if (confPropCollection.Equals(elems[count].Name))
+                        {
+                            XmlElement elem = xmlDocument.CreateElement(confPropCollection, @"http://maven.apache.org/POM/4.0.0");
+
+                            //Loop throught existing item and
+                            //append everything except for the item to change
+                            //check for the item and change it
+                            foreach (XmlNode n in elems[count].ChildNodes)
+                            {
+                                if (confProp.Equals(n.Name))
+                                {
+                                    XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
+                                    if (n.InnerText.Equals(confPropVal))
+                                    {
+                                        node.InnerText = newPropVal;
+                                    }
+                                    else
+                                    {
+                                        node.InnerText = n.InnerText;
+                                    }
+                                    elem.AppendChild(node);
+                                }
+                            }
+                            
+                            elems[count] = elem;
+
+                            break;
+                        }
+                    }
+                }
+            }
+            WriteModelToPom(model);
+        }
+
+
+        public void RemoveMavenCompilePluginConfiguration(string pluginGroupId, string pluginArtifactId, string confPropCollection, string confProp, string confPropVal)
+        {
+            NPanday.Model.Pom.Model model = ReadPomAsModel();
+
+            foreach (Plugin plugin in model.build.plugins)
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+
+                if (pluginGroupId.Equals(plugin.groupId.ToLower())
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                {
+                    if (plugin.configuration == null && plugin.configuration.Any == null)
+                    {
+                        return;
+                    }
+                    XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
+                    for (int count = elems.Length; count-- > 0; )
+                    {
+                        if (confPropCollection.Equals(elems[count].Name))
+                        {
+                            XmlElement elem = xmlDocument.CreateElement(confPropCollection, @"http://maven.apache.org/POM/4.0.0");
+
+                            //Loop throught existing item and
+                            //append everything except for the item to change
+                            //check for the item and change it
+                            foreach (XmlNode n in elems[count].ChildNodes)
+                            {
+                                if (confProp.Equals(n.Name))
+                                {
+                                    XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
+                                    if (!n.InnerText.Equals(confPropVal))
+                                    {
+                                        node.InnerText = n.InnerText;
+                                        elem.AppendChild(node);
+                                    }
+                                }
+                            }
+
+                            elems[count] = elem;
+
+                            break;
+                        }
+                    }
+                }
+            }
+            WriteModelToPom(model);
+        }
+
+
+        
+        
+        public void AddMavenResxPluginConfiguration(string pluginGroupId, string pluginArtifactId, string confPropCollection, string confProp, string sourceFile, string resxName)
+        {
+            NPanday.Model.Pom.Model model = ReadPomAsModel();
+
+            foreach (Plugin plugin in model.build.plugins)
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+
+                if (pluginGroupId.Equals(plugin.groupId.ToLower())
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                {
+                    if (plugin.configuration == null && plugin.configuration.Any == null)
+                    {
+                        return;
+                    }
+                    XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
+                    for (int count = elems.Length; count-- > 0; )//(XmlElement elem in ((XmlElement[])plugin.configuration.Any))
+                    {
+
+                        if (confPropCollection.Equals(elems[count].Name))
+                        {
+                            XmlElement elem = xmlDocument.CreateElement(confPropCollection, @"http://maven.apache.org/POM/4.0.0");
+
+                            //Loop throught existing item and
+                            //append everything including the newly added item
+                            
+                            
+
+                            foreach (XmlNode n in elems[count].ChildNodes)
+                            {
+                                if (confProp.Equals(n.Name))
+                                {
+                                   
+                                    XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
+                                    XmlNodeList nList = n.ChildNodes;
+                                    foreach (XmlNode nChild in nList)
+                                    {
+                                        XmlNode innerChild = xmlDocument.CreateNode(XmlNodeType.Element, nChild.Name, @"http://maven.apache.org/POM/4.0.0");
+                                        innerChild.InnerText = nChild.InnerText;
+                                        node.AppendChild(innerChild);
+                                    }
+                                    
+                                    
+                                    elem.AppendChild(node);
+
+                                }
+                            }
+                            
+                            XmlNode confPropNode = xmlDocument.CreateNode(XmlNodeType.Element, confProp, @"http://maven.apache.org/POM/4.0.0");
+                            XmlNode nodeSourceFile = xmlDocument.CreateNode(XmlNodeType.Element, "sourceFile", @"http://maven.apache.org/POM/4.0.0");
+                            XmlNode nodeResxName = xmlDocument.CreateNode(XmlNodeType.Element, "name", @"http://maven.apache.org/POM/4.0.0");
+                            nodeSourceFile.InnerText = sourceFile;
+                            nodeResxName.InnerText = resxName;
+
+                            confPropNode.AppendChild(nodeSourceFile);
+                            confPropNode.AppendChild(nodeResxName);
+
+                            elem.AppendChild(confPropNode);
+
+                            elems[count] = elem;
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+            WriteModelToPom(model);
+
+        }
+
+        public void RenameMavenResxPluginConfiguration(string pluginGroupId, string pluginArtifactId, string confPropCollection, string confProp, string sourceFile, string resxName, string newSourceFile, string newResxName)
+        {
+            NPanday.Model.Pom.Model model = ReadPomAsModel();
+
+            foreach (Plugin plugin in model.build.plugins)
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+
+                if (pluginGroupId.Equals(plugin.groupId.ToLower())
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                {
+                    if (plugin.configuration == null && plugin.configuration.Any == null)
+                    {
+                        return;
+                    }
+                    XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
+                    for (int count = elems.Length; count-- > 0; )//(XmlElement elem in ((XmlElement[])plugin.configuration.Any))
+                    {
+
+                        if (confPropCollection.Equals(elems[count].Name))
+                        {
+                            XmlElement elem = xmlDocument.CreateElement(confPropCollection, @"http://maven.apache.org/POM/4.0.0");
+
+                            //Loop throught existing item and
+                            //append everything including the newly added item
+
+                            foreach (XmlNode n in elems[count].ChildNodes)
+                            {
+                                if (confProp.Equals(n.Name))
+                                {
+
+                                    XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
+                                    XmlNodeList nList = n.ChildNodes;
+                                    foreach (XmlNode nChild in nList)
+                                    {
+                                        XmlNode innerChild = xmlDocument.CreateNode(XmlNodeType.Element, nChild.Name, @"http://maven.apache.org/POM/4.0.0");
+                                        if (nChild.InnerText.Equals(sourceFile) && nChild.Name.Equals("sourceFile"))
+                                        {
+                                            innerChild.InnerText = newSourceFile;
+                                        }
+                                        else if(nChild.InnerText.Equals(resxName) && nChild.Name.Equals("name"))
+                                        {
+                                            innerChild.InnerText = newResxName;
+                                        }
+                                        else
+                                        {
+                                            innerChild.InnerText = nChild.InnerText;
+                                            
+                                        }
+                                        node.AppendChild(innerChild);
+                                        
+                                    }
+                                    elem.AppendChild(node);
+
+                                }
+                            }
+                            elems[count] = elem;
+
+                            break;
+                        }
+                    }
+                }
+            }
+            WriteModelToPom(model);
+        }
+
+
+
+        public void RemoveMavenResxPluginConfiguration(string pluginGroupId, string pluginArtifactId, string confPropCollection, string confProp, string sourceFile, string resxName)
+        {
+            NPanday.Model.Pom.Model model = ReadPomAsModel();
+
+            foreach (Plugin plugin in model.build.plugins)
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+
+                if (pluginGroupId.Equals(plugin.groupId.ToLower())
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                {
+                    if (plugin.configuration == null && plugin.configuration.Any == null)
+                    {
+                        return;
+                    }
+                    XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
+                    for (int count = elems.Length; count-- > 0; )//(XmlElement elem in ((XmlElement[])plugin.configuration.Any))
+                    {
+
+                        if (confPropCollection.Equals(elems[count].Name))
+                        {
+                            XmlElement elem = xmlDocument.CreateElement(confPropCollection, @"http://maven.apache.org/POM/4.0.0");
+
+                            //Loop throught existing item and
+                            //append everything including the newly added item
+
+                            foreach (XmlNode n in elems[count].ChildNodes)
+                            {
+                                if (confProp.Equals(n.Name))
+                                {
+
+                                    XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
+                                    XmlNodeList nList = n.ChildNodes;
+                                    foreach (XmlNode nChild in nList)
+                                    {
+                                        XmlNode innerChild = xmlDocument.CreateNode(XmlNodeType.Element, nChild.Name, @"http://maven.apache.org/POM/4.0.0");
+                                        if (nChild.Name.Equals("sourceFile"))
+                                        {
+                                            if (!nChild.InnerText.Equals(sourceFile))
+                                            {
+                                                innerChild.InnerText = nChild.InnerText;
+                                                node.AppendChild(innerChild);
+                                            }
+                                        }
+                                                                            
+                                        if (nChild.Name.Equals("name"))
+                                        {
+                                            if(!nChild.InnerText.Equals(resxName))
+                                            {
+                                                innerChild.InnerText = nChild.InnerText;
+                                                node.AppendChild(innerChild);
+                                            }
+                                        }
+                                    }
+                                    if (node.HasChildNodes)
+                                    {
+                                        elem.AppendChild(node);
+                                    }
+                                    
+                                }
+                            }
+                            elems[count] = elem;
+
+                            break;
+                        }
+                    }
+                }
+            }
+            WriteModelToPom(model);
+        }
+
+        
         void addPluginExecution(Plugin plugin, string goal, string phase)
         {
             if (string.IsNullOrEmpty(goal))
