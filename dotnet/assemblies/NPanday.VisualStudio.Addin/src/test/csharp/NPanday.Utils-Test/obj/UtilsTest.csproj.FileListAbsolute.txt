@@ -1,0 +1,8 @@
+C:\Projects\community-trunk\dotnet\assemblies\NPanday.Utils\src\test\csharp\NPanday.Utils-Test\obj\Debug\ResolveAssemblyReference.cache
+C:\Projects\community-trunk\dotnet\assemblies\NPanday.Utils\src\test\csharp\NPanday.Utils-Test\bin\Debug\ClassLibrary1.dll
+C:\Projects\community-trunk\dotnet\assemblies\NPanday.Utils\src\test\csharp\NPanday.Utils-Test\bin\Debug\ClassLibrary1.pdb
+C:\Projects\community-trunk\dotnet\assemblies\NPanday.Utils\src\test\csharp\NPanday.Utils-Test\bin\Debug\NPanday.Utils.dll
+C:\Projects\community-trunk\dotnet\assemblies\NPanday.Utils\src\test\csharp\NPanday.Utils-Test\bin\Debug\nunit.framework.dll
+C:\Projects\community-trunk\dotnet\assemblies\NPanday.Utils\src\test\csharp\NPanday.Utils-Test\bin\Debug\nunit.framework.xml
+C:\Projects\community-trunk\dotnet\assemblies\NPanday.Utils\src\test\csharp\NPanday.Utils-Test\obj\Debug\ClassLibrary1.dll
+C:\Projects\community-trunk\dotnet\assemblies\NPanday.Utils\src\test\csharp\NPanday.Utils-Test\obj\Debug\ClassLibrary1.pdb
