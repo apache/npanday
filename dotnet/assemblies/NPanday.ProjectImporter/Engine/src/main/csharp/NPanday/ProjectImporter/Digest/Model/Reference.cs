@@ -282,7 +282,18 @@ namespace NPanday.ProjectImporter.Digest.Model
                         foreach (Repository repo in profile.repositories)
                         {
                             ArtifactContext artifactContext = new ArtifactContext();
-                            artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, repo.url, ext);
+
+                            if (artifact.Version.Contains("SNAPSHOT"))
+                            {
+                                string newVersion = GetSnapshotVersion(artifact, repo.url);
+                                artifact.Version = artifact.Version.Replace("SNAPSHOT", newVersion);
+                                string remotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, repo.url, ext);
+                                artifact.RemotePath = remotePath.Replace((newVersion + "/" ), "SNAPSHOT/");
+                            }
+                            else
+                            {
+                                artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, repo.url, ext);
+                            }
 
                             if (downloadArtifact(artifact))
                             {
@@ -298,6 +309,80 @@ namespace NPanday.ProjectImporter.Digest.Model
             {
                 return false;
             }
+        }
+
+        private static string GetSnapshotVersion(NPanday.Artifact.Artifact artifact, string repo)
+        {
+            string timeStampVersion = null;
+            string metadataPath = repo + "/" + artifact.GroupId + "/" + artifact.ArtifactId;
+            string snapshot = "<snapshot>";
+            string metadata = "/maven-metadata.xml";
+
+            if (urlExists(metadataPath + metadata))
+            {
+                metadataPath = metadataPath + metadata;
+            }
+            else if (urlExists(metadataPath + "/" + artifact.Version + metadata))
+            {
+                metadataPath = metadataPath + artifact.Version + metadata;
+            }
+            else
+            {
+                return null;
+            }
+
+            WebClient client = new WebClient();
+            Stream strm = client.OpenRead(metadataPath);
+            StreamReader sr = new StreamReader(strm);
+
+            string timeStamp = null;
+            string buildNumber = null;
+            string line;
+            
+            while ((line = sr.ReadLine()) != null && (timeStamp == null || buildNumber == null))
+            {
+                int startIndex;
+                int len;
+
+                if (line.Contains("<timestamp>"))
+                {
+                    startIndex = line.IndexOf("<timestamp>") + "<timestamp>".Length;
+                    len = line.IndexOf("</timestamp>") - startIndex;
+
+                    timeStamp = line.Substring(startIndex, len);
+                }
+
+                if (line.Contains("<buildNumber>"))
+                {
+                    startIndex = line.IndexOf("<buildNumber>") + "<buildNumber>".Length;
+                    len = line.IndexOf("</buildNumber>") - startIndex;
+
+                    buildNumber = line.Substring(startIndex, len);
+                }
+            }
+
+            timeStampVersion = timeStamp + "-" + buildNumber;
+
+            return timeStampVersion;
+        }
+
+        private static bool urlExists(string repo)
+        {
+            Uri urlCheck = new Uri(repo);
+            WebRequest request = WebRequest.Create(urlCheck);
+            request.Timeout = 15000;
+
+            WebResponse response;
+
+            try
+            {
+                response = request.GetResponse();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }            
         }
 
         static bool downloadArtifact(Artifact.Artifact artifact)
