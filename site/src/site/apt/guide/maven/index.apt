@@ -1,0 +1,27 @@
+ ----
+ Maven Command Line Users's Guide
+ ----
+ 18 February 2010
+ ----
+
+Maven Command Line Users's Guide
+
+  This guide is for those that wish to run builds from the command line using Maven, and to author or alter POMs
+  themselves without the help of the Visual Studio Add-in. It assumes that you already have NPanday successfully
+  installed as shown in the {{{../installation/index.html} Installation instructions}}.
+
+* Contents
+
+  * {{{./generate-project.html} Generating template projects}}
+
+  * {{{./dependencies.html} Adding dependencies to the project}}
+
+  * {{{./project-types.html} Available project types}}
+
+  * {{{../../plugins/index.html} Available plugins}}
+
+  * {{{./releasing.html} Releasing .NET projects with Maven}}
+
+  * {{{./integration-tests.html} Including Integration Tests}}
+
+  []  

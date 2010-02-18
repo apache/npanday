@@ -1,0 +1,26 @@
+ ----
+ NPanday Developer's Guide
+ ----
+ 18 February 2010
+ ----
+
+NPanday Developer's Guide
+
+  This guide is for those wishing to contribute to NPanday, and contains references for current developers.
+
+* Contents
+
+  * {{{./building.html} Building NPanday}}
+
+  * {{{./conventions.html} Conventions to use}}
+
+  * {{{./design/index.html} NPanday Architecture}}
+
+  []
+
+** References for NPanday Developers
+
+  * {{{./releasing.html} Releasing NPanday}}
+
+  []
+  

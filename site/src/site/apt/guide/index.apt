@@ -20,6 +20,8 @@ NPanday User's Guide
                                                                   run builds outside of Visual Studio, or customize the
                                                                   generated POM
 
+    * {{{./devinfra/index.html} Using NPanday with your Maven Development Infrastructure}}                                                                  
+
     * {{{/plugins/index.html} Maven Plugin Reference}} - reference for Maven users constructing POMs by hand
 
     * {{{./troubleshooting.html} Troubleshooting}} - for when it all goes wrong

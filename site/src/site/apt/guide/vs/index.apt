@@ -14,8 +14,8 @@ Using the NPanday Visual Studio Add-in
   This guide will walk you through a basic introduction to the Visual Studio Add-in, how to use it for typical project
   tasks, and what configuration options are available.
 
-  ~~TODO Finally, we will discuss the use cases where you might need to
-  ~~manipulate the Maven POM directly and other advanced use cases.
+  Finally, we will discuss the use cases where you might need to manipulate the Maven POM directly and other advanced
+  use cases.
 
   After completing this guide, you may want to read the guide to
   {{{../devinfra/index.html} Using NPanday with your Maven Development Infrastructure}}.
@@ -49,8 +49,18 @@ Using the NPanday Visual Studio Add-in
 
   * {{{./settings.html} Maven settings}} - how to configure an alternate Maven settings file
 
+  * {{{../maven/releasing.html} Releasing .NET projects with Maven}} - how to use the Maven release mechanism from the
+    command line
+
   []
 
-~~TODO MAVEN
+** Advanced Maven Usage
+
+  * {{{../../plugins/index.html} Available plugins}}
+
+  * {{{./integration-tests.html} Including Integration Tests}}
+
+  []
+
 
   

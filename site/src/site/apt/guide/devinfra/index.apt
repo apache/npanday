@@ -1,0 +1,17 @@
+ ----
+ Using NPanday with your Maven Development Infrastructure
+ ----
+ 18 February 2010
+ ----
+
+Using NPanday with your Maven Development Infrastructure
+
+  This guide shows how to configure development infrastructure to work with NPanday.
+
+* Contents
+
+  * {{{./artifact-repository.html} Setting up an Artifact Repository}}
+
+  * {{{./continuum.html} Using Continuum to release .NET projects}}
+
+  []
