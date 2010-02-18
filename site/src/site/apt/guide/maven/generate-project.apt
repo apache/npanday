@@ -1,0 +1,87 @@
+ ------
+ Creating a Simple Project
+ ------
+ ------
+ 25 Feb 2009
+ ------
+
+Creating a Simple Project
+
+  Before you start this procedure, you must have all {{{../installation/index.html} Pre-requisites}} in place and have
+  successfully completed all steps in the previous section entitled Installing and Verifying NPanday .NET Build Tool.
+
+  We will use the Maven Archetype Plugin to generate a skeleton project. It will be created as a subdirectory of the
+  current working directory in the command shell.
+
+  Execute the following command to create a C# project:
+
+  ~~TODO: how can we get the archetypes into a catalog so they can be easily viewed?
+
+----
+mvn archetype:generate -DarchetypeArtifactId=maven-archetype-dotnet-simple -DarchetypeGroupId=org.apache.maven.dotnet \
+  -DarchetypeVersion=[version]>>>
+----
+
+  When prompted, select the co-ordinates for the project that you wish to use, eg:
+
+    * group ID = <<<com.example>>>
+
+    * artifact ID = <<<Example.Project>>>
+
+    * version = <<<1.0-SNAPSHOT>>>
+
+    []
+
+  The command creates the project in the Example.Project directory, which will now contain the following:
+  
++------+
+.
+|-- src
+| `-- main
+|   `-- csharp
+|     `-- Sample
+|       `-- MyApp.cs
+|   `-- resources
+| `-- test
+|   `-- csharp
+`- pom.xml
++------+
+
+  From inside the Solution directory (<<<Example.Project>>>), execute the following command to build and install the
+  Example.Project DLL files into your repository:
+  
+  <<<mvn install>>>
+  
+  The <<<mvn install>>> command typically puts artifacts (installs them) into the repository here,
+  <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository>>>.
+  
+  NPanday installs the artifacts in a .NET local repository, located in
+  <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac>>>.
+  
+  For the <<<Example.Project>>> solution the artifact is placed here,
+  <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac\\gac_msil\\Example.Project\\1.0-SNAPSHOT__com.example\Example.Project.dll>>>
+  
+  The contents in <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac\\gac_msil>>> SHOULD NOT be manually modified or
+  the project build will fail due to artifacts that are not properly indexed and are not synchronized with the
+  repository. In case the contents have been modified, delete the
+  <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac>>> directory then re-install the project.
+  
+  The sample project contains NUnit tests. If the build fails on <<<nunit-console>>>, make sure you have NUnit 2.2+
+  installed and located in the PATH.
+  
+  You can clean up the target directory and download dependencies by executing:
+  
+  <<<mvn clean>>>
+
+* Creating other types of projects
+
+  Other types of template projects are available. To use them instead, change the <<<archetypeArtifactId>>> option to
+  one of the following:
+
+    * <<<maven-artchetype-dotnet-simple>>> - simple C# project with unit tests in the Maven directory layout
+
+    * <<<maven-artchetype-vb-simple>>> - simple Visual Basic project with unit tests in the Maven directory layout
+
+    * <<<maven-artchetype-netexecutable>>> - simple project for creating a console executable
+
+    []

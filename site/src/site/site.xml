@@ -32,9 +32,6 @@
       <item name="NPanday Plugins" href="/plugins/index.html"/>
     </menu>
     <!-- TODO: rebuild -->
-    <menu name="Getting Started" collapse="true">
-      <item name="Creating a Simple Project" href="/guide/simple_project.html"/>
-    </menu>
     <menu name="IDE Integration" collapse="true">
       <item name="Releasing Project" href="/ide/release.html" collapse="true">
 				<item name="Using Command Line" href="/ide/commandline.html"/>
