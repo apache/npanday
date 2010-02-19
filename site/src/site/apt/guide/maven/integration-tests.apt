@@ -1,0 +1,40 @@
+ ------
+ Integration Tests
+ ------
+ ------
+ 26 Feb 2009
+ ------
+
+Integration Tests
+
+  Integration tests are run on projects that contains the plugin <<<maven-test-plugin>>> under the POM build
+  configuration.
+  
+  Since integration test itself is for testing, the <<<\<testSourceDirectory\>>>> is no longer needed and the
+  <<<\<sourceDirectory\>>>> is enough to be able to run the project test successfully. This matches the Maven
+  convention of placing integration tests in a separate module.
+
+  The following POM snippet is an example build configuration of an integration test project.
+
++------+
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      [...]
+      <plugin>
+      <groupId>npanday.plugin</groupId>
+      <artifactId>maven-test-plugin</artifactId>
+      <extensions>true</extensions>
+      <configuration>
+        <integrationTest>true</integrationTest>
+      </configuration>
+      </plugin>
+    </plugins>
+  </build>
++------+
+
+  To run the test, simply import the project and execute the NPanday's test goal. You can refer to
+  {{{importing.html} Importing Projects}} and {{{execute_goals.html} Test}} sections for instructions on importing and
+  executing test goal respectively.
+
+  Like regular unit tests, the plugin requires that NUnit be installed and on the PATH to execute the tests.
