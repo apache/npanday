@@ -12,7 +12,7 @@ Release Notes for NPanday 1.1
 * Compatibility Changes
 
   * Projects generated with NPanday 1.0.2 may have hardcoded paths that can be removed by regenerating. For more
-    information, see {{{guide/vs/resyncReferences.html} Making VS Project Files Portable}}.
+    information, see {{{./guide/vs/resyncReferences.html} Making VS Project Files Portable}}.
 
 * New in NPanday 1.1
 

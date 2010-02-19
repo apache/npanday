@@ -10,7 +10,7 @@ NPanday User's Guide
 
   This guide is broken into the following sections:
 
-    * {{{#Introduction} Introduction}} - How NPanday works
+    * {{{./index.html#Introduction} Introduction}} - How NPanday works
 
     * {{{./installation/index.html} Installation}} - How to download and install an NPanday release
 

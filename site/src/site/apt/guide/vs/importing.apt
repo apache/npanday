@@ -7,7 +7,7 @@
 
 Importing Projects
 
-  This section provides more deetails on how on importing a Visual Studio project using the
+  This section provides more details on how on importing a Visual Studio project using the
   <Generate Solution's POM Information...> feature works. As we saw in the {{{./quickstart.html} Quickstart example}},
   this feature will generate <<<pom.xml>>> files from an existing Visual Studio solution file. The generated
   <<<pom.xml>>> file will contain the latest versions of the artifact dependencies used for the project.
@@ -84,7 +84,7 @@ Importing Projects
 
   The wsdl goal is the one responsible for building and creating webservice proxy classes. And, all the web references
   used in the project are listed inside the <<< \<webreferences\> >>> tag. For more instructions on adding, renaming,
-  and deleting web references, refer to {{{webReferences.html} Web References}} section of this guide.
+  and deleting web references, refer to {{{./webReferences.html} Web References}} section of this guide.
   
   Other project types will generate corresponding plugins needed to build that type of project (for example, the compile
   plugin, aspx plugin, or msbuild plugin).

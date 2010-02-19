@@ -58,7 +58,7 @@ Using the NPanday Visual Studio Add-in
 
   * {{{../../plugins/index.html} Available plugins}}
 
-  * {{{./integration-tests.html} Including Integration Tests}}
+  * {{{../maven/integration-tests.html} Including Integration Tests}}
 
   []
 

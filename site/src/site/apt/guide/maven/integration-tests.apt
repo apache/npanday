@@ -33,8 +33,10 @@ Integration Tests
   </build>
 +------+
 
-  To run the test, simply import the project and execute the NPanday's test goal. You can refer to
-  {{{importing.html} Importing Projects}} and {{{execute_goals.html} Test}} sections for instructions on importing and
-  executing test goal respectively.
+  To run the test:
+
+----
+mvn test
+----
 
   Like regular unit tests, the plugin requires that NUnit be installed and on the PATH to execute the tests.
