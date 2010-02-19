@@ -1,0 +1,71 @@
+ ----
+ Releasing .NET Projects with Maven
+ ----
+ 19 Feb 2010
+ ----
+
+Releasing .NET Projects with Maven
+
+  Releasing a project with NPanday follows the same technique as for any Maven project, so the Maven documentation can
+  be consulted on the topic. Here we will provide a brief summary, and give notes on NPanday specific issues. You can
+  refer to the release documentation in
+  {{{http://maestrodev.com/node/196} Better Builds with Maven}} for more information.
+
+* Setting up the POM
+
+  Before preparing the release, the Maven POM must be set up appropriate for release. The version of the project should
+  be a SNAPSHOT, but all SNAPSHOT dependency, parent and plugin references outside the project solution should be
+  set to fixed releases.
+
+  The <<<\<scm\>>>> tag should be configured in the project's <<<pom.xml>>>. It should look similar to the following:
+
++------+
+  <scm>
+    <connection>scm:svn:[project_url]</connection>
+    <developerConnection>scm:svn:[project_url]</developerConnection>
+    <url>[URL of the project]</url>
+  </scm>
++------+
+
+* Preparing References
+
+  Before starting the release, projects with GAC or COM references should run an additional preparation step:
+
+----
+mvn npanday.plugin:NPanday.Plugin.SysRef.JavaBinding:prepare
+----
+
+  The reference (DLL) will be searched from <<<C:\\WINDOWS\\assembly\\GAC_MSIL>>> directory and will be put in
+  <<<C:\\WINDOWS\\Temp\\NPanday>>> then renamed following the artifact filename format <<<[artifactId]-[version].[packaging]>>>.
+
+  After the reference is renamed, it will then be installed in the local repository
+  <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository>>> for it to be used when releasing the project.
+
+  The following are examples of references of different types which are renamed then installed in the local repository,
+
+  * <<gac_msil>> file: <<<Microsoft.JScript-8.0.0.0-b03f5f7f11d50a3a.gac_msil>>>
+
+  * <<com_reference>> file: <<<Acrobat-1.1.0.0-{E64169B3-3592-47D2-816E-602C5C13F328}-1.1-0.com_reference>>>
+
+  []
+
+* Preparing and Performing the Release
+
+  Following this, the Maven release process can be used. First, it needs to be prepared:
+
+----
+mvn release:prepare
+----
+
+  Following the prompts will adjust the versions and manipulate SCM to end up with a tagged release, and trunk ready
+  for more development.
+
+  After that (or at a point in the future), the release can be built and published using the perform command:
+
+----
+mvn release:perform
+----
+
+  This will also deploy the built artifacts to an artifact repository. See
+  {{{../devinfra/artifact-repository.html} Setting up an Artifact Repository}} for information on how to do this and
+  to configure the POM's <<<distributionManagement>>> section accordingly.

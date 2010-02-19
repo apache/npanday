@@ -32,14 +32,7 @@
       <item name="NPanday Plugins" href="/plugins/index.html"/>
     </menu>
     <!-- TODO: rebuild -->
-    <menu name="IDE Integration" collapse="true">
-      <item name="Releasing Project" href="/ide/release.html" collapse="true">
-				<item name="Using Command Line" href="/ide/commandline.html"/>
-				<item name="Using Build Management" href="/ide/continuum.html"/>
-      </item>
-      <item name="Integration Test" href="/ide/test.html"/>
-    </menu>
-		
+
     ${reports}
 
     <menu name="Resources">
