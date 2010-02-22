@@ -1,0 +1,62 @@
+ ----
+ Releasing NPanday
+ ----
+
+Pre-release checklist
+
+  * Make sure that the copyright and licenses are on all source code
+
+  * Check the build is successful in continuum
+
+  []
+
+Creating a Release Candidate
+
+  Send a proposal in to the discussion forum regarding the release and the issues that would be fix in the said release.
+
+  The release will be done in {{http://ci.npanday.org/continuum/}}. Go to the release page and select <Prepare>.
+
+  Fill in the following values:
+
+    * the SCM tag should be <<<npanday-1.2-RC1>>> or similar (use the release version)
+
+    * the SCM tag base should be {{https://npanday.svn.codeplex.com/svn/tags/}}
+
+    * use <<<clean>>> as the preparation goal
+
+    * check the values for <Release version> and <Next development version> are correct
+
+    []
+
+  After this successfully completes, proceed with the <Perform> step.
+
+  Fill in the following values:
+
+    * use <<<clean deploy>>> as the goals (the default)
+
+    []
+
+  To verify if the release was successful, check that the artifacts has been populated in
+  {{http://repo.npanday.org/archiva/repository/npanday-releases/}}
+
+Testing the Release Candidate
+
+  Announce the RC and the community will be given a 48hr window to test. If the RC passes, same process would be done
+  for the final version. eg. <<<1.1>>>.
+
+Voting on the Release
+
+  Post the Majority of Vote on the results of the release.
+
+Finalising the Release
+
+  After the approval of the developers:
+
+    * Update Download Page to upload the repository builder from the latest release and mark the version as released
+
+    * Make the announcement on the forum
+
+    []
+
+  <<Note:>> If a serious flaw is found in the release, the release version will not be removed in the distribution list
+            but instead a new release (1.1.1) should be provided.
