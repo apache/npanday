@@ -118,3 +118,8 @@ child Group ID: NPanday.Model, NPanday.Models or NPanday.Model.VSContent
 +------+
 
  * Use the default setup within the npanday-settings.xml is to configure cross-platform builds.
+
+* Plugin Naming Convention
+
+  For plugins going forward, NPanday will use the normal convention of <subject><<<-maven-plugin>>>, e.g.
+  <<<wix-maven-plugin>>>.
