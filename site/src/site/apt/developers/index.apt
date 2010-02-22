@@ -12,6 +12,8 @@ NPanday Developer's Guide
 
   * {{{./building.html} Building NPanday}}
 
+  * {{{./debugging-addin.html} Debugging the Visual Studio Add-in}}
+
   * {{{./conventions.html} Conventions to use}}
 
   * {{{./design/index.html} NPanday Architecture}}
