@@ -17,6 +17,10 @@ Quick Start Guide
   Next, in Visual Studio start the NPanday Build System from Tools>NPanday Build System. You will see NPanday starting
   in the Visual Studio Output pane.
 
+  <Note:> After you start the NPanday Build System and it is running, it no longer appears as an option on the Tools
+          menu (and reappears again when Visual Studio is stopped and started). Therefore, if you had previously started
+          the NPanday Build System and it is still running, you do not need to start it again in this step.
+
 * Creating a Project
 
   Creating a project for use with NPanday is the same as you would normally do so for any project within Visual Studio.

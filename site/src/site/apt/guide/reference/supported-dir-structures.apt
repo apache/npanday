@@ -1,0 +1,118 @@
+ ----
+ Supported Directory Structures
+ ----
+ ----
+
+Supported Directory Structures
+
+  The following directory structures are supported by NPanday's Visual Studio integration. Note that using the bare
+  Maven plugins you can support any directory structure, but it may require manual configuration of various plugin
+  fields.
+
+* Multi-module Projects
+
+  Multi-module project with a parent POM containing one or more modules, then a subdirectory for each module, which
+  equates to a VS "project". The <<<.sln>>> file sits beside the parent POM, and each subdirectory contains a
+  <<<.csproj>>>, <<<pom.xml>>> and source code. Source code is not typically put in a subdirectory under the module, but
+  it might be. NUnit test code may be within each module in a directory named "Tests", or it may be in a separate
+  module.
+
+----
+MySolution/
+|-- MyClassLibrary/
+|   |-- Properties/
+|   |   `-- AssemblyInfo.cs
+|   |-- Class1.cs
+|   |-- MyClassLibrary.csproj
+|   `-- pom.xml
+|-- MyClassLibraryTest/
+|   |-- Properties/
+|   |   `-- AssemblyInfo.cs
+|   |-- MyAppTest.cs
+|   |-- MyClassLibraryTest.csproj
+|   `-- pom.xml
+|-- MyConsoleApplication/
+|   |-- Properties/
+|   |   `-- AssemblyInfo.cs
+|   |-- MyConsoleApplication.csproj
+|   |-- Program.cs
+|   `-- pom.xml
+|-- MySolution.sln
+`-- pom.xml
+----
+
+* Flat Single Module Project
+
+  Flat structure with <<<pom.xml>>>, <<<.sln>>>, <<<.csproj>>> and source code all in the same directory. Source code is
+  not typically put in a subdirectory under the module, but it might be. If present, NUnit test code should be in a
+  directory named "Tests", which is not packaged in the main artifact. See note below about "nested" projects. The
+  "flat" structure is only supported as a single project with no sub-modules, for projects of type <<<library>>> (DLL)
+  and <<<exe>>>.
+
+----
+FlatSingleModule/
+|-- Properties/
+|   `-- AssemblyInfo.cs
+|-- Class1.cs
+|-- FlatSingleModule.csproj
+|-- FlatSingleModule.sln
+`-- pom.xml
+----
+
+* Visual Studio Web Site Project
+
+  Visual Studio "Web Site" (File -> New -> Web Site) project with <<<.sln>>> file copied into the project directory and
+  modified to normalize paths. NPanday will build a zip file containing the aspx files and compiled dlls (in a bin/
+  directory). Note: There is an issue with building this type of project twice in a row: you must 'clean' before
+  building again.
+
+----
+MyWebSite
+|-- App_Data/
+|-- Default.aspx
+|-- Default.aspx.cs
+|-- MyWebSite.sln
+`-- pom.xml
+----
+
+* Visual Studio ASP.NET Web Application
+
+  Visual Studio "ASP.NET Web Application" (File -> New -> Project, "ASP.NET Web Application"). Structure is similar to
+  a multi-module project with a parent POM and <<<.sln>>> file at the top, plus a subdirectory for each project/module.
+  NPanday should build a .zip file as in the previous web site example containing pages and dlls.
+
+----
+MyProject/
+|-- MyWebApplication/
+|   |-- Properties/
+|   |   `-- AssemblyInfo.cs
+|   |-- Default.aspx
+|   |-- Default.aspx.cs
+|   |-- Default.aspx.designer.cs
+|   |-- MyWebApplication.csproj
+|   |-- Web.config
+|   `-- pom.xml
+|-- MyProject.sln
+`-- pom.xml
+----
+
+ 	~~TODO: ASP.NET Web Service Application
+
+ 	~~TODO: ADO.NET project structure
+
+Notes
+
+  [[1]] Some versions of NPanday have limited support for a "nested" project-within-project structure with source code
+        in the parent directory. This structure will have a <<<.sln>>> <and> <<<.vbproj>>> file at the top, then
+        directories for additional modules beneath, each containing a <<<.vbproj>>> file. This structure is
+        <<not recommended>> and not likely to be fully supported by Maven tools such as the Release plugin
+
+  [[2]] In the examples, <<<.vbproj>>> and <<<.csproj>>> are interchangeable, each structure should work for any
+        language, and a solution may be composed of different modules using different languages. In addition, tests
+ 	    within a module may be written in a different language than the main artifact
+
+  [[3]] The Visual Studio integration uses the project directory as the main directory for source code. However,
+        NPanday archetypes will generate projects using the more Maven-like convention of <<<src/main/csharp>>>, etc.
+
+  []
+ 	
