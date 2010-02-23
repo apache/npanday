@@ -20,7 +20,8 @@ Using the NPanday Visual Studio Add-in
   After completing this guide, you may want to read the guide to
   {{{../devinfra/index.html} Using NPanday with your Maven Development Infrastructure}}.
 
-  If you encounter any problems, don't forget to consult the {{{../troubleshooting.html} Troubleshooting guide}}.
+  If you encounter any problems, don't forget to consult the
+  {{{../reference/troubleshooting.html} Troubleshooting guide}}.
 
 * Contents
 
@@ -53,14 +54,4 @@ Using the NPanday Visual Studio Add-in
     command line
 
   []
-
-** Advanced Maven Usage
-
-  * {{{../../plugins/index.html} Available plugins}}
-
-  * {{{../maven/integration-tests.html} Including Integration Tests}}
-
-  []
-
-
   

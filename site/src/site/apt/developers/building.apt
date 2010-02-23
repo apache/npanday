@@ -97,7 +97,7 @@ mvn test -Prun-its -Dnpanday.version=1.1
 
   It is common under the current architecture of NPanday to get clashes between versions, so if you are developing on a
   different version to the one previously run, you may wish to clean up your environment beforehand. The full steps to
-  do so can be found in the {{{../guide/installing/uninstall.apt} Uninstalling NPanday}} guide. You will need to
+  do so can be found in the {{{../guide/installation/uninstall.html} Uninstalling NPanday}} guide. You will need to
   rebuild NPanday with the steps above afterwards.
 
   <Note:> Not all steps are always required. The most common source of problems is the <<<uac>>> directory, and in
