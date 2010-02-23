@@ -1,0 +1,81 @@
+ ----
+ Setting up an Artifact Repository
+ ----
+
+Setting up an Artifact Repository
+
+  Setting up an artifact repository is highly recommended for working with NPanday and Maven projects in general.
+
+  In this example, we configure {{{http://archiva.apache.org/} Apache Archiva}}, however other repository managers
+  will operate similarly. Instructions on installing Archiva can be found on the
+  {{{http://archiva.apache.org/docs/1.3/quick-start.html} Archiva web site}}.
+
+* Creating an NPanday repository
+
+  ~~TODO: pictures would help
+
+  Logged in as the administrator created when installed, go to the <Repositories> tab and add a new managed repository.
+  Use the following values:
+
+    * <Identifier>: <<<npanday>>>
+
+    * <Name>: NPanday Repository
+
+    * <Location>: the path where the NPanday release repository was unpacked on your machine
+
+    []
+
+  After adding this, you may be prompted due to the content already existing - you can safely request to continue.
+
+  Next, you will need to go to the <Users> tab and select the <<<guest>>> user, and follow the screens to allocate them
+  with <Repository Observer> permission for the <<<npanday>>> repository to allow it to be accessed without a username
+  and password.
+
+  This will make all of the NPanday artifacts available at {{http://localhost:8080/archiva/repository/npanday/}}.
+
+* Configuring Maven to use the NPanday repository
+
+  You will next need to configure Maven to use this remote repository. This can be done using the instructions shown on
+  the Archiva web site, {{{http://archiva.apache.org/docs/1.3/userguide/using-repository.html} Configuring Maven 2 to use an Archiva repository}}.
+
+* Proxying Future Releases
+
+  An alternative to downloading the releases from the Codeplex site is to automatically obtain them from the NPanday
+  repository on demand using Archiva's repository proxy feature.
+
+  To do so, first go to the <Repositories> tab and add a new <remote> repository (below the <managed> repositories at
+  the top). The fields used will be:
+
+    * <Identifier>: <<<npanday.remote>>>
+
+    * <Name>: NPanday Remote Repository
+
+    * <URL>: {{http://repo.npanday.org/archiva/repository/npanday-group}}
+
+    []
+
+  After this is added, you can connect the previous <<<npanday>>> repository with the <<<npanday.remote>>> repository
+  using a proxy connector. You can find more information on the Archiva web site, under
+  {{{http://archiva.apache.org/docs/1.3/adminguide/proxy-connectors.html} Understanding Proxy Connector Configuration of Apache Archiva}}.
+
+* Separate NPanday Release Repository
+
+  The above techniques provide repositories that contain not only the NPanday releases, but also all of the artifacts
+  it depends on.
+
+  Alternatively, you can configure NPanday releases into a single managed repository, and other dependencies in
+  separate repositories.
+
+  For the NPanday releases, they can be obtained as above either from the <<<npanday>>> subdirectory of the downloaded
+  repository, or from the remote URL: {{http://repo.npanday.org/archiva/repository/npanday-releases}}.
+
+  For the dependencies, there are two needs:
+
+    * the Open RDF repository, which can be proxied from {{http://repository.aduna-software.org/maven2}}.
+      Only the <<<info/aduna/**>>> and <<<org/openrdf/**>>> artifacts need to be proxied.
+
+    * 3rd party .NET dependencies. Some can be obtained from {{http://repo.npanday.org/archiva/repository/3rdparty/}},
+      or they can be uploaded manually to your own managed repository. Currently, only NUnit is included there.
+
+    []
+    

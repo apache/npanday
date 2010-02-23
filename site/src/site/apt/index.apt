@@ -40,6 +40,8 @@ NPanday
 
    * {{{./guide/maven/index.html} Maven Command Line User's Guide}}
 
+   * {{{./guide/devinfra/index.html} Using with Maven-based Development Infrastructure}}
+
    * {{{./plugins/index.html} Maven Plugin Reference}}
 
 * Contributing to NPanday
