@@ -1,0 +1,46 @@
+ ----
+ Project Types
+ ----
+
+Available Project Types
+
+  The following packaging types are supported by the Maven plugins. To make them available, add the Compile plugin
+  with the following definition:
+
+----
+<plugin>
+  <groupId>npanday.plugin</groupId>
+  <artifactId>maven-compile-plugin</artifactId>
+  <version>${project.version}</version>
+  <extensions>true</extensions>
+</plugin>
+----
+
+  The <<<maven-compile-plugin>>> provides the following packaging types:
+
+    * <<<nar>>> - builds and packages with the Webapp plugin
+
+    * <<<module>>> - builds and packages the assembly then uses the Link plugin in the package phase
+    
+    * <<<library>>> - builds and packages the assembly
+
+    * <<<exe>>>, <<<winexe>>> - build and package a console application
+
+    * <<<netplugin>>> - build an assembly from the .NET code and generate a Java binding for Maven
+
+    * <<<asp>>> - uses the ASPX plugin to build an ASP.NET project
+
+    * <<<exe.config>>> - simply installs the configuration into the local repository, as no build is required
+
+    * <<<visual-studio-addin>>> - build and packages the assembly in the same way as for a <<<library>>>
+
+    []
+
+  The following dependency types (in addition to the above) are also declared:
+
+    * <<<netmodule>>> - references to a <<<module>>>
+
+    * <<<gac>>>, <<<gac_32>>>, <<<gac_generic>>>, <<<gac_msil>>> - dependencies in the respective GAC types variants
+
+    []
+
