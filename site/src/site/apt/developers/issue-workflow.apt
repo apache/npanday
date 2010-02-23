@@ -1,0 +1,15 @@
+ ----
+ NPanday Developer's Issue Workflow
+ ----
+
+NPanday Developer's Issue Workflow
+
+  * After fix is committed, developer would post a comment on the issue and changed the status of the issue to "FIXED".
+
+  * Another person would test the fix in another machine and if the issue is already fixed then that issue will be
+    "CLOSED" by that person.
+
+  []
+
+  <Note:> Make sure that issues under the next release version will be updated (e.g if fixed, will be closed if it
+          hasn't been updated).
