@@ -1,0 +1,49 @@
+ ----
+ COM References
+ ----
+
+COM References
+
+ 	When Visual Studio compiles code that uses a COM object, it creates a wrapper DLL. For example, compiling code in
+ 	<<<MyProject>>> that uses <<<Shell32.dll>>> will result in both <<<MyProject.dll>>> and <<<Interop.Shell32.dll>>>
+ 	being created.
+
+ 	This also needs to happen if there is a transitive dependency - if <<<OtherProject>>> depends on <<<MyProject>>>, and
+ 	<<<MyProject>>> uses <<<Shell32.dll>>>, then <<<Interop.Shell32.dll>>> also needs to be available when building
+ 	<<<OtherProject>>>.
+
+* Requirements
+
+  * If needed, ActiveX/COM objects must be pre-installed on the build system. NPanday will not do the installation.
+
+  * Adding ActiveX/COM from VS "Add Reference" should update the POM information with a <<<\<dependency\>>>> with type
+    <<<com_reference>>>.
+
+  * Generating POMs from a project containing a COM reference will result in a POM with a dependency with type
+    <<<com_reference>>>.
+
+  * When a dependency with type <<<com_reference>>> is encountered, NPanday will generate the interop wrapper DLL and
+    use it during compilation.
+
+  * Deleting ActiveX/COM reference should remove the <<<com_reference>>> dependency from the POM.
+
+  * Adding ActiveX/COM from "Add Maven Artifact" local or remote Maven repository is not allowed. If this attempted, a
+    meaningful error message should be displayed, and nothing should be added to the POM.
+
+  * Building a project with ActiveX/COM references should successfully build if the referenced ActiveX is pre-installed
+    in the system.
+
+  * Building a project with ActiveX/COM references but the actual ActiveX/COM is not in the system should prompt a
+    meaningful error message.
+
+  * Interop wrapper DLLs may be installed/deployed to the local/remote repository and consumed as normal 'library' DLLs.
+
+  []
+
+* References
+
+  * {{http://msdn.microsoft.com/en-us/library/sd10k43k.aspx}}
+  
+  * {{http://msdn.microsoft.com/en-us/magazine/cc301750.aspx}}
+
+  []
