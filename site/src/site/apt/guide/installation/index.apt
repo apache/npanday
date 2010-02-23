@@ -32,7 +32,7 @@ Preparation
   While it is generally safe to install the new version without uninstalling the previous version, to ensure a clean
   system you may want to follow the {{{./uninstall.html} Uninstalling NPanday}} instructions.
 
-* Set the PATH
+* {Set the PATH}
 
   All Maven commands must be run with the PATH set for the .NET SDKs. This can usually be achieved by
   starting the appropriate command prompt shortcuts supplied with the SDK or Visual Studio.
@@ -42,13 +42,53 @@ Preparation
 
   The method you use to set the PATH environment can vary, depending on how you usually launch Visual Studio:
 
-    * If you are starting Visual Studio from the Windows Start menu, use the following to set the PATH environment variable in the System Properties:
-    <<<Start \> My Computer \> View System Information \> Advanced \> Environment variables>>>. The variable must have all the additional elements
-    that are added when you run the Visual Studio Command Prompt.
+    * If you are starting Visual Studio from the Windows Start menu, use the following to set the PATH environment
+      variable in the System Properties:
+      <<<Start \> My Computer \> View System Information \> Advanced \> Environment variables>>>. The variable must have
+      all the additional elements that are added when you run the Visual Studio Command Prompt.
 
     * From within the Visual Studio Command Prompt, you can start Visual Studio using the <<<devenv>>> command.
 
     []
+
+  The correct PATH should include the following:
+
+    * The .NET framework runtime(s) - all that are needed (<<<C:\WINDOWS\Microsoft.NET\Framework\v3.5>>> and/or
+      <<<C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727>>>)
+
+    * The .NET SDK - only the latest (<<<C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin>>> or
+      <<<C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin>>> or other location if installed aside from
+      Visual Studio)
+
+    * The Maven <<<bin>>> directory
+
+    * The NUnit <<<bin>>> directory if writing NUnit tests
+
+  If you are building .NET SDK 3.5 or Visual Studio 2008 projects, you must ensure that the elements for that
+  environment are <before> any previous SDK versions.
+
+   A typical PATH For Visual Studio 2008 will look like the following:
+
+----
+C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE;C:\Program Files\Microsoft Visual Studio 9.0\VC\BIN;
+C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools;C:\WINDOWS\Microsoft.NET\Framework\v3.5;
+C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft Visual Studio 9.0\VC\VCPackages;
+C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin;C:\Program Files\CollabNet\Subversion Client;C:\WINDOWS\system32;
+C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;
+c:\program files\apache-maven-2.2.1\bin;c:\program files\nunit 2.4.8\bin
+----
+
+   For Visual Studio 2005, it will likely be:
+
+----
+C:\Program Files\Microsoft Visual Studio 8\Common7\IDE;C:\Program Files\Microsoft Visual Studio 8\VC\BIN;
+C:\Program Files\Microsoft Visual Studio 8\Common7\Tools;C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\bin;
+C:\Program Files\Microsoft Visual Studio 8\VC\PlatformSDK\bin;C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin;
+C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft Visual Studio 8\VC\VCPackages;
+C:\Program Files\CollabNet\Subversion Client;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;
+c:\Program Files\Microsoft SQL Server\90\Tools\binn\;c:\program files\apache-maven-2.2.1\bin;
+c:\program files\nunit 2.4.8\bin
+----
 
 Obtaining NPanday
 
