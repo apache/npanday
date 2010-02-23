@@ -8,6 +8,8 @@ Pre-release checklist
 
   * Check the build is successful in continuum
 
+  * Ensure all issues in the tracker for that version have been resolved, or are moved to a later version
+
   []
 
 Creating a Release Candidate
@@ -51,6 +53,8 @@ Voting on the Release
 Finalising the Release
 
   After the approval of the developers:
+
+    * {{{./publishing-docs.html} Publish the site}} for the released version
 
     * Update Download Page to upload the repository builder from the latest release and mark the version as released
 

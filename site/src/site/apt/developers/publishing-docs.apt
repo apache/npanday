@@ -1,0 +1,28 @@
+ ----
+ Publishing the Documentation
+ ----
+
+Publishing the Documentation
+
+  The documentation should be published after a release has been tagged.
+
+  There are two separate sites to publish:
+
+    * the plugins reference
+
+    * the main documentation site
+
+  This is done with the following command within the release checkout, first from the <<<plugins>>> subdirectory, then
+  the <<<site>>> subdirectory:
+
+----
+mvn site-deploy
+----
+
+  <Note:> It's important to do them in this order so that the generic plugins index page will get overwritten by the
+          correct one in the docs for this version.
+
+  After this succeeds, the documentation will be available in Subversion under
+  {{https://npanday.svn.codeplex.com/svn/docs/1.1/}} (where <<<1.1>>> is replaced with the version of NPanday). This
+  will not automatically propogate the results to the {{http://www.npanday.org/docs/}} website, however - for this,
+  request that it be done by one of the developers with access on the discussion forum.
