@@ -7,7 +7,7 @@
 
 Making VS Project Files Portable
 
-   To be able to make VS project files portable, NPanday 1.1 provides the Resync References functionality.
+   To be able to make VS project files portable, NPanday 1.1 and above provides the Resync References functionality.
    This will synchronize the references so that the project will still run in other user's machine. Added references
    will be stored in hidden folder named ".references". When the project is used in other user's machine, the Resync
    References functionality will download and store the references in the ".references" folder.

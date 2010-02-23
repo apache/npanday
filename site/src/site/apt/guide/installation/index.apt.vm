@@ -121,12 +121,12 @@ Installing NPanday's Maven Plugins
   has not been modified in Maven's <<<settings.xml>>>.
 
   For example, you may end up with a structure containing
-  <<<C:\\Documents and Settings\\User\\.m2\\repository\\npanday\\npanday-project\\1.1\\npanday-project-1.1.pom>>>.
+  <<<C:\\Documents and Settings\\User\\.m2\\repository\\npanday\\npanday-project\\${project.version}\\npanday-project-${project.version}.pom>>>.
 
-  To confirm your installation, run the following command, replacing <<<1.1>>> with the version you are installing:
+  To confirm your installation, run the following command, replacing <<<${project.version}>>> with the version you are installing:
 
 ----
-mvn help:describe -DgroupId=npanday.plugin -DartifactId=maven-vsinstaller-plugin -Dversion=1.1
+mvn help:describe -DgroupId=npanday.plugin -DartifactId=maven-vsinstaller-plugin -Dversion=${project.version}
 ----
 
   If successful, you should receive the following output:
@@ -136,7 +136,7 @@ Name: NPanday :: Visual Studio Addin Installer Maven Plugin
 Description: Maven Plugin for .NET: Installs the Visual Studio Addin
 Group Id: npanday.plugin
 Artifact Id: maven-vsinstaller-plugin
-Version: 1.1
+Version: ${project.version}
 Goal Prefix: vsinstaller
 
 This plugin has 1 goal:

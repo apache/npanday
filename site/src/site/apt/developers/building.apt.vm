@@ -86,7 +86,7 @@ mvn test -Prun-its
   if needed):
 
 ----
-mvn test -Prun-its -Dnpanday.version=1.1
+mvn test -Prun-its -Dnpanday.version=${project.version}
 ----
 
   When contributing fixes for issues in the Maven plugins, it is appropriate to write an integration test along with it.
