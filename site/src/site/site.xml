@@ -25,15 +25,30 @@
       <item name="NPanday ${project.version}" href="/" />
     </breadcrumbs>
 
-    <menu name="General Info" collapse="true">
+    <menu name="General Info">
       <item name="NPanday Overview" href="/index.html"/>
       <item name="NPanday Release Notes" href="/release-notes.html"/>
       <item name="NPanday FAQs" href="/faqs.html"/>
+      <item name="NPanday Features" href="/faqs.html"/>
+      <item name="Documentation PDF" href="/npanday.pdf"/>
+    </menu>
+
+    <menu name="User's Guide">
+      <item name="Introduction" href="./guide/index.html#Introduction" />
+      <item name="Installation" href="./guide/installation/index.html" />
+      <item name="Visual Studio Add-in" href="./guide/vs/index.html" />
+      <item name="Maven Command Line" href="./guide/maven/index.html" />
+      <item name="Maven Development Infrastructure" href="./guide/devinfra/index.html" />
       <item name="NPanday Plugins" href="/plugins/index.html"/>
     </menu>
-    <!-- TODO: rebuild -->
 
-    ${reports}
+    <menu name="Contributing">
+      <item name="Developer's Guide" href="./developers/index.html" />
+      <item name="Issue Tracking" href="./issue-tracking.html"/>
+      <item name="Mailing Lists" href="./mail-lists.html"/>
+    </menu>
+
+    <menu ref="reports" />
 
     <menu name="Resources">
       <item name="Apache Maven" href="http://maven.apache.org/" />
