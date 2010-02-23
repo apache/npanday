@@ -34,7 +34,7 @@
     </menu>
 
     <menu name="User's Guide">
-      <item name="Introduction" href="./guide/index.html#Introduction" />
+      <item name="Introduction" href="./guide/index.html" />
       <item name="Installation" href="./guide/installation/index.html" />
       <item name="Visual Studio Add-in" href="./guide/vs/index.html" />
       <item name="Maven Command Line" href="./guide/maven/index.html" />

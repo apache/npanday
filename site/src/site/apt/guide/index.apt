@@ -10,8 +10,6 @@ NPanday User's Guide
 
   This guide is broken into the following sections:
 
-    * {{{./index.html#Introduction} Introduction}} - How NPanday works
-
     * {{{./installation/index.html} Installation}} - How to download and install an NPanday release
 
     * {{{./vs/index.html} Visual Studio Add-in User's Guide}} - for Visual Studio users
@@ -37,6 +35,3 @@ NPanday User's Guide
   If you are looking for a particular reference, you can skip to those sections now. If you are new to NPanday or Maven,
   continue reading the introduction.
 
-* {Introduction}
-
-  ~~TODO write the introduction if nothing else from the guide is useful
