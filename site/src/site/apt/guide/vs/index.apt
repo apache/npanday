@@ -45,6 +45,8 @@ Using the NPanday Visual Studio Add-in
 
   * {{{./assemblyKey.html} Setting the Assembly Key}} - how to set a strong name on your build using NPanday 
 
+  * {{{./correctSettings.html} Correct Format of Settings.xml}} - shows the correct and valid format of a settings.xml file
+  
   * {{{./configureRepository.html} Configuring a Remote Repository}} - the steps necessary to have a remote repository
     for downloading Maven artifacts from
 
