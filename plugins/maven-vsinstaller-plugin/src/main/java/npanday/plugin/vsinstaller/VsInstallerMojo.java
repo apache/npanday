@@ -173,6 +173,7 @@ public class VsInstallerMojo
     }
 
     private void writePlugin(String version)
+        throws MojoExecutionException
     {
         OutputStreamWriter writer = null;
         try
@@ -181,38 +182,29 @@ public class VsInstallerMojo
                                         "\\My Documents\\Visual Studio " + version + "\\Addins\\" );
             if(!addinPath.exists())
             {
-                return;
+                if ( !addinPath.getParentFile().exists() )
+                {
+                    getLog().info( "Skipping installation for Visual Studio " + version + "; location can not be found: " + addinPath );
+                    return;
+                }
+                addinPath.mkdirs();
             }
             String addin =
                 IOUtil.toString( VsInstallerMojo.class.getResourceAsStream( "/template/NPanday.VisualStudio.AddIn" ) );
             File outputFile = new File( System.getProperty( "user.home" ) +
                 "\\My Documents\\Visual Studio " + version + "\\Addins\\NPanday.VisualStudio.AddIn" );
 
-            if ( !outputFile.getParentFile().exists() )
-            {
-                outputFile.getParentFile().mkdir();
-            }
             writer = new OutputStreamWriter( new FileOutputStream( outputFile ), "Unicode" );
             String pab = new File( localRepository ).getParent() + "\\pab";
             writer.write( addin.replaceAll( "\\$\\{localRepository\\}", pab.replaceAll( "\\\\", "\\\\\\\\" ) ) );
         }
         catch ( IOException e )
         {
-            e.printStackTrace();
+            throw new MojoExecutionException( "Unable to write to Visual Studio AddIns directory: " + e.getMessage() );
         }
         finally
         {
-            try
-            {
-                if ( writer != null )
-                {
-                    writer.close();
-                }
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
+            IOUtil.close( writer );
         }
     }
 
