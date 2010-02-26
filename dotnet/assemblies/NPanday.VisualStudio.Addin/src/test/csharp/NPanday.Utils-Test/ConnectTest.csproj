@@ -32,6 +32,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\NPanday.Artifact\target\NPanday.Artifact.dll</HintPath>
     </Reference>
+    <Reference Include="NPanday.Model.Settings, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\NPanday.Model.Settings\target\NPanday.Model.Settings.dll</HintPath>
+    </Reference>
     <Reference Include="NPanday.Utils, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\target\NPanday.Utils.dll</HintPath>
@@ -51,8 +55,11 @@
   <ItemGroup>
     <Compile Include="MavenCompilePluginConfigurationTest.cs" />
     <Compile Include="MavenResxPluginConfigurationTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MavenSettingsXMLConfigurationTest.cs" />
     <Compile Include="ResyncArtifactSnapshot.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

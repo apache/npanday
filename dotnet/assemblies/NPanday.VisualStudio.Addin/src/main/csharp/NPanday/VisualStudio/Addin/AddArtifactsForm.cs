@@ -603,69 +603,78 @@ namespace NPanday.VisualStudio.Addin
                     return;
                 }
 
-                if (defaultProfile == null)
+                if (settings.profiles != null)
                 {
-                    defaultProfile = getDefaultProfile();
-                }
 
-                // if NPanday profile is not found, create it
-                if (defaultProfile != null)
-                {
-                    selectedRepo = getRepositoryFromProfile(defaultProfile, selectedUrl);
-
-                    // if found, remove then add
-                    if (selectedRepo != null)
+                    if (defaultProfile == null)
                     {
-                        removeRepositoryFromProfile(selectedRepo, defaultProfile);
-                        updateRepository(defaultProfile, selectedRepo);
+                        defaultProfile = getDefaultProfile();
+                    }
+
+                    // if NPanday profile is not found, create it
+                    if (defaultProfile != null)
+                    {
+                        selectedRepo = getRepositoryFromProfile(defaultProfile, selectedUrl);
+
+                        // if found, remove then add
+                        if (selectedRepo != null)
+                        {
+                            removeRepositoryFromProfile(selectedRepo, defaultProfile);
+                            updateRepository(defaultProfile, selectedRepo);
+                        }
+                        else
+                        {
+                            selectedRepo = new NPanday.Model.Setting.Repository();
+                            selectedRepo.url = selectedUrl;
+                            updateRepository(defaultProfile, selectedRepo);
+                        }
+                        addRepositoryToProfile(selectedRepo, defaultProfile);
                     }
                     else
                     {
-                        selectedRepo = new NPanday.Model.Setting.Repository();
-                        selectedRepo.url = selectedUrl;
-                        updateRepository(defaultProfile, selectedRepo);
+                        // create new profile
+                        defaultProfile = new NPanday.Model.Setting.Profile();
+                        defaultProfile.id = defaultProfileID;
+
+                        // create new repo
+                        NPanday.Model.Setting.Repository newRepo = new NPanday.Model.Setting.Repository();
+                        newRepo.url = selectedUrl;
+                        updateRepository(defaultProfile, newRepo);
+                        defaultProfile.repositories = new NPanday.Model.Setting.Repository[] { newRepo };
+
+                        if (settings.profiles == null)
+                        {
+                            settings.profiles = new NPanday.Model.Setting.Profile[] { defaultProfile };
+                        }
+                        else
+                        {
+                            List<NPanday.Model.Setting.Profile> profiles = new List<NPanday.Model.Setting.Profile>();
+                            profiles.AddRange(settings.profiles);
+                            profiles.Add(defaultProfile);
+                            settings.profiles = profiles.ToArray();
+                        }
+
+                        selectedRepo = newRepo;
                     }
-                    addRepositoryToProfile(selectedRepo, defaultProfile);
+
+                    // make NPanday.id profile active
+                    addActiveProfile(defaultProfileID);
+
+                    // write to Settings.xml
+                    writer = new StreamWriter(settingsPath);
+                    serializer.Serialize(writer, settings);
+                    writer.Close();
+
+                    // do not specify SelectedUrl to suppress SelectedIndexChanged event
+                    repoCombo_Refresh(null);
+                    MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
+                    //localListView_Refresh(); 
                 }
                 else
                 {
-                    // create new profile
-                    defaultProfile = new NPanday.Model.Setting.Profile();
-                    defaultProfile.id = defaultProfileID;
-
-                    // create new repo
-                    NPanday.Model.Setting.Repository newRepo = new NPanday.Model.Setting.Repository();
-                    newRepo.url = selectedUrl;
-                    updateRepository(defaultProfile, newRepo);
-                    defaultProfile.repositories = new NPanday.Model.Setting.Repository[] { newRepo };
-
-                    if (settings.profiles == null)
-                    {
-                        settings.profiles = new NPanday.Model.Setting.Profile[] { defaultProfile };
-                    }
-                    else
-                    {
-                        List<NPanday.Model.Setting.Profile> profiles = new List<NPanday.Model.Setting.Profile>();
-                        profiles.AddRange(settings.profiles);
-                        profiles.Add(defaultProfile);
-                        settings.profiles = profiles.ToArray();
-                    }
-
-                    selectedRepo = newRepo;
+                    MessageBox.Show("Invalid settings.xml. Please check the documentation for the correct format.", "Configuration Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.Close();
                 }
-
-                // make NPanday.id profile active
-                addActiveProfile(defaultProfileID);
-
-                // write to Settings.xml
-                writer = new StreamWriter(settingsPath);
-                serializer.Serialize(writer, settings);
-                writer.Close();
-
-                // do not specify SelectedUrl to suppress SelectedIndexChanged event
-                repoCombo_Refresh(null);
-                MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
-                //localListView_Refresh(); 
             }
         }
 
@@ -982,6 +991,7 @@ namespace NPanday.VisualStudio.Addin
 
             if (settings != null)
             {
+               
                 foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
                 {
                     if (defaultProfileID.Equals(profile.id))
