@@ -87,6 +87,10 @@ public class ResourceCopierMojo
     {
         DirectoryScanner directoryScanner = new DirectoryScanner();
         directoryScanner.setBasedir( sourceDirectory );
+     
+        String[] sourceTokens = sourceDirectory.split(File.separator+File.separator);
+        String className = sourceTokens[sourceTokens.length-1];
+          
         if ( !includes.isEmpty() )
         {
             directoryScanner.setIncludes( includes.toArray( new String[includes.size()] ) );
@@ -100,8 +104,15 @@ public class ResourceCopierMojo
         String[] files = directoryScanner.getIncludedFiles();
         for ( String file : files )
         {
+            String newFileName = file;
+            if(!file.startsWith(className))
+            {
+                String[] fileTokens = file.split(File.separator+File.separator);
+                String actualFile = fileTokens[fileTokens.length-1];
+                newFileName = "resource"+File.separator+className+"."+actualFile;
+            }
             File sourceFile = new File( sourceDirectory, file );
-            File destinationFile = new File( outputDirectory, "assembly-resources" + File.separator + file );
+            File destinationFile = new File( outputDirectory, "assembly-resources" + File.separator + newFileName );
             try
             {
                 FileUtils.copyFile( sourceFile, destinationFile );

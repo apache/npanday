@@ -65,6 +65,44 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         }
 
         #region AddEmbeddedResources
+
+
+        private bool isResgenSupported(string rsrc)
+        {
+            bool isSupported=false;
+            if (rsrc.Contains(".txt") || rsrc.Contains(".resx") || rsrc.Contains(".resource"))
+            {
+                isSupported = true ;
+            }
+            return isSupported;
+        }
+
+        /// <summary>
+        /// Auto Generate the Resources unsupported by Resgen.exe
+        /// </summary>
+        /// <param name="rsrcList"></param>
+        protected void AddResources(List<string> rsrcList)
+        {
+            List<NPanday.Model.Pom.Resource> resources = new List<NPanday.Model.Pom.Resource>();
+            
+            if (model.build.resources != null)
+            {
+                resources.AddRange(model.build.resources);
+            }
+
+            // Add other resource file
+            
+            Resource r = new Resource();
+            r.directory = "./";
+            r.includes = rsrcList.ToArray();
+            resources.Add(r);
+
+            model.build.resources = resources.ToArray();
+
+
+
+        }
+        
         protected void AddEmbeddedResources()
         {
             if (projectDigest != null && projectDigest.EmbeddedResources != null && projectDigest.EmbeddedResources.Length > 0)
@@ -78,21 +116,34 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
                 List<Dictionary<string, string>> embeddedResourceList = new List<Dictionary<string, string>>();
-                
+                List<string> resourceList = new List<string>();   
                 foreach (EmbeddedResource embeddedResource in projectDigest.EmbeddedResources)
                 {
-                    Dictionary<string, string> value = new Dictionary<string, string>();
-                    string sourceFile = embeddedResource.IncludePath;
-                    if (sourceFile == null)
-                        continue;
+                    if (isResgenSupported(embeddedResource.IncludePath))
+                    {
+                        Dictionary<string, string> value = new Dictionary<string, string>();
+                        string sourceFile = embeddedResource.IncludePath;
+                        if (sourceFile == null)
+                            continue;
 
+                        value.Add("sourceFile", sourceFile);
+                        value.Add("name", parseEmbeddedName(projectDigest.RootNamespace, sourceFile));
 
-                    value.Add("sourceFile", sourceFile);
-                    value.Add("name", parseEmbeddedName(projectDigest.RootNamespace, sourceFile));
-
-                    embeddedResourceList.Add(value);
+                        embeddedResourceList.Add(value);
+                    }
+                    else
+                    {
+                        resourceList.Add(embeddedResource.IncludePath);
+                    }
                 }
-                AddPluginConfiguration(embeddedResourcePlugin, "embeddedResources", embeddedResourceList);
+                if (embeddedResourceList.Count > 0)
+                {
+                    AddPluginConfiguration(embeddedResourcePlugin, "embeddedResources", embeddedResourceList);
+                }
+                if (resourceList.Count > 0)
+                {
+                    AddResources(resourceList);
+                }
             }
         }
 
@@ -425,6 +476,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return AddPlugin(groupId, artifactId, null, true);
         }
 
+        
 
         protected Plugin AddPlugin(string groupId, string artifactId, string version, bool extensions)
         {
@@ -545,8 +597,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             plugin.configuration.Any = elems.ToArray();
 
         }
-
-
 
         /// <summary>
         /// Design for WebReferenceUrl
