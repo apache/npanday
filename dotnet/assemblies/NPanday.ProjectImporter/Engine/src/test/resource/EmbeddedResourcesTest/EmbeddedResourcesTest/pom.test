@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>test.artfact.80304494-70d1-4305-acfa-065f41f92f72</artifactId>
+    <groupId>test.group.42241c48-3e90-4695-abf2-e844a15dd423</groupId>
+    <version>1.2.3-SNAPSHOT</version>
+    <relativePath>..\pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>EmbeddedResourcesTest</artifactId>
+  <packaging>winexe</packaging>
+  <name>G2ix.EmbeddedResourcesTest : EmbeddedResourcesTest</name>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>./</directory>
+        <includes>
+          <include>MyImage.bmp</include>
+        </includes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <includeSources>
+            <includeSource>Form1.cs</includeSource>
+            <includeSource>Form1.Designer.cs</includeSource>
+            <includeSource>Program.cs</includeSource>
+            <includeSource>Properties\AssemblyInfo.cs</includeSource>
+            <includeSource>Properties\Resources.Designer.cs</includeSource>
+            <includeSource>Properties\Settings.Designer.cs</includeSource>
+          </includeSources>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>maven-resgen-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <embeddedResources>
+            <embeddedResource>
+              <sourceFile>Properties\Resources.resx</sourceFile>
+              <name>EmbeddedResourcesTest.Properties.Resources</name>
+            </embeddedResource>
+          </embeddedResources>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

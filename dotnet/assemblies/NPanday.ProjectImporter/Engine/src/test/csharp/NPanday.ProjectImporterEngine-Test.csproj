@@ -29,6 +29,7 @@
   <ItemGroup>
     <Compile Include="ImporterTests\AbstractProjectImportTest.cs" />
     <Compile Include="ImporterTests\ComReferenceNormalProjectTest.cs" />
+    <Compile Include="ImporterTests\EmbeddedResourcesTest.cs" />
     <Compile Include="ImporterTests\FileUtil.cs" />
     <Compile Include="ImporterTests\FlatMultiModuleProjectTest.cs" />
     <Compile Include="ImporterTests\FlatMultiModuleWebApplicationVBTest.cs" />
