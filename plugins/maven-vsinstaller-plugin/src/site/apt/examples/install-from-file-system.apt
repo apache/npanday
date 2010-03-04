@@ -46,6 +46,6 @@ Install From File System
  the command line:
 
 +----+
- mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install
+ mvn npanday.plugin:maven-vsinstaller-plugin:install
 +----+
 

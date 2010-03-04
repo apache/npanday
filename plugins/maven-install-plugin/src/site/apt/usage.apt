@@ -1,7 +1,7 @@
 How to Use
 
 +----+
- mvn org.apache.maven.dotnet.plugins:maven-install-plugin:install-file
+ mvn npanday.plugin:maven-install-plugin:install-file
         -Dfile=../imports/nunit-2.0/nunit.framework.dll
         -DpomFile=../imports/nunit-2.0/pom.xml
         -DgroupId=NUnit

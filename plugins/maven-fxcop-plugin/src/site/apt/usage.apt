@@ -15,11 +15,11 @@ How to Use
   For a single module install or a multi-module, non-aggregated reports, type:
 
 +----+
-mvn org.apache.maven.dotnet.plugins:maven-fxcop-plugin:fxcop
+mvn npanday.plugin:maven-fxcop-plugin:fxcop
 +----+
 
  For a mult-module, aggregated report, type:
 
 +----+
-mvn org.apache.maven.dotnet.plugins:maven-fxcop-plugin:aggregate
+mvn npanday.plugin:maven-fxcop-plugin:aggregate
 +----+

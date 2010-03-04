@@ -18,7 +18,7 @@ Creating a Simple Project
   ~~TODO: how can we get the archetypes into a catalog so they can be easily viewed?
 
 ----
-mvn archetype:generate -DarchetypeArtifactId=maven-archetype-dotnet-simple -DarchetypeGroupId=org.apache.maven.dotnet \
+mvn archetype:generate -DarchetypeArtifactId=maven-archetype-dotnet-simple -DarchetypeGroupId=npanday \
   -DarchetypeVersion=[version]>>>
 ----
 

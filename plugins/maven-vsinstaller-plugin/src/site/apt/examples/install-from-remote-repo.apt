@@ -46,7 +46,7 @@ Install From Remote Repo
  Now type the following from the command line:
 
 +----+
- mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install
+ mvn npanday.plugin:maven-vsinstaller-plugin:install
 +----+
 
  This will download the plugin and all of its dependencies.

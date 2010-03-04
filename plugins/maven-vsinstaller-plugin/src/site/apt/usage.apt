@@ -32,7 +32,7 @@ Usage
  If you have built NMaven locally on your machine, you can just type:
 
 +----+
- mvn org.apache.maven.dotnet.plugins:maven-vsinstaller-plugin:install
+ mvn npanday.plugin:maven-vsinstaller-plugin:install
 +----+
 
  If you have not built NMaven locally and are just looking to use the binary distribution, then check out the instructions here:

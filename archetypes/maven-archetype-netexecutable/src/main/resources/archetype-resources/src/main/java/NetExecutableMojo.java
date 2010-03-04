@@ -2,8 +2,8 @@ package $package;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.dotnet.executable.ExecutionException;
-import org.apache.maven.dotnet.PlatformUnsupportedException;
+import npanday.executable.ExecutionException;
+import npanday.PlatformUnsupportedException;
 import org.apache.maven.project.MavenProject;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 <pre>
   <executablePlugin>
     <identifier>${ID}</identifier>
-    <pluginClass>org.apache.maven.dotnet.executable.impl.DefaultNetExecutable</pluginClass>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>${vendor}</vendor>
     <executable>${exe}</executable>
     <profile>${profile}</profile>
@@ -43,7 +43,7 @@ public class NetExecutableMojo
     /**
      * @component
      */
-    private org.apache.maven.dotnet.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
 
     /**
      * The maven project.
