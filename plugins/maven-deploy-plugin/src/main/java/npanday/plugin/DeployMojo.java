@@ -32,6 +32,7 @@ import org.apache.maven.project.artifact.ProjectArtifactMetadata;
 import npanday.artifact.ApplicationConfig;
 
 import java.io.File;
+import java.util.Collection;
 
 /**
  * Deploys the .NET assembly to the remote repository
@@ -68,25 +69,11 @@ public class DeployMojo
     private ArtifactDeployer artifactDeployer;
 
     /**
-     * The project packaging type
-     *
-     * @parameter expression="${project.packaging}"
-     * @required
-     * @readonly
-     */
-    private String packaging;
-
-    /**
      * Attach an additional artifact with the given classifier.
      *
      * @parameter
      */
     private String classifier;
-
-    /**
-     * @component
-     */
-    private ArtifactFactory artifactFactory;
 
     /**
      * @component
@@ -97,11 +84,7 @@ public class DeployMojo
         throws MojoExecutionException, MojoFailureException
     {
         Artifact projectArtifact = project.getArtifact();
-
-        if ( ! "pom".equals( packaging ) )
-        {
-            projectArtifact.addMetadata( new ProjectArtifactMetadata( projectArtifact, project.getFile() ) );
-        }
+        projectArtifact.addMetadata( new ProjectArtifactMetadata( projectArtifact, project.getFile() ) );
 
         ApplicationConfig config = ApplicationConfig.Factory.createDefaultApplicationConfig( project.getArtifact(),
                                                                                              project.getBasedir(),
@@ -110,22 +93,27 @@ public class DeployMojo
         File exePath = config.getRepositoryPath( new File( localRepo.getBasedir() ) );
         if ( exePath.exists() )
         {
-            projectHelper.attachArtifact( project, packaging, "exe.config", exePath );
+            projectHelper.attachArtifact( project, project.getPackaging(), "exe.config", exePath );
         }
 
         if ( classifier != null )
         {
-            projectHelper.attachArtifact( project, packaging, classifier, project.getArtifact().getFile() );
+            projectHelper.attachArtifact( project, project.getPackaging(), classifier, project.getArtifact().getFile() );
         }
 
         try
         {
-            artifactDeployer.deploy( project.getArtifact().getFile(), projectArtifact,
-                                     project.getDistributionManagementArtifactRepository(), localRepo );
+            ArtifactRepository repo = project.getDistributionManagementArtifactRepository();
+            artifactDeployer.deploy( project.getArtifact().getFile(), projectArtifact, repo, localRepo );
+
+            for ( Artifact attached : ((Collection<Artifact>) project.getAttachedArtifacts() ) )
+            {
+                artifactDeployer.deploy( attached.getFile(), attached, repo, localRepo );
+            }
         }
         catch ( ArtifactDeploymentException e )
         {
-            throw new MojoExecutionException( "NPANDAY-DEPLOY: Deploy Failed", e );
+            throw new MojoExecutionException( "NPANDAY-DEPLOY: Deploy Failed: " + e.getMessage(), e );
         }
     }
 }
