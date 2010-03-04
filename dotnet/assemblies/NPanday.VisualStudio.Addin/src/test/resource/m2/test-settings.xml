@@ -3,9 +3,9 @@
   <localRepository>C:/Documents and Settings/user/.m2/repository</localRepository>
   <mirrors>
     <mirror>
-      <mirrorOf>external:*,!npanday</mirrorOf>
-      <url>http://pip.manila.exist.com/archiva/repository/maestro</url>
-      <id>archiva-internal</id>
+      <mirrorOf>*</mirrorOf>
+      <url>http://repo.npanday.org/archiva/repository/npanday-releases/</url>
+      <id>npanday-repo</id>
     </mirror>
-  </mirrors>  
+  </mirrors>
 </settings>

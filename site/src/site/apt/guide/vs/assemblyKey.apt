@@ -28,5 +28,5 @@ sn -k [filename] .snk
   We have now covered much of the functionality of NPanday Visual Studio Add-in. In subsequent sections of the guide,
   we will examine the available configuration options.
 
-  The next topic is {{{./correctSettings.html} Correct Format of settings.xml}}, or you can return to the
+  The next topic is {{{./configureRepository.html} Configuring a Remote Repository}}, or you can return to the
   {{{./index.html} index}}.

@@ -74,6 +74,11 @@ namespace NPanday.VisualStudio.Addin
             addArtifact.Show();
         }
 
+        public string settings_Path
+        {
+            get { return settingsPath; }
+        }
+        
         public AddArtifactsForm(Project project, ArtifactContext container, Logger logger, FileInfo pom)
         {
             this.project = project;
@@ -125,9 +130,7 @@ namespace NPanday.VisualStudio.Addin
 
             if (settings.profiles == null || settings.profiles.Length < 1)
             {
-                MessageBox.Show("No Profile Found. Please Configure your Repository. Check correct format of Settings.xml in documentation.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.Close();
-                return;
+                addProfilesTag(settingsPath);
             }
 
             defaultProfile = getDefaultProfile();
@@ -702,17 +705,21 @@ namespace NPanday.VisualStudio.Addin
         private void repoCombo_Refresh(string selectedUrl)
         {
             RepoCombo.Items.Clear();
-            foreach (NPanday.Model.Setting.Repository repo in getAllRepositories())
-            {
-                if (!RepoCombo.Items.Contains(repo.url))
-                {
-                    RepoCombo.Items.Add(repo.url);
-                }
-            }
 
-            if (RepoCombo.Items.Count > 0 && !string.IsNullOrEmpty(selectedUrl))
+            if (settings.profiles != null)
             {
-                RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(selectedUrl);
+                foreach (NPanday.Model.Setting.Repository repo in getAllRepositories())
+                {
+                    if (!RepoCombo.Items.Contains(repo.url))
+                    {
+                        RepoCombo.Items.Add(repo.url);
+                    }
+                }
+
+                if (RepoCombo.Items.Count > 0 && !string.IsNullOrEmpty(selectedUrl))
+                {
+                    RepoCombo.SelectedIndex = RepoCombo.Items.IndexOf(selectedUrl);
+                }
             }
         }
 
@@ -720,6 +727,16 @@ namespace NPanday.VisualStudio.Addin
         {
             checkBoxRelease.Checked = (selectedRepo.releases != null)? selectedRepo.releases.enabled: false;
             checkBoxSnapshot.Checked = (selectedRepo.snapshots != null)? selectedRepo.snapshots.enabled: false;
+        }
+
+        public void addProfilesTag(string settingsPath)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(settingsPath);
+            XmlElement element = doc.CreateElement("profiles");
+
+            doc.DocumentElement.AppendChild(element);
+            doc.Save(settingsPath);
         }
 
         #region GUI Events
@@ -981,7 +998,7 @@ namespace NPanday.VisualStudio.Addin
                 loadSettings();
             }
 
-            if (settings != null)
+            if (settings.profiles != null)
             {
                
                 foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
