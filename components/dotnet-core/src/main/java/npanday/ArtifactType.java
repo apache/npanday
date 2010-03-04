@@ -35,7 +35,12 @@ public enum ArtifactType
     VISUAL_STUDIO_ADDIN( "visual-studio-addin", "library", "dll" ),
     SHARP_DEVELOP_ADDIN( "sharp-develop-addin", "library", "dll" ),
     NULL( "null", "null", "null" ),     
-    ASP ( "asp", "library", "zip" );
+    ASP ( "asp", "library", "zip" ),
+    GAC ( "gac", "null", "dll"),
+    GAC_GENERIC ("gac_generic", "null", "dll"),
+    GAC_MSIL ("gac_msil", "null", "dll"),
+    GAC_32 ( "gac32", "null", "dll");
+
 
     /**
      * The extension used for the artifact(netmodule, dll, exe)
@@ -100,50 +105,11 @@ public enum ArtifactType
      */
     public static synchronized ArtifactType getArtifactTypeForPackagingName( String packagingName )
     {
-        if ( packagingName.equals( ArtifactType.MODULE.getPackagingType() ) )
+        for( ArtifactType t : ArtifactType.values() )
         {
-            return ArtifactType.MODULE;
+            if(packagingName.equals(t.getPackagingType()))
+                return t;
         }
-        else if ( packagingName.equals( ArtifactType.LIBRARY.getPackagingType() ) )
-        {
-            return ArtifactType.LIBRARY;
-        }
-        else if ( packagingName.equals( ArtifactType.EXE.getPackagingType() ) )
-        {
-            return ArtifactType.EXE;
-        }
-        else if ( packagingName.equals( ArtifactType.WINEXE.getPackagingType() ) )
-        {
-            return ArtifactType.WINEXE;
-        }
-        else if ( packagingName.equals( ArtifactType.LIBRARY.getPackagingType() ) )
-        {
-            return ArtifactType.LIBRARY;
-        }
-        else if ( packagingName.equals( ArtifactType.NAR.getPackagingType() ) )
-        {
-            return ArtifactType.NAR;
-        }
-        else if ( packagingName.equals( ArtifactType.EXECONFIG.getPackagingType() ) )
-        {
-            return ArtifactType.EXECONFIG;
-        }
-        else if ( packagingName.equals( ArtifactType.NETPLUGIN.getPackagingType() ) )
-        {
-            return ArtifactType.NETPLUGIN;
-        }
-        else if ( packagingName.equals( ArtifactType.SHARP_DEVELOP_ADDIN.getPackagingType() ) )
-        {
-            return ArtifactType.SHARP_DEVELOP_ADDIN;
-        }
-        else if ( packagingName.equals( ArtifactType.VISUAL_STUDIO_ADDIN.getPackagingType() ) )
-        {
-            return ArtifactType.VISUAL_STUDIO_ADDIN;
-        }
-        else if ( packagingName.equals( ArtifactType.ASP.getPackagingType() ) )
-        {
-            return ArtifactType.ASP;
-        }        
         return ArtifactType.NULL;
     }
 }
