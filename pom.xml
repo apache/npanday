@@ -135,6 +135,11 @@ under the License.
     </developer>        
     <!--Emeritus Committers-->
   </developers>  
+  <contributors>
+    <contributor>
+      <name>Kurt Harriger</name>
+    </contributor>
+  </contributors>
   <modules> 
     <module>components</module>  
     <module>archetypes</module>  
