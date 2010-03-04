@@ -27,6 +27,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 import org.apache.maven.project.artifact.ProjectArtifactMetadata;
 import npanday.artifact.ApplicationConfig;
 
@@ -76,7 +77,7 @@ public class DeployMojo
     private String packaging;
 
     /**
-     * The project classifier type
+     * Attach an additional artifact with the given classifier.
      *
      * @parameter
      */
@@ -86,6 +87,11 @@ public class DeployMojo
      * @component
      */
     private ArtifactFactory artifactFactory;
+
+    /**
+     * @component
+     */
+    private MavenProjectHelper projectHelper;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -104,34 +110,12 @@ public class DeployMojo
         File exePath = config.getRepositoryPath( new File( localRepo.getBasedir() ) );
         if ( exePath.exists() )
         {
-            Artifact attachedArtifact = artifactFactory.createArtifact( projectArtifact.getGroupId(),
-                                                                        projectArtifact.getArtifactId(),
-                                                                        project.getVersion(), packaging, "exe.config" );
-            try
-            {
-                artifactDeployer.deploy( exePath, attachedArtifact,
-                                         project.getDistributionManagementArtifactRepository(), localRepo );
-            }
-            catch ( ArtifactDeploymentException e )
-            {
-                throw new MojoExecutionException( "NPANDAY-DEPLOY: Deploy Failed", e );
-            }
+            projectHelper.attachArtifact( project, packaging, "exe.config", exePath );
         }
 
         if ( classifier != null )
         {
-            Artifact attachedArtifact = artifactFactory.createArtifactWithClassifier( projectArtifact.getGroupId(),
-                                                                        projectArtifact.getArtifactId(),
-                                                                        project.getVersion(), packaging, classifier );
-            try
-            {
-                artifactDeployer.deploy( project.getArtifact().getFile(), attachedArtifact,
-                                         project.getDistributionManagementArtifactRepository(), localRepo );
-            }
-            catch ( ArtifactDeploymentException e )
-            {
-                throw new MojoExecutionException( "NPANDAY-DEPLOY: Deploy Failed", e );
-            }
+            projectHelper.attachArtifact( project, packaging, classifier, project.getArtifact().getFile() );
         }
 
         try
