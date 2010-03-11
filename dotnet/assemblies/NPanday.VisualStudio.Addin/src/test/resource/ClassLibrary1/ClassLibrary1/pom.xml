@@ -22,6 +22,7 @@
           <includeSources>
             <includeSource>Properties\AssemblyInfo.cs</includeSource>
             <includeSource>Resource1.Designer.cs</includeSource>
+            <includeSource>Settings.Designer.cs</includeSource>
           </includeSources>
         </configuration>
       </plugin>
@@ -52,6 +53,22 @@
               <name>ClassLibrary1.ToBeDeleted</name>
             </embeddedResource>
           </embeddedResources>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>maven-wsdl-plugin</artifactId>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>wsdl</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <webreferences>
+          </webreferences>
         </configuration>
       </plugin>
     </plugins>

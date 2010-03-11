@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:tns="http://www.4s4c.com/wsdl/demo_itf.wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://www.4s4c.com/wsdl/demo.xsd" xmlns:xsd="http://www.w3.org/1999/XMLSchema" name="demoServices Interfaces" targetNamespace="http://www.4s4c.com/wsdl/demo_itf.wsdl" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <import namespace="http://www.4s4c.com/wsdl/demo.xsd" location="http://www.4s4c.com/wsdl/demo.xsd" />
+  <types />
+  <message name="getAddressFromNameRequest">
+    <part name="Name" type="xsd:string" />
+  </message>
+  <message name="getAddressFromNameResponse">
+    <part name="address" type="ns1:addressStruct" />
+  </message>
+  <message name="addEntryRequest">
+    <part name="AddressToRegister" type="xsd:string" />
+    <part name="address" type="ns1:addressStruct" />
+  </message>
+  <message name="addEntryResponse" />
+  <message name="doErrorRequest" />
+  <message name="doErrorResponse">
+    <part name="foo" type="xsd:string" />
+  </message>
+  <message name="addRequest">
+    <part name="a" type="xsd:int" />
+    <part name="b" type="xsd:int" />
+  </message>
+  <message name="addResponse">
+    <part name="added" type="xsd:int" />
+  </message>
+  <message name="add2Request">
+    <part name="a" type="xsd:int" />
+    <part name="b" type="xsd:int" />
+    <part name="c" type="xsd:int" />
+  </message>
+  <message name="add2Response">
+    <part name="added" type="xsd:int" />
+    <part name="c" type="xsd:int" />
+  </message>
+  <message name="add3Request">
+    <part name="nums" type="ns1:ArrayOfint" />
+  </message>
+  <message name="add3Response">
+    <part name="added" type="xsd:int" />
+  </message>
+  <message name="add4Request">
+    <part name="a" type="xsd:float" />
+    <part name="b" type="xsd:float" />
+  </message>
+  <message name="add4Response">
+    <part name="d" type="xsd:float" />
+    <part name="b" type="xsd:float" />
+    <part name="c" type="xsd:float" />
+  </message>
+  <message name="doublerRequest">
+    <part name="nums" type="ns1:ArrayOfint" />
+  </message>
+  <message name="doublerResponse">
+    <part name="nums" type="ns1:ArrayOfint" />
+  </message>
+  <message name="someStringRequest" />
+  <message name="someStringResponse">
+    <part name="string" type="xsd:string" />
+  </message>
+  <message name="concatRequest">
+    <part name="chunks" type="ns1:ArrayOfstring" />
+  </message>
+  <message name="concatResponse">
+    <part name="concated" type="xsd:string" />
+  </message>
+  <message name="splitRequest">
+    <part name="theString" type="xsd:string" />
+  </message>
+  <message name="splitResponse">
+    <part name="chunks" type="ns1:ArrayOfstring" />
+  </message>
+  <message name="GetPersonRequest">
+    <part name="idx" type="xsd:int" />
+  </message>
+  <message name="GetPersonResponse">
+    <part name="Person" type="ns1:PersonStruct" />
+  </message>
+  <message name="GetPersonsRequest" />
+  <message name="GetPersonsResponse">
+    <part name="persons" type="ns1:ArrayOfPersonStruct" />
+  </message>
+  <message name="PutPersonRequest">
+    <part name="newPerson" type="ns1:PersonStruct" />
+  </message>
+  <message name="PutPersonResponse" />
+  <message name="GetCompanyRequest" />
+  <message name="GetCompanyResponse">
+    <part name="Company" type="ns1:CompanyStruct" />
+  </message>
+  <message name="PutCompanyRequest">
+    <part name="newCompany" type="ns1:CompanyStruct" />
+  </message>
+  <message name="PutCompanyResponse" />
+  <message name="imageRequest" />
+  <message name="imageResponse">
+    <part name="imageData" type="ns1:ArrayOfint" />
+  </message>
+  <message name="DateAddRequest">
+    <part name="dateToConvert" type="xsd:timeInstant" />
+    <part name="HrsOffset" type="xsd:int" />
+  </message>
+  <message name="DateAddResponse">
+    <part name="newDate" type="xsd:timeInstant" />
+  </message>
+  <message name="image_matchRequest">
+    <part name="imageData" type="ns1:ArrayOfint" />
+  </message>
+  <message name="image_matchResponse">
+    <part name="bMatch" type="xsd:boolean" />
+  </message>
+  <portType name="abookPortType">
+    <operation name="getAddressFromName">
+      <input name="getAddressFromName" message="tns:getAddressFromNameRequest" />
+      <output name="getAddressFromNameResponse" message="tns:getAddressFromNameResponse" />
+    </operation>
+    <operation name="addEntry">
+      <input name="addEntry" message="tns:addEntryRequest" />
+      <output name="addEntryResponse" message="tns:addEntryResponse" />
+    </operation>
+  </portType>
+  <portType name="IcalcPortType">
+    <operation name="doError">
+      <input name="doError" message="tns:doErrorRequest" />
+      <output name="doErrorResponse" message="tns:doErrorResponse" />
+    </operation>
+    <operation name="add">
+      <input name="add" message="tns:addRequest" />
+      <output name="addResponse" message="tns:addResponse" />
+    </operation>
+    <operation name="add2">
+      <input name="add2" message="tns:add2Request" />
+      <output name="add2Response" message="tns:add2Response" />
+    </operation>
+    <operation name="add3">
+      <input name="add3" message="tns:add3Request" />
+      <output name="add3Response" message="tns:add3Response" />
+    </operation>
+    <operation name="add4">
+      <input name="add4" message="tns:add4Request" />
+      <output name="add4Response" message="tns:add4Response" />
+    </operation>
+    <operation name="doubler">
+      <input name="doubler" message="tns:doublerRequest" />
+      <output name="doublerResponse" message="tns:doublerResponse" />
+    </operation>
+  </portType>
+  <portType name="dualPortType">
+    <operation name="someString">
+      <input name="someString" message="tns:someStringRequest" />
+      <output name="someStringResponse" message="tns:someStringResponse" />
+    </operation>
+  </portType>
+  <portType name="IStringsPortType">
+    <operation name="concat">
+      <input name="concat" message="tns:concatRequest" />
+      <output name="concatResponse" message="tns:concatResponse" />
+    </operation>
+    <operation name="split">
+      <input name="split" message="tns:splitRequest" />
+      <output name="splitResponse" message="tns:splitResponse" />
+    </operation>
+  </portType>
+  <portType name="structsPortType">
+    <operation name="GetPerson">
+      <input name="GetPerson" message="tns:GetPersonRequest" />
+      <output name="GetPersonResponse" message="tns:GetPersonResponse" />
+    </operation>
+    <operation name="GetPersons">
+      <input name="GetPersons" message="tns:GetPersonsRequest" />
+      <output name="GetPersonsResponse" message="tns:GetPersonsResponse" />
+    </operation>
+    <operation name="PutPerson">
+      <input name="PutPerson" message="tns:PutPersonRequest" />
+      <output name="PutPersonResponse" message="tns:PutPersonResponse" />
+    </operation>
+    <operation name="GetCompany">
+      <input name="GetCompany" message="tns:GetCompanyRequest" />
+      <output name="GetCompanyResponse" message="tns:GetCompanyResponse" />
+    </operation>
+    <operation name="PutCompany">
+      <input name="PutCompany" message="tns:PutCompanyRequest" />
+      <output name="PutCompanyResponse" message="tns:PutCompanyResponse" />
+    </operation>
+  </portType>
+  <portType name="typesPortType">
+    <operation name="image">
+      <input name="image" message="tns:imageRequest" />
+      <output name="imageResponse" message="tns:imageResponse" />
+    </operation>
+    <operation name="DateAdd">
+      <input name="DateAdd" message="tns:DateAddRequest" />
+      <output name="DateAddResponse" message="tns:DateAddResponse" />
+    </operation>
+    <operation name="image_match">
+      <input name="image_match" message="tns:image_matchRequest" />
+      <output name="image_matchResponse" message="tns:image_matchResponse" />
+    </operation>
+  </portType>
+</definitions>

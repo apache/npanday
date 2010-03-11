@@ -38,7 +38,7 @@
     </Reference>
     <Reference Include="NPanday.Utils, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\target\NPanday.Utils.dll</HintPath>
+      <HintPath>..\..\..\..\..\NPanday.Utils\target\NPanday.Utils.dll</HintPath>
     </Reference>
     <Reference Include="NPanday.VisualStudio.Addin, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -57,7 +57,7 @@
     <Compile Include="MavenCompilePluginConfigurationTest.cs" />
     <Compile Include="MavenResxPluginConfigurationTest.cs" />
     <Compile Include="MavenSettingsConfigurationTest.cs" />
-    <Compile Include="MavenSettingsXMLConfigurationTest.cs" />
+    <Compile Include="RenameWebReferenceTest.cs" />
     <Compile Include="ResyncArtifactSnapshot.cs" />
   </ItemGroup>
   <ItemGroup>

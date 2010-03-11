@@ -1657,7 +1657,7 @@ namespace NPanday.Utils
                                 foreach (XmlNode node1 in node.ChildNodes)
                                 {
                                     if (node1.Name.ToLower().Equals("namespace") &&
-                                        node1.InnerText.ToLower().Equals(name))
+                                        node1.InnerText.ToLower().Equals(name.ToLower()))
                                     {
                                         removeMe = node;
                                         break;
