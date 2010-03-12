@@ -141,6 +141,9 @@ under the License.
     <contributor>
       <name>Lars Corneliussen</name>
     </contributor>
+    <contributor>
+      <name>Thorsten Kamann</name>
+    </contributor>
   </contributors>
   <modules> 
     <module>components</module>  
