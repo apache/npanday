@@ -76,7 +76,8 @@ namespace NPanday.ProjectImporter.Digest
             {
                 foreach (ProjectReference projectReference in projectDigest.ProjectReferences)
                 {
-                    if (!projDigestDictionary.ContainsKey(projectReference.Name))
+                    if (string.IsNullOrEmpty(projectReference.Name) 
+                        || !projDigestDictionary.ContainsKey(projectReference.Name))
                     {
                         Project prjRef = GetProject(projectReference.ProjectFullPath);
                         if (prjRef == null)

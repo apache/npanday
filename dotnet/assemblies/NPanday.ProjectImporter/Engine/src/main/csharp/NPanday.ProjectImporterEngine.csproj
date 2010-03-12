@@ -35,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NPanday\ProjectImporter\Converter\Algorithms\WebWithVbOrCsProjectFilePomConverter.cs" />
+    <Compile Include="NPanday\ProjectImporter\Digest\Algorithms\BaseProjectDigestAlgorithm.cs" />
     <Compile Include="NPanday\ProjectImporter\Digest\Model\ComReference.cs" />
     <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\AbnormalProject.cs" />
     <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\AbstractProjectAlgorithm.cs" />

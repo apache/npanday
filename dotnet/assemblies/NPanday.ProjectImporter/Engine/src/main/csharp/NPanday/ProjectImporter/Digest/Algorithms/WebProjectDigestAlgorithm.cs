@@ -9,15 +9,14 @@ using Microsoft.Build.BuildEngine;
 using NPanday.ProjectImporter.Parser;
 using NPanday.ProjectImporter.Digest;
 using NPanday.ProjectImporter.Digest.Model;
-
-using NPanday.Utils;
 using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
+using NPanday.Utils;
 
 /// Author: Leopoldo Lee Agdeppa III
 
 namespace NPanday.ProjectImporter.Digest.Algorithms
 {
-    public class WebProjectDigestAlgorithm : IProjectDigestAlgorithm
+    public class WebProjectDigestAlgorithm : BaseProjectDigestAlgorithm, IProjectDigestAlgorithm
     {
         public ProjectDigest DigestProject(Dictionary<string, object> projectMap)
         {
@@ -167,31 +166,5 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
 
             return false;
         }
-
-        public static string GetProjectAssemblyName(string projectFile)
-        {
-            Project project = ProjectDigester.GetProject(projectFile);
-
-            if (project == null)
-            {
-                return null;
-            }
-
-            foreach (BuildPropertyGroup buildPropertyGroup in project.PropertyGroups)
-            {
-                foreach (BuildProperty buildProperty in buildPropertyGroup)
-                {
-                    if (!buildProperty.IsImported && "AssemblyName".Equals(buildProperty.Name))
-                    {
-                        return buildProperty.Value;
-                    }
-
-                }
-            }
-
-            return null;
-        }
-
-
     }
 }

@@ -13,7 +13,7 @@ using NPanday.Utils;
 
 namespace NPanday.ProjectImporter.Digest.Algorithms 
 {
-    public class NormalProjectDigestAlgorithm : IProjectDigestAlgorithm
+    public class NormalProjectDigestAlgorithm : BaseProjectDigestAlgorithm, IProjectDigestAlgorithm
     {
 
         public ProjectDigest DigestProject(Dictionary<string, object> projectMap)
@@ -513,29 +513,5 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             }
         }
 
-
-        public static string GetProjectAssemblyName(string projectFile)
-        {
-            Project project = ProjectDigester.GetProject(projectFile);
-
-            if (project == null)
-            {
-                return null;
-            }
-
-            foreach (BuildPropertyGroup buildPropertyGroup in project.PropertyGroups)
-            {
-                foreach (BuildProperty buildProperty in buildPropertyGroup)
-                {
-                    if (!buildProperty.IsImported && "AssemblyName".Equals(buildProperty.Name))
-                    {
-                        return buildProperty.Value;
-                    }
-
-                }
-            }
-
-            return null;
-        }
     }
 }
