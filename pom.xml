@@ -133,11 +133,13 @@ under the License.
       <id>eworley</id>  
       <email>eworley@apache.org</email>  
     </developer>        
-    <!--Emeritus Committers-->
-  </developers>  
+  </developers>
   <contributors>
     <contributor>
       <name>Kurt Harriger</name>
+    </contributor>
+    <contributor>
+      <name>Lars Corneliussen</name>
     </contributor>
   </contributors>
   <modules> 

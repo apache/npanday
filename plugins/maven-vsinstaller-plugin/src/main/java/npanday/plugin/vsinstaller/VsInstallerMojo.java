@@ -19,16 +19,8 @@
 
 package npanday.plugin.vsinstaller;
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
-import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
-import org.apache.maven.artifact.Artifact;
-import npanday.artifact.ArtifactContext;
 import npanday.PlatformUnsupportedException;
+import npanday.artifact.ArtifactContext;
 import npanday.artifact.NetDependenciesRepository;
 import npanday.artifact.NetDependencyMatchPolicy;
 import npanday.executable.ExecutionException;
@@ -36,21 +28,22 @@ import npanday.executable.NetExecutable;
 import npanday.model.netdependency.NetDependency;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.Vendor;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.settings.Profile;
-import org.apache.maven.settings.Repository;
 import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 
 /**
  * Installs Visual Studio 2005 addin.
@@ -67,7 +60,12 @@ public class VsInstallerMojo
     /**
      * @parameter expression = "${project}"
      */
-     public org.apache.maven.project.MavenProject mavenProject;
+    public org.apache.maven.project.MavenProject mavenProject;
+
+    /**
+     * @parameter
+     */
+    public List<File> vsAddinDirectories = new ArrayList<File>();
 
     /**
      * The the path to the local maven repository.
@@ -102,6 +100,8 @@ public class VsInstallerMojo
      */
     private Settings settings;
 
+    private FileSystemView filesystemView = new JFileChooser().getFileSystemView();
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -123,9 +123,8 @@ public class VsInstallerMojo
                 "NPANDAY-1600-000: Failed to create the repository registry for this plugin", e );
         }
 
-        NetDependenciesRepository netRepository =
-            (NetDependenciesRepository) repositoryRegistry.find( "net-dependencies" );
-        String pomVersion = netRepository.getProperty( "npanday.version");
+        NetDependenciesRepository netRepository = (NetDependenciesRepository) repositoryRegistry.find(
+            "net-dependencies" );
 
         artifactContext.init( null, mavenProject.getRemoteArtifactRepositories(), new File( localRepository ) );
 
@@ -138,8 +137,8 @@ public class VsInstallerMojo
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
-        //GAC Installs
 
+        // GAC Installs
         List<NetDependencyMatchPolicy> gacInstallPolicies = new ArrayList<NetDependencyMatchPolicy>();
         gacInstallPolicies.add( new GacMatchPolicy( true ) );
         List<Dependency> gacInstallDependencies = netRepository.getDependenciesFor( gacInstallPolicies );
@@ -151,12 +150,11 @@ public class VsInstallerMojo
             try
             {
                 NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor(
-                    Vendor.MICROSOFT.getVendorName(), "2.0.50727", "GACUTIL",
-                    getGacInstallCommandsFor( artifacts.get( 0 ) ), null );
+                    Vendor.MICROSOFT.getVendorName(), "2.0.50727", "GACUTIL", getGacInstallCommandsFor( artifacts.get(
+                        0 ) ), null );
                 netExecutable.execute();
-                getLog().info( "NPANDAY-1600-004: Installed Assembly into GAC: Assembly = " +
-                    artifacts.get( 0 ).getFile().getAbsolutePath() + ",  Vendor = " +
-                    netExecutable.getVendor().getVendorName() );
+                getLog().info( "NPANDAY-1600-004: Installed Assembly into GAC: Assembly = " + artifacts.get(
+                    0 ).getFile().getAbsolutePath() + ",  Vendor = " + netExecutable.getVendor().getVendorName() );
             }
             catch ( ExecutionException e )
             {
@@ -168,31 +166,64 @@ public class VsInstallerMojo
             }
         }
 
-        writePlugin("2005");
-        writePlugin("2008");
+        collectDefaultVSAddinDirectories();
+
+        for ( File vsAddinsDir : vsAddinDirectories )
+        {
+            writePlugin( vsAddinsDir );
+        }
     }
 
-    private void writePlugin(String version)
+    private void collectDefaultVSAddinDirectories()
+    {
+        File homeDir = filesystemView.getDefaultDirectory();
+
+        String vs2008 = "Visual Studio 2008";
+        String vs2005 = "Visual Studio 2005";
+
+        List<File> defaultVSDirs = new ArrayList<File>();
+
+        defaultVSDirs.add( new File( homeDir, vs2008 ) );
+        defaultVSDirs.add( new File( homeDir, vs2005 ) );
+
+        File enHomeDir = new File( System.getProperty( "user.home" ), "My Documents" );
+        if ( !homeDir.getPath().toLowerCase().equals( enHomeDir.getPath().toLowerCase() ) )
+        {
+            defaultVSDirs.add( new File( enHomeDir, vs2008 ) );
+            defaultVSDirs.add( new File( enHomeDir, vs2005 ) );
+        }
+
+        for ( File dir : defaultVSDirs )
+        {
+            if ( dir.exists() )
+            {
+                File addInPath = new File( dir, "AddIns" );
+
+                if ( !addInPath.exists() )
+                {
+                    addInPath.mkdir();
+                }
+
+                vsAddinDirectories.add( addInPath );
+            }
+        }
+    }
+
+    private void writePlugin( File addinPath )
         throws MojoExecutionException
     {
         OutputStreamWriter writer = null;
+
+        if ( !addinPath.exists() )
+        {
+            addinPath.mkdirs();
+        }
+
         try
         {
-            File addinPath = new File( System.getProperty( "user.home" ) +
-                                        "\\My Documents\\Visual Studio " + version + "\\Addins\\" );
-            if(!addinPath.exists())
-            {
-                if ( !addinPath.getParentFile().exists() )
-                {
-                    getLog().info( "Skipping installation for Visual Studio " + version + "; location can not be found: " + addinPath );
-                    return;
-                }
-                addinPath.mkdirs();
-            }
-            String addin =
-                IOUtil.toString( VsInstallerMojo.class.getResourceAsStream( "/template/NPanday.VisualStudio.AddIn" ) );
-            File outputFile = new File( System.getProperty( "user.home" ) +
-                "\\My Documents\\Visual Studio " + version + "\\Addins\\NPanday.VisualStudio.AddIn" );
+            String addin = IOUtil.toString( VsInstallerMojo.class.getResourceAsStream(
+                "/template/NPanday.VisualStudio.AddIn" ) );
+            File outputFile = new File( addinPath, "NPanday.VisualStudio.AddIn" );
 
             writer = new OutputStreamWriter( new FileOutputStream( outputFile ), "Unicode" );
             String pab = new File( localRepository ).getParent() + "\\pab";
@@ -206,6 +237,7 @@ public class VsInstallerMojo
         {
             IOUtil.close( writer );
         }
+
     }
 
     private List<String> getGacInstallCommandsFor( Artifact artifact )
@@ -231,6 +263,6 @@ public class VsInstallerMojo
         public boolean match( NetDependency netDependency )
         {
             return netDependency.isIsGacInstall() == isGacInstall;
-        }
-    }
+		}
+	}
 }

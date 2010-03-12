@@ -18,23 +18,57 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
-  <parent> 
-    <groupId>npanday.plugin</groupId>  
-    <version>1.2-SNAPSHOT</version>  
-    <artifactId>maven-dotnet-plugins</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>maven-vsinstaller-plugin</artifactId>  
-  <packaging>maven-plugin</packaging>  
-  <name>NPanday :: Visual Studio Addin Installer Maven Plugin</name>  
-  <description>Maven Plugin for .NET: Installs the Visual Studio Addin</description>  
-  <build> 
-    <resources> 
-      <resource> 
-        <directory>src/main/resources</directory>  
-        <filtering>true</filtering> 
-      </resource> 
-    </resources> 
-  </build> 
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>npanday.plugin</groupId>
+    <version>1.2-SNAPSHOT</version>
+    <artifactId>maven-dotnet-plugins</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>maven-vsinstaller-plugin</artifactId>
+  <packaging>maven-plugin</packaging>
+  <name>NPanday :: Visual Studio Addin Installer Maven Plugin</name>
+  <description>Maven Plugin for .NET: Installs the Visual Studio Addin</description>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.groovy.maven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generateStubs</goal>
+              <goal>compile</goal>
+              <goal>generateTestStubs</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>1.7.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>
