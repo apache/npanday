@@ -104,7 +104,14 @@ public class ResourceCopierMojo
         String[] files = directoryScanner.getIncludedFiles();
         for ( String file : files )
         {
+            
+            // We need to change the fileName for resources that are not .txt, .resx, .resource
+            // We need to get the actual file name so that we do not copy the containing folder over to 
+            // the \target\assembly-resources\resource. The compiler then uses the resources found in that folder
+            // and adds them during compile time.
+            
             String newFileName = file;
+            
             if(!file.startsWith(className))
             {
                 String[] fileTokens = file.split(File.separator+File.separator);
