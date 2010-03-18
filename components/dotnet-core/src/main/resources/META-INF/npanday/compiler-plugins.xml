@@ -59,8 +59,8 @@
     <profile>FULL</profile>
     <frameworkVersions>
       <frameworkVersion>3.5</frameworkVersion>
-	  <frameworkVersion>3.0</frameworkVersion>
-	  <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>3.0</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
@@ -119,8 +119,8 @@
     <profile>COMPACT</profile>
     <frameworkVersions>
       <frameworkVersion>3.0</frameworkVersion>
-	  <frameworkVersion>3.5</frameworkVersion>
-	  <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
@@ -140,10 +140,10 @@
       <assembly>System.Windows.Forms</assembly>
       <assembly>Microsoft.WindowsCE.Forms</assembly>
       <assembly>System.Xml</assembly>
-	  <assembly>System.Core</assembly>
-	  <assembly>System.Data.DataSetExtensions</assembly>
-	  <assembly>System.Xml.Linq</assembly>
-	  <assembly>Microsoft.Transactions.Bridge</assembly>
+      <assembly>System.Core</assembly>
+      <assembly>System.Data.DataSetExtensions</assembly>
+      <assembly>System.Xml.Linq</assembly>
+      <assembly>Microsoft.Transactions.Bridge</assembly>
     </assemblies>
     <commandFilter>
       <includes>
@@ -197,7 +197,8 @@
     <profile>FULL</profile>
     <frameworkVersions>
       <frameworkVersion>3.5</frameworkVersion>
-	  <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>3.0</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
     <platforms>
@@ -259,9 +260,9 @@
     <language>ASP</language>
     <profile>FULL</profile>
     <frameworkVersions>
-	  <frameworkVersion>2.0.50727</frameworkVersion>
-	  <frameworkVersion>3.0</frameworkVersion>
-	  <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>3.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
