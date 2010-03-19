@@ -220,7 +220,7 @@ namespace NPanday.VisualStudio.Addin
                     {
                         if (DialogResult.Yes == MessageBox.Show(string.Format("SCM tag {0} was not accessible, would you still like to proceed with Project import?", scmTag), "SCM Tag", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
                         {
-                            warningMsg = string.Format("\n    SCM tag was not added, because the url {0} was not accessible", scmTag);
+                            warningMsg = string.Format("\n    The SCM URL {0} was added to the POM but could not be resolved and may not be valid.", scmTag);
                         }
                         else
                         {
