@@ -11,6 +11,9 @@
   <packaging>pom</packaging>
   <name>NPanday</name>
   <url>http://www.npanday.org/docs/${project.version}</url>
+  <prerequisites>
+    <maven>2.2.1</maven>
+  </prerequisites>
   
   <build>
     <plugins>
