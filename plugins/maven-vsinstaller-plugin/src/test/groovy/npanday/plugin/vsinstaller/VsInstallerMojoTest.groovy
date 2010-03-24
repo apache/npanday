@@ -55,7 +55,7 @@ public class VsInstallerMojoTest{
 	
 	@Test
 	final void testCollectDefaultVSHomeDirectoriesWithAdditionalPaths(){
-		mojo.vsAddinDirectories.add new File(tempDir, "Addins")
+		mojo.vsAddinDirectories.add new File(tempDir, "AddIns")
 		mojo.collectDefaultVSAddinDirectories()
 		List results = mojo.vsAddinDirectories
 		
@@ -78,7 +78,7 @@ public class VsInstallerMojoTest{
 	
 	@Test
 	final void testWritePlugin(){
-		mojo.vsAddinDirectories.add new File(tempDir, "Addins")
+		mojo.vsAddinDirectories.add new File(tempDir, "AddIns")
 		mojo.collectDefaultVSAddinDirectories()
 		List results = mojo.vsAddinDirectories
 		
@@ -86,7 +86,7 @@ public class VsInstallerMojoTest{
 		
 		results.each{ mojo.writePlugin it  }
 		
-		Assert.assertTrue new File(tempDir, "Addins/NPanday.VisualStudio.AddIn").exists()
+		Assert.assertTrue new File(tempDir, "AddIns/NPanday.VisualStudio.AddIn").exists()
 	}
 	
 	@Test
@@ -105,6 +105,6 @@ public class VsInstallerMojoTest{
 		
 		results.each{ mojo.writePlugin it }
 		
-		Assert.assertTrue new File(v2008, "Addins/NPanday.VisualStudio.AddIn").exists()
+		Assert.assertTrue new File(v2008, "AddIns/NPanday.VisualStudio.AddIn").exists()
 	}
 }
