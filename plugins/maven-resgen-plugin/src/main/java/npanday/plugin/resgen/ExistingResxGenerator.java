@@ -66,9 +66,9 @@ public class ExistingResxGenerator extends AbstractMojo
     public static final String ASSEMBLY_RESOURCES_DIR = "assembly-resources";
 
     /**  
-     * Transforms *.resx files from  "target/assembly-resources" to *.resources and move it to target/assembly-resources/resgen
-     * 
-     */    
+     * Transforms each of the input files (relative to sourceDirectory) and compiles them to a .resources file, placed
+     * under target/assembly-resources/resource, where it will be included in the assembly.
+     */
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {

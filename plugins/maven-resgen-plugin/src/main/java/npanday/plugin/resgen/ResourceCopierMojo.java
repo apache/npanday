@@ -33,7 +33,9 @@ import java.io.IOException;
 
 
 /**
- * Copies resources to target directory
+ * Copies embedded resources to target/assembly-resources/resource directory.
+ *
+ * @todo replace with the standard Maven resources plugin, we only need to reconfigure the default output location to be target/assembly-resources/resource, and add some extra handling for exe.config files.
  *
  * @author Shane Isbell
  * @goal copy-resources
@@ -54,21 +56,21 @@ public class ResourceCopierMojo
     public void execute()
         throws MojoExecutionException
     {
-        String targetDirectory = project.getBuild().getDirectory();
         List<Resource> resources = project.getResources();
         if ( resources.isEmpty() )
         {
             getLog().info( "NPANDAY-1500-000: No resources found" );
             return;
         }
+
+        File targetDirectory = new File( project.getBuild().getDirectory(), "assembly-resources/resource" );
         for ( Resource resource : resources )
         {
-            if ( !new File( resource.getDirectory() ).exists() )
+            File file = new File( resource.getDirectory() );
+            if ( file.exists() )
             {
-                continue;
+                copyResourceDirectory( file, targetDirectory, resource.getIncludes(), resource.getExcludes() );
             }
-            copyResourceDirectory( resource.getDirectory(), targetDirectory, resource.getIncludes(),
-                                   resource.getExcludes() );
         }
         try
         {
@@ -81,16 +83,13 @@ public class ResourceCopierMojo
         }
     }
 
-    private void copyResourceDirectory( String sourceDirectory, String outputDirectory, List<String> includes,
+    private void copyResourceDirectory( File sourceDirectory, File outputDirectory, List<String> includes,
                                         List<String> excludes )
         throws MojoExecutionException
     {
         DirectoryScanner directoryScanner = new DirectoryScanner();
         directoryScanner.setBasedir( sourceDirectory );
      
-        String[] sourceTokens = sourceDirectory.split(File.separator+File.separator);
-        String className = sourceTokens[sourceTokens.length-1];
-          
         if ( !includes.isEmpty() )
         {
             directoryScanner.setIncludes( includes.toArray( new String[includes.size()] ) );
@@ -104,24 +103,11 @@ public class ResourceCopierMojo
         String[] files = directoryScanner.getIncludedFiles();
         for ( String file : files )
         {
-            
-            // We need to change the fileName for resources that are not .txt, .resx, .resource
-            // We need to get the actual file name so that we do not copy the containing folder over to 
-            // the \target\assembly-resources\resource. The compiler then uses the resources found in that folder
-            // and adds them during compile time.
-            
-            String newFileName = file;
-            
-            if(!file.startsWith(className))
-            {
-                String[] fileTokens = file.split(File.separator+File.separator);
-                String actualFile = fileTokens[fileTokens.length-1];
-                newFileName = "resource"+File.separator+className+"."+actualFile;
-            }
             File sourceFile = new File( sourceDirectory, file );
-            File destinationFile = new File( outputDirectory, "assembly-resources" + File.separator + newFileName );
+            File destinationFile = new File( outputDirectory, file );
             try
             {
+                destinationFile.getParentFile().mkdirs();
                 FileUtils.copyFile( sourceFile, destinationFile );
                 getLog().debug( "NPANDAY-1500-001: Copied Resource File: Source File = " + sourceFile.getAbsolutePath() +
                     ", Destination File = " + destinationFile.getAbsolutePath() );
