@@ -40,8 +40,10 @@ under the License.
       <plugin> 
         <groupId>npanday.plugin</groupId>  
         <artifactId>maven-compile-plugin</artifactId>  
-        <!-- Must peg to a previous release to avoid MNG-1911 bug -->
-        <version>1.0.2</version>
+        <!-- Must peg to a previous release to avoid MNG-1911 bug
+             TODO: check if still needed if using Maven 2.2.1
+        <version>1.0.2</version> -->
+        <version>${project.version}</version>
         <extensions>true</extensions>  
         <configuration> 
           <frameworkVersion>2.0.50727</frameworkVersion> 
