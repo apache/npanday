@@ -144,6 +144,9 @@ under the License.
     <contributor>
       <name>Thorsten Kamann</name>
     </contributor>
+    <contributor>
+      <name>John Fallows</name>
+    </contributor>
   </contributors>
   <modules> 
     <module>components</module>  

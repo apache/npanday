@@ -436,31 +436,25 @@ public class ArtifactInstallerImpl
      */
     private void deleteTempDir(File pomFile)
     {
-        String pomFilePath = pomFile.getAbsolutePath();
-        
-        pomFilePath = pomFilePath.substring( 0, pomFilePath.lastIndexOf( "\\" ) );
-        
         //get the directory of the current pom file.
-        String pomDirectory = pomFilePath;
+        File pomDir = pomFile.getParentFile();
         
-        pomFilePath = pomFilePath.substring( 0, pomFilePath.lastIndexOf( "\\" ) );
-        
-        String binDir= pomFilePath +"\\bin";
+        File binDir = new File(pomDir, "bin");
         
         try
         {
-            FileUtils.deleteDirectory( binDir);
+            FileUtils.deleteDirectory(binDir);
             
-            String targetDir = pomDirectory+"\\target";
+            File targetDir = new File(pomDir, "target");
             
-            String[] directories = new File(targetDir).list();
+            String[] directories = targetDir.list();
             
             for(String dir:directories)
             {
-                String insideTarget = targetDir+"\\"+dir;
-                if(new File(insideTarget).isDirectory())
+                File insideTarget = new File(targetDir, dir);
+                if(insideTarget.isDirectory())
                 {
-                    String tempDir = insideTarget.substring( insideTarget.lastIndexOf( "\\" )+1);
+                    String tempDir = insideTarget.getName();
                     
                     if(isAllDigit(tempDir))
                     {
