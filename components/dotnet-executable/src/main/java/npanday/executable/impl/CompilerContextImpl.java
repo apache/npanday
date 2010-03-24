@@ -432,13 +432,16 @@ public final class CompilerContextImpl
     private List<File> getEmbeddedResources( File basedir )
     {
         List<File> embeddedResources = new ArrayList<File>();
-        DirectoryScanner scanner = new DirectoryScanner();
-        scanner.setBasedir( basedir );
-        scanner.scan();
-
-        for ( String file : scanner.getIncludedFiles() )
+        if ( basedir.exists() )
         {
-            embeddedResources.add( new File( basedir, file ) );
+            DirectoryScanner scanner = new DirectoryScanner();
+            scanner.setBasedir( basedir );
+            scanner.scan();
+
+            for ( String file : scanner.getIncludedFiles() )
+            {
+                embeddedResources.add( new File( basedir, file ) );
+            }
         }
         return embeddedResources;
     }
