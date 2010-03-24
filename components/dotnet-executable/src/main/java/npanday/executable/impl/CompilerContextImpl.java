@@ -540,6 +540,7 @@ public final class CompilerContextImpl
         // after installing the gac check if it is installed in the system.
         if ( !gacFile.exists() )
         {
+            // TODO: this will only work on Windows
             //check for gac_msil
             gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
             gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
