@@ -36,6 +36,7 @@ import npanday.RepositoryNotFoundException;
 import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.util.*;
@@ -402,8 +403,7 @@ public final class CompilerContextImpl
         String basedir = project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator;
         linkedResources = new File( basedir, "linkresource" ).exists() ? Arrays.asList(
             new File( basedir, "linkresource" ).listFiles() ) : new ArrayList<File>();
-        embeddedResources = new File( basedir, "resource" ).exists() ? Arrays.asList(
-            new File( basedir, "resource" ).listFiles() ) : new ArrayList<File>();
+        this.embeddedResources = getEmbeddedResources( new File( basedir, "resource" ) );
         win32resources = new File( basedir, "win32res" ).exists() ? Arrays.asList(
             new File( basedir, "win32res" ).listFiles() ) : new ArrayList<File>();
         File win32IconDir = new File( basedir, "win32icon" );
@@ -422,7 +422,21 @@ public final class CompilerContextImpl
             }
         }
     }
-    
+
+    private List<File> getEmbeddedResources( File basedir )
+    {
+        List<File> embeddedResources = new ArrayList<File>();
+        DirectoryScanner scanner = new DirectoryScanner();
+        scanner.setBasedir( basedir );
+        scanner.scan();
+
+        for ( String file : scanner.getIncludedFiles() )
+        {
+            embeddedResources.add( new File( basedir, file ) );
+        }
+        return embeddedResources;
+    }
+
     private void moveInteropDllToBuildDirectory(Artifact artifact) throws PlatformUnsupportedException
     {
         try
