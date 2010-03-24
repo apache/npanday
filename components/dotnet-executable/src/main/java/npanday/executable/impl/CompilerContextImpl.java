@@ -284,7 +284,13 @@ public final class CompilerContextImpl
 
         if ( new File( "/usr/lib/mono/gac/" ).exists() )
         {
+            // Linux default location
             return new File( "/usr/lib/mono/gac/" ).getAbsolutePath();
+        }
+        else if ( new File( "/Library/Frameworks/Mono.framework/Home/lib/mono/gac/" ).exists() )
+        {
+            // Mac OS X default location
+            return new File( "/Library/Frameworks/Mono.framework/Home/lib/mono/gac/" ).getAbsolutePath();
         }
         else
         {
