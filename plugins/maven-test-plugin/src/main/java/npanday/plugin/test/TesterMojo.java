@@ -19,31 +19,27 @@
 
 package npanday.plugin.test;
 
-import com.sun.jdi.VirtualMachine;
-import npanday.PlatformUnsupportedException;
-import npanday.executable.NetExecutable;
-import npanday.executable.NetExecutableFactory;
-import npanday.vendor.*;
-import npanday.vendor.IllegalStateException;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.Artifact;
-import org.codehaus.plexus.util.FileUtils;
-import org.apache.maven.plugin.logging.Log;
-
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.List;
-import java.io.IOException;
-import java.io.File;
-
-import npanday.executable.ExecutionException;
-import npanday.executable.CommandExecutor;
 import npanday.artifact.AssemblyResolver;
-import org.codehaus.plexus.logging.AbstractLogger;
+import npanday.executable.CommandExecutor;
+import npanday.executable.ExecutionException;
+import npanday.vendor.IllegalStateException;
+import npanday.vendor.StateMachineProcessor;
+import npanday.vendor.Vendor;
+import npanday.vendor.VendorInfo;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Runs NUnit tests
