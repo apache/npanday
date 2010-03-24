@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <groupId>npanday.model</groupId>
+  <artifactId>NPanday.Model.Pom</artifactId>
+  <packaging>library</packaging>
+  <version>1.1</version>
+</project>

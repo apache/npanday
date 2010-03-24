@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <groupId>npanday.logging</groupId>
+  <artifactId>NPanday.Logging</artifactId>
+  <packaging>library</packaging>
+  <version>1.1</version>
+</project>

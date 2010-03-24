@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>
+  <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>
+  <packaging>gac_msil</packaging>
+  <version>8.0.0.0</version>
+</project>

@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Name='Thing 1.0' Id='6E390708-A2AD-4269-8CE0-561D72DFCFF3'
+    Language='1033' Codepage='1252' Version='1.0.0' Manufacturer='Sample Inc.'>
+
+    <Package Id='5902BCD6-12B9-4F38-BF6B-2C30F825FFED' Keywords='Installer'
+      Description="Sample Inc's Thing 1.0 Installer"
+      Comments='Thing is a registered trademark of Sample Inc.' Manufacturer='Sample Inc.'
+      InstallerVersion='100' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
+
+    <Media Id='1' Cabinet='Sample.cab' EmbedCab='yes' DiskPrompt="CD-ROM #1" />
+    <Property Id='DiskPrompt' Value="Sample's Thing 1.0 Installation [1]" />
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+      <Directory Id='ProgramFilesFolder' Name='PFiles'>
+        <Directory Id='Sample' Name='Sample'>
+          <Directory Id='INSTALLDIR' Name='Thing 1.0'>
+
+            <Component Id='MainExecutable' Guid='059035F2-A47C-4407-8459-0597276DF276'>
+              <File Id='ThingEXE' Name='Thing10.exe' DiskId='1' Source='ThingAppl10.exe' Vital='yes'>
+                <Shortcut Id="startmenuThing10" Directory="ProgramMenuDir" Name="Thing 1.0" WorkingDirectory='INSTALLDIR' Icon="Thing10.exe" IconIndex="0" />
+                <Shortcut Id="desktopThing10" Directory="DesktopFolder" Name="Thing 1.0" WorkingDirectory='INSTALLDIR' Icon="Thing10.exe" IconIndex="0" />
+              </File>
+              <RegistryKey Root="HKCU" Key="Software\Sample\Thing 1.0" Action="createAndRemoveOnUninstall">
+                <RegistryValue Name="Version" Value="[ProductVersion]" Type="string" KeyPath="yes"></RegistryValue>
+              </RegistryKey>
+              <RemoveFolder Id="MainExecutable_RemoveShortcutFolder" Directory="ProgramMenuDir" On='uninstall' />
+            </Component>
+
+            <Component Id='HelperLibrary' Guid='DFEB88F1-A60f-45E9-80F1-1AB62E66D73C'>
+              <File Id='HelperDLL' Name='Helper.dll' DiskId='1' Source='Helper.dll' Vital='yes' />
+            </Component>
+
+            <Component Id='Manual' Guid='B6277FF6-CA9E-481E-9619-758FD725A752'>
+              <File Id='Manual' Name='Manual.pdf' DiskId='1' Source='Manual.pdf'>
+                <Shortcut Id="startmenuManual" Directory="ProgramMenuDir" Name="Manual" LongName="Instruction Manual" />
+              </File>
+              <RegistryKey Root="HKCU" Key="Software\Sample\Thing $(var.VER)\Manual" Action="createAndRemoveOnUninstall">
+                <RegistryValue Name="Version" Value="[ProductVersion]" Type="string" KeyPath="yes"></RegistryValue>
+              </RegistryKey>
+            </Component>
+
+          </Directory>
+        </Directory>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name='Thing 1.0' />
+      </Directory>
+
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+
+    <Feature Id='Complete' Level='1'>
+      <ComponentRef Id='MainExecutable' />
+      <ComponentRef Id='HelperLibrary' />
+      <ComponentRef Id='Manual' />
+    </Feature>
+
+    <Icon Id="Thing10.exe" SourceFile="ThingAppl10.exe" />
+
+  </Product>
+</Wix>

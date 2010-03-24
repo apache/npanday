@@ -156,6 +156,7 @@ under the License.
     <!-- must appear before the second repository builder that includes it -->
     <module>misc/dotnet-repository-builder</module>
     <module>misc/npanday-repository-builder</module>
+	<module>misc/npanday-installer-builder</module>
   </modules>  
   <build> 
     <plugins> 

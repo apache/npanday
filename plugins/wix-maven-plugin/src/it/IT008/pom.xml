@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>npanday.examples</groupId>
+  <artifactId>IT008</artifactId>
+  <version>1.2-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>NPanday WiX Plugin Integation Test 008</name>
+  <description>
+    Simple integration test to execute candle on a sample .wxs file.
+    Aims to test the -d parameter passing before preprocessing
+  </description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>wix-maven-plugin</artifactId>
+        <version>1.2-SNAPSHOT</version>
+        <configuration>
+          <sourceFiles>
+            <sourceFile>Sample.wxs</sourceFile>
+          </sourceFiles>
+		  <definitions>
+		    <definition>VER=1.0</definition> 
+		  </definitions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

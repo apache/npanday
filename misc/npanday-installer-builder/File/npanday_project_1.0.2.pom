@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>  
+  <groupId>npanday</groupId>  
+  <artifactId>npanday-project</artifactId>  
+  <packaging>pom</packaging>  
+  <version>1.0.2</version>  
+  <name>npanday-project</name>  
+  <mailingLists> 
+    <mailingList> 
+      <name>NPanday Dev List</name>  
+      <post>npanday@discussions.codeplex.com</post>  
+      <otherArchives> 
+        <otherArchive>http://n2.nabble.com/NPanday-Discussions-f1657131.html</otherArchive> 
+      </otherArchives> 
+    </mailingList>  
+  </mailingLists>  
+  <scm> 
+    <url>https://npanday.svn.codeplex.com/svn/</url>  
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/</connection>  
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/</developerConnection>  
+    <tag>REL_0_9_SNAPSHOT</tag> 
+  </scm>  
+  <organization> 
+    <name>NPanday</name>  
+    <url>http://codeplex.com/npanday</url> 
+  </organization>  
+  <issueManagement> 
+    <system>Codeplex Issue Tracker</system>  
+    <url>http://www.codeplex.com/npanday/WorkItem/List.aspx</url> 
+  </issueManagement>  
+  <licenses> 
+    <license> 
+      <name>Apache 2.0</name>  
+      <url>LICENSE.txt</url> 
+    </license> 
+  </licenses>  
+  <developers> 
+    <developer> 
+      <name>Brett Porter</name>  
+      <id>brettporter</id>  
+      <email>brett@apache.org</email>  
+      <roles> 
+        <role>coordinator</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Melvin Sembrano</name>  
+      <id>melvinsembrano</id>  
+      <email>melvinsembrano@gmail.com</email>  
+      <roles> 
+        <role>coordinator</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Leopoldo Agdeppa</name>  
+      <id>lagdeppa</id>  
+      <email>lagdeppa@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Jan Ancajas</name>  
+      <id>jancajas</id>  
+      <email>jancajas@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Joe Ocaba</name>  
+      <id>jocaba</id>  
+      <email>jocaba@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Shein Ernacio</name>  
+      <id>sernacio</id>  
+      <email>sernacio@exist.com</email>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Cédric</name>  
+      <id>mimil</id>  
+      <roles> 
+        <role>developer</role>  
+      </roles> 
+    </developer>  
+    <developer> 
+      <name>Maricor Baclay</name>  
+      <id>mbaclay</id>  
+      <email>mbaclay@exist.com</email>  
+      <roles> 
+        <role>QA</role>  
+      </roles> 
+    </developer>  
+    <!--Emeritus Committers-->
+    <developer> 
+      <name>Shane Isbell</name>  
+      <id>sisbell</id>  
+      <email>sisbell@apache.org</email>  
+      <url>http://jroller.com/page/random7</url>  
+    </developer>      
+    <developer> 
+      <name>Evan Worley</name>  
+      <id>eworley</id>  
+      <email>eworley@apache.org</email>  
+    </developer>        
+    <!--Emeritus Committers-->
+  </developers>  
+  <modules> 
+    <module>components</module>  
+    <module>archetypes</module>  
+    <module>plugins</module>  
+  </modules>  
+  <repositories> 
+    <repository> 
+      <id>apache.org</id>  
+      <name>Maven Snapshots</name>  
+      <url>http://people.apache.org/repo/m2-snapshot-repository</url>  
+      <releases> 
+        <enabled>false</enabled> 
+      </releases>  
+      <snapshots> 
+        <enabled>true</enabled> 
+      </snapshots> 
+    </repository>  
+    <repository> 
+      <id>codehaus-snapshot-repo</id>  
+      <name>Codehaus Snapshot Repo</name>  
+      <url>http://snapshots.repository.codehaus.org</url>  
+      <releases> 
+        <enabled>false</enabled> 
+      </releases> 
+    </repository> 
+  </repositories>  
+  <build> 
+    <extensions> 
+      <extension> 
+        <groupId>org.apache.maven.wagon</groupId>  
+        <artifactId>wagon-ssh-external</artifactId>  
+        <version>1.0-beta-2</version> 
+      </extension>  
+      <extension> 
+        <groupId>org.apache.maven.wagon</groupId>  
+        <artifactId>wagon-webdav</artifactId>  
+        <version>1.0-beta-2</version> 
+      </extension> 
+    </extensions>  
+    <plugins> 
+      <plugin> 
+        <artifactId>maven-javadoc-plugin</artifactId>  
+        <configuration> 
+          <aggregate>true</aggregate> 
+        </configuration> 
+      </plugin>  
+      <plugin> 
+        <artifactId>maven-assembly-plugin</artifactId>  
+        <inherited>false</inherited>  
+        <configuration> 
+          <descriptor>src/assembly/src.xml</descriptor>  
+          <outputDirectory>target</outputDirectory> 
+          <finalName>npanday</finalName>
+        </configuration> 
+        <executions> 
+          <execution> 
+            <id>make-assembly</id>  
+            <phase>package</phase>  
+            <goals> 
+              <goal>single</goal> 
+            </goals> 
+          </execution> 
+        </executions> 
+      </plugin>  
+      <plugin> 
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-compiler-plugin</artifactId>  
+        <configuration> 
+          <source>1.5</source>  
+          <target>1.5</target> 
+        </configuration> 
+      </plugin> 
+    </plugins>  
+    <pluginManagement> 
+      <plugins> 
+        <plugin> 
+          <groupId>org.codehaus.modello</groupId>  
+          <artifactId>modello-maven-plugin</artifactId>  
+          <version>1.0-alpha-13</version>  
+          <executions> 
+            <execution> 
+              <goals> 
+                <goal>xpp3-reader</goal>  
+                <goal>java</goal> 
+              </goals> 
+            </execution>  
+            <execution> 
+              <id>site</id>  
+              <phase>pre-site</phase>  
+              <goals> 
+                <goal>xdoc</goal> 
+              </goals> 
+            </execution> 
+          </executions> 
+        </plugin> 
+      </plugins> 
+    </pluginManagement> 
+  </build>  
+  <dependencies> 
+    <dependency> 
+      <groupId>org.easymock</groupId>  
+      <artifactId>easymock</artifactId>  
+      <version>2.0</version>  
+      <scope>test</scope> 
+    </dependency>  
+    <dependency> 
+      <groupId>junit</groupId>  
+      <artifactId>junit</artifactId>  
+      <version>3.8.1</version>  
+      <scope>test</scope> 
+    </dependency> 
+  </dependencies>  
+  <properties> 
+    <mavenVersion>2.0.9</mavenVersion>  
+    <jettyVersion>6.1.5</jettyVersion>  
+    <xfireVersion>1.2.5</xfireVersion> 
+  </properties>  
+  <dependencyManagement> 
+    <dependencies> 
+      <dependency> 
+        <groupId>org.apache.maven</groupId>  
+        <artifactId>maven-project</artifactId>  
+        <version>${mavenVersion}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.apache.maven</groupId>  
+        <artifactId>maven-core</artifactId>  
+        <version>${mavenVersion}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.apache.maven</groupId>  
+        <artifactId>maven-artifact</artifactId>  
+        <version>${mavenVersion}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.apache.maven</groupId>  
+        <artifactId>maven-plugin-api</artifactId>  
+        <version>${mavenVersion}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.codehaus.xfire</groupId>  
+        <artifactId>xfire-plexus</artifactId>  
+        <version>${xfireVersion}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.codehaus.xfire</groupId>  
+        <artifactId>xfire-java5</artifactId>  
+        <version>${xfireVersion}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.mortbay.jetty</groupId>  
+        <artifactId>jetty</artifactId>  
+        <version>${jettyVersion}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.mortbay.jetty</groupId>  
+        <artifactId>jetty-embedded</artifactId>  
+        <version>${jettyVersion}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.mortbay.jetty</groupId>  
+        <artifactId>servlet-api-2.5</artifactId>  
+        <version>${jettyVersion}</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>net.sf.kxml</groupId>  
+        <artifactId>kxml2</artifactId>  
+        <version>2.1.8</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>xmlpull</groupId>  
+        <artifactId>xmlpull</artifactId>  
+        <version>1.1.3.4a</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.codehaus.plexus</groupId>  
+        <artifactId>plexus-archiver</artifactId>  
+        <version>1.0-alpha-9</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.codehaus.plexus</groupId>  
+        <artifactId>plexus-utils</artifactId>  
+        <version>1.4.5</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.codehaus.plexus</groupId>  
+        <artifactId>plexus-container-default</artifactId>  
+        <version>1.0-alpha-32</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.codehaus.plexus</groupId>  
+        <artifactId>plexus-component-api</artifactId>  
+        <version>1.0-alpha-32</version> 
+      </dependency>  
+      <dependency> 
+        <groupId>org.codehaus.plexus</groupId>  
+        <artifactId>plexus-classworlds</artifactId>  
+        <version>1.2-alpha-10</version> 
+      </dependency> 
+    </dependencies> 
+  </dependencyManagement>  
+</project>

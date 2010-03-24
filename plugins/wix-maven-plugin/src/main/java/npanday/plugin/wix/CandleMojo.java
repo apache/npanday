@@ -43,9 +43,16 @@ public class CandleMojo
     private File[] sourceFiles;
     
     /**
+     * Definitions to be passed on before pre Compilation
+     * @parameter expression="${definitions}"
+     */
+    private String[] definitions;
+    
+    
+    /**
      * Output file
      * @parameter expression="${outputDirectory}"
-	 */
+     */
     private File outputDirectory;
 
     public void execute()
@@ -56,14 +63,25 @@ public class CandleMojo
           File f = sourceFiles[x];
           if ( !f.exists() )
           {
-         	throw new MojoExecutionException( "Source file does not exist " + sourceFiles[x] );
+             throw new MojoExecutionException( "Source file does not exist " + sourceFiles[x] );
           } else {
-	        paths = paths + sourceFiles[x].getAbsolutePath() + " ";
+            paths = paths + sourceFiles[x].getAbsolutePath() + " ";
           }
         }
 
         try {
-          String line = "candle -nologo "; 
+          String line = "candle -nologo -sw "; 
+          String dftns = "";
+          
+          if(definitions.length>0)
+          {
+            for (int x = 0; x < definitions.length; x++) 
+            {
+                    dftns=dftns+"-d"+definitions[x]+" ";                
+            }
+            line += dftns;
+          }
+          
           if(outputDirectory != null)
           {
             if (!outputDirectory.exists()) 
@@ -77,12 +95,13 @@ public class CandleMojo
             }
           }
           line += " " + paths;
+          
           CommandLine commandLine = CommandLine.parse(line);
           DefaultExecutor executor = new DefaultExecutor();
           int exitValue = executor.execute(commandLine);
           
           if ( exitValue != 0 ) {
-        	  throw new MojoExecutionException( "Problem executing candle, return code " + exitValue );
+              throw new MojoExecutionException( "Problem executing candle, return code " + exitValue );
           }
          
         } catch (ExecuteException e) {

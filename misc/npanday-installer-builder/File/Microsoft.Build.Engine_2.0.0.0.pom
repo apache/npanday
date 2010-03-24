@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <groupId>Microsoft.Build.Engine</groupId>
+  <artifactId>Microsoft.Build.Engine</artifactId>
+  <packaging>gac_msil</packaging>
+  <version>2.0.0.0</version>
+</project>
