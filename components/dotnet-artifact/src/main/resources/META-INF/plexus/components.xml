@@ -127,13 +127,6 @@
         <requirement>
           <role>npanday.registry.RepositoryRegistry</role>
         </requirement>
-        <requirement>
-          <role>org.apache.maven.artifact.handler.manager.ArtifactHandlerManager</role>
-        </requirement>
-        <requirement>
-          <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-          <field-name>artifactHandlers</field-name>
-        </requirement>
       </requirements>
     </component>
     <component>

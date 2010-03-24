@@ -72,10 +72,6 @@ public final class ArtifactContextImpl
      */
     private Logger logger;
 
-    private List<ArtifactHandler> artifactHandlers;
-
-    private ArtifactHandlerManager artifactHandlerManager;
-
     /**
      * Constructor. This method is intended to by invoked by the plexus-container, not by the application developer.
      */
@@ -174,7 +170,7 @@ public final class ArtifactContextImpl
     }
 
     /**
-     * @see ArtifactContext#init(org.apache.maven.project.MavenProject,java.util.List, File
+     * @see ArtifactContext#init(org.apache.maven.project.MavenProject,java.util.List, File)
      */
     public void init( MavenProject mavenProject, List<ArtifactRepository> remoteArtifactRepositories,
                       File localRepository )
@@ -182,30 +178,6 @@ public final class ArtifactContextImpl
         this.project = mavenProject;
         this.localRepository = localRepository.getAbsolutePath();
         artifactInstaller.init( this, remoteArtifactRepositories, localRepository );
-        Map<String, ArtifactHandler> map = new HashMap<String, ArtifactHandler>();
-
-        for ( ArtifactHandler artifactHandler : artifactHandlers )
-        {
-            //If I add a handler that already exists, the runtime breaks.
-            if ( isDotNetHandler( artifactHandler ) )
-            {
-                map.put( artifactHandler.getPackaging(), artifactHandler );
-            }
-        }
-        artifactHandlerManager.addHandlers( map );
-    }
-
-    /**
-     * Returns true if the artifact handler can handle the dotnet types, otherwise returns false
-     *
-     * @param artifactHandler the artifact handler to check
-     * @return true if the artifact handler can handle the dotnet types, otherwise returns false
-     */
-    private boolean isDotNetHandler( ArtifactHandler artifactHandler )
-    {
-        String extension = artifactHandler.getExtension();
-        return extension.equals( "dll" ) || extension.equals( "nar" ) || extension.equals( "exe" ) ||
-            extension.equals( "exe.config" );
     }
 
     /**
