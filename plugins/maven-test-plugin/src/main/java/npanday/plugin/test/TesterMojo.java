@@ -19,6 +19,12 @@
 
 package npanday.plugin.test;
 
+import com.sun.jdi.VirtualMachine;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.NetExecutable;
+import npanday.executable.NetExecutableFactory;
+import npanday.vendor.*;
+import npanday.vendor.IllegalStateException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
@@ -34,7 +40,6 @@ import java.io.IOException;
 import java.io.File;
 
 import npanday.executable.ExecutionException;
-import npanday.vendor.Vendor;
 import npanday.executable.CommandExecutor;
 import npanday.artifact.AssemblyResolver;
 import org.codehaus.plexus.logging.AbstractLogger;
@@ -134,15 +139,17 @@ extends AbstractMojo
      */
     private File localRepository;
 
-
-
-
     /**
      * The artifact acts as an Integration test project
      *
      * @parameter
      */
     protected boolean integrationTest;
+
+    /**
+     * @component role="npanday.vendor.StateMachineProcessor"
+     */
+    private StateMachineProcessor processor;
 
     private String getExecutableFor( Vendor vendor, String home )
     {
@@ -160,7 +167,7 @@ extends AbstractMojo
             testAssemblyPath = "/" + testAssemblyPath;
         }
 
-        
+
 
         if(integrationTest)
         {
@@ -172,17 +179,23 @@ extends AbstractMojo
             // if not use the commpiled test
             commands.add( testAssemblyPath + File.separator + project.getArtifactId() + "-test.dll" );
         }
-        
-        commands.add( "/xml:" + nUnitXmlFilePath.getAbsolutePath() );
 
-        commands.add( "/output:" + nUnitResultOutputPath.getAbsolutePath() );
-        commands.add( "/err:" + nUnitResultErrorOutputPath.getAbsolutePath() );
+        String switchChar = "/";
 
-        commands.add( "/labels" );
+        if ( vendor != null && "MONO".equals( vendor.getVendorName() ) )
+        {
+            switchChar = "-";
+        }
+        commands.add( switchChar + "xml:" + nUnitXmlFilePath.getAbsolutePath() );
+
+        commands.add( switchChar + "output:" + nUnitResultOutputPath.getAbsolutePath() );
+        commands.add( switchChar + "err:" + nUnitResultErrorOutputPath.getAbsolutePath() );
+
+        commands.add( switchChar + "labels" );
 
         if ( xmlConsole )
         {
-            commands.add( "/xmlConsole" );
+            commands.add( switchChar + "xmlConsole" );
         }
         return commands;
     }
@@ -304,7 +317,19 @@ extends AbstractMojo
 
         FileUtils.mkdir( reportsDirectory );
 
-        List<String> commands = getCommandsFor( null );
+        VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
+        vendorInfo.setVendorVersion( "" );
+        vendorInfo.setFrameworkVersion( null );
+
+        try
+        {
+            processor.process( vendorInfo );
+        }
+        catch ( IllegalStateException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+        List<String> commands = getCommandsFor( vendorInfo.getVendor() );
         getLog().debug( "NPANDAY-1100-008: " + commands.toString() );
 
         // pretty print nunit logs
