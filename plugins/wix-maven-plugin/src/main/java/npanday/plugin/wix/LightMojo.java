@@ -60,6 +60,12 @@ public class LightMojo
      */
     private File outputDirectory;
 
+     /**
+     * WiX extensions to use
+     * @parameter
+     */
+    private String[] extensions;
+
     public void execute()
         throws MojoExecutionException
     {
@@ -97,6 +103,10 @@ public class LightMojo
           }
           else if (outputDirectory != null) {
             line = line + " -out " + outputDirectory.getAbsolutePath() + "\\";
+          }
+
+          for ( String ext : extensions ) {
+            line += " -ext " + ext;
           }
           
           CommandLine commandLine = CommandLine.parse(line);
