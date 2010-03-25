@@ -21,33 +21,36 @@
         <artifactId>wix-maven-plugin</artifactId>
         <version>${project.version}</version>
         <extensions>true</extensions>
-        <configuration>
-          <sourceFiles>
-            <sourceFile>setup.wxs</sourceFile>
-          </sourceFiles>
-          <!-- Update to the version you want the installer to be based -->
-          <definitions>
-            <definition>VERSION=${project.version}</definition>
-            <!-- TODO: what is this? Can it be the same? -->
-            <definition>CMPTVER=1.2_SNAPSHOT</definition>
-          </definitions>
-          <objectFiles>
-            <objectFile>${project.build.directory}/setup.wixobj</objectFile>
-          </objectFiles>
-          <outputFile>${project.build.directory}/setup.msi</outputFile>
-        </configuration>
         <executions>
           <execution>
             <id>create-wixobj-files</id>
             <goals>
               <goal>candle</goal>
             </goals>
+            <configuration>
+              <!-- Update to the version you want the installer to be based -->
+              <definitions>
+                <definition>VERSION=${project.version}</definition>
+                <!-- TODO: what is this? Can it be the same? -->
+                <definition>CMPTVER=1.2_SNAPSHOT</definition>
+              </definitions>
+              <sourceFiles>
+                <sourceFile>setup.wxs</sourceFile>
+              </sourceFiles>
+              <outputDirectory>${project.build.directory}</outputDirectory>
+            </configuration>
           </execution>
           <execution>
             <id>create-msi-files</id>
             <goals>
               <goal>light</goal>
             </goals>
+            <configuration>
+              <objectFiles>
+                <objectFile>${project.build.directory}/setup.wixobj</objectFile>
+              </objectFiles>
+              <outputFile>${project.build.directory}/setup.msi</outputFile>
+            </configuration>
           </execution>
         </executions>
       </plugin>
