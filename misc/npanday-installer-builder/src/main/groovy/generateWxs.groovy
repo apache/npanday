@@ -8,9 +8,10 @@ if ( index >= 0 ) {
 def repositoryComponentIds = []
 def repositoryBasedir = new File(project.build.directory + "/repository/releases");
 def generateGuid = { "{"+java.util.UUID.randomUUID().toString().toUpperCase() + "}" }
-
-def addinArtifacts = [ [groupId:"npanday.visualstudio", artifactId:"NPanday.VisualStudio.Addin"]]
 def visualStudioVersions = ['2005', '2008']
+
+def addinArtifacts = []
+new File(project.build.directory + "/addin").eachFile { addinArtifacts << it }
 
 outputFile = new File(project.build.directory, "npanday.wxs")
 outputFile.getParentFile().mkdirs()
@@ -49,15 +50,9 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
         Directory(Id:"ProgramFilesFolder", Name:"PFiles") {
           Directory(Id:"NPandayDir", Name:"NPanday") {
             Directory(Id:"BinDir", Name:"bin") {
-              addinArtifacts.each { artifact ->
-                Component(Id:"${artifact.artifactId}.dll", Guid:generateGuid()) {
-                  def groupPath = artifact.groupId.replace('.','/')
-                  // use a pattern as we might have a timestamped snapshot to match
-                  def p = ~/${artifact.artifactId}-.*\.dll$/
-                  def dir = new File(repositoryBasedir, "${groupPath}/${artifact.artifactId}/${version}")
-                  dir.eachFileMatch(p) { file ->
-                    File(Name:"${artifact.artifactId}.dll", DiskId:"1", Source:file.absolutePath)
-                  }
+              addinArtifacts.each { file ->
+                Component(Id:file.name, Guid:generateGuid()) {
+                  File(Name:file.name, DiskId:"1", Source:file.absolutePath)
                 }
               }
             }
@@ -97,8 +92,8 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
         }
       }
       Feature(Id:"NPandayAddIn", Title:"NPanday Visual Studio Add-in", Level: "1") {
-        addinArtifacts.each { artifact ->
-          ComponentRef(Id:"${artifact.artifactId}.dll")
+        addinArtifacts.each { file ->
+          ComponentRef(Id:file.name)
         }
         visualStudioVersions.each { vs ->
           ComponentRef(Id:"VS${vs}AddinDescriptor")

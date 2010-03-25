@@ -11,6 +11,14 @@
   <artifactId>npanday-installer-builder</artifactId>
   <packaging>pom</packaging>
   <name>NPanday.Installer : NPanday Windows Installer</name>
+  <dependencies>
+    <dependency>
+      <groupId>npanday.visualstudio</groupId>
+      <artifactId>NPanday.VisualStudio.Addin</artifactId>
+      <version>${project.version}</version>
+      <type>library</type>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -36,6 +44,18 @@
               <goal>unpack</goal>
             </goals>
           </execution>
+          <execution>
+            <id>addin</id>
+            <phase>generate-resources</phase>
+            <configuration>
+              <outputDirectory>${project.build.directory}/addin</outputDirectory>
+              <includeTypes>library</includeTypes>
+              <stripVersion>true</stripVersion>
+            </configuration>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -53,6 +73,13 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <!-- For the NPanday types -->
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <version>1.1</version>
+        <extensions>true</extensions>
       </plugin>
       <plugin>
         <groupId>npanday.plugin</groupId>
