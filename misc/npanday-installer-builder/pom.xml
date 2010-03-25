@@ -58,6 +58,11 @@
         <groupId>npanday.plugin</groupId>
         <artifactId>wix-maven-plugin</artifactId>
         <version>${project.version}</version>
+        <configuration>
+          <extensions>
+            <extension>WixUtilExtension</extension>
+          </extensions>
+        </configuration>
         <executions>
           <execution>
             <id>create-wixobj-files</id>
@@ -74,7 +79,6 @@
           </execution>
           <execution>
             <id>create-msi-files</id>
-            <phase>package</phase>
             <goals>
               <goal>light</goal>
             </goals>
