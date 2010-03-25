@@ -26,10 +26,7 @@
                 <artifactItem>
                   <groupId>npanday</groupId>
                   <artifactId>npanday-repository-builder</artifactId>
-<!--
                   <version>${project.version}</version>
--->
-<version>1.1</version>
                   <type>tar.gz</type>
                   <classifier>bin</classifier>
                 </artifactItem>
