@@ -94,8 +94,10 @@ public class CandleMojo
               line = line + "-out " + outputDirectory.getAbsolutePath() + "\\";
             }
           }
-          for ( String ext : extensions ) {
-            line += " -ext " + ext;
+          if ( extensions != null ) {
+            for ( String ext : extensions ) {
+              line += " -ext " + ext;
+            }
           }
 
           line += " " + paths;

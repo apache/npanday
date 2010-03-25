@@ -99,10 +99,12 @@ public class LightMojo
             line = line + " -out " + outputDirectory.getAbsolutePath() + "\\";
           }
 
-          for ( String ext : extensions ) {
-            line += " -ext " + ext;
+          if ( extensions != null ) {
+            for ( String ext : extensions ) {
+              line += " -ext " + ext;
+            }
           }
-          
+
           CommandLine commandLine = CommandLine.parse(line);
           DefaultExecutor executor = new DefaultExecutor();
           int exitValue = executor.execute(commandLine);
