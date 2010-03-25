@@ -20,13 +20,18 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
   builder.Wix (xmlns:"http://schemas.microsoft.com/wix/2006/wi",
                'xmlns:netfx':"http://schemas.microsoft.com/wix/NetFxExtension",
                'xmlns:util':'http://schemas.microsoft.com/wix/UtilExtension') {
+
     Product( Id:"{9BB7FC88-853C-406E-92C0-A617ACD3E3B1}", Codepage:"1252", Language:"1033", Manufacturer:project.organization.name,
              Name:"NPanday " + version, UpgradeCode:"{A9239AE6-C0D5-41A2-A779-F427B2A32F3E}", Version:productVersion) {
       Package(Id:"*", InstallerVersion:"200", Compressed:"yes", Description:project.description, Manufacturer:project.organization.name)
       Media(Id:"1", Cabinet:"NPanday.cab", EmbedCab:"yes")
 
-      // TODO: make configurable in installer?
-      SetDirectory(Id:"REPOSITORYDIR",Value:"\$(env.UserProfile)\\.m2\\repository")
+      UIRef(Id:"WixUI_FeatureTree")
+      UIRef(Id:"WixUI_ErrorProgressText")
+
+      WixVariable(Id:"WixUILicenseRtf", Value:"${project.basedir}\\src\\main\\wix\\License.rtf")
+
+      Property(Id:"REPOSITORYDIR",Value:"\$(env.UserProfile)\\.m2\\repository")
 
       Property(Id:"VS2005INSTALLED") {
         RegistrySearch(Id:"VS2005INSTALLED", Root:"HKCR", Key:"VisualStudio.DTE.8.0", Type: "raw")
@@ -112,18 +117,21 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
           }
         }
       }
-      Feature(Id:"NPandayRepository", Title:"NPanday Repository Content", Level:"1") {
+      Feature(Id:"NPandayRepository", Title:"NPanday Maven Repository", Level:"1",
+              ConfigurableDirectory:'REPOSITORYDIR', AllowAdvertise:"no") {
         for ( id in repositoryComponentIds ) {
           ComponentRef(Id:id)
         }
       }
-      Feature(Id:"NPandayAddIn", Title:"NPanday Visual Studio Add-in", Level: "1") {
+      Feature(Id:"NPandayAddIn", Title:"NPanday Visual Studio Add-in", Level: "1", Display: "expand",
+              AllowAdvertise:"no") {
         addinArtifacts.each { file ->
           ComponentRef(Id:file.name)
         }
         visualStudioVersions.each { vs ->
-          Feature(Id:"NPandayAddIn${vs}", Title:"NPanday Visual Studio Add-in for Visual Studio ${vs}", Level: "1000") {
-            Condition(Level:"1", "VS${vs}INSTALLED")
+          Feature(Id:"NPandayAddIn${vs}", Title:"NPanday Visual Studio Add-in for Visual Studio ${vs}", Level: "1",
+                  AllowAdvertise:"no") {
+            Condition(Level:"0", "NOT VS${vs}INSTALLED")
             ComponentRef(Id:"VS${vs}AddinDescriptor")
           }
         }

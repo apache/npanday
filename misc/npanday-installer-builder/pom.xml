@@ -89,6 +89,7 @@
           <extensions>
             <extension>WixNetFxExtension</extension>
             <extension>WixUtilExtension</extension>
+            <extension>WixUIExtension</extension>
           </extensions>
         </configuration>
         <executions>
