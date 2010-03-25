@@ -11,11 +11,52 @@
   <artifactId>npanday-installer-builder</artifactId>
   <packaging>pom</packaging>
   <name>NPanday.Installer : NPanday Windows Installer</name>
-  <description>
-    Automatic generation of the windows installer of NPanday using Wix.
-  </description>
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.0</version>
+        <executions>
+          <execution>
+            <id>repository</id>
+            <phase>generate-resources</phase>
+            <configuration>
+              <outputDirectory>${project.build.directory}</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>npanday</groupId>
+                  <artifactId>npanday-repository-builder</artifactId>
+<!--
+                  <version>${project.version}</version>
+-->
+<version>1.1</version>
+                  <type>tar.gz</type>
+                  <classifier>bin</classifier>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>src/main/groovy/generateWxs.groovy</source>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>npanday.plugin</groupId>
         <artifactId>wix-maven-plugin</artifactId>
@@ -23,32 +64,28 @@
         <executions>
           <execution>
             <id>create-wixobj-files</id>
+            <phase>prepare-package</phase>
             <goals>
               <goal>candle</goal>
             </goals>
             <configuration>
-              <!-- Update to the version you want the installer to be based -->
-              <definitions>
-                <definition>VERSION=${project.version}</definition>
-                <!-- TODO: what is this? Can it be the same? -->
-                <definition>CMPTVER=1.2_SNAPSHOT</definition>
-              </definitions>
               <sourceFiles>
-                <sourceFile>setup.wxs</sourceFile>
+                <sourceFile>${project.build.directory}/npanday.wxs</sourceFile>
               </sourceFiles>
               <outputDirectory>${project.build.directory}</outputDirectory>
             </configuration>
           </execution>
           <execution>
             <id>create-msi-files</id>
+            <phase>package</phase>
             <goals>
               <goal>light</goal>
             </goals>
             <configuration>
               <objectFiles>
-                <objectFile>${project.build.directory}/setup.wixobj</objectFile>
+                <objectFile>${project.build.directory}/npanday.wixobj</objectFile>
               </objectFiles>
-              <outputFile>${project.build.directory}/setup.msi</outputFile>
+              <outputFile>${project.build.directory}/NPanday-${project.version}.msi</outputFile>
             </configuration>
           </execution>
         </executions>
