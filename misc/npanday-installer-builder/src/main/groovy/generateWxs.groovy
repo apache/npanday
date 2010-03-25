@@ -28,7 +28,14 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
       // TODO: make configurable in installer?
       SetDirectory(Id:"REPOSITORYDIR",Value:"\$(env.UserProfile)\\.m2\\repository")
 
-      Condition(Message:"NPanday cannot be installed on Windows 9x/ME") { VersionNT }
+      Property(Id:"VS2005INSTALLED") {
+        RegistrySearch(Id:"VS2005INSTALLED", Root:"HKCR", Key:"VisualStudio.DTE.8.0", Type: "raw")
+      }
+      Property(Id:"VS2008INSTALLED") {
+        RegistrySearch(Id:"VS2008INSTALLED", Root:"HKCR", Key:"VisualStudio.DTE.9.0", Type: "raw")
+      }
+
+      Condition(Message:"NPanday cannot be installed on Windows 9x/ME", "VersionNT")
 
       // TODO: check .NET version -- see http://wix.sourceforge.net/manual-wix3/check_for_dotnet.htm
       //   need to decide on best approach here - require .NET 3.5 SP1 + Windows 6.0A SDK for VS2008 installation feature, and lower for the others?
@@ -81,8 +88,6 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
         }
         Directory(Id:"PersonalFolder", Name:"MyDocuments") {
           visualStudioVersions.each { vs ->
-            // TODO: make conditional on VS installed
-            //      would check HKCR\VisualStudio.DTE.8.0, HKCR\VisualStudio.DTE.9.0 in the registry respectively
             Directory(Id:"VS${vs}Folder", Name:"Visual Studio ${vs}") {
               Directory(Id:"VS${vs}Addin", Name:"Addins") {
                 Component(Id:"VS${vs}AddinDescriptor", Guid:generateGuid()) {
@@ -117,7 +122,10 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
           ComponentRef(Id:file.name)
         }
         visualStudioVersions.each { vs ->
-          ComponentRef(Id:"VS${vs}AddinDescriptor")
+          Feature(Id:"NPandayAddIn${vs}", Title:"NPanday Visual Studio Add-in for Visual Studio ${vs}", Level: "1000") {
+            Condition(Level:"1", "VS${vs}INSTALLED")
+            ComponentRef(Id:"VS${vs}AddinDescriptor")
+          }
         }
       }
     }
