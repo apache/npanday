@@ -87,6 +87,7 @@
         <version>${project.version}</version>
         <configuration>
           <extensions>
+            <extension>WixNetFxExtension</extension>
             <extension>WixUtilExtension</extension>
           </extensions>
         </configuration>

@@ -17,7 +17,9 @@ outputFile = new File(project.build.directory, "npanday.wxs")
 outputFile.getParentFile().mkdirs()
 def writer = outputFile.withWriter("UTF-8") { writer ->
   def builder = new groovy.xml.MarkupBuilder( writer )
-  builder.Wix (xmlns:"http://schemas.microsoft.com/wix/2006/wi", 'xmlns:util':'http://schemas.microsoft.com/wix/UtilExtension') {
+  builder.Wix (xmlns:"http://schemas.microsoft.com/wix/2006/wi",
+               'xmlns:netfx':"http://schemas.microsoft.com/wix/NetFxExtension",
+               'xmlns:util':'http://schemas.microsoft.com/wix/UtilExtension') {
     Product( Id:"{9BB7FC88-853C-406E-92C0-A617ACD3E3B1}", Codepage:"1252", Language:"1033", Manufacturer:project.organization.name,
              Name:"NPanday " + version, UpgradeCode:"{A9239AE6-C0D5-41A2-A779-F427B2A32F3E}", Version:productVersion) {
       Package(Id:"*", InstallerVersion:"200", Compressed:"yes", Description:project.description, Manufacturer:project.organization.name)
@@ -25,6 +27,17 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
 
       // TODO: make configurable in installer?
       SetDirectory(Id:"REPOSITORYDIR",Value:"\$(env.UserProfile)\\.m2\\repository")
+
+      Condition(Message:"NPanday cannot be installed on Windows 9x/ME") { VersionNT }
+
+      // TODO: check .NET version -- see http://wix.sourceforge.net/manual-wix3/check_for_dotnet.htm
+      //   need to decide on best approach here - require .NET 3.5 SP1 + Windows 6.0A SDK for VS2008 installation feature, and lower for the others?
+      //   see related point below about detecting what is installed and installing selectively
+      //   may want to allow choosing the features
+
+      // TODO: check Java installed? HKLM\Software\JavaSoft\Java Development Kit\1.5
+
+      // TODO: check Maven installed? env.M2_HOME and mvn in path
 
       Directory(Id:"TARGETDIR", Name:"SourceDir") {
         Directory(Id:"REPOSITORYDIR",Name:"REPOSITORYDIR") {
