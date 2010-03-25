@@ -17,7 +17,7 @@
   <build>
     <sourceDirectory>./</sourceDirectory>
     <plugins>
-	  <plugin>
+      <plugin>
         <groupId>npanday.plugin</groupId>
         <artifactId>wix-maven-plugin</artifactId>
         <version>1.2-SNAPSHOT</version>
@@ -26,11 +26,11 @@
           <sourceFiles>
             <sourceFile>setup.wxs</sourceFile>
           </sourceFiles>
-		  <!-- Update to the version you want the installer to be based -->
-		  <definitions>
-			<definition>VERSION=1.2-SNAPSHOT</definition>
-			<definition>CMPTVER=1.2_SNAPSHOT</definition>
-		  </definitions>
+          <!-- Update to the version you want the installer to be based -->
+          <definitions>
+            <definition>VERSION=1.2-SNAPSHOT</definition>
+            <definition>CMPTVER=1.2_SNAPSHOT</definition>
+          </definitions>
           <objectFiles>
             <objectFile>setup.wixobj</objectFile>
           </objectFiles>
