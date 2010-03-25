@@ -29,29 +29,37 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
       Directory(Id:"TARGETDIR", Name:"SourceDir") {
         Directory(Id:"REPOSITORYDIR",Name:"REPOSITORYDIR") {
           traverse = { dir, id ->
+            def files = []
             dir.eachFile { f ->
               if ( f.isDirectory() ) {
                 nextId = id + "_" + f.name.replace('-','')
-                Directory(Id:nextId, Name:f.name) {
+                Directory(Id:"__dir" + nextId, Name:f.name) {
                   traverse( f, nextId )
                 }
               }
               else if ( ! ( f.name =~ /maven-metadata(-central)?.xml*/ ) ) {
-                def componentId = "repository_" + f.name.replace('-', '_')
-                repositoryComponentIds << componentId
-                Component(Id:componentId,Guid:generateGuid()) {
+                files << f
+              }
+            }
+            if ( files ) {
+              def componentId = "repository" + id
+              repositoryComponentIds << componentId
+              Component(Id:componentId,Guid:generateGuid()) {
+                files.each { f ->
                   File(Name:f.name, DiskId:"1", Source:f.absolutePath)
                 }
               }
             }
           }
-          traverse(repositoryBasedir, "__dir")
+          traverse(repositoryBasedir, "")
         }
         Directory(Id:"ProgramFilesFolder", Name:"PFiles") {
           Directory(Id:"NPandayDir", Name:"NPanday") {
             Directory(Id:"BinDir", Name:"bin") {
               addinArtifacts.each { file ->
                 Component(Id:file.name, Guid:generateGuid()) {
+                  // It doesn't appear to be necessary to put any of these in the GAC
+                  //  otherwise we'd need to check the file name is in the list of GAC installs and set Assembly:'.net'
                   File(Name:file.name, DiskId:"1", Source:file.absolutePath)
                 }
               }
