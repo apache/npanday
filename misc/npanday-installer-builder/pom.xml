@@ -20,7 +20,6 @@
         <groupId>npanday.plugin</groupId>
         <artifactId>wix-maven-plugin</artifactId>
         <version>${project.version}</version>
-        <extensions>true</extensions>
         <executions>
           <execution>
             <id>create-wixobj-files</id>
