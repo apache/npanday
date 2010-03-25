@@ -52,7 +52,7 @@
               <goal>execute</goal>
             </goals>
             <configuration>
-              <source>src/main/groovy/generateWxs.groovy</source>
+              <source>${basedir}/src/main/groovy/generateWxs.groovy</source>
             </configuration>
           </execution>
         </executions>
