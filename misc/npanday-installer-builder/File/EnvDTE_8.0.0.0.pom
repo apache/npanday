@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><project>
-  <groupId>EnvDTE</groupId>
-  <artifactId>EnvDTE</artifactId>
-  <packaging>gac</packaging>
-  <version>8.0.0.0</version>
-</project>
