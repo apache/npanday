@@ -33,7 +33,7 @@ import java.io.IOException;
  * @phase package
  */
 public class CandleMojo
-    extends AbstractMojo
+    extends AbstractWixMojo
 {
     /**
      * Location of the WiX source files.
@@ -94,6 +94,10 @@ public class CandleMojo
               line = line + "-out " + outputDirectory.getAbsolutePath() + "\\";
             }
           }
+          for ( String ext : extensions ) {
+            line += " -ext " + ext;
+          }
+
           line += " " + paths;
           
           CommandLine commandLine = CommandLine.parse(line);

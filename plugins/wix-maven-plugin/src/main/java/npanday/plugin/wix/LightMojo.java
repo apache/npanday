@@ -33,7 +33,7 @@ import java.io.IOException;
  * @phase package
  */
 public class LightMojo
-    extends AbstractMojo
+    extends AbstractWixMojo
 {
     /**
      * Location of the WiX object files.
@@ -59,12 +59,6 @@ public class LightMojo
      * @parameter expression="${outputDirectory}"
      */
     private File outputDirectory;
-
-     /**
-     * WiX extensions to use
-     * @parameter
-     */
-    private String[] extensions;
 
     public void execute()
         throws MojoExecutionException
