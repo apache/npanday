@@ -105,7 +105,7 @@ namespace NPanday.ProjectImporter
         /// <param name="version"></param>
         public delegate void VerifyProjectToImport(ref ProjectDigest[] projectDigests, ProjectStructureType structureType, string solutionFile, ref string groupId,ref string artifactId,ref string version);
 
-        private static string HasValidFolderStructure(List<Dictionary<string, object>> projectList)
+        private static void HasValidFolderStructure(List<Dictionary<string, object>> projectList)
         {
             string errorProject = string.Empty;
             foreach (Dictionary<string,object> project in projectList)
@@ -116,12 +116,10 @@ namespace NPanday.ProjectImporter
                     holder = (string)project["ProjectFullPath"];
                     if (holder.Contains("..\\"))
                     {
-                        errorProject = holder;
-                        break;
+                        throw new Exception( "Invalid folder structure for project " + project + "; it's path contains '..': " + holder );
                     }
                 }
             }
-            return errorProject;
         }
 
         /// <summary>
@@ -146,10 +144,7 @@ namespace NPanday.ProjectImporter
             List<Dictionary<string, object>> list = ParseSolution(solutionFileInfo, ref warningMsg);
 
             //Checks for Invalid folder structure
-            if (HasValidFolderStructure(list)!=string.Empty)
-            {
-                throw new Exception("Project Importer failed with project " + HasValidFolderStructure(list) + "  Project Directory may not be supported");
-            }
+            HasValidFolderStructure(list);
 
             ProjectDigest[] prjDigests = DigestProjects(list, ref warningMsg);
 

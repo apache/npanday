@@ -158,10 +158,10 @@ namespace NPanday.ProjectImporter.Converter
                 }
                 return model;
             }
-            catch
+            catch (Exception e)
             {
                 throw new Exception("Project Importer failed with project "+errorPrj
-                                   +" Project directory structure may not be supported.");
+                                   +" Project directory structure may not be supported. Cause: " + e.Message);
             }
 
             

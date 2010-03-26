@@ -370,13 +370,20 @@ namespace NPanday.VisualStudio.Addin
                 if (Path.GetExtension(projPath).EndsWith("proj"))
                 {
                     string projDir = Path.GetDirectoryName(projPath);
-                    if ((isFlatSingleModule && solutionDir == projDir) || (!isFlatSingleModule && solutionDir == Path.GetDirectoryName(projDir)))
+                    if (isFlatSingleModule)
                     {
-                        continue;
+                        if (solutionDir != projDir)
+                        {
+                            throw new Exception("Project Importer failed with project " + project.Name + ". Project directory structure not supported: in a single module project, the solution and project must be in the same directory");
+                        }
                     }
                     else
                     {
-                        throw new Exception("Project Importer failed with project " + project.Name + ". Project directory structure may not be supported.");
+                        // This check seems too arbitrary - removed for now
+//                        if (solutionDir != Path.GetDirectoryName(projDir))
+//                        {
+//                            throw new Exception("Project Importer failed with project " + project.Name + ". Project directory structure may not be supported: in a multi-module project, the project must be in a direct subdirectory of the solution");
+//                        }
                     }
                 }
             }
