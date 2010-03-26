@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>NPanday.MultipleFolderLevelExample</groupId>
+  <artifactId>MultipleFolderLevelExample-parent</artifactId>
+  <packaging>pom</packaging>
+  <name>NPanday.MultipleFolderLevelExample : MultipleFolderLevelExample-parent</name>
+  <version>1.2-SNAPSHOT</version>
+  <scm>
+    <connection>scm:svn:https://aedc-build-pilot.aexpdev.extra.aexp.com/svn/aedc-build-pilot/trunk/examples/MultipleFolderLevelExample</connection>
+    <developerConnection>scm:svn:https://aedc-build-pilot.aexpdev.extra.aexp.com/svn/aedc-build-pilot/trunk/examples/MultipleFolderLevelExample</developerConnection>
+    <url>https://aedc-build-pilot.aexpdev.extra.aexp.com/svn/aedc-build-pilot/trunk/examples/MultipleFolderLevelExample</url>
+  </scm>
+  <modules>
+    <module>SubLevelWebApplication/SubLevelWebApplication</module>
+    <module>MultipleFolderLevelExample</module>
+  </modules>
+</project>
