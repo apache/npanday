@@ -46,11 +46,11 @@ Quick Start Guide
   NPanday makes creating the POM file(s) easy. To do so, right click on the project solution (or any of the projects)
   in the Solution Explorer and select <Generate Solution's POM Information...>:
 
-[../../images/vs/generate-pom.png]
+[../../images/vs/generate-pom.jpg]
 
   Next, you will see the following dialog:
 
-[../../images/vs/import-dialog.png]
+[../../images/vs/import-dialog.jpg]
 
   We'll look at this in more detail shortly, but for now accept the default settings, and do likewise on the next dialog
   asking about test projects. Finally, NPanday will inform you that it has created two <<<pom.xml>>> files: one for the
