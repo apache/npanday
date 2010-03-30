@@ -11,6 +11,11 @@
   <artifactId>npanday-repository-builder</artifactId>  
   <packaging>pom</packaging>
   <name>NPanday :: Repository Builder</name>  
+  <scm> 
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-repository-builder</connection>
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-repository-builder</developerConnection>
+    <url>https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-repository-builder</url>
+  </scm>  
   <dependencies> 
 
     <!--

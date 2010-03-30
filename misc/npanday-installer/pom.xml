@@ -11,6 +11,11 @@
   <artifactId>npanday-installer</artifactId>
   <packaging>pom</packaging>
   <name>NPanday Windows Installer</name>
+  <scm> 
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</connection>
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</developerConnection>
+    <url>https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</url>
+  </scm>  
   <dependencies>
     <dependency>
       <groupId>npanday.visualstudio</groupId>

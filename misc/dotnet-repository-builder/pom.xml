@@ -10,6 +10,11 @@
   <artifactId>dotnet-repository-builder</artifactId>
   <name>NPanday :: .NET Repository Builder</name>
   <packaging>pom</packaging>
+  <scm> 
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</connection>
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</developerConnection>
+    <url>https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</url>
+  </scm>  
   <dependencies>
     <!--assemblies-->
     <dependency>
