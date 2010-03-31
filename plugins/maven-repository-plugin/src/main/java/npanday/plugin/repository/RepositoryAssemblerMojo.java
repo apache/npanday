@@ -152,14 +152,14 @@ public class RepositoryAssemblerMojo
 
         assemblyRepository( netDependencies, new DefaultRepositoryLayout() );
 
-        try
-        {
-            repositoryConverter.convertRepositoryFormat( rdfRepository, localRepository );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException("NPANDAY-1700-008: Message = " +  e.getMessage(), e );
-        }
+        //try
+        //{
+            //repositoryConverter.convertRepositoryFormat( rdfRepository, localRepository );
+        //}
+        //catch ( IOException e )
+        //{
+            //throw new MojoExecutionException("NPANDAY-1700-008: Message = " +  e.getMessage(), e );
+        //}
     }
 
     private void assemblyRepository( List<Dependency> dependencies, ArtifactRepositoryLayout layout )
