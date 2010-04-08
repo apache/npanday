@@ -451,8 +451,12 @@ public final class CompilerContextImpl
             {
                 File f = new File(basedir, file);
                 embeddedResources.add(f);
-                String resourceName = project.getArtifactId() + "." + file.replace(File.separatorChar, '.');
-                embeddedResourceArgs.add(f.getAbsolutePath() + "," + resourceName);
+                if (f.getName().endsWith(".resources")) {
+                    embeddedResourceArgs.add(f.getAbsolutePath());
+                } else {
+                    String resourceName = project.getArtifactId() + "." + file.replace(File.separatorChar, '.');
+                    embeddedResourceArgs.add(f.getAbsolutePath() + "," + resourceName);
+                }
             }
         }
         this.embeddedResources = embeddedResources;
