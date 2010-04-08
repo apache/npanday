@@ -80,7 +80,10 @@ public final class CompilerContextImpl
 
     private List<File> linkedResources;
 
+    /** @deprecated */
     private List<File> embeddedResources;
+
+    private List<String> embeddedResourceArgs;
 
     private File win32icon;
 
@@ -94,6 +97,11 @@ public final class CompilerContextImpl
     public List<File> getEmbeddedResources()
     {
         return embeddedResources;
+    }
+
+    public List<String> getEmbeddedResourceArgs()
+    {
+        return embeddedResourceArgs;
     }
 
     public File getWin32Icon()
@@ -409,7 +417,7 @@ public final class CompilerContextImpl
         String basedir = project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator;
         linkedResources = new File( basedir, "linkresource" ).exists() ? Arrays.asList(
             new File( basedir, "linkresource" ).listFiles() ) : new ArrayList<File>();
-        this.embeddedResources = getEmbeddedResources( new File( basedir, "resource" ) );
+        getEmbeddedResources( new File( basedir, "resource" ) );
         win32resources = new File( basedir, "win32res" ).exists() ? Arrays.asList(
             new File( basedir, "win32res" ).listFiles() ) : new ArrayList<File>();
         File win32IconDir = new File( basedir, "win32icon" );
@@ -429,9 +437,10 @@ public final class CompilerContextImpl
         }
     }
 
-    private List<File> getEmbeddedResources( File basedir )
+    private void getEmbeddedResources( File basedir )
     {
         List<File> embeddedResources = new ArrayList<File>();
+        List<String> embeddedResourceArgs = new ArrayList<String>();
         if ( basedir.exists() )
         {
             DirectoryScanner scanner = new DirectoryScanner();
@@ -440,10 +449,14 @@ public final class CompilerContextImpl
 
             for ( String file : scanner.getIncludedFiles() )
             {
-                embeddedResources.add( new File( basedir, file ) );
+                File f = new File(basedir, file);
+                embeddedResources.add(f);
+                String resourceName = project.getArtifactId() + "." + file.replace(File.separatorChar, '.');
+                embeddedResourceArgs.add(f.getAbsolutePath() + "," + resourceName);
             }
         }
-        return embeddedResources;
+        this.embeddedResources = embeddedResources;
+        this.embeddedResourceArgs = embeddedResourceArgs;
     }
 
     private void moveInteropDllToBuildDirectory(Artifact artifact) throws PlatformUnsupportedException

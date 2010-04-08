@@ -109,9 +109,9 @@ public final class DefaultCompiler
                 commands.add( "/reference:" + path );
             }
         }
-        for ( File file : compilerContext.getEmbeddedResources() )
+        for ( String arg : compilerContext.getEmbeddedResourceArgs() )
         {
-            commands.add( "/resource:" + file.getAbsolutePath() );
+            commands.add( "/resource:" + arg );
         }
         for ( File file : compilerContext.getLinkedResources() )
         {
@@ -254,6 +254,10 @@ public final class DefaultCompiler
             String recurseCmd = "/recurse:" + TempDir+File.separator + "*" + fileExt + "";
             filteredCommands.add(recurseCmd);
             
+        }
+        if ( logger.isDebugEnabled() )
+        {
+            logger.debug( "commands: " + filteredCommands );
         }
         String responseFilePath = TempDir + File.separator + "responcefile.rsp";
         try

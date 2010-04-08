@@ -179,4 +179,5 @@ public interface CompilerContext
                CapabilityMatcher capabilityMatcher )
         throws PlatformUnsupportedException;
 
+    List<String> getEmbeddedResourceArgs();
 }
