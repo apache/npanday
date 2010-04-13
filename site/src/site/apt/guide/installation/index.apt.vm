@@ -175,23 +175,27 @@ Installing the Visual Studio Add-in using the NPanday Installer
 
   To launch the NPanday Setup, click the installer twice,
  
-[../../images/first.jpg]  
+[../../images/vs/installer/screen1.jpg]  
  
   After clicking the 'Next' button, End-User License Agreement wizard page will prompt.  Check the box and click the 'Next' button.
   
-[../../images/second.jpg] 
+[../../images/vs/installer/screen2.jpg] 
   
   Next wizard page will be for the Custom Setup which will allow user to change the way the features will be installed and the location of the repository.
+
+  If you are going to configure Maven to use NPanday installed on a remote repository, you can disable the installation of its artifacts in your local repository.
+
+  An item for the Visual Studio Addin should appear for each version of Visual Studio that you have installed. You can then select which of these you wish for the Addin to be installed into.
   
-[../../images/third.jpg]
+[../../images/vs/installer/screen3.jpg]
    
   After changes were made, click on Next button and user will be redirected to the Installation wizard page.  Click on the 'Install' button to start installation.
   
-[../../images/fourth.jpg]
+[../../images/vs/installer/screen4.jpg]
    
   If installation was successful, user will be prompted with this:
   
-[../../images/fifth.jpg]
+[../../images/vs/installer/screen5.jpg]
  
   After running the installer the add-in will be located here:
   <<<C:\\Documents and Settings\\[user_home]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
@@ -208,7 +212,7 @@ Verifying the NPanday Add-in
 
   []
 
-[../../images/verify_installation.jpg] NPanday Build System
+[../../images/vs/installer/verify_installation.jpg] NPanday Build System
 
   You can also set Visual Studio to automatically start NPanday Build System upon startup by checking
   NPanday.VisualStudio.Addin in Tools > Add-in Manager.

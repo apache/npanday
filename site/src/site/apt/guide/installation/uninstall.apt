@@ -1,18 +1,15 @@
  ------
- Uninstalling Manually
+ Uninstalling NPanday
  ------
  ------
  26 Feb 2009
  ------
 
-Uninstalling Manually
+Uninstalling NPanday
 
   To remove the NPanday .NET Build Tool, follow these steps:
-  
-  [[1]] Locate and delete your previous version of the NPanday .NET Build Tool for Visual Studio.
-  It is typically found at the following location, where [user_home] is your home directory:
-  
-  <<<C:\\Documents and Settings\\[user_home]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
+
+  [[1]] Run the uninstaller from the Control Panel's Add/Remove programs dialog if you used the MSI to install NPanday.
   
   [[2]] Clear the cache by typing the following in a command shell:
   
@@ -38,8 +35,6 @@ Uninstalling Manually
   
   [[6]] Remove the following file <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository\\npanday.artifacts.resolved>>>
 
-  [[7]] Remove the <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository\npanday>>> directory
-  
   []
   
   An alternative to step 3 is to run the following commands from the command prompt as an administrator:
@@ -49,4 +44,17 @@ gacutil /u NPanday.Model.Pom
 gacutil /u NPanday.Plugin
 ----
 
+Uninstalling without the Installer
+
+  If you didn't use the installer package to install NPanday, you should still perform step 2 onwards above, and then the
+  following additional steps:
+  
+  [[1]] Locate and delete your previous version of the NPanday .NET Build Tool for Visual Studio.
+  It is typically found at the following location, where [user_home] is your home directory:
+  
+  <<<C:\\Documents and Settings\\[user_home]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
+  
+  [[2]] Remove the <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository\npanday>>> directory
+
+  []
   
