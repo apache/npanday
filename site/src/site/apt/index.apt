@@ -22,6 +22,19 @@ NPanday
   You can read more about {{{http://maven.apache.org/maven-features.html} Maven's features}} on the Maven
   web site.
 
+  NPanday doesn't intend to replicate MSBuild's (or Visual Studio's build) behavior exactly, or necessarily serve as
+  a replacement for Visual Studio users, but rather to:
+
+    * augment Visual Studio with dependency management and make the build reproducible in clean environments
+
+    * offer a consistent toolchain to build environments with projects in other languages (particularly those using Maven for Java projects)
+
+    * offer a solution for declarative builds for .NET projects that will work consistently whether Visual Studio is used or not
+
+    * expose other Maven features and plugins to .NET projects
+
+    []
+
   For more information about NPanday, refer to the following guides:
 
     * {{{./features.html} Features}}
