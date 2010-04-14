@@ -215,7 +215,10 @@ namespace NPanday.ProjectImporter.Digest.Model
             bool asmNotLoaded = true;
             foreach (Assembly asmm in AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
             {
-                if (Path.GetFileNameWithoutExtension(asmm.Location).Equals(Path.GetFileNameWithoutExtension(path)))
+                // compare the assembly name to the filename of the reference to determine if it is a match
+                // as the location might not be set
+                // TODO: why do we need to load the assembly?
+                if (asmm.GetName().Name.Equals(Path.GetFileNameWithoutExtension(path)))
                 {
                     asm = asmm;
                     asmNotLoaded = false;
