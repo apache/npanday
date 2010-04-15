@@ -52,12 +52,12 @@ under the License.
         <plugin>
           <groupId>npanday.plugin</groupId>
           <artifactId>maven-compile-plugin</artifactId>  
-          <version>1.1</version>
+          <version>${stable.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>npanday.plugin</groupId>
           <artifactId>maven-resgen-plugin</artifactId>  
-          <version>1.1</version>
+          <version>${stable.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>npanday.plugin</groupId>
@@ -185,4 +185,7 @@ under the License.
       </dependency>  
     </dependencies> 
   </dependencyManagement> 
+  <properties>
+    <stable.npanday.version>1.1</stable.npanday.version>
+  </properties>
 </project>
