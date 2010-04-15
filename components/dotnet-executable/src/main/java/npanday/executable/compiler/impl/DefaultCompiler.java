@@ -173,12 +173,12 @@ public final class DefaultCompiler
         }
         commands.add( "/warnaserror-" );
         //commands.add( "/nowarn" );
-        if ( compilerContext.getCompilerRequirement().getVendor().equals( Vendor.MONO ) )
-        {
-            commands.add( "/reference:System.Drawing" );
-            commands.add( "/reference:System.Windows.Forms" );
-            commands.add( "/reference:System.Web.Services" );
-        }
+//        if ( compilerContext.getCompilerRequirement().getVendor().equals( Vendor.MONO ) )
+//        {
+//            commands.add( "/reference:System.Drawing" );
+//            commands.add( "/reference:System.Windows.Forms" );
+//            commands.add( "/reference:System.Web.Services" );
+//        }
         if ( !compilerContext.getNetCompilerConfig().isTestCompile() )
         {
             commands.add(
