@@ -346,6 +346,79 @@
     </commandFilter>
   </compilerPlugin>
   <compilerPlugin>
+    <identifier>MONO-VB</identifier>
+    <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
+    <vendor>MONO</vendor>
+    <language>VB</language>
+    <profile>FULL</profile>
+    <executable>vbnc</executable>
+    <frameworkVersions>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Mac OS X</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Linux</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Solaris</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>FreeBSD</operatingSystem>
+      </platform>
+    </platforms>
+    <commandFilter>
+      <includes>
+        <include>out</include>
+        <include>target</include>
+        <include>doc</include>
+        <include>addmodule</include>
+        <include>recurse</include>
+        <include>reference</include>
+        <include>linkresource</include>
+        <include>resource</include>
+        <include>win32icon</include>
+        <include>win32resource</include>
+        <include>optimize</include>
+        <include>removeintchecks</include>
+        <include>debug</include>
+        <include>nowarn</include>
+        <include>warnaserror</include>
+        <include>define</include>
+        <include>imports</include>
+        <include>optionexplicit</include>
+        <include>rootnamespace</include>
+        <include>optionstrict</include>
+        <include>optioncompare</include>
+        <include>noconfig</include>
+        <include>nologo</include>
+        <include>quiet</include>
+        <include>verbose</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>codepage</include>
+        <include>delaysign</include>
+        <include>errorreport</include>
+        <include>filealign</include>
+        <include>keycontainer</include>
+        <include>keyfile</include>
+        <include>libpath</include>
+        <include>main</include>
+        <include>netcf</include>
+        <include>nostdlib</include>
+        <include>platform</include>
+        <include>sdkpath</include>
+        <include>utf8output</include>
+      </includes>
+    </commandFilter>
+  </compilerPlugin>
+  <compilerPlugin>
     <identifier>MONO-CS-2</identifier>
     <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
     <vendor>MONO</vendor>
