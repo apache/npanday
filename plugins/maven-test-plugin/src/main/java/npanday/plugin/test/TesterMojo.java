@@ -147,10 +147,39 @@ extends AbstractMojo
      */
     private StateMachineProcessor processor;
 
-    private String getExecutableFor( Vendor vendor, String home )
+    /**
+     * Specify the name of the NUnit command to be run, from within the <i>nunitHome</i>/bin directory.
+     *  
+     * @parameter
+     */
+    private String nunitCommand;
+
+    private String getExecutableFor( VendorInfo vendorInfo )
     {
+        String exe;
+        if ( nunitCommand == null )
+        {
+            exe = "nunit-console";
+
+            if ( vendorInfo != null )
+            {
+                Vendor vendor = vendorInfo.getVendor();
+                String frameworkVersion = vendorInfo.getFrameworkVersion();
+                if ( "MONO".equals( vendor.getVendorName() ) )
+                {
+                    if ( frameworkVersion == null || !frameworkVersion.startsWith( "1.1" ) )
+                    {
+                        exe = "nunit-console2";
+                    }
+                }
+            }
+        }
+        else
+        {
+            exe = nunitCommand;
+        }
         return !( nunitHome == null || nunitHome.equals( "" ) ) ? nunitHome + File.separator + "bin" + File.separator
-            + "nunit-console" : "nunit-console";
+            + exe : exe;
     }
 
     private List<String> getCommandsFor( Vendor vendor )
@@ -370,7 +399,7 @@ extends AbstractMojo
                 }
 
             } );
-            commandExecutor.executeCommand( getExecutableFor( null, null ), commands );
+            commandExecutor.executeCommand( getExecutableFor( vendorInfo ), commands );
         }
         catch ( ExecutionException e )
         {
