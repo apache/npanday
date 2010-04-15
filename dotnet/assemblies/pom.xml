@@ -39,14 +39,26 @@ under the License.
     <module>NPanday.Plugin.MojoGenerator</module>	
     <module>NPanday.Plugin.Loader</module>  
     <module>NPanday.Plugin.Runner</module>  
-
-    <!-- TODO: should build without EnvDTE80, etc. but currently has dependencies on windows libs -->
-    <module>NPanday.Utils</module>
-    <module>NPanday.ProjectImporter</module>
-
-    <!-- TODO: should be optional -->
-    <module>NPanday.VisualStudio</module>  
-    <module>NPanday.VisualStudio.Addin</module>  
-    <module>NPanday.VisualStudio.ProjectWizard</module>
   </modules>
+
+  <profiles>
+    <profile>
+      <id>VisualStudio</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+      <modules>
+        <!-- TODO: should build without EnvDTE80, etc. but currently has dependencies on windows libs -->
+        <module>NPanday.Utils</module>
+        <module>NPanday.ProjectImporter</module>
+
+        <!-- TODO: should be optional -->
+        <module>NPanday.VisualStudio</module>
+        <module>NPanday.VisualStudio.Addin</module>
+        <module>NPanday.VisualStudio.ProjectWizard</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

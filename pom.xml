@@ -153,10 +153,6 @@ under the License.
     <module>archetypes</module>  
     <module>plugins</module>  
     <module>dotnet</module>
-    <!-- must appear before the second repository builder that includes it -->
-    <module>misc/dotnet-repository-builder</module>
-    <module>misc/npanday-repository-builder</module>
-    <module>misc/npanday-installer</module>
   </modules>  
   <build> 
     <plugins> 
@@ -383,8 +379,37 @@ under the License.
     </profile>
     <profile>
       <id>npanday-release</id>
+      <modules>
+        <!-- must appear before the second repository builder that includes it -->
+        <module>misc/dotnet-repository-builder</module>
+        <module>misc/npanday-repository-builder</module>
+        <module>misc/npanday-installer</module>
+      </modules>
       <build>
-        <plugins> 
+        <plugins>
+          <!-- Fail fast: the release build must run on Windows for the Add-in -->
+          <!-- TODO: consider splitting it into a separate release -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>1.0-beta-1</version>
+            <executions>
+              <execution>
+                <id>enforce-os</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireOS>
+                      <family>windows</family>
+                    </requireOS>
+                  </rules>
+                  <fail>true</fail>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
           <plugin> 
             <artifactId>maven-assembly-plugin</artifactId>  
             <inherited>false</inherited>  
