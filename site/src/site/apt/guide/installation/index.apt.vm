@@ -97,7 +97,7 @@ Obtaining NPanday
     * {{{http://npanday.codeplex.com/Release/ProjectReleases.aspx} NPanday Download page}} - for downloading a full
       repository to install locally
 
-    * {{{http://repo.npanday.org/archiva/} NPanday Release Repository}} - for downloading directly from Maven
+    * {{{http://repo.npanday.org/archiva/repository/npanday-releases} NPanday Release Repository}} - for downloading directly from Maven (<Note>: that you will also need to include the repository {{http://repository.aduna-software.org/maven2}} for some dependencies).
 
   As of NPanday 1.1, the release is only made available as a Maven binary repository, or a source distribution.
   For information on how to build the project from source, see {{{../../developers/building.html} Building from Source}}
