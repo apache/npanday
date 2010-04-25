@@ -105,11 +105,13 @@ Obtaining NPanday
   For information on how to build the project from source, see {{{../../developers/building.html} Building from Source}}
   in the Developer's Guide. NPanday 1.2 and above include a Windows installer as an option.
 
-  In this guide, we will use the repository downloaded from the NPanday download page.
-
   ~~TODO: additional guides for using the existing repositories
 
-Installing NPanday's Maven Plugins
+Installing Using the Downloaded Binary Repository
+
+  In this guide, we will use the repository downloaded from the NPanday download page.
+
+* Installing NPanday's Maven Plugins
 
   Whether you are using just the Visual Studio integration or the full set of capabilities, you must have the Maven
   environment installed.
@@ -149,11 +151,9 @@ vsinstaller:install
 
   ~~TODO: add a troubleshooting guide and reference here in case it all goes wrong
 
-* Getting Started with Maven
-
   If you don't intend to use the Visual Studio Add-in, you can now {{{../maven/index.html} get started using Maven}}.  
   
-Installing the Visual Studio Add-in
+* Installing the Visual Studio Add-in
 
   To install the Add-in, first ensure that Visual Studio is not running.
 
@@ -169,6 +169,8 @@ mvn npanday.plugin:maven-vsinstaller-plugin:[version]:install
   After running the <<<maven-vsinstaller-plugin>>> the add-in will be located here:
   <<<C:\\Documents and Settings\\[user_home]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
   (or equivalent for Visual Studio 2008).
+
+  More information on how to verify the Add-in installation are located at the end of this guide.
 
 Installing the Visual Studio Add-in using the NPanday Installer
 
@@ -202,6 +204,8 @@ Installing the Visual Studio Add-in using the NPanday Installer
   After running the installer the add-in will be located here:
   <<<C:\\Documents and Settings\\[user_home]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
   (or equivalent for Visual Studio 2008).
+
+  You can verify that the Maven plugins are also installed correctly by following the same steps as shown in the previous section.
   
 Verifying the NPanday Add-in
 
