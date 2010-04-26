@@ -720,9 +720,6 @@ namespace NPanday.VisualStudio.Addin
                         else if (a.Location.ToLower().IndexOf(@"\gac\") >= 0)
                             refType = "gac";
 
-                        scope = "system";
-                        systemPath = a.Location;
-
                         if (!a.GlobalAssemblyCache)
                         {
                             refType = "library";

@@ -65,8 +65,6 @@ import org.codehaus.plexus.util.cli.StreamConsumer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.codehaus.plexus.util.FileUtils;
 
-
-
 import java.util.logging.Logger;
 import java.util.Set;
 import java.util.HashSet;
@@ -78,6 +76,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.EOFException;
+import java.lang.ExceptionInInitializerError;
 import java.net.URISyntaxException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -91,7 +90,7 @@ public final class ProjectDaoImpl
     implements ProjectDao
 {
 
-	private String className;
+    private String className;
 
     private String id;
 
@@ -179,12 +178,9 @@ public final class ProjectDaoImpl
 
                 // Project project = getProjectFor( groupId, artifactId, version, artifactType, null );
                 /*
-                for ( Iterator<Binding> i = set.iterator(); i.hasNext(); )
-                {
-                    Binding b = i.next();
-                    System.out.println( b.getName() + ":" + b.getValue() );
-                }
-               */
+                 * for ( Iterator<Binding> i = set.iterator(); i.hasNext(); ) { Binding b = i.next();
+                 * System.out.println( b.getName() + ":" + b.getValue() ); }
+                 */
                 projects.add( getProjectFor( groupId, artifactId, version, artifactType, classifier ) );
             }
         }
@@ -331,12 +327,9 @@ public final class ProjectDaoImpl
             {
                 BindingSet set = result.next();
                 /*
-                for ( Iterator<Binding> i = set.iterator(); i.hasNext(); )
-                {
-                    Binding b = i.next();
-                    System.out.println( b.getName() + ":" + b.getValue() );
-                }
-                */
+                 * for ( Iterator<Binding> i = set.iterator(); i.hasNext(); ) { Binding b = i.next();
+                 * System.out.println( b.getName() + ":" + b.getValue() ); }
+                 */
                 if ( set.hasBinding( ProjectUri.IS_RESOLVED.getObjectBinding() )
                     && set.getBinding( ProjectUri.IS_RESOLVED.getObjectBinding() ).getValue().toString().equalsIgnoreCase(
                                                                                                                            "true" ) )
@@ -346,14 +339,11 @@ public final class ProjectDaoImpl
 
                 project.setArtifactType( set.getBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding() ).getValue().toString() );
                 /*
-                if ( set.hasBinding( ProjectUri.PARENT.getObjectBinding() ) )
-                {
-                    String pid = set.getBinding( ProjectUri.PARENT.getObjectBinding() ).getValue().toString();
-                    String[] tokens = pid.split( "[:]" );
-                    Project parentProject = getProjectFor( tokens[0], tokens[1], tokens[2], null, null );
-                    project.setParentProject( parentProject );
-                }
-                */
+                 * if ( set.hasBinding( ProjectUri.PARENT.getObjectBinding() ) ) { String pid = set.getBinding(
+                 * ProjectUri.PARENT.getObjectBinding() ).getValue().toString(); String[] tokens = pid.split( "[:]" );
+                 * Project parentProject = getProjectFor( tokens[0], tokens[1], tokens[2], null, null );
+                 * project.setParentProject( parentProject ); }
+                 */
                 if ( set.hasBinding( ProjectUri.DEPENDENCY.getObjectBinding() ) )
                 {
                     Binding binding = set.getBinding( ProjectUri.DEPENDENCY.getObjectBinding() );
@@ -410,6 +400,18 @@ public final class ProjectDaoImpl
     public void storeProject( Project project, File localRepository, List<ArtifactRepository> artifactRepositories )
         throws IOException
     {
+
+    }
+
+    /**
+     * Generates the system path for gac dependencies.
+     */
+    private String generateDependencySystemPath( ProjectDependency projectDependency )
+    {
+        return new File( System.getenv( "SystemRoot" ), "/assembly/"
+            + projectDependency.getArtifactType().toUpperCase() + "/" + projectDependency.getArtifactId() + "/"
+            + projectDependency.getVersion() + "__" + projectDependency.getPublicKeyTokenId() + "/"
+            + projectDependency.getArtifactId() + ".dll" ).getAbsolutePath();
 
     }
 
@@ -483,13 +485,18 @@ public final class ProjectDaoImpl
 
             for ( ProjectDependency projectDependency : project.getProjectDependencies() )
             {
-                logger.finest( "NPANDAY-180-011: Project Dependency: Artifact ID = " + projectDependency.getArtifactId()
-                    + ", Group ID = " + projectDependency.getGroupId() + ", Version = "
-                    + projectDependency.getVersion() + ", Artifact Type = " + projectDependency.getArtifactType() );
+                logger.finest( "NPANDAY-180-011: Project Dependency: Artifact ID = "
+                    + projectDependency.getArtifactId() + ", Group ID = " + projectDependency.getGroupId()
+                    + ", Version = " + projectDependency.getVersion() + ", Artifact Type = "
+                    + projectDependency.getArtifactType() );
 
                 // If artifact has been deleted, then re-resolve
                 if ( projectDependency.isResolved() && !projectDependency.getArtifactType().startsWith( "gac" ) )
                 {
+                    if ( projectDependency.getSystemPath() == null )
+                    {
+                        projectDependency.setSystemPath( generateDependencySystemPath( projectDependency ) );
+                    }
                     Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
 
                     File dependencyFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
@@ -537,20 +544,21 @@ public final class ProjectDaoImpl
                 // resolve com reference
                 // flow:
                 // 1. generate the interop dll in temp folder and resolve to that path during dependency resolution
-                // 2. cut and paste the dll to  buildDirectory and update the paths once we grab the reference of MavenProject (CompilerContext.java)
+                // 2. cut and paste the dll to buildDirectory and update the paths once we grab the reference of
+                // MavenProject (CompilerContext.java)
                 if ( projectDependency.getArtifactType().equals( "com_reference" ) )
-                {                    
-                    String tokenId = projectDependency.getPublicKeyTokenId();                    
-                    String interopPath = generateInteropDll(projectDependency.getArtifactId(), tokenId );
+                {
+                    String tokenId = projectDependency.getPublicKeyTokenId();
+                    String interopPath = generateInteropDll( projectDependency.getArtifactId(), tokenId );
 
                     File f = new File( interopPath );
-                    
+
                     if ( !f.exists() )
                     {
-                        throw new IOException( "Dependency com_reference File not found:"
-                            + interopPath + "in Group ID = " + projectDependency.getGroupId()
-                            + ", Artiract ID = " + projectDependency.getArtifactId() );
-                    }                    
+                        throw new IOException( "Dependency com_reference File not found:" + interopPath
+                            + "in Group ID = " + projectDependency.getGroupId() + ", Artiract ID = "
+                            + projectDependency.getArtifactId() );
+                    }
 
                     Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
                     assembly.setFile( f );
@@ -569,12 +577,36 @@ public final class ProjectDaoImpl
                     continue;
                 }
 
+                // resolve gac references
+                // note: the old behavior of gac references, used to have system path properties in the pom of the
+                // project
+                // now we need to generate the system path of the gac references so we can use
+                // System.getenv("SystemRoot")
                 if ( !projectDependency.isResolved() )
                 {
                     if ( projectDependency.getArtifactType().startsWith( "gac" ) )
                     {
-                        projectDependency.setResolved( true );
-                        artifactDependencies.add( ProjectFactory.createArtifactFrom( projectDependency, artifactFactory ) );
+                        try
+                        {
+                            projectDependency.setResolved( true );
+                            if ( projectDependency.getSystemPath() == null )
+                            {
+                                projectDependency.setSystemPath( generateDependencySystemPath( projectDependency ) );
+                            }
+                            File f = new File( projectDependency.getSystemPath() );
+                            Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
+                            assembly.setFile( f );
+                            assembly.setResolved( true );
+                            artifactDependencies.add( assembly );
+
+                        }
+                        catch ( ExceptionInInitializerError e )
+                        {
+                            logger.warning( "NPANDAY-180-516.82: Project Failed to Resolve Dependency: Artifact ID = "
+                                + projectDependency.getArtifactId() + ", Group ID = " + projectDependency.getGroupId()
+                                + ", Version = " + projectDependency.getVersion() + ", Scope = "
+                                + projectDependency.getScope() + "SystemPath = " + projectDependency.getSystemPath() );
+                        }
                     }
                     else
                     {
@@ -626,7 +658,6 @@ public final class ProjectDaoImpl
                                 + ".xml" );
                         tmpFile.deleteOnExit();
                         pomArtifact.setFile( tmpFile );
-						
 
                         try
                         {
@@ -711,13 +742,11 @@ public final class ProjectDaoImpl
                                 v = model.getParent().getVersion();
                             }
                             if ( !( g.equals( projectDependency.getGroupId() )
-                                && model.getArtifactId().equals( projectDependency.getArtifactId() ) && v.equals(
-                                                                                                                                   projectDependency.getVersion() ) ) )
+                                && model.getArtifactId().equals( projectDependency.getArtifactId() ) && v.equals( projectDependency.getVersion() ) ) )
                             {
                                 throw new IOException(
                                                        "NPANDAY-180-017: Model parameters do not match project dependencies parameters: Model: "
-                                                           + g + ":" + model.getArtifactId() + ":"
-                                                           + v + ", Project: "
+                                                           + g + ":" + model.getArtifactId() + ":" + v + ", Project: "
                                                            + projectDependency.getGroupId() + ":"
                                                            + projectDependency.getArtifactId() + ":"
                                                            + projectDependency.getVersion() );
@@ -818,7 +847,7 @@ public final class ProjectDaoImpl
                                                            List<ArtifactRepository> artifactRepositories )
         throws IOException
     {
-		return storeProjectAndResolveDependencies( ProjectFactory.createProjectFrom( model, pomFileDirectory ),
+        return storeProjectAndResolveDependencies( ProjectFactory.createProjectFrom( model, pomFileDirectory ),
                                                    localArtifactRepository, artifactRepositories );
     }
 
@@ -970,8 +999,8 @@ public final class ProjectDaoImpl
         }
         return null;
     }
-    
-    //TODO:  move generateInteropDll, getInteropParameters, getTempDirectory, and execute methods to another class    
+
+    // TODO: move generateInteropDll, getInteropParameters, getTempDirectory, and execute methods to another class
     private String generateInteropDll( String name, String classifier )
         throws IOException
     {
@@ -986,7 +1015,7 @@ public final class ProjectDaoImpl
         {
             throw new IOException( "Unable to create temporary directory" );
         }
-                
+
         try
         {
             comReferenceAbsolutePath = resolveComReferencePath( name, classifier );
@@ -994,11 +1023,10 @@ public final class ProjectDaoImpl
         catch ( Exception e )
         {
             throw new IOException( e.getMessage() );
-        }        
+        }
 
-        String interopAbsolutePath = tmpDir.getAbsolutePath() + File.separator + "Interop." + name + ".dll" ;
+        String interopAbsolutePath = tmpDir.getAbsolutePath() + File.separator + "Interop." + name + ".dll";
         List<String> params = getInteropParameters( interopAbsolutePath, comReferenceAbsolutePath, name );
-                
 
         try
         {
@@ -1011,169 +1039,169 @@ public final class ProjectDaoImpl
 
         return interopAbsolutePath;
     }
-    
-    private String resolveComReferencePath(String name, String classifier) throws Exception
+
+    private String resolveComReferencePath( String name, String classifier )
+        throws Exception
     {
-        String[] classTokens = classifier.split("}");
-        
-        classTokens[1]= classTokens[1].replace( "-", "\\" );
-        
-        String newClassifier = classTokens[0]+"}"+classTokens[1];
-        
-		String registryPath = "HKEY_CLASSES_ROOT\\TypeLib\\" + newClassifier + "\\win32\\";
-        int lineNoOfPath = 1 ;
-        
+        String[] classTokens = classifier.split( "}" );
+
+        classTokens[1] = classTokens[1].replace( "-", "\\" );
+
+        String newClassifier = classTokens[0] + "}" + classTokens[1];
+
+        String registryPath = "HKEY_CLASSES_ROOT\\TypeLib\\" + newClassifier + "\\win32\\";
+        int lineNoOfPath = 1;
+
         List<String> parameters = new ArrayList<String>();
         parameters.add( "query" );
         parameters.add( registryPath );
         parameters.add( "/ve" );
-        
+
         StreamConsumer outConsumer = new StreamConsumerImpl();
         StreamConsumer errorConsumer = new StreamConsumerImpl();
-        
+
         try
         {
-            //TODO: investigate why outConsumer ignores newline
-            execute( "reg" , parameters, outConsumer, errorConsumer );            
+            // TODO: investigate why outConsumer ignores newline
+            execute( "reg", parameters, outConsumer, errorConsumer );
         }
-        catch(Exception e){
-            throw new Exception("Cannot find information of ["+name+"] ActiveX component in your system, you need to install this component first to continue.");
+        catch ( Exception e )
+        {
+            throw new Exception( "Cannot find information of [" + name
+                + "] ActiveX component in your system, you need to install this component first to continue." );
         }
-        
-        //parse outConsumer
-        String out = outConsumer.toString();       
+
+        // parse outConsumer
+        String out = outConsumer.toString();
 
         String tokens[] = out.split( "\n" );
-        
-        String lineResult  = "";
+
+        String lineResult = "";
         String[] result;
-        if (tokens.length >= lineNoOfPath - 1)
+        if ( tokens.length >= lineNoOfPath - 1 )
         {
-            lineResult  = tokens[lineNoOfPath - 1];
+            lineResult = tokens[lineNoOfPath - 1];
         }
-        
+
         result = lineResult.split( "REG_SZ" );
-        
-        if (result.length > 1)
-        {            
+
+        if ( result.length > 1 )
+        {
             return result[1].trim();
         }
-            
 
         return null;
     }
-	
-	private List<String> readPomAttribute(String pomFileLoc, String tag)
-	{
-		List<String> attributes=new ArrayList<String>();
-		
-		try 
-		{
-            File file = new File(pomFileLoc);
-            
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+    private List<String> readPomAttribute( String pomFileLoc, String tag )
+    {
+        List<String> attributes = new ArrayList<String>();
+
+        try
+        {
+            File file = new File( pomFileLoc );
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(file);
+            Document doc = db.parse( file );
             doc.getDocumentElement().normalize();
-                        
-			NodeList nodeLst = doc.getElementsByTagName(tag);
-	
-            for (int s = 0; s < nodeLst.getLength(); s++) 
-			{
-                Node currentNode = nodeLst.item(s);
-				
-				NodeList childrenList = currentNode.getChildNodes();
-								
-				for (int i = 0; i < childrenList.getLength(); i++)
-				{
-					Node child = childrenList.item(i);
-					attributes.add(child.getNodeValue());
-				}
+
+            NodeList nodeLst = doc.getElementsByTagName( tag );
+
+            for ( int s = 0; s < nodeLst.getLength(); s++ )
+            {
+                Node currentNode = nodeLst.item( s );
+
+                NodeList childrenList = currentNode.getChildNodes();
+
+                for ( int i = 0; i < childrenList.getLength(); i++ )
+                {
+                    Node child = childrenList.item( i );
+                    attributes.add( child.getNodeValue() );
+                }
             }
-		} 
-		catch (Exception e) 
-		{
-            
         }
-		
-		return attributes;
-	}
-    
-    private List<String> getInteropParameters( String interopAbsolutePath, String comRerefenceAbsolutePath, String namespace )
+        catch ( Exception e )
+        {
+
+        }
+
+        return attributes;
+    }
+
+    private List<String> getInteropParameters( String interopAbsolutePath, String comRerefenceAbsolutePath,
+                                               String namespace )
     {
         List<String> parameters = new ArrayList<String>();
         parameters.add( comRerefenceAbsolutePath );
-        parameters.add( "/out:" + interopAbsolutePath );        
+        parameters.add( "/out:" + interopAbsolutePath );
         parameters.add( "/namespace:" + namespace );
-		try
-		{
-			//beginning code for checking of strong name key or signing of projects
-			String key = "";
-			String keyfile =  "";
-			String currentWorkingDir = System.getProperty("user.dir");
-		
-		
-			//Check if Parent pom
-			List<String> modules = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","module");
-			if(!modules.isEmpty())
-			{
-				//check if there is a matching dependency with the namespace
-				for(String child : modules)
-				{
-					//check each module pom file if there is existing keyfile
-					String tempDir = currentWorkingDir+File.separator+child;
-					try
-					{
-						List<String> keyfiles = readPomAttribute(tempDir+"\\pom.xml","keyfile");
-					if(keyfiles.get(0)!=null)
-					{
-						//PROBLEM WITH MULTIMODULES
-						boolean hasComRef = false;
-						List<String> dependencies = readPomAttribute(tempDir+"\\pom.xml","groupId");
-						for(String item : dependencies)
-						{
-							if(item.equals(namespace))
-							{
-								hasComRef = true;
-								break;
-							}
-						}
-						if(hasComRef)
-						{
-							key = keyfiles.get(0);
-							currentWorkingDir = tempDir;
-						}
-					}
-					}
-					catch(Exception e)
-					{
-					}
-					
-					
-				}
-			}
-			else
-			{
-				//not a parent pom, so read project pom file for keyfile value
-				
-				List<String> keyfiles = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","keyfile");
-				key = keyfiles.get(0);
-			}
-			if(key!="")
-			{
-				keyfile = currentWorkingDir+File.separator+key;
-				parameters.add( "/keyfile:"+keyfile);
-			}
-			//end code for checking of strong name key or signing of projects
-		}
-		catch(Exception ex)
-		{
-		}
-		
-		
-		return parameters;
+        try
+        {
+            // beginning code for checking of strong name key or signing of projects
+            String key = "";
+            String keyfile = "";
+            String currentWorkingDir = System.getProperty( "user.dir" );
+
+            // Check if Parent pom
+            List<String> modules = readPomAttribute( currentWorkingDir + File.separator + "pom.xml", "module" );
+            if ( !modules.isEmpty() )
+            {
+                // check if there is a matching dependency with the namespace
+                for ( String child : modules )
+                {
+                    // check each module pom file if there is existing keyfile
+                    String tempDir = currentWorkingDir + File.separator + child;
+                    try
+                    {
+                        List<String> keyfiles = readPomAttribute( tempDir + "\\pom.xml", "keyfile" );
+                        if ( keyfiles.get( 0 ) != null )
+                        {
+                            // PROBLEM WITH MULTIMODULES
+                            boolean hasComRef = false;
+                            List<String> dependencies = readPomAttribute( tempDir + "\\pom.xml", "groupId" );
+                            for ( String item : dependencies )
+                            {
+                                if ( item.equals( namespace ) )
+                                {
+                                    hasComRef = true;
+                                    break;
+                                }
+                            }
+                            if ( hasComRef )
+                            {
+                                key = keyfiles.get( 0 );
+                                currentWorkingDir = tempDir;
+                            }
+                        }
+                    }
+                    catch ( Exception e )
+                    {
+                    }
+
+                }
+            }
+            else
+            {
+                // not a parent pom, so read project pom file for keyfile value
+
+                List<String> keyfiles = readPomAttribute( currentWorkingDir + File.separator + "pom.xml", "keyfile" );
+                key = keyfiles.get( 0 );
+            }
+            if ( key != "" )
+            {
+                keyfile = currentWorkingDir + File.separator + key;
+                parameters.add( "/keyfile:" + keyfile );
+            }
+            // end code for checking of strong name key or signing of projects
+        }
+        catch ( Exception ex )
+        {
+        }
+
+        return parameters;
     }
-    
+
     private File getTempDirectory()
         throws IOException
     {
@@ -1183,17 +1211,18 @@ public final class ProjectDaoImpl
         tmpDir.mkdir();
         return tmpDir;
     }
-    
-    //can't use dotnet-executable due to cyclic dependency.
-    private void execute( String executable, List<String> commands ) throws Exception
+
+    // can't use dotnet-executable due to cyclic dependency.
+    private void execute( String executable, List<String> commands )
+        throws Exception
     {
         execute( executable, commands, null, null );
     }
-    
+
     private void execute( String executable, List<String> commands, StreamConsumer systemOut, StreamConsumer systemError )
         throws Exception
     {
-        int result = 0;        
+        int result = 0;
         Commandline commandline = new Commandline();
         commandline.setExecutable( executable );
         commandline.addArguments( commands.toArray( new String[commands.size()] ) );
@@ -1217,9 +1246,9 @@ public final class ProjectDaoImpl
     }
 
     /**
-     * TODO: refactor this to another class and all methods concerning com_reference 
-     * StreamConsumer instance that buffers the entire output
-     */    
+     * TODO: refactor this to another class and all methods concerning com_reference StreamConsumer instance that
+     * buffers the entire output
+     */
     class StreamConsumerImpl
         implements StreamConsumer
     {
@@ -1252,5 +1281,5 @@ public final class ProjectDaoImpl
             return sb.toString();
         }
     }
-    
+
 }

@@ -58,6 +58,11 @@ Project Dependencies
 
   See below for adding COM references directly.
 
+** .NET References
+
+  As of version 1.2 when adding .NET References NPanday will no longer add system scope and system path properties on the 
+  .NET dependency.
+  
 * Adding References
 
   You can also add traditional references to the project and have NPanday translate them into Maven dependencies.

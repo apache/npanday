@@ -43,6 +43,7 @@ import npanday.dao.ProjectDao;
 import npanday.dao.ProjectUri;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.manager.WagonManager;
 
 public class ProjectDaoImplTest
     extends TestCase
@@ -55,12 +56,70 @@ public class ProjectDaoImplTest
     private org.openrdf.repository.Repository rdfRepository;
 
     private File dataDir;
-        //Disable this test due to a compilation error in the wagon manager test stub
+
     public void testBogus()
     {
 
     }
-/*
+
+    private ProjectDao createProjectDao()
+    {
+        dataDir = new File( basedir, ( "/target/rdf-repos/rdf-repo-" + System.currentTimeMillis() ) );
+        rdfRepository = new SailRepository( new MemoryStoreRDFSInferencer( new MemoryStore( dataDir ) ) );
+        try
+        {
+            rdfRepository.initialize();
+        }
+        catch ( RepositoryException e )
+        {
+            return null;
+        }
+        ProjectDaoImpl dao = new ProjectDaoImpl();
+        WagonManagerTestStub stub = new WagonManagerTestStub();
+        stub.setBaseDir( basedir );
+        dao.initForUnitTest( rdfRepository, "", "", stub, new ArtifactFactoryTestStub() );
+        dao.openConnection();
+        return dao;
+    }
+
+    public void testStore_WithGacDependencies()
+    {
+        ProjectDao dao = this.createProjectDao();
+
+        Project project = new Project();
+        project.setGroupId( "NPanday" );
+        project.setArtifactId( "NPanday.Test5" );
+        project.setVersion( "1.0.0" );
+        project.setArtifactType( "library" );
+        ProjectDependency test2 =
+            createProjectDependency( "Microsoft.Build.Conversion", "Microsoft.Build.Conversion", "2.0.0.0", "gac_msil",
+                                     "31bf3856ad364e35" );
+        project.addProjectDependency( test2 );
+
+        try
+        {
+            dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
+        }
+        catch ( java.io.IOException e )
+        {
+            e.printStackTrace();
+            fail( "Could not store the project: " + e.getMessage() );
+        }
+
+        Set<Project> projects = null;
+        try
+        {
+            projects = dao.getAllProjects();
+        }
+        catch ( IOException e )
+        {
+            e.printStackTrace();
+            fail( "Could not retrieve the project: " + e.getMessage() );
+        }
+
+        dao.closeConnection();
+    }
+
     public void testGetAllProjects()
     {
         ProjectDao dao = this.createProjectDao();
@@ -70,8 +129,10 @@ public class ProjectDaoImplTest
         project.setArtifactId( "NPanday.Test5" );
         project.setVersion( "1.0.0" );
         project.setArtifactType( "library" );
-        //ProjectDependency test2 = createProjectDependency( "NPanday", "NPanday.Test5", "1.0.0" );
-        //project.addProjectDependency( test2 );
+        ProjectDependency test2 =
+            createProjectDependency( "Microsoft.VisualBasic", "Microsoft.VisualBasic", "8.0.0.0", "gac_msil",
+                                     "31bf3856ad364e35" );
+        project.addProjectDependency( test2 );
 
         try
         {
@@ -110,10 +171,13 @@ public class ProjectDaoImplTest
         Set<Requirement> requirements = new HashSet<Requirement>();
         try
         {
-            requirements.add( Requirement.Factory.createDefaultRequirement( new URI( ProjectUri.VENDOR.getPredicate() ),
+            requirements.add( Requirement.Factory.createDefaultRequirement(
+                                                                            new URI( ProjectUri.VENDOR.getPredicate() ),
                                                                             "MICROSOFT" ) );
             requirements.add( Requirement.Factory.createDefaultRequirement(
-                new URI( ProjectUri.FRAMEWORK_VERSION.getPredicate() ), "2.0" ) );
+                                                                            new URI(
+                                                                                     ProjectUri.FRAMEWORK_VERSION.getPredicate() ),
+                                                                            "2.0" ) );
         }
         catch ( Exception e )
         {
@@ -149,8 +213,8 @@ public class ProjectDaoImplTest
         assertEquals( "Incorrect number of requirements.", 2, requirements.size() );
         assertTrue( "Could not find framework requirement",
                     hasRequirement( ProjectUri.FRAMEWORK_VERSION.getPredicate(), "2.0", requirements ) );
-        assertTrue( "Could not find vendor requirement",
-                    hasRequirement( ProjectUri.VENDOR.getPredicate(), "MICROSOFT", requirements ) );
+        assertTrue( "Could not find vendor requirement", hasRequirement( ProjectUri.VENDOR.getPredicate(), "MICROSOFT",
+                                                                         requirements ) );
         dao.closeConnection();
     }
 
@@ -171,9 +235,9 @@ public class ProjectDaoImplTest
     {
         for ( ProjectDependency projectDependency : projectDependencies )
         {
-            if ( projectDependency.getGroupId().equals( groupId ) &&
-                projectDependency.getArtifactId().equals( artifactId ) &&
-                projectDependency.getVersion().equals( version ) )
+            if ( projectDependency.getGroupId().equals( groupId )
+                && projectDependency.getArtifactId().equals( artifactId )
+                && projectDependency.getVersion().equals( version ) )
             {
                 return true;
             }
@@ -195,8 +259,8 @@ public class ProjectDaoImplTest
         Set<Artifact> artifacts = null;
         try
         {
-            artifacts = dao.storeProjectAndResolveDependencies( project1, localRepository,
-                                                                new ArrayList<ArtifactRepository>() );
+            artifacts =
+                dao.storeProjectAndResolveDependencies( project1, localRepository, new ArrayList<ArtifactRepository>() );
         }
         catch ( java.io.IOException e )
         {
@@ -227,12 +291,11 @@ public class ProjectDaoImplTest
         Set<ProjectDependency> projectDependencies = testProject.getProjectDependencies();
         assertEquals( "Incorrect number of dependencies", 1, projectDependencies.size() );
         ProjectDependency projectDependency = (ProjectDependency) projectDependencies.toArray()[0];
-        assertTrue( "Could not find required dependency. Found Dependency: GroupId = " +
-            projectDependency.getGroupId() + ", Artifact Id = " + projectDependency.getArtifactId(),
-                    this.hasDependency( "NPanday", "NPanday.Test4", "1.0.0", projectDependencies ) );
+        assertTrue( "Could not find required dependency. Found Dependency: GroupId = " + projectDependency.getGroupId()
+            + ", Artifact Id = " + projectDependency.getArtifactId(), this.hasDependency( "NPanday", "NPanday.Test4",
+                                                                                          "1.0.0", projectDependencies ) );
         dao.closeConnection();
     }
-
 
     public void testSingleStore()
     {
@@ -318,24 +381,18 @@ public class ProjectDaoImplTest
         return projectDependency;
     }
 
-    private ProjectDao createProjectDao()
+    private ProjectDependency createProjectDependency( String groupId, String artifactId, String version, String type,
+                                                       String classifier )
     {
-        dataDir = new File( basedir, ( "/target/rdf-repos/rdf-repo-" + System.currentTimeMillis() ) );
-        rdfRepository = new SailRepository( new MemoryStoreRDFSInferencer( new MemoryStore( dataDir ) ) );
-        try
-        {
-            rdfRepository.initialize();
-        }
-        catch ( RepositoryException e )
-        {
-            return null;
-        }
-        ProjectDaoImpl dao = new ProjectDaoImpl();
-        WagonManagerTestStub stub = new WagonManagerTestStub();
-        stub.setBaseDir( basedir );
-        dao.initForUnitTest( rdfRepository, "", "", stub, new ArtifactFactoryTestStub() );
-        dao.openConnection();
-        return dao;
+        ProjectDependency projectDependency = new ProjectDependency();
+        projectDependency.setGroupId( groupId );
+        projectDependency.setArtifactId( artifactId );
+        projectDependency.setVersion( version );
+        projectDependency.setArtifactType( "library" );
+        projectDependency.setPublicKeyTokenId( classifier );
+        projectDependency.setArtifactType( type );
+
+        return projectDependency;
     }
 
     private void exportRepositoryToRdf( String fileName )
@@ -348,7 +405,7 @@ public class ProjectDaoImplTest
         }
         catch ( IOException e )
         {
-            //fail( e.getMessage() );
+            // fail( e.getMessage() );
             return;
         }
 
@@ -366,5 +423,5 @@ public class ProjectDaoImplTest
             e.printStackTrace();
         }
     }
-    */
+
 }

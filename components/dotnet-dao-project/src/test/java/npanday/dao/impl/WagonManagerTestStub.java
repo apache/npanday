@@ -44,12 +44,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class WagonManagerTestStub
-   // implements WagonManager
+    implements WagonManager
 {
 
     private File basedir;
 
-    public void addAuthenticationCredentials(String s, String s2, String s3 , String s4 ,String s5)
+    public void addAuthenticationCredentials( String s, String s2, String s3, String s4, String s5 )
     {
 
     }
@@ -57,13 +57,13 @@ public class WagonManagerTestStub
     public Wagon getWagon( String string )
         throws UnsupportedProtocolException
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public Wagon getWagon( Repository repository )
         throws UnsupportedProtocolException, WagonConfigurationException
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void getArtifact( Artifact artifact, List list )
@@ -73,9 +73,8 @@ public class WagonManagerTestStub
         {
             try
             {
-                FileUtils.copyFile(
-                    new File( basedir, "target/remote-test-repo/" + new DefaultRepositoryLayout().pathOf( artifact ) ),
-                    artifact.getFile() );
+                FileUtils.copyFile( new File( basedir, "target/remote-test-repo/"
+                    + new DefaultRepositoryLayout().pathOf( artifact ) ), artifact.getFile() );
             }
             catch ( IOException e )
             {
@@ -87,97 +86,112 @@ public class WagonManagerTestStub
     public void getArtifact( Artifact artifact, ArtifactRepository artifactRepository )
         throws TransferFailedException, ResourceDoesNotExistException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void putArtifact( File file, Artifact artifact, ArtifactRepository artifactRepository )
         throws TransferFailedException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void putArtifactMetadata( File file, ArtifactMetadata artifactMetadata,
-                                     ArtifactRepository artifactRepository )
+    public void putArtifactMetadata( File file, ArtifactMetadata artifactMetadata, ArtifactRepository artifactRepository )
         throws TransferFailedException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void getArtifactMetadata( ArtifactMetadata artifactMetadata, ArtifactRepository artifactRepository,
                                      File file, String string )
         throws TransferFailedException, ResourceDoesNotExistException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void setOnline( boolean b )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public boolean isOnline()
     {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false; // To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void getArtifactMetadataFromDeploymentRepository( ArtifactMetadata metadata, ArtifactRepository repository,
+                                                             File destination, String checksumPolicy )
+    {
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void addProxy( String string, String string1, int i, String string2, String string3, String string4 )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void contextualize( org.codehaus.plexus.context.Context context )
+    {
+        // To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public ArtifactRepository getMirrorRepository( ArtifactRepository repository )
+    {
+        return null;
     }
 
     public void addAuthenticationInfo( String string, String string1, String string2, String string3, String string4 )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void addMirror( String string, String string1, String string2 )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void setDownloadMonitor( TransferListener transferListener )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void addPermissionInfo( String string, String string1, String string2 )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public ProxyInfo getProxy( String string )
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public AuthenticationInfo getAuthenticationInfo( String string )
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void addConfiguration( String string, Xpp3Dom xpp3Dom )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void setInteractive( boolean b )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void registerWagons( Collection collection, PlexusContainer plexusContainer )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void findAndRegisterWagons( PlexusContainer plexusContainer )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void setDefaultRepositoryPermissions( RepositoryPermissions repositoryPermissions )
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // To change body of implemented methods use File | Settings | File Templates.
     }
 
     protected void setBaseDir( File basedir )
