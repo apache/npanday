@@ -280,7 +280,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                 
                 foreach (Profile profile in settings.profiles)
                 {
-                    if (activeProfiles.Contains(profile.id))
+                    if (activeProfiles.Contains(profile.id) && profile.repositories != null)
                     {
                         foreach (Repository repo in profile.repositories)
                         {
@@ -308,8 +308,9 @@ namespace NPanday.ProjectImporter.Digest.Model
                 }
                 return false;                
             }
-            catch 
+            catch (Exception e)
             {
+                MessageBox.Show("Cannot add reference of " + artifact.ArtifactId + ", an exception occurred trying to download it: " + e.Message );
                 return false;
             }
         }
