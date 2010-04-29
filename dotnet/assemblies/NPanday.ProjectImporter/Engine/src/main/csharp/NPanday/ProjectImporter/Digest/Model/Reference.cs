@@ -318,17 +318,13 @@ namespace NPanday.ProjectImporter.Digest.Model
         private static string GetSnapshotVersion(NPanday.Artifact.Artifact artifact, string repo)
         {
             string timeStampVersion = null;
-            string metadataPath = repo + "/" + artifact.GroupId + "/" + artifact.ArtifactId;
+            string metadataPath = repo + "/" + artifact.GroupId.Replace('.','/') + "/" + artifact.ArtifactId;
             string snapshot = "<snapshot>";
             string metadata = "/maven-metadata.xml";
 
-            if (urlExists(metadataPath + metadata))
+            if (urlExists(metadataPath + "/" + artifact.Version + metadata))
             {
-                metadataPath = metadataPath + metadata;
-            }
-            else if (urlExists(metadataPath + "/" + artifact.Version + metadata))
-            {
-                metadataPath = metadataPath + artifact.Version + metadata;
+                metadataPath = metadataPath + "/" + artifact.Version + metadata;
             }
             else
             {

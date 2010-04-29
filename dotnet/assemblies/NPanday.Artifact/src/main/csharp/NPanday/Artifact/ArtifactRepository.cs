@@ -44,7 +44,7 @@ namespace NPanday.Artifact
 
         public string GetRemoteRepositoryPath(Artifact artifact, string url, string ext)
         {
-            return string.Format("{0}/{1}/{2}/{3}/{2}-{3}{4}", url, artifact.GroupId, artifact.ArtifactId, artifact.Version, ext);
+            return string.Format("{0}/{1}/{2}/{3}/{2}-{3}{4}", url, artifact.GroupId.Replace('.','/'), artifact.ArtifactId, artifact.Version, ext);
         }
 
         public Artifact GetArtifactFor(String uri)
