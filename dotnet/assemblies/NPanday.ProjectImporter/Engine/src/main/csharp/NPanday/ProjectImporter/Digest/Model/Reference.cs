@@ -277,33 +277,60 @@ namespace NPanday.ProjectImporter.Digest.Model
                 }
                 List<string> activeProfiles = new List<string>();
                 activeProfiles.AddRange(settings.activeProfiles);
-                
+
+                Dictionary<string, string> mirrors = new Dictionary<string, string>();
+
+                foreach (Mirror mirror in settings.mirrors)
+                {
+                    string id = mirror.mirrorOf;
+                    if (id == "external:*") id = "*";
+                    // TODO: support '!' syntax
+                    mirrors.Add(id, mirror.url);
+                }
+
+                Dictionary<string,string> repos = new Dictionary<string,string>();
+                repos.Add("central", "http://repo1.maven.org/maven2" );
                 foreach (Profile profile in settings.profiles)
                 {
                     if (activeProfiles.Contains(profile.id) && profile.repositories != null)
                     {
                         foreach (Repository repo in profile.repositories)
                         {
-                            ArtifactContext artifactContext = new ArtifactContext();
-
-                            if (artifact.Version.Contains("SNAPSHOT"))
-                            {
-                                string newVersion = GetSnapshotVersion(artifact, repo.url);
-                                artifact.Version = artifact.Version.Replace("SNAPSHOT", newVersion);
-                                string remotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, repo.url, ext);
-                                artifact.RemotePath = remotePath.Replace((newVersion + "/" ), "SNAPSHOT/");
-                            }
-                            else
-                            {
-                                artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, repo.url, ext);
-                            }
-
-                            if (downloadArtifact(artifact))
-                            {
-                                return true;
-                            }
+                            repos.Add(repo.id, repo.url);
                         }
-                        break;
+                    }
+                }
+
+                // TODO: sustain correct ordering from settings.xml
+                foreach (string id in repos.Keys)
+                {
+                    string url = repos[id];
+                    if (mirrors.ContainsKey(id))
+                    {
+                        url = mirrors[id];
+                    }
+                    if (mirrors.ContainsKey("*"))
+                    {
+                        url = mirrors["*"];
+                    }
+
+                    ArtifactContext artifactContext = new ArtifactContext();
+
+                    if (artifact.Version.Contains("SNAPSHOT"))
+                    {
+                        string newVersion = GetSnapshotVersion(artifact, url);
+                        artifact.Version = artifact.Version.Replace("SNAPSHOT", newVersion);
+                        string remotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, url, ext);
+                        artifact.RemotePath = remotePath.Replace((newVersion + "/" ), "SNAPSHOT/");
+                    }
+                    else
+                    {
+                        artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, url, ext);
+                    }
+
+                    if (downloadArtifact(artifact))
+                    {
+                        return true;
                     }
                 }
                 return false;                
