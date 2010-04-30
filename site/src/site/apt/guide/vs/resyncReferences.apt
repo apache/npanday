@@ -18,6 +18,16 @@ Making VS Project Files Portable
    Intra-project references are skipped on Resync. Since this behavior was just applied recently in Version 1.0.2,
    old POMs with intra-project references might generate an error during Resync or Import. To fix this, remove the
    reference and add it back again. Or simply delete the POM and re-import the project.
+   
+   How Resync Works:
+   
+   * First NPanday will check for the dependency in the local repository, if the dependency is not found NPanday proceeds 
+     to the next possible location.
+     
+   * If NPanday was not able to find the dependency in the local repository NPanday will proceed to check the remote
+     repositories found in the user's settings.xml.
+    
+   * For SNAPSHOT Dependencies NPanday bases from the maven-metadata.xml and gets the latest time stamp versioned dependency.
 
    In the next section we revisit {{{./importing.html} importing a project into Maven}}. Other topics are available on
    the {{{./index.html} index}}.
