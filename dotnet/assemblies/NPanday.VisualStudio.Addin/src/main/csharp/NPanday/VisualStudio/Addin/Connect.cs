@@ -74,7 +74,7 @@ namespace NPanday.VisualStudio.Addin
     {
         public const string MSG_E_NOTIMPLEMENTED = "The method or operation is not implemented.";
         public const string MSG_L_NPANDAY_ALREADY_STARTED = "\nNPanday Addin Has Already Started.";
-        public const string MSG_L_NPANDAY_ADDIN_STARTED = "\nNPanday Addin Successfully Started.";
+        public const string MSG_L_NPANDAY_ADDIN_STARTED = "\n{0} Successfully Started.";
         public const string MSG_E_NPANDAY_REMOVE_DEPENDENCY_ERROR = "NPanday Remove Dependency Error:";
         public const string MSG_Q_STOP_MAVEN_BUILD = "Do you want to stop the NPanday Build?";
         public const string MSG_EF_NOT_A_PROJECT_POM = "Not A Project Pom Error: {0} is not a project Pom, the pom is a parent pom type.";
@@ -322,7 +322,7 @@ namespace NPanday.VisualStudio.Addin
             _addInInstance = (AddIn)addInInst;
             Command command = null;
             mavenConnected = true;
-
+            
             //next two lines add a eventhandler to handle beforeclosing a solution
             globalSolutionEvents = (EnvDTE.SolutionEvents)((Events2)_applicationObject.Events).SolutionEvents;
             globalSolutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler(SolutionEvents_BeforeClosing);
@@ -985,7 +985,8 @@ namespace NPanday.VisualStudio.Addin
             _selectionEvents.OnChange += new _dispSelectionEvents_OnChangeEventHandler(this.OnChange);
             _npandayLaunched = true;
             outputWindowPane.Clear();
-            outputWindowPane.OutputString(Messages.MSG_L_NPANDAY_ADDIN_STARTED);
+            string NPandayVersion = _addInInstance.Description.Substring(0,_addInInstance.Description.IndexOf(" provides"));
+            outputWindowPane.OutputString(string.Format(Messages.MSG_L_NPANDAY_ADDIN_STARTED,NPandayVersion));
 
             if (_applicationObject.Solution != null)
                 attachReferenceEvent();
