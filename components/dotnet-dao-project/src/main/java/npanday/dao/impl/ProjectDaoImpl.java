@@ -485,6 +485,8 @@ public final class ProjectDaoImpl
 
             for ( ProjectDependency projectDependency : project.getProjectDependencies() )
             {
+                snapshotVersion = null;
+                
                 logger.finest( "NPANDAY-180-011: Project Dependency: Artifact ID = "
                     + projectDependency.getArtifactId() + ", Group ID = " + projectDependency.getGroupId()
                     + ", Version = " + projectDependency.getVersion() + ", Artifact Type = "
@@ -661,8 +663,10 @@ public final class ProjectDaoImpl
 
                         try
                         {
+                            
                             logger.info( "NPANDAY-180-012: Retrieving artifact: Artifact ID  = "
                                 + projectDependency.getArtifactId() );
+                                
                             if ( pomArtifact.isSnapshot() )
                             {
 
