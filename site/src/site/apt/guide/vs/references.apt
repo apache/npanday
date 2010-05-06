@@ -91,6 +91,12 @@ Project Dependencies
 
   However, some references are non-portable when they are added.
 
+** Intra Solution References
+
+   When Adding Intra Solution references use the Visual Studio "Add Reference" and not the "Add Maven Artifact" command.
+   This sets the csproj/vbproj file & the pom.xml correctly simultaenously, and allows VS to build the project without
+   needing to resolve the reference.
+
 ** Non-portable References
 
   When adding a COM reference, the actual reference (DLL) is copied to <<<C:\\WINDOWS\\assembly\\GAC_MSIL>>>.
