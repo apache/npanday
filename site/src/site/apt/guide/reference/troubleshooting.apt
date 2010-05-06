@@ -10,6 +10,16 @@ Troubleshooting
   If you encounter a problem with NPanday, try some of the following to resolve the issue before contacting the user
   forums.
 
+* Check what version of NPanday you are currently using
+
+   The version can be viewed from the output console once you start NPanday 
+   
+[../../images/vs/console_version.jpg] 
+   
+   Another way to check for the version would be to go to <<Visual Studio Help \> About>> menu option
+   
+[../../images/vs/vs_about.jpg] 
+
 * Verifying Visual Studio 2005/2008 Service Pack 1 is installed
 
   To make sure you have the Service Pack 1, go to <<Visual Studio Help \> About>> menu option. From the About screen,
