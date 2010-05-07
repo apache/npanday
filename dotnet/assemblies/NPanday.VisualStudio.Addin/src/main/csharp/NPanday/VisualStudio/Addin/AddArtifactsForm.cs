@@ -34,7 +34,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Serialization;
 
 using VSLangProj;
 
@@ -581,15 +580,11 @@ namespace NPanday.VisualStudio.Addin
             }
             else
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Setting.Settings));
-                TextWriter writer;
-
                 string selectedUrl = RepoCombo.Text;
 
                 // verify if URL is accessible
                 try
                 {
-
                     if (selectedUrl.Contains("file:///"))
                     {
                         verifyFileProtocol(selectedUrl);
@@ -613,102 +608,37 @@ namespace NPanday.VisualStudio.Addin
                 }
 
                 // if NPanday profile is not found, create it
-                if (defaultProfile != null)
+                if (defaultProfile == null)
                 {
-                    selectedRepo = getRepositoryFromProfile(defaultProfile, selectedUrl);
-
-                    // if found, remove then add
-                    if (selectedRepo != null)
-                    {
-                        removeRepositoryFromProfile(selectedRepo, defaultProfile);
-                        updateRepository(defaultProfile, selectedRepo);
-                    }
-                    else
-                    {
-                        selectedRepo = new NPanday.Model.Setting.Repository();
-                        selectedRepo.url = selectedUrl;
-                        updateRepository(defaultProfile, selectedRepo);
-                    }
-                    addRepositoryToProfile(selectedRepo, defaultProfile);
-                }
-                else
-                {
-                    // create new profile
                     defaultProfile = new NPanday.Model.Setting.Profile();
                     defaultProfile.id = defaultProfileID;
-
-                    // create new repo
-                    NPanday.Model.Setting.Repository newRepo = new NPanday.Model.Setting.Repository();
-                    newRepo.url = selectedUrl;
-                    updateRepository(defaultProfile, newRepo);
-                    defaultProfile.repositories = new NPanday.Model.Setting.Repository[] { newRepo };
-
-                    if (settings.profiles == null)
-                    {
-                        settings.profiles = new NPanday.Model.Setting.Profile[] { defaultProfile };
-                    }
-                    else
-                    {
-                        List<NPanday.Model.Setting.Profile> profiles = new List<NPanday.Model.Setting.Profile>();
-                        profiles.AddRange(settings.profiles);
-                        profiles.Add(defaultProfile);
-                        settings.profiles = profiles.ToArray();
-                    }
-
-                    selectedRepo = newRepo;
                 }
-
+                
+                // add repository to profile
+                selectedRepo = SettingsUtil.AddRepositoryToProfile(defaultProfile, selectedUrl, checkBoxRelease.Checked, checkBoxSnapshot.Checked, settings);
+                
                 // make NPanday.id profile active
-                addActiveProfile(defaultProfileID);
+                SettingsUtil.AddActiveProfile(settings, defaultProfileID);
 
                 // write to Settings.xml
-                writer = new StreamWriter(settingsPath);
-                serializer.Serialize(writer, settings);
-                writer.Close();
-
+                SettingsUtil.WriteSettings(settings, settingsPath);
+                
                 // do not specify SelectedUrl to suppress SelectedIndexChanged event
                 repoCombo_Refresh(null);
                 MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
                 //localListView_Refresh(); 
-                }
-        }
-
-        private void addActiveProfile(string profileID)
-        {
-            bool isActive = false;
-            if (settings.activeProfiles == null)
-            {
-                settings.activeProfiles = new string[] { profileID };
-                isActive = true;
-            }
-            else
-            {
-                foreach (string id in settings.activeProfiles)
-                {
-                    if (id == profileID)
-                    {
-                        isActive = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!isActive)
-            {
-                string[] newActiveProfiles = new string[settings.activeProfiles.Length + 1];
-                settings.activeProfiles.CopyTo(newActiveProfiles, 0);
-                newActiveProfiles[settings.activeProfiles.Length] = profileID;
-                settings.activeProfiles = newActiveProfiles;
             }
         }
-
+    
         private void repoCombo_Refresh(string selectedUrl)
         {
             RepoCombo.Items.Clear();
 
             if (settings.profiles != null)
             {
-                foreach (NPanday.Model.Setting.Repository repo in getAllRepositories())
+                List<NPanday.Model.Setting.Repository> repositories = SettingsUtil.GetAllRepositories(settings);
+
+                foreach (NPanday.Model.Setting.Repository repo in repositories)
                 {
                     if (!RepoCombo.Items.Contains(repo.url))
                     {
@@ -982,7 +912,6 @@ namespace NPanday.VisualStudio.Addin
                 {
                     throw new Exception("Sorry, but no settings.xml file was found in your Local Repository.");
                 }
-
             }
             catch (Exception ex)
             {
@@ -998,18 +927,7 @@ namespace NPanday.VisualStudio.Addin
                 loadSettings();
             }
 
-            if (settings.profiles != null)
-            {
-               
-                foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
-                {
-                    if (defaultProfileID.Equals(profile.id))
-                    {
-                        return profile;
-                    }
-                }
-            }
-            return null;
+            return SettingsUtil.GetProfile(settings, defaultProfileID);
         }
 
         private NPanday.Model.Setting.Repository getRepository(string url)
@@ -1025,33 +943,18 @@ namespace NPanday.VisualStudio.Addin
             }
 
             // extract from NPanday repositories first
+            NPanday.Model.Setting.Repository repo;
             if (defaultProfile != null)
             {
-                foreach (NPanday.Model.Setting.Repository repo in defaultProfile.repositories)
+                repo = SettingsUtil.GetRepositoryFromProfile(defaultProfile, url);
+                if (repo != null)
                 {
-                    if (url.Equals(repo.url))
-                    {
-                        return repo;
-                    }
+                    return repo;
                 }
             }
 
             // extract from NON-NPanday repositories
-            foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
-            {
-                if (profile.id != defaultProfileID)
-                {
-                    foreach (NPanday.Model.Setting.Repository repo in profile.repositories)
-                    {
-                        if (url.Equals(repo.url))
-                        {
-                            return repo;
-                        }
-                    }
-                }
-            }
-
-            return null;
+            return SettingsUtil.GetRepositoryByUrl(settings, url);
         }
 
         private NPanday.Model.Setting.Repository getDefaultRepository()
@@ -1066,78 +969,6 @@ namespace NPanday.VisualStudio.Addin
                 return defaultProfile.repositories[0];
             }
             return null;
-        }
-
-        private List<NPanday.Model.Setting.Repository> getAllRepositories()
-        {
-            List<NPanday.Model.Setting.Repository> repos = new List<NPanday.Model.Setting.Repository>();
-
-            if (defaultProfile == null)
-            {
-                defaultProfile = getDefaultProfile();
-            }
-
-            foreach (NPanday.Model.Setting.Profile profile in settings.profiles)
-            {
-                repos.AddRange(profile.repositories);
-            }
-            return repos;
-        }
-
-        private NPanday.Model.Setting.Repository getRepositoryFromProfile(NPanday.Model.Setting.Profile profile, string url)
-        {
-            foreach (NPanday.Model.Setting.Repository repo in profile.repositories)
-            {
-                if (url.Equals(repo.url))
-                {
-                    return repo;
-                }
-            }
-            return null;
-        }
-
-        private void addRepositoryToProfile(NPanday.Model.Setting.Repository repository, NPanday.Model.Setting.Profile profile)
-        {
-            // activate profile
-            NPanday.Model.Setting.Activation activation = new NPanday.Model.Setting.Activation();
-            activation.activeByDefault = true;
-            profile.activation = activation;
-
-            // add repository to profile
-            if (profile.repositories == null)
-            {
-                profile.repositories = new NPanday.Model.Setting.Repository[] { repository };
-            }
-            else
-            {
-                List<NPanday.Model.Setting.Repository> repositories = new List<NPanday.Model.Setting.Repository>();
-                repositories.AddRange(profile.repositories);
-                repositories.Insert(0, repository);
-                profile.repositories = repositories.ToArray();
-            }
-        }
-
-        private void removeRepositoryFromProfile(NPanday.Model.Setting.Repository repository, NPanday.Model.Setting.Profile profile)
-        {
-            List<NPanday.Model.Setting.Repository> repositories = new List<NPanday.Model.Setting.Repository>();
-            repositories.AddRange(profile.repositories);
-            repositories.Remove(repository);
-            profile.repositories = repositories.ToArray();
-        }
-
-        private void updateRepository(NPanday.Model.Setting.Profile profile, NPanday.Model.Setting.Repository repository)
-        {
-            NPanday.Model.Setting.Activation activation = new NPanday.Model.Setting.Activation();
-            activation.activeByDefault = true;
-            profile.activation = activation;
-
-            NPanday.Model.Setting.RepositoryPolicy releasesPolicy = new NPanday.Model.Setting.RepositoryPolicy();
-            NPanday.Model.Setting.RepositoryPolicy snapshotsPolicy = new NPanday.Model.Setting.RepositoryPolicy();
-            releasesPolicy.enabled = checkBoxRelease.Checked;
-            snapshotsPolicy.enabled = checkBoxSnapshot.Checked;
-            repository.releases = releasesPolicy;
-            repository.snapshots = snapshotsPolicy;
-            repository.id = repository.url;
         }
 
         #endregion
@@ -1162,8 +993,6 @@ namespace NPanday.VisualStudio.Addin
             get { return artifact; }
             set { artifact = value; }
         }
-
-
     }
 
 
@@ -1196,6 +1025,5 @@ namespace NPanday.VisualStudio.Addin
             get { return isFileSystem; }
             set { isFileSystem = value; }
         }
-
     }
 }

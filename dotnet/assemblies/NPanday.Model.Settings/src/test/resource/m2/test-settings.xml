@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <localRepository>C:/Documents and Settings/user/.m2/repository</localRepository>
+  <mirrors>
+    <mirror>
+      <mirrorOf>*</mirrorOf>
+      <url>http://repo.npanday.org/archiva/repository/npanday-releases/</url>
+      <id>npanday-repo</id>
+    </mirror>
+  </mirrors>
+</settings>

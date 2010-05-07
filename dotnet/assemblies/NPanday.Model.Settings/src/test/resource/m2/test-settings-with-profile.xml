@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <localRepository>C:/Documents and Settings/user/.m2/repository</localRepository>
+  <mirrors>
+    <mirror>
+      <mirrorOf>*</mirrorOf>
+      <url>http://repo.npanday.org/archiva/repository/npanday-releases/</url>
+      <id>npanday-repo</id>
+    </mirror>
+  </mirrors>
+  <profiles>
+    <profile>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <releases />
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>npanday.repo.0</id>
+          <url>http://repo1.maven.org/maven2</url>
+        </repository>
+      </repositories>
+      <id>npanday.test.id</id>
+    </profile>
+  </profiles>
+</settings>
