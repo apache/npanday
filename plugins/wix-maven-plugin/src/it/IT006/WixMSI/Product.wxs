@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension">
     <Product Id="03d5af5f-94db-4bd7-829c-7c24ac85e25d" Name="WixMSI" Language="1033" Version="1.0.0.0" Manufacturer="WixMSI" UpgradeCode="920b0288-6713-4ee3-858d-45c5c1dcb2bd">
-    <?define source2.dir="VBWebAppExample\target\VBWebAppExample"?>
+    <?define source2.dir="VBWebApplication_Wix\target\VBWebApplication_Wix"?>
         <Package InstallerVersion="200" Compressed="yes" />
 
         

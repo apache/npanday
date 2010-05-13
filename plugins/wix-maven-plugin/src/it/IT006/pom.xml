@@ -7,9 +7,7 @@
   <name>Npanday.examples : WIXVBWebApp08-parent</name>
   <version>1.2-SNAPSHOT</version>
   <modules>
-    <module>VBAppDll</module>
-    <module>VBTestApp</module>
-    <module>VBWebAppExample</module>
-    <module>WixMSI</module>
+    <module>VBWebApplication_Wix</module>
+	<module>WixMSI</module>
   </modules>
 </project>

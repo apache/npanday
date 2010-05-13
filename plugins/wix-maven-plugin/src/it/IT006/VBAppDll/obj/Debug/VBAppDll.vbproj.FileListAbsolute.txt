@@ -1,9 +1,0 @@
-C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBAppDll\bin\Debug\VBAppDll.dll
-C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBAppDll\bin\Debug\VBAppDll.pdb
-C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBAppDll\bin\Debug\VBAppDll.xml
-C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBAppDll\obj\Debug\ResolveAssemblyReference.cache
-C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBAppDll\obj\Debug\VBAppDll.Resources.resources
-C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBAppDll\obj\Debug\VBAppDll.vbproj.GenerateResource.Cache
-C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBAppDll\obj\Debug\VBAppDll.dll
-C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBAppDll\obj\Debug\VBAppDll.xml
-C:\svn\maven-plugins\trunk\wix-maven-plugin\src\it\IT006\VBAppDll\obj\Debug\VBAppDll.pdb
