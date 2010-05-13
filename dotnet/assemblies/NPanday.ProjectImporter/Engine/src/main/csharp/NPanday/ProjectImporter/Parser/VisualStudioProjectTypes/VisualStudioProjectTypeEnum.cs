@@ -171,8 +171,13 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
         /// GUID: {603c0e0b-db56-11dc-be95-000d561079b0}
         /// </summary>
         Website_MVC = 3,
-
-
+		
+		
+        /// <summary>
+        /// Project Type: ASP MVC,
+        /// GUID: {69150728-AFCB-45A3-9D78-D96A5E0F1A27}
+        /// </summary>
+        Model_View_Controller_MVC = 67108864,
                 
     }
 }

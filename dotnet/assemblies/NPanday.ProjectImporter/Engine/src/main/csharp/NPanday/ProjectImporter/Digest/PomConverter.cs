@@ -70,6 +70,11 @@ namespace NPanday.ProjectImporter.Converter
                 VisualStudioProjectTypeEnum.Windows_Communication_Foundation__WCF | VisualStudioProjectTypeEnum.Windows__VbDotNet,
                 typeof(NormalPomConverter)
               );
+			  
+			__converterAlgorithms.Add(
+				VisualStudioProjectTypeEnum.Model_View_Controller_MVC | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.Web_Application,
+				typeof(NormalPomConverter)
+			);
         }
 
 
