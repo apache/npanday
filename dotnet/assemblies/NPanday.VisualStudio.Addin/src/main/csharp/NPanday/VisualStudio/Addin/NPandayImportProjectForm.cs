@@ -23,6 +23,7 @@ namespace NPanday.VisualStudio.Addin
     {
         private DTE2 applicationObject;
         private OutputWindowPane outputWindowPane;
+        private NPanday.Logging.Logger logger;
 
 		public static string FilterID(string partial)
         {
@@ -64,7 +65,7 @@ namespace NPanday.VisualStudio.Addin
                     {
                         txtSCMTag.Text = scmTag;
                     }
-                    
+
                 }
                 catch { /*do nothing*/}
 
@@ -330,7 +331,7 @@ namespace NPanday.VisualStudio.Addin
                         foreach (IReferenceManager mgr in refManagers)
                         {
                             mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
-                            mgr.ResyncArtifacts();
+                            mgr.ResyncArtifacts(logger);
                         }
 
                         if (!refManagerHasError)

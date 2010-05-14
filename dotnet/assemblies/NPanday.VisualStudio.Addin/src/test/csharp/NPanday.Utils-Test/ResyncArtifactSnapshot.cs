@@ -21,7 +21,7 @@ namespace ClassLibrary1
             artifact.ArtifactId = "NPanday.Artifact";
             artifact.Extension = "dll";
 
-            refMngr.CopyArtifact(artifact);
+            refMngr.CopyArtifact(artifact,null);
         }
 
         [Test]

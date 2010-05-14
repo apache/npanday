@@ -1050,7 +1050,7 @@ namespace NPanday.VisualStudio.Addin
                 IReferenceManager refmanager = new ReferenceManager();
                 refmanager.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
                 refmanager.Initialize((VSProject2)CurrentSelectedProject.Object);
-                refmanager.ResyncArtifacts();
+                refmanager.ResyncArtifacts(logger);
 
                 if (!refManagerHasError)
                 {
@@ -1210,7 +1210,7 @@ namespace NPanday.VisualStudio.Addin
                             IReferenceManager mgr = new ReferenceManager();
                             mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
                             mgr.Initialize((VSProject2)project.Object);
-                            mgr.ResyncArtifacts();
+                            mgr.ResyncArtifacts(logger);
                             mgr = null;
                         }
                     }

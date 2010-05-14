@@ -177,7 +177,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 						}
 						else
 						{
-							if (downloadArtifactFromRemoteRepository(a, dll.Extension))
+							if (downloadArtifactFromRemoteRepository(a, dll.Extension,null))
 							{
 								//asm = Assembly.ReflectionOnlyLoadFrom(a.FileInfo.FullName);
 								path = a.FileInfo.FullName;
@@ -260,12 +260,12 @@ namespace NPanday.ProjectImporter.Digest.Model
             return string.Empty;
         }
 
-        public static bool DownloadArtifact(Artifact.Artifact artifact)
+        public static bool DownloadArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
         {
-            return downloadArtifactFromRemoteRepository(artifact, artifact.FileInfo.Extension);
+            return downloadArtifactFromRemoteRepository(artifact, artifact.FileInfo.Extension,logger);
         }
 
-        static bool downloadArtifactFromRemoteRepository(Artifact.Artifact artifact, string ext)
+        static bool downloadArtifactFromRemoteRepository(Artifact.Artifact artifact, string ext, NPanday.Logging.Logger logger)
         {
             try
             {
@@ -328,7 +328,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                         artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, url, ext);
                     }
 
-                    if (downloadArtifact(artifact))
+                    if (downloadArtifact(artifact,logger))
                     {
                         return true;
                     }
@@ -412,12 +412,14 @@ namespace NPanday.ProjectImporter.Digest.Model
             }            
         }
 
-        static bool downloadArtifact(Artifact.Artifact artifact)
+        static bool downloadArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
         {
             try
             {
                 WebClient client = new WebClient();
+                logger.Log(NPanday.Logging.Level.INFO, string.Format("\nDownload Start: {0} Downloading From {1} ",DateTime.Now,artifact.RemotePath));
                 byte[] assembly = client.DownloadData(artifact.RemotePath);
+                logger.Log(NPanday.Logging.Level.INFO, string.Format("\nDownload Finished: {0} ", DateTime.Now));
                 if (!artifact.FileInfo.Directory.Exists) 
                 {
                     artifact.FileInfo.Directory.Create();
@@ -443,8 +445,9 @@ namespace NPanday.ProjectImporter.Digest.Model
                 
                 return true;
             }
-            catch
+            catch(Exception e)
             {
+                logger.Log(NPanday.Logging.Level.WARNING, string.Format("\nDownload Failed {0}",e.Message));
                 return false;
             }
         }
