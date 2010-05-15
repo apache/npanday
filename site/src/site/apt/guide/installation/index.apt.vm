@@ -90,6 +90,12 @@ c:\Program Files\Microsoft SQL Server\90\Tools\binn\;c:\program files\apache-mav
 c:\program files\nunit 2.4.8\bin
 ----
 
+Visual Studio 2008
+
+    For users that only have Visual Studio 2008 installed and no Visual Studio 2005, you would need to install .NET 2.0 SDK.
+    
+    Found here:  (x86: {{{http://www.microsoft.com/downloads/details.aspx?FamilyID=fe6f2099-b7b4-4f47-a244-c96d69c35dec&displaylang=en} .NET 2.0 SDK}})
+
 Obtaining NPanday
 
   NPanday releases are made available in two locations:
