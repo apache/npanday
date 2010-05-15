@@ -13,7 +13,15 @@ Uninstalling NPanday
   
   [[2]] Clear the cache by typing the following in a command shell:
   
-  <<<C:\\Program Files\\Microsoft Visual Studio 8\\SDK\\v2.0\\Bin\\mscorcfg.msc>>>
+  <<<%ProgramFiles%\\Microsoft Visual Studio 8\\SDK\\v2.0\\Bin\\mscorcfg.msc>>>
+  
+  other possible locations for mscorcfg.msc
+  
+  <<<%windir%\Microsoft.NET\Framework\v1.1.4322\mscorcfg.msc>>>
+  
+  <<<%windir%\ServicePackFiles\i386\mscorcfg.msc>>>
+  
+  <<<%ProgramFiles%\Microsoft SDKs\Windows\v6.0\Bin\mscorcfg.msc>>>
   
   [[3]] Go to My Computer > AssemblyCache, click View List. Delete the following two files:
   
