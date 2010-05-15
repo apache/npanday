@@ -27,9 +27,11 @@ Building NPanday
   {{{../guide/installation/index.html#Set_the_PATH} Set the PATH}} for more information. The easiest way to do this
   is to run the <Visual Studio 2005 Command Prompt> from the Windows Start menu.
 
+  NUnit installed must also be added into the path. Note that the runner is located in bin/net-2.0 and not just bin.
+  
   If you have only Visual Studio 2008 Installed and no Visual Studio 2005, you would need to copy:
   %ProgramFiles%/MSBuild/v9.0 to v8.0 - so the test for the plugin-reporter will succeed.
-  
+   
 * Checking out the Source Code
 
   You can check out the latest source code from {{https://npanday.svn.codeplex.com/svn/trunk}}. You can also
