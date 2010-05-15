@@ -319,9 +319,17 @@ namespace NPanday.ProjectImporter.Digest.Model
                     if (artifact.Version.Contains("SNAPSHOT"))
                     {
                         string newVersion = GetSnapshotVersion(artifact, url);
-                        artifact.Version = artifact.Version.Replace("SNAPSHOT", newVersion);
-                        string remotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, url, ext);
-                        artifact.RemotePath = remotePath.Replace((newVersion + "/" ), "SNAPSHOT/");
+
+                        if (newVersion != null)
+                        {
+                            artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, artifact.Version.Replace("SNAPSHOT", newVersion), url, ext);
+                        }
+
+                        else
+                        {
+                            artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, url, ext);
+                        }
+                        
                     }
                     else
                     {
