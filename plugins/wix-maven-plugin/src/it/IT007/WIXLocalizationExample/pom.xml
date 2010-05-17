@@ -19,7 +19,6 @@
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
-          <frameworkVersion>3.5</frameworkVersion>
           <includeSources>
             <includeSource>Form1.cs</includeSource>
             <includeSource>Form1.Designer.cs</includeSource>
