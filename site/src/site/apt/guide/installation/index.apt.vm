@@ -50,6 +50,9 @@ Preparation
     * From within the Visual Studio Command Prompt, you can start Visual Studio using the <<<devenv>>> command.
 
     []
+    
+  The easiest way to obtain the full PATH is to call <<<set path>>> from the Visual Studio Commmand Prompt of 
+  the corresponding Visual Studio version. Then use copy-paste to set this PATH permanently to your Environment Variables.
 
   The correct PATH should include the following:
 
@@ -67,15 +70,13 @@ Preparation
   If you are building .NET SDK 3.5 or Visual Studio 2008 projects, you must ensure that the elements for that
   environment are <before> any previous SDK versions.
 
-   A typical PATH For Visual Studio 2008 will look like the following:
+  The additional PATH fragment for Visual Studio 2008 will probably look like the following:
 
 ----
 C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE;C:\Program Files\Microsoft Visual Studio 9.0\VC\BIN;
 C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools;C:\WINDOWS\Microsoft.NET\Framework\v3.5;
 C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft Visual Studio 9.0\VC\VCPackages;
-C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin;C:\Program Files\CollabNet\Subversion Client;C:\WINDOWS\system32;
-C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;
-c:\program files\apache-maven-2.2.1\bin;c:\program files\nunit 2.4.8\bin
+C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin;
 ----
 
    For Visual Studio 2005, it will likely be:
@@ -85,14 +86,12 @@ C:\Program Files\Microsoft Visual Studio 8\Common7\IDE;C:\Program Files\Microsof
 C:\Program Files\Microsoft Visual Studio 8\Common7\Tools;C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\bin;
 C:\Program Files\Microsoft Visual Studio 8\VC\PlatformSDK\bin;C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin;
 C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft Visual Studio 8\VC\VCPackages;
-C:\Program Files\CollabNet\Subversion Client;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;
-c:\Program Files\Microsoft SQL Server\90\Tools\binn\;c:\program files\apache-maven-2.2.1\bin;
-c:\program files\nunit 2.4.8\bin
 ----
 
 Visual Studio 2008
 
-    For users that only have Visual Studio 2008 installed and no Visual Studio 2005, you would need to install .NET 2.0 SDK.
+    For users that only have Visual Studio 2008 installed and no Visual Studio 2005, you would need to install .NET 2.0 SDK and
+    add <<<C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727>>> to the PATH.
     
     Found here:  (x86: {{{http://www.microsoft.com/downloads/details.aspx?FamilyID=fe6f2099-b7b4-4f47-a244-c96d69c35dec&displaylang=en} .NET 2.0 SDK}})
 
