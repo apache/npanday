@@ -44,6 +44,29 @@ Building NPanday
 svn co https://npanday.svn.codeplex.com/svn/trunk npanday
 ----
 
+* Enabling additional Remote Repositories
+
+  NPanday has some dependencies that are not in Maven Central. In order to have them downloaded to your local
+  repository you have to uncomment some additional repositories in the <<<repositories>>> section of NPanday's
+  <<<pom.xml>>>, or you can add the following remote repositories to your local <<<settings.xml>>>.
+  
+----
+<repository>
+  <id>npanday.3rdparty</id>
+  <name>NPanday 3rd-Party Repository</name>
+  <url>http://repo.npanday.org/archiva/repository/3rdparty</url>
+  <snapshots>
+	<enabled>false</enabled>
+  </snapshots>
+</repository>
+<repository> 
+  <id>aduna.org</id>  
+  <url>http://repository.aduna-software.org/maven2</url> 
+</repository>
+----
+
+  For performance reasons you should disable them again after the first successful build.
+
 * Building All with Maven
 
   Everything in the distribution, including the Visual Studio add-in, is built using the following command:

@@ -468,7 +468,7 @@ under the License.
     <pluginRepository>
       <id>npanday.releases</id>
       <name>NPanday Releases Repository</name>
-      <url>http://repo.npanday.org/archiva/repository/npanday-releases</url>
+      <url>${npanday.releases.url}</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -478,16 +478,24 @@ under the License.
     <repository>
       <id>npanday.releases</id>
       <name>NPanday Releases Repository</name>
-      <url>http://repo.npanday.org/archiva/repository/npanday-releases</url>
+      <url>${npanday.releases.url}</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
     </repository>
-<!-- Additional repositories needed in addition to files in thirdparty if not already loaded into your own
-        <repository> 
-          <id>aduna.org</id>  
-          <url>http://repository.aduna-software.org/maven2</url> 
-        </repository> 
--->
+    <!-- Additional repositories needed on first build
+    <repository>
+      <id>npanday.3rdparty</id>
+      <name>NPanday 3rd-Party Repository</name>
+      <url>http://repo.npanday.org/archiva/repository/3rdparty</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository> 
+      <id>aduna.org</id>  
+      <url>http://repository.aduna-software.org/maven2</url> 
+    </repository>
+    -->
   </repositories>
 </project>
