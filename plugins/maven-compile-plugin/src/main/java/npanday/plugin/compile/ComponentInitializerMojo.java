@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
 /**
  * This class initializes and validates the setup.
  *
@@ -107,6 +108,31 @@ public class ComponentInitializerMojo
                     i.remove();
                 }
             }
+                                                     
+             // we don't actually want transitive dependencies, so take the resolved set and cull back to the same as the
+            // project specifies. TODO: we should be able to simplify this mojo to use Maven's dependency resolution mechanism if we have a way to resolve the GAC/COM dependencies
+            for ( Iterator i = project.getDependencyArtifacts().iterator(); i.hasNext(); )
+            {
+                Artifact artifact = (Artifact) i.next();
+                System.out.println(">>>>>. artifact " + artifact.getId());
+                boolean found = false;
+                for ( Iterator j = project.getDependencies().iterator(); j.hasNext() && !found; )
+                {
+                    Dependency dependency  = (Dependency) j.next();
+                    if ( dependency.getGroupId().equals( artifact.getGroupId() ) && dependency.getArtifactId().equals(
+                        artifact.getArtifactId() ) && dependency.getVersion().equals(artifact.getVersion()) )
+                    {
+                        found = true;
+                    }
+                }
+                
+
+                if ( !found )
+                {
+                    i.remove();
+                }
+            }
+
         }
         catch ( java.io.IOException e )
         {
