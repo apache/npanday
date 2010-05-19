@@ -318,7 +318,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
                     if (artifact.Version.Contains("SNAPSHOT"))
                     {
-                        string newVersion = GetSnapshotVersion(artifact, url);
+                        string newVersion = GetSnapshotVersion(artifact, url, logger);
 
                         if (newVersion != null)
                         {
@@ -350,53 +350,72 @@ namespace NPanday.ProjectImporter.Digest.Model
             }
         }
 
-        private static string GetSnapshotVersion(NPanday.Artifact.Artifact artifact, string repo)
+        private static string GetSnapshotVersion(NPanday.Artifact.Artifact artifact, string repo, NPanday.Logging.Logger logger)
         {
+            WebClient client = new WebClient();
             string timeStampVersion = null;
             string metadataPath = repo + "/" + artifact.GroupId.Replace('.','/') + "/" + artifact.ArtifactId;
             string snapshot = "<snapshot>";
             string metadata = "/maven-metadata.xml";
 
-            if (urlExists(metadataPath + "/" + artifact.Version + metadata))
+            try
             {
-                metadataPath = metadataPath + "/" + artifact.Version + metadata;
+
+                if (urlExists(metadataPath + "/" + artifact.Version + metadata))
+                {
+                    metadataPath = metadataPath + "/" + artifact.Version + metadata;
+                }
+                else
+                {
+                    return null;
+                }
+
+                Stream strm = client.OpenRead(metadataPath);                
+                StreamReader sr = new StreamReader(strm);
+
+
+                string timeStamp = null;
+                string buildNumber = null;
+                string line;
+
+                while ((line = sr.ReadLine()) != null && (timeStamp == null || buildNumber == null))
+                {
+                    int startIndex;
+                    int len;
+
+                    if (line.Contains("<timestamp>"))
+                    {
+                        startIndex = line.IndexOf("<timestamp>") + "<timestamp>".Length;
+                        len = line.IndexOf("</timestamp>") - startIndex;
+
+                        timeStamp = line.Substring(startIndex, len);
+                    }
+
+                    if (line.Contains("<buildNumber>"))
+                    {
+                        startIndex = line.IndexOf("<buildNumber>") + "<buildNumber>".Length;
+                        len = line.IndexOf("</buildNumber>") - startIndex;
+
+                        buildNumber = line.Substring(startIndex, len);
+                    }
+                }
+
+                timeStampVersion = timeStamp + "-" + buildNumber;
+
             }
-            else
+
+
+            catch (Exception e)
             {
+                logger.Log(NPanday.Logging.Level.WARNING, string.Format("\nUnable to find file {0}", e.Message));
                 return null;
             }
 
-            WebClient client = new WebClient();
-            Stream strm = client.OpenRead(metadataPath);
-            StreamReader sr = new StreamReader(strm);
-
-            string timeStamp = null;
-            string buildNumber = null;
-            string line;
-            
-            while ((line = sr.ReadLine()) != null && (timeStamp == null || buildNumber == null))
+            finally
             {
-                int startIndex;
-                int len;
-
-                if (line.Contains("<timestamp>"))
-                {
-                    startIndex = line.IndexOf("<timestamp>") + "<timestamp>".Length;
-                    len = line.IndexOf("</timestamp>") - startIndex;
-
-                    timeStamp = line.Substring(startIndex, len);
-                }
-
-                if (line.Contains("<buildNumber>"))
-                {
-                    startIndex = line.IndexOf("<buildNumber>") + "<buildNumber>".Length;
-                    len = line.IndexOf("</buildNumber>") - startIndex;
-
-                    buildNumber = line.Substring(startIndex, len);
-                }
+                client.Dispose();
             }
 
-            timeStampVersion = timeStamp + "-" + buildNumber;
 
             return timeStampVersion;
         }
@@ -422,27 +441,23 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         static bool downloadArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
         {
+            WebClient client = new WebClient();
+            string artifactDir = GetLocalUacPath(artifact, artifact.FileInfo.Extension);
+
+
             try
             {
-                WebClient client = new WebClient();
-                logger.Log(NPanday.Logging.Level.INFO, string.Format("\nDownload Start: {0} Downloading From {1} ",DateTime.Now,artifact.RemotePath));
-                byte[] assembly = client.DownloadData(artifact.RemotePath);
+                logger.Log(NPanday.Logging.Level.INFO, string.Format("\nDownload Start: {0} Downloading From {1} ", DateTime.Now, artifact.RemotePath));
+
+                client.DownloadFile(artifact.RemotePath, artifactDir);
                 logger.Log(NPanday.Logging.Level.INFO, string.Format("\nDownload Finished: {0} ", DateTime.Now));
-                if (!artifact.FileInfo.Directory.Exists) 
+                if (!artifact.FileInfo.Directory.Exists)
                 {
                     artifact.FileInfo.Directory.Create();
                 }
-                FileStream stream = new FileStream(artifact.FileInfo.FullName, FileMode.Create);
-                stream.Write(assembly, 0, assembly.Length);
-                stream.Flush();
-                stream.Close();
-                stream.Dispose();
-                client.Dispose();
                 
 
-                string artifactDir = GetLocalUacPath(artifact, artifact.FileInfo.Extension);
-                
-                if(!Directory.Exists(Path.GetDirectoryName(artifactDir)))
+                if (!Directory.Exists(Path.GetDirectoryName(artifactDir)))
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(artifactDir));
                 }
@@ -450,13 +465,17 @@ namespace NPanday.ProjectImporter.Digest.Model
                 {
                     File.Copy(artifact.FileInfo.FullName, artifactDir);
                 }
-                
+
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                logger.Log(NPanday.Logging.Level.WARNING, string.Format("\nDownload Failed {0}",e.Message));
+                logger.Log(NPanday.Logging.Level.WARNING, string.Format("\nDownload Failed {0}", e.Message));
                 return false;
+            }
+            finally
+            {
+                client.Dispose();
             }
         }
 
