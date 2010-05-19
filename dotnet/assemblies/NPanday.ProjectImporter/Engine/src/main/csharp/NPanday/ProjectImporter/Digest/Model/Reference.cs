@@ -407,7 +407,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
             catch (Exception e)
             {
-                logger.Log(NPanday.Logging.Level.WARNING, string.Format("\nUnable to find file {0}", e.Message));
+                logger.Log(NPanday.Logging.Level.WARNING, string.Format("\n Unable to find file {0}\n", e.Message));
                 return null;
             }
 
@@ -441,21 +441,25 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         static bool downloadArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
         {
-            WebClient client = new WebClient();
-            string artifactDir = GetLocalUacPath(artifact, artifact.FileInfo.Extension);
-
+            WebClient client = new WebClient();            
+            bool dirCreated = false;
 
             try
             {
-                logger.Log(NPanday.Logging.Level.INFO, string.Format("\nDownload Start: {0} Downloading From {1} ", DateTime.Now, artifact.RemotePath));
-
-                client.DownloadFile(artifact.RemotePath, artifactDir);
-                logger.Log(NPanday.Logging.Level.INFO, string.Format("\nDownload Finished: {0} ", DateTime.Now));
                 if (!artifact.FileInfo.Directory.Exists)
                 {
                     artifact.FileInfo.Directory.Create();
+                    dirCreated = true;
                 }
-                
+
+
+                logger.Log(NPanday.Logging.Level.INFO, string.Format("\n Download Start: {0} Downloading From {1} ", DateTime.Now, artifact.RemotePath));
+
+                client.DownloadFile(artifact.RemotePath, artifact.FileInfo.FullName);
+
+                logger.Log(NPanday.Logging.Level.INFO, string.Format("\n Download Finished: {0} ", DateTime.Now));
+
+                string artifactDir = GetLocalUacPath(artifact, artifact.FileInfo.Extension);
 
                 if (!Directory.Exists(Path.GetDirectoryName(artifactDir)))
                 {
@@ -467,17 +471,27 @@ namespace NPanday.ProjectImporter.Digest.Model
                 }
 
                 return true;
+
             }
+
             catch (Exception e)
-            {
-                logger.Log(NPanday.Logging.Level.WARNING, string.Format("\nDownload Failed {0}", e.Message));
+            {       
+                if (dirCreated)                        
+                {
+                    artifact.FileInfo.Directory.Delete();
+                }
+
+                logger.Log(NPanday.Logging.Level.WARNING, string.Format("\n Download Failed {0}", e.Message));
+                               
                 return false;
             }
+
             finally
             {
                 client.Dispose();
             }
         }
+
 
         public static string GetLocalUacPath(Artifact.Artifact artifact, string ext)
         {
