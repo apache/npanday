@@ -4,6 +4,17 @@
 
 Available Project Types
 
+  Currently NPanday has two plugins that register types for dotnet. The <<<maven-compile-plugin>>
+  and the <<<custom-lifecycle-maven-plugin>>>.
+
+  While the compile-plugin introduces the NPanday default lifecycle, the other
+  one just does a default maven install and deploy, while leaving it to you
+  to fill up the maven lifecycle with meaningful executions.
+
+  Both plugins can resolve dependencies with the types of the other.
+
+* Maven Compile Plugin
+
   The following packaging types are supported by the Maven plugins. To make them available, add the Compile plugin
   with the following definition:
 
@@ -44,3 +55,41 @@ Available Project Types
 
     []
 
+* Custom Lifecycle Maven Plugin
+
+    The following definition allows you to install, deploy and resolves files of the listed types.
+
+----
+<plugin>
+  <groupId>npanday.plugin</groupId>
+  <artifactId>custom-lifecycle-maven-plugin</artifactId>
+  <version>${project.version}</version>
+  <extensions>true</extensions>
+</plugin>
+----
+
+    * <<<dotnet-module>>> - a .NET module with extension <<netmodule>>
+
+	* <<<dotnet-library>>> - A dll-file compiled by any of the .NET compilers
+
+	* <<<dotnet-library-config>>> - Configuration file attachable to a library artifact
+
+    * <<<dotnet-executable>>> - A exe-file compiled by any of the .NET compilers
+
+    * <<<dotnet-executable-config>>> - Configuration file attachable to a executable artifact
+
+    * <<<dotnet-symbols>>> - A pdb-file containing debug symbols for either a dll or executable
+
+    * <<<ole-type-library>>> - A tlb-file that contains information about types of a library that are accessible through COM
+
+    * <<<dotnet-vsdocs>>> - A xml-file containing the inline code documentation for a library or executable
+
+    * <<<dotnet-archive>>> - A zip of libraries and their complementary files as debug symbols,
+      docs or local satellite assemblies.
+
+    []
+
+    For <<<dotnet-archive>>> it is recommended to create the zip using the Maven Assembly Plugin.
+
+    When you resolve a <<<dotnet-archive>>> you might want to use <<<depencendy:unpack-dependencies>>> to
+    unpack it before you compile against your dependencies.
