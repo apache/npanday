@@ -34,7 +34,8 @@ under the License.
     <module>netplugins/NPanday.Plugin.Devenv/javabinding</module>  
     <module>netplugins/NPanday.Plugin.Settings/javabinding</module>
     <module>netplugins/NPanday.Plugin.SysRef/javabinding</module>
-    <module>netplugins/NPanday.Plugin.Msbuild/javabinding</module>	
+    <module>netplugins/NPanday.Plugin.Msbuild/javabinding</module>
+    <module>custom-lifecycle-maven-plugin</module>
     <module>maven-compile-plugin</module>
     <module>maven-aspx-plugin</module>    
     <module>maven-deploy-plugin</module>  

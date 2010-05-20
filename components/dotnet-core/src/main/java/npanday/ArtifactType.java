@@ -22,6 +22,7 @@ package npanday;
  * Enumeration of all the valid target types for the .NET platform.
  *
  * @author Shane Isbell
+ * @author <a href="mailto:me@lcorneliussen.de">Lars Corneliussen</a>
  */
 public enum ArtifactType
 {

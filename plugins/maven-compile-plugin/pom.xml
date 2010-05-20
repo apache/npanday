@@ -38,5 +38,52 @@ under the License.
       <groupId>npanday</groupId>  
       <artifactId>dotnet-registry</artifactId>  
     </dependency> 
-  </dependencies>  
+    <dependency>
+      <groupId>org.codehaus.gmaven</groupId>
+      <artifactId>gmaven-mojo</artifactId>
+      <version>1.2</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>groovy-all-minimal</artifactId>
+          <groupId>org.codehaus.groovy</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>1.7.0</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generateStubs</goal>
+              <goal>compile</goal>
+              <goal>generateTestStubs</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>generate-plexus-config</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>file:///${pom.basedir}/src/main/script/plexus_component_xml.groovy</source>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

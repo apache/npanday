@@ -367,7 +367,17 @@ under the License.
         <groupId>org.codehaus.plexus</groupId>  
         <artifactId>plexus-classworlds</artifactId>  
         <version>1.2-alpha-10</version> 
-      </dependency> 
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>1.5.11</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.5.11</version>
+      </dependency>
     </dependencies> 
   </dependencyManagement>  
   <profiles>
