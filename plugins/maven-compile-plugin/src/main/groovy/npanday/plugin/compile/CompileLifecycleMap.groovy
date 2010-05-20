@@ -54,7 +54,7 @@ class CompileLifecycleMap extends LifecycleMap
 		def default_process_sources = [np_compile_process_sources, np_compile_process_test_sources]
 		def default_install = [np_convert, 'npanday.plugin:maven-install-plugin:install', mv_install]
 		
-		forType( ArtifactType.LIBRARY ) {
+		forTypes( [ArtifactType.DOTNET_LIBRARY, ArtifactType.LIBRARY] ) {
 			LifecycleMappingBuilder b->
 			b.validate (default_validate)
 			b.generate_sources (default_generate_sources)
@@ -78,7 +78,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b._package ('npanday.plugin:maven-webapp-plugin:package')
 			b.deploy ('npanday.plugin:maven-webapp-plugin:deploy')
 		}
-		forType( ArtifactType.MODULE ) {
+		forTypes( [ArtifactType.DOTNET_MODULE, ArtifactType.MODULE] ) {
 			LifecycleMappingBuilder b->
 			b.validate (default_validate)
 			b.process_sources (default_process_sources)
@@ -103,7 +103,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.install (default_install)
 			b.deploy ('npanday.plugin:maven-deploy-plugin:deploy')
 		}
-		forTypes( [ArtifactType.EXE, ArtifactType.WINEXE] ) {
+		forTypes( [ArtifactType.DOTNET_EXECUTABLE, ArtifactType.EXE, ArtifactType.WINEXE] ) {
 			LifecycleMappingBuilder b->
 			b.validate (default_validate)
 			b.generate_sources (default_generate_sources)
@@ -115,7 +115,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.install (default_install)
 			b.deploy (mv_deploy)
 		}
-		forType( ArtifactType.NETPLUGIN ) {
+		forTypes( [ArtifactType.DOTNET_MAVEN_PLUGIN, ArtifactType.NETPLUGIN] ) {
 			LifecycleMappingBuilder b->
 			b.validate (default_validate)
 			b.generate_sources (default_generate_sources)
@@ -152,7 +152,8 @@ class CompileLifecycleMap extends LifecycleMap
 			b.install (default_install)
 			b.deploy (mv_deploy)
 		}
-		forType( ArtifactType.EXECONFIG ) {
+
+		forTypes( [ArtifactType.DOTNET_EXECUTABLE_CONFIG, ArtifactType.EXECONFIG] ) {
 			LifecycleMappingBuilder b->
 			b.install (default_install)
 			b.deploy (mv_deploy)
