@@ -64,7 +64,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.test_compile (np_test_compile)
 			b.test (np_test)
 			b.install (default_install)
-			b.deploy (np_convert, 'npanday.plugin:maven-deploy-plugin:deploy')
+			b.deploy ('npanday.plugin:maven-deploy-plugin:deploy')
 		}
 		forType( ArtifactType.NAR ) {
 			LifecycleMappingBuilder b->
@@ -88,7 +88,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.test (np_test)
 			b._package ('npanday.plugin:maven-link-plugin:package')
 			b.install (default_install)
-			b.deploy (np_convert, mv_deploy)
+			b.deploy (mv_deploy)
 		}
 		forType( ArtifactType.ASP ) {
 			LifecycleMappingBuilder b->
@@ -100,8 +100,8 @@ class CompileLifecycleMap extends LifecycleMap
 			b.test_compile (np_test_compile)
 			b.test (np_test)
 			b._package ('npanday.plugin:maven-aspx-plugin:package')
-			b.install ('npanday.plugin:maven-install-plugin:install')
-			b.deploy (np_convert, 'npanday.plugin:maven-deploy-plugin:deploy')
+			b.install (default_install)
+			b.deploy ('npanday.plugin:maven-deploy-plugin:deploy')
 		}
 		forType( ArtifactType.EXE ) {
 			LifecycleMappingBuilder b->
@@ -113,7 +113,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.test_compile (np_test_compile)
 			b.test (np_test)
 			b.install (default_install)
-			b.deploy (np_convert, mv_deploy)
+			b.deploy (mv_deploy)
 		}
 		forType( ArtifactType.WINEXE ) {
 			LifecycleMappingBuilder b->
@@ -125,7 +125,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.test_compile (np_test_compile)
 			b.test (np_test)
 			b.install (default_install)
-			b.deploy (np_convert, mv_deploy)
+			b.deploy (mv_deploy)
 		}
 		forType( ArtifactType.NETPLUGIN ) {
 			LifecycleMappingBuilder b->
@@ -138,7 +138,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.deploy ('npanday.plugin:maven-mojo-generator-plugin:generate-bindings')
 			b.test (np_test)
 			b.install (default_install)
-			b.deploy (np_convert, mv_deploy)
+			b.deploy (mv_deploy)
 		}
 		forType( ArtifactType.VISUAL_STUDIO_ADDIN ) {
 			LifecycleMappingBuilder b->
@@ -150,7 +150,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.test_compile (np_test_compile)
 			b.test (np_test)
 			b.install (default_install)
-			b.deploy (np_convert, mv_deploy)
+			b.deploy (mv_deploy)
 		}
 		forType( ArtifactType.SHARP_DEVELOP_ADDIN ) {
 			LifecycleMappingBuilder b->
@@ -162,12 +162,12 @@ class CompileLifecycleMap extends LifecycleMap
 			b.test_compile (np_test_compile)
 			b.test (np_test)
 			b.install (default_install)
-			b.deploy (np_convert, mv_deploy)
+			b.deploy (mv_deploy)
 		}
 		forType( ArtifactType.EXECONFIG ) {
 			LifecycleMappingBuilder b->
-			b.install ('npanday.plugin:maven-install-plugin:install')
-			b.deploy (np_convert, mv_deploy)
+			b.install (default_install)
+			b.deploy (mv_deploy)
 		}
 	}
 	
