@@ -103,19 +103,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.install (default_install)
 			b.deploy ('npanday.plugin:maven-deploy-plugin:deploy')
 		}
-		forType( ArtifactType.EXE ) {
-			LifecycleMappingBuilder b->
-			b.validate (default_validate)
-			b.generate_sources (default_generate_sources)
-			b.process_sources (default_process_sources)
-			b.process_resources (default_process_resources)
-			b.compile (np_compile)
-			b.test_compile (np_test_compile)
-			b.test (np_test)
-			b.install (default_install)
-			b.deploy (mv_deploy)
-		}
-		forType( ArtifactType.WINEXE ) {
+		forTypes( [ArtifactType.EXE, ArtifactType.WINEXE] ) {
 			LifecycleMappingBuilder b->
 			b.validate (default_validate)
 			b.generate_sources (default_generate_sources)
@@ -173,5 +161,12 @@ class CompileLifecycleMap extends LifecycleMap
 	
 	void forType(ArtifactType type, Closure phases){
 		add(LifecycleMappingBuilder.build(type, phases))
+	}
+
+	void forTypes(List types, Closure phases){
+		types.each {
+			ArtifactType type->
+			add(LifecycleMappingBuilder.build(type, phases))
+        }
 	}
 }
