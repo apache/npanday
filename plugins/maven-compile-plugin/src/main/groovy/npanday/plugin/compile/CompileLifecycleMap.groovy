@@ -20,6 +20,9 @@ import npanday.lifecycle.LifecyclePhase;
 import npanday.lifecycle.LifecycleMap;
 import npanday.ArtifactType;
 
+import npanday.lifecycle.LifecycleMappingBuilder;
+import static LifecycleMappingBuilder.build as forType
+
 /**
  * The lifecycles defined by the maven-compile-plugin..
  * 
@@ -27,8 +30,7 @@ import npanday.ArtifactType;
  */
 class CompileLifecycleMap extends LifecycleMap
 {
-	
 	void defineMappings() {
-		add(new LifecycleMapping(type: ArtifactType.LIBRARY, phases: null))
+		
 	}
 }

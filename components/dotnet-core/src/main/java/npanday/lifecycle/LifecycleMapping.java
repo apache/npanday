@@ -14,6 +14,7 @@
  */
 package npanday.lifecycle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import npanday.ArtifactType;
@@ -24,7 +25,7 @@ import npanday.ArtifactType;
 public class LifecycleMapping {
 	ArtifactType type;
 
-	List<LifecyclePhase> phases;
+	List<LifecyclePhase> phases = new ArrayList<LifecyclePhase>();
 
 	public ArtifactType getType() {
 		return type;

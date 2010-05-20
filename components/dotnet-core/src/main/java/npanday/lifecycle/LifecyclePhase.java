@@ -14,6 +14,7 @@
  */
 package npanday.lifecycle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ import java.util.List;
  */
 public class LifecyclePhase {
 	String name;
-	List<String> goals;
+	List<String> goals = new ArrayList<String>();
 
 	public String getPhase() {
 		return name;

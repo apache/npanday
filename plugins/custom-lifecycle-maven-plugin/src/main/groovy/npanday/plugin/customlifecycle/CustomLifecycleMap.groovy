@@ -16,9 +16,12 @@ package npanday.plugin.customlifecycle;
 
 import org.apache.maven.lifecycle.Lifecycle;
 import npanday.lifecycle.LifecycleMapping;
-import npanday.lifecycle.LifecycleStep;
+import npanday.lifecycle.LifecycleMappingBuilder;
+import npanday.lifecycle.LifecyclePhase;
 import npanday.lifecycle.LifecycleMap;
 import npanday.ArtifactType;
+
+import static LifecycleMappingBuilder.build as forType
 /**
  * The mapping of all compilable types to an almost empty lifecycle. It only 
  * executes the default install and deploy plugins in the corresponding phases.
@@ -27,24 +30,19 @@ import npanday.ArtifactType;
  */
 class CustomLifecycleMap extends LifecycleMap
 {
+	def mv_install = 'org.apache.maven.plugins:maven-install-plugin:install'
+	def mv_deploy = 'org.apache.maven.plugins:maven-deploy-plugin:deploy'
+	
 	void defineMappings() {
-	    def steps = [
-			new LifecycleStep(
-    			phase: 'install',
-    			goals: ['org.apache.maven.plugins:maven-install-plugin:install']
-			),
-			new LifecycleStep(
-    			phase: 'deploy',
-    			goals: ['org.apache.maven.plugins:maven-deploy-plugin:deploy']
-			)
-		]
-		
+	    def phases = {LifecycleMappingBuilder b -> 
+			b.install( mv_install )
+			b.deploy( mv_deploy )
+		}
 		
 		ArtifactType.values()
     		.findAll{ArtifactType type -> type != npanday.ArtifactType.NULL && type.targetCompileType != null}
     		.each{
-				ArtifactType type ->
-				    add(new LifecycleMapping(type: type, steps: steps))
+				add(forType(it, phases))
 			}
 	}
 }
