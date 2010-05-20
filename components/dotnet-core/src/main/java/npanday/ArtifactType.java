@@ -19,29 +19,138 @@
 package npanday;
 
 /**
- * Enumeration of all the valid target types (module, library, winexe, exe, nar) for the .NET platform.
+ * Enumeration of all the valid target types for the .NET platform.
  *
  * @author Shane Isbell
  */
 public enum ArtifactType
 {
+	NULL( null, null, null ),
+	
+	DOTNET_MODULE("dotnet-module", "module", "netmodule"),
+	
+	/**
+	 * A dll-file compiled by any of the .NET compilers.
+	 */
+	DOTNET_LIBRARY("dotnet-library", "library", "dll"),
+	
+	/**
+	 * Configuration file attachable to a library
+	 * artifact.
+	 */
+    DOTNET_LIBRARY_CONFIG("dotnet-library-config", null, "dll.config"),
+
+    /**
+     * A exe-file compiled by any of the .NET compilers.
+     */
+    DOTNET_EXECUTABLE("dotnet-executable", "exe", "exe"),
+    
+    /**
+	 * Configuration file attachable to a executable
+	 * artifact.
+	 */
+    DOTNET_EXECUTABLE_CONFIG("dotnet-executable-config", null, "exe.config"),
+
+    /**
+     * A library that is expected to be installed into the GAC
+     * before it is used.
+     */
+    DOTNET_GAC("dotnet-gac", null, "dll"),
+    
+    /**
+     * A pdb file containing debug symbols for either
+     * a dll or executable.
+     */
+    DOTNET_SYMBOLS("dotnet-symbols", null, "pdb"),
+    
+    /**
+     * A tlb-file that contains information about types
+     * of a library that are accessible through COM.
+     */
+    DOTNET_OLE_TYPE_LIB("ole-type-library", null, "tlb"),
+    
+    /**
+     * Contains the inline code documentation.
+     */
+    DOTNET_VSDOCS("dotnet-vsdocs", null, "xml"),
+    
+    /**
+     * A maven plugin authored in .NET.
+     */
+    DOTNET_MAVEN_PLUGIN("dotnet-maven-plugin", "library", "dll"),
+    
+    /**
+     * A compilation of libraries and their complementary 
+     * files as debug symbols, docs or local satellite
+     * assemblies.
+     */
+    DOTNET_ARCHIVE("dotnet-archive", null, ".zip"),
+
+    // We should reconsider those..
+    
+    // DOTNET_ASPX("dotnet-aspx", "library", "dll"),
+    // DOTNET_("dotnet-gac_generic", "library", "dll"),
+    // DOTNET_("dotnet-gac_msil", "library", "dll"),
+    // DOTNET_("dotnet-gac_32", "library", "dll"),
+    // DOTNET_("dotnet-nar", "library", "nar"),
+    // DOTNET_("dotnet-visual-studio-addin", "library", "dll"),
+    
+    /** 
+     * Use DOTNET_MODULE instead
+     */
+	@Deprecated
     MODULE( "module", "module", "netmodule" ),
+    
+    /** 
+     * Use DOTNET_LIBRARY instead
+     */
+    @Deprecated
     LIBRARY( "library", "library", "dll" ),
+    
+    /** 
+     * Use DOTNET_EXECUTABLE instead
+     */
+	@Deprecated
     EXE( "exe", "exe", "exe" ),
+    
+    /** 
+     * Use DOTNET_EXECUTABLE instead
+     */
+    @Deprecated
     WINEXE( "winexe", "winexe", "exe" ),
-    NAR( "nar", "null", "nar" ),
+    
+    /** 
+     * Use DOTNET_EXECUTABLE_CONFIG instead
+     */
+    @Deprecated
     EXECONFIG( "exe.config", "null", "exe.config" ),
+    
+    NAR( "nar", null, "nar" ),
+    
+    /** 
+     * Use DOTNET_MAVEN_PLUGIN instead
+     */
+    @Deprecated
     NETPLUGIN( "netplugin", "library", "dll" ),
+    
     VISUAL_STUDIO_ADDIN( "visual-studio-addin", "library", "dll" ),
+    
     SHARP_DEVELOP_ADDIN( "sharp-develop-addin", "library", "dll" ),
-    NULL( "null", "null", "null" ),     
-    ASP ( "asp", "library", "zip" ),
-    GAC ( "gac", "null", "dll"),
-    GAC_GENERIC ("gac_generic", "null", "dll"),
-    GAC_MSIL ("gac_msil", "null", "dll"),
-    GAC_32 ( "gac32", "null", "dll");
-
-
+    
+    ASP ( "asp", "library", "dll" ),
+    
+    /** 
+     * Use DOTNET_GAC instead
+     */
+    @Deprecated
+    GAC ( "gac", null, "dll"),
+    
+    GAC_GENERIC ("gac_generic", null, "dll"),
+    
+    GAC_MSIL ("gac_msil", null, "dll"),
+    
+    GAC_32 ( "gac32", null, "dll");
+	
     /**
      * The extension used for the artifact(netmodule, dll, exe)
      */
