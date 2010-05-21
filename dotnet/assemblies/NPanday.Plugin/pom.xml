@@ -38,6 +38,7 @@ under the License.
     </dependency> 
   </dependencies>  
   <build> 
+    <!-- TODO: ideally, avoid GAC installation of this artifact -->
     <pluginManagement>
       <plugins> 
         <plugin> 
@@ -53,6 +54,29 @@ under the License.
           <configuration> 
             <isGacInstall>true</isGacInstall> 
           </configuration> 
+        </plugin> 
+        <plugin> 
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>1.5</version>
+          <executions>
+            <execution>
+              <id>attach-artifacts</id>
+              <phase>package</phase>
+              <goals>
+                <goal>attach-artifact</goal>
+              </goals>
+              <configuration>
+                <artifacts>
+                  <artifact>
+                    <file>${project.build.directory}/${project.build.finalName}.dll</file>
+                    <type>library</type>
+                    <classifier>4b435f4d76e2f0e6</classifier>
+                  </artifact>
+                </artifacts>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins> 
     </pluginManagement>
