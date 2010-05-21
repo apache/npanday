@@ -64,7 +64,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.test_compile (np_test_compile)
 			b.test (np_test)
 			b.install (default_install)
-			b.deploy ('npanday.plugin:maven-deploy-plugin:deploy')
+			b.deploy (mv_deploy)
 		}
 		forType( ArtifactType.NAR ) {
 			LifecycleMappingBuilder b->
@@ -101,7 +101,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.test (np_test)
 			b._package ('npanday.plugin:maven-aspx-plugin:package')
 			b.install (default_install)
-			b.deploy ('npanday.plugin:maven-deploy-plugin:deploy')
+			b.deploy (mv_deploy)
 		}
 		forTypes( [ArtifactType.DOTNET_EXECUTABLE, ArtifactType.EXE, ArtifactType.WINEXE] ) {
 			LifecycleMappingBuilder b->

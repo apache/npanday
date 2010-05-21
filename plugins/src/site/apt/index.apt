@@ -12,8 +12,6 @@ The following plugins are shipped along with each NPanday release:
 
  * {{{./maven-compile-plugin}<<<compile>>>}}
 
- * {{{./maven-deploy-plugin}<<<deploy>>>}}
-
  * {{{./maven-fxcop-plugin}<<<fxcop>>>}}
 
  * {{{./maven-install-plugin}<<<install>>>}}
