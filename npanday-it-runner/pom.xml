@@ -60,6 +60,9 @@ under the License.
               <value>${project.version}</value>
             </property>
           </systemProperties>
+          <includes>
+            <include>**/IntegrationTestSuite.*</include>
+          </includes>
         </configuration>
       </plugin>
       <plugin>
