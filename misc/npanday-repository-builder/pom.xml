@@ -33,11 +33,6 @@
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
-      <artifactId>maven-deploy-plugin</artifactId>
-      <version>1.2-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>npanday.plugin</groupId>
       <artifactId>maven-fxcop-plugin</artifactId>
       <version>1.2-SNAPSHOT</version>
     </dependency>

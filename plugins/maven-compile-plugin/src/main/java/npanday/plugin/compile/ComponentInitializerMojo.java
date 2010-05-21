@@ -114,13 +114,12 @@ public class ComponentInitializerMojo
             for ( Iterator i = project.getDependencyArtifacts().iterator(); i.hasNext(); )
             {
                 Artifact artifact = (Artifact) i.next();
-                System.out.println(">>>>>. artifact " + artifact.getId());
                 boolean found = false;
                 for ( Iterator j = project.getDependencies().iterator(); j.hasNext() && !found; )
                 {
                     Dependency dependency  = (Dependency) j.next();
                     if ( dependency.getGroupId().equals( artifact.getGroupId() ) && dependency.getArtifactId().equals(
-                        artifact.getArtifactId() ) && dependency.getVersion().equals(artifact.getVersion()) )
+                        artifact.getArtifactId() ) && dependency.getVersion().equals( artifact.getVersion() ) )
                     {
                         found = true;
                     }

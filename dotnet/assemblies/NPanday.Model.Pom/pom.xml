@@ -62,13 +62,6 @@ under the License.
             <isGacInstall>true</isGacInstall> 
           </configuration> 
         </plugin> 
-        <plugin> 
-          <groupId>npanday.plugin</groupId>  
-          <artifactId>maven-deploy-plugin</artifactId>  
-          <configuration> 
-            <classifier>4b435f4d76e2f0e6</classifier>
-          </configuration> 
-        </plugin> 
       </plugins>
     </pluginManagement>
   </build> 
