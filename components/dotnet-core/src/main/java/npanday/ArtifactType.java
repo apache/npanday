@@ -85,7 +85,7 @@ public enum ArtifactType
      * files as debug symbols, docs or local satellite
      * assemblies.
      */
-    DOTNET_ARCHIVE("dotnet-archive", null, ".zip"),
+    DOTNET_ARCHIVE("dotnet-archive", null, "zip"),
 
     // We should reconsider those..
     
