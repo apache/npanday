@@ -29,29 +29,37 @@ Available Project Types
 
   The <<<maven-compile-plugin>>> provides the following packaging types:
 
-    * <<<nar>>> - builds and packages with the Webapp plugin
+    * <<<dotnet-library>>> - builds and packages the assembly (Deprecated: <<<library>>>)
 
-    * <<<module>>> - builds and packages the assembly then uses the Link plugin in the package phase
-    
-    * <<<library>>> - builds and packages the assembly
+    * <<<dotnet-executable>>> - build and package a console application (Deprecated: <<<exe>>>, <<<winexe>>>)
 
-    * <<<exe>>>, <<<winexe>>> - build and package a console application
+    * <<<dotnet-module>>> - builds and packages the assembly then uses the Link plugin in the package phase (Deprecated: <<<module>>>)
 
-    * <<<netplugin>>> - build an assembly from the .NET code and generate a Java binding for Maven
+    * <<<dotnet-maven-plugin>>> - build an assembly from the .NET code and generate a Java binding for Maven (Deprecated: <<<netplugin>>>)
 
     * <<<asp>>> - uses the ASPX plugin to build an ASP.NET project
 
-    * <<<exe.config>>> - simply installs the configuration into the local repository, as no build is required
+    * <<<dotnet-executable-config>>> - simply installs the configuration into the local repository, as no build is required (Deprecated: <<<exe.config>>>)
 
-    * <<<visual-studio-addin>>> - build and packages the assembly in the same way as for a <<<library>>>
+    * <<<visual-studio-addin>>> - build and packages the assembly in the same way as for a <<<dotnet-library>>>
+
+    * <<<nar>>> - builds and packages with the Webapp plugin
 
     []
 
   The following dependency types (in addition to the above) are also declared:
 
-    * <<<netmodule>>> - references to a <<<module>>>
+    * <<<dotnet-module>>> - references to a <<<dotnet-module>>>
 
-    * <<<gac>>>, <<<gac_32>>>, <<<gac_generic>>>, <<<gac_msil>>> - dependencies in the respective GAC types variants
+    * <<<dotnet-executable-config>>> and <<<dotnet-library-config>>> - references to .NET configuration files
+
+    * <<<dotnet-symbols>>> - PDB debug information for libraries or executables
+
+    * <<<ole-type-library>>> - TLB-files containing type descriptors for .NET COM Interop
+
+    * <<<dotnet-vsdocs>>> - XML-file containing intellisense information for libraries or executables
+
+    * <<dotnet-gac>>, <<<gac_32>>> - dependencies in the respective GAC types variants (Deprecated: <<<gac>>>, <<<gac_generic>>>, <<<gac_msil>>>)
 
     []
 
