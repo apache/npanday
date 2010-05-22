@@ -18,6 +18,7 @@
  */
 package npanday.plugin.compile;
 
+import npanday.ArtifactTypeHelper;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -127,7 +128,7 @@ public class AssemblyInfoGeneratorMojo
     {
         long startTime = System.currentTimeMillis();
 
-        if ( project.getArtifact().getType().equals( "module" ) )
+        if ( ArtifactTypeHelper.isDotnetModule( project.getArtifact().getType() ))
         {
             return;
         }

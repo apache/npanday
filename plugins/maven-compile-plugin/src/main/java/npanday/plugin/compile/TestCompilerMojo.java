@@ -125,7 +125,7 @@ public final class TestCompilerMojo
 
         compilerConfig.setCommands( getParameters() );
 
-        compilerConfig.setArtifactType( ArtifactType.LIBRARY );
+        compilerConfig.setArtifactType( ArtifactType.DOTNET_LIBRARY );
         compilerConfig.setTestCompile( true );
         compilerConfig.setLocalRepository( localRepository );
 

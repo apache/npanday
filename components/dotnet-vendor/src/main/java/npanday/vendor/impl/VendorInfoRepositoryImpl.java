@@ -18,6 +18,7 @@
  */
 package npanday.vendor.impl;
 
+import npanday.ArtifactTypeHelper;
 import npanday.vendor.VendorInfoRepository;
 import npanday.vendor.VendorInfo;
 import npanday.vendor.VendorInfoMatchPolicy;
@@ -190,7 +191,9 @@ public class VendorInfoRepositoryImpl
     public File getGlobalAssemblyCacheDirectoryFor( Vendor vendor, String frameworkVersion, String artifactType )
         throws PlatformUnsupportedException
     {
-        if ( artifactType.equals( "gac_generic" ) )
+        // TODO: Duplicate code with CompilerContextImpl.init
+
+        if (ArtifactTypeHelper.isDotnetGac( artifactType ))
         {
             if ( vendor.equals( Vendor.MICROSOFT ) &&
                 ( frameworkVersion.equals( "2.0.50727" ) || frameworkVersion.equals( "3.0" ) ) )

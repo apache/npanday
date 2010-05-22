@@ -708,12 +708,12 @@ namespace NPanday.Utils
 
         public void AddPomDependency(string groupId, string artifactId)
         {
-            AddPomDependency(groupId, artifactId, null, "library", null, null);
+            AddPomDependency(groupId, artifactId, null, "dotnet-library", null, null);
         }
 
         public void AddPomDependency(string groupId, string artifactId, string version)
         {
-            AddPomDependency(groupId, artifactId, version, "library", null, null);
+            AddPomDependency(groupId, artifactId, version, "dotnet-library", null, null);
         }
 
         public void AddPomDependency(string groupId, string artifactId, string version, string type, string scope, string systemPath)

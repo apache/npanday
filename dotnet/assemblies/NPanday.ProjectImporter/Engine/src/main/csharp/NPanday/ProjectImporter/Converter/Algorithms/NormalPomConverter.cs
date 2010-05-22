@@ -37,7 +37,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         {
 
             
-            GenerateHeader("library");
+            GenerateHeader("dotnet-library");
 
 
             Model.build.sourceDirectory = GetSourceDir();

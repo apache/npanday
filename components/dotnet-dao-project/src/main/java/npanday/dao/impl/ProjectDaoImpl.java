@@ -18,6 +18,8 @@
  */
 package npanday.dao.impl;
 
+import npanday.ArtifactType;
+import npanday.ArtifactTypeHelper;
 import npanday.dao.ProjectDao;
 import npanday.dao.ProjectUri;
 import npanday.dao.ProjectFactory;
@@ -648,7 +650,8 @@ public final class ProjectDaoImpl
                         continue;
                     }
 
-                    if ( !assembly.getType().equals( "exe.config" ) )// TODO: Generalize to any attached artifact
+                    ArtifactType type = ArtifactType.getArtifactTypeForPackagingName( assembly.getType() );
+                    if ( !ArtifactTypeHelper.isDotnetExecutableConfig( type ))// TODO: Generalize to any attached artifact
                     {
                         Artifact pomArtifact =
                             artifactFactory.createProjectArtifact( projectDependency.getGroupId(),

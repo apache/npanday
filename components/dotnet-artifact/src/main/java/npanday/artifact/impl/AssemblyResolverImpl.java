@@ -108,7 +108,7 @@ public class AssemblyResolverImpl
         project.setArtifactId( mavenProject.getArtifactId() );
         project.setVersion( mavenProject.getVersion() );
         project.setArtifactType(
-            ( mavenProject.getArtifact() != null ) ? mavenProject.getArtifact().getType() : "library" );
+            ( mavenProject.getArtifact() != null ) ? mavenProject.getArtifact().getType() : "dotnet-library" );
 
         project.setPublicKeyTokenId(
             ( mavenProject.getArtifact() != null ) ? mavenProject.getArtifact().getClassifier() : null );

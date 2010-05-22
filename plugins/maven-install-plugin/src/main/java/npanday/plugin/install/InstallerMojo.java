@@ -18,6 +18,7 @@
  */
 package npanday.plugin.install;
 
+import npanday.ArtifactTypeHelper;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -187,13 +188,13 @@ public class InstallerMojo
         // To allow executables to be runnable from the repo
         Artifact artifact = project.getArtifact();
 
-        if ( artifact.getType().equals( ArtifactType.EXE.getPackagingType() ) ||
-            artifact.getType().equals( ArtifactType.NETPLUGIN.getPackagingType() ) ||
+        if (ArtifactTypeHelper.isDotnetExecutable( artifact.getType() ) ||
+            ArtifactTypeHelper.isDotnetMavenPlugin( artifact.getType() ) ||
             artifact.getType().equals( ArtifactType.VISUAL_STUDIO_ADDIN.getPackagingType() ) ||
             artifact.getType().equals( ArtifactType.SHARP_DEVELOP_ADDIN.getPackagingType() ) )
         {
             List<Dependency> dependencies = project.getDependencies();
-            if ( artifact.getType().equals( ArtifactType.EXE.getPackagingType() ) )
+            if ( ArtifactTypeHelper.isDotnetExecutable( artifact.getType() ) )
             {
                 ApplicationConfig applicationConfig = artifactContext.getApplicationConfigFor( artifact );
               //  File configExeFile = new File( applicationConfig.getConfigDestinationPath() );

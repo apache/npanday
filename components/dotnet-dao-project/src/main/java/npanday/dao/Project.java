@@ -52,9 +52,9 @@ public class Project
     private boolean isResolved = false;
 
     /**
-     * The type of artifact: library, exe, winexe, netmodule
+     * The type of artifact: {@see ArtifactType}
      */
-    private String artifactType = "library";
+    private String artifactType = "dotnet-library";
 
     /**
      * The set of project dependencies for this project

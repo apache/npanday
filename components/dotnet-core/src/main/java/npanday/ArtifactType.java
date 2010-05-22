@@ -140,12 +140,12 @@ public enum ArtifactType
     
     ASP ( "asp", "library", "dll" ),
     
-    /** 
+    GAC ( "gac", null, "dll"),
+
+    /**
      * Use DOTNET_GAC instead
      */
     @Deprecated
-    GAC ( "gac", null, "dll"),
-    
     GAC_GENERIC ("gac_generic", null, "dll"),
     
     GAC_MSIL ("gac_msil", null, "dll"),

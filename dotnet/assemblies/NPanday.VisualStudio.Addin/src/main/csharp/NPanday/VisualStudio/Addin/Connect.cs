@@ -722,7 +722,7 @@ namespace NPanday.VisualStudio.Addin
 
                         if (!a.GlobalAssemblyCache)
                         {
-                            refType = "library";
+                            refType = "dotnet-library";
                         }
                     }
                     else if (pReference.SourceProject != null && pReference.ContainingProject.DTE.Solution.FullName == pReference.SourceProject.DTE.Solution.FullName)
@@ -749,13 +749,13 @@ namespace NPanday.VisualStudio.Addin
                         {
                             refVersion = "1.0-SNAPSHOT";
                         }
-                        refType = "library";
+                        refType = "dotnet-library";
                     }
                     else
                     {
                         scope = "system";
                         systemPath = pReference.Path;
-                        refType = "library";
+                        refType = "dotnet-library";
                         if (!iNPandayRepo)
                         {
                             MessageBox.Show(string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."

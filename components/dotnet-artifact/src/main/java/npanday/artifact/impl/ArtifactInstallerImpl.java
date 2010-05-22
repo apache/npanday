@@ -18,6 +18,7 @@
  */
 package npanday.artifact.impl;
 
+import npanday.ArtifactTypeHelper;
 import npanday.artifact.ArtifactContext;
 import npanday.artifact.ApplicationConfig;
 import npanday.ArtifactType;
@@ -180,7 +181,7 @@ public class ArtifactInstallerImpl
                                                                            dependency.getVersion(),
                                                                            dependency.getType() );
             //Resolve the JavaBinding for the .NET plugin
-            if ( sourceArtifact.getType().equals( ArtifactType.NETPLUGIN.getPackagingType() ) )
+            if ( ArtifactTypeHelper.isDotnetMavenPlugin(sourceArtifact.getType()))
             {
                 Artifact javaBindingArtifact = artifactFactory.createBuildArtifact( sourceArtifact.getGroupId(),
                                                                                     sourceArtifact.getArtifactId() +
@@ -397,7 +398,7 @@ public class ArtifactInstallerImpl
                     dependency.setGroupId( artifact.getGroupId() );
                     dependency.setArtifactId( artifact.getArtifactId() );
                     dependency.setVersion( artifact.getVersion() );
-                    dependency.setType( ArtifactType.EXECONFIG.getPackagingType() );
+                    dependency.setType( ArtifactType.DOTNET_EXECUTABLE_CONFIG.getPackagingType() );
                     model.addDependency( dependency );
                 }
             }
@@ -537,8 +538,8 @@ public class ArtifactInstallerImpl
     {
         public boolean match( NetDependency netDependency )
         {
-            return netDependency.getType().equals( ArtifactType.EXE.getPackagingType() ) ||
-                netDependency.getType().equals( ArtifactType.NETPLUGIN.getPackagingType() ) ||
+            return ArtifactTypeHelper.isDotnetExecutable(netDependency.getType()) ||
+                ArtifactTypeHelper.isDotnetMavenPlugin(netDependency.getType()) ||
                 netDependency.getType().equals( ArtifactType.VISUAL_STUDIO_ADDIN.getPackagingType() ) ||
                 netDependency.getType().equals( ArtifactType.SHARP_DEVELOP_ADDIN.getPackagingType() );
         }

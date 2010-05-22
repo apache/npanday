@@ -270,7 +270,7 @@ namespace NPanday.Plugin.SysRef
                         Console.WriteLine("Successfully Installed : " + dependency.artifactId);
                         
                     }
-                    if (dependency.type.Contains("gac") || dependency.type.Equals("library"))
+                    if (dependency.type.Contains("gac") || dependency.type.Equals("library") || dependency.type.Equals("dotnet-library"))
                     {
                         if (dependency.systemPath != null || dependency.systemPath != string.Empty)
                         {

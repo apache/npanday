@@ -18,6 +18,7 @@
  */
 package npanday.plugin.webapp;
 
+import npanday.ArtifactTypeHelper;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -90,7 +91,8 @@ public class NetAchiverMojo
         dependencies.add( project.getArtifact() );
         for ( Artifact artifact : artifacts )
         {
-            if ( ( artifact.getType().equals( "library" ) || artifact.getType().equals( "module" ) ) &&
+            if ( ArtifactTypeHelper.isDotnetLibrary( artifact.getType() )
+                  || ArtifactTypeHelper.isDotnetModule( artifact.getType() ) &&
                 artifact.getScope().equals( Artifact.SCOPE_COMPILE ) ||
                 artifact.getScope().equals( Artifact.SCOPE_RUNTIME ) )
             {

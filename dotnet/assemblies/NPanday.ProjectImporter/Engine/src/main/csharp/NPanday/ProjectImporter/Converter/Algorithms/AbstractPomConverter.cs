@@ -418,7 +418,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             interDependency.artifactId = projectRef.Name;
             interDependency.groupId = !string.IsNullOrEmpty(groupId) ? groupId : projectRef.Name;
             interDependency.version = string.IsNullOrEmpty(version) ? "1.0-SNAPSHOT" : version;
-            interDependency.type = "library";
+            interDependency.type = "dotnet-library";
 
             if (projectRef.ProjectReferenceDigest != null
                 && !string.IsNullOrEmpty(projectRef.ProjectReferenceDigest.OutputType))
@@ -448,7 +448,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
 
 
-            if (!"library".Equals(refDependency.type, StringComparison.OrdinalIgnoreCase))
+            if (!("library".Equals(refDependency.type, StringComparison.OrdinalIgnoreCase)
+                  || "dotnet-library".Equals(refDependency.type, StringComparison.OrdinalIgnoreCase)))
             {
                 // ignore gac if already in the RSP 
                 if (gacUtil.IsRspIncluded(refDependency.artifactId, projectDigest.Language))
@@ -722,7 +723,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 dependency.artifactId = artifact.ArtifactId;
                 dependency.groupId = artifact.GroupId;
                 dependency.version = artifact.Version;
-                dependency.type = "library";
+                dependency.type = "dotnet-library";
                 return dependency;
             }
 
@@ -812,7 +813,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     refDependency.version = pathTokens[pathTokens.Length-2].Replace(reference.Name+"-","") ?? "1.0.0.0";
                     //refDependency.version = reference.Version ?? "1.0.0.0";
                     
-                    refDependency.type = "library";
+                    refDependency.type = "dotnet-library";
                     //refDependency.scope = "system";
                     //refDependency.systemPath = reference.HintFullPath;
 
@@ -822,7 +823,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     refDependency.artifactId = reference.Name;
                     refDependency.groupId = reference.Name;
                     refDependency.version = reference.Version ?? "1.0.0.0";
-                    refDependency.type = "library";
+                    refDependency.type = "dotnet-library";
                     refDependency.scope = "system";
                     refDependency.systemPath = reference.HintFullPath;
                 }

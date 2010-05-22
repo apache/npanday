@@ -60,16 +60,18 @@ namespace NPanday.Artifact
 
         public String GetExtensionFor(String packaging)
         {
-            if (packaging.Equals("library") || packaging.Equals("netplugin")
+            if (packaging.Equals("dotnet-library") || packaging.Equals("library")
+                || packaging.Equals("dotnet-maven-plugin") || packaging.Equals("netplugin")
                 || packaging.Equals("visual-studio-addin") || packaging.Equals("sharp-develop-addin"))
             {
                 return "dll";
             }
-            else if(packaging.Equals("winexe") ||  packaging.Equals("exe"))
+            else if(packaging.Equals("dotnet-executable")
+                    ||  packaging.Equals("winexe") ||  packaging.Equals("exe"))
             {
                 return "exe";
             }
-            else if (packaging.Equals("module"))
+            else if (packaging.Equals("dotnet-module") || packaging.Equals("module"))
             {
                 return "netmodule";
             }

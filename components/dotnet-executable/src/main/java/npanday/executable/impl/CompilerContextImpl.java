@@ -18,6 +18,7 @@
  */
 package npanday.executable.impl;
 
+import npanday.ArtifactTypeHelper;
 import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutionException;
 import npanday.executable.CapabilityMatcher;
@@ -147,13 +148,13 @@ public final class CompilerContextImpl
             return new ArrayList<Artifact>();
             //TODO: How to handle this: usually implies improper init of ArtifactContext
         }
-        if ( config.isTestCompile() && config.getArtifactType().equals( ArtifactType.MODULE ) )
+        if ( config.isTestCompile() && ArtifactTypeHelper.isDotnetModule( config.getArtifactType() ) )
         {
             artifacts.add( project.getArtifact() );
         }
 
         if ( config.isTestCompile() &&
-            project.getArtifact().getType().equals( ArtifactType.MODULE.getPackagingType() ) &&
+            ArtifactTypeHelper.isDotnetModule( project.getArtifact().getType() ) &&
             project.getArtifact().getFile() != null && project.getArtifact().getFile().exists() )
         {
             artifacts.add( project.getArtifact() );
@@ -178,10 +179,10 @@ public final class CompilerContextImpl
     {   
                 
         if ( config.isTestCompile() 
-            && ( config.getArtifactType().equals( ArtifactType.LIBRARY ) 
-                 || config.getArtifactType().equals( ArtifactType.NETPLUGIN ))
+            && ( ArtifactTypeHelper.isDotnetLibrary( config.getArtifactType() ) 
+                 || ArtifactTypeHelper.isDotnetMavenPlugin( config.getArtifactType() ))
             && project.getArtifact().getFile() != null && project.getArtifact().getFile().exists()
-            && !libraries.contains( project.getArtifact() ) && !project.getArtifact().getType().equals( "module" ) 
+            && !libraries.contains( project.getArtifact() ) && !ArtifactTypeHelper.isDotnetModule( project.getArtifact().getType() )
            )
         {
             libraries.add( project.getArtifact() );
@@ -325,17 +326,20 @@ public final class CompilerContextImpl
             for ( Artifact artifact : artifacts )
             {
                 String type = artifact.getType();
-                if ( type.equals( "module" ) )
+                ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( type );
+                if ( ArtifactTypeHelper.isDotnetModule( type ))
                 {
                     modules.add( artifact );
                 }
-                else if ( type.equals("asp") || type.equals( "library" ) || type.equals( "exe" ) || type.equals( "jar" ) )
+                else if ( (artifactType != null && (artifactType.getExtension().equals( "library" )
+                        || artifactType.getExtension().equals( "exe" )) ) || type.equals( "jar" ) )
                 {
                     libraries.add( artifact );
                 }
                 //Resolving here since the GAC path is vendor and framework aware
-                else if ( type.equals( "gac_generic" ) )
+                else if ( ArtifactTypeHelper.isDotnetGac( type ) )
                 {
+                    // TODO: Duplicate code with VendorInfoRepositoryImpl.getGlobalAssemblyCacheDirectoryFor
                     String gacRoot = null;
                     if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) && (
                         compilerRequirement.getFrameworkVersion().equals( "2.0.50727" ) ||
@@ -550,6 +554,8 @@ public final class CompilerContextImpl
     private void setArtifactGacFile( String gacRoot, Artifact artifact )
         throws PlatformUnsupportedException
     {
+        // TODO: Refactor to PathUtil.getGlobalAssemblyCacheFileFor
+
         File gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
             artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
         // first check if the artifact is not yet installed

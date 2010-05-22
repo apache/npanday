@@ -21,6 +21,7 @@ package npanday.artifact.impl;
 import java.util.*;
 import java.io.File;
 
+import npanday.ArtifactTypeHelper;
 import npanday.artifact.*;
 import npanday.registry.RepositoryRegistry;
 import npanday.PathUtil;
@@ -214,7 +215,7 @@ public final class ArtifactContextImpl
          */
         public boolean match( Artifact artifact )
         {
-            return artifact.getType().equals( "module" );
+            return ArtifactTypeHelper.isDotnetModule( artifact.getType() );
         }
     }
 }
