@@ -195,14 +195,15 @@ public class VendorInfoRepositoryImpl
 
         if (ArtifactTypeHelper.isDotnetGac( artifactType ))
         {
-            if ( vendor.equals( Vendor.MICROSOFT ) &&
-                ( frameworkVersion.equals( "2.0.50727" ) || frameworkVersion.equals( "3.0" ) ) )
-            {
-                return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
-            }
-            else if ( vendor.equals( Vendor.MICROSOFT ) && frameworkVersion.equals( "1.1.4322" ) )
+            if ( vendor.equals( Vendor.MICROSOFT ) && frameworkVersion.equals( "1.1.4322" ) )
             {
                 return new File( System.getenv("SystemRoot"), "\\assembly\\GAC\\" );
+            }
+            else if ( vendor.equals( Vendor.MICROSOFT ) )
+            {
+                // Layout changed since 2.0
+                // http://discuss.joelonsoftware.com/default.asp?dotnet.12.383883.5
+                return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
             }
             else if ( vendor.equals( Vendor.MONO ) && exists() )
             {

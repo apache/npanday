@@ -341,16 +341,16 @@ public final class CompilerContextImpl
                 {
                     // TODO: Duplicate code with VendorInfoRepositoryImpl.getGlobalAssemblyCacheDirectoryFor
                     String gacRoot = null;
-                    if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) && (
-                        compilerRequirement.getFrameworkVersion().equals( "2.0.50727" ) ||
-                            compilerRequirement.getFrameworkVersion().equals( "3.0" ) ) )
-                    {
-                        gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
-                    }
-                    else if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) &&
+                    if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) &&
                         compilerRequirement.getFrameworkVersion().equals( "1.1.4322" ) )
                     {
                         gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC\\";
+                    }
+                    else if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) )
+                    {
+                        // Layout changed since 2.0
+                        // http://discuss.joelonsoftware.com/default.asp?dotnet.12.383883.5
+                        gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
                     }
                     else if ( compilerRequirement.getVendor().equals( Vendor.MONO ) )
                     {
