@@ -294,10 +294,10 @@ public class ArtifactInstallerImpl
             */
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
-                logger.warn( "NPANDAY-000-017: Could not find artifact to install: Artifact ID = " +
-                    artifact.getArtifactId() + ", File Path = " +
+                 logger.warn( "NPANDAY-000-017: Could not find artifact dependency to copy in PAB: Artifact ID = " +
+                    artifactDependency.getId() + ", File Path = " +
                     ( ( artifactDependencyFile != null ) ? artifactDependencyFile.getAbsolutePath() : null ) );
-                return;
+                continue;
             }
 
             artifactDependency.setFile( artifactDependencyFile );
