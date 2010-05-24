@@ -84,17 +84,31 @@ public class ArtifactTypeHelper
     }
 
 
-    public static boolean isDotnetGac(String packaging)
+    public static boolean isDotnetGenericGac(String packaging)
     {
-        return isDotnetGac( ArtifactType.getArtifactTypeForPackagingName( packaging ) );
+        return isDotnetGenericGac( ArtifactType.getArtifactTypeForPackagingName( packaging ) );
     }
 
-    public static boolean isDotnetGac(ArtifactType packaging)
+    public static boolean isDotnetGenericGac(ArtifactType packaging)
     {
         // the new gac should always be generic.
         // GAC_MSIL, GAC32 and GAC should be deprecated without
         // any replacements.
         return packaging.equals( ArtifactType.DOTNET_GAC )
                 || packaging.equals( ArtifactType.GAC_GENERIC );
+    }
+
+    public static boolean isDotnetAnyGac(String packaging)
+    {
+        return isDotnetAnyGac( ArtifactType.getArtifactTypeForPackagingName( packaging ) );
+    }
+
+    public static boolean isDotnetAnyGac(ArtifactType packaging)
+    {
+        return packaging.equals( ArtifactType.DOTNET_GAC )
+                || packaging.equals( ArtifactType.GAC_GENERIC )
+                || packaging.equals( ArtifactType.GAC )
+                || packaging.equals( ArtifactType.GAC_32)
+                || packaging.equals( ArtifactType.GAC_MSIL );
     }
 }

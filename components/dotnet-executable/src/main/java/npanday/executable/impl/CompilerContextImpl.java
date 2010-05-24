@@ -341,7 +341,7 @@ public final class CompilerContextImpl
                     libraries.add( artifact );
                 }
                 //Resolving here since the GAC path is vendor and framework aware
-                else if ( ArtifactTypeHelper.isDotnetGac( type ) )
+                else if ( ArtifactTypeHelper.isDotnetGenericGac( type ) )
                 {
                     // TODO: Duplicate code with VendorInfoRepositoryImpl.getGlobalAssemblyCacheDirectoryFor
                     String gacRoot = null;

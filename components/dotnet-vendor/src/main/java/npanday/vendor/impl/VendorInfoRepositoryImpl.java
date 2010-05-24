@@ -193,7 +193,7 @@ public class VendorInfoRepositoryImpl
     {
         // TODO: Duplicate code with CompilerContextImpl.init
 
-        if (ArtifactTypeHelper.isDotnetGac( artifactType ))
+        if (ArtifactTypeHelper.isDotnetGenericGac( artifactType ))
         {
             if ( vendor.equals( Vendor.MICROSOFT ) && frameworkVersion.equals( "1.1.4322" ) )
             {
