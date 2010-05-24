@@ -259,6 +259,10 @@ public class ArtifactInstallerImpl
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();
         for ( Dependency dependency : dependencies )
         {
+            // skip non-dotnet-references
+            if (ArtifactTypeHelper.isDotnet( dependency.getType() ))
+                continue;
+
             String scope = ( dependency.getScope() == null ) ? Artifact.SCOPE_COMPILE : dependency.getScope();
             Artifact artifactDependency = artifactFactory.createDependencyArtifact( dependency.getGroupId(),
                                                                                     dependency.getArtifactId(),
