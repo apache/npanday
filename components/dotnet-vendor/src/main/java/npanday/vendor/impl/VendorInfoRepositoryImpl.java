@@ -18,6 +18,7 @@
  */
 package npanday.vendor.impl;
 
+import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
 import npanday.vendor.VendorInfoRepository;
 import npanday.vendor.VendorInfo;
@@ -243,15 +244,15 @@ public class VendorInfoRepositoryImpl
                 //TODO: MONO Support for Linux (Separate file containg installs)
             }
         }
-        else if ( artifactType.equals( "gac" ) )
+        else if ( artifactType.equals( ArtifactType.GAC.getPackagingType() ) )
         {
             return new File( System.getenv("SystemRoot"), "\\assembly\\GAC\\" );
         }
-        else if ( artifactType.equals( "gac_32" ) )
+        else if ( artifactType.equals( ArtifactType.GAC_32.getPackagingType() ) )
         {
             return new File(System.getenv("SystemRoot"), "\\assembly\\GAC_32\\" );
         }
-        else if ( artifactType.equals( "gac_msil" ) )
+        else if ( artifactType.equals( ArtifactType.GAC_MSIL.getPackagingType() ) )
         {
             return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
         }

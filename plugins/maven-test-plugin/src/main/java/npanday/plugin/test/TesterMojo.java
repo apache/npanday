@@ -19,6 +19,7 @@
 
 package npanday.plugin.test;
 
+import npanday.ArtifactTypeHelper;
 import npanday.artifact.AssemblyResolver;
 import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutionException;
@@ -273,7 +274,7 @@ extends AbstractMojo
 
         for ( Artifact artifact : artifacts )
         {
-            if ( artifact.getType().startsWith( "gac" ) )
+            if ( ArtifactTypeHelper.isDotnetAnyGac( artifact.getType() ) )
             {
                 continue;
             }

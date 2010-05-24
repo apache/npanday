@@ -307,7 +307,7 @@ public final class ProjectDaoImpl
 
             if ( !result.hasNext() )
             {
-                if ( artifactType != null && artifactType.startsWith( "gac" ) )
+                if ( artifactType != null && ArtifactTypeHelper.isDotnetAnyGac( artifactType ) )
                 {
                     Artifact artifact =
                         ProjectFactory.createArtifactFrom( (ProjectDependency) project, artifactFactory );
@@ -495,7 +495,7 @@ public final class ProjectDaoImpl
                     + projectDependency.getArtifactType() );
 
                 // If artifact has been deleted, then re-resolve
-                if ( projectDependency.isResolved() && !projectDependency.getArtifactType().startsWith( "gac" ) )
+                if ( projectDependency.isResolved() && !ArtifactTypeHelper.isDotnetAnyGac( projectDependency.getArtifactType() ) )
                 {
                     if ( projectDependency.getSystemPath() == null )
                     {
@@ -588,7 +588,7 @@ public final class ProjectDaoImpl
                 // System.getenv("SystemRoot")
                 if ( !projectDependency.isResolved() )
                 {
-                    if ( projectDependency.getArtifactType().startsWith( "gac" ) )
+                    if ( ArtifactTypeHelper.isDotnetAnyGac( projectDependency.getArtifactType() ) )
                     {
                         try
                         {

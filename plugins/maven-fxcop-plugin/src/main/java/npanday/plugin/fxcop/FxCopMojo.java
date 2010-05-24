@@ -18,6 +18,7 @@
  */
 package npanday.plugin.fxcop;
 
+import npanday.ArtifactTypeHelper;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import npanday.executable.ExecutionException;
@@ -126,7 +127,7 @@ public class FxCopMojo
         Set<Artifact> artifacts = project.getDependencyArtifacts();
         for ( Artifact artifact : artifacts )
         {
-            if ( artifact.getType().startsWith( "gac" ) )
+            if ( ArtifactTypeHelper.isDotnetAnyGac( artifact.getType() ) )
             {
                 continue;
             }

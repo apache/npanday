@@ -272,35 +272,15 @@ public class ArtifactInstallerImpl
                                                                                     dependency.getClassifier(), scope,
                                                                                     null );
             File artifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( artifactDependency, localRepository );
-            // if(artifactDependencyFile != null) System.out.println("AD = " + artifactDependencyFile.getAbsolutePath());
-            //Removing the following check because it breaks compatibility with Mono. We would have to initialize
-            // the Executable Context (perf hit) to get this check for vendor. Fix This.
-            if ( ( artifactDependencyFile == null || !artifactDependencyFile.exists() ) &&
-                artifactDependency.getType().startsWith( "gac" ) )
-            {
-                continue;
-            }
-            /*
+            
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
-                artifactDependencyFile = PathUtil.getGlobalAssemblyCacheFileFor( artifactDependency, new File(
-                    System.getProperty( "SystemDrive" ), "\\Windows\\assembly" ) );
-            }
-
-            if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
-            {
-                throw new IOException( "NPANDAY-001-004: Could not find artifact dependency: Artifact ID = " +
-                    artifactDependency.getArtifactId() + ", Path = " + (
-                    ( artifactDependencyFile != null && !artifactDependencyFile.exists() )
-                        ? artifactDependencyFile.getAbsolutePath() : null ) );
-            }
-
-            */
-            if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
-            {
-                 logger.warn( "NPANDAY-000-017: Could not find artifact dependency to copy in PAB: Artifact ID = " +
-                    artifactDependency.getId() + ", File Path = " +
-                    ( ( artifactDependencyFile != null ) ? artifactDependencyFile.getAbsolutePath() : null ) );
+                if (!ArtifactTypeHelper.isDotnetAnyGac( artifactDependency.getType() ))
+                {
+                    logger.warn( "NPANDAY-000-017: Could not find artifact dependency to copy in PAB: Artifact ID = " +
+                        artifactDependency.getId() + ", File Path = " +
+                        ( ( artifactDependencyFile != null ) ? artifactDependencyFile.getAbsolutePath() : null ) );
+                }
                 continue;
             }
 
@@ -322,7 +302,7 @@ public class ArtifactInstallerImpl
         File installDirectory = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository ).getParentFile();
         for ( Artifact artifactDependency : artifactDependencies )
         {
-            if ( !artifactDependency.getType().startsWith( "gac" ) )
+            if ( !ArtifactTypeHelper.isDotnetAnyGac( artifactDependency.getType() ) )
             {
                 logger.info( "NPANDAY-001-005: Installing file into private assembly bin: File = " +
                     artifactDependency.getFile().getAbsolutePath() );

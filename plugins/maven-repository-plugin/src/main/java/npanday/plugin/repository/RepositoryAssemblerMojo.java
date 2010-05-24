@@ -18,6 +18,7 @@
  */
 package npanday.plugin.repository;
 
+import npanday.ArtifactTypeHelper;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -203,7 +204,7 @@ public class RepositoryAssemblerMojo
 
             try
             {
-                if ( withGac || !artifact.getType().startsWith( "gac" ) )
+                if ( withGac || !ArtifactTypeHelper.isDotnetAnyGac( artifact.getType() ) )
                 {
                     artifactDeployer.deploy( artifact.getFile(), artifact, deploymentRepository,
                                              localArtifactRepository );

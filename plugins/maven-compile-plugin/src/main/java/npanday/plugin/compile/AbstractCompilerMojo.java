@@ -19,6 +19,7 @@
 
 package npanday.plugin.compile;
 
+import npanday.ArtifactTypeHelper;
 import org.apache.maven.artifact.Artifact;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutionException;
@@ -1107,11 +1108,11 @@ public abstract class AbstractCompilerMojo
         Artifact lastModArtifact = null;
         for (Artifact artifact : artifacts)
         {
-            if (lastModArtifact == null && !artifact.getType().startsWith("gac"))
+            if (lastModArtifact == null && !ArtifactTypeHelper.isDotnetAnyGac( artifact.getType() ))
             {
                 lastModArtifact = artifact;
             }
-            else if (!artifact.getType().startsWith("gac") &&
+            else if (!ArtifactTypeHelper.isDotnetAnyGac( artifact.getType() ) &&
                     artifact.getFile().lastModified() > lastModArtifact.getFile().lastModified())
             {
                 lastModArtifact = artifact;

@@ -18,6 +18,7 @@
  */
 package npanday.dao;
 
+import npanday.ArtifactTypeHelper;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Parent;
@@ -212,7 +213,7 @@ public final class ProjectFactory
                                                                           project.getArtifactType(),
                                                                           project.getPublicKeyTokenId() );
 
-        File artifactFile = ( ( project.getArtifactType().startsWith( "gac" ) ) ) ? new File(
+        File artifactFile = ( ( ArtifactTypeHelper.isDotnetAnyGac( project.getArtifactType() ) ) ) ? new File(
             "C:\\WINDOWS\\assembly\\" + project.getArtifactType() + File.separator + project.getArtifactId() + File.separator +
                 project.getVersion() + "__" + project.getPublicKeyTokenId() + File.separator + project.getArtifactId() + ".dll" )
             : new File( localRepository.getParentFile(), File.separator + "uac" + File.separator + "gac_msil" + File.separator
@@ -244,7 +245,8 @@ public final class ProjectFactory
                                                                       projectDependency.getPublicKeyTokenId(), scope,
                                                                       null );
         //System.out.println("Scope = " + assembly.getScope() + ", Type = " + assembly.getType() + ", Classifier = " + assembly.getClassifier());
-        File artifactFile = ( ( projectDependency.getArtifactType().startsWith( "gac" ) ) ) ? new File(
+        // TODO: Use PathUtil!
+        File artifactFile = ( ( ArtifactTypeHelper.isDotnetAnyGac( projectDependency.getArtifactType()) ) ) ? new File(
             "C:\\WINDOWS\\assembly\\" + projectDependency.getArtifactType() + File.separator + projectDependency.getArtifactId() +
                 File.separator + projectDependency.getVersion() + "__" + projectDependency.getPublicKeyTokenId() + File.separator +
                 projectDependency.getArtifactId() + ".dll" ) : new File( System.getProperty( "user.home" ),
