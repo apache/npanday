@@ -101,6 +101,11 @@
       <artifactId>wix-maven-plugin</artifactId>
       <version>1.2-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>npanday.plugin</groupId>
+      <artifactId>custom-lifecycle-maven-plugin</artifactId>
+      <version>1.2-SNAPSHOT</version>
+    </dependency>
 
     <!--
     NPANDAY NETPLUGINS
