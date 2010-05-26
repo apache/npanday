@@ -21,6 +21,40 @@
       <groupId>npanday.visualstudio</groupId>
       <artifactId>NPanday.VisualStudio.Addin</artifactId>
       <version>${project.version}</version>
+	  <exclusions>
+	    <exclusion>
+		  <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
+		  <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
+		</exclusion>
+	    <exclusion>
+		  <groupId>EnvDTE</groupId>  
+		  <artifactId>EnvDTE</artifactId>  
+ 		</exclusion>
+	    <exclusion>
+		  <groupId>EnvDTE80</groupId>  
+		  <artifactId>EnvDTE80</artifactId>  
+		</exclusion>
+	    <exclusion>
+		  <groupId>Extensibility</groupId>  
+		  <artifactId>Extensibility</artifactId>  
+		</exclusion>
+	    <exclusion>
+		  <groupId>VSLangProj</groupId>  
+		  <artifactId>VSLangProj</artifactId>  
+		</exclusion>
+	    <exclusion>
+		  <groupId>VSLangProj80</groupId>  
+		  <artifactId>VSLangProj80</artifactId>  
+		</exclusion>
+	    <exclusion>
+		  <groupId>VsWebSite.Interop</groupId>  
+		  <artifactId>VsWebSite.Interop</artifactId>  
+		</exclusion>
+	    <exclusion>
+		  <groupId>Microsoft.Build.Engine</groupId>  
+		  <artifactId>Microsoft.Build.Engine</artifactId>  
+		</exclusion>		
+	  </exclusions>
       <type>library</type>
     </dependency>
   </dependencies>
