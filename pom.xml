@@ -167,6 +167,7 @@ under the License.
           <arguments>-Pnpanday-release</arguments>
           <preparationGoals>clean install</preparationGoals>  
           <autoVersionSubmodules>true</autoVersionSubmodules>
+		  <mavenExecutorId>forked-path</mavenExecutorId>
         </configuration>  
       </plugin>
       <plugin> 
