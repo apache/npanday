@@ -21,7 +21,7 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"> 
   <parent> 
     <groupId>npanday</groupId>  
-    <version>1.2-SNAPSHOT</version>  
+    <version>1.2-RC1</version>  
     <artifactId>NPanday.Assemblies</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
@@ -33,37 +33,37 @@ under the License.
     <dependency> 
       <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin</artifactId>  
-      <version>1.2-SNAPSHOT</version>
+      <version>1.2-RC1</version>
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>npanday.logging</groupId>  
       <artifactId>NPanday.Logging</artifactId>  
-      <version>1.2-SNAPSHOT</version>
+      <version>1.2-RC1</version>
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>npanday.model</groupId>  
       <artifactId>NPanday.Model.Pom</artifactId>  
-      <version>1.2-SNAPSHOT</version>
+      <version>1.2-RC1</version>
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>npanday.visualstudio</groupId>  
       <artifactId>NPanday.VisualStudio</artifactId>  
-      <version>1.2-SNAPSHOT</version>
+      <version>1.2-RC1</version>
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>npanday.artifact</groupId>  
       <artifactId>NPanday.Artifact</artifactId>  
-      <version>1.2-SNAPSHOT</version>
+      <version>1.2-RC1</version>
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>npanday.model</groupId>  
       <artifactId>NPanday.Model.Settings</artifactId>  
-      <version>1.2-SNAPSHOT</version>
+      <version>1.2-RC1</version>
       <type>library</type>  
     </dependency>  
     <dependency> 
@@ -118,13 +118,13 @@ under the License.
     <dependency> 
       <groupId>npanday.projectimporter</groupId>  
       <artifactId>NPanday.ProjectImporterEngine</artifactId>  
-      <version>1.2-SNAPSHOT</version>
+      <version>1.2-RC1</version>
       <type>library</type> 
     </dependency>  
     <dependency> 
       <groupId>npanday.utils</groupId>  
       <artifactId>NPanday.Utils</artifactId>  
-      <version>1.2-SNAPSHOT</version>
+      <version>1.2-RC1</version>
       <type>library</type>  
     </dependency> 
   </dependencies>  
