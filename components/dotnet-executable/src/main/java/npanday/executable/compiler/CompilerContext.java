@@ -89,6 +89,13 @@ public interface CompilerContext
     List<Artifact> getLibraryDependencies();
 
     /**
+     * Returns a list of non transitive library (dll) dependencies of the class files.
+     *
+     * @return a list of non transitive library (dll) dependencies of the class files.
+     */
+    List<Artifact> getDirectLibraryDependencies();
+    
+    /**
      * Returns a list of module (netmodule) dependencies of the class files.
      *
      * @return a list of module (netmodule) dependencies of the class files.

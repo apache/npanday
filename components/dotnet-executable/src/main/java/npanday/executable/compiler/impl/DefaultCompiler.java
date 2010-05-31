@@ -54,7 +54,8 @@ public final class DefaultCompiler
             throw new ExecutionException( "NPANDAY-068-000: Compiler has not been initialized with a context" );
         }
         CompilerConfig config = compilerContext.getNetCompilerConfig();
-        List<Artifact> references = compilerContext.getLibraryDependencies();
+        // references uses directLibraryDependencies for non transitive dependencies
+        List<Artifact> references = compilerContext.getDirectLibraryDependencies();
         List<Artifact> modules = compilerContext.getDirectModuleDependencies();
 
         String sourceDirectory = compilerContext.getSourceDirectoryName();
@@ -103,6 +104,7 @@ public final class DefaultCompiler
         }
         if ( !references.isEmpty() )
         {
+         
             for ( Artifact artifact : references )
             {
                 String path = artifact.getFile().getAbsolutePath();

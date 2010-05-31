@@ -31,6 +31,7 @@ import npanday.ArtifactType;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.Dependency;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryRegistry;
 import npanday.RepositoryNotFoundException;
@@ -59,6 +60,8 @@ public final class CompilerContextImpl
     private CompilerConfig config;
 
     private List<Artifact> libraries;
+    
+    private List<Artifact> directLibraries;
 
     private List<Artifact> modules;
 
@@ -189,6 +192,53 @@ public final class CompilerContextImpl
         }
         return libraries;
     }
+    
+    public List<Artifact> getDirectLibraryDependencies()
+    {   
+                
+        for ( Iterator i = project.getDependencyArtifacts().iterator(); i.hasNext(); )
+        {
+                Artifact artifact = (Artifact) i.next();
+                
+                if ( !hasArtifact(artifact) )
+                {
+                    directLibraries.add( artifact );
+                }
+                
+                boolean found = false;
+                for ( Iterator j = project.getDependencies().iterator(); j.hasNext() && !found; )
+                {
+                    Dependency dependency  = (Dependency) j.next();
+                    if ( dependency.getGroupId().equals( artifact.getGroupId() ) && dependency.getArtifactId().equals(
+                        artifact.getArtifactId() ) && dependency.getVersion().equals( artifact.getVersion() ) )
+                    {
+                        found = true;
+                    }
+                }
+
+                if ( !found )
+                {
+                    directLibraries.remove(artifact);
+                }
+            
+                
+        }
+            
+        return directLibraries;
+  
+    }
+    
+    private boolean hasArtifact(Artifact artifact)
+    {
+        for ( Artifact art : directLibraries )
+        {
+            if ( art.getArtifactId().equals( artifact.getArtifactId() ) )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public Logger getLogger()
     {
@@ -317,6 +367,7 @@ public final class CompilerContextImpl
         this.config = config;
         this.compilerRequirement = compilerRequirement;
         libraries = new ArrayList<Artifact>();
+        directLibraries = new ArrayList<Artifact>();
         modules = new ArrayList<Artifact>();
         artifactContext.init( project, project.getRemoteArtifactRepositories(), config.getLocalRepository() );
 
