@@ -390,12 +390,6 @@ under the License.
     </profile>
     <profile>
       <id>npanday-release</id>
-      <modules>
-        <!-- must appear before the second repository builder that includes it -->
-        <module>misc/dotnet-repository-builder</module>
-        <module>misc/npanday-repository-builder</module>
-        <module>misc/npanday-installer</module>
-      </modules>
       <build>
         <plugins>
           <!-- Fail fast: the release build must run on Windows for the Add-in -->
