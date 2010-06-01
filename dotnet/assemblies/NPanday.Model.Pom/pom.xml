@@ -59,7 +59,7 @@ under the License.
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>${project.build.directory}/${project.build.finalName}.dll</file>
+                  <file>${project.build.directory}/${project.artifactId}.dll</file>
                   <type>library</type>
                   <classifier>4b435f4d76e2f0e6</classifier>
                 </artifact>
