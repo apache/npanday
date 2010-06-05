@@ -22,11 +22,6 @@ package npanday;
  */
 public class ArtifactTypeHelper
 {
-    public static boolean isDotnet(String packaging)
-    {
-        return null != ArtifactType.getArtifactTypeForPackagingName( packaging );
-    }
-
     public static boolean isDotnetMavenPlugin(String packaging)
     {
         return isDotnetMavenPlugin( ArtifactType.getArtifactTypeForPackagingName( packaging ) );
