@@ -651,6 +651,10 @@ public final class ProjectDaoImpl
                     }
 
                     ArtifactType type = ArtifactType.getArtifactTypeForPackagingName( assembly.getType() );
+
+                    logger.info( "NPANDAY-180-012: Resolving artifact for unresolved dependency: "
+                                + assembly.getId());
+
                     if ( !ArtifactTypeHelper.isDotnetExecutableConfig( type ))// TODO: Generalize to any attached artifact
                     {
                         Artifact pomArtifact =
@@ -666,10 +670,6 @@ public final class ProjectDaoImpl
 
                         try
                         {
-                            
-                            logger.info( "NPANDAY-180-012: Retrieving artifact: Artifact ID  = "
-                                + projectDependency.getArtifactId() );
-                                
                             if ( pomArtifact.isSnapshot() )
                             {
 
@@ -681,19 +681,19 @@ public final class ProjectDaoImpl
                                     artifactResolver.resolve( pomArtifact, artifactRepositories,
                                                               localArtifactRepository );
 
-                                    logger.info( "NPANDAY: resolving artifact: " + pomArtifact.toString() );
+                                    logger.info( "NPANDAY-180-024: resolving pom artifact: " + pomArtifact.toString() );
                                     snapshotVersion = pomArtifact.getVersion();
 
                                 }
                                 catch ( ArtifactNotFoundException e )
                                 {
-                                    logger.info( "NPANDAY:  Problem in resolving artifact: " + pomArtifact.toString()
+                                    logger.info( "NPANDAY-180-025:  Problem in resolving pom artifact: " + pomArtifact.toString()
                                         + ", Message = " + e.getMessage() );
 
                                 }
                                 catch ( ArtifactResolutionException e )
                                 {
-                                    logger.info( "NPANDAY:  Problem in resolving artifact: " + pomArtifact.toString()
+                                    logger.info( "NPANDAY-180-026: Problem in resolving pom artifact: " + pomArtifact.toString()
                                         + ", Message = " + e.getMessage() );
                                 }
                             }
@@ -704,15 +704,13 @@ public final class ProjectDaoImpl
                         }
                         catch ( TransferFailedException e )
                         {
-                            logger.info( "NPANDAY-180-013: Problem in resolving artifact: Assembly Artifact Id = "
-                                + assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Message = "
-                                + e.getMessage() );
+                            logger.info( "NPANDAY-180-013: Problem in resolving pom artifact: " + pomArtifact.toString()
+                                        + ", Message = " + e.getMessage() );
                         }
                         catch ( ResourceDoesNotExistException e )
                         {
-                            logger.info( "NPANDAY-180-014: Problem in resolving artifact: Assembly Artifact Id = "
-                                + assembly.getArtifactId() + ", Type = " + assembly.getType() + ", Message = "
-                                + e.getMessage() );
+                            logger.info( "NPANDAY-180-014: Problem in resolving pom artifact: " + pomArtifact.toString()
+                                        + ", Message = " + e.getMessage() );
                         }
 
                         if ( pomArtifact.getFile() != null && pomArtifact.getFile().exists() )
@@ -763,35 +761,38 @@ public final class ProjectDaoImpl
 
                     }
 
-                    assembly.setFile( PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository ) );
                     if ( snapshotVersion != null )
                     {
                         assembly.setVersion( snapshotVersion );
                     }
 
-                    if ( !assembly.getFile().exists() )
+                    File uacFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
+                    if (uacFile.exists())
                     {
+                        assembly.setFile( uacFile );
+                    }
+                    else
+                    {
+                        logger.info( "NPANDAY-180-018: Not found in UAC, now retrieving artifact from wagon:"
+                                + assembly.getId()
+                                + ", Failed UAC Path Check = " + uacFile.getAbsolutePath());
+
                         try
                         {
-                            logger.info( "NPANDAY-180-018: Retrieving artifact: Artifact ID  = "
-                                + projectDependency.getArtifactId() );
                             wagonManager.getArtifact( assembly, artifactRepositories );
                         }
                         catch ( TransferFailedException e )
                         {
                             throw new IOException(
-                                                   "NPANDAY-180-019: Problem in resolving artifact: Assembly Artifact Id = "
-                                                       + assembly.getArtifactId() + ", Type = " + assembly.getType()
+                                                   "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
+                                                       + assembly.getId()
                                                        + ", Message = " + e.getMessage() );
                         }
                         catch ( ResourceDoesNotExistException e )
                         {
-                            boolean found = false;
-
                             throw new IOException(
-                                                   "NPANDAY-180-020: Problem in resolving artifact: Assembly Artifact Id = "
-                                                       + assembly.getArtifactId() + ", Type = " + assembly.getType()
-                                                       + ", Local Path Check = " + assembly.getFile().getAbsolutePath()
+                                                   "NPANDAY-180-020: Problem in resolving artifact: Artifact = "
+                                                       + assembly.getId()
                                                        + ", Message = " + e.getMessage() );
                         }
                     }
