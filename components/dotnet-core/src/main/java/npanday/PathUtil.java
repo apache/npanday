@@ -47,11 +47,13 @@ public final class PathUtil
             logger.warning( "NPANDAY-040-000: Artifact is null - Cannot get application file." );
             return null;
         }
+		
         if ( gacRepository == null )
         {
             logger.warning( "NPANDAY-040-001: GAC Repository is null - Cannot get application file." );
             return null;
         }
+		
         if ( artifact.getClassifier() == null )
         {
             logger.warning( "NPANDAY-040-002: Assembly must be signed - Cannot get application file." );
@@ -140,13 +142,14 @@ public final class PathUtil
         }
         ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifact.getType() );
 
+	/**	
         if(artifactType.equals( ArtifactType.NULL))
         {
             logger.warning( "NPANDAY-040-009: Artifact Type not recognized - Cannot get application file: Type = "
                 + artifact.getType());
             return null;
         }
-
+    */
         return new File( localRepository.getParentFile(), "uac" + File.separator + "gac_msil" + File.separator
             + artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" + artifact.getGroupId()
             + File.separator + artifact.getArtifactId() + "."

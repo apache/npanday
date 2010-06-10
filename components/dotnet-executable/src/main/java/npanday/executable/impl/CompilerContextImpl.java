@@ -40,6 +40,7 @@ import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.*;
 import java.io.File;
@@ -383,7 +384,7 @@ public final class CompilerContextImpl
                     modules.add( artifact );
                 }
                 else if ( (artifactType != null && (
-                            artifactType.getTargetCompileType().equals( "library" )
+                            StringUtils.equals( artifactType.getTargetCompileType(), "library" )
                             || artifactType.getExtension().equals( "dll" )
                             || artifactType.getExtension().equals( "exe" ))
                           )

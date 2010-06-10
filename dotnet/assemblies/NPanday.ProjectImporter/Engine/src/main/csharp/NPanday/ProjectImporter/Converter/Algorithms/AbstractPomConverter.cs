@@ -737,8 +737,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 Dependency refDependency = new Dependency();
                 refDependency.artifactId = reference.Name;
                 refDependency.groupId = reference.Name;
-
-                refDependency.type = "gac";
+                
                 if ("MSIL".Equals(reference.ProcessorArchitecture, StringComparison.OrdinalIgnoreCase))
                 {
                     refDependency.type = "gac_msil";
@@ -748,6 +747,16 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     refDependency.type = "gac_32";
                 }
 
+                else if ((reference.ProcessorArchitecture == null) && ("31bf3856ad364e35".Equals(reference.PublicKeyToken.ToLower(), StringComparison.OrdinalIgnoreCase)))
+                {
+                    refDependency.type = "gac_msil";
+                }
+
+                else
+                {
+                    refDependency.type = "gac";
+                }
+                
                 refDependency.version = reference.Version ?? "1.0.0.0";
                 
                 System.Reflection.Assembly a = System.Reflection.Assembly.Load(gacUtil.GetAssemblyInfo(reference.Name));

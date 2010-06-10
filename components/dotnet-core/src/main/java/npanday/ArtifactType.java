@@ -150,7 +150,7 @@ public enum ArtifactType
     
     GAC_MSIL ("gac_msil", null, "dll"),
     
-    GAC_32 ( "gac32", null, "dll"),
+    GAC_32 ( "gac_32", null, "dll"),
 
     COM_REFERENCE( "com_reference", null, "dll");
 	
