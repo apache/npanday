@@ -4,7 +4,7 @@
   <parent> 
     <groupId>npanday</groupId>  
     <artifactId>npanday-project</artifactId>  
-    <version>1.2-RC4</version> 
+    <version>1.2-SNAPSHOT</version> 
     <relativePath>../../pom.xml</relativePath>
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
@@ -12,9 +12,9 @@
   <packaging>pom</packaging>
   <name>NPanday :: Repository Builder</name>  
   <scm> 
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2-RC4/misc/npanday-repository-builder</connection>
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2-RC4/misc/npanday-repository-builder</developerConnection>
-    <url>https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2-RC4/misc/npanday-repository-builder</url>
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-repository-builder</connection>
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-repository-builder</developerConnection>
+    <url>https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-repository-builder</url>
   </scm>  
   <dependencies> 
 
@@ -24,87 +24,87 @@
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-compile-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-aspx-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-fxcop-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-install-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-link-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-mojo-generator-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-repository-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-resgen-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-resolver-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-test-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-vsinstaller-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-webapp-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-wsdl-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-xsd-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>maven-xsp-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
 	<dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>wix-maven-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>npanday.plugin</groupId>
       <artifactId>custom-lifecycle-maven-plugin</artifactId>
-      <version>1.2-RC4</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
 
     <!--
@@ -113,27 +113,27 @@
     <dependency> 
       <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Addin.JavaBinding</artifactId>  
-      <version>1.2-RC4</version> 
+      <version>1.2-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Devenv.JavaBinding</artifactId>  
-      <version>1.2-RC4</version> 
+      <version>1.2-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>  
-      <version>1.2-RC4</version> 
+      <version>1.2-SNAPSHOT</version> 
     </dependency>
 	<dependency> 
       <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.SysRef.JavaBinding</artifactId>  
-      <version>1.2-RC4</version> 
+      <version>1.2-SNAPSHOT</version> 
     </dependency>
 	<dependency> 
       <groupId>npanday.plugin</groupId>  
       <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>  
-      <version>1.2-RC4</version> 
+      <version>1.2-SNAPSHOT</version> 
     </dependency>
 
     <!--
@@ -142,17 +142,17 @@
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>maven-archetype-dotnet-simple</artifactId>  
-      <version>1.2-RC4</version> 
+      <version>1.2-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>maven-archetype-netexecutable</artifactId>  
-      <version>1.2-RC4</version> 
+      <version>1.2-SNAPSHOT</version> 
     </dependency>
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>maven-archetype-vb-simple</artifactId>  
-      <version>1.2-RC4</version> 
+      <version>1.2-SNAPSHOT</version> 
     </dependency>
   </dependencies>  
   <build>
