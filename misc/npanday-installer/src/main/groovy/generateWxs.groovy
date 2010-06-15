@@ -31,7 +31,7 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
 
       WixVariable(Id:"WixUILicenseRtf", Value:"${project.basedir}\\src\\main\\wix\\License.rtf")
 
-      Property(Id:"REPOSITORYDIR",Value:"\$(env.UserProfile)\\.m2\\repository")
+      PropertyRef(Id:"WIX_DIR_PROFILE")
 
       Property(Id:"VS2005INSTALLED") {
         RegistrySearch(Id:"VS2005INSTALLED", Root:"HKCR", Key:"VisualStudio.DTE.8.0", Type: "raw")
@@ -52,65 +52,69 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
       // TODO: check Maven installed? env.M2_HOME and mvn in path
 
       Directory(Id:"TARGETDIR", Name:"SourceDir") {
-        Directory(Id:"REPOSITORYDIR",Name:"REPOSITORYDIR") {
-          traverse = { dir, id ->
-            def files = []
-            dir.eachFile { f ->
-              if ( f.isDirectory() ) {
-                nextId = id + "_" + f.name.replace('-','')
-                Directory(Id:"__dir" + nextId, Name:f.name) {
-                  traverse( f, nextId )
-                }
-              }
-              else if ( ! ( f.name =~ /maven-metadata(-central)?.xml*/ ) ) {
-                files << f
-              }
-            }
-            if ( files ) {
-              def componentId = "repository" + id
-              repositoryComponentIds << componentId
-              Component(Id:componentId,Guid:generateGuid()) {
-                files.each { f ->
-                  File(Name:f.name, DiskId:"1", Source:f.absolutePath)
-                }
-              }
-            }
-          }
-          traverse(repositoryBasedir, "")
-        }
-        Directory(Id:"ProgramFilesFolder", Name:"PFiles") {
-          Directory(Id:"NPandayDir", Name:"NPanday") {
-            Directory(Id:"BinDir", Name:"bin") {
-              addinArtifacts.each { file ->
-                Component(Id:file.name, Guid:generateGuid()) {
-                  // It doesn't appear to be necessary to put any of these in the GAC
-                  //  otherwise we'd need to check the file name is in the list of GAC installs and set Assembly:'.net'
-                  File(Name:file.name, DiskId:"1", Source:file.absolutePath)
-                }
-              }
-            }
-          }
-        }
-        Directory(Id:"PersonalFolder", Name:"MyDocuments") {
-          visualStudioVersions.each { vs ->
-            Directory(Id:"VS${vs}Folder", Name:"Visual Studio ${vs}") {
-              Directory(Id:"VS${vs}Addin", Name:"Addins") {
-                Component(Id:"VS${vs}AddinDescriptor", Guid:generateGuid()) {
-                  RemoveFolder(Id:"remove_VS${vs}Addin",On:"uninstall")
-                  RemoveFolder(Id:"remove_VS${vs}Folder",On:"uninstall",Directory:"VS${vs}Folder")
-                  RegistryKey( Root:"HKCU", Key:"Software\\NPanday\\VS${vs}AddinDescriptor") {
-                    RegistryValue( KeyPath: "yes", Type:"string", Value:"" )
+        Directory(Id:"WIX_DIR_PROFILE") {
+          Directory(Id:"M2",Name:".m2") {
+            Directory(Id:"REPOSITORYDIR",Name:"repository") {
+              traverse = { dir, id ->
+                def files = []
+                dir.eachFile { f ->
+                  if ( f.isDirectory() ) {
+                    nextId = id + "_" + f.name.replace('-','')
+                    Directory(Id:"__dir" + nextId, Name:f.name) {
+                      traverse( f, nextId )
+                    }
                   }
-                  File(Id:"VS${vs}_file", Name:"NPanday.VisualStudio.Addin", DiskId:"1",
-                       Source:"${project.basedir}/src/main/wix/NPanday.VisualStudio.Addin")
-                  'util:XmlFile'(Id:"VS${vs}XmlModifyAssembly", Action:"setValue",
-                                 ElementPath:"/Extensibility/Addin/Assembly",
-                                 File:"[VS${vs}Addin]\\NPanday.VisualStudio.Addin",
-                                 Value:"[BinDir]NPanday.VisualStudio.Addin.dll")
-                  'util:XmlFile'(Id:"VS${vs}XmlModifyDescription", Action:"setValue",
-                                 ElementPath:"/Extensibility/Addin/Description",
-                                 File:"[VS${vs}Addin]\\NPanday.VisualStudio.Addin",
-                                 Value:"${project.description}")
+                  else if ( ! ( f.name =~ /maven-metadata(-central)?.xml*/ ) ) {
+                    files << f
+                  }
+                }
+                if ( files ) {
+                  def componentId = "repository" + id
+                  repositoryComponentIds << componentId
+                  Component(Id:componentId,Guid:generateGuid()) {
+                    files.each { f ->
+                      File(Name:f.name, DiskId:"1", Source:f.absolutePath)
+                    }
+                  }
+                }
+              }
+              traverse(repositoryBasedir, "")
+            }
+            Directory(Id:"ProgramFilesFolder", Name:"PFiles") {
+              Directory(Id:"NPandayDir", Name:"NPanday") {
+                Directory(Id:"BinDir", Name:"bin") {
+                  addinArtifacts.each { file ->
+                    Component(Id:file.name, Guid:generateGuid()) {
+                      // It doesn't appear to be necessary to put any of these in the GAC
+                      //  otherwise we'd need to check the file name is in the list of GAC installs and set Assembly:'.net'
+                      File(Name:file.name, DiskId:"1", Source:file.absolutePath)
+                    }
+                  }
+                }
+              }
+            }
+            Directory(Id:"PersonalFolder", Name:"MyDocuments") {
+              visualStudioVersions.each { vs ->
+                Directory(Id:"VS${vs}Folder", Name:"Visual Studio ${vs}") {
+                  Directory(Id:"VS${vs}Addin", Name:"Addins") {
+                    Component(Id:"VS${vs}AddinDescriptor", Guid:generateGuid()) {
+                      RemoveFolder(Id:"remove_VS${vs}Addin",On:"uninstall")
+                      RemoveFolder(Id:"remove_VS${vs}Folder",On:"uninstall",Directory:"VS${vs}Folder")
+                      RegistryKey( Root:"HKCU", Key:"Software\\NPanday\\VS${vs}AddinDescriptor") {
+                        RegistryValue( KeyPath: "yes", Type:"string", Value:"" )
+                      }
+                      File(Id:"VS${vs}_file", Name:"NPanday.VisualStudio.Addin", DiskId:"1",
+                           Source:"${project.basedir}/src/main/wix/NPanday.VisualStudio.Addin")
+                      'util:XmlFile'(Id:"VS${vs}XmlModifyAssembly", Action:"setValue",
+                                     ElementPath:"/Extensibility/Addin/Assembly",
+                                     File:"[VS${vs}Addin]\\NPanday.VisualStudio.Addin",
+                                     Value:"[BinDir]NPanday.VisualStudio.Addin.dll")
+                      'util:XmlFile'(Id:"VS${vs}XmlModifyDescription", Action:"setValue",
+                                     ElementPath:"/Extensibility/Addin/Description",
+                                     File:"[VS${vs}Addin]\\NPanday.VisualStudio.Addin",
+                                     Value:"${project.description}")
+                    }
+                  }
                 }
               }
             }
