@@ -29,6 +29,8 @@ import npanday.model.netdependency.NetDependency;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.Vendor;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.handler.ArtifactHandler;
+import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -41,7 +43,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 
@@ -95,6 +99,12 @@ public class VsInstallerMojo
      */
     private npanday.executable.NetExecutableFactory netExecutableFactory;
 
+    /** @component */
+    private List<ArtifactHandler> artifactHandlers;
+
+    /** @component */
+    private ArtifactHandlerManager artifactHandlerManager;
+
     /**
      * @parameter expression="${settings}"
      */
@@ -127,6 +137,17 @@ public class VsInstallerMojo
             "net-dependencies" );
 
         artifactContext.init( null, mavenProject.getRemoteArtifactRepositories(), new File( localRepository ) );
+        Map<String, ArtifactHandler> map = new HashMap<String, ArtifactHandler>();
+
+        for ( ArtifactHandler artifactHandler : artifactHandlers )
+        {
+            //If I add a handler that already exists, the runtime breaks.
+            if ( isDotNetHandler( artifactHandler ) )
+            {
+                map.put( artifactHandler.getPackaging(), artifactHandler );
+            }
+        }
+        artifactHandlerManager.addHandlers( map );
 
         try
         {
@@ -172,6 +193,19 @@ public class VsInstallerMojo
         {
             writePlugin( vsAddinsDir );
         }
+    }
+
+    /**
+     * Returns true if the artifact handler can handle the dotnet types, otherwise returns false
+     *
+     * @param artifactHandler the artifact handler to check
+     * @return true if the artifact handler can handle the dotnet types, otherwise returns false
+     */
+    private boolean isDotNetHandler( ArtifactHandler artifactHandler )
+    {
+        String extension = artifactHandler.getExtension();
+        return extension.equals( "dll" ) || extension.equals( "nar" ) || extension.equals( "exe" ) ||
+            extension.equals( "exe.config" );
     }
 
     private void collectDefaultVSAddinDirectories()
