@@ -747,6 +747,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     refDependency.type = "gac_32";
                 }
 
+				//Assemblies that with null ProcessorArchitecture esp ASP.net assmblies (e.g MVC)
                 else if ((reference.ProcessorArchitecture == null) && ("31bf3856ad364e35".Equals(reference.PublicKeyToken.ToLower(), StringComparison.OrdinalIgnoreCase)))
                 {
                     refDependency.type = "gac_msil";
