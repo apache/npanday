@@ -180,10 +180,16 @@ public final class CompilerContextImpl
     }
 
     public List<Artifact> getLibraryDependencies()
-    {   
-                
-        if ( config.isTestCompile() 
-            && ( ArtifactTypeHelper.isDotnetLibrary( config.getArtifactType() ) 
+    {
+
+        addProjectArtifactForTestCompile( libraries );
+        return libraries;
+    }
+
+    private void addProjectArtifactForTestCompile( List<Artifact> libraries )
+    {
+        if ( config.isTestCompile()
+            && ( ArtifactTypeHelper.isDotnetLibrary( config.getArtifactType() )
                  || ArtifactTypeHelper.isDotnetMavenPlugin( config.getArtifactType() ))
             && project.getArtifact().getFile() != null && project.getArtifact().getFile().exists()
             && !libraries.contains( project.getArtifact() ) && !ArtifactTypeHelper.isDotnetModule( project.getArtifact().getType() )
@@ -191,9 +197,8 @@ public final class CompilerContextImpl
         {
             libraries.add( project.getArtifact() );
         }
-        return libraries;
     }
-    
+
     public List<Artifact> getDirectLibraryDependencies()
     {   
                 
@@ -224,6 +229,8 @@ public final class CompilerContextImpl
             
                 
         }
+
+        addProjectArtifactForTestCompile( directLibraries );
             
         return directLibraries;
   
