@@ -125,12 +125,12 @@ Installing Using the Downloaded Binary Repository
   groups you will host the repository on a shared server that all developers can use to obtain the correct release.
 
   After downloading the binary repository, unpack the contents (you may need a 3rd party application to expand the
-  <<<tar.gz>> format on Windows). Next, copy the contents of <<<repository/releases>>> from the archive to
+  <<<tar.gz>>> format on Windows). Next, copy the contents of <<<repository/releases>>> from the archive to
   <<<%HOMEDRIVE%%HOMEPATH%\\.m2\\repository>>>. This is the default <local repository> of a Maven installation if it
   has not been modified in Maven's <<<settings.xml>>>.
 
   For example, you may end up with a structure containing
-  <<<C:\\Documents and Settings\\User\\.m2\\repository\\npanday\\npanday-project\\${project.version}\\npanday-project-${project.version}.pom>>>.
+  <<<C:\\Documents and Settings\\User\\.m2\\repository\\npanday\\npanday-project\\\\${project.version}\\npanday-project-${project.version}.pom>>>.
 
   To confirm your installation, run the following command, replacing <<<${project.version}>>> with the version you are installing:
 
