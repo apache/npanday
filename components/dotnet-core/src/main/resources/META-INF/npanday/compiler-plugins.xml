@@ -226,6 +226,7 @@
         <include>define</include>
         <include>imports</include>
         <include>optionexplicit</include>
+        <include>optioninfer</include>
         <include>rootnamespace</include>
         <include>optionstrict</include>
         <include>optioncompare</include>
