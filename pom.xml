@@ -23,7 +23,7 @@ under the License.
   <groupId>npanday</groupId>  
   <artifactId>npanday-project</artifactId>  
   <packaging>pom</packaging>  
-  <version>1.2-RC5</version>  
+  <version>1.2-SNAPSHOT</version>  
   <name>NPanday</name>  
   <url>http://www.codeplex.com/npanday</url>  
   <description>NPanday provides Maven plugins to support building of .NET applications</description>  
@@ -38,9 +38,9 @@ under the License.
     </mailingList>  
   </mailingLists>
   <scm> 
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2-RC5</connection>
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2-RC5</developerConnection>
-    <url>https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2-RC5</url>
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</connection>
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</developerConnection>
+    <url>https://npanday.svn.codeplex.com/svn/trunk/</url>
   </scm>  
   <organization> 
     <name>NPanday</name>  
@@ -244,77 +244,77 @@ under the License.
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-assembler</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency>  
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-dao-project</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-executable</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-artifact</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-plugin</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-registry</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-repository</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-core</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-vendor</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-model-netdependency</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-model-assembly-plugins</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-model-compiler-plugins</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-model-executable-plugins</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-model-configuration-appenders</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>npanday</groupId>  
         <artifactId>dotnet-model-settings</artifactId>  
-        <version>1.2-RC5</version> 
+        <version>1.2-SNAPSHOT</version> 
       </dependency> 
 
       <dependency> 
