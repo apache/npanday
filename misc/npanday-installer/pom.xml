@@ -4,7 +4,7 @@
   <parent> 
     <groupId>npanday</groupId>  
     <artifactId>npanday-project</artifactId>  
-    <version>1.2-SNAPSHOT</version> 
+    <version>1.2-RC5</version> 
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -12,9 +12,9 @@
   <packaging>pom</packaging>
   <name>NPanday Windows Installer</name>
   <scm> 
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</connection>
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</developerConnection>
-    <url>https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</url>
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2-RC5/misc/npanday-installer</connection>
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2-RC5/misc/npanday-installer</developerConnection>
+    <url>https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2-RC5/misc/npanday-installer</url>
   </scm>  
   <dependencies>
     <dependency>
