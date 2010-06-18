@@ -140,18 +140,17 @@ public final class PathUtil
             logger.warning( "NPANDAY-040-006: Local Repository is null - Cannot get application file." );
             return null;
         }
-        ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifact.getType() );
 
-	/**	
-        if(artifactType.equals( ArtifactType.NULL))
-        {
-            logger.warning( "NPANDAY-040-009: Artifact Type not recognized - Cannot get application file: Type = "
-                + artifact.getType());
-            return null;
-        }
-    */
+//        ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifact.getType() );
+//        if ( artifactType.equals( ArtifactType.NULL ) )
+//        {
+//            logger.warning( "NPANDAY-040-009: Artifact Type not recognized - Cannot get application file: Type = " +
+//                artifact.getType() );
+//            return null;
+//        }
+
         return new File( localRepository.getParentFile(), "uac" + File.separator + "gac_msil" + File.separator
-            + artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" + artifact.getGroupId()
+            + artifact.getArtifactId() + File.separator + artifact.getBaseVersion() + "__" + artifact.getGroupId()
             + File.separator + artifact.getArtifactId() + "."
             + ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
     }
