@@ -164,9 +164,6 @@
           <role>npanday.registry.DataAccessObjectRegistry</role>
         </requirement>
         <requirement>
-          <role>org.apache.maven.artifact.manager.WagonManager</role>
-        </requirement>
-        <requirement>
           <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
         </requirement>
       </requirements>

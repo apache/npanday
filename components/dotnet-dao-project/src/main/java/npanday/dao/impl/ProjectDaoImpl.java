@@ -100,8 +100,6 @@ public final class ProjectDaoImpl
 
     private org.openrdf.repository.Repository rdfRepository;
 
-    private org.apache.maven.artifact.manager.WagonManager wagonManager;
-
     /**
      * The artifact factory component, which is used for creating artifacts.
      */
@@ -119,15 +117,9 @@ public final class ProjectDaoImpl
 
     private ArtifactResolver artifactResolver;
 
-    public void init( ArtifactFactory artifactFactory, WagonManager wagonManager )
-    {
-        init( artifactFactory, wagonManager, null );
-    }
-
-    public void init( ArtifactFactory artifactFactory, WagonManager wagonManager, ArtifactResolver artifactResolver )
+    public void init( ArtifactFactory artifactFactory, ArtifactResolver artifactResolver )
     {
         this.artifactFactory = artifactFactory;
-        this.wagonManager = wagonManager;
         this.artifactResolver = artifactResolver;
 
         List<ProjectUri> projectUris = new ArrayList<ProjectUri>();
@@ -868,11 +860,11 @@ public final class ProjectDaoImpl
 
     }
 
-    protected void initForUnitTest( Object dataStoreObject, String id, String className, WagonManager wagonManager,
-                                    ArtifactFactory artifactFactory )
+    protected void initForUnitTest( Object dataStoreObject, String id, String className,
+                                    ArtifactResolver artifactResolver, ArtifactFactory artifactFactory )
     {
         this.init( dataStoreObject, id, className );
-        init( artifactFactory, wagonManager );
+        init( artifactFactory, artifactResolver );
     }
 
     private void addClassifiersToProject( Project project, RepositoryConnection repositoryConnection,

@@ -62,7 +62,7 @@ public class RepositoryConverterImplTest
 
         RepositoryConverterImpl repositoryConverter = new RepositoryConverterImpl();
         repositoryConverter.initTest( new DataAccessObjectRegistryStub(), new ArtifactFactoryTestStub(),
-                                      new WagonManagerTestStub(), new ArtifactResolverTestStub() );
+                                      null, new ArtifactResolverTestStub() );
 
         ArtifactFactory artifactFactory = new ArtifactFactoryTestStub();
         Artifact artifact = artifactFactory.createArtifactWithClassifier( project.getGroupId(), project.getArtifactId(),
@@ -119,7 +119,7 @@ public class RepositoryConverterImplTest
 
         RepositoryConverterImpl repositoryConverter = new RepositoryConverterImpl();
         repositoryConverter.initTest( new DataAccessObjectRegistryStub(), new ArtifactFactoryTestStub(),
-                                      new WagonManagerTestStub(), new ArtifactResolverTestStub() );
+                                      null, new ArtifactResolverTestStub() );
         try
         {
             repositoryConverter.convertRepositoryFormat( repository, testRepo );
@@ -164,9 +164,7 @@ public class RepositoryConverterImplTest
     private ProjectDao createProjectDao( Repository rdfRepository )
     {
         ProjectDaoImpl dao = new ProjectDaoImpl();
-        WagonManagerTestStub stub = new WagonManagerTestStub();
-        stub.setBaseDir( basedir );
-        dao.init( new ArtifactFactoryTestStub(), stub );
+        dao.init( new ArtifactFactoryTestStub(), new ArtifactResolverTestStub() );
         dao.setRdfRepository( rdfRepository );
         dao.openConnection();
         return dao;

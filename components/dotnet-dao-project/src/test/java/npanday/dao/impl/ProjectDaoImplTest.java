@@ -19,31 +19,32 @@
 package npanday.dao.impl;
 
 import junit.framework.TestCase;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.FileOutputStream;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.net.URI;
-
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.repository.RepositoryException;
+import npanday.dao.Project;
+import npanday.dao.ProjectDao;
+import npanday.dao.ProjectDependency;
+import npanday.dao.ProjectUri;
+import npanday.dao.Requirement;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.sail.memory.MemoryStore;
-import org.openrdf.sail.memory.MemoryStoreRDFSInferencer;
+import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.rdfxml.RDFXMLWriter;
-import npanday.dao.Project;
-import npanday.dao.ProjectDependency;
-import npanday.dao.Requirement;
-import npanday.dao.ProjectDao;
-import npanday.dao.ProjectUri;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.manager.WagonManager;
+import org.openrdf.sail.memory.MemoryStore;
+import org.openrdf.sail.memory.MemoryStoreRDFSInferencer;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.mockito.Mockito.mock;
 
 public class ProjectDaoImplTest
     extends TestCase
@@ -75,8 +76,7 @@ public class ProjectDaoImplTest
             return null;
         }
         ProjectDaoImpl dao = new ProjectDaoImpl();
-        WagonManagerTestStub stub = new WagonManagerTestStub();
-        stub.setBaseDir( basedir );
+        ArtifactResolver stub = mock(ArtifactResolver.class);
         dao.initForUnitTest( rdfRepository, "", "", stub, new ArtifactFactoryTestStub() );
         dao.openConnection();
         return dao;

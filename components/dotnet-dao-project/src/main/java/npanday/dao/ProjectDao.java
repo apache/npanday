@@ -114,18 +114,9 @@ public interface ProjectDao
      * Initializes the data access object
      *
      * @param artifactFactory the artifact factory used in creating artifacts
-     * @param wagonManager    the manager used for downloading artifacts
-     */
-    void init( ArtifactFactory artifactFactory, WagonManager wagonManager );
-
-    /**
-     * Initializes the data access object
-     *
-     * @param artifactFactory the artifact factory used in creating artifacts
-     * @param wagonManager    the manager used for downloading artifacts
      *@param artifactResolver    for snapshot artifact
      */
-    void init( ArtifactFactory artifactFactory, WagonManager wagonManager, ArtifactResolver artifactResolver );
+    void init( ArtifactFactory artifactFactory, ArtifactResolver artifactResolver );
     
     /**
      * Returns all projects.

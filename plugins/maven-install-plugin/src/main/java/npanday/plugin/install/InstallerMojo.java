@@ -113,11 +113,6 @@ public class InstallerMojo
     private npanday.registry.DataAccessObjectRegistry daoRegistry;
 
     /**
-     * @component
-     */
-    private org.apache.maven.artifact.manager.WagonManager wagonManager;
-
-    /**
      * The artifact factory component, which is used for creating artifacts.
      *
      * @component
@@ -140,7 +135,7 @@ public class InstallerMojo
         }
 
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, wagonManager, artifactResolver );
+        dao.init( artifactFactory, artifactResolver );
         dao.openConnection();
 
         artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );

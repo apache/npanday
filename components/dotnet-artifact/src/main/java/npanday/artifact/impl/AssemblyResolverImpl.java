@@ -68,11 +68,6 @@ public class AssemblyResolverImpl
     private npanday.registry.DataAccessObjectRegistry daoRegistry;
 
     /**
-     * Manager used to download artifacts.
-     */
-    private org.apache.maven.artifact.manager.WagonManager wagonManager;
-    
-    /**
      * Used for resolving snapshot
      */
     private ArtifactResolver artifactResolver;
@@ -127,7 +122,7 @@ public class AssemblyResolverImpl
         }
         
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, wagonManager, artifactResolver );
+        dao.init( artifactFactory, artifactResolver );
         dao.openConnection();
 
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();

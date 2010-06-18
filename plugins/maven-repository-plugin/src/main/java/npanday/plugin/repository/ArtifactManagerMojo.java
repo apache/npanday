@@ -19,6 +19,7 @@
 
 package npanday.plugin.repository;
 
+import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -62,7 +63,7 @@ public class ArtifactManagerMojo
     /**
      * @component
      */
-    private org.apache.maven.artifact.manager.WagonManager wagonManager;
+    private ArtifactResolver artifactResolver;
 
     /**
      * The artifact factory component, which is used for creating artifacts.
@@ -94,7 +95,7 @@ public class ArtifactManagerMojo
         }
 
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, wagonManager );
+        dao.init( artifactFactory, artifactResolver );
         dao.openConnection();
 
         try

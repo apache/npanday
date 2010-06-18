@@ -5,9 +5,6 @@
       <implementation>npanday.repository.impl.RepositoryConverterImpl</implementation>
       <requirements>
         <requirement>
-          <role>org.apache.maven.artifact.manager.WagonManager</role>
-        </requirement>
-        <requirement>
           <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
         </requirement>
         <requirement>

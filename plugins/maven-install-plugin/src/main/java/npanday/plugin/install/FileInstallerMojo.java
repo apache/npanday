@@ -116,11 +116,6 @@ public class FileInstallerMojo
     private npanday.registry.DataAccessObjectRegistry daoRegistry;
 
     /**
-     * @component
-     */
-    private org.apache.maven.artifact.manager.WagonManager wagonManager;
-    
-    /**
      * Used for resolving snapshot
      */
     private ArtifactResolver artifactResolver;
@@ -129,7 +124,7 @@ public class FileInstallerMojo
         throws MojoExecutionException
     {
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, wagonManager, artifactResolver );
+        dao.init( artifactFactory, artifactResolver );
         dao.openConnection();
 
         artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );

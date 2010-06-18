@@ -53,11 +53,6 @@ public class RepositoryConverterImpl
 {
 
     /**
-     * The manager used to download artifacts.
-     */
-    private org.apache.maven.artifact.manager.WagonManager wagonManager;
-
-    /**
      * The artifact factory component, which is used for creating artifacts.
      */
     private org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
@@ -86,7 +81,6 @@ public class RepositoryConverterImpl
     {
         this.daoRegistry = daoRegistry;
         this.artifactFactory = artifactFactory;
-        this.wagonManager = wagonManager;
         this.artifactResolver = artifactResolver;
     }
 
@@ -97,7 +91,7 @@ public class RepositoryConverterImpl
         throws IOException
     {
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, wagonManager, artifactResolver );
+        dao.init( artifactFactory, artifactResolver );
         dao.setRdfRepository( repository );
         dao.openConnection();
         Set<Project> projects = dao.getAllProjects();
@@ -153,7 +147,7 @@ public class RepositoryConverterImpl
         throws IOException
     {
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, wagonManager, artifactResolver );
+        dao.init( artifactFactory, artifactResolver );
         dao.setRdfRepository( repository );
         dao.openConnection();
         Project project = dao.getProjectFor( artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
