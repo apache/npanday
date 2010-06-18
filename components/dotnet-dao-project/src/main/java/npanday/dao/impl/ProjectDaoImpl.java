@@ -657,12 +657,6 @@ public final class ProjectDaoImpl
                                                                    projectDependency.getArtifactId(),
                                                                    projectDependency.getVersion() );
 
-                        File tmpFile =
-                            new File( System.getProperty( "java.io.tmpdir" ), "pom-." + System.currentTimeMillis()
-                                + ".xml" );
-                        tmpFile.deleteOnExit();
-                        pomArtifact.setFile( tmpFile );
-
                         try
                         {
                             artifactResolver.resolve( pomArtifact, artifactRepositories,
@@ -752,6 +746,9 @@ public final class ProjectDaoImpl
                         {
                             artifactResolver.resolve( assembly, artifactRepositories,
                                                       localArtifactRepository );
+
+                            uacFile.getParentFile().mkdirs();
+                            FileUtils.copyFile( assembly.getFile(), uacFile );
                         }
                         catch ( ArtifactNotFoundException e )
                         {
