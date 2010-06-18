@@ -436,14 +436,6 @@ public abstract class AbstractCompilerMojo
     protected boolean optionexplicit;
     
     /**
-     * Require data type to be infered
-     *
-     * @parameter
-     */
-    protected boolean optioninfer;
-
-
-    /**
      * Require explicit declaration of variables.
      *
      * @parameter

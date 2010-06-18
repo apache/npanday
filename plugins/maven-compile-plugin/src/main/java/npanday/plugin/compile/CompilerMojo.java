@@ -245,11 +245,6 @@ public final class CompilerMojo
         {
             params.add("/optioncompare:" + optionCompare);
         }
-        
-        if (optioninfer)
-        {
-            params.add("/optioninfer-");
-        }
 
         if (checked)
         {
