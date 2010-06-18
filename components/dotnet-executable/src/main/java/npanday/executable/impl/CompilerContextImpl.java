@@ -216,7 +216,7 @@ public final class CompilerContextImpl
                 {
                     Dependency dependency  = (Dependency) j.next();
                     if ( dependency.getGroupId().equals( artifact.getGroupId() ) && dependency.getArtifactId().equals(
-                        artifact.getArtifactId() ) && dependency.getVersion().equals( artifact.getVersion() ) )
+                        artifact.getArtifactId() ) && dependency.getVersion().equals( artifact.getBaseVersion() ) )
                     {
                         found = true;
                     }
