@@ -121,6 +121,8 @@ public class InstallerMojo
     
     /**
      * Used for resolving snapshot
+     *
+     * @component
      */
     private ArtifactResolver artifactResolver;
 
