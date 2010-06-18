@@ -99,7 +99,7 @@ public class VsInstallerMojo
      */
     private npanday.executable.NetExecutableFactory netExecutableFactory;
 
-    /** @component */
+    /** @component role="org.apache.maven.artifact.handler.ArtifactHandler" */
     private List<ArtifactHandler> artifactHandlers;
 
     /** @component */
