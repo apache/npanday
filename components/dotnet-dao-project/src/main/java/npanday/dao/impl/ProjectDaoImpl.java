@@ -747,8 +747,11 @@ public final class ProjectDaoImpl
                             artifactResolver.resolve( assembly, artifactRepositories,
                                                       localArtifactRepository );
 
-                            uacFile.getParentFile().mkdirs();
-                            FileUtils.copyFile( assembly.getFile(), uacFile );
+                            if ( assembly != null && assembly.getFile().exists() )
+                            {
+                                uacFile.getParentFile().mkdirs();
+                                FileUtils.copyFile( assembly.getFile(), uacFile );
+                            }
                         }
                         catch ( ArtifactNotFoundException e )
                         {
