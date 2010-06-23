@@ -11,7 +11,7 @@ Release Notes for NPanday 1.2
 
 * Compatibility Changes
 
-  * Projects types suppored in NPanday 1.2. For more information, see {{{./guide/maven/project-types.html} Available Project Types}}.
+  * Most previous project packaging and dependency types have been deprecated in favour of more specific <<<dotnet-*>>> alternatives. For more information, see {{{./guide/maven/project-types.html} Available Project Types}}.
 
 * New in NPanday 1.2
 
@@ -31,10 +31,6 @@ Release Notes for NPanday 1.2
   
   Rewrite of documentation to be more complete.
   
-  <<Bug fixes and Improvements>>
-  
-  Numerous bug fixes and other improvements.
-
 * Release Notes
 
 ** Changes in NPanday 1.2
