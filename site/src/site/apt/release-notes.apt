@@ -1,44 +1,152 @@
  -----
- Release Notes for NPanday 1.1
+ Release Notes for NPanday 1.2
  -----
 
-Release Notes for NPanday 1.1
+Release Notes for NPanday 1.2
 
-  NPanday .NET Build Tool 1.1 release is now available for
+  NPanday .NET Build Tool 1.2 release is now available for
   {{{http://www.codeplex.com/npanday/Release/ProjectReleases.aspx} download}} from the web site.
   
   The {{{./faqs.html} NPanday FAQs}} provides answers to common questions regarding NPanday .NET Build Tool.
 
 * Compatibility Changes
 
-  * Projects generated with NPanday 1.0.2 may have hardcoded paths that can be removed by regenerating. For more
-    information, see {{{./guide/vs/resyncReferences.html} Making VS Project Files Portable}}.
+  * Most previous project packaging and dependency types have been deprecated in favour of more specific <<<dotnet-*>>> alternatives. For more information, see {{{./guide/maven/project-types.html} Available Project Types}}.
 
-* New in NPanday 1.1
+* New in NPanday 1.2
 
-  <<Support for WPF and WCF project types>>
-
-  The Visual Studio Addin now creates POMs for project using WPF or WCF.
-
-  <<MSBuild Maven Plugin>>
-
-  It is now possible to have Maven directly drive an MSBuild-based project while still co-ordinating dependency
-  resolution for assembly references in advance. This allows certain project types such as WPF and WCF to be built by
-  Maven, as well as making migration of existing, more complicated, builds simpler.
-
-  <<WiX Maven Plugin>>
-
-  A new Maven plugin is present to execute the WiX installer tool.
-
-  <<Unified build structure>>
-
-  For developers and contributors, NPanday can now be built with a single <<<mvn clean install>>> command from the base
-  directory of the source tree rather than requiring a bootstrap. Other build enhancements are present including a more
-  automated release process, automated integration and regression test execution for the Maven plugins, and availability
-  of development infrastructure for the project itself.
-
+  <<Improved type names available>>
+  
+  Improved type names available (dotnet-library, etc.), and previous types are deprecated (library, etc.)
+  
+  <<MSI installer>>
+  
+  MSI-based installer for the Visual Studio Addin and Maven plugins
+  
+  <<MVC project type support>>
+  
+  The Visual Studio Addin now creates POMs for project using MVC.
+  
+  <<Updated Documentation>>
+  
+  Rewrite of documentation to be more complete.
+  
 * Release Notes
 
+** Changes in NPanday 1.2
+
+  <<Date released: 22 June 2010>>
+  
+  * #9011 - Trunk fails to compile when not having VisualStudio
+  
+  * #9019 - java packages not matches with classes package declaration
+  
+  * #9622 - error building npanday on linux
+  
+  * #9627 - Visual Studio Addin Installer
+  
+  * #10276 - Incompatibilty between NPanday and maven-flex-plugin
+  
+  * #10388 - Path separator issue in ArtefactInstallerImpl of dotnet-artifact
+  
+  * #10389 - Specify nunit-console binary for maven-test-plugin
+  
+  * #10603 - Build with embedded resource files
+  
+  * #10710 - Docs on the Automation of NPanday Startup
+  
+  * #10803 - Create Addin Folder during installation if not present
+  
+  * #10813 - Migrate relevant wiki content to bundled documentation
+  
+  * #11453 - vsinstalller:install does not generate the AddOn when My Document is not under ${HOME}
+  
+  * #11480 - NPanday should support MVC
+  
+  * #11524 - Complete integration tests for wix plugin
+  
+  * #11614 - refresh bundled documentation
+  
+  * #11615 - migrate integration-tests to npanday-its
+  
+  * #11635 - Resync Reference unable to download snapshot artifact from Archiva
+  
+  * #11637 - MSBuild output is not shown and errors are ignored
+  
+  * #11649 - Add Maven Artifact dialog may not appear if settings can not be read
+  
+  * #11673 - GAC versions of NPanday.Model.Pom and NPanday.Plugin are not shipped in the 1.1 repository
+  
+  * #11695 - MSBuild Plugin fails to resolve references in a clean environment
+  
+  * #11697 - Visual Studio Add-In needs to maintain the includeSources compile plugin configuration
+  
+  * #11711 - Renaming a web reference would result to adding a new <webreference> node
+  
+  * #11733 - installing an artifact with a snapshot dependency causes NPE
+  
+  * #11746 - show the NPanday version in console when it starts up, and/or have an about box
+  
+  * #11803 - generated ID for remote repository is too long
+  
+  * #11837 - VS crashes when adding a new remote repository
+  
+  * #11938 - VS-Installer-Plugin only supports english environments
+  
+  * #11941 - Doku on Uninstalling NPanday, mscorcfg.msc location
+  
+  * #11946 - Update Documentation: Install + Build NPanday locally with VS 2008 only
+  
+  * #11949 - Update Documentation: NUnit-Console must be configured or in Env Path
+  
+  * #11955 - 1.2-SNAPSHOT referencing 1.1-SNAPSHOT
+  
+  * #12004 - Unable to recognised GAC dependencies
+  
+  * #12011 - Deploy plugin deploys artifacts with a classifier with a different snapshot build number
+  
+  * #12110 - Unable to build VB WebApp projects with a .Net 3.0 Version
+  
+  * #12120 - Misleading warning message when unable to resolve an SCM URL
+  
+  * #12231 - Unable to build NPanday projects on Maven 3
+  
+  * #12239 - NUnit doesn't work on Mono
+  
+  * #12287 - Overzealous project structure check in project importer
+  
+  * #12379 - WiX plugin ITs depend on .NET 3.5 SDK
+  
+  * #12402 - Supporting alternative packaging types
+  
+  * #12549 - WPF applications can miss including required resources
+  
+  * #12686 - Remove the deploy plugin
+  
+  * #12782 - Remove Requirement to use system path for Gac Dependencies
+  
+  * #12901 - Visual Studio Addin should support <mirrors> in settings.xml
+  
+  * #12940 - NPanday Fails to Resolve Dependencies if mixed versions of -SNAPSHOT and Released
+  
+  * #12951 - Document how to add intra solution references
+  
+  * #13018 - NPanday Transitive Dependency Error
+  
+  * #13092 - Logger on Resync
+  
+  * #13199 - compile-plugin calls different goals on deploy for ArtifactType.LIBRARY and ArtifactType.EXE/WINEXE
+  
+  * #13203 - Completely enable npanday for new dotnet-* types
+  
+  * #13446 - Include in Installation docs the instructions on how to install NPanday using the installer
+  
+  * #13449 - vsinstaller-plugin:install fails if the npanday remote repos are not accessible even if artifacts are already in the local repository
+  
+  * #13541 - unable to successfully install NPanday when running the vsinstaller command
+  
+  * #13542 - "Optioninfer" compiler option is not recognized by NPanday
+  
 ** Changes in NPanday 1.1
 
   <<Date released>>: 24 January 2010
