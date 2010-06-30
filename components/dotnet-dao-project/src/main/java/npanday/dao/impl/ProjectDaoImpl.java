@@ -414,7 +414,7 @@ public final class ProjectDaoImpl
         throws IOException, IllegalArgumentException
     {
         long startTime = System.currentTimeMillis();
-        String snapshotVersion = null;
+        String snapshotVersion;
 
         if ( project == null )
         {
@@ -615,14 +615,20 @@ public final class ProjectDaoImpl
                                                     projectDependency.getPublicKeyTokenId() );
                             if ( dep.isResolved() )
                             {
-                                projectDependency = (ProjectDependency) dep;
                                 Artifact assembly =
                                     ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
-                                artifactDependencies.add( assembly );
-                                artifactDependencies.addAll( this.storeProjectAndResolveDependencies(
-                                                                                                      projectDependency,
-                                                                                                      localRepository,
-                                                                                                      artifactRepositories ) );
+
+                                // re-resolve snapshots
+                                if ( !assembly.isSnapshot() )
+                                {
+                                    projectDependency = (ProjectDependency) dep;
+                                    artifactDependencies.add( assembly );
+                                    Set<Artifact> deps = this.storeProjectAndResolveDependencies( projectDependency,
+                                                                                                  localRepository,
+                                                                                                  artifactRepositories );
+                                    artifactDependencies.addAll( deps );
+                                }
+
                             }
                         }
                         catch ( IOException e )
@@ -732,41 +738,34 @@ public final class ProjectDaoImpl
                     }
 
                     File uacFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
-                    if (uacFile.exists())
+                    logger.info( "NPANDAY-180-018: Not found in UAC, now retrieving artifact from wagon:"
+                            + assembly.getId()
+                            + ", Failed UAC Path Check = " + uacFile.getAbsolutePath());
+
+                    try
                     {
-                        assembly.setFile( uacFile );
+                        artifactResolver.resolve( assembly, artifactRepositories,
+                                                  localArtifactRepository );
+
+                        if ( assembly != null && assembly.getFile().exists() )
+                        {
+                            uacFile.getParentFile().mkdirs();
+                            FileUtils.copyFile( assembly.getFile(), uacFile );
+                        }
                     }
-                    else
+                    catch ( ArtifactNotFoundException e )
                     {
-                        logger.info( "NPANDAY-180-018: Not found in UAC, now retrieving artifact from wagon:"
-                                + assembly.getId()
-                                + ", Failed UAC Path Check = " + uacFile.getAbsolutePath());
-
-                        try
-                        {
-                            artifactResolver.resolve( assembly, artifactRepositories,
-                                                      localArtifactRepository );
-
-                            if ( assembly != null && assembly.getFile().exists() )
-                            {
-                                uacFile.getParentFile().mkdirs();
-                                FileUtils.copyFile( assembly.getFile(), uacFile );
-                            }
-                        }
-                        catch ( ArtifactNotFoundException e )
-                        {
-                            throw new IOException(
-                                                   "NPANDAY-180-020: Problem in resolving artifact: Artifact = "
-                                                       + assembly.getId()
-                                                       + ", Message = " + e.getMessage() );
-                        }
-                        catch ( ArtifactResolutionException e )
-                        {
-                            throw new IOException(
-                                                   "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
-                                                       + assembly.getId()
-                                                       + ", Message = " + e.getMessage() );
-                        }
+                        throw new IOException(
+                                               "NPANDAY-180-020: Problem in resolving artifact: Artifact = "
+                                                   + assembly.getId()
+                                                   + ", Message = " + e.getMessage() );
+                    }
+                    catch ( ArtifactResolutionException e )
+                    {
+                        throw new IOException(
+                                               "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
+                                                   + assembly.getId()
+                                                   + ", Message = " + e.getMessage() );
                     }
                     artifactDependencies.add( assembly );
                 }// end if dependency not resolved
