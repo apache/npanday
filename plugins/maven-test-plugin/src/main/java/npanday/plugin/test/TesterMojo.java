@@ -287,6 +287,8 @@ extends AbstractMojo
             {
                 try
                 {
+                    // TODO: adjust the filename to not include the version, if we aren't copying from the UAC later
+                    //       (there will be several other instances of such uses of getFile() that need to be corrected)
                     FileUtils.copyFileToDirectory( artifact.getFile(), new File( testAssemblyPath ) );
                 }
                 catch ( IOException e )
