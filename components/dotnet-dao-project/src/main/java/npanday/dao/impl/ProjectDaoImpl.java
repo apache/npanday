@@ -617,10 +617,9 @@ public final class ProjectDaoImpl
                             {
                                 Artifact assembly =
                                     ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
-                                ArtifactType type = ArtifactType.getArtifactTypeForPackagingName( assembly.getType() );
 
                                 // re-resolve snapshots
-                                if ( !assembly.isSnapshot() || ArtifactTypeHelper.isDotnetExecutableConfig( type ) )
+                                if ( !assembly.isSnapshot() )
                                 {
                                     projectDependency = (ProjectDependency) dep;
                                     artifactDependencies.add( assembly );
@@ -743,31 +742,34 @@ public final class ProjectDaoImpl
                             + assembly.getId()
                             + ", Failed UAC Path Check = " + uacFile.getAbsolutePath());
 
-                    try
+                    if ( !ArtifactTypeHelper.isDotnetExecutableConfig( type ) || !uacFile.exists() )// TODO: Generalize to any attached artifact
                     {
-                        artifactResolver.resolve( assembly, artifactRepositories,
-                                                  localArtifactRepository );
-
-                        if ( assembly != null && assembly.getFile().exists() )
+                        try
                         {
-                            uacFile.getParentFile().mkdirs();
-                            FileUtils.copyFile( assembly.getFile(), uacFile );
-                            assembly.setFile( uacFile );
+                            artifactResolver.resolve( assembly, artifactRepositories,
+                                                      localArtifactRepository );
+
+                            if ( assembly != null && assembly.getFile().exists() )
+                            {
+                                uacFile.getParentFile().mkdirs();
+                                FileUtils.copyFile( assembly.getFile(), uacFile );
+                                assembly.setFile( uacFile );
+                            }
                         }
-                    }
-                    catch ( ArtifactNotFoundException e )
-                    {
-                        throw new IOException(
-                                               "NPANDAY-180-020: Problem in resolving artifact: Artifact = "
-                                                   + assembly.getId()
-                                                   + ", Message = " + e.getMessage() );
-                    }
-                    catch ( ArtifactResolutionException e )
-                    {
-                        throw new IOException(
-                                               "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
-                                                   + assembly.getId()
-                                                   + ", Message = " + e.getMessage() );
+                        catch ( ArtifactNotFoundException e )
+                        {
+                            throw new IOException(
+                                                   "NPANDAY-180-020: Problem in resolving artifact: Artifact = "
+                                                       + assembly.getId()
+                                                       + ", Message = " + e.getMessage() );
+                        }
+                        catch ( ArtifactResolutionException e )
+                        {
+                            throw new IOException(
+                                                   "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
+                                                       + assembly.getId()
+                                                       + ", Message = " + e.getMessage() );
+                        }
                     }
                     artifactDependencies.add( assembly );
                 }// end if dependency not resolved
