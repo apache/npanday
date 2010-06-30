@@ -751,6 +751,7 @@ public final class ProjectDaoImpl
                         {
                             uacFile.getParentFile().mkdirs();
                             FileUtils.copyFile( assembly.getFile(), uacFile );
+                            assembly.setFile( uacFile );
                         }
                     }
                     catch ( ArtifactNotFoundException e )
