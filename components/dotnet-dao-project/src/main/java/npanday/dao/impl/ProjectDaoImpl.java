@@ -617,9 +617,10 @@ public final class ProjectDaoImpl
                             {
                                 Artifact assembly =
                                     ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
+                                ArtifactType type = ArtifactType.getArtifactTypeForPackagingName( assembly.getType() );
 
                                 // re-resolve snapshots
-                                if ( !assembly.isSnapshot() )
+                                if ( !assembly.isSnapshot() || ArtifactTypeHelper.isDotnetExecutableConfig( type ) )
                                 {
                                     projectDependency = (ProjectDependency) dep;
                                     artifactDependencies.add( assembly );
