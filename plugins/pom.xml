@@ -81,13 +81,27 @@ under the License.
   </dependencies>  
   <build> 
     <plugins> 
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>emma-maven-plugin</artifactId>
+        <version>1.0-alpha-2</version>
+        <inherited>true</inherited>
+        <executions>
+            <execution>
+                <phase>install</phase>
+                <goals>
+                    <goal>emma</goal>
+                </goals>
+            </execution>
+        </executions>
+      </plugin>
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>  
         <artifactId>maven-surefire-plugin</artifactId>  
         <configuration> 
           <reportFormat>plain</reportFormat> 
         </configuration> 
-      </plugin> 
+      </plugin>
     </plugins> 
     <extensions>
       <extension>
@@ -104,7 +118,12 @@ under the License.
   </build>  
   <reporting> 
     <excludeDefaults>true</excludeDefaults>
-    <plugins> 
+     <plugins>  
+      <plugin>      
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>emma-maven-plugin</artifactId>
+        <version>1.0-alpha-2</version>
+      </plugin>
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>  
         <artifactId>maven-project-info-reports-plugin</artifactId>  
