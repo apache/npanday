@@ -765,10 +765,13 @@ public final class ProjectDaoImpl
                         }
                         catch ( ArtifactResolutionException e )
                         {
+                            logger.error( "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
+                                              + assembly.getId()
+                                              + ", Message = " + e.getMessage(), e );
                             throw new IOException(
                                                    "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
                                                        + assembly.getId()
-                                                       + ", Message = " + e.getMessage(), e );
+                                                       + ", Message = " + e.getMessage() );
                         }
                     }
                     artifactDependencies.add( assembly );
