@@ -67,6 +67,7 @@ import org.codehaus.plexus.util.cli.StreamConsumer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.codehaus.plexus.util.FileUtils;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Set;
 import java.util.HashSet;
@@ -765,7 +766,7 @@ public final class ProjectDaoImpl
                         }
                         catch ( ArtifactResolutionException e )
                         {
-                            logger.error( "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
+                            logger.log( Level.SEVERE, "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
                                               + assembly.getId()
                                               + ", Message = " + e.getMessage(), e );
                             throw new IOException(
