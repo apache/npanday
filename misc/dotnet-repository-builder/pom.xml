@@ -210,6 +210,13 @@
   </dependencies>
   <build>
     <plugins>
+      <!-- for types -->
+      <plugin>
+        <groupId>npanday.plugin</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <version>${stable.npanday.version}</version>
+        <extensions>true</extensions>
+      </plugin>
       <plugin>
         <groupId>npanday.plugin</groupId>
         <artifactId>maven-repository-plugin</artifactId>

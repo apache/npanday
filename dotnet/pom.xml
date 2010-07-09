@@ -187,7 +187,4 @@ under the License.
       <scope>test</scope> 
     </dependency> 
   </dependencies>
-  <properties>
-    <stable.npanday.version>1.2</stable.npanday.version>
-  </properties>
 </project>
