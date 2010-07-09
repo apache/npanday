@@ -31,10 +31,16 @@ under the License.
   <name>NPanday :: .NET Plugin MojoGenerator</name>  
   <dependencies> 
     <dependency> 
-      <groupId>npanday.plugin</groupId>  
-      <artifactId>NPanday.Plugin</artifactId>  
+      <groupId>npanday.plugin</groupId>
+      <artifactId>NPanday.Plugin</artifactId>
       <version>1.2.1-SNAPSHOT</version>
-      <type>library</type>  
-    </dependency> 
+      <type>library</type>
+    </dependency>
+    <dependency>
+      <groupId>npanday.model</groupId>
+      <artifactId>NPanday.Model.Pom</artifactId>
+      <version>1.2.1-SNAPSHOT</version>
+      <type>library</type>
+    </dependency>
   </dependencies> 
 </project>

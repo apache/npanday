@@ -121,13 +121,6 @@ under the License.
         <version>7.0.3300.0</version>  
         <classifier>b03f5f7f11d50a3a</classifier> 
       </dependency>  
-      <dependency> 
-        <groupId>NUnit</groupId>  
-        <artifactId>NUnit.Framework</artifactId>  
-        <version>2.2.8.0</version>  
-        <type>library</type>  
-        <scope>test</scope> 
-      </dependency> 
 
       <dependency> 
         <groupId>npanday.model</groupId>  
@@ -185,7 +178,16 @@ under the License.
       </dependency>  
     </dependencies> 
   </dependencyManagement> 
+  <dependencies>
+    <dependency> 
+      <groupId>NUnit</groupId>  
+      <artifactId>NUnit.Framework</artifactId>  
+      <version>2.2.8.0</version>  
+      <type>library</type>  
+      <scope>test</scope> 
+    </dependency> 
+  </dependencies>
   <properties>
-    <stable.npanday.version>1.1</stable.npanday.version>
+    <stable.npanday.version>1.2</stable.npanday.version>
   </properties>
 </project>
