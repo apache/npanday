@@ -768,7 +768,7 @@ public final class ProjectDaoImpl
                             throw new IOException(
                                                    "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
                                                        + assembly.getId()
-                                                       + ", Message = " + e.getMessage() );
+                                                       + ", Message = " + e.getMessage(), e );
                         }
                     }
                     artifactDependencies.add( assembly );
