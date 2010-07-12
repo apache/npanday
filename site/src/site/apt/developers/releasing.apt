@@ -6,37 +6,79 @@ Pre-release checklist
 
   * Make sure that the copyright and licenses are on all source code
 
-  * Check the build is successful in continuum
+  * Check the build is successful for both NPanday and NPanday-ITs
 
   * Ensure all issues in the tracker for that version have been resolved, or are moved to a later version
+  
+<Note: (This is needed for the signature of the artifacts to be deployed)>
+  
+  * The release manager should generate a sign key and register the key at http://pgp.mit.edu/
+  
+  * Be sure that the key was already VERIFIED for integrity puposes
+  
+  * The following configuration should be added in the settings.xml:
+
++------+  
+  <profile>
+    <id>npanday-releases</id>
+	<properties>
+	  <gpg.passphrase>PASSPHRASE_CREATED</gpg.passphrase>
+	</properties>
++------+
 
   []
 
 Creating a Release Candidate
 
-  Send a proposal in to the discussion forum regarding the release and the issues that would be fix in the said release.
+  Send a proposal in the discussion forum regarding the release and the issues that would be fix in the said release.
 
-  The release will be done in {{http://ci.npanday.org/continuum/}}. Go to the release page and select <Prepare>.
+  The release will be done in through the command line.
+  
+* Steps in releasing NPanday:
 
-  Fill in the following values:
+  [[1]] Check out the code from https://npanday.svn.codeplex.com/svn/npanday-its/trunk/
+  
+  [[2]] Run the following command:
+----
+mvn release:prepare
+----
+  [[3]] Fill in the following values:
 
-    * the SCM tag should be <<<npanday-1.2-RC1>>> or similar (use the release version)
+     * the release version should be <<<1.2.1-RC1>>> or similar (use the release version)
+     
+	 * the SCM tag should be <<<npanday-1.2.1-RC1>>> or similar (use the release version)
+     
+	 * check the values for the <Release version> and <Next development version> are correct
+	 
+  [[4]] Check if the tag was successfully created in https://npanday.svn.codeplex.com/svn/releases/<<<SCM tag>>>
+  
+  [[5]] After successful release:prepare, run the following command:
 
-    * the SCM tag base should be {{https://npanday.svn.codeplex.com/svn/tags/}}
+----
+mvn release:perform -Pnpanday-release -Dtag=url_tag
+----
 
-    * use <<<clean>>> as the preparation goal
+* Steps in releasing NPanday-ITs
 
-    * check the values for <Release version> and <Next development version> are correct
+  [[1]] Check out the code from https://npanday.svn.codeplex.com/svn/npanday-its/trunk/
 
-    []
+  [[2]] Run the following command:
 
-  After this successfully completes, proceed with the <Perform> step.
+----  
+mvn release:prepare
+----
 
-  Fill in the following values:
+  [[3]] Fill in the following values:
+ 
+     * the release version should ve <<<1.2.1-RC1>>> or similar (use the release version)
+	 
+     * the SCM tag should be <<<npanday-its-1.2.1-RC1>>> or similar (use the release version)
+     
+	 * check the values for the <Release version> and <Next development version> are correct
 
-    * use <<<clean deploy>>> as the goals (the default)
-
-    []
+  [[4]] Check if the tag was successfully created in https://npanday.svn.codeplex.com/svn/npanday-its/releases/<<<SCM tag>>>
+  
+  [[5]] After successful release:prepare, run 'mvn release:perform -Pnpanday-release -Dtag=url_tag'
 
   To verify if the release was successful, check that the artifacts has been populated in
   {{http://repo.npanday.org/archiva/repository/npanday-releases/}}
@@ -44,7 +86,7 @@ Creating a Release Candidate
 Testing the Release Candidate
 
   Announce the RC and the community will be given a 48hr window to test. If the RC passes, same process would be done
-  for the final version. eg. <<<1.1>>>.
+  for the final version. eg. <<<1.2.1>>>.
 
 Voting on the Release
 
@@ -63,4 +105,4 @@ Finalising the Release
     []
 
   <<Note:>> If a serious flaw is found in the release, the release version will not be removed in the distribution list
-            but instead a new release (1.1.1) should be provided.
+            but instead a new release (1.2.2) should be provided.
