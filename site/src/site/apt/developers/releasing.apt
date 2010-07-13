@@ -19,11 +19,12 @@ Pre-release checklist
   * The following configuration should be added in the settings.xml:
 
 +------+  
-  <profile>
-    <id>npanday-releases</id>
-	<properties>
-	  <gpg.passphrase>PASSPHRASE_CREATED</gpg.passphrase>
-	</properties>
+<profile>
+  <id>npanday-releases</id>
+  <properties>
+    <gpg.passphrase>PASSPHRASE_CREATED</gpg.passphrase>
+  </properties>
+</profile>
 +------+
 
   []
@@ -39,17 +40,19 @@ Creating a Release Candidate
   [[1]] Check out the code from https://npanday.svn.codeplex.com/svn/npanday-its/trunk/
   
   [[2]] Run the following command:
+  
 ----
 mvn release:prepare
 ----
-  [[3]] Fill in the following values:
 
-     * the release version should be <<<1.2.1-RC1>>> or similar (use the release version)
+  [[3]] Fill in the following values:
+  
+   * the release version should be <<<1.2.1-RC1>>> or similar (use the release version)
      
-	 * the SCM tag should be <<<npanday-1.2.1-RC1>>> or similar (use the release version)
+   * the SCM tag should be <<<npanday-1.2.1-RC1>>> or similar (use the release version)
      
-	 * check the values for the <Release version> and <Next development version> are correct
-	 
+   * check the values for the <Release version> and <Next development version> are correct	 
+  
   [[4]] Check if the tag was successfully created in https://npanday.svn.codeplex.com/svn/releases/<<<SCM tag>>>
   
   [[5]] After successful release:prepare, run the following command:
@@ -68,20 +71,23 @@ mvn release:perform -Pnpanday-release -Dtag=url_tag
 mvn release:prepare
 ----
 
-  [[3]] Fill in the following values:
- 
-     * the release version should ve <<<1.2.1-RC1>>> or similar (use the release version)
-	 
-     * the SCM tag should be <<<npanday-its-1.2.1-RC1>>> or similar (use the release version)
-     
-	 * check the values for the <Release version> and <Next development version> are correct
+  [[3]] Fill in the following values: 
 
+   * the release version should ve <<<1.2.1-RC1>>> or similar (use the release version)
+	 
+   * the SCM tag should be <<<npanday-its-1.2.1-RC1>>> or similar (use the release version)
+     
+   * check the values for the <Release version> and <Next development version> are correct
+  
   [[4]] Check if the tag was successfully created in https://npanday.svn.codeplex.com/svn/npanday-its/releases/<<<SCM tag>>>
   
-  [[5]] After successful release:prepare, run 'mvn release:perform -Pnpanday-release -Dtag=url_tag'
+  [[5]] After successful release:prepare, run the following command:
 
-  To verify if the release was successful, check that the artifacts has been populated in
-  {{http://repo.npanday.org/archiva/repository/npanday-releases/}}
+----
+mvn release:perform -Pnpanday-release -Dtag=url_tag
+----
+
+  To verify if the release was successful, check that the artifacts has been populated in {{http://repo.npanday.org/archiva/repository/npanday-releases/}}
 
 Testing the Release Candidate
 
