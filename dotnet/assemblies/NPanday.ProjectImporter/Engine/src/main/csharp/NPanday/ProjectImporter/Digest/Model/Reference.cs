@@ -360,25 +360,15 @@ namespace NPanday.ProjectImporter.Digest.Model
 
             try
             {
+                metadataPath = metadataPath + "/" + artifact.Version + metadata;
 
-                if (urlExists(metadataPath + "/" + artifact.Version + metadata))
-                {
-                    metadataPath = metadataPath + "/" + artifact.Version + metadata;
-                }
-                else
-                {
-                    return null;
-                }
-
-                Stream strm = client.OpenRead(metadataPath);                
-                StreamReader sr = new StreamReader(strm);
-
+                string content = client.DownloadString(metadataPath);
+                string[] lines = content.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 
                 string timeStamp = null;
                 string buildNumber = null;
-                string line;
 
-                while ((line = sr.ReadLine()) != null && (timeStamp == null || buildNumber == null))
+                foreach ( string line in lines )
                 {
                     int startIndex;
                     int len;
@@ -400,43 +390,30 @@ namespace NPanday.ProjectImporter.Digest.Model
                     }
                 }
 
+                if ( timeStamp == null )
+                {
+                    logger.Log(NPanday.Logging.Level.WARNING, "Timestamp was not specified in maven-metadata.xml - using default snapshot version");
+                    return null;
+                }
+
+                if ( buildNumber == null )
+                {
+                    logger.Log(NPanday.Logging.Level.WARNING, "Build number was not specified in maven-metadata.xml - using default snapshot version");
+                    return null;
+                }
+
                 timeStampVersion = timeStamp + "-" + buildNumber;
-
             }
-
-
             catch (Exception e)
             {
-                logger.Log(NPanday.Logging.Level.WARNING, string.Format("\n Unable to find file {0}\n", e.Message));
                 return null;
             }
-
             finally
             {
                 client.Dispose();
             }
 
-
             return timeStampVersion;
-        }
-
-        private static bool urlExists(string repo)
-        {
-            Uri urlCheck = new Uri(repo);
-            WebRequest request = WebRequest.Create(urlCheck);
-            request.Timeout = 15000;
-
-            WebResponse response;
-
-            try
-            {
-                response = request.GetResponse();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }            
         }
 
         static bool downloadArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
@@ -453,11 +430,11 @@ namespace NPanday.ProjectImporter.Digest.Model
                 }
 
 
-                logger.Log(NPanday.Logging.Level.INFO, string.Format("\n Download Start: {0} Downloading From {1} ", DateTime.Now, artifact.RemotePath));
+                logger.Log(NPanday.Logging.Level.INFO, string.Format("Download Start: {0} Downloading From {1}\n", DateTime.Now, artifact.RemotePath));
 
                 client.DownloadFile(artifact.RemotePath, artifact.FileInfo.FullName);
 
-                logger.Log(NPanday.Logging.Level.INFO, string.Format("\n Download Finished: {0} ", DateTime.Now));
+                logger.Log(NPanday.Logging.Level.INFO, string.Format("Download Finished: {0}\n", DateTime.Now));
 
                 string artifactDir = GetLocalUacPath(artifact, artifact.FileInfo.Extension);
 
@@ -481,7 +458,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                     artifact.FileInfo.Directory.Delete();
                 }
 
-                logger.Log(NPanday.Logging.Level.WARNING, string.Format("\n Download Failed {0}", e.Message));
+                logger.Log(NPanday.Logging.Level.WARNING, string.Format("Download Failed {0}\n", e.Message));
                                
                 return false;
             }
