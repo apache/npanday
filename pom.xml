@@ -62,13 +62,37 @@ under the License.
     </license>
   </licenses>
   <developers> 
+    <developer>
+      <name>Lars Corneliussen</name>
+      <id>lcorneliussen</id>
+    </developer>
+    <developer> 
+      <name>Joe Ocaba</name>  
+      <id>jocaba</id>  
+      <email>jocaba@exist.com</email>  
+    </developer>     
+    <developer> 
+      <name>Adelita Padilla</name>  
+      <id>apadilla</id>  
+    </developer>     
     <developer> 
       <name>Brett Porter</name>  
       <id>brettporter</id>  
-      <email>brett@apache.org</email>  
-      <roles> 
-        <role>coordinator</role>  
-      </roles> 
+    </developer>  
+    <developer> 
+      <name>Marecor Baclay</name>  
+      <id>mbaclay</id>  
+      <email>mbaclay@exist.com</email>  
+    </developer>  
+    <developer>
+      <name>Wendy Smoak</name>
+      <id>wsmoak</id>
+      <email>wsmoak@gmail.com</email>
+    </developer> 
+    <!--Emeritus Committers-->
+    <developer> 
+      <name>C�dric</name>  
+      <id>mimil</id>  
     </developer>  
     <developer> 
       <name>Melvin Sembrano</name>  
@@ -78,35 +102,6 @@ under the License.
         <role>coordinator</role>  
       </roles> 
     </developer>
-    <developer> 
-      <name>Joe Ocaba</name>  
-      <id>jocaba</id>  
-      <email>jocaba@exist.com</email>  
-      <roles> 
-        <role>coordinator</role>  
-      </roles> 
-    </developer>     
-    <developer> 
-      <name>C�dric</name>  
-      <id>mimil</id>  
-      <roles> 
-        <role>developer</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Maricor Baclay</name>  
-      <id>mbaclay</id>  
-      <email>mbaclay@exist.com</email>  
-      <roles> 
-        <role>QA</role>  
-      </roles> 
-    </developer>  
-    <developer>
-      <name>Wendy Smoak</name>
-      <id>wsmoak</id>
-      <email>wsmoak@gmail.com</email>
-    </developer> 
-    <!--Emeritus Committers-->
     <developer> 
       <name>Leopoldo Agdeppa</name>  
       <id>lagdeppa</id>  
@@ -137,9 +132,6 @@ under the License.
   <contributors>
     <contributor>
       <name>Kurt Harriger</name>
-    </contributor>
-    <contributor>
-      <name>Lars Corneliussen</name>
     </contributor>
     <contributor>
       <name>Thorsten Kamann</name>
