@@ -1,10 +1,13 @@
  ----
  Project Types
  ----
+ ----
+ 2010-07-03
+ ----
 
 Available Project Types
 
-  Currently NPanday has two plugins that register types for dotnet. The <<<maven-compile-plugin>>
+  Currently NPanday has two plugins that register types for dotnet. The <<<maven-compile-plugin>>>
   and the <<<custom-lifecycle-maven-plugin>>>.
 
   While the compile-plugin introduces the NPanday default lifecycle, the other
@@ -78,9 +81,9 @@ Available Project Types
 
     * <<<dotnet-module>>> - a .NET module with extension <<netmodule>>
 
-	* <<<dotnet-library>>> - A dll-file compiled by any of the .NET compilers
+    * <<<dotnet-library>>> - A dll-file compiled by any of the .NET compilers
 
-	* <<<dotnet-library-config>>> - Configuration file attachable to a library artifact
+    * <<<dotnet-library-config>>> - Configuration file attachable to a library artifact
 
     * <<<dotnet-executable>>> - A exe-file compiled by any of the .NET compilers
 

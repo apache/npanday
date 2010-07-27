@@ -1,6 +1,9 @@
  ----
  NPanday and ASP.NET Projects
  ----
+ ----
+ 2010-07-03
+ ----
 
 NPanday and ASP.NET Projects
 
@@ -8,7 +11,7 @@ NPanday and ASP.NET Projects
 
   In Visual Studio you can build and publish a web application using right click in a ASP.NET project -> Publish
 
- A simple Web Application in ASP .NET will generate:
+  A simple Web Application in ASP .NET will generate:
 
 ----
 .
@@ -20,15 +23,15 @@ NPanday and ASP.NET Projects
 `-- *.aspx -- ASP pages
 ----
 
- 	This can be deployed to IIS.
+  This can be deployed to IIS.
 
- 	The normal compilation using the dotnet compiler plugin already generates proper DLLs.
+  The normal compilation using the dotnet compiler plugin already generates proper DLLs.
 
-    The plugin created an <<<aspnet>>> type that generates the DLL in <<<target/artifactId/bin>>> and copies all aspx
-    files to <<<target/artifactId>>>
+  The plugin created an <<<aspnet>>> type that generates the DLL in <<<target/artifactId/bin>>> and copies all aspx
+  files to <<<target/artifactId>>>
 
- 	It then zips that folder and install it in the repo (in the future create a msi package - perhaps by using the
- 	wix plugin as well).
+  It then zips that folder and install it in the repo (in the future create a msi package - perhaps by using the
+  wix plugin as well).
 
 ----
 <assembly xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -72,13 +75,14 @@ aspnet_compiler.exe -v /artifactId -p artifactId\ -u -f target\artifactId
 
 * Visual Studio Addin
 
- 	The Add-in needs to recognize Web and Webservices projects in project import
+  The Add-in needs to recognize Web and Webservices projects in project import
 
 ** Implementation
 
- 	Recognize Web and Webservices projects by checking the packaging
+  Recognize Web and Webservices projects by checking the packaging
 
 * References
 
-# {{{http://msdn.microsoft.com/en-us/library/aa479386.aspx} Using IIS with Microsoft Visual Studio 2005 and the New Web Project System}}
-# {{{http://www.odetocode.com/Articles/417.aspx} Precompilation In ASP.NET 2.0}}
+  * {{{http://msdn.microsoft.com/en-us/library/aa479386.aspx} Using IIS with Microsoft Visual Studio 2005 and the New Web Project System}}
+
+  * {{{http://www.odetocode.com/Articles/417.aspx} Precompilation In ASP.NET 2.0}}

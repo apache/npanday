@@ -2,7 +2,7 @@
  NPanday Conventions
  ------
  ------
- 25 Feb 2009
+ 2010-07-03
  ------
 
 NPanday Conventions
@@ -21,13 +21,14 @@ NPanday Conventions
 
 +------+
  |-- NPanday.Artifact
- |   `-- main
- |       `-- csharp
- |           `-- NPanday
- |               `-- Artifact
- |                   `-- ArtifactContext.cs
- |                   `-- Artifact.cs
-  `-- pom.xml
+ |   `-- src
+ |       `-- main
+ |           `-- csharp
+ |               `-- NPanday
+ |                   `-- Artifact
+ |                       |-- ArtifactContext.cs
+ |                       `-- Artifact.cs
+ `-- pom.xml
 +------+
 
  pom.xml file
@@ -68,13 +69,14 @@ child Group ID: NPanday.Model, NPanday.Models or NPanday.Model.VSContent
 
 +------+
  |-- NPanday.Artifact
- |   `-- main
- |       `-- csharp
- |           `-- NPanday
- |               `-- Artifact
- |                   `-- ArtifactContext.cs
- |                   `-- Artifact.cs
-  `-- pom.xml
+ |   `-- src
+ |       `-- main
+ |           `-- csharp
+ |               `-- NPanday
+ |                   `-- Artifact
+ |                       |-- ArtifactContext.cs
+ |                       `-- Artifact.cs
+ `-- pom.xml
 +------+
 
 +------+

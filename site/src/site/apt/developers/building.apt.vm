@@ -85,6 +85,20 @@ mvn clean install
   If you just wish to work on the Visual Studio Add-in, it can be loaded into Visual Studio and built there. More
   information is available in {{{./debugging-addin.html} Debugging the Visual Studio Add-in}}.
 
+* Building All and executing the ITs
+
+  You can also build the source code and execute the ITs. But first you have to install the ITs in your local repository using the following command:
+  
+----
+mvn clean install
+----
+
+  After you have installed the ITs locally, you can now build the source code and execute the ITs by using the following command:
+  
+----
+mvn clean install -PintegrationTests
+----
+  
 * Running Integration Tests
 
   The Maven command line plugins feature a series of integration tests to ensure that everything is working as

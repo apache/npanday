@@ -48,7 +48,7 @@ Importing Projects
   Next, the project unit tests window will appear. If you have modules that are for unit tests only, select them and
   click OK.
 
-[../../images/vs/unit-tests.png] Project unit tests list
+[../../images/vs/unit-tests.JPG] Project unit tests list
 
   <<<pom.xml>>> files will be generated for all the projects that are included in the solution file, including the
   parent project and its sub-projects, if there are any.
