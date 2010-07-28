@@ -98,7 +98,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     //add the MsBuild plugin to auto generate the .g.cs/g.vb files
                     if (!msBuildPluginAdded)
                     {
-                        Plugin msBuildPlugin = AddPlugin("npanday.plugin", "NPanday.Plugin.Msbuild.JavaBinding", null, true);
+                        Plugin msBuildPlugin = AddPlugin("npanday.plugin", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
                         AddPluginExecution(msBuildPlugin, "compile", "validate");
                         msBuildPluginAdded = true;
                     }
@@ -151,7 +151,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     "npanday.plugin",
                     "maven-test-plugin",
                     null,
-                    true
+                    false
                 );
                 AddPluginConfiguration(testPlugin, "integrationTest", "true");
                 

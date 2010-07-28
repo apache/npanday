@@ -380,6 +380,11 @@ namespace NPanday.Utils
                             {
                                 plugins.Add(item);
                             }
+
+                            if ((item.artifactId.Equals("maven-compile-plugin")) || (item.artifactId.Equals("maven-aspx-plugin")))
+                            {
+                                item.extensions = true;
+                            }
                         }
                     }
 

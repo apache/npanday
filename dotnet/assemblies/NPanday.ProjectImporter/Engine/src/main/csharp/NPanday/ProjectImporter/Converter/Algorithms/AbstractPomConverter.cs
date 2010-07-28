@@ -111,7 +111,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     "npanday.plugin",
                     "maven-resgen-plugin",
                     null,
-                    true
+                    false
                 );
 
 
@@ -187,7 +187,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     "npanday.plugin",
                     "maven-wsdl-plugin",
                     null,
-                    true
+                    false
                 );
 
                 AddPluginExecution(webReferencePlugin, "wsdl", null);

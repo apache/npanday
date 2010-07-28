@@ -41,7 +41,6 @@
         <groupId>npanday.plugin</groupId>
         <artifactId>wix-maven-plugin</artifactId>
         <version>1.2-SNAPSHOT</version>
-        <extensions>true</extensions>
         <configuration>
           <sourceFiles>
             <sourceFile>Product.wxs</sourceFile>

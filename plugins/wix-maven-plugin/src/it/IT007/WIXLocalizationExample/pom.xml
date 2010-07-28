@@ -32,7 +32,6 @@
       <plugin>
         <groupId>npanday.plugin</groupId>
         <artifactId>maven-resgen-plugin</artifactId>
-        <extensions>true</extensions>
         <configuration>
           <embeddedResources>
             <embeddedResource>
