@@ -1,4 +1,15 @@
-How to Use
+ ----
+ Usage
+ ----
+ ----
+ 2010-07-05
+ ----
+
+Usage
+
+  The <<<install-file>>> goal is used to install artifacts to the local repository.
+
+  The example below shows how to install NUnit 2.2.8.0 into your local repository.
 
 +----+
  mvn npanday.plugin:maven-install-plugin:install-file

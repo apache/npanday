@@ -1,19 +1,25 @@
-How to Use
+ ----
+ Usage
+ ----
+ ----
+ 2010-07-05
+ ----
+
+Usage
 
 * Building & Deploying Web Applications
 
- To enable building of the Web application, specify the packaging as "nar" - .NET Archive. NMaven will compile
+ To enable building of the Web application, specify the packaging as "nar" - .NET Archive. NPanday will compile
  classes in the source and test directories and then proceed to place the newly generated artifacts and its dependencies into
- the target/$\{project.build.finalname\}/bin directory. NMaven will also copy any files from the src/main/webapp directory
+ the target/$\{project.build.finalname\}/bin directory. NPanday will also copy any files from the src/main/webapp directory
  into the target/$\{project.build.finalname\} directory, allowing you to add any additional resources such as Web.Config and
  ASPX files.
 
- You will only need to add the nmaven-webapp-plugin to the pom if you are planning on deploying the web application. In
- that case, add the <<deployPath>> pom configuration as shown below. Type "mvn deploy" from the command line and NMaven will
+ You will only need to add the maven-webapp-plugin to the POM if you are planning on deploying the web application. In
+ that case, add the <<deployPath>> POM configuration as shown below. Type "mvn deploy" from the command line and NPanday will
  copy the web application to the <<deployPath>> location.
 
 +----+
-
 <project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.maven.sample</groupId>
@@ -36,7 +42,7 @@ How to Use
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compile-plugin</artifactId>
-     	        <extensions>true</extensions>
+                <extensions>true</extensions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -48,3 +54,4 @@ How to Use
         </plugins>
     </build>
 </project>
++----+

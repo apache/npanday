@@ -1,4 +1,11 @@
-Configuration
+ ----
+ Usage
+ ----
+ ----
+ 2010-07-05
+ ----
+
+Usage
 
  The WSDL plugin will use the path environmental variable to choose the WSDL generator - MONO or Microsoft. Within
  the path field, specify the location of your WSDL file. If you
@@ -6,7 +13,6 @@ Configuration
  add the netHome, language, namespace, server and proxy.
 
 +----+
-
     <build>
         <plugins>
             <plugin>
@@ -19,7 +25,7 @@ Configuration
                         </goals>
                     </execution>
                 </executions>
-     	        <configuration>
+                <configuration>
                     <netHome>${MONO_HOME}</netHome>
                     <language>CS</language>
                     <namespace>org.apache.maven.test</namespace>
@@ -34,14 +40,13 @@ Configuration
                     <proxy>
                         <id>my-proxy</id>
                     </proxy>
-		        </configuration>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
 +----+
 
-Handling Servers and Proxies
+* Handling Servers and Proxies
 
  The WSDL generation utility allows you to pull the WSDL from a URL. In some case, these URLs may be located behind a proxy
  and/or require some form of authentication. It is generally not good pratice to embed the username/passwords in the
@@ -52,23 +57,21 @@ Handling Servers and Proxies
  There is an experimental feature to hash the password (does not work in all cases due to encoding issues).
 
 +----+
-
 <settings>
-	<servers>
-		<server>
-			<id>nmaven-site</id>
-			<username>name</username>
-			<password>pass</password>
-		</server>
-	</servers>
-	<proxies>
-		<proxy>
-			<id>my-proxy</id>
-			<username>name1</username>
-			<password>password1</password>
-			<host>localhost</host>
-		</proxy>
-	</proxies>
+    <servers>
+        <server>
+            <id>nmaven-site</id>
+            <username>name</username>
+            <password>pass</password>
+        </server>
+    </servers>
+    <proxies>
+        <proxy>
+            <id>my-proxy</id>
+            <username>name1</username>
+            <password>password1</password>
+            <host>localhost</host>
+        </proxy>
+    </proxies>
 </settings>
-
 +----+

@@ -1,6 +1,13 @@
+ ----
+ Install From File System
+ ----
+ ----
+ 2010-07-05
+ ----
+
 Install From File System
 
- First, make sure that the repository containing the NMaven assembliies and vsinstaller is located on your local file
+ First, make sure that the repository containing the NPanday assemblies and vsinstaller is located on your local file
  system. Typically, you would only do this for testing or for installing from a non-standard repo location.
  Next, configure your settings.xml file to point to your repo.
 
@@ -8,14 +15,14 @@ Install From File System
 <settings>
   <profiles>
     <profile>
-      <id>nmaven.snapshots</id>
+      <id>npanday.snapshots</id>
       <repositories>
         <repository>
           <id>local</id>
-          <name>Maven Plugin Snapshots</name>
+          <name>NPanday Snapshots</name>
           <url>file://C:\m2\repo</url>
           <releases>
-            <enabled>true</enabled>
+            <enabled>false</enabled>
           </releases>
           <snapshots>
             <enabled>true</enabled>
@@ -25,7 +32,7 @@ Install From File System
       <pluginRepositories>
         <pluginRepository>
           <id>local</id>
-          <name>Maven Plugin Snapshots</name>
+          <name>NPanday Plugin Snapshots</name>
           <url>file://C:\m2\repo</url>
           <releases>
             <enabled>false</enabled>

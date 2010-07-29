@@ -1,12 +1,17 @@
-How to Use
+ ----
+ Usage
+ ----
+ ----
+ 2010-07-05
+ ----
 
- Also make sure that you read {{{http://incubator.apache.org/nmaven/environment-configuration.html} Configuration}}
+Usage
 
 
 * Pass-Through Compiler Commands
 
  There may be cases that the specific compiler option that you want to use may not be directly supported by the
- nmaven-compile-plugin. In this case, you can use the parameter(s) tag to pass through the command to the compiler.
+ maven-compile-plugin. In this case, you can use the parameter(s) tag to pass through the command to the compiler.
  Be aware that the command filter specified within the compiler-plugins.xml may choose not to pass this parameter
  to the compiler. Typically, this will only be done for unsupported commands: (you will see a warn message in the output
  if this occurs).
@@ -55,7 +60,7 @@ How to Use
  It is important to understand what setting the \<vendor/> tag means for multi-platform builds.
 
  * In the case of not
- setting the \<vendor/> tag, NMaven will use the Microsoft compiler for the windows platform and MONO for all other
+ setting the \<vendor/> tag, NPanday will use the Microsoft compiler for the windows platform and MONO for all other
  platforms. By not specifying the vendor, you are indicating that the application should build with with both Microsoft
  and Mono compilers. For most development environments, Microsoft is installed on Windows, and Mono comes by default
   on many Linux distributions: so this option is usually a safe bet for multi-platform builds.
@@ -73,10 +78,3 @@ How to Use
  as a default for any of the platforms: so to target this environment, you must set the \<vendor/> tag. Also you may run
  into some problems since there is currently no way to set the frameworkVersion/profile. I am giving some thought to this
  problem, so keep an eye on the documentation.
-
-
-
-
-
-
-

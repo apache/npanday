@@ -8,7 +8,7 @@ Candle Mojo Usage
 
 * The <<<candle>>> mojo
 
- If you want to convert a WiX Source (.wxs) file into a WiX Object (.wixobj) file, use this configuration in your pom:
+ If you want to convert a WiX Source (.wxs) file into a WiX Object (.wixobj) file, use this configuration in your POM:
 
 +---+
 <project>

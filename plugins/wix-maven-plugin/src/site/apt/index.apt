@@ -20,16 +20,16 @@ NPanday WiX Plugin
 
  The WiX plugin has several goals:
 
- * {{{candle-mojo.html}candle}} converts a WiX XML (.wxs) file into a WiX Object (.wixobj) file.
+ * {{{./candle-mojo.html}candle}} converts a WiX XML (.wxs) file into a WiX Object (.wixobj) file.
 
- * {{{light-mojo.html}light}} converts a WiX Object (.wixobj) file into an installation package (.msi file).
+ * {{{./light-mojo.html}light}} converts a WiX Object (.wixobj) file into an installation package (.msi file).
 
 * Usage
 
  Instructions on how to use the WiX plugin goals:
 
- * {{{usage/index.html}Complete example}}
+ * {{{./usage/index.html}Complete example}}
 
- * {{{usage/candle.html}Create a WiX object file with candle}}
+ * {{{./usage/candle.html}Create a WiX object file with candle}}
 
- * {{{usage/light.html}Create an installation package (.msi file) with light}}
+ * {{{./usage/light.html}Create an installation package (.msi file) with light}}

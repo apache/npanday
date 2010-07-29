@@ -1,12 +1,19 @@
-How to Use
+ ----
+ Usage
+ ----
+ ----
+ 2010-07-05
+ ----
+
+Usage
 
 * Generate a class binding/dataset from a schema
 
  If you already have a schema, then use the xsd goal by adding its execution in the pom.xml file. The xsdFile should
- point to the xsd.
+ point to the xsd file.
 
 +----+
- <project>
+<project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.maven.it</groupId>
   <artifactId>it0006</artifactId>
@@ -44,7 +51,7 @@ How to Use
  To generate a dataset instead of classes, change the plugin configuation:
 
 +----+
- <project>
+<project>
   [...]
       <plugin>
         <groupId>npanday.plugin</groupId>
@@ -69,7 +76,7 @@ How to Use
 * Generate a schema from an XML instance and then create a class binding from the generated schema
 
  You can also generate the schema from a sample XML file prior to generating the bindings. The xmlFiles tag allows
- you to specify one or more xml files.
+ you to specify one or more XML files.
  
 +----+
 <project>

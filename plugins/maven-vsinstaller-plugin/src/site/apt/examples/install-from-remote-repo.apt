@@ -1,7 +1,14 @@
+ ----
+ Install From Remote Repo
+ ----
+ ----
+ 2010-07-05
+ ----
+
 Install From Remote Repo
 
  First, configure your settings.xml file to point to your repo. You may choose to enter the public snapshot repo
- below or to enter your own repo that hosts the NMaven VS installer.
+ below or to enter your own repo that hosts the NPanday VS installer.
 
 +----+
   <profiles>
@@ -16,7 +23,7 @@ Install From Remote Repo
           <name>Maven Snapshots</name>
           <url>http://people.apache.org/repo/m2-snapshot-repository</url>
           <releases>
-            <enabled>true</enabled>
+            <enabled>false</enabled>
           </releases>
           <snapshots>
             <enabled>true</enabled>
@@ -42,7 +49,7 @@ Install From Remote Repo
 
  Due to a bug in Maven, if you are remotely resolving a plugin that doesn't exist in central, you will need to install
  from a directory containing a pom.xml file. So if you have a pom.xml handy, goto that directory from the command line.
- If not, you will need to download the {{{pom.xml}pom.xml}} and goto to the download directory from the command line.
+ If not, you will need to download the {{{./pom.xml}pom.xml}} and goto to the download directory from the command line.
  Now type the following from the command line:
 
 +----+

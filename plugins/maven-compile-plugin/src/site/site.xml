@@ -1,18 +1,19 @@
-<project name="NPanday">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
   <body>
     <links>
-      <item name="Project Site" href="http://incubator.apache.org/projects/npanday.html"/>
-      <item name="NPanday" href="http://incubator.apache.org/npanday"/>
-      <item name="NPanday SVN" href="http://svn.apache.org/repos/asf/incubator/npanday/"/>
-      <item name="Maven" href="http://maven.apache.org/"/>
       <item name="Mono Project" href="http://www.mono-project.com/"/>
       <item name="DotGNU" href="http://dotgnu.org/"/>
     </links>
-    <menu name="General Info">
+
+    <menu ref="parent" />
+
+    <menu name="Overview">
       <item name="About" href="index.html"/>
       <item name="Goals" href="plugin-info.html"/>
       <item name="Usage" href="usage.html"/>
     </menu>
-    ${reports}
+
+    <menu ref="reports" />
   </body>
 </project>

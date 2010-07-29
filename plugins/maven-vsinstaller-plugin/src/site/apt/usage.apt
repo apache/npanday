@@ -1,3 +1,10 @@
+ ----
+ Usage
+ ----
+ ----
+ 2010-07-05
+ ----
+
 Usage
 
 * Prerequisites
@@ -8,14 +15,14 @@ Usage
 
   [[2]] Both {{{http://msdn2.microsoft.com/en-us/downloads/default.aspx} Microsoft .NET Framework}} (2.0+)
      AND {{{http://msdn2.microsoft.com/en-us/downloads/default.aspx} NET Framework 2.0 SDK}}. Note that the 2.0+ framework
-     is required to run NMaven, but you can still target 1.1 for your builds provided that the 1.1 version
+     is required to run NPanday, but you can still target 1.1 for your builds provided that the 1.1 version
      is also installed.
 
   [[3]] {{{http://nunit.org/index.php?p=download} NUnit 2.2+ (only if using unit tests)}}.
 
   [[4]] {{{http://maven.apache.org/download.html} Maven 2.0.4 or higher}}
 
-  [[5]]   Visual Studio 2005 Standard or higher is needed to use the NMaven Addin
+  [[5]]   Visual Studio 2005 Standard or higher is needed to use the NPanday Addin
     (Visual Studio Express Edition will not work)
 
     []
@@ -29,12 +36,12 @@ Usage
 
 * Installing
 
- If you have built NMaven locally on your machine, you can just type:
+ If you have built NPanday locally on your machine, you can just type:
 
 +----+
  mvn npanday.plugin:maven-vsinstaller-plugin:install
 +----+
 
- If you have not built NMaven locally and are just looking to use the binary distribution, then check out the instructions here:
+ If you have not built NPanday locally and are just looking to use the binary distribution, then check out the instructions here:
  {{{examples/install-from-remote-repo.html} Install From Remote Repo}}
 

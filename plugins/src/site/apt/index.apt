@@ -2,43 +2,44 @@
  Available Plugins
  -----
  -----
+ 2010-07-05
  -----
 
 Available Plugins
 
 The following plugins are shipped along with each NPanday release:
 
- * {{{./maven-aspx-plugin}<<<aspx>>>}}
+ * {{{./maven-aspx-plugin/index.html}<<<aspx>>>}}
 
- * {{{./maven-compile-plugin}<<<compile>>>}}
+ * {{{./maven-compile-plugin/index.html}<<<compile>>>}}
 
- * {{{./maven-fxcop-plugin}<<<fxcop>>>}}
+ * {{{./maven-fxcop-plugin/index.html}<<<fxcop>>>}}
 
- * {{{./maven-install-plugin}<<<install>>>}}
+ * {{{./maven-install-plugin/index.html}<<<install>>>}}
 
- * {{{./maven-link-plugin}<<<link>>>}}
+ * {{{./maven-link-plugin/index.html}<<<link>>>}}
 
- * {{{./maven-mojo-generator-plugin}<<<mojo-generator>>>}}
+ * {{{./maven-mojo-generator-plugin/index.html}<<<mojo-generator>>>}}
 
- * {{{./maven-repository-plugin}<<<repository>>>}}
+ * {{{./maven-repository-plugin/index.html}<<<repository>>>}}
 
- * {{{./maven-resgen-plugin}<<<resgen>>>}}
+ * {{{./maven-resgen-plugin/index.html}<<<resgen>>>}}
 
- * {{{./maven-resolver-plugin}<<<resolver>>>}}
+ * {{{./maven-resolver-plugin/index.html}<<<resolver>>>}}
 
- * {{{./maven-test-plugin}<<<test>>>}}
+ * {{{./maven-test-plugin/index.html}<<<test>>>}}
 
- * {{{./maven-vsinstaller-plugin}<<<vsinstaller>>>}}
+ * {{{./maven-vsinstaller-plugin/index.html}<<<vsinstaller>>>}}
 
- * {{{./maven-webapp-plugin}<<<webapp>>>}}
+ * {{{./maven-webapp-plugin/index.html}<<<webapp>>>}}
 
- * {{{./wix-maven-plugin}<<<wix>>>}}
+ * {{{./wix-maven-plugin/index.html}<<<wix>>>}}
 
- * {{{./maven-wsdl-plugin}<<<wsdl>>>}}
+ * {{{./maven-wsdl-plugin/index.html}<<<wsdl>>>}}
 
- * {{{./maven-xsd-plugin}<<<xsd>>>}}
+ * {{{./maven-xsd-plugin/index.html}<<<xsd>>>}}
 
- * {{{./maven-xsp-plugin}<<<xsp>>>}}
+ * {{{./maven-xsp-plugin/index.html}<<<xsp>>>}}
 
  * NPanday.Plugin.Addin.JavaBinding
 

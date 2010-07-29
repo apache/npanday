@@ -1,17 +1,24 @@
-How to Use
+ ----
+ Usage
+ ----
+ ----
+ 2010-07-05
+ ----
 
- Your project structure should look something like:
+Usage
+
+ Your project structure should look something like this:
 
 +------+
 .
  |-- src
  |   `-- main
  |       `-- csharp
- |           `-- NMaven
+ |           `-- NPanday
  |               `-- Plugins
  |                   `-- Test
  |                       `-- MyMojo.cs
-  `-- pom.xml
+ `-- pom.xml
 +------+
 
  Now compile and install the module containing your plugin:
@@ -33,17 +40,17 @@ How to Use
  |-- src
  |   `-- main
  |       |-- csharp
- |       |   `-- NMaven
+ |       |   `-- NPanday
  |       |       `-- Plugins
- |       |            `-- Test
- |       |                 `-- MyMojo.cs
- |        `-- java
- |           `-- NMaven
+ |       |           `-- Test
+ |       |                `-- MyMojo.cs
+ |       `-- java
+ |           `-- NPanday
  |               `-- Plugins
  |                   `-- Test
- |                     `-- MyMojo.java
-  `-- pom.xml
-  `-- pom-java.xml
+ |                       `-- MyMojo.java
+ |-- pom.xml
+ `-- pom-java.xml
 +------+
 
- For more information on how to create plugins in .NET see: {{{../net-plugins.html} .NET Plugins}}
+~~ @todo (link is broken) For more information on how to create plugins in .NET see: {{{../net-plugins.html} .NET Plugins}}

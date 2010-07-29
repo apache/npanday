@@ -1,10 +1,17 @@
-How to Use
+ ----
+ Usage
+ ----
+ ----
+ 2010-07-05
+ ----
+
+Usage
 
  Make sure that FxCopCmd is installed and located within your path.
 
  Then:
 
- [[1]] Go to your directory containing the pom (it may be a parent pom containing multiple modules).
+ [[1]] Go to your directory containing the POM (it may be a parent POM containing multiple modules).
 
  [[2]] Install the project: mvn install
 
@@ -18,7 +25,7 @@ How to Use
 mvn npanday.plugin:maven-fxcop-plugin:fxcop
 +----+
 
- For a mult-module, aggregated report, type:
+ For a multi-module, aggregated report, type:
 
 +----+
 mvn npanday.plugin:maven-fxcop-plugin:aggregate
