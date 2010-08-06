@@ -234,7 +234,11 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 web.CachedDynamicPropName = buildItem.GetMetadata("CachedDynamicPropName");
                                 web.CachedAppSettingsObjectName = buildItem.GetMetadata("CachedAppSettingsObjectName");
                                 web.CachedSettingsPropName = buildItem.GetMetadata("CachedSettingsPropName");
-                                webReferenceUrls.Add(web);
+
+                                if (!webRefExists(web, webReferenceUrls))
+                                {
+                                    webReferenceUrls.Add(web);
+                                }
                                 break;
                             case "COMReference":
                                 ComReference comRef = new ComReference();
