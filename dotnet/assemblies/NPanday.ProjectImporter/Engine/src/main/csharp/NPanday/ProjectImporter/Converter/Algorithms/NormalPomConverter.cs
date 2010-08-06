@@ -76,7 +76,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     AddPluginConfiguration(compilePlugin, "define", define);
                 }
             }
-
             
             AddPluginConfiguration(compilePlugin, "main", projectDigest.StartupObject);
             AddPluginConfiguration(compilePlugin, "doc", projectDigest.DocumentationFile);
@@ -126,7 +125,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 }
             }
             AddPluginConfiguration(compilePlugin, "includeSources", "includeSource", compiles.ToArray());
-            
 
             if ("true".Equals(projectDigest.SignAssembly, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrEmpty(projectDigest.AssemblyOriginatorKeyFile)

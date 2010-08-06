@@ -208,6 +208,22 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 none.DependentUpon = buildItem.GetMetadata("DependentUpon");
 
                                 nones.Add(none);
+                               
+                                //add included web reference when reimporting
+                                if (buildItem.Include.Contains(".wsdl"))
+                                {
+                                    string path = Path.GetDirectoryName(buildItem.Include) + "\\";
+
+                                    WebReferenceUrl webUrl = new WebReferenceUrl();
+                                    webUrl.UrlBehavior = "Dynamic";
+                                    webUrl.RelPath = path;
+                                    
+                                    if (!webRefExists(webUrl, webReferenceUrls))
+                                    {
+                                        webReferenceUrls.Add(webUrl);
+                                    }
+
+                                }
                                 break;
                             case "WebReferenceUrl":
                                 WebReferenceUrl web = new WebReferenceUrl();
@@ -235,6 +251,14 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 Content content = new Content(projectBasePath);
                                 content.IncludePath = buildItem.Include;
                                 contents.Add(content);
+
+                                //add web reference in <includes> tag of compile-plugin
+                                if (content.IncludePath.Contains("Web References"))
+                                {
+                                    Compile compileWebRef = new Compile(projectBasePath);
+                                    compileWebRef.IncludePath = buildItem.Include;
+                                    compiles.Add(compileWebRef);
+                                }
                                 break;
                             case "Folder":
                                 Folder folder = new Folder(projectBasePath);
@@ -280,6 +304,21 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                     }
                 }
             }
+        }
+
+        public static bool webRefExists(WebReferenceUrl webUrl, ICollection<WebReferenceUrl> webReferenceUrls)
+        {
+            bool webRefExists = false;
+
+            foreach (WebReferenceUrl w in webReferenceUrls)
+            {
+                if (w.RelPath == webUrl.RelPath)
+                {
+                    webRefExists = true;
+                }
+            }
+
+            return webRefExists;
         }
 
         private static void DigestBuildProperties(Project project, ProjectDigest projectDigest)

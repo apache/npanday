@@ -115,6 +115,7 @@ namespace NPanday.VisualStudio.Addin
         public const string MSG_C_ERROR = "Error";
         public const string MSG_C_ALL_PROJECTS = "All NPanday Projects";
         public const string MSG_C_CUR_PROJECT = "Current NPanday Project";
+        public const string MSG_D_WEB_REF = "Web References";
     }
     public class NPandayBuildSystemProperties : System.ComponentModel.ISynchronizeInvoke
     {
@@ -193,6 +194,14 @@ namespace NPanday.VisualStudio.Addin
             if (_applicationObject != null && projectItem!= null)
             {
                 PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+
+                // add web configuration
+
+                string webRef = getWebReference(projectItem);
+                if (webRef != null)
+                {
+                    addWebReference(pomUtil, projectItem.Name, Messages.MSG_D_WEB_REF + "\\" + projectItem.Name + "\\" + webRef, string.Empty);
+                }                
 
                 //determine which plugin the projectItem belongs to
 
@@ -293,7 +302,20 @@ namespace NPanday.VisualStudio.Addin
 
         }
 
+        private static string getWebReference(ProjectItem projectItem)
+        {
+            string projectPath = Path.GetDirectoryName(projectItem.ContainingProject.FullName);
+            string path = projectPath + "\\" + Messages.MSG_D_WEB_REF + "\\" + projectItem.Name;
+ 
+            string[] files = Directory.GetFiles(path, "*.wsdl");
+ 
+            if (files.Length > 0)
+            {
+                return Path.GetFileName(files[0]);
+            }
 
+            return null;
+        }
 
         #endregion
         static bool projectRefEventLoaded;
@@ -849,12 +871,22 @@ namespace NPanday.VisualStudio.Addin
 
                 PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
 
-                pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty);
-
+                pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty);              
+                //addWebReference(pomUtil, e.Namespace, e.WsdlFile, string.Empty);
+ 
             }
             catch (Exception ex)
             {
                 outputWindowPane.OutputString("\nError on webservice create: " + ex.Message);
+            }
+        }
+
+        void addWebReference(PomHelperUtility pomUtil, string name, string path, string output)
+        {
+            //lock (typeof(PomHelperUtility))
+            lock(this)
+            {
+                pomUtil.AddWebReference(name, path, output);
             }
         }
 
