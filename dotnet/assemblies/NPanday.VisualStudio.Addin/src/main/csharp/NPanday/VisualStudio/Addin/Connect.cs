@@ -883,8 +883,7 @@ namespace NPanday.VisualStudio.Addin
 
         void addWebReference(PomHelperUtility pomUtil, string name, string path, string output)
         {
-            //lock (typeof(PomHelperUtility))
-            lock(this)
+            lock (typeof(PomHelperUtility))
             {
                 pomUtil.AddWebReference(name, path, output);
             }
