@@ -21,6 +21,8 @@ namespace NPanday.Utils
     {
 
         private FileInfo pom;
+        public bool isWebRefEmpty = false;
+
         GacUtility gacUtil = new GacUtility();
 
         public PomHelperUtility(Solution solution, Project project)
@@ -1040,7 +1042,6 @@ namespace NPanday.Utils
                     }
                 }
             }
-
             WriteModelToPom(model);
         }
 
@@ -1577,6 +1578,8 @@ namespace NPanday.Utils
             }
             return null;
         }
+
+
         #endregion
         #region RemoveWebReference
         public void RemoveWebReference(string path, string name)
@@ -1589,6 +1592,11 @@ namespace NPanday.Utils
                     if (isWsdlPlugin(plugin))
                     {
                         removeWebConfiguration(plugin, name);
+
+                        if (!isWebRefEmpty)
+                        {
+                            WriteModelToPom(model);
+                        }
                     }
 
                     if ("npanday.plugin".Equals(plugin.groupId.ToLower())
@@ -1628,17 +1636,18 @@ namespace NPanday.Utils
                     }
                 }
             }
-            WriteModelToPom(model);
 
         }
 
         void removeWebConfiguration(Plugin plugin, string name)
         {
+            
             if (string.IsNullOrEmpty(name))
             {
                 //nothing to remove
                 return;
             }
+
             XmlElement[] elems;
             if (plugin.configuration.Any != null)
             {
@@ -1651,10 +1660,6 @@ namespace NPanday.Utils
                     if (!string.IsNullOrEmpty(elem.Name) &&
                         elem.Name.ToLower().Equals("webreferences"))
                     {
-                        foreach (XmlNode node in elem.GetElementsByTagName("webreference"))
-                        {
-                            Console.WriteLine(node.Name);
-                        }
                         foreach (XmlNode node in elem.ChildNodes)
                         {
                             if (node.Name.ToLower().Equals("webreference"))
@@ -1672,15 +1677,23 @@ namespace NPanday.Utils
                         }
                     }
                     if (removeMe != null)
+                    {
                         elem.RemoveChild(removeMe);
+                    }
+                    if (elem.InnerText.Equals(string.Empty))
+                    {
+                        isWebRefEmpty = true;
+                    }
+
                 }
 				
-				if (IsWebReferenceEmpty())
+                if(isWebRefEmpty)
                 {
                     DeletePlugin(plugin);
                 }
                
             }
+
         }
         #endregion
         #region RenameWebReference

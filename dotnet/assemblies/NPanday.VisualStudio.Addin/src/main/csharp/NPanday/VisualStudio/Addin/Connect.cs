@@ -264,6 +264,19 @@ namespace NPanday.VisualStudio.Addin
                 {
                     PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
 
+                    // remove web reference configuration in pom.xml when using "Exclude in Project"
+
+                    string webRef = getWebReference(projectItem);
+                    if (webRef != null)
+                    {
+                        string projectPath = Path.GetDirectoryName(projectItem.ContainingProject.FullName);
+                        string path = projectPath + "\\" + Messages.MSG_D_WEB_REF + "\\" + projectItem.Name;
+
+                        pomUtil.RemoveWebReference(path, projectItem.Name);
+                        
+                    }                
+
+
                     if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
                     {
                         //change addpluginConfiguration to accept xmlElement instead
