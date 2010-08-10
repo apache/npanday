@@ -669,6 +669,8 @@ public final class ProjectDaoImpl
                             artifactResolver.resolve( pomArtifact, artifactRepositories,
                                                       localArtifactRepository );
 
+                            projectDependency.setResolved( true );                          
+                                                      
                             logger.info( "NPANDAY-180-024: resolving pom artifact: " + pomArtifact.toString() );
                             snapshotVersion = pomArtifact.getVersion();
 
@@ -728,7 +730,10 @@ public final class ProjectDaoImpl
                                                            + projectDependency.getArtifactId() + ":"
                                                            + projectDependency.getVersion() );
                             }
-                            modelDependencies.add( model );
+                            if( model.getArtifactId().equals( projectDependency.getArtifactId() ) && projectDependency.isResolved() )
+                            {
+                                modelDependencies.add( model );
+                            }
                         }
 
                     }
@@ -750,6 +755,8 @@ public final class ProjectDaoImpl
                             artifactResolver.resolve( assembly, artifactRepositories,
                                                       localArtifactRepository );
 
+                            projectDependency.setResolved( true );
+                            
                             if ( assembly != null && assembly.getFile().exists() )
                             {
                                 uacFile.getParentFile().mkdirs();
