@@ -52,6 +52,16 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // change the outputDirectory of the plugin
             Plugin compilePlugin = FindPlugin("npanday.plugin", "maven-compile-plugin");
             AddPluginConfiguration(compilePlugin, "outputDirectory", "bin");
+			
+            // add msbuild plugin config in pom if there's a maven-resgen-plugin but no msbuild config 
+            // generates resources in target/bin folder
+			
+            if ((FindPlugin("npanday.plugin", "maven-resgen-plugin")) != null && (FindPlugin("npanday.plugin", "NPanday.Plugin.Msbuild.JavaBinding")) == null)
+            {
+                Plugin msbuildPlugin = AddPlugin("npanday.plugin", "NPanday.Plugin.Msbuild.JavaBinding");
+                AddPluginExecution(msbuildPlugin, "compile", "validate");
+            }
+			
 
             if (writePom)
             {

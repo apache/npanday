@@ -518,7 +518,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             foreach (Plugin plugin in model.build.plugins)
             {
-                if (groupId.Equals(plugin.groupId) && artifactId.Equals(plugin.artifactId))
+                if (groupId.ToLower().Equals(plugin.groupId.ToLower()) && artifactId.ToLower().Equals(plugin.artifactId.ToLower()))
                 {
                     if (!string.IsNullOrEmpty(version) && version.Equals(plugin.version))
                     {
