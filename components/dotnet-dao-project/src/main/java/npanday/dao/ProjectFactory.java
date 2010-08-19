@@ -18,24 +18,22 @@
  */
 package npanday.dao;
 
+import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
-import org.apache.maven.model.Model;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Parent;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.versioning.VersionRange;
-import npanday.ArtifactType;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.codehaus.plexus.util.FileUtils;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.logging.Logger;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Class for creating Project/ProjectDependency objects.
@@ -220,43 +218,6 @@ public final class ProjectFactory
                 + project.getArtifactId() + File.separator +
                 project.getVersion() + "__" + project.getGroupId() + File.separator + project.getArtifactId() + "." +
                 ArtifactType.getArtifactTypeForPackagingName( project.getArtifactType() ).getExtension() );
-
-        assembly.setFile( artifactFile );
-        return assembly;
-    }
-
-    /**
-     * Creates an artifact using information from the specified project dependency.
-     *
-     * @param projectDependency a project dependency to use as the source of the returned artifact
-     * @param artifactFactory   artifact factory used to create the artifact
-     * @return an artifact using information from the specified project dependency
-     */
-    public static Artifact createArtifactFrom( ProjectDependency projectDependency, ArtifactFactory artifactFactory )
-    {
-        logAndVerifyProjectParameters( projectDependency );
-
-        String scope = ( projectDependency.getScope() == null ) ? Artifact.SCOPE_COMPILE : projectDependency.getScope();
-        Artifact assembly = artifactFactory.createDependencyArtifact( projectDependency.getGroupId(),
-                                                                      projectDependency.getArtifactId(),
-                                                                      VersionRange.createFromVersion(
-                                                                          projectDependency.getVersion() ),
-                                                                      projectDependency.getArtifactType(),
-                                                                      projectDependency.getPublicKeyTokenId(), scope,
-                                                                      null );
-        //System.out.println("Scope = " + assembly.getScope() + ", Type = " + assembly.getType() + ", Classifier = " + assembly.getClassifier());
-        // TODO: Use PathUtil!
-        File artifactFile = ( ( ArtifactTypeHelper.isDotnetAnyGac( projectDependency.getArtifactType()) ) ) ? new File(
-            "C:\\WINDOWS\\assembly\\" + projectDependency.getArtifactType() + File.separator + projectDependency.getArtifactId() +
-                File.separator + projectDependency.getVersion() + "__" + projectDependency.getPublicKeyTokenId() + File.separator +
-                projectDependency.getArtifactId() + ".dll" ) : new File( System.getProperty( "user.home" ),
-                                                                         File.separator + ".m2" +File.separator + "uac" + File.separator + "gac_msil" +File.separator +
-                                                                             projectDependency.getArtifactId() + File.separator +
-                                                                             projectDependency.getVersion() + "__" +
-                                                                             projectDependency.getGroupId() + File.separator +
-                                                                             projectDependency.getArtifactId() + "." +
-                                                                             ArtifactType.getArtifactTypeForPackagingName(
-                                                                                 projectDependency.getArtifactType() ).getExtension() );
 
         assembly.setFile( artifactFile );
         return assembly;

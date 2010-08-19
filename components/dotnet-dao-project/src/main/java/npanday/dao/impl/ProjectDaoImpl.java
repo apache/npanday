@@ -36,6 +36,7 @@ import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
@@ -264,7 +265,7 @@ public final class ProjectDaoImpl
 
         ValueFactory valueFactory = rdfRepository.getValueFactory();
 
-        Project project = new ProjectDependency();
+        ProjectDependency project = new ProjectDependency();
         project.setArtifactId( artifactId );
         project.setGroupId( groupId );
         project.setVersion( version );
@@ -295,8 +296,7 @@ public final class ProjectDaoImpl
             {
                 if ( artifactType != null && ArtifactTypeHelper.isDotnetAnyGac( artifactType ) )
                 {
-                    Artifact artifact =
-                        ProjectFactory.createArtifactFrom( (ProjectDependency) project, artifactFactory );
+                    Artifact artifact = createArtifactFrom( project, artifactFactory );
                     if ( !artifact.getFile().exists() )
                     {
                         throw new IOException( "NPANDAY-180-003: Could not find GAC assembly: Group ID = " + groupId
@@ -488,6 +488,8 @@ public final class ProjectDaoImpl
 
             for ( ProjectDependency projectDependency : project.getProjectDependencies() )
             {
+                Artifact assembly = createArtifactFrom( projectDependency, artifactFactory );
+
                 snapshotVersion = null;
                 
                 logger.finest( "NPANDAY-180-011: Project Dependency: Artifact ID = "
@@ -502,7 +504,6 @@ public final class ProjectDaoImpl
                     {
                         projectDependency.setSystemPath( generateDependencySystemPath( projectDependency ) );
                     }
-                    Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
 
                     File dependencyFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
                     if ( !dependencyFile.exists() )
@@ -529,7 +530,6 @@ public final class ProjectDaoImpl
                             + ", Artiract ID = " + projectDependency.getArtifactId() );
                     }
 
-                    Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
                     assembly.setFile( f );
                     assembly.setResolved( true );
                     artifactDependencies.add( assembly );
@@ -565,7 +565,6 @@ public final class ProjectDaoImpl
                             + projectDependency.getArtifactId() );
                     }
 
-                    Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
                     assembly.setFile( f );
                     assembly.setResolved( true );
                     artifactDependencies.add( assembly );
@@ -599,7 +598,6 @@ public final class ProjectDaoImpl
                                 projectDependency.setSystemPath( generateDependencySystemPath( projectDependency ) );
                             }
                             File f = new File( projectDependency.getSystemPath() );
-                            Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
                             assembly.setFile( f );
                             assembly.setResolved( true );
                             artifactDependencies.add( assembly );
@@ -617,18 +615,15 @@ public final class ProjectDaoImpl
                     {
                         try
                         {
-                            Project dep =
-                                this.getProjectFor( projectDependency.getGroupId(), projectDependency.getArtifactId(),
-                                                    projectDependency.getVersion(),
-                                                    projectDependency.getArtifactType(),
-                                                    projectDependency.getPublicKeyTokenId() );
-                            if ( dep.isResolved() )
+                            // re-resolve snapshots
+                            if ( !assembly.isSnapshot() )
                             {
-                                Artifact assembly =
-                                    ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
-
-                                // re-resolve snapshots
-                                if ( !assembly.isSnapshot() )
+                                Project dep =
+                                    this.getProjectFor( projectDependency.getGroupId(), projectDependency.getArtifactId(),
+                                                        projectDependency.getVersion(),
+                                                        projectDependency.getArtifactType(),
+                                                        projectDependency.getPublicKeyTokenId() );
+                                if ( dep.isResolved() )
                                 {
                                     projectDependency = (ProjectDependency) dep;
                                     artifactDependencies.add( assembly );
@@ -638,7 +633,6 @@ public final class ProjectDaoImpl
                                                                                                   cache );
                                     artifactDependencies.addAll( deps );
                                 }
-
                             }
                         }
                         catch ( IOException e )
@@ -650,7 +644,6 @@ public final class ProjectDaoImpl
 
                 if ( !projectDependency.isResolved() )
                 {
-                    Artifact assembly = ProjectFactory.createArtifactFrom( projectDependency, artifactFactory );
                     if ( assembly.getType().equals( "jar" ) )
                     {
                         logger.info( "Detected jar dependency - skipping: Artifact Dependency ID = "
@@ -1254,6 +1247,64 @@ public final class ProjectDaoImpl
         {
             throw new Exception( "NPANDAY-040-002: Could not execute: Command = " + commandline.toString() );
         }
+    }
+
+    /**
+     * Creates an artifact using information from the specified project dependency.
+     *
+     * @param projectDependency a project dependency to use as the source of the returned artifact
+     * @param artifactFactory   artifact factory used to create the artifact
+     * @return an artifact using information from the specified project dependency
+     */
+    private static Artifact createArtifactFrom( ProjectDependency projectDependency, ArtifactFactory artifactFactory )
+    {
+        String groupId = projectDependency.getGroupId();
+        String artifactId = projectDependency.getArtifactId();
+        String version = projectDependency.getVersion();
+        String artifactType = projectDependency.getArtifactType();
+        String scope = ( projectDependency.getScope() == null ) ? Artifact.SCOPE_COMPILE : projectDependency.getScope();
+        String publicKeyTokenId = projectDependency.getPublicKeyTokenId();
+
+        if ( groupId == null )
+        {
+            logger.warning( "NPANDAY-180-001: Project Group ID is missing" );
+        }
+        if ( artifactId == null )
+        {
+            logger.warning( "NPANDAY-180-002: Project Artifact ID is missing: Group Id = " + groupId );
+        }
+        if ( version == null )
+        {
+            logger.warning( "NPANDAY-180-003: Project Version is missing: Group Id = " + groupId +
+                ", Artifact Id = " + artifactId );
+        }
+        if ( artifactType == null )
+        {
+            logger.warning( "NPANDAY-180-004: Project Artifact Type is missing: Group Id" + groupId +
+                ", Artifact Id = " + artifactId + ", Version = " + version );
+        }
+
+        Artifact assembly = artifactFactory.createDependencyArtifact( groupId, artifactId,
+                                                                      VersionRange.createFromVersion( version ),
+                                                                      artifactType, publicKeyTokenId, scope,
+                                                                      null );
+        // TODO: Use PathUtil!
+        File artifactFile = ArtifactTypeHelper.isDotnetAnyGac( artifactType ) ? new File(
+            "C:\\WINDOWS\\assembly\\" + artifactType + File.separator + artifactId + File.separator + version + "__" +
+                publicKeyTokenId + File.separator + artifactId + ".dll" ) : new File( System.getProperty( "user.home" ),
+                                                                                      File.separator + ".m2" +
+                                                                                          File.separator + "uac" +
+                                                                                          File.separator + "gac_msil" +
+                                                                                          File.separator + artifactId +
+                                                                                          File.separator + version +
+                                                                                          "__" + groupId +
+                                                                                          File.separator + artifactId +
+                                                                                          "." +
+                                                                                          ArtifactType.getArtifactTypeForPackagingName(
+                                                                                              artifactType ).getExtension() );
+
+        assembly.setFile( artifactFile );
+        return assembly;
     }
 
     /**
