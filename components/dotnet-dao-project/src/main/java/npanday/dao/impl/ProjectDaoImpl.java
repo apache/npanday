@@ -20,74 +20,67 @@ package npanday.dao.impl;
 
 import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
-import npanday.dao.ProjectDao;
-import npanday.dao.ProjectUri;
-import npanday.dao.ProjectFactory;
+import npanday.PathUtil;
 import npanday.dao.Project;
+import npanday.dao.ProjectDao;
 import npanday.dao.ProjectDependency;
+import npanday.dao.ProjectFactory;
+import npanday.dao.ProjectUri;
 import npanday.dao.Requirement;
 import npanday.registry.RepositoryRegistry;
-import npanday.PathUtil;
-import org.apache.maven.project.MavenProject;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.manager.WagonManager;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.wagon.TransferFailedException;
-import org.apache.maven.wagon.ResourceDoesNotExistException;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.Model;
-
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.vocabulary.RDF;
-
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.Repository;
-import org.openrdf.OpenRDFException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.Binding;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
 import org.codehaus.plexus.util.cli.Commandline;
 import org.codehaus.plexus.util.cli.DefaultConsumer;
 import org.codehaus.plexus.util.cli.StreamConsumer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.codehaus.plexus.util.FileUtils;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileReader;
-import java.io.EOFException;
-import java.lang.ExceptionInInitializerError;
-import java.net.URISyntaxException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import org.openrdf.OpenRDFException;
+import org.openrdf.model.URI;
+import org.openrdf.model.Value;
+import org.openrdf.model.ValueFactory;
+import org.openrdf.model.vocabulary.RDF;
+import org.openrdf.query.Binding;
+import org.openrdf.query.BindingSet;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.QueryLanguage;
+import org.openrdf.query.TupleQuery;
+import org.openrdf.query.TupleQueryResult;
+import org.openrdf.repository.Repository;
+import org.openrdf.repository.RepositoryConnection;
+import org.openrdf.repository.RepositoryException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 public final class ProjectDaoImpl
     implements ProjectDao
@@ -414,6 +407,21 @@ public final class ProjectDaoImpl
                                                              List<ArtifactRepository> artifactRepositories )
         throws IOException, IllegalArgumentException
     {
+        return storeProjectAndResolveDependencies( project, localRepository, artifactRepositories,
+                                                   new HashMap<String, Set<Artifact>>() );
+    }
+
+    public Set<Artifact> storeProjectAndResolveDependencies( Project project, File localRepository,
+                                                             List<ArtifactRepository> artifactRepositories,
+                                                             Map<String, Set<Artifact>> cache )
+        throws IOException, IllegalArgumentException
+    {
+        String key = getKey( project );
+        if ( cache.containsKey( key ) )
+        {
+            return cache.get( key );
+        }
+
         long startTime = System.currentTimeMillis();
         String snapshotVersion;
 
@@ -475,7 +483,7 @@ public final class ProjectDaoImpl
                         + parentProject.getVersion() + ":" + project.getArtifactType() );
                 repositoryConnection.add( id, parent, pid );
                 artifactDependencies.addAll( storeProjectAndResolveDependencies( parentProject, null,
-                                                                                 artifactRepositories ) );
+                                                                                 artifactRepositories, cache ) );
             }
 
             for ( ProjectDependency projectDependency : project.getProjectDependencies() )
@@ -626,7 +634,8 @@ public final class ProjectDaoImpl
                                     artifactDependencies.add( assembly );
                                     Set<Artifact> deps = this.storeProjectAndResolveDependencies( projectDependency,
                                                                                                   localRepository,
-                                                                                                  artifactRepositories );
+                                                                                                  artifactRepositories,
+                                                                                                  cache );
                                     artifactDependencies.addAll( deps );
                                 }
 
@@ -826,14 +835,22 @@ public final class ProjectDaoImpl
         for ( Model model : modelDependencies )
         {
             // System.out.println( "Storing dependency: Artifact Id = " + model.getArtifactId() );
-            artifactDependencies.addAll( storeProjectAndResolveDependencies( ProjectFactory.createProjectFrom( model,
-                                                                                                               null ),
-                                                                             localRepository, artifactRepositories ) );
+            Project projectModel = ProjectFactory.createProjectFrom( model, null );
+            artifactDependencies.addAll( storeProjectAndResolveDependencies( projectModel, localRepository,
+                                                                             artifactRepositories, cache ) );
         }
         logger.finest( "NPANDAY-180-022: ProjectDao.storeProjectAndResolveDependencies - Artifact Id = "
             + project.getArtifactId() + ", Time = " + ( System.currentTimeMillis() - startTime ) + ", Count = "
             + storeCounter++ );
+
+        cache.put( key, artifactDependencies );
+
         return artifactDependencies;
+    }
+
+    private String getKey( Project project )
+    {
+        return project.getGroupId() + ":" + project.getArtifactId() + ":" + project.getVersion();
     }
 
     public Set<Artifact> storeModelAndResolveDependencies( Model model, File pomFileDirectory,
