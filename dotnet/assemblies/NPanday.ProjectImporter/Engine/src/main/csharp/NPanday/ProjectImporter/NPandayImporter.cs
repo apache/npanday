@@ -112,11 +112,11 @@ namespace NPanday.ProjectImporter
             {
                 string holder;
                 if (project.ContainsKey("ProjectFullPath"))
-                { 
+                {
                     holder = (string)project["ProjectFullPath"];
                     if (holder.Contains("..\\"))
                     {
-                        throw new Exception( "Invalid folder structure for project " + project + "; it's path contains '..': " + holder );
+                        throw new Exception( "Invalid folder structure for project." + " One of it's path contains '..' : " + holder);
                     }
                 }
             }
