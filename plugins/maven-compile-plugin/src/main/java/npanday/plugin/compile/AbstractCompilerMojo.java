@@ -48,6 +48,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import java.util.List;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.*;
 
 /**
  * Abstract Class for compile mojos for both test-compile and compile.
@@ -767,7 +770,7 @@ public abstract class AbstractCompilerMojo
 		}
 	}
 
-	private void updateProjectVersion(String assemblyInfoFile, String ver)
+	private void updateProjectVersion(String assemblyInfoFile, String ver, String dirtyVersion)
 	{
 		try
 		{
@@ -779,8 +782,60 @@ public abstract class AbstractCompilerMojo
 			}
 			String contents = getContents(new File(assemblyInfoFile));
 			
-			//check for version
-			String checkVersion = "AssemblyFileVersion(\""+ver;
+			//add build number from Hudson (if any)
+			String buildNumber = System.getenv("BUILD_NUMBER");// just for Hudson
+			String fullVer = buildNumber != null && buildNumber.length() != 0 ? ver + "." + buildNumber : ver;
+			
+			//check for assembly version
+			Boolean atrIsCSharp = assemblyInfoFile.indexOf(".cs") != -1;
+			Pattern atrPattern = Pattern.compile("AssemblyVersion\\(.*\\)");
+			Matcher m = atrPattern.matcher(contents);
+			if(m.find()) //we have some record already, so change it
+			{
+				m.reset();
+				contents = m.replaceAll("AssemblyVersion(\""+fullVer+"\")");
+			}
+			else //add new
+			{
+				if (atrIsCSharp)
+					contents += "[assembly: AssemblyVersion(\""+fullVer+"\")]";
+				else
+					contents += "<Assembly: AssemblyVersion(\""+fullVer+"\")>";
+			}
+			
+			
+			//check for assembly file version
+			atrPattern = Pattern.compile("AssemblyFileVersion\\(.*\\)");
+			m = atrPattern.matcher(contents);
+			if(m.find()) //we have some record already, so change it
+			{
+				m.reset();
+				contents = m.replaceAll("AssemblyFileVersion(\""+fullVer+"\")");
+			}
+			else //add new
+			{
+				if (atrIsCSharp)
+					contents += "[assembly: AssemblyFileVersion(\""+fullVer+"\")]";
+				else
+					contents += "<Assembly: AssemblyFileVersion(\""+fullVer+"\")>";
+			}
+			
+			//check for assembly informational version
+			atrPattern = Pattern.compile("AssemblyInformationalVersion\\(.*\\)");
+			m = atrPattern.matcher(contents);
+			if(m.find()) //we have some record already, so change it
+			{
+				m.reset();
+				contents = m.replaceAll("AssemblyInformationalVersion(\""+dirtyVersion+"\")");
+			}
+			else //add new
+			{
+				if (atrIsCSharp)
+					contents += "[assembly: AssemblyInformationalVersion(\""+dirtyVersion+"\")]";
+				else
+					contents += "<Assembly: AssemblyInformationalVersion(\""+dirtyVersion+"\")>";
+			}
+			/*String checkVersion = "AssemblyFileVersion(\""+ver;
 			//modify AssemblyFileInfo if version is different in the pom.
 			if(contents.lastIndexOf(checkVersion)==-1)
 			{
@@ -800,11 +855,15 @@ public abstract class AbstractCompilerMojo
 						setContents(new File(assemblyInfoFile),contents);
 					}
 				}
-			}
+			}*/
+			
+			setContents(new File(assemblyInfoFile),contents);
 		}
 		catch(Exception e)
 		{
+		//setContents(new File(assemblyInfoFile),contents);
 			System.out.println("[Error] Problem with updating Project File Version");
+			e.printStackTrace();
 		}
 	}
 	
@@ -884,6 +943,7 @@ public abstract class AbstractCompilerMojo
 				//get versions in specific project path if executed with CURRENT project option
 				List<String> versions = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","version");
 				ver = versions.get(0);
+				String durtyVer = ver;
 				
 				//added checking for flat single modules with parent pom
 				List<String> parent = readPomAttribute(currentWorkingDir+File.separator+"pom.xml","parent");
@@ -892,6 +952,7 @@ public abstract class AbstractCompilerMojo
 				if(hasArtifactVersion(new File(currentWorkingDir+File.separator+"pom.xml")))
 				{
 					ver = versions.get(1);
+					durtyVer = ver;
 					ver = filterVersion(ver);
 				}
 				else
@@ -905,7 +966,7 @@ public abstract class AbstractCompilerMojo
 				{
 					assemblyInfoFile = currentWorkingDir+File.separator+"My Project"+File.separator+"AssemblyInfo.vb";
 				}
-				updateProjectVersion(assemblyInfoFile,ver);				
+				updateProjectVersion(assemblyInfoFile,ver, durtyVer);				
 			}
 			//parent pom
 			else
@@ -920,11 +981,13 @@ public abstract class AbstractCompilerMojo
 						//get versions in parent path if executed with ALL project option
 						List<String> versions = readPomAttribute(childDir+File.separator+"pom.xml","version");
 						ver = versions.get(0);
+						String durtyVer = ver;
 				
 						//checking if artifact has its own version
 						if(hasArtifactVersion(new File(childDir+File.separator+"pom.xml")))
 						{
 							ver = versions.get(1);
+							durtyVer = ver;
 							ver = filterVersion(ver);
 						}
 						else
@@ -940,7 +1003,7 @@ public abstract class AbstractCompilerMojo
 							{
 								assemblyInfoFile = childDir+File.separator+"My Project"+File.separator+"AssemblyInfo.vb";
 							}
-							updateProjectVersion(assemblyInfoFile,ver);		
+							updateProjectVersion(assemblyInfoFile,ver, durtyVer);		
 						}
 						catch(Exception e)
 						{
