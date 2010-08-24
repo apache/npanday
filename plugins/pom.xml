@@ -80,21 +80,7 @@ under the License.
     </dependency>
   </dependencies>  
   <build> 
-    <plugins> 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>emma-maven-plugin</artifactId>
-        <version>1.0-alpha-2</version>
-        <inherited>true</inherited>
-        <executions>
-            <execution>
-                <phase>install</phase>
-                <goals>
-                    <goal>emma</goal>
-                </goals>
-            </execution>
-        </executions>
-      </plugin>
+    <plugins>
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>  
         <artifactId>maven-surefire-plugin</artifactId>  
