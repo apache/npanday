@@ -123,10 +123,9 @@ class CompileLifecycleMap extends LifecycleMap
 			b.process_resources (default_process_resources)
 			b.compile (np_compile)
 			b.test_compile (np_test_compile)
-			b.deploy ('npanday.plugin:maven-mojo-generator-plugin:generate-bindings')
 			b.test (np_test)
 			b.install (default_install)
-			b.deploy (mv_deploy)
+			b.deploy ('npanday.plugin:maven-mojo-generator-plugin:generate-bindings')
 		}
 		forType( ArtifactType.VISUAL_STUDIO_ADDIN ) {
 			LifecycleMappingBuilder b->
