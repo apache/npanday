@@ -29,8 +29,10 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Map.Entry;
 
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Provides services for writing out the AssemblyInfo entries using the bracket convention [assembly:
@@ -75,6 +77,25 @@ final class DefaultAssemblyInfoMarshaller
         {
             sb.append( createEntry( "KeyFile", assemblyInfo.getKeyFile().getAbsolutePath().replace( "\\", "\\\\" ) ) );
         }
+
+        boolean wroteCustomStringAttribute = false;
+        for(Entry<String, String> e: assemblyInfo.getCustomStringAttributes().entrySet()) {
+            if(StringUtils.isEmpty(e.getValue()))
+                continue;
+            sb.append(createCustomStringEntry(e.getKey(), e.getValue()));
+            wroteCustomStringAttribute = true;
+        }
+        
+        if(wroteCustomStringAttribute) {
+            final String customClass = "\n" + //
+                "[System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]\n" + //
+                "class CustomStringAttribute : System.Attribute {\n" + //
+                "  public CustomStringAttribute(string name, string value) {\n" + //
+                "  }\n" + // 
+                "}\n"; //
+            sb.append(customClass);
+        }
+        
         FileOutputStream man = null;
         try
         {
@@ -210,5 +231,10 @@ final class DefaultAssemblyInfoMarshaller
         sb.append( "[assembly: Assembly" ).append( name ).append( "(\"" ).append( value ).append( "\")]" ).append(
             "\r\n" );
         return sb.toString();
+    }
+
+    private String createCustomStringEntry( String name, String value )
+    {
+        return "[assembly: CustomStringAttribute(\"" + name + "\", \"" + value + "\")]\r\n";
     }
 }

@@ -26,7 +26,9 @@ import org.codehaus.plexus.util.FileUtils;
 
 import java.io.IOException;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import npanday.InitializationException;
 import npanday.vendor.*;
@@ -109,7 +111,7 @@ public class AssemblyInfoGeneratorMojo
 
     /**
      * @component
-     */
+     */ 
     private AssemblerContext assemblerContext;
 
     /**
@@ -117,6 +119,10 @@ public class AssemblyInfoGeneratorMojo
      */
     private npanday.vendor.StateMachineProcessor stateMachineProcessor;
 
+    /**
+     * @parameter
+     */
+    protected Map assemblyInfo = new HashMap();
 
     /**
      * If an AssemblyInfo file exists in the source directory, then this method will not generate an AssemblyInfo.
@@ -172,6 +178,8 @@ public class AssemblyInfoGeneratorMojo
         }
 
         AssemblyInfo assemblyInfo = assemblerContext.getAssemblyInfo();
+        assemblyInfo.setCustomStringAttributes(this.assemblyInfo);
+
         try
         {
             stateMachineProcessor.process( vendorInfo );

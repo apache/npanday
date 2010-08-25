@@ -19,6 +19,7 @@
 package npanday.assembler;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * Provides the information to be included within the assembly. Class can be extended to add additional assembly info
@@ -82,6 +83,8 @@ public class AssemblyInfo
 
     private File keyFile;
 
+    private Map<String, String> customStringAttributes;
+    
     /**
      * Default constructor
      */
@@ -231,6 +234,15 @@ public class AssemblyInfo
         this.configuration = configuration;
     }
 
+    public Map<String, String> getCustomStringAttributes()
+    {
+        return customStringAttributes;
+    }
+
+    public void setCustomStringAttributes(Map<String, String> attributes)
+    {
+        this.customStringAttributes = attributes;
+    }
 
     public boolean equals( Object o )
     {
