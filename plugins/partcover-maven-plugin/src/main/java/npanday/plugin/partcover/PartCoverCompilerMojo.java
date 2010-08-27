@@ -16,10 +16,8 @@ package npanday.plugin.partcover;
  * limitations under the License.
  */
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -30,7 +28,7 @@ import java.io.IOException;
 /**
  * Goal which generates the xml report of Part Cover
  *
- * @goal pcover
+ * @goal generate
  * 
  * @phase package
  */
@@ -46,7 +44,7 @@ public class PartCoverCompilerMojo
 		
     /**
      * Base Directory where all reports are written to
-     * @parameter expression="${siteOutputDirectory}" default-value="${project.build.directory}/partcover-reports"
+     * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/partcover-reports"
      */
     private File outputDirectory;
 	
@@ -79,19 +77,13 @@ public class PartCoverCompilerMojo
 			    outputDirectory.mkdirs();
 			}
 	        		
-		    String line = " \"" +partCover + "\"" + " --target " + "\"" + nUnit + "\"" + " --target-args " + assemblyName + " --include [*]* --output " + outputDirectory + "\\coverage.xml";
+		    String line = " \"" +partCover + "\"" + " --target " + "\"" + nUnit + "\"" + " --target-args " + assemblyName + " --include [*]* --output " + outputDirectory + "/coverage.xml";
 
-            CommandLine commandLine = CommandLine.parse( line );
-		    DefaultExecutor executor = new DefaultExecutor();
-            int exitValue = executor.execute( commandLine );
-		
-		    if ( exitValue != 0 )
-		    {
-		        throw new MojoExecutionException( "Problem executing coverage, return code " + exitValue );
-		    }			
-		
-		    FileUtils.forceDeleteOnExit( new File( project.getBasedir() + "\\partcover.driver.log" ) );
-		    FileUtils.forceDeleteOnExit( new File( project.getBasedir() + "\\TestResult.xml" ) );
+            int exitValue = executeCommandLine( line );
+            
+            // clean up		
+		    FileUtils.forceDeleteOnExit( new File( project.getBasedir(), "partcover.driver.log" ) );
+		    FileUtils.forceDeleteOnExit( new File( project.getBasedir(), "TestResult.xml" ) );
 	    }
 	
 	    catch ( ExecuteException e ) 

@@ -15,11 +15,9 @@ package npanday.plugin.partcover;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
+import org.apache.commons.exec.ExecuteException; 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
@@ -32,7 +30,7 @@ import eu.cedarsoft.utils.ZipExtractor;
 /**
  * Goal which converts xml to html for code coverage reports.
  *
- * @goal pconverter
+ * @goal convert
  * 
  * @phase package
  */
@@ -42,7 +40,7 @@ public class PartCoverConverterMojo
 	
     /**
      * Base Directory where all reports are written to
-     * @parameter expression="${siteOutputDirectory}" default-value="${project.build.directory}/partcover-reports"
+     * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/partcover-reports"
      */
     private File outputDirectory;
 	 
@@ -58,48 +56,55 @@ public class PartCoverConverterMojo
 	    try 
 	    {
 
-		    URL xsltFile = getClass().getResource( "/templates.zip" );
-			
-			File template = new File ( outputDirectory, "templates.zip" );
-			
-			try 
-			{
-			    FileUtils.copyURLToFile( xsltFile, template );
-			}
-			catch ( IOException e )
-			{
-			     throw new MojoExecutionException( "Unable to copy template to: " + e );
-			}
-			
-            extractZipTemplate( outputDirectory, template );
-	        String line = " \"" + msxsl + "\"" + " \"" + outputDirectory + "/coverage.xml" + "\" "  + " \"" + outputDirectory + "/templates/common-partcover-report.xslt" + "\"" + " -o " + " \"" + outputDirectory + "/templates/coverage.html\"";
+            // copy resources
             
-            System.out.println( "msxsl command: " + line);
-		
-            CommandLine commandLine = CommandLine.parse( line );
-		    DefaultExecutor executor = new DefaultExecutor();
-		    int exitValue = executor.execute( commandLine );
+            File templateFile = copyFileToOutputDirectory( "/templates.zip", "templates.zip" );
+            extractZip( templateFile, outputDirectory);
+            
+            copyFileToOutputDirectory( "/coverage-report.css", "coverage-report.css" );
+            
+            // convert xml result using xslt;            
+	        //String line = " \"" + msxsl + "\" \"" + outputDirectory + "/coverage.xml" \""  + outputDirectory + "/templates/common-partcover-report.xslt" -o \"" + outputDirectory + "/coverage.html\"";
+            
+            String line = " \"" + msxsl + "\" \"" + outputDirectory + "/coverage.xml\" \"" + outputDirectory
+                + "/templates/common-partcover-report.xslt\" -o  \"" + outputDirectory + "/coverage.html\"";
 
-            FileUtils.copyFileToDirectory( outputDirectory + "/templates/coverage-report.css", outputDirectory);
-		
+            int exitValue = executeCommandLine( line );
+            		
 		    if ( exitValue != 0 )
 		    {
 		        throw new MojoExecutionException( "Problem executing coverage, return code " + exitValue );
 		    }
 	    }
-
-	    catch ( ExecuteException e ) 
-	    {
+        catch ( ExecuteException e )
+        {
             throw new MojoExecutionException( "Problem executing coverage", e );
-        } 
-	  
-	    catch (IOException e ) 
-	    {
+        }
+        catch ( IOException e )
+        {
             throw new MojoExecutionException( "Problem executing coverage", e );
-        }    	   
+        }
     }
     
-    private void extractZipTemplate( File outputDirectory, File template )
+    private File copyFileToOutputDirectory( String resourcePath, String file )
+        throws MojoExecutionException
+    {
+        URL resourceUrl = getClass().getResource( resourcePath );
+        File outputFile = new File( outputDirectory, file );
+        
+        try
+        {
+            FileUtils.copyURLToFile( resourceUrl, outputFile );
+        }
+        catch ( IOException e )
+        {
+           throw new MojoExecutionException( "Unable to copy file to " + outputFile, e );
+        }
+
+        return outputFile;
+    }
+    
+    private void extractZip( File template, File outputDirectory )
         throws MojoExecutionException
     {
         try

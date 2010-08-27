@@ -16,14 +16,22 @@ package npanday.plugin.partcover;
  * limitations under the License.
  */
 
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteException;
 import org.apache.maven.plugin.AbstractMojo;
+
+import java.io.IOException;
 
 public abstract class AbstractPartCoverMojo
     extends AbstractMojo
 {
-    /**
-    * PartCover extensions to use
-    * @parameter
-    */
-    protected String[] extensions;
+    protected int executeCommandLine( String line )
+        throws ExecuteException, IOException
+    {
+        CommandLine commandLine = CommandLine.parse( line );
+        DefaultExecutor executor = new DefaultExecutor();
+        return executor.execute( commandLine );
+    }
+
 }
