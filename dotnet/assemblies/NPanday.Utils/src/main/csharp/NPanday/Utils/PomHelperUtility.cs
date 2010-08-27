@@ -1032,7 +1032,10 @@ namespace NPanday.Utils
                                 XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, "includeSource", @"http://maven.apache.org/POM/4.0.0");
 
                                 node.InnerText = GetRelativePath(pom.Directory, file);
-                                elem.AppendChild(node);
+                                if (!elem.InnerText.Contains(node.InnerText))
+                                {
+                                    elem.AppendChild(node);
+                                }
                             }
                             elems[count] = elem;
 
@@ -1561,7 +1564,10 @@ namespace NPanday.Utils
             }
             else
             {
-                elem.AppendChild(elem.OwnerDocument.ImportNode(node, true));
+                if (!elem.InnerText.Contains(name))
+                {
+                    elem.AppendChild(elem.OwnerDocument.ImportNode(node, true));
+                }
             }
 
 
@@ -1578,7 +1584,6 @@ namespace NPanday.Utils
             }
             return null;
         }
-
 
         #endregion
         #region RemoveWebReference
