@@ -134,7 +134,7 @@ namespace NPanday.VisualStudio.Addin
             // TODO: Probably we should use value of 
             // <metadata>/<versioning>/<lastUpdated> node from maven metadata xml file 
             // as an artifactTimestamp
-            var artifactTimestamp = new FileInfo(artifact.FileInfo.FullName).LastWriteTime;
+            DateTime artifactTimestamp = new FileInfo(artifact.FileInfo.FullName).LastWriteTime;
 
             if (!File.Exists(artifactFileName) ||
                 (artifactTimestamp.CompareTo(new FileInfo(artifactFileName).LastWriteTime) > 0))
