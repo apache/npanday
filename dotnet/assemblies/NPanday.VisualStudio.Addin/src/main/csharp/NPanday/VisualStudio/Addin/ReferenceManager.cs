@@ -130,10 +130,16 @@ namespace NPanday.VisualStudio.Addin
             
             //string artifactFileName = Path.Combine(artifactFolder, artifact.FileInfo.Name);
             string artifactFileName = Path.Combine(artifactFolder, artifact.ArtifactId+".dll");
-            
-            if (!File.Exists(artifactFileName))
+
+            // TODO: Probably we should use value of 
+            // <metadata>/<versioning>/<lastUpdated> node from maven metadata xml file 
+            // as an artifactTimestamp
+            var artifactTimestamp = new FileInfo(artifact.FileInfo.FullName).LastWriteTime;
+
+            if (!File.Exists(artifactFileName) ||
+                (artifactTimestamp.CompareTo(new FileInfo(artifactFileName).LastWriteTime) > 0))
             {
-                File.Copy(artifact.FileInfo.FullName, artifactFileName);
+                File.Copy(artifact.FileInfo.FullName, artifactFileName, true);
             }
             return artifactFileName;
         }
