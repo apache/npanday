@@ -979,7 +979,7 @@ namespace NPanday.Utils
                         "npanday.plugin",
                         "maven-wsdl-plugin",
                         null,
-                        true
+                        false
                         );
                     addPluginExecution(webReferencePlugin, "wsdl", null);
 
@@ -1032,10 +1032,7 @@ namespace NPanday.Utils
                                 XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, "includeSource", @"http://maven.apache.org/POM/4.0.0");
 
                                 node.InnerText = GetRelativePath(pom.Directory, file);
-                                if (!elem.InnerText.Contains(node.InnerText))
-                                {
-                                    elem.AppendChild(node);
-                                }
+                                elem.AppendChild(node);
                             }
                             elems[count] = elem;
 
@@ -1564,10 +1561,7 @@ namespace NPanday.Utils
             }
             else
             {
-                if (!elem.InnerText.Contains(name))
-                {
-                    elem.AppendChild(elem.OwnerDocument.ImportNode(node, true));
-                }
+                elem.AppendChild(elem.OwnerDocument.ImportNode(node, true));
             }
 
 
@@ -1710,6 +1704,43 @@ namespace NPanday.Utils
         }
         #endregion
 
+
+        //check if web reference is existing
+        public bool isWebRefExisting(string name)
+        {
+            bool exists = false;
+            StreamReader sr = new StreamReader(pom.FullName);
+            String temp = sr.ReadLine();
+
+            try
+            {
+                while (temp != null)
+                {
+                    if (temp.Contains(name + ".wsdl"))
+                    {
+                        exists = true;
+                        break;
+                    }
+                    temp = sr.ReadLine();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                try
+                {
+                    sr.Close();
+                    sr.Dispose();
+                }
+                catch
+                { }
+            }
+            return exists;
+
+        }
     }
 }
 

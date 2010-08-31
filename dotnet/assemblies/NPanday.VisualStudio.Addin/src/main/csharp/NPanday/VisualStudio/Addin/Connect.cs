@@ -198,7 +198,7 @@ namespace NPanday.VisualStudio.Addin
                 // add web configuration
 
                 string webRef = getWebReference(projectItem);
-                if (webRef != null)
+                if (webRef != null && !pomUtil.isWebRefExisting(projectItem.Name))
                 {
                     addWebReference(pomUtil, projectItem.Name, Messages.MSG_D_WEB_REF + "\\" + projectItem.Name + "\\" + webRef, string.Empty);
                 }                
