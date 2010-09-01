@@ -37,13 +37,13 @@ import eu.cedarsoft.utils.ZipExtractor;
 public class PartCoverConverterMojo
     extends AbstractPartCoverMojo
 { 
-	
+    
     /**
      * Base Directory where all reports are written to
      * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/partcover-reports"
      */
     private File outputDirectory;
-	 
+     
     /**
      * msxsl.exe File
      * @parameter expression="${msxsl}"
@@ -53,8 +53,8 @@ public class PartCoverConverterMojo
     public void execute()
         throws MojoExecutionException
     { 
-	    try 
-	    {
+        try 
+        {
 
             // copy resources
             
@@ -64,18 +64,17 @@ public class PartCoverConverterMojo
             copyFileToOutputDirectory( "/coverage-report.css", "coverage-report.css" );
             
             // convert xml result using xslt;            
-	        //String line = " \"" + msxsl + "\" \"" + outputDirectory + "/coverage.xml" \""  + outputDirectory + "/templates/common-partcover-report.xslt" -o \"" + outputDirectory + "/coverage.html\"";
-            
+      
             String line = " \"" + msxsl + "\" \"" + outputDirectory + "/coverage.xml\" \"" + outputDirectory
                 + "/templates/common-partcover-report.xslt\" -o  \"" + outputDirectory + "/coverage.html\"";
 
             int exitValue = executeCommandLine( line );
-            		
-		    if ( exitValue != 0 )
-		    {
-		        throw new MojoExecutionException( "Problem executing coverage, return code " + exitValue );
-		    }
-	    }
+                    
+            if ( exitValue != 0 )
+            {
+                throw new MojoExecutionException( "Problem executing coverage, return code " + exitValue );
+            }
+        }
         catch ( ExecuteException e )
         {
             throw new MojoExecutionException( "Problem executing coverage", e );

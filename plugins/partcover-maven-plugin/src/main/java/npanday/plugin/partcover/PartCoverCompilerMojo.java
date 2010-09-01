@@ -40,59 +40,70 @@ public class PartCoverCompilerMojo
      * @parameter expression="${assemblyName}"
      * @required
      */
-	private File assemblyName;
-		
+    private File assemblyName;
+        
     /**
      * Base Directory where all reports are written to
      * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/partcover-reports"
      */
     private File outputDirectory;
-	
-	/**
-	 * Nunit installed
-	 * @parameter expression="${nUnit}" 
+    
+    /**
+     * Nunit installed
+     * @parameter expression="${nUnit}" 
      */
     private File nUnit;	
-	
-	/**
-	 * PartCover installed
-	 * @parameter expression="${partCover}" 
-	 */
-	private File partCover;
-	
-	/** 
-	 * The maven project
-	 * @parameter expression="${project}"
-	 * @readonly
-	 */
-	protected MavenProject project;
-	
+    
+    /**
+     * PartCover installed
+     * @parameter expression="${partCover}" 
+     */
+    private File partCover;
+    
+    /** 
+     * The maven project
+     * @parameter expression="${project}"
+     * @readonly
+     */
+    protected MavenProject project;
+    
+    /** 
+     * @parameter expression="${include}" default-value="[*]*"
+     */
+    private String include;
+    
+    /**
+     * @parameter expression="${exclude}" default-value="[nunit*]*"
+     */
+    private String exclude;
+    
     public void execute()
         throws MojoExecutionException
     {
-	    try 
-	    {
-		    if ( !outputDirectory.exists() )
-			{
-			    outputDirectory.mkdirs();
-			}
-	        		
-		    String line = " \"" +partCover + "\"" + " --target " + "\"" + nUnit + "\"" + " --target-args " + assemblyName + " --include [*]* --output " + outputDirectory + "/coverage.xml";
-
+        try 
+        {
+            if ( !outputDirectory.exists() )
+            {
+                outputDirectory.mkdirs();
+            }
+                    
+            String line = " \"" +partCover + "\"" + " --target " + "\"" + nUnit + "\"" + " --target-args " + assemblyName + " --include " 
+                + include + " --exclude " + exclude + " --output " + outputDirectory + "/coverage.xml";
+    
             int exitValue = executeCommandLine( line );
             
-            // clean up		
-		    FileUtils.forceDeleteOnExit( new File( project.getBasedir(), "partcover.driver.log" ) );
-		    FileUtils.forceDeleteOnExit( new File( project.getBasedir(), "TestResult.xml" ) );
-	    }
-	
-	    catch ( ExecuteException e ) 
-	    {
+            // clean up 
+            FileUtils.forceDeleteOnExit( new File( project.getBasedir(), "partcover.driver.log" ) );
+            FileUtils.forceDeleteOnExit( new File( project.getBasedir(), "TestResult.xml" ) );
+        }
+    
+        catch ( ExecuteException e ) 
+        {
             throw new MojoExecutionException( "Problem executing coverage", e );
         } 
-	    
-		catch ( IOException e ) 
-	    {
+        
+        catch ( IOException e ) 
+        {
             throw new MojoExecutionException( "Problem executing coverage", e );
         }    
    }
