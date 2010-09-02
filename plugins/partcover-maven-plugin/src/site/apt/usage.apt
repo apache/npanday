@@ -1,0 +1,30 @@
+Usage
+
+ To be able to use the partcover plugin, the following line should be added to the .net module and "-Ppartcover" argument should be added when compiling.
++-----+
+  <profile>
+    <id>partcover</id>
+    <build>
+      <plugins>
+        <plugin> 
+          <groupId>npanday.plugin</groupId>
+          <artifactId>partcover-maven-plugin</artifactId>  
+          <configuration>
+            <nUnit>${unit-console.exe}</nUnit>
+            <partCover>${PartCover.exe}</partCover>
+            <assemblyName>${assemblyName.dll}</assemblyName>
+            <msxsl>${msxsl.exe}</msxsl>
+          </configuration> 
+          <executions> 
+            <execution>
+              <goals> 
+                <goal>generate</goal> 
+                <goal>convert</goal>
+              </goals> 
+            </execution> 
+          </executions> 
+        </plugin>  
+      </plugins> 
+    </build>
+  </profile>  
++-----+

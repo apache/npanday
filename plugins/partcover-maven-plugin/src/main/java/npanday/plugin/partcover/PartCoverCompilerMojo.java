@@ -69,6 +69,7 @@ public class PartCoverCompilerMojo
     
     /** 
      * @parameter expression="${include}" default-value="[*]*"
+     * @required
      */
     private String include;
     
@@ -86,22 +87,31 @@ public class PartCoverCompilerMojo
             {
                 outputDirectory.mkdirs();
             }
-                    
-            String line = " \"" +partCover + "\"" + " --target " + "\"" + nUnit + "\"" + " --target-args " + assemblyName + " --include " 
-                + include + " --exclude " + exclude + " --output " + outputDirectory + "/coverage.xml";
-    
-            int exitValue = executeCommandLine( line );
+            
+            StringBuilder line = new StringBuilder();            
+            line.append( " \"" ).append( partCover ).append( "\" --target \"" ).append( nUnit ).append( "\" --target-args " ).append( assemblyName );            
+
+            if ( include != null && include.length() > 0 )
+            {
+                line.append( " --include " ).append( include );
+            }
+            if ( exclude != null && exclude.length() > 0 )
+            {
+                line.append( " --exclude " ).append( exclude );
+            }                   
+            
+            line.append( " --output " ).append( outputDirectory ).append( "/coverage.xml" );
+            
+            int exitValue = executeCommandLine( line.toString() );
             
             // clean up 
             FileUtils.forceDeleteOnExit( new File( project.getBasedir(), "partcover.driver.log" ) );
             FileUtils.forceDeleteOnExit( new File( project.getBasedir(), "TestResult.xml" ) );
-        }
-    
+        }    
         catch ( ExecuteException e ) 
         {
             throw new MojoExecutionException( "Problem executing coverage", e );
-        } 
-        
+        }        
         catch ( IOException e ) 
         {
             throw new MojoExecutionException( "Problem executing coverage", e );

@@ -1,0 +1,16 @@
+ -----
+ Introduction
+ -----
+
+NPanday PartCover Plugin
+
+ The PartCover Plugin allows user to generate code coverage reports for .net source code.
+ 
+* Goals Overview
+
+ The PartCover plugin has several goals:
+
+ * generate - This goal generates an xml report of the code coverage.
+ 
+ * convert - This converts the xml report to a more readable html report.
+ 
