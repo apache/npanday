@@ -126,15 +126,7 @@ under the License.
       <roles> 
         <role>committer</role> 
       </roles> 
-    </developer>
-    <developer> 
-      <name>Joe Ocaba</name>  
-      <id>jocaba</id>  
-      <email>jocaba@maestrodev.com</email>  
-      <roles> 
-        <role>committer</role> 
-      </roles> 
-    </developer>     
+    </developer> 
   </developers>  
   <modules> 
     <module>components</module>  
