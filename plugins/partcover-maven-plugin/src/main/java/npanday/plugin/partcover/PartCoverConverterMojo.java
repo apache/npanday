@@ -25,8 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import eu.cedarsoft.utils.ZipExtractor;
-
 /**
  * Goal which converts xml to html for code coverage reports.
  *
@@ -39,16 +37,19 @@ public class PartCoverConverterMojo
 { 
     
     /**
-     * Base Directory where all reports are written to
+     * Directory where all reports will be generated.
      * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/partcover-reports"
      */
     private File outputDirectory;
      
     /**
-     * msxsl.exe File
-     * @parameter expression="${msxsl}"
+     * The path where msxsl.exe file is located.
+     * This executable converts the xml report to a more readable html report.
+     * This should be added in the "C:/WINDOWS/msxsle.exe"
+     *
+     * @parameter expression="${msxsl}" default-value="C:\\WINDOWS\\msxsl.exe"
      */
-    private File msxsl;
+    private String msxsl;
  
     public void execute()
         throws MojoExecutionException
@@ -58,15 +59,18 @@ public class PartCoverConverterMojo
 
             // copy resources
             
-            File templateFile = copyFileToOutputDirectory( "/templates.zip", "templates.zip" );
-            extractZip( templateFile, outputDirectory);
-            
+            copyFileToOutputDirectory( "/partcover-report-by-class.xslt", "partcover-report-by-class.xslt");
+            copyFileToOutputDirectory( "/common-footer.xslt", "common-footer.xslt" );
+            copyFileToOutputDirectory( "/common-header.xslt", "common-header.xslt" );
+            copyFileToOutputDirectory( "/common-partcover-report.xslt", "common-partcover-report.xslt" );
+            copyFileToOutputDirectory( "/partcover-report-by-assembly.xslt", "partcover-report-by-assembly.xslt" );
             copyFileToOutputDirectory( "/coverage-report.css", "coverage-report.css" );
             
             // convert xml result using xslt;            
-      
+                      
             String line = " \"" + msxsl + "\" \"" + outputDirectory + "/coverage.xml\" \"" + outputDirectory
-                + "/templates/common-partcover-report.xslt\" -o  \"" + outputDirectory + "/coverage.html\"";
+                + "/common-partcover-report.xslt\" -o  \"" + outputDirectory + "/coverage.html\"";
+
 
             int exitValue = executeCommandLine( line );
                     
@@ -101,20 +105,5 @@ public class PartCoverConverterMojo
         }
 
         return outputFile;
-    }
-    
-    private void extractZip( File template, File outputDirectory )
-        throws MojoExecutionException
-    {
-        try
-        {
-            ZipExtractor zip = new ZipExtractor ( template );
-            zip.extract( outputDirectory );
-        }
-        
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "An error occured when trying to extract file.", e );
-        }
     }
 }

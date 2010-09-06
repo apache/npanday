@@ -43,22 +43,25 @@ public class PartCoverCompilerMojo
     private File assemblyName;
         
     /**
-     * Base Directory where all reports are written to
+     * Directory where all reports will be generated.
      * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/partcover-reports"
      */
     private File outputDirectory;
     
     /**
-     * Nunit installed
-     * @parameter expression="${nUnit}" 
+     * The path where the nunit-console executable is located.
+     * The version should be 2.5 up so that partcover will run successfully.
+     *     
+     * @parameter expression="${nUnit}" default-value="C:\\Program Files\\NUnit 2.5.7\\bin\\net-2.0\\nunit-console.exe"
      */
-    private File nUnit;	
+    private String nUnit;	
     
     /**
-     * PartCover installed
-     * @parameter expression="${partCover}" 
+     * The path where the partcover executable is located.
+     *
+     * @parameter expression="${partCover}" default-value="C:\\Program Files\\PartCover\\PartCover .NET 4.0\\PartCover.exe"
      */
-    private File partCover;
+    private String partCover;
     
     /** 
      * The maven project

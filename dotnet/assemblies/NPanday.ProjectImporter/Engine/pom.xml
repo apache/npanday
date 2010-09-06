@@ -101,10 +101,7 @@ under the License.
             <groupId>npanday.plugin</groupId>
             <artifactId>partcover-maven-plugin</artifactId>  
             <configuration>
-              <nUnit>C:\Program Files\NUnit 2.5.7\bin\net-2.0\nunit-console.exe</nUnit>
-              <partCover>C:\Program Files\PartCover\PartCover .NET 4.0\PartCover.exe</partCover>
               <assemblyName>${project.build.directory}/test-assemblies/NPanday.ProjectImporterEngine-test.dll</assemblyName>
-              <msxsl>C:\WINDOWS\msxsl.exe</msxsl>
             </configuration> 
             <executions> 
               <execution>
