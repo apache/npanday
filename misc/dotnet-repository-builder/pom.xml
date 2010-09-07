@@ -3,7 +3,7 @@
   <parent>
     <groupId>npanday</groupId>  
     <artifactId>npanday-project</artifactId>  
-    <version>1.2.1</version>
+    <version>1.2.2-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -11,9 +11,9 @@
   <name>NPanday :: .NET Repository Builder</name>
   <packaging>pom</packaging>
   <scm> 
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2.1/misc/dotnet-repository-builder</connection>
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2.1/misc/dotnet-repository-builder</developerConnection>
-    <url>https://npanday.svn.codeplex.com/svn/releases/npanday-project-1.2.1/misc/dotnet-repository-builder</url>
+    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</connection>
+    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</developerConnection>
+    <url>https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</url>
   </scm>  
   <dependencies>
     <!--assemblies-->
