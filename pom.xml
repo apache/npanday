@@ -38,9 +38,9 @@ under the License.
     </mailingList>  
   </mailingLists>
   <scm> 
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</connection>
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</developerConnection>
-    <url>https://npanday.svn.codeplex.com/svn/trunk/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/incubator/npanday/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/trunk/</developerConnection>
+    <url>http://svn.apache.org/viewvc/incubator/npanday/trunk</url>
   </scm>  
   <organization> 
     <name>NPanday</name>  
@@ -77,7 +77,7 @@ under the License.
     </developer>     
     <developer> 
       <name>Brett Porter</name>  
-      <id>brettporter</id>  
+      <id>brett</id>  
     </developer>  
     <developer> 
       <name>Marecor Baclay</name>  
@@ -159,7 +159,7 @@ under the License.
         <artifactId>maven-release-plugin</artifactId>  
         <version>2.0</version>  
         <configuration>  
-          <tagBase>https://npanday.svn.codeplex.com/svn/releases/</tagBase>  
+          <tagBase>https://svn.apache.org/repos/asf/incubator/npanday/tags</tagBase>  
           <useReleaseProfile>false</useReleaseProfile>
           <goals>deploy</goals>  
           <arguments>-Pnpanday-release</arguments>
