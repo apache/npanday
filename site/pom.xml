@@ -5,12 +5,12 @@
   <parent>
     <groupId>npanday</groupId>
     <artifactId>npanday-project</artifactId>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>1.2.2-incubating-SNAPSHOT</version>
   </parent>
   <artifactId>npanday-site</artifactId>
   <packaging>pom</packaging>
   <name>NPanday</name>
-  <url>http://www.npanday.org/docs/${project.version}</url>
+  <url>http://incubator.apache.org/npanday/docs/${project.version}</url>
   <prerequisites>
     <maven>2.2.1</maven>
   </prerequisites>
@@ -116,8 +116,8 @@
   </reporting>
   <distributionManagement>
     <site>
-      <id>npanday.site</id>
-      <url>scm:svn:https://npanday.svn.codeplex.com/svn/docs/${project.version}</url>
+      <id>apache.website</id>
+      <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}</url>
     </site>
   </distributionManagement>
   <profiles>
