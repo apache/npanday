@@ -150,6 +150,7 @@ public class FileInstallerMojo
         {
             Artifact sourceArtifact =
                 artifactFactory.createArtifact( groupId, artifactId, version, "compile", packaging );
+			this.getLog().debug( "NPANDAY-xxx-001: set file...." );                
             sourceArtifact.setFile( artifactFile );
             this.getLog().info( "NPANDAY-xxx-000: Installing file with specified pom" );
             try

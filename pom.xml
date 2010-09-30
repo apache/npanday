@@ -510,7 +510,7 @@ under the License.
         <enabled>false</enabled>
       </snapshots>
     </repository>
-    <!-- Additional repositories needed on first build
+    <!-- Additional repositories needed on first build-->
     <repository>
       <id>npanday.3rdparty</id>
       <name>NPanday 3rd-Party Repository</name>
@@ -523,6 +523,6 @@ under the License.
       <id>aduna.org</id>  
       <url>http://repository.aduna-software.org/maven2</url> 
     </repository>
-    -->
+    <!---->
   </repositories>
 </project>

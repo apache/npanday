@@ -385,22 +385,12 @@ public final class CompilerContextImpl
             for ( Artifact artifact : artifacts )
             {
                 String type = artifact.getType();
+                logger.debug( "NPANDAY-061-006: Artifact Type:" + type);
+                logger.debug( "NPANDAY-061-007: Artifact Type:" + ArtifactTypeHelper.isDotnetGenericGac( type ));
                 ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( type );
-                if ( ArtifactTypeHelper.isDotnetModule( type ))
-                {
-                    modules.add( artifact );
-                }
-                else if ( (artifactType != null && (
-                            StringUtils.equals( artifactType.getTargetCompileType(), "library" )
-                            || artifactType.getExtension().equals( "dll" )
-                            || artifactType.getExtension().equals( "exe" ))
-                          )
-                          || type.equals( "jar" ) )
-                {
-                    libraries.add( artifact );
-                }
+
                 //Resolving here since the GAC path is vendor and framework aware
-                else if ( ArtifactTypeHelper.isDotnetGenericGac( type ) )
+                if ( ArtifactTypeHelper.isDotnetGenericGac( type ) )                
                 {
                     // TODO: Duplicate code with VendorInfoRepositoryImpl.getGlobalAssemblyCacheDirectoryFor
                     String gacRoot = null;
@@ -424,6 +414,11 @@ public final class CompilerContextImpl
                         setArtifactGacFile( gacRoot, artifact );
                         libraries.add( artifact );
                     }
+                }                
+                else if (type.equals(ArtifactType.GAC_MSIL4.getPackagingType())) {
+                    String gacRoot = System.getenv( "SystemRoot" ) + "\\Microsoft.NET\\assembly\\GAC_MSIL\\";
+                    setArtifactGacFile( gacRoot, artifact );
+                    libraries.add( artifact );
                 }
                 else if ( type.equals( ArtifactType.GAC.getPackagingType() ) )
                 {
@@ -451,6 +446,16 @@ public final class CompilerContextImpl
                     moveInteropDllToBuildDirectory( artifact );
                     libraries.add( artifact );
                 }
+                else if ( (artifactType != null && (
+                            "library".equals(artifactType.getTargetCompileType()  )
+                            || "dll".equals(artifactType.getExtension()  )
+                            || "exe".equals(artifactType.getExtension()  ))
+                          )
+                          || "jar".equals(type  ) )
+                {
+                   libraries.add( artifact );
+                }
+                
             }
         }
 
@@ -619,8 +624,21 @@ public final class CompilerContextImpl
     {
         // TODO: Refactor to PathUtil.getGlobalAssemblyCacheFileFor
 
-        File gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
-            artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+        String type = artifact.getType();
+        logger.debug( "NPANDAY-061-001: Gac Root:" + gacRoot);
+        logger.debug( "NPANDAY-061-003: Artifact Type:" + type);
+        File gacFile;
+        if ("gac_msil4".equalsIgnoreCase(type)) {
+            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + "v" + compilerRequirement.getFrameworkVersion() + "_" + artifact.getVersion() + "__" +
+                artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+        }
+        else {
+            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
+                artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+        }
+
+        logger.debug( "NPANDAY-061-001: gacFile to:" + gacFile.getAbsolutePath() );
+
         // first check if the artifact is not yet installed
         if ( !gacFile.exists() )
         {

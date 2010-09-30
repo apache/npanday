@@ -83,6 +83,7 @@ public final class StateMachineProcessorImpl
         transitionRules.put( VendorInfoState.POST_PROCESS, factory.createPostProcessRule() );
         try
         {
+            logger.debug( "NPANDAY-102-012: Initialized rule factory repositoryRegistry:" + repositoryRegistry );        
             factory.init( repositoryRegistry, vendorInfoRepository, logger );
             logger.debug( "NPANDAY-102-000: Initialized rule factory." );
             transitionRules.put( VendorInfoState.MFF, factory.createVendorInfoSetterForMFF() );
@@ -126,7 +127,9 @@ public final class StateMachineProcessorImpl
         }
         for ( VendorInfoState state = VendorInfoState.START; !state.equals( VendorInfoState.EXIT ); )
         {
+            logger.debug( "NPANDAY-102-002: Apply rule:" + rule );        
             state = rule.process( vendorInfo );
+            logger.debug( "NPANDAY-102-003: Vendor info after rule:" + vendorInfo );            
             rule = transitionRules.get( state );
             if ( rule == null && !state.equals( VendorInfoState.EXIT ) )
             {

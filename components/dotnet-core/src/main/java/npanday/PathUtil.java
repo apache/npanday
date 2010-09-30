@@ -20,8 +20,13 @@ package npanday;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
+import npanday.ArtifactTypeHelper;
+import npanday.ArtifactType;
+import org.codehaus.plexus.util.DirectoryScanner;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -32,6 +37,22 @@ public final class PathUtil
 {
     private static final Logger logger = Logger.getAnonymousLogger();
 
+    public static File getGACFile4Artifact(Artifact artifact) {
+
+        File gacFile;
+        String type = artifact.getType();
+        if (type.equals(ArtifactType.GAC_MSIL4.getPackagingType())) {
+            String gacRoot = System.getenv( "SystemRoot" ) + "\\Microsoft.NET\\assembly\\GAC_MSIL\\";
+            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + "v4.0" + "_" + artifact.getVersion() + "__" +
+                artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+        }
+        else {
+            gacFile = artifact.getFile();
+        }
+
+        return gacFile;
+    } 
+ 
     /**
      * Returns the path of the artifact within the global assembly cache.
      *
@@ -47,13 +68,13 @@ public final class PathUtil
             logger.warning( "NPANDAY-040-000: Artifact is null - Cannot get application file." );
             return null;
         }
-		
+
         if ( gacRepository == null )
         {
             logger.warning( "NPANDAY-040-001: GAC Repository is null - Cannot get application file." );
             return null;
         }
-		
+
         if ( artifact.getClassifier() == null )
         {
             logger.warning( "NPANDAY-040-002: Assembly must be signed - Cannot get application file." );
@@ -64,6 +85,8 @@ public final class PathUtil
         {
             version = version + ".0";
         }
+
+        logger.finest( "NPANDAY-040-003: Read global assembly cache folder for: " + artifact);        
         //TODO: gac_generic
         //String processArchitecture = ( artifact.getType().equals( "gac_generic" ) );
         return new File( gacRepository, File.separator + artifact.getType() + File.separator + artifact.getArtifactId()
@@ -148,7 +171,7 @@ public final class PathUtil
 //                artifact.getType() );
 //            return null;
 //        }
-
+        logger.finest( "NPANDAY-040-007: Read global assembly cache folder for(getUserAssemblyCacheFileFor): " + artifact);
         return new File( localRepository.getParentFile(), "uac" + File.separator + "gac_msil" + File.separator
             + artifact.getArtifactId() + File.separator + artifact.getBaseVersion() + "__" + artifact.getGroupId()
             + File.separator + artifact.getArtifactId() + "."

@@ -82,6 +82,7 @@ public class ExistingResxGenerator extends AbstractMojo
         String outputDirectory = project.getBuild().getDirectory();
         //resgen.exe
         String resourceDirectory = outputDirectory + File.separator + ASSEMBLY_RESOURCES_DIR + File.separator + "resource" ;
+		getLog().debug("NPANDAY-1501-006: Resource directory:" + resourceDirectory);        
         if ( !FileUtils.fileExists( resourceDirectory ) )
         {
             FileUtils.mkdir( resourceDirectory );        

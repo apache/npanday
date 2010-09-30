@@ -92,11 +92,12 @@ public class NetExecutableFactoryImpl
     {
 
         VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-	    vendorInfo.setVendorVersion( compilerRequirement.getVendorVersion() );
+        vendorInfo.setVendorVersion( compilerRequirement.getVendorVersion() );
         vendorInfo.setFrameworkVersion( compilerRequirement.getFrameworkVersion() );
         vendorInfo.setVendor( compilerRequirement.getVendor() );
         try
         {
+            logger.debug("NPANDAY-066-025 - Try to find executable for vendor:" + vendorInfo + ":processor:" + processor);        
             processor.process( vendorInfo );
         }
         catch ( IllegalStateException e )

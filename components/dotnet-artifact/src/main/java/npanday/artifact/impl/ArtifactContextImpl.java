@@ -115,6 +115,7 @@ public final class ArtifactContextImpl
         List<Artifact> artifacts = repository.getArtifactsFor( groupId, artifactId, version, type );
         for ( Artifact artifact : artifacts )
         {
+            logger.debug("NPANDAY-000-002: set file");        
             artifact.setFile( PathUtil.getUserAssemblyCacheFileFor( artifact, getLocalRepository() ) );
         }
         return artifacts;

@@ -56,16 +56,39 @@ public class ResourceCopierMojo
     public void execute()
         throws MojoExecutionException
     {
-        List<Resource> resources = project.getResources();
+		try 
+		{
+		
+			copyAllResources(project.getResources());
+			copyAllResources(project.getTestResources());
+		}
+		catch (Exception ex) 
+		{
+			getLog().debug("Exception thrown while copying files. Reason:", ex);
+			throw new MojoExecutionException( "NPANDAY-1500-005: Failed to copy config files.", ex );
+		}
+    }
+
+	private void copyAllResources(List<Resource> resources) 
+		throws MojoExecutionException
+	{
+        
         if ( resources.isEmpty() )
         {
             getLog().info( "NPANDAY-1500-000: No resources found" );
             return;
         }
 
-        File targetDirectory = new File( project.getBuild().getDirectory(), "assembly-resources/resource" );
+        File defaultTargetDirectory = new File( project.getBuild().getDirectory(), "assembly-resources/resource" );
+		
+		getLog().debug("NPANDAY-1500-002: Target directory:" + defaultTargetDirectory);
+		getLog().debug("NPANDAY-1500-003: Project:" + project);
+        
         for ( Resource resource : resources )
         {
+			String resourceTargetPath = resource.getTargetPath();
+			File targetDirectory = (resourceTargetPath != null && resourceTargetPath.length() > 0? new File(project.getBuild().getDirectory() + "/" + resourceTargetPath)  : defaultTargetDirectory);
+        
             File file = new File( resource.getDirectory() );
             if ( file.exists() )
             {
