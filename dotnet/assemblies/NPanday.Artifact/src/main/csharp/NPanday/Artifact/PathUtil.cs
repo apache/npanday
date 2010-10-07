@@ -23,21 +23,27 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using NPanday.Model.Setting;
 
 namespace NPanday.Artifact
 {
     public class PathUtil
     {
-        public static FileInfo GetPrivateApplicationBaseFileFor(Artifact artifact, DirectoryInfo localRepository)
+        public static FileInfo GetPrivateApplicationBaseFileFor(Artifact artifact, DirectoryInfo localRepository, string currentDir)
         {
-            return new FileInfo(localRepository.Parent.FullName + @"\pab\gac_msil\" + artifact.ArtifactId + @"\" + artifact.Version + "__" +
-                artifact.GroupId + @"\" + artifact.ArtifactId + "." + artifact.Extension);
+           FileInfo target = new FileInfo(currentDir + Path.PathSeparator + "target" + Path.PathSeparator+artifact.ArtifactId + ".dll");
+            File.Copy(GetUserAssemblyCacheFileFor(artifact, localRepository).ToString(), target.ToString());
+            return target;
         }
 
         public static FileInfo GetUserAssemblyCacheFileFor(Artifact artifact, DirectoryInfo localRepository)
         {
-            return new FileInfo(localRepository.Parent.FullName + @"\uac\gac_msil\" + artifact.ArtifactId + @"\" + artifact.Version + "__" +
-                artifact.GroupId + @"\" + artifact.ArtifactId + "." + artifact.Extension);
+           return new FileInfo( Path.Combine(SettingsUtil.GetLocalRepositoryPath(), string.Format(@"{0}\{1}\{1}{2}-{3}", Tokenize(artifact.GroupId), artifact.ArtifactId, artifact.Version, artifact.Extension)));
+        }
+        
+        public static string Tokenize(String id)
+        {
+            return id.Replace(".",Path.DirectorySeparatorChar.ToString());
         }
 
 

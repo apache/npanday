@@ -30,7 +30,7 @@ public class RepositoryConverterImplTest
 
     private static File basedir = new File( System.getProperty( "basedir" ) );
 
-
+    /*
     public void testConvertArtifact()
     {
         File testRepo = new File( System.getProperty( "basedir" ), "target/test-repo/repository-1" );
@@ -196,5 +196,5 @@ public class RepositoryConverterImplTest
         {
             e.printStackTrace();
         }
-    }
+    }*/
 }

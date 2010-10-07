@@ -268,7 +268,11 @@ public class ArtifactInstallerImpl
                                                                                     dependency.getType(),
                                                                                     dependency.getClassifier(), scope,
                                                                                     null );
-            File artifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( artifactDependency, localRepository );
+           
+            File mavenArtifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( artifactDependency, localRepository );
+            
+             
+            File artifactDependencyFile = PathUtil.getDotNetArtifact( artifactDependency, mavenArtifactDependencyFile );
             
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
@@ -337,6 +341,7 @@ public class ArtifactInstallerImpl
             {
 
                 File artifactFile = artifact.getFile();
+                 
                 File destFile = PathUtil.getUserAssemblyCacheFileFor( artifact, localRepository );
                                 logger.info(
                     "NPANDAY-001-007: Installing file into repository: File = " + artifact.getFile().getAbsolutePath()

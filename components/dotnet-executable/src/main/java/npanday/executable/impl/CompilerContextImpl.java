@@ -28,6 +28,7 @@ import npanday.executable.compiler.*;
 import npanday.artifact.ArtifactContext;
 import npanday.artifact.ArtifactException;
 import npanday.ArtifactType;
+import npanday.PathUtil;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
@@ -619,8 +620,8 @@ public final class CompilerContextImpl
     {
         // TODO: Refactor to PathUtil.getGlobalAssemblyCacheFileFor
 
-        File gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
-            artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+        File gacFile = PathUtil.getDotNetArtifact( artifact );
+            
         // first check if the artifact is not yet installed
         if ( !gacFile.exists() )
         {
@@ -631,6 +632,7 @@ public final class CompilerContextImpl
         {
             // TODO: this will only work on Windows
             //check for gac_msil
+            
             gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
             gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
                                 artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );

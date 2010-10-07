@@ -264,7 +264,7 @@ public final class ProjectDaoImpl
         long startTime = System.currentTimeMillis();
 
         ValueFactory valueFactory = rdfRepository.getValueFactory();
-
+      
         ProjectDependency project = new ProjectDependency();
         project.setArtifactId( artifactId );
         project.setGroupId( groupId );
@@ -294,12 +294,16 @@ public final class ProjectDaoImpl
 
             if ( !result.hasNext() )
             {
-                if ( artifactType != null && ArtifactTypeHelper.isDotnetAnyGac( artifactType ) )
+                
+                //if ( artifactType != null && ArtifactTypeHelper.isDotnetAnyGac( artifactType ) )
+                if ( artifactType != null )
                 {
+                    
                     Artifact artifact = createArtifactFrom( project, artifactFactory );
+                    
                     if ( !artifact.getFile().exists() )
                     {
-                        throw new IOException( "NPANDAY-180-003: Could not find GAC assembly: Group ID = " + groupId
+                        throw new IOException( "NPANDAY-180-123: Could not find GAC assembly: Group ID = " + groupId
                             + ", Artifact ID = " + artifactId + ", Version = " + version + ", Artifact Type = "
                             + artifactType + ", File Path = " + artifact.getFile().getAbsolutePath() );
                     }
@@ -307,8 +311,8 @@ public final class ProjectDaoImpl
                     return project;
                 }
 
-                throw new IOException( "NPANDAY-180-004: Could not find the project: Group ID = " + groupId
-                    + ", Artifact ID = " + artifactId + ", Version = " + version + ", Artifact Type = " + artifactType );
+                throw new IOException( "NPANDAY-180-124: Could not find the project: Group ID = " + groupId
+                    + ", Artifact ID =  " + artifactId + ", Version = " + version + ", Artifact Type = " + artifactType );
             }
 
             while ( result.hasNext() )
@@ -504,8 +508,11 @@ public final class ProjectDaoImpl
                     {
                         projectDependency.setSystemPath( generateDependencySystemPath( projectDependency ) );
                     }
-
-                    File dependencyFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
+                    
+                    File mavenArtifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
+            
+                    File dependencyFile = PathUtil.getDotNetArtifact( assembly, mavenArtifactDependencyFile );
+                    
                     if ( !dependencyFile.exists() )
                     {
                         projectDependency.setResolved( false );
@@ -744,13 +751,16 @@ public final class ProjectDaoImpl
                     {
                         assembly.setVersion( snapshotVersion );
                     }
-
-                    File uacFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
-                    logger.info( "NPANDAY-180-018: Not found in UAC, now retrieving artifact from wagon:"
+                    
+                    File mavenArtifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
+            
+                    File dotnetFile = PathUtil.getDotNetArtifact( assembly, mavenArtifactDependencyFile );
+                    
+                    logger.info( "NPANDAY-180-018: Not found in local repository, now retrieving artifact from wagon:"
                             + assembly.getId()
-                            + ", Failed UAC Path Check = " + uacFile.getAbsolutePath());
+                            + ", Failed UAC Path Check = " + dotnetFile.getAbsolutePath());
 
-                    if ( !ArtifactTypeHelper.isDotnetExecutableConfig( type ) || !uacFile.exists() )// TODO: Generalize to any attached artifact
+                    if ( !ArtifactTypeHelper.isDotnetExecutableConfig( type ) || !dotnetFile.exists() )// TODO: Generalize to any attached artifact
                     {
                         try
                         {
@@ -761,9 +771,9 @@ public final class ProjectDaoImpl
                             
                             if ( assembly != null && assembly.getFile().exists() )
                             {
-                                uacFile.getParentFile().mkdirs();
-                                FileUtils.copyFile( assembly.getFile(), uacFile );
-                                assembly.setFile( uacFile );
+                                dotnetFile.getParentFile().mkdirs();
+                                FileUtils.copyFile( assembly.getFile(), dotnetFile );
+                                assembly.setFile( dotnetFile );
                             }
                         }
                         catch ( ArtifactNotFoundException e )
@@ -1283,26 +1293,16 @@ public final class ProjectDaoImpl
             logger.warning( "NPANDAY-180-004: Project Artifact Type is missing: Group Id" + groupId +
                 ", Artifact Id = " + artifactId + ", Version = " + version );
         }
-
+        
         Artifact assembly = artifactFactory.createDependencyArtifact( groupId, artifactId,
                                                                       VersionRange.createFromVersion( version ),
                                                                       artifactType, publicKeyTokenId, scope,
                                                                       null );
-        // TODO: Use PathUtil!
+ 
         File artifactFile = ArtifactTypeHelper.isDotnetAnyGac( artifactType ) ? new File(
             "C:\\WINDOWS\\assembly\\" + artifactType + File.separator + artifactId + File.separator + version + "__" +
-                publicKeyTokenId + File.separator + artifactId + ".dll" ) : new File( System.getProperty( "user.home" ),
-                                                                                      File.separator + ".m2" +
-                                                                                          File.separator + "uac" +
-                                                                                          File.separator + "gac_msil" +
-                                                                                          File.separator + artifactId +
-                                                                                          File.separator + version +
-                                                                                          "__" + groupId +
-                                                                                          File.separator + artifactId +
-                                                                                          "." +
-                                                                                          ArtifactType.getArtifactTypeForPackagingName(
-                                                                                              artifactType ).getExtension() );
-
+                publicKeyTokenId + File.separator + artifactId + ".dll" ) : PathUtil.getDotNetArtifact( assembly );
+   
         assembly.setFile( artifactFile );
         return assembly;
     }

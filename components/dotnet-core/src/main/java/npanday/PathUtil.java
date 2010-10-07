@@ -20,8 +20,14 @@ package npanday;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.logging.Logger;
 
 /**
@@ -54,6 +60,8 @@ public final class PathUtil
             return null;
         }
 		
+        
+        
         if ( artifact.getClassifier() == null )
         {
             logger.warning( "NPANDAY-040-002: Assembly must be signed - Cannot get application file." );
@@ -66,9 +74,7 @@ public final class PathUtil
         }
         //TODO: gac_generic
         //String processArchitecture = ( artifact.getType().equals( "gac_generic" ) );
-        return new File( gacRepository, File.separator + artifact.getType() + File.separator + artifact.getArtifactId()
-            + File.separator + version + "__" + artifact.getClassifier() + File.separator + artifact.getArtifactId()
-            + ".dll" );
+        return getDotNetArtifact( artifact );
     }
 
     /**
@@ -114,10 +120,9 @@ public final class PathUtil
             logger.warning( "NPANDAY-040-004: Local Repository is null - Cannot get application file." );
             return null;
         }
-        return new File( localRepository.getParentFile(), "pab" + File.separator +"gac_msil" + File.separator
-            + artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" + artifact.getGroupId()
-            + File.separator + artifact.getArtifactId() + "."
-            + ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
+        File source = getUserAssemblyCacheFileFor( artifact, localRepository);
+        
+        return  getDotNetArtifact( artifact, source );
     }
 
     /**
@@ -140,18 +145,74 @@ public final class PathUtil
             logger.warning( "NPANDAY-040-006: Local Repository is null - Cannot get application file." );
             return null;
         }
-
-//        ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifact.getType() );
-//        if ( artifactType.equals( ArtifactType.NULL ) )
-//        {
-//            logger.warning( "NPANDAY-040-009: Artifact Type not recognized - Cannot get application file: Type = " +
-//                artifact.getType() );
-//            return null;
-//        }
-
-        return new File( localRepository.getParentFile(), "uac" + File.separator + "gac_msil" + File.separator
-            + artifact.getArtifactId() + File.separator + artifact.getBaseVersion() + "__" + artifact.getGroupId()
-            + File.separator + artifact.getArtifactId() + "."
-            + ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
+      
+        return getDotNetArtifact( artifact );
     }
+    
+    private static String getTokenizedPath(String path)
+    {
+        return path.replace(".",File.separator);
+    }
+    
+    /**
+     * Returns the path of the artifact within the user assembly cache.
+     *
+     * @param artifact        the artifact to find the path of. This value should not be null.
+     * @return the path of the artifact within the user assembly cache or null if either of the specified
+     *         parameters is null
+     */
+    public static File getDotNetArtifact( Artifact artifact, File source )
+    {
+        if ( artifact == null )
+        {
+            logger.warning( "NPANDAY-040-053.1: Artifact is null - Cannot get application file." );
+            return null;
+        }
+        if ( source == null )
+        {
+            logger.warning( "NPANDAY-040-054.1: Local Repository is null - Cannot get application file." );
+            return null;
+        }
+        
+        String outputDir = System.getProperty("user.dir");
+        outputDir = outputDir+File.separator+"target";
+        
+        String filename = artifact.getArtifactId() + "." + artifact.getArtifactHandler().getExtension();
+        File targetFile = new File(outputDir+File.separator+ filename);
+        
+        try
+        {     
+              FileUtils.copyFile(source, targetFile);
+        }   
+        catch (IOException ioe) 
+        {
+            logger.warning("NPANDAY-1005-0001: Error copying dependency " + artifact +ioe.getMessage());
+        }
+         
+        return targetFile;
+    }
+    
+    /**
+     * Returns the path of the artifact within the user assembly cache.
+     *
+     * @param artifact        the artifact to find the path of. This value should not be null.
+     * @return the path of the artifact within the user assembly cache or null if either of the specified
+     *         parameters is null
+     */
+    public static File getDotNetArtifact( Artifact artifact )
+    {
+        if ( artifact == null )
+        {
+            logger.warning( "NPANDAY-040-0532: Artifact is null - Cannot get application file." );
+            return null;
+        }
+       
+        File source = new File( System.getProperty( "user.home" ),".m2" + File.separator + "repository" + File.separator + getTokenizedPath(artifact.getGroupId() ) + File.separator + artifact.getArtifactId() + File.separator + artifact.getVersion() + File.separator + artifact.getArtifactId() + "-" + artifact.getVersion() +"." + ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
+        
+        File dotnetFile =  getDotNetArtifact( artifact, source );
+        
+        return dotnetFile;
+    }
+    
+
 }

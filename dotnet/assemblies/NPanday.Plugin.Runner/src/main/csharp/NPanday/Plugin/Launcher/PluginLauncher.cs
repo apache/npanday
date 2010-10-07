@@ -38,34 +38,42 @@ namespace NPanday.Plugin.Launcher
 		static int Main(string[] args)
 		{
 
-			Console.WriteLine("NPanday: Start Process = " + DateTime.Now);
-			Console.WriteLine(@flattenArgs(args));
-			String vendor = GetArgFor("vendor", args);
-			String startProcessAssembly = @GetArgFor("startProcessAssembly", args);
-			ProcessStartInfo processStartInfo = null;
-
-			if(vendor != null && vendor.Equals("MONO"))
-			{
-                processStartInfo =
-                    new ProcessStartInfo("mono", startProcessAssembly + " " + @flattenArgs(args));
-            }
-            else
+            try
             {
-                processStartInfo =
-                    new ProcessStartInfo(startProcessAssembly, @flattenArgs(args));
+                Console.WriteLine("NPanday: Start Process = " + DateTime.Now);
+                Console.WriteLine(@flattenArgs(args));
+                String vendor = GetArgFor("vendor", args);
+                String startProcessAssembly = @GetArgFor("startProcessAssembly", args);
+                ProcessStartInfo processStartInfo = null;
+
+                if (vendor != null && vendor.Equals("MONO"))
+                {
+                    processStartInfo =
+                        new ProcessStartInfo("mono", startProcessAssembly + " " + @flattenArgs(args));
+                }
+                else
+                {
+                    processStartInfo =
+                        new ProcessStartInfo(startProcessAssembly, @flattenArgs(args));
+                }
+
+                String version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+                processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_ASM"]
+                    = "NPanday.Plugin, Version=" + version + ", PublicKeyToken=4b435f4d76e2f0e6, culture=neutral";
+                processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_TYPE"]
+                    = "NPanday.Plugin.PluginDomainManager";
+
+                processStartInfo.UseShellExecute = false;
+                Process p = Process.Start(processStartInfo);
+                p.WaitForExit();
+                Console.WriteLine("NPanday: End Process = " + DateTime.Now + "; exit code = " + p.ExitCode);
             }
-
-            String version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
-			processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_ASM"]
-				= "NPanday.Plugin, Version="+ version + ", PublicKeyToken=4b435f4d76e2f0e6, culture=neutral";
-			processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_TYPE"]
-				= "NPanday.Plugin.PluginDomainManager";
-
-			processStartInfo.UseShellExecute = false;
-			Process p = Process.Start(processStartInfo);
-            p.WaitForExit();
-            Console.WriteLine("NPanday: End Process = " + DateTime.Now + "; exit code = " + p.ExitCode);
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
             return p.ExitCode;
         }
 

@@ -83,8 +83,7 @@ public class ArtifactManagerMojo
         String artifactValue = System.getProperty( "artifact" );
         String[] tokens = artifactValue.split( "[:]" );
 
-        File dataDir = new File( localRepository.getParentFile(), "/uac/rdfRepository" );
-        org.openrdf.repository.Repository rdfRepository = new SailRepository( new MemoryStore( dataDir ) );
+        org.openrdf.repository.Repository rdfRepository = new SailRepository( new MemoryStore( localRepository ) );
         try
         {
             rdfRepository.initialize();
@@ -108,5 +107,6 @@ public class ArtifactManagerMojo
             throw new MojoExecutionException( e.getMessage() );
         }
         dao.closeConnection();
+      
     }
 }

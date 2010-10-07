@@ -20,6 +20,7 @@ package npanday.dao;
 
 import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
+import npanday.PathUtil;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.model.Dependency;
@@ -211,14 +212,12 @@ public final class ProjectFactory
                                                                           project.getArtifactType(),
                                                                           project.getPublicKeyTokenId() );
 
+                
         File artifactFile = ( ( ArtifactTypeHelper.isDotnetAnyGac( project.getArtifactType() ) ) ) ? new File(
             "C:\\WINDOWS\\assembly\\" + project.getArtifactType() + File.separator + project.getArtifactId() + File.separator +
                 project.getVersion() + "__" + project.getPublicKeyTokenId() + File.separator + project.getArtifactId() + ".dll" )
-            : new File( localRepository.getParentFile(), File.separator + "uac" + File.separator + "gac_msil" + File.separator
-                + project.getArtifactId() + File.separator +
-                project.getVersion() + "__" + project.getGroupId() + File.separator + project.getArtifactId() + "." +
-                ArtifactType.getArtifactTypeForPackagingName( project.getArtifactType() ).getExtension() );
-
+            : PathUtil.getDotNetArtifact( assembly ) ;
+        
         assembly.setFile( artifactFile );
         return assembly;
     }

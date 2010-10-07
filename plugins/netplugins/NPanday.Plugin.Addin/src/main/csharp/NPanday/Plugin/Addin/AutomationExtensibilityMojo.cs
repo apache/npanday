@@ -56,7 +56,7 @@ namespace NPanday.Plugin.Addin
         {
             ArtifactContext artifactContext = new ArtifactContext();
             FileInfo artifactFileInfo = PathUtil.GetPrivateApplicationBaseFileFor(artifactContext.GetArtifactFor(mavenProject), 
-                new FileInfo(localRepository).Directory); 
+                new FileInfo(localRepository).Directory, Directory.GetCurrentDirectory() ); 
             
             Console.WriteLine("Artifact Path = " + artifactFileInfo.FullName);
 
