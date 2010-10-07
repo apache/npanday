@@ -25,7 +25,7 @@ under the License.
   <packaging>pom</packaging>  
   <version>1.2.2-incubating-SNAPSHOT</version>  
   <name>NPanday</name>  
-  <url>http://www.codeplex.com/npanday</url>  
+  <url>http://incubator.apache.org/npanday/</url>
   <description>NPanday provides Maven plugins to support building of .NET applications</description>  
   <mailingLists> 
     <mailingList> 
@@ -64,13 +64,9 @@ under the License.
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/trunk/</developerConnection>
     <url>http://svn.apache.org/viewvc/incubator/npanday/trunk</url>
   </scm>  
-  <organization> 
-    <name>NPanday</name>  
-    <url>http://www.codeplex.com/npanday</url> 
-  </organization>  
   <issueManagement> 
-    <system>Codeplex Issue Tracker</system>  
-    <url>http://www.codeplex.com/npanday/WorkItem/List.aspx</url> 
+    <system>jira</system>  
+    <url>http://issues.apache.org/jira/browse/NPANDAY</url>
   </issueManagement>
   <ciManagement>
     <system>continuum</system>
