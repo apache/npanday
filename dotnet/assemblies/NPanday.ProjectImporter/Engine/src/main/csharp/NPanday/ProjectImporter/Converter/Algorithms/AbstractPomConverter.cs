@@ -760,9 +760,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 
                 refDependency.version = reference.Version ?? "1.0.0.0";
                 
-                System.Reflection.Assembly a = System.Reflection.Assembly.Load(gacUtil.GetAssemblyInfo(reference.Name));
-
-                if (reference.PublicKeyToken != null)
+				//exclude ProcessArchitecture when loading assembly on a non-32 bit machine
+                System.Reflection.Assembly a = System.Reflection.Assembly.Load(new System.Reflection.AssemblyName(gacUtil.GetAssemblyInfo(reference.Name)).FullName);
+                
+				if (reference.PublicKeyToken != null)
                 {
                     refDependency.classifier = reference.PublicKeyToken;
                 }
