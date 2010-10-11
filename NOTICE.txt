@@ -1,4 +1,4 @@
-NPanday
-Copyright 2007-2009
+Apache NPanday (incubating)
+Copyright 2007-2010
 
 This product includes software developed by The Apache Software Foundation (http://www.apache.org/).
