@@ -164,7 +164,17 @@ public final class DefaultCompiler
             commands.add( wcfRef + "Microsoft.Data.Entity.Build.Tasks.dll" );
             commands.add( wcfRef + "Microsoft.VisualC.STLCLR.dll" );
         }
-        
+ 
+        if ( compilerContext.getCompilerRequirement().getVendor().equals( Vendor.MICROSOFT ) &&
+            compilerContext.getCompilerRequirement().getFrameworkVersion().equals( "4.0" ) )
+        {
+            String wcfRef = "/reference:" + System.getenv( "SystemRoot" ) +
+                "\\Microsoft.NET\\Framework\\v4.0.30319\\";
+            //TODO: This is a hard-coded path: Don't have a registry value either.
+            commands.add( wcfRef + "Microsoft.Build.Tasks.v4.0.dll" );
+            commands.add( wcfRef + "Microsoft.Data.Entity.Build.Tasks.dll" );
+            commands.add( wcfRef + "Microsoft.VisualC.STLCLR.dll" );
+        } 
         if ( compilerContext.getKeyInfo().getKeyFileUri() != null )
         {
             commands.add( "/keyfile:" + compilerContext.getKeyInfo().getKeyFileUri() );

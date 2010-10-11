@@ -123,13 +123,14 @@ namespace NPanday.Plugin.Settings
             bool dirInfo11 = new DirectoryInfo(Path.Combine(installRoot, "v1.1.4322")).Exists;
             bool dirInfo20 = new DirectoryInfo(Path.Combine(installRoot, "v2.0.50727")).Exists;
             bool dirInfo35 = new DirectoryInfo(Path.Combine(installRoot, "v3.5")).Exists;
+            bool dirInfo40 = new DirectoryInfo(Path.Combine(installRoot, "v4.0.30319")).Exists;
 
             if(installRoot != null)
             {
-                if(!dirInfo11 && !dirInfo20 && !dirInfo35)
+                if(!dirInfo11 && !dirInfo20 && !dirInfo35 && !dirInfo40)
                     return null;
                 defaultSetup.vendorName = "MICROSOFT";
-                defaultSetup.vendorVersion = (dirInfo20) ? "2.0.50727" : ((dirInfo35) ? "3.5" : "1.1.4322");                
+                defaultSetup.vendorVersion = (dirInfo20) ? "2.0.50727" : ((dirInfo35) ? "3.5" : ((dirInfo40) ? "4.0" : "1.1.4322"));                
                 defaultSetup.frameworkVersion = defaultSetup.vendorVersion;
                 return defaultSetup;
             }
@@ -190,6 +191,7 @@ namespace NPanday.Plugin.Settings
             DirectoryInfo dirInfo20 = new DirectoryInfo(Path.Combine(installRoot, "v2.0.50727"));
             DirectoryInfo dirInfo30 = new DirectoryInfo(Path.Combine(installRoot, "v3.0"));
             DirectoryInfo dirInfo35 = new DirectoryInfo(Path.Combine(installRoot, "v3.5"));
+            DirectoryInfo dirInfo40 = new DirectoryInfo(Path.Combine(installRoot, "v4.0.30319"));			
             
             int vendorCounter = 0;
             if (dirInfo11.Exists)
@@ -239,6 +241,20 @@ namespace NPanday.Plugin.Settings
                 vendor.frameworks = vendorFrameworks;
                 vendors[vendorCounter++] = vendor;
             }
+            if (dirInfo40.Exists)
+            {
+                npandaySettingsVendorsVendor vendor = new npandaySettingsVendorsVendor();
+                vendor.vendorName = "MICROSOFT";
+                vendor.vendorVersion = "4.0";
+                npandaySettingsVendorsVendorFrameworksFramework[] vendorFrameworks = new npandaySettingsVendorsVendorFrameworksFramework[1];
+                npandaySettingsVendorsVendorFrameworksFramework vf11 = new npandaySettingsVendorsVendorFrameworksFramework();
+                vf11.installRoot = dirInfo40.FullName;
+                vf11.frameworkVersion = "4.0";
+                vendorFrameworks[0] = vf11;
+                vf11.sdkInstallRoot = sdkInstallRoot20;
+                vendor.frameworks = vendorFrameworks;
+                vendors[vendorCounter++] = vendor;
+            }			
             
             return vendors;
         }
@@ -271,6 +287,11 @@ namespace NPanday.Plugin.Settings
                 vf35.frameworkVersion = "3.5";
                 vendorFrameworks[2] = vf35;
                 
+                npandaySettingsVendorsVendorFrameworksFramework vf40 = new npandaySettingsVendorsVendorFrameworksFramework();
+                vf40.installRoot = installRoot;
+                vf40.frameworkVersion = "4.0";
+                vendorFrameworks[3] = vf40;
+
                 npandaySettingsVendorsVendor vendor = new npandaySettingsVendorsVendor();
                 vendor.vendorName = "MONO";
                 vendor.vendorVersion = keyName;

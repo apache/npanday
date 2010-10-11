@@ -104,6 +104,7 @@ public class ArtifactTypeHelper
                 || packaging.equals( ArtifactType.GAC_GENERIC )
                 || packaging.equals( ArtifactType.GAC )
                 || packaging.equals( ArtifactType.GAC_32)
+                || packaging.equals( ArtifactType.GAC_64)				
                 || packaging.equals( ArtifactType.GAC_MSIL )
                 || packaging.equals( ArtifactType.GAC_MSIL4 );
     }

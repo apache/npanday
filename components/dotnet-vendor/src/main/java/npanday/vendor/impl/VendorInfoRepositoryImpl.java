@@ -252,6 +252,10 @@ public class VendorInfoRepositoryImpl
         {
             return new File(System.getenv("SystemRoot"), "\\assembly\\GAC_32\\" );
         }
+        else if ( artifactType.equals( ArtifactType.GAC_64.getPackagingType() ) )
+        {
+            return new File(System.getenv("SystemRoot"), "\\assembly\\GAC_64\\" );
+        }		
         else if ( artifactType.equals( ArtifactType.GAC_MSIL.getPackagingType() ) )
         {
             return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );

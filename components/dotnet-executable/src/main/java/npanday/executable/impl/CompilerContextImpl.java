@@ -434,6 +434,13 @@ public final class CompilerContextImpl
                     setArtifactGacFile( gacRoot, artifact );
                     libraries.add( artifact );
                 }
+                else if ( type.equals( ArtifactType.GAC_64.getPackagingType() ) )
+                {
+                    String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
+                        : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_64\\";
+                    setArtifactGacFile( gacRoot, artifact );
+                    libraries.add( artifact );
+                }		 							
                 else if ( type.equals( ArtifactType.GAC_MSIL.getPackagingType() ) )
                 {
                     String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()

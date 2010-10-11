@@ -94,6 +94,7 @@ public enum ArtifactType
     // DOTNET_("dotnet-gac_msil", "library", "dll"),
     // DOTNET_("dotnet-gac_msil4", "library", "dll"),
     // DOTNET_("dotnet-gac_32", "library", "dll"),
+    // DOTNET_("dotnet-gac_64", "library", "dll"),	
     // DOTNET_("dotnet-nar", "library", "nar"),
     // DOTNET_("dotnet-visual-studio-addin", "library", "dll"),
     
@@ -154,6 +155,8 @@ public enum ArtifactType
     GAC_MSIL4 ("gac_msil4", null, "dll"),    
     
     GAC_32 ( "gac_32", null, "dll"),
+
+    GAC_64 ( "gac_64", null, "dll"),	
 
     COM_REFERENCE( "com_reference", null, "dll");
 

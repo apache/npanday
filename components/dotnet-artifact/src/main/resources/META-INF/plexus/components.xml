@@ -82,6 +82,15 @@
       </configuration>
     </component>
     <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>      
+      <role-hint>gac_64</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <extension>dll</extension>
+        <type>gac_64</type>
+      </configuration>
+    </component>	
+    <component>
       <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
       <role-hint>nar</role-hint>
       <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
