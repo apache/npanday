@@ -102,8 +102,18 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                         msBuildPluginAdded = true;
                     }
                     
+                    string gFile;
+ 
+                    //if project is imported in 64-bit path should include "x86"
+                    if (projectDigest.Platform.Contains("x86"))
+                    {
+                        gFile = @"obj\x86\Debug";
+                    }
+                    else
+                    {
+                        gFile = @"obj\Debug\";
+                    }
 
-                    string gFile = @"obj\Debug\";
                     if (compilesFile.EndsWith(".cs"))
                         gFile += compilesFile.Replace(".xaml.cs", ".g.cs");
                     else
