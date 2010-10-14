@@ -27,6 +27,12 @@ under the License.
   <name>NPanday</name>  
   <url>http://incubator.apache.org/npanday/</url>
   <description>NPanday provides Maven plugins to support building of .NET applications</description>  
+  <!-- Temporary until we move to using the ASF parent POM. Organization must be specified for the installer to
+       build successfully. -->
+  <organization>
+    <name>The Apache Software Foundation</name>
+    <url>http://www.apache.org/</url>
+  </organization>
   <mailingLists> 
     <mailingList> 
       <name>NPanday Developers List</name>  
