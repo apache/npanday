@@ -32,13 +32,6 @@ under the License.
   
   <name>Integration Test Executor</name>
 
-  
-  <scm> 
-    <url>https://npanday.svn.codeplex.com/svn/trunk/npanday-it-runner</url>  
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/npanday-it-runner</connection>  
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/npanday-it-runner</developerConnection>  
-  </scm> 
-  
   <dependencies>
     <dependency>
       <groupId>npanday.its</groupId>
