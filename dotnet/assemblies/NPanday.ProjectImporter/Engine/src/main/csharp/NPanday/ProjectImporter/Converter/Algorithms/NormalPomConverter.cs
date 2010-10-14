@@ -107,7 +107,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     //if project is imported in 64-bit path should include "x86"
                     if (projectDigest.Platform.Contains("x86"))
                     {
-                        gFile = @"obj\x86\Debug";
+                        gFile = @"obj\x86\Debug\";
                     }
                     else
                     {
