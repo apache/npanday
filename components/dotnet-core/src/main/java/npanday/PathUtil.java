@@ -22,6 +22,12 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.codehaus.plexus.util.FileUtils;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,6 +35,8 @@ import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * This class provides methods for obtaining the location of artifacts.
@@ -120,9 +128,8 @@ public final class PathUtil
             logger.warning( "NPANDAY-040-004: Local Repository is null - Cannot get application file." );
             return null;
         }
-        File source = getUserAssemblyCacheFileFor( artifact, localRepository);
         
-        return  getDotNetArtifact( artifact, source );
+        return  getDotNetArtifact( artifact );
     }
 
     /**
@@ -146,7 +153,8 @@ public final class PathUtil
             return null;
         }
       
-        return getDotNetArtifact( artifact );
+        return  getDotNetArtifact( artifact );
+        
     }
     
     private static String getTokenizedPath(String path)
@@ -176,17 +184,19 @@ public final class PathUtil
         
         String outputDir = System.getProperty("user.dir");
         outputDir = outputDir+File.separator+"target";
-        
+
+        new File(outputDir).mkdir();
+           
         String filename = artifact.getArtifactId() + "." + artifact.getArtifactHandler().getExtension();
         File targetFile = new File(outputDir+File.separator+ filename);
         
         try
-        {     
+        {    
               FileUtils.copyFile(source, targetFile);
         }   
         catch (IOException ioe) 
         {
-            logger.warning("NPANDAY-1005-0001: Error copying dependency " + artifact +ioe.getMessage());
+            logger.warning("\nNPANDAY-1005-0001: Error copying dependency " + artifact +" "+ioe.getMessage());
         }
          
         return targetFile;
@@ -207,12 +217,19 @@ public final class PathUtil
             return null;
         }
        
-        File source = new File( System.getProperty( "user.home" ),".m2" + File.separator + "repository" + File.separator + getTokenizedPath(artifact.getGroupId() ) + File.separator + artifact.getArtifactId() + File.separator + artifact.getVersion() + File.separator + artifact.getArtifactId() + "-" + artifact.getVersion() +"." + ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension() );
+        String ext = ArtifactType.getArtifactTypeForPackagingName( artifact.getType() ).getExtension();
         
+        //assumes that since it was not found as a .dll or a .exe it will be considered as a default library
+        if(ext == null)
+        {
+            ext = "jar";
+        }
+       
+        File source = new File( System.getProperty( "user.home" ),".m2" + File.separator + "repository" + File.separator + getTokenizedPath(artifact.getGroupId() ) + File.separator + artifact.getArtifactId() + File.separator + artifact.getVersion() + File.separator + artifact.getArtifactId() + "-" + artifact.getVersion() +"." + ext );
+               
         File dotnetFile =  getDotNetArtifact( artifact, source );
         
         return dotnetFile;
     }
     
-
 }

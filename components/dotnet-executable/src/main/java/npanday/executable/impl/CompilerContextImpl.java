@@ -391,7 +391,7 @@ public final class CompilerContextImpl
                 {
                     modules.add( artifact );
                 }
-                else if ( (artifactType != null && (
+                else if ( (artifactType != ArtifactType.NULL && (
                             StringUtils.equals( artifactType.getTargetCompileType(), "library" )
                             || artifactType.getExtension().equals( "dll" )
                             || artifactType.getExtension().equals( "exe" ))

@@ -31,14 +31,22 @@ namespace NPanday.Artifact
     {
         public static FileInfo GetPrivateApplicationBaseFileFor(Artifact artifact, DirectoryInfo localRepository, string currentDir)
         {
-           FileInfo target = new FileInfo(currentDir + Path.PathSeparator + "target" + Path.PathSeparator+artifact.ArtifactId + ".dll");
-            File.Copy(GetUserAssemblyCacheFileFor(artifact, localRepository).ToString(), target.ToString());
+            FileInfo target = new FileInfo(currentDir + Path.PathSeparator + "target" + Path.PathSeparator+artifact.ArtifactId + artifact.Extension);
+           
+            FileInfo source = GetUserAssemblyCacheFileFor(artifact, localRepository);
+
+            if(source.Exists)
+            {
+                   File.Copy( source.ToString(), target.ToString());
+            } 
+            
+           
             return target;
         }
 
         public static FileInfo GetUserAssemblyCacheFileFor(Artifact artifact, DirectoryInfo localRepository)
         {
-           return new FileInfo( Path.Combine(SettingsUtil.GetLocalRepositoryPath(), string.Format(@"{0}\{1}\{1}{2}-{3}", Tokenize(artifact.GroupId), artifact.ArtifactId, artifact.Version, artifact.Extension)));
+           return new FileInfo( Path.Combine(SettingsUtil.GetLocalRepositoryPath(), string.Format(@"{0}\{1}\{2}\{1}-{2}.{3}", Tokenize(artifact.GroupId), artifact.ArtifactId, artifact.Version, artifact.Extension)));
         }
         
         public static string Tokenize(String id)

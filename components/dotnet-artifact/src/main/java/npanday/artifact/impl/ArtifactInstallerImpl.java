@@ -269,16 +269,13 @@ public class ArtifactInstallerImpl
                                                                                     dependency.getClassifier(), scope,
                                                                                     null );
            
-            File mavenArtifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( artifactDependency, localRepository );
-            
-             
-            File artifactDependencyFile = PathUtil.getDotNetArtifact( artifactDependency, mavenArtifactDependencyFile );
+            File artifactDependencyFile = PathUtil.getDotNetArtifact( artifactDependency );
             
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
                 if (!ArtifactTypeHelper.isDotnetAnyGac( artifactDependency.getType() ))
                 {
-                    logger.warn( "NPANDAY-000-017: Could not find artifact dependency to copy in PAB: Artifact ID = " +
+                    logger.warn( "NPANDAY-000-017: Could not find artifact dependency to copy in local repository: Artifact ID = " +
                         artifactDependency.getId() + ", File Path = " +
                         ( ( artifactDependencyFile != null ) ? artifactDependencyFile.getAbsolutePath() : null ) );
                 }
@@ -300,6 +297,7 @@ public class ArtifactInstallerImpl
             }
             artifactDependencies.add( artifact );
         }
+        //File installDirectory = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository ).getParentFile();
         File installDirectory = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository ).getParentFile();
         for ( Artifact artifactDependency : artifactDependencies )
         {
@@ -319,13 +317,16 @@ public class ArtifactInstallerImpl
         throws ArtifactInstallationException
     {
         ApplicationConfig applicationConfig = artifactContext.getApplicationConfigFor( artifact );
+        
         File configExeFile = applicationConfig.getConfigBuildPath();
+       
         if ( configExeFile.exists() )
         {
             try
             {
-                FileUtils.copyFileToDirectory( configExeFile, PathUtil.getUserAssemblyCacheFileFor( artifact,
-                                                                                                    localRepository ).getParentFile() );
+                
+                FileUtils.copyFileToDirectory( configExeFile, PathUtil.getUserAssemblyCacheFileFor( artifact,localRepository ).getParentFile() );
+                
             }
             catch ( IOException e )
             {

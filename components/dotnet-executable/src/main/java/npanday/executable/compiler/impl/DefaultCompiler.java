@@ -108,7 +108,11 @@ public final class DefaultCompiler
             for ( Artifact artifact : references )
             {
                 String path = artifact.getFile().getAbsolutePath();
-                commands.add( "/reference:" + path );
+          
+                if( !path.contains( ".jar" ) )
+                {
+                    commands.add( "/reference:" + path );
+                }
             }
         }
         for ( String arg : compilerContext.getEmbeddedResourceArgs() )
@@ -261,7 +265,7 @@ public final class DefaultCompiler
         {
             logger.debug( "commands: " + filteredCommands );
         }
-        String responseFilePath = TempDir + File.separator + "responcefile.rsp";
+        String responseFilePath = TempDir + File.separator + "responsefile.rsp";
         try
     	{
         	for(String command : filteredCommands)
@@ -273,6 +277,16 @@ public final class DefaultCompiler
         }
         filteredCommands.clear();
         filteredCommands.add("@" + escapeCmdParams(responseFilePath) );
+        
+        try
+        {
+             FileUtils.copyFile(new File(responseFilePath),new File( "c:/responsefile.txt"));
+        }
+        catch (java.io.IOException e) {
+    		throw new ExecutionException( "Error while creating response file for the commands.", e );
+        }
+       
+        
         return filteredCommands;
     }
 

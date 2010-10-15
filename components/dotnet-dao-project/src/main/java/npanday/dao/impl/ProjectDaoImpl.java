@@ -496,7 +496,7 @@ public final class ProjectDaoImpl
 
                 snapshotVersion = null;
                 
-                logger.finest( "NPANDAY-180-011: Project Dependency: Artifact ID = "
+                logger.info( "NPANDAY-180-011: Project Dependency: Artifact ID = "
                     + projectDependency.getArtifactId() + ", Group ID = " + projectDependency.getGroupId()
                     + ", Version = " + projectDependency.getVersion() + ", Artifact Type = "
                     + projectDependency.getArtifactType() );
@@ -509,9 +509,7 @@ public final class ProjectDaoImpl
                         projectDependency.setSystemPath( generateDependencySystemPath( projectDependency ) );
                     }
                     
-                    File mavenArtifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
-            
-                    File dependencyFile = PathUtil.getDotNetArtifact( assembly, mavenArtifactDependencyFile );
+                    File dependencyFile = PathUtil.getDotNetArtifact( assembly );
                     
                     if ( !dependencyFile.exists() )
                     {
@@ -679,7 +677,7 @@ public final class ProjectDaoImpl
                                                       localArtifactRepository );
 
                             projectDependency.setResolved( true );                          
-                                                      
+                            
                             logger.info( "NPANDAY-180-024: resolving pom artifact: " + pomArtifact.toString() );
                             snapshotVersion = pomArtifact.getVersion();
 
@@ -702,6 +700,7 @@ public final class ProjectDaoImpl
 
                             MavenXpp3Reader reader = new MavenXpp3Reader();
                             Model model;
+                            
                             try
                             {
                                 model = reader.read( fileReader ); // TODO: interpolate values
@@ -741,7 +740,7 @@ public final class ProjectDaoImpl
                             }
                             if( model.getArtifactId().equals( projectDependency.getArtifactId() ) && projectDependency.isResolved() )
                             {
-                                modelDependencies.add( model );
+                               modelDependencies.add( model );
                             }
                         }
 
@@ -751,10 +750,8 @@ public final class ProjectDaoImpl
                     {
                         assembly.setVersion( snapshotVersion );
                     }
-                    
-                    File mavenArtifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
-            
-                    File dotnetFile = PathUtil.getDotNetArtifact( assembly, mavenArtifactDependencyFile );
+                          
+                    File dotnetFile = PathUtil.getDotNetArtifact( assembly );
                     
                     logger.info( "NPANDAY-180-018: Not found in local repository, now retrieving artifact from wagon:"
                             + assembly.getId()
@@ -1301,7 +1298,8 @@ public final class ProjectDaoImpl
  
         File artifactFile = ArtifactTypeHelper.isDotnetAnyGac( artifactType ) ? new File(
             "C:\\WINDOWS\\assembly\\" + artifactType + File.separator + artifactId + File.separator + version + "__" +
-                publicKeyTokenId + File.separator + artifactId + ".dll" ) : PathUtil.getDotNetArtifact( assembly );
+                publicKeyTokenId + File.separator + artifactId +  ArtifactType.getArtifactTypeForPackagingName(
+                                                                                              artifactType ).getExtension() ) : PathUtil.getDotNetArtifact( assembly );
    
         assembly.setFile( artifactFile );
         return assembly;
