@@ -37,6 +37,8 @@ namespace NPanday.VisualStudio.Addin
             this.txtGroupId = new System.Windows.Forms.TextBox();
             this.lblSCM = new System.Windows.Forms.Label();
             this.txtSCMTag = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtVersion = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnBrowse
@@ -71,7 +73,7 @@ namespace NPanday.VisualStudio.Addin
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(450, 76);
+            this.btnCancel.Location = new System.Drawing.Point(451, 107);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(64, 21);
@@ -82,7 +84,7 @@ namespace NPanday.VisualStudio.Addin
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(343, 76);
+            this.btnGenerate.Location = new System.Drawing.Point(341, 107);
             this.btnGenerate.Margin = new System.Windows.Forms.Padding(2);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(104, 21);
@@ -124,16 +126,35 @@ namespace NPanday.VisualStudio.Addin
             this.txtSCMTag.Size = new System.Drawing.Size(396, 20);
             this.txtSCMTag.TabIndex = 13;
             this.txtSCMTag.Text = "<OPTIONAL: svn url>";
-            this.txtSCMTag.DoubleClick += new System.EventHandler(this.txtSCMTag_DoubleClick);
-            this.txtSCMTag.TextChanged += new System.EventHandler(this.txtSCMTag_TextChanged);
             this.txtSCMTag.Click += new System.EventHandler(this.txtSCMTag_Click);
+            this.txtSCMTag.TextChanged += new System.EventHandler(this.txtSCMTag_TextChanged);
+            this.txtSCMTag.DoubleClick += new System.EventHandler(this.txtSCMTag_DoubleClick);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(10, 110);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Version:";
+            // 
+            // txtVersion
+            // 
+            this.txtVersion.Location = new System.Drawing.Point(118, 107);
+            this.txtVersion.Margin = new System.Windows.Forms.Padding(2);
+            this.txtVersion.Name = "txtVersion";
+            this.txtVersion.Size = new System.Drawing.Size(171, 20);
+            this.txtVersion.TabIndex = 15;
             // 
             // NPandayImportProjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 107);
+            this.ClientSize = new System.Drawing.Size(526, 136);
             this.ControlBox = false;
+            this.Controls.Add(this.txtVersion);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtSCMTag);
             this.Controls.Add(this.lblSCM);
             this.Controls.Add(this.txtGroupId);
@@ -164,5 +185,7 @@ namespace NPanday.VisualStudio.Addin
         private System.Windows.Forms.TextBox txtGroupId;
         private System.Windows.Forms.Label lblSCM;
         private System.Windows.Forms.TextBox txtSCMTag;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtVersion;
     }
 }

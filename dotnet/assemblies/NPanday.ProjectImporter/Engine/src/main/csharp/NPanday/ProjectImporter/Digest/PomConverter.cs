@@ -128,8 +128,8 @@ namespace NPanday.ProjectImporter.Converter
                     scmTag = scmTag.Trim();
                     
                     Scm scmHolder = new Scm();
-                    scmHolder.connection = string.Format("scm:svn:{0}",scmTag);
-                    scmHolder.developerConnection = string.Format("scm:svn:{0}", scmTag);
+                    scmHolder.connection = string.Format("scm:svn:{0}",scmTag); 
+                    scmHolder.developerConnection = string.Format("scm:svn:{0}", scmTag); //why forcibly Subversion? (scm:hg for example). Need to add more fields to configure.
                     scmHolder.url = scmTag;
                     model.scm = scmHolder;
                 }

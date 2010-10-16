@@ -586,22 +586,20 @@ public final class ProjectDaoImpl
                 // project
                 // now we need to generate the system path of the gac references so we can use
                 // System.getenv("SystemRoot")
+                //we have already set file for the assembly above (in createArtifactFrom) so we do not need re-resovle it
                 if ( !projectDependency.isResolved() )
                 {
                     if ( ArtifactTypeHelper.isDotnetAnyGac( projectDependency.getArtifactType() ) )
                     {
                         try
                         {
-                            projectDependency.setResolved( true );
-                            if ( projectDependency.getSystemPath() == null )
+                            if (assembly.getFile().exists())
                             {
-                                projectDependency.setSystemPath( generateDependencySystemPath( projectDependency ) );
+                                projectDependency.setSystemPath( assembly.getFile().getAbsolutePath());
+                                projectDependency.setResolved( true );
+                                assembly.setResolved( true );
                             }
-                            File f = new File( projectDependency.getSystemPath() );
-                            assembly.setFile( f );
-                            assembly.setResolved( true );
                             artifactDependencies.add( assembly );
-
                         }
                         catch ( ExceptionInInitializerError e )
                         {
@@ -1295,20 +1293,24 @@ public final class ProjectDaoImpl
                                                                       VersionRange.createFromVersion( version ),
                                                                       artifactType, publicKeyTokenId, scope,
                                                                       null );
-        // TODO: Use PathUtil!
-        File artifactFile = ArtifactTypeHelper.isDotnetAnyGac( artifactType ) ? new File(
-            "C:\\WINDOWS\\assembly\\" + artifactType + File.separator + artifactId + File.separator + version + "__" +
-                publicKeyTokenId + File.separator + artifactId + ".dll" ) : new File( System.getProperty( "user.home" ),
-                                                                                      File.separator + ".m2" +
-                                                                                          File.separator + "uac" +
-                                                                                          File.separator + "gac_msil" +
-                                                                                          File.separator + artifactId +
-                                                                                          File.separator + version +
-                                                                                          "__" + groupId +
-                                                                                          File.separator + artifactId +
-                                                                                          "." +
-                                                                                          ArtifactType.getArtifactTypeForPackagingName(
-                                                                                              artifactType ).getExtension() );
+        //using PathUtil
+        File artifactFile = null;
+        if (ArtifactTypeHelper.isDotnetAnyGac( artifactType ))
+        {
+            if (!ArtifactTypeHelper.isDotnet4Gac(artifactType))
+            {
+                artifactFile = PathUtil.getGlobalAssemblyCacheFileFor( assembly, new File("C:\\WINDOWS\\assembly\\") );
+            }
+            else
+            {
+                artifactFile = PathUtil.getGACFile4Artifact(assembly);
+            }
+        }
+        else
+        {
+            artifactFile = PathUtil.getUserAssemblyCacheFileFor( assembly, new File( System.getProperty( "user.home" ),
+                                                                                      File.separator + ".m2" + File.separator + "repository") );
+        }
 
         assembly.setFile( artifactFile );
         return assembly;

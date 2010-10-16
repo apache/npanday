@@ -46,6 +46,16 @@ public final class PathUtil
             gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + "v4.0" + "_" + artifact.getVersion() + "__" +
                 artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
         }
+        else if (type.equals(ArtifactType.GAC_32_4.getPackagingType())) {
+            String gacRoot = System.getenv( "SystemRoot" ) + "\\Microsoft.NET\\assembly\\GAC_32\\";
+            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + "v4.0" + "_" + artifact.getVersion() + "__" +
+                artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+        }
+        else if (type.equals(ArtifactType.GAC_64_4.getPackagingType())) {
+            String gacRoot = System.getenv( "SystemRoot" ) + "\\Microsoft.NET\\assembly\\GAC_64\\";
+            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + "v4.0" + "_" + artifact.getVersion() + "__" +
+                artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+        }
         else {
             gacFile = artifact.getFile();
         }

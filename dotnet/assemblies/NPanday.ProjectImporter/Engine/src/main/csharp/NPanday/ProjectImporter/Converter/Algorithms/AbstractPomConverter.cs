@@ -518,7 +518,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             foreach (Plugin plugin in model.build.plugins)
             {
-                if (groupId.ToLower().Equals(plugin.groupId.ToLower()) && artifactId.ToLower().Equals(plugin.artifactId.ToLower()))
+                if (groupId.ToLower().Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase) && artifactId.ToLower().Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (!string.IsNullOrEmpty(version) && version.Equals(plugin.version))
                     {
@@ -730,7 +730,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
             // resolve from GAC
-            if (!string.IsNullOrEmpty(gacUtil.GetAssemblyInfo(reference.Name)))
+            if (!string.IsNullOrEmpty(gacUtil.GetAssemblyInfo(reference.Name, null, projectDigest.Platform)))
             {
                 // Assembly is found at the gac
 
@@ -740,21 +740,50 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 
                 if ("MSIL".Equals(reference.ProcessorArchitecture, StringComparison.OrdinalIgnoreCase))
                 {
-                    refDependency.type = "gac_msil";
+                    if ("4.0.0.0".Equals(reference.Version))
+                    {
+                        refDependency.type = "gac_msil4";
+                    }
+                    else
+                    {
+                        refDependency.type = "gac_msil";
+                    }
                 }
                 else if ("x86".Equals(reference.ProcessorArchitecture, StringComparison.OrdinalIgnoreCase))
                 {
-                    refDependency.type = "gac_32";
+                    if ("4.0.0.0".Equals(reference.Version))
+                    {
+                        refDependency.type = "gac_32_4";
+                    }
+                    else
+                    {
+                        refDependency.type = "gac_32";
+                    }
                 }
-                //check if Project is imported on a 64bit machine			
-                else if ("AMD64".Equals(reference.ProcessorArchitecture, StringComparison.OrdinalIgnoreCase))
+                else if ("IA64".Equals(reference.ProcessorArchitecture, StringComparison.OrdinalIgnoreCase) || 
+                     "AMD64".Equals(reference.ProcessorArchitecture, StringComparison.OrdinalIgnoreCase))
                 {
-                    refDependency.type = "gac_64";
+                    if ("4.0.0.0".Equals(reference.Version))
+                    {
+                        refDependency.type = "gac_64_4";
+                    }
+                    else
+                    {
+                        refDependency.type = "gac_64";
+                    }
                 }
-				//Assemblies that with null ProcessorArchitecture esp ASP.net assmblies (e.g MVC)
+
+                //Assemblies that with null ProcessorArchitecture esp ASP.net assmblies (e.g MVC)
                 else if ((reference.ProcessorArchitecture == null) && ("31bf3856ad364e35".Equals(reference.PublicKeyToken.ToLower(), StringComparison.OrdinalIgnoreCase)))
                 {
-                    refDependency.type = "gac_msil";
+                    if ("4.0.0.0".Equals(reference.Version))
+                    {
+                        refDependency.type = "gac_msil4";
+                    }
+                    else
+                    {
+                        refDependency.type = "gac_msil";
+                    }
                 }
 
                 else
@@ -765,7 +794,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 refDependency.version = reference.Version ?? "1.0.0.0";
                 
 				//exclude ProcessArchitecture when loading assembly on a non-32 bit machine
-                System.Reflection.Assembly a = System.Reflection.Assembly.Load(new System.Reflection.AssemblyName(gacUtil.GetAssemblyInfo(reference.Name)).FullName);
+                System.Reflection.Assembly a = System.Reflection.Assembly.Load(new System.Reflection.AssemblyName(gacUtil.GetAssemblyInfo(reference.Name, reference.Version, null)).FullName);
                 
 				if (reference.PublicKeyToken != null)
                 {

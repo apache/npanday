@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
-
+using System.Xml.XPath;
 using Extensibility;
 using EnvDTE;
 using EnvDTE80;
@@ -60,12 +60,34 @@ namespace NPanday.VisualStudio.Addin
                     groupId = ConvertToPascalCase(groupId);
                     groupId = FilterID(groupId) + "." + FilterID(ConvertToPascalCase(new FileInfo(applicationObject.Solution.FileName).Name.Replace(".sln", "")));
                     txtGroupId.Text = groupId;
-                    string scmTag =  getSCMTag(applicationObject.Solution.FileName);
-                    if(scmTag!=string.Empty && scmTag!=null)
+                    string scmTag = string.Empty;  //getSCMTag(applicationObject.Solution.FileName);
+                    string version = "1.0-SNAPSHOT";
+                    string pomFilePath = applicationObject.Solution.FileName.Substring(0, applicationObject.Solution.FileName.LastIndexOf("\\"));
+                    pomFilePath += "\\pom.xml";
+                    if (File.Exists(pomFilePath))
+                    {
+                        XmlDocument doc = new XmlDocument();
+                        doc.Load(pomFilePath);
+                        System.Xml.XmlNamespaceManager xmlnsManager = new System.Xml.XmlNamespaceManager(doc.NameTable);
+                        xmlnsManager.AddNamespace("pom", "http://maven.apache.org/POM/4.0.0");
+                        XmlNode node = doc.SelectSingleNode("/pom:project/pom:scm/pom:developerConnection", xmlnsManager);
+                        if (node != null)
+                        {
+                            scmTag = node.InnerText;
+                        }
+                        node = doc.SelectSingleNode("/pom:project/pom:version", xmlnsManager);
+                        if (node != null)
+                        {
+                            version = node.InnerText;
+                        }
+                    }
+
+                    if(! string.IsNullOrEmpty(scmTag))
                     {
                         txtSCMTag.Text = scmTag;
                     }
 
+                    txtVersion.Text = version;
                 }
                 catch { /*do nothing*/}
 
@@ -130,42 +152,6 @@ namespace NPanday.VisualStudio.Addin
 
         }
 
-        private string getSCMTag(string filePath)
-        {
-            string pomFilePath = string.Empty;
-            string scmTag = string.Empty;
-            try
-            {
-                
-                //construct the path for the pom file and check for file existance.
-                //return if file does not exist.
-                pomFilePath = filePath.Substring(0, filePath.LastIndexOf("\\"));
-                pomFilePath += "\\pom.xml";
-                if (!File.Exists(pomFilePath))
-                {
-                    return scmTag;
-                }
-
-                XmlDocument doc = new XmlDocument();
-                doc.Load(pomFilePath);
-
-                XmlNodeList devCon = doc.GetElementsByTagName("developerConnection");
-                
-                foreach (XmlNode item in devCon)
-                {
-                    scmTag = item.InnerText;
-                }
-                
-               
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return scmTag;
-        }
-
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             string warningMsg = string.Empty;
@@ -182,6 +168,7 @@ namespace NPanday.VisualStudio.Addin
                     //string groupId = FilterID(ConvertToPascalCase(txtGroupId.Text));
                     string groupId = FilterID(txtGroupId.Text);
                     string scmTag = txtSCMTag.Text;
+                    string version = txtVersion.Text;
 
                     if (scmTag == null)
                     {
@@ -231,7 +218,7 @@ namespace NPanday.VisualStudio.Addin
 
                     validateSolutionStructure();
                     resyncAllArtifacts();
-                    string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, "1.0-SNAPSHOT", scmTag, true, ref warningMsg);
+                    string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, ref warningMsg);
                     string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
 
                     foreach (string pom in generatedPoms)

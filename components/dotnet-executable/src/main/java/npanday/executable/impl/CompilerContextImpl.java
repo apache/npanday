@@ -434,13 +434,25 @@ public final class CompilerContextImpl
                     setArtifactGacFile( gacRoot, artifact );
                     libraries.add( artifact );
                 }
+                else if ( type.equals( ArtifactType.GAC_32_4.getPackagingType() ) )
+                {
+                    String gacRoot = System.getenv( "SystemRoot" ) + "\\Microsoft.NET\\assembly\\GAC_32\\";
+                    setArtifactGacFile( gacRoot, artifact );
+                    libraries.add( artifact );
+                }
                 else if ( type.equals( ArtifactType.GAC_64.getPackagingType() ) )
                 {
                     String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
                         : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_64\\";
                     setArtifactGacFile( gacRoot, artifact );
                     libraries.add( artifact );
-                }		 							
+                }
+                else if ( type.equals( ArtifactType.GAC_64_4.getPackagingType() ) )
+                {
+                    String gacRoot = System.getenv( "SystemRoot" ) + "\\Microsoft.NET\\assembly\\GAC_64\\";
+                    setArtifactGacFile( gacRoot, artifact );
+                    libraries.add( artifact );
+                }
                 else if ( type.equals( ArtifactType.GAC_MSIL.getPackagingType() ) )
                 {
                     String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
@@ -635,7 +647,7 @@ public final class CompilerContextImpl
         logger.debug( "NPANDAY-061-001: Gac Root:" + gacRoot);
         logger.debug( "NPANDAY-061-003: Artifact Type:" + type);
         File gacFile;
-        if ("gac_msil4".equalsIgnoreCase(type)) {
+        if ("gac_msil4".equalsIgnoreCase(type) || "gac_32_4".equalsIgnoreCase(type) || "gac_64_4".equalsIgnoreCase(type)) {
             gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + "v" + compilerRequirement.getFrameworkVersion() + "_" + artifact.getVersion() + "__" +
                 artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
         }

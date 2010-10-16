@@ -52,6 +52,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // change the outputDirectory of the plugin
             Plugin compilePlugin = FindPlugin("npanday.plugin", "maven-compile-plugin");
             AddPluginConfiguration(compilePlugin, "outputDirectory", "bin");
+
+            // Add NPanday compile plugin 
+            Plugin aspxPlugin = AddPlugin("npanday.plugin", "maven-aspx-plugin");
+            if (!string.IsNullOrEmpty(projectDigest.TargetFramework))
+                AddPluginConfiguration(aspxPlugin, "frameworkVersion", projectDigest.TargetFramework);
 			
             // add msbuild plugin config in pom if there's a maven-resgen-plugin but no msbuild config 
             // generates resources in target/bin folder

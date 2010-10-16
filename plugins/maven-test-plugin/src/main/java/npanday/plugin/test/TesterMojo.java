@@ -155,6 +155,13 @@ extends AbstractMojo
      */
     private String nunitCommand;
 
+    /**
+     * The framework version to run the tests: 1.1, 2.0, 3.5, 4.0
+     *
+     * @parameter expression = "${executionFrameworkVersion}"
+     */
+    private String executionFrameworkVersion;
+
     private String getExecutableFor( VendorInfo vendorInfo )
     {
         String exe;
@@ -357,7 +364,7 @@ extends AbstractMojo
         VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
 		getLog().debug( "NPANDAY-1100-014.1: Vendor info:" + vendorInfo );        
         vendorInfo.setVendorVersion( "" );
-        vendorInfo.setFrameworkVersion( null );
+        vendorInfo.setFrameworkVersion( executionFrameworkVersion );
 		getLog().debug( "NPANDAY-1100-014.2: Vendor info:" + vendorInfo );        
 
         try
