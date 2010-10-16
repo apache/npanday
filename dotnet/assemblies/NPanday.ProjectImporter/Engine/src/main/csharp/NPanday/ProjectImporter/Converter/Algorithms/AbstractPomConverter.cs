@@ -746,7 +746,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 {
                     refDependency.type = "gac_32";
                 }
-
+                //check if Project is imported on a 64bit machine			
+                else if ("AMD64".Equals(reference.ProcessorArchitecture, StringComparison.OrdinalIgnoreCase))
+                {
+                    refDependency.type = "gac_64";
+                }
 				//Assemblies that with null ProcessorArchitecture esp ASP.net assmblies (e.g MVC)
                 else if ((reference.ProcessorArchitecture == null) && ("31bf3856ad364e35".Equals(reference.PublicKeyToken.ToLower(), StringComparison.OrdinalIgnoreCase)))
                 {
@@ -760,9 +764,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 
                 refDependency.version = reference.Version ?? "1.0.0.0";
                 
-                System.Reflection.Assembly a = System.Reflection.Assembly.Load(gacUtil.GetAssemblyInfo(reference.Name));
-
-                if (reference.PublicKeyToken != null)
+				//exclude ProcessArchitecture when loading assembly on a non-32 bit machine
+                System.Reflection.Assembly a = System.Reflection.Assembly.Load(new System.Reflection.AssemblyName(gacUtil.GetAssemblyInfo(reference.Name)).FullName);
+                
+				if (reference.PublicKeyToken != null)
                 {
                     refDependency.classifier = reference.PublicKeyToken;
                 }

@@ -98,7 +98,8 @@ public class DefaultRepositoryNetExecutable
                 ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Command = " +
                 commands, e );
         }
-        if ( commandExecutor.getStandardOut().contains( "error" ) )
+        if ( commandExecutor.getStandardOut().contains( "error" )
+          && !commandExecutor.getStandardOut().contains( "exit code = 0" ) )        
         {
             throw new ExecutionException(
                 "NPANDAY-063-001: Executable = " + getExecutable() + ",Command = " + commands );

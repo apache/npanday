@@ -314,8 +314,12 @@ public class ArtifactInstallerImpl
     public void installArtifactWithPom( Artifact artifact, File pomFile, boolean modifyProjectMetadata )
         throws ArtifactInstallationException
     {
+        logger.debug( "NPANDAY-001-031: artifact:" + artifact);
+        logger.debug( "NPANDAY-001-032: artifact file:" + artifact.getFile());    
         ApplicationConfig applicationConfig = artifactContext.getApplicationConfigFor( artifact );
         File configExeFile = applicationConfig.getConfigBuildPath();
+        logger.debug( "NPANDAY-001-032: config file:" + configExeFile);
+        
         if ( configExeFile.exists() )
         {
             try
@@ -343,7 +347,7 @@ public class ArtifactInstallerImpl
                         + ", Dest Directory = " + destFile.getParent());
                 try
                 {
-				    //this is previously using copyFile(File, File)
+                    //this is previously using copyFile(File, File)
                     FileUtils.copyFileToDirectory( artifactFile.getAbsolutePath(), destFile.getParent() );
                 }
                 catch ( IOException e )
@@ -372,7 +376,10 @@ public class ArtifactInstallerImpl
             Model model;
             try
             {
+                logger.debug( "NPANDAY-001-033: config file:" + artifact.getType());
+
                 model = reader.read( new FileReader( pomFile ) );
+
                 if ( configExeFile.exists() )
                 {
                     Dependency dependency = new Dependency();
@@ -396,6 +403,7 @@ public class ArtifactInstallerImpl
             dao.openConnection();
             try
             {
+                logger.debug( "NPANDAY-001-034: ProjectDao. Call storeModelAndResolveDependencies on :" + dao.getClass());        
                 dao.storeModelAndResolveDependencies( model, pomFile.getParentFile(), localRepository,
                                                       new ArrayList<ArtifactRepository>() );
             }
@@ -408,7 +416,7 @@ public class ArtifactInstallerImpl
             finally
             {
                 dao.closeConnection();
-				deleteTempDir(pomFile);
+                deleteTempDir(pomFile);
             }
         }
     }

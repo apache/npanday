@@ -256,8 +256,8 @@ public class AspxCompilerMojo
             /* keep only the files needed to run the app */
             List<File> allFiles = FileUtils.getFiles( tmpDir, "**", null );
             List<File> filesToKeep = FileUtils.getFiles( tmpDir, DEFAULT_INCLUDES, DEFAULT_EXCLUDES );
-        	
-        	for ( File file : allFiles )
+
+            for ( File file : allFiles )
             {
                 if ( !filesToKeep.contains( file ) || "App_global.asax.dll".equals(file.getName()) || "App_global.asax.compiled".equals(file.getName()))
                 {
@@ -294,14 +294,20 @@ public class AspxCompilerMojo
         //copy .asax to target file
         try
         {
-        	List<File> fileList = FileUtils.getFiles(project.getBasedir(), "*.asax", null);
-        	for(File file : fileList)
+            String sourceDirectory = project.getBuild().getSourceDirectory();
+            List<File> fileList = FileUtils.getFiles(new File(sourceDirectory), "**/*.asax", null);
+            getLog().debug("copy .asax to target file (source folder: " + project.getBuild().getSourceDirectory() +  ")...");
+            getLog().debug("copy .asax to target file (temp folder: " + tmpDir +  ")...");
+            getLog().debug("copy .asax to target file (folder: " + project.getBasedir() +  ")...");
+            getLog().debug("copy .asax to target file (file count: " + fileList.size() +  ")...");
+
+            for(File file : fileList)
             {
                 try
                 {
-            	    String fileName = file.getAbsolutePath().substring((int)project.getBasedir().getAbsolutePath().length());
-            		FileUtils.copyFile(new File(file.getAbsolutePath()), new File(webappDir.getAbsolutePath() + fileName));
-            		getLog().info("Copying " + fileName.substring(1) + " to " + webappDir.getAbsolutePath() );
+                    String fileName = file.getAbsolutePath().substring((int)sourceDirectory.length());                    
+                    FileUtils.copyFile(new File(file.getAbsolutePath()), new File(webappDir.getAbsolutePath() + fileName));
+                    getLog().info("Copying " + fileName.substring(1) + " to " + webappDir.getAbsolutePath() );
                 }
                 catch ( IOException e )
                 {
@@ -336,18 +342,18 @@ public class AspxCompilerMojo
         getLog().info( "NPANDAY-000-000: Setting the target file: " + targetFile );
         project.getArtifact().setFile( new File( targetFile ) );
 
-		//Delete Bin Folder
+        //Delete Bin Folder
         String binDir = project.getBuild().getSourceDirectory()+File.separator + "Bin";
         try
         {
-        	FileUtils.deleteDirectory(binDir);
-        	getLog().info("Bin folder deleted: " + binDir);
+            FileUtils.deleteDirectory(binDir);
+            getLog().info("Bin folder deleted: " + binDir);
         }
         catch(IOException e)
         {
-        	getLog().info("Failed to delete Bin folder: " + binDir + " : " + e.getMessage());
+            getLog().info("Failed to delete Bin folder: " + binDir + " : " + e.getMessage());
         }
-		
+
     }
 
     private List<String> getCommands( File tmpDir )
@@ -366,7 +372,7 @@ public class AspxCompilerMojo
         parameters.add( "-f" );
         parameters.add( tmpDir.getAbsolutePath() );
         parameters.add( "-nologo" );
-		parameters.add( "-fixednames" );
+        parameters.add( "-fixednames" );
 
         return parameters;
     }

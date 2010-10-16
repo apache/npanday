@@ -85,7 +85,8 @@ public class StandardRegistryLoader
             while ( parser.nextTag() == XmlPullParser.START_TAG )
             {
                 parser.require( XmlPullParser.START_TAG, null, "repository" );
-                repositories.add( getRepositoryObject( parser ) );
+                RepositoryObject rep = getRepositoryObject( parser );
+                repositories.add( rep );                
             }
         }
         catch ( XmlPullParserException e )
@@ -146,7 +147,13 @@ public class StandardRegistryLoader
                 filePath.append( (char) path[i++] );
             }
         }//end for:i
-        return filePath.toString();
+        String str = filePath.toString();
+        if (!str.startsWith("/")) {
+            str = str.replaceAll("/", "\\\\");
+            str = str.replaceAll("\\\\:", ":");
+            str = str.replaceAll("\\\\\\\\", "\\\\");
+        }
+        return str;
     }
 
     /**

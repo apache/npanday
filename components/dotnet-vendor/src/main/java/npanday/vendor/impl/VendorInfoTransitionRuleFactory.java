@@ -92,7 +92,8 @@ final class VendorInfoTransitionRuleFactory
         {
             throw new InitializationException( "NPANDAY-103-000: Unable to find the repository registry" );
         }
-
+        logger.debug( "NPANDAY-103-036.0: Respository registry: " + repositoryRegistry);
+        
         SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
         if ( settingsRepository == null )
         {
@@ -180,9 +181,11 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NPANDAY-103-004: Entering State = NFF" );
+                logger.debug( "NPANDAY-103-041: Vendor:" + vendorInfo.getVendor() + ":default vendor:" + defaultVendor );
                 if ( vendorInfo.getVendor().equals( defaultVendor ) )
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
+                    logger.debug( "NPANDAY-103-042: Set default framework:" + defaultFrameworkVersion );
                     vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
                     return VendorInfoState.POST_PROCESS;
                 }
@@ -193,9 +196,11 @@ final class VendorInfoTransitionRuleFactory
                     {
                         for ( VendorInfo vi : v )
                         {
+                            logger.debug( "NPANDAY-103-043: Compare vendor:" + vi.getVendor() + ":with vendor:" + vendorInfo.getVendor() );
                             if ( vi.getVendor().equals( vendorInfo.getVendor() ) )
                             {
                                 vendorInfo.setVendorVersion( vi.getVendorVersion() );
+                                logger.debug( "NPANDAY-103-044: Hard code the frameworkd (default framework:" + defaultFrameworkVersion + ")" );
                                 vendorInfo.setFrameworkVersion( "2.0.50727" );
                                 return VendorInfoState.POST_PROCESS;
                             }
@@ -206,9 +211,11 @@ final class VendorInfoTransitionRuleFactory
                         v = vendorInfoRepository.getVendorInfosFor( vendorInfo, false );
                         for ( VendorInfo vi : v )
                         {
+                            logger.debug( "NPANDAY-103-046: Compare vendor:" + vi.getVendor() + ":with vendor:" + vendorInfo.getVendor() );
                             if ( vi.getVendor().equals( vendorInfo.getVendor() ) )
                             {
                                 vendorInfo.setVendorVersion( vi.getVendorVersion() );
+                                logger.debug( "NPANDAY-103-045: Hard code the frameworkd (default framework:" + defaultFrameworkVersion + ")" );
                                 vendorInfo.setFrameworkVersion(
                                     "2.0.50727" );  //TODO: this should be according to max version
                                 return VendorInfoState.POST_PROCESS;
@@ -228,6 +235,7 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NPANDAY-103-005: Entering State = NFF" );
+                logger.debug( "NPANDAY-103-047: Hard code the frameworkd (default framework:" + defaultFrameworkVersion + ")" );
                 vendorInfo.setFrameworkVersion( "2.0.50727" );
                 return VendorInfoState.NFT;
             }
@@ -343,8 +351,11 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NPANDAY-103-009: Entering State = NTF" );
+                logger.debug( "NPANDAY-103-049: Compare vendor version :" + defaultVendorVersion + ":width:" + vendorInfo.getVendorVersion());
+                
                 if ( vendorInfo.getVendorVersion().equals( defaultVendorVersion ) )
                 {
+                    logger.debug( "NPANDAY-103-049: Set to default framework:" + defaultFrameworkVersion + ")" );
                     vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
                     vendorInfo.setVendor( defaultVendor );
                     return VendorInfoState.NTT;
@@ -447,8 +458,12 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NPANDAY-103-011: Entering State = FTF" );
+                logger.debug( "NPANDAY-103-050: Compare vendor version :" + defaultVendorVersion + ":width:" + vendorInfo.getVendorVersion());
+
                 if ( vendorInfo.getVendorVersion().equals( defaultVendorVersion ) )
                 {
+                    logger.debug( "NPANDAY-103-050: Set to default version:" + defaultFrameworkVersion);
+
                     vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
                     vendorInfo.setVendor( defaultVendor );
                     if ( defaultVendor.equals( Vendor.MICROSOFT ) )
@@ -471,8 +486,12 @@ final class VendorInfoTransitionRuleFactory
                     {
                         for ( VendorInfo vi : v )
                         {
+                            logger.debug( "NPANDAY-103-050: Compare vendor version :" + vi.getVendorVersion() + ":width:" + vendorInfo.getVendorVersion());
+
                             if ( vi.getVendorVersion().equals( vendorInfo.getVendorVersion() ) )
                             {
+                                logger.debug( "NPANDAY-103-050: Set framework version:" + vi.getFrameworkVersion());
+
                                 vendorInfo.setFrameworkVersion( vi.getFrameworkVersion() );
                                 vendorInfo.setVendor( vi.getVendor() );
                                 if ( vi.getVendor().equals( Vendor.MICROSOFT ) )
@@ -496,8 +515,12 @@ final class VendorInfoTransitionRuleFactory
                         v = vendorInfoRepository.getVendorInfosFor( vendorInfo, false );
                         for ( VendorInfo vi : v )
                         {
+                            logger.debug( "NPANDAY-103-050: Compare vendor version :" + vi.getVendorVersion() + ":width:" + vendorInfo.getVendorVersion());
+                        
                             if ( vi.getVendorVersion().equals( vendorInfo.getVendorVersion() ) )
                             {
+                                logger.debug( "NPANDAY-103-050: Set framework version:" + vi.getFrameworkVersion());
+                            
                                 vendorInfo.setFrameworkVersion( vi.getFrameworkVersion() );
                                 vendorInfo.setVendor( vi.getVendor() );
                                 if ( vi.getVendor().equals( Vendor.MICROSOFT ) )
@@ -717,6 +740,7 @@ final class VendorInfoTransitionRuleFactory
                 logger.debug( "NPANDAY-103-017: Entering State = FFF" );
                 vendorInfo.setVendor( defaultVendor );
                 vendorInfo.setVendorVersion( defaultVendorVersion );
+                logger.debug( "NPANDAY-103-052: Set to default framework version:" + defaultFrameworkVersion);
                 vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
                 return VendorInfoState.POST_PROCESS;
             }
@@ -743,6 +767,7 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NPANDAY-103-019: Entering State = MTF" );
+                logger.debug( "NPANDAY-103-053: Set to framework version:" + vendorInfo.getVendorVersion());
                 vendorInfo.setFrameworkVersion( vendorInfo.getVendorVersion() );
                 return VendorInfoState.MTT;
             }
@@ -779,6 +804,7 @@ final class VendorInfoTransitionRuleFactory
 
                 if ( v2.exists() )
                 {
+                    logger.debug( "NPANDAY-103-055: Hardcode framework version (default:" + defaultFrameworkVersion + ")");
                     vendorInfo.setFrameworkVersion( "2.0.50727" );
                     executablePaths.add( v2 );
                     if ( v4.exists() )
@@ -788,6 +814,7 @@ final class VendorInfoTransitionRuleFactory
                 }
                 else if ( v1.exists() )
                 {
+                    logger.debug( "NPANDAY-103-056: Hardcode framework version (default:" + defaultFrameworkVersion + ")");
                     vendorInfo.setFrameworkVersion( "1.1.4322" );
                     executablePaths.add( v1 );
                     if ( v3.exists() )
@@ -797,6 +824,7 @@ final class VendorInfoTransitionRuleFactory
                 }
                 else
                 {
+                    logger.debug( "NPANDAY-103-057: Hardcode framework version:");
                     vendorInfo.setFrameworkVersion( "2.0.50727" );
                 }
 
@@ -858,6 +886,7 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NPANDAY-103-023: Entering State = GFF" );
+                logger.debug( "NPANDAY-103-058: Hardcode framework version:");
                 vendorInfo.setFrameworkVersion( "2.0.50727" );
                 vendorInfo.setVendorVersion( "2.0.50727" );
                 return VendorInfoState.POST_PROCESS;
@@ -875,6 +904,7 @@ final class VendorInfoTransitionRuleFactory
                 if ( vendorInfo.getVendor().equals( defaultVendor ) )
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
+                    logger.debug( "NPANDAY-103-059: Hardcode framework version (default:" + defaultFrameworkVersion + ")" );
                     vendorInfo.setFrameworkVersion( "2.0.50727" );
                     return VendorInfoState.POST_PROCESS;
                 }
@@ -894,6 +924,7 @@ final class VendorInfoTransitionRuleFactory
                     {
                         String maxVersion = vendorInfoRepository.getMaxVersion( versions );
                         vendorInfo.setVendorVersion( maxVersion );
+                        logger.debug( "NPANDAY-103-060: Hardcode framework version (default:" + defaultFrameworkVersion + ")" );
                         vendorInfo.setFrameworkVersion( "2.0.50727" );
                         return VendorInfoState.POST_PROCESS;
                     }

@@ -19,9 +19,11 @@ package npanday.plugin.aspx;
  * under the License.
  */
 
+import java.lang.StackTraceElement; 
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
+import java.util.ArrayList;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
@@ -29,6 +31,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
+import npanday.PathUtil;
+
 
 /**
  * Maven Mojo for copying ASPx project dependencies to sourceDirectory\Bin folder
@@ -63,13 +67,18 @@ public class AspxBinDependencyResolver
                 File targetFile = new File(binDir, filename);
 
                 if (!targetFile.exists()) {
-                    getLog().info("NPANDAY-000-0000: copying " + dependency.getFile().getAbsolutePath() + " to " + targetFile);
+                    getLog().debug("NPANDAY-000-0001: copy dependency: typeof:" +  dependency.getClass());
+                    getLog().debug("NPANDAY-000-0001: copy dependency: " + dependency);
+                    getLog().debug("NPANDAY-000-0002: copying " + dependency.getFile().getAbsolutePath() + " to " + targetFile);
+                    File sourceFile = PathUtil.getGACFile4Artifact(dependency);
 
-                    FileUtils.copyFile(dependency.getFile(), targetFile);
+                    FileUtils.copyFile(sourceFile, targetFile);
+                    
                 }
             }
             catch (IOException ioe) {
-                throw new MojoExecutionException("NPANDAY-000-0000: Error copying dependency " + dependency, ioe);
+                throw new MojoExecutionException("NPANDAY-000-00002: Error copying dependency " + dependency, ioe);
+                
             }
         }
     }

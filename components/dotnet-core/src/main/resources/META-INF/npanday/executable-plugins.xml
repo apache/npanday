@@ -104,6 +104,9 @@
         <operatingSystem>Windows</operatingSystem>
       </platform>
       <platform>
+        <operatingSystem>Windows 7</operatingSystem>
+      </platform>
+      <platform>      
         <operatingSystem>Mac OS X</operatingSystem>
       </platform>
       <platform>
@@ -132,6 +135,9 @@
         <operatingSystem>Windows</operatingSystem>
       </platform>
       <platform>
+        <operatingSystem>Windows 7</operatingSystem>
+      </platform>
+      <platform>      
         <operatingSystem>Mac OS X</operatingSystem>
       </platform>
       <platform>
@@ -173,6 +179,9 @@
         <operatingSystem>Windows</operatingSystem>
       </platform>
       <platform>
+        <operatingSystem>Windows 7</operatingSystem>
+      </platform>
+      <platform>      
         <operatingSystem>Mac OS X</operatingSystem>
       </platform>
       <platform>
@@ -291,6 +300,9 @@
         <operatingSystem>Windows</operatingSystem>
       </platform>
       <platform>
+        <operatingSystem>Windows 7</operatingSystem>
+      </platform>
+      <platform>      
         <operatingSystem>Mac OS X</operatingSystem>
       </platform>
       <platform>
@@ -319,6 +331,9 @@
         <operatingSystem>Windows</operatingSystem>
       </platform>
       <platform>
+        <operatingSystem>Windows 7</operatingSystem>
+      </platform>
+      <platform>      
         <operatingSystem>Mac OS X</operatingSystem>
       </platform>
       <platform>
@@ -363,6 +378,9 @@
         <operatingSystem>Windows</operatingSystem>
       </platform>
       <platform>
+        <operatingSystem>Windows 7</operatingSystem>
+      </platform>
+      <platform>      
         <operatingSystem>Mac OS X</operatingSystem>
       </platform>
       <platform>

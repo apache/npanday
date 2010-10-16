@@ -26,19 +26,19 @@ package npanday;
  */
 public enum ArtifactType
 {
-	NULL( null, null, null ),
-	
-	DOTNET_MODULE("dotnet-module", "module", "netmodule"),
-	
-	/**
-	 * A dll-file compiled by any of the .NET compilers.
-	 */
-	DOTNET_LIBRARY("dotnet-library", "library", "dll"),
-	
-	/**
-	 * Configuration file attachable to a library
-	 * artifact.
-	 */
+    NULL( null, null, null ),
+
+    DOTNET_MODULE("dotnet-module", "module", "netmodule"),
+
+    /**
+     * A dll-file compiled by any of the .NET compilers.
+     */
+    DOTNET_LIBRARY("dotnet-library", "library", "dll"),
+
+    /**
+     * Configuration file attachable to a library
+     * artifact.
+    */
     DOTNET_LIBRARY_CONFIG("dotnet-library-config", null, "dll.config"),
 
     /**
@@ -47,9 +47,9 @@ public enum ArtifactType
     DOTNET_EXECUTABLE("dotnet-executable", "exe", "exe"),
     
     /**
-	 * Configuration file attachable to a executable
-	 * artifact.
-	 */
+     * Configuration file attachable to a executable
+     * artifact.
+    */
     DOTNET_EXECUTABLE_CONFIG("dotnet-executable-config", null, "exe.config"),
 
     /**
@@ -92,14 +92,16 @@ public enum ArtifactType
     // DOTNET_ASPX("dotnet-aspx", "library", "dll"),
     // DOTNET_("dotnet-gac_generic", "library", "dll"),
     // DOTNET_("dotnet-gac_msil", "library", "dll"),
+    // DOTNET_("dotnet-gac_msil4", "library", "dll"),
     // DOTNET_("dotnet-gac_32", "library", "dll"),
+    // DOTNET_("dotnet-gac_64", "library", "dll"),	
     // DOTNET_("dotnet-nar", "library", "nar"),
     // DOTNET_("dotnet-visual-studio-addin", "library", "dll"),
     
     /** 
      * Use DOTNET_MODULE instead
      */
-	@Deprecated
+    @Deprecated
     MODULE( "module", "module", "netmodule" ),
     
     /** 
@@ -111,7 +113,7 @@ public enum ArtifactType
     /** 
      * Use DOTNET_EXECUTABLE instead
      */
-	@Deprecated
+    @Deprecated
     EXE( "exe", "exe", "exe" ),
     
     /** 
@@ -149,11 +151,15 @@ public enum ArtifactType
     GAC_GENERIC ("gac_generic", null, "dll"),
     
     GAC_MSIL ("gac_msil", null, "dll"),
+
+    GAC_MSIL4 ("gac_msil4", null, "dll"),    
     
     GAC_32 ( "gac_32", null, "dll"),
 
+    GAC_64 ( "gac_64", null, "dll"),	
+
     COM_REFERENCE( "com_reference", null, "dll");
-	
+
     /**
      * The extension used for the artifact(netmodule, dll, exe)
      */

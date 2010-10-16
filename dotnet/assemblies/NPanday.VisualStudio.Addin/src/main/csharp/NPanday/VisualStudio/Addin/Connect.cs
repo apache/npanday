@@ -978,7 +978,12 @@ namespace NPanday.VisualStudio.Addin
             buildControls = new List<CommandBarControl>();
             foreach (CommandBar commandBar in (CommandBars)dte2.CommandBars)
             {
-                foreach (CommandBarControl control in commandBar.Controls)
+				IList<CommandBarControl> barControls = new List<CommandBarControl>();
+				foreach (CommandBarControl control in commandBar.Controls)
+				{
+					barControls.Add(control);
+				}
+				foreach (CommandBarControl control in barControls)
                 {
                     if (control.Caption.Equals(Messages.MSG_C_ADD_REFERENCE))
                     {
@@ -1074,7 +1079,7 @@ namespace NPanday.VisualStudio.Addin
                 System.Type.Missing, System.Type.Missing, 1, true);
             buildButton.Caption = Messages.MSG_C_BUILD;
             buildButton.Visible = true;
-            buildButton.FaceId = 645;
+            //buildButton.FaceId = 645;
             buildButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuild_Click);
 
 
@@ -1228,7 +1233,7 @@ namespace NPanday.VisualStudio.Addin
                 System.Type.Missing, System.Type.Missing, 1, true);
             buildAllButton.Caption = Messages.MSG_C_BUILD;
             buildAllButton.Visible = true;
-            buildAllButton.FaceId = 645;
+            //buildAllButton.FaceId = 645;
             buildAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuildAll_Click);
 
             buildControls.Add(buildAllButton);

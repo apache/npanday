@@ -212,17 +212,23 @@ public class VsInstallerMojo
     {
         File homeDir = filesystemView.getDefaultDirectory();
 
+        String vs2010 = "Visual Studio 2010";
+        
         String vs2008 = "Visual Studio 2008";
         String vs2005 = "Visual Studio 2005";
 
         List<File> defaultVSDirs = new ArrayList<File>();
 
+        defaultVSDirs.add( new File( homeDir, vs2010 ) );
+        
         defaultVSDirs.add( new File( homeDir, vs2008 ) );
         defaultVSDirs.add( new File( homeDir, vs2005 ) );
 
         File enHomeDir = new File( System.getProperty( "user.home" ), "My Documents" );
         if ( !homeDir.getPath().toLowerCase().equals( enHomeDir.getPath().toLowerCase() ) )
         {
+            defaultVSDirs.add( new File( enHomeDir, vs2010 ) );
+
             defaultVSDirs.add( new File( enHomeDir, vs2008 ) );
             defaultVSDirs.add( new File( enHomeDir, vs2005 ) );
         }

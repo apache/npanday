@@ -408,6 +408,13 @@ public abstract class AbstractCompilerMojo
      * @parameter expression = "${resource}"
      */
     protected String resource;
+    
+    /**
+     * Embed the specified resource
+     *
+     * @parameter expression = "${embeddedResources}"
+     */
+    protected ArrayList<String> embeddedResources;    
 
     /**
      * Embed the specified resource
@@ -676,109 +683,109 @@ public abstract class AbstractCompilerMojo
         execute(false);
     }
 
-	private List<String> readPomAttribute(String pomFileLoc, String tag)
-	{
-		List<String> attributes=new ArrayList<String>();
-		
-		try 
-		{
+    private List<String> readPomAttribute(String pomFileLoc, String tag)
+    {
+        List<String> attributes=new ArrayList<String>();
+
+        try 
+        {
             File file = new File(pomFileLoc);
-            
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(file);
             doc.getDocumentElement().normalize();
-                        
-			NodeList nodeLst = doc.getElementsByTagName(tag);
-	
+
+            NodeList nodeLst = doc.getElementsByTagName(tag);
+
             for (int s = 0; s < nodeLst.getLength(); s++) 
-			{
+            {
                 Node currentNode = nodeLst.item(s);
-				
-				NodeList childrenList = currentNode.getChildNodes();
-								
-				for (int i = 0; i < childrenList.getLength(); i++)
-				{
-					Node child = childrenList.item(i);
-					attributes.add(child.getNodeValue());
-				}
+
+                NodeList childrenList = currentNode.getChildNodes();
+
+                for (int i = 0; i < childrenList.getLength(); i++)
+                {
+                    Node child = childrenList.item(i);
+                    attributes.add(child.getNodeValue());
+                }
             }
-		} 
-		catch (Exception e) 
-		{
+        } 
+        catch (Exception e) 
+        {
             System.out.println("[ERROR] readPomAttribute encountered error, there is a problem with the parsing of the pomfile");
         }
-		
-		return attributes;
-	}
-	
-	private String getContents(File aFile) 
-	{
-		StringBuilder contents = new StringBuilder();
-		
-		try 
-		{
-		  BufferedReader input =  new BufferedReader(new FileReader(aFile));
-		  try 
-		  {
-			String line = null; //not declared within while loop
-			
-			while (( line = input.readLine()) != null)
-			{
-			  contents.append(line);
-			  contents.append(System.getProperty("line.separator"));
-			}
-		  }
-		  finally 
-		  {
-			input.close();
-		  }
-		}
-		catch (Exception ex)
-		{
-		  System.out.println("[ERROR] Could not get the contents of the given file: "+aFile);
-		}
-    
-		return contents.toString();
-	}
 
-	private void setContents(File aFile, String aContents) throws Exception
-	{
-		if (aFile == null) 
-		{
-		  throw new Exception("File should not be null.");
-		}
-		if (!aFile.exists()) {
-		  throw new Exception ("File does not exist: " + aFile);
-		}
-		if (!aFile.isFile()) {
-		  throw new Exception("Should not be a directory: " + aFile);
-		}
-		if (!aFile.canWrite()) {
-		  throw new Exception("File cannot be written: " + aFile);
-		}
+        return attributes;
+    }
 
-		//use buffering
-		Writer output = new BufferedWriter(new FileWriter(aFile));
-		try 
-		{
-		  //FileWriter always assumes default encoding is OK!
-		  output.write( aContents );
-		}
-		finally {
-		  output.close();
-		}
-	}
+    private String getContents(File aFile) 
+    {
+        StringBuilder contents = new StringBuilder();
 
-	private void updateProjectVersion(String assemblyInfoFile, String ver, String dirtyVersion)
-	{
-		try
-		{
-			//returns if assemblyInfoFile does not exist
-			if(!FileUtils.fileExists(assemblyInfoFile))
-			{
-				System.out.println("[INFO] No Assembly Info File found");
-				return;
+        try 
+        {
+          BufferedReader input =  new BufferedReader(new FileReader(aFile));
+          try 
+          {
+            String line = null; //not declared within while loop
+
+            while (( line = input.readLine()) != null)
+            {
+              contents.append(line);
+              contents.append(System.getProperty("line.separator"));
+            }
+          }
+          finally 
+          {
+            input.close();
+          }
+        }
+        catch (Exception ex)
+        {
+          System.out.println("[ERROR] Could not get the contents of the given file: "+aFile);
+        }
+
+        return contents.toString();
+    }
+
+    private void setContents(File aFile, String aContents) throws Exception
+    {
+        if (aFile == null) 
+        {
+          throw new Exception("File should not be null.");
+        }
+        if (!aFile.exists()) {
+          throw new Exception ("File does not exist: " + aFile);
+        }
+        if (!aFile.isFile()) {
+          throw new Exception("Should not be a directory: " + aFile);
+        }
+        if (!aFile.canWrite()) {
+          throw new Exception("File cannot be written: " + aFile);
+        }
+
+        //use buffering
+        Writer output = new BufferedWriter(new FileWriter(aFile));
+        try 
+        {
+          //FileWriter always assumes default encoding is OK!
+          output.write( aContents );
+        }
+        finally {
+          output.close();
+        }
+    }
+
+    private void updateProjectVersion(String assemblyInfoFile, String ver, String dirtyVersion)
+    {
+        try
+        {
+            //returns if assemblyInfoFile does not exist
+            if(!FileUtils.fileExists(assemblyInfoFile))
+            {
+                System.out.println("[INFO] No Assembly Info File found");
+                return;
 			}
 			String contents = getContents(new File(assemblyInfoFile));
 			

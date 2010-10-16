@@ -213,6 +213,15 @@ public final class CompilerMojo
             params.add("/resource:" + resource);
         }
 
+		if (embeddedResources != null)
+        {
+			for ( String arg : embeddedResources )
+			{
+				params.add( "/resource:" + arg );
+			}
+            //params.add("/resource:" + resource);
+        }
+        
         if (linkResource != null)
         {
             params.add("/linkresource:" + linkResource);

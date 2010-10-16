@@ -644,6 +644,9 @@ public final class ProjectDaoImpl
 
                 if ( !projectDependency.isResolved() )
                 {
+                    logger.finest("NPANDAY-180-055: dependency:" + projectDependency.getClass());
+                    logger.finest("NPANDAY-180-056: dependency:" + assembly.getClass());
+                    
                     if ( assembly.getType().equals( "jar" ) )
                     {
                         logger.info( "Detected jar dependency - skipping: Artifact Dependency ID = "
@@ -661,6 +664,8 @@ public final class ProjectDaoImpl
                                                        new DefaultRepositoryLayout() );
                     if ( !ArtifactTypeHelper.isDotnetExecutableConfig( type ))// TODO: Generalize to any attached artifact
                     {
+                        logger.finest( "NPANDAY-180-016: set file....");
+                    
                         Artifact pomArtifact =
                             artifactFactory.createProjectArtifact( projectDependency.getGroupId(),
                                                                    projectDependency.getArtifactId(),
@@ -739,13 +744,14 @@ public final class ProjectDaoImpl
                         }
 
                     }
-
+                    logger.finest( "NPANDAY-180-019: set file...");
                     if ( snapshotVersion != null )
                     {
                         assembly.setVersion( snapshotVersion );
                     }
 
                     File uacFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
+                    logger.finest( "NPANDAY-180-0181: P = " + projectDependency);                    
                     logger.info( "NPANDAY-180-018: Not found in UAC, now retrieving artifact from wagon:"
                             + assembly.getId()
                             + ", Failed UAC Path Check = " + uacFile.getAbsolutePath());
@@ -768,6 +774,7 @@ public final class ProjectDaoImpl
                         }
                         catch ( ArtifactNotFoundException e )
                         {
+                            logger.log(Level.SEVERE, "NPANDAY-180-0201: Error resolving artifact. Reason:", e);                        
                             throw new IOException(
                                                    "NPANDAY-180-020: Problem in resolving artifact: Artifact = "
                                                        + assembly.getId()
