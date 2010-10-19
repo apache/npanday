@@ -83,7 +83,7 @@ namespace NPanday.Plugin.MojoGenerator
 			char[] delim = {'.'};
 			DirectoryInfo sourceDirectory = new DirectoryInfo(@outputDirectory.FullName + "/src/main/java/" 
 			                                                  + artifactId.Replace('.', '/'));
-			sourceDirectory.Create();
+            sourceDirectory.Create();
 			if(javaClasses.Count == 0)
 			{
 				Console.WriteLine("NPanday-000-000: There are no Mojos within the assembly: Artifact Id = " 
@@ -97,23 +97,33 @@ namespace NPanday.Plugin.MojoGenerator
 				string classFileName = tokens[tokens.Length - 1];
 				FileInfo fileInfo = new FileInfo(sourceDirectory.FullName + "/" 
 				                                 + classFileName + ".java");
-				jcuLocal.unmarshall(javaClass, fileInfo);
+                jcuLocal.unmarshall(javaClass, fileInfo);
 			}
-			
-			ResourceManager resourceManager = new ResourceManager("NPanday.Plugin.MojoGenerator", 
-			                                                      Assembly.GetExecutingAssembly());
-			String pomXml = (String) resourceManager.GetObject("pom-java.xml");
-			TextReader reader = new StringReader(pomXml);
+            
+
+            try
+            {
+                ResourceManager resourceManager = new ResourceManager("NPanday.Plugin.MojoGenerator",
+                                                               Assembly.GetExecutingAssembly());
+               
+                String pomXml = (String)resourceManager.GetObject("pom-java.xml"); 
+            
+            TextReader reader = new StringReader(pomXml);
 		    XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Pom.Model));
 			NPanday.Model.Pom.Model model = (NPanday.Model.Pom.Model) serializer.Deserialize(reader);	
 			model.artifactId = artifactId + ".JavaBinding";
 			model.groupId = groupId;
 			model.version = version;
 			model.name = artifactId + ".JavaBinding";
-				    
-			FileInfo outputPomXml = new FileInfo(@outputDirectory.FullName + "/pom-java.xml");
+
+            FileInfo outputPomXml = new FileInfo(@outputDirectory.FullName + "/pom-java.xml");
 			TextWriter textWriter = new StreamWriter(@outputPomXml.FullName);
-			serializer.Serialize(textWriter, model);
+            serializer.Serialize(textWriter, model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 			return 0;
 		}
 		
@@ -127,8 +137,7 @@ namespace NPanday.Plugin.MojoGenerator
 			string artifactId = GetArgFor("artifactId", args);
 			string version = GetArgFor("artifactVersion", args); 
 			
-			//Console.WriteLine("targetAssemblyFile = {0}, outputDirectory = {1}, pluginArtifactPath = {2}, version = {3}", 
-			//                  targetAssemblyFile, outputDirectory, pluginArtifactPath, version);
+            
 			Generator generator = new Generator();
 			AppDomain applicationDomain = 
 				generator.GetApplicationDomainFor(new FileInfo(targetAssemblyFile));

@@ -82,7 +82,7 @@ public final class PathUtil
         }
         //TODO: gac_generic
         //String processArchitecture = ( artifact.getType().equals( "gac_generic" ) );
-        return getDotNetArtifact( artifact );
+        return getDotNetArtifact( artifact , gacRepository );
     }
 
     /**
@@ -129,7 +129,7 @@ public final class PathUtil
             return null;
         }
         
-        return  getDotNetArtifact( artifact );
+        return  getDotNetArtifact( artifact, localRepository );
     }
 
     /**
@@ -153,7 +153,7 @@ public final class PathUtil
             return null;
         }
       
-        return  getDotNetArtifact( artifact );
+        return  getDotNetArtifact( artifact , localRepository );
         
     }
     
@@ -169,7 +169,7 @@ public final class PathUtil
      * @return the path of the artifact within the user assembly cache or null if either of the specified
      *         parameters is null
      */
-    public static File getDotNetArtifact( Artifact artifact, File source )
+    public static File getDotNetArtifact( Artifact artifact, String source )
     {
         if ( artifact == null )
         {
@@ -190,9 +190,10 @@ public final class PathUtil
         String filename = artifact.getArtifactId() + "." + artifact.getArtifactHandler().getExtension();
         File targetFile = new File(outputDir+File.separator+ filename);
         
+        
         try
         {    
-              FileUtils.copyFile(source, targetFile);
+              FileUtils.copyFile(new File( source ), targetFile);
         }   
         catch (IOException ioe) 
         {
@@ -209,7 +210,7 @@ public final class PathUtil
      * @return the path of the artifact within the user assembly cache or null if either of the specified
      *         parameters is null
      */
-    public static File getDotNetArtifact( Artifact artifact )
+    public static File getDotNetArtifact( Artifact artifact, File localRepository )
     {
         if ( artifact == null )
         {
@@ -224,10 +225,20 @@ public final class PathUtil
         {
             ext = "jar";
         }
-       
-        File source = new File( System.getProperty( "user.home" ),".m2" + File.separator + "repository" + File.separator + getTokenizedPath(artifact.getGroupId() ) + File.separator + artifact.getArtifactId() + File.separator + artifact.getVersion() + File.separator + artifact.getArtifactId() + "-" + artifact.getVersion() +"." + ext );
-               
-        File dotnetFile =  getDotNetArtifact( artifact, source );
+        
+        File source = null;
+        
+        if( localRepository!= null )
+        {
+          source = new File( localRepository + File.separator + getTokenizedPath(artifact.getGroupId() ) + File.separator + artifact.getArtifactId() + File.separator + artifact.getVersion() + File.separator + artifact.getArtifactId() + "-" + artifact.getVersion() +"." + ext );
+        }
+        else
+        {
+           source = new File( System.getProperty( "user.home" ),".m2" + File.separator + "repository" + File.separator + getTokenizedPath(artifact.getGroupId() ) + File.separator + artifact.getArtifactId() + File.separator + artifact.getVersion() + File.separator + artifact.getArtifactId() + "-" + artifact.getVersion() +"." + ext );
+        
+        }
+                      
+        File dotnetFile =  getDotNetArtifact( artifact, source.toString() );
         
         return dotnetFile;
     }

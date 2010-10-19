@@ -269,7 +269,7 @@ public class ArtifactInstallerImpl
                                                                                     dependency.getClassifier(), scope,
                                                                                     null );
            
-            File artifactDependencyFile = PathUtil.getDotNetArtifact( artifactDependency );
+            File artifactDependencyFile = PathUtil.getDotNetArtifact( artifactDependency , localRepository );
             
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {

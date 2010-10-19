@@ -620,7 +620,8 @@ public final class CompilerContextImpl
     {
         // TODO: Refactor to PathUtil.getGlobalAssemblyCacheFileFor
 
-        File gacFile = PathUtil.getDotNetArtifact( artifact );
+        File localRepository = null;
+        File gacFile = PathUtil.getDotNetArtifact( artifact, localRepository );
             
         // first check if the artifact is not yet installed
         if ( !gacFile.exists() )

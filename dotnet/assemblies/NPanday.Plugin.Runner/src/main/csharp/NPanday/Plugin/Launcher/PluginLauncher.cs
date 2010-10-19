@@ -55,7 +55,7 @@ namespace NPanday.Plugin.Launcher
             }
 
             String version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
+            
             processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_ASM"]
                 = "NPanday.Plugin, Version=" + version + ", PublicKeyToken=4b435f4d76e2f0e6, culture=neutral";
             processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_TYPE"]

@@ -509,7 +509,7 @@ public final class ProjectDaoImpl
                         projectDependency.setSystemPath( generateDependencySystemPath( projectDependency ) );
                     }
                     
-                    File dependencyFile = PathUtil.getDotNetArtifact( assembly );
+                    File dependencyFile = PathUtil.getDotNetArtifact( assembly , localRepository );
                     
                     if ( !dependencyFile.exists() )
                     {
@@ -751,11 +751,11 @@ public final class ProjectDaoImpl
                         assembly.setVersion( snapshotVersion );
                     }
                           
-                    File dotnetFile = PathUtil.getDotNetArtifact( assembly );
+                    File dotnetFile = PathUtil.getDotNetArtifact( assembly , localRepository );
                     
                     logger.info( "NPANDAY-180-018: Not found in local repository, now retrieving artifact from wagon:"
                             + assembly.getId()
-                            + ", Failed UAC Path Check = " + dotnetFile.getAbsolutePath());
+                            + ", Failed Path Check = " + dotnetFile.getAbsolutePath());
 
                     if ( !ArtifactTypeHelper.isDotnetExecutableConfig( type ) || !dotnetFile.exists() )// TODO: Generalize to any attached artifact
                     {
@@ -1296,10 +1296,12 @@ public final class ProjectDaoImpl
                                                                       artifactType, publicKeyTokenId, scope,
                                                                       null );
  
+        File localRepository = null;
+        
         File artifactFile = ArtifactTypeHelper.isDotnetAnyGac( artifactType ) ? new File(
             "C:\\WINDOWS\\assembly\\" + artifactType + File.separator + artifactId + File.separator + version + "__" +
                 publicKeyTokenId + File.separator + artifactId +  ArtifactType.getArtifactTypeForPackagingName(
-                                                                                              artifactType ).getExtension() ) : PathUtil.getDotNetArtifact( assembly );
+                                                                                              artifactType ).getExtension() ) : PathUtil.getDotNetArtifact( assembly, localRepository  );
    
         assembly.setFile( artifactFile );
         return assembly;

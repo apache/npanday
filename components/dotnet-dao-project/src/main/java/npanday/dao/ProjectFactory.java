@@ -216,7 +216,7 @@ public final class ProjectFactory
         File artifactFile = ( ( ArtifactTypeHelper.isDotnetAnyGac( project.getArtifactType() ) ) ) ? new File(
             "C:\\WINDOWS\\assembly\\" + project.getArtifactType() + File.separator + project.getArtifactId() + File.separator +
                 project.getVersion() + "__" + project.getPublicKeyTokenId() + File.separator + project.getArtifactId() + ArtifactType.getArtifactTypeForPackagingName( project.getArtifactType() ).getExtension()  )
-            : PathUtil.getDotNetArtifact( assembly ) ;
+            : PathUtil.getDotNetArtifact( assembly, localRepository ) ;
         
         assembly.setFile( artifactFile );
         return assembly;

@@ -46,7 +46,7 @@ namespace NPanday.Artifact
 
         public static FileInfo GetUserAssemblyCacheFileFor(Artifact artifact, DirectoryInfo localRepository)
         {
-           return new FileInfo( Path.Combine(SettingsUtil.GetLocalRepositoryPath(), string.Format(@"{0}\{1}\{2}\{1}-{2}.{3}", Tokenize(artifact.GroupId), artifact.ArtifactId, artifact.Version, artifact.Extension)));
+           return new FileInfo( Path.Combine(localRepository.ToString(), string.Format(@"{0}\{1}\{2}\{1}-{2}.{3}", Tokenize(artifact.GroupId), artifact.ArtifactId, artifact.Version, artifact.Extension)));
         }
         
         public static string Tokenize(String id)
