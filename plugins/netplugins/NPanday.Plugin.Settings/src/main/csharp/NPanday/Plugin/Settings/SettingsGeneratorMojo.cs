@@ -241,6 +241,20 @@ namespace NPanday.Plugin.Settings
                 vendor.frameworks = vendorFrameworks;
                 vendors[vendorCounter++] = vendor;
             }
+			if (dirInfo35.Exists)
+            {
+                npandaySettingsVendorsVendor vendor = new npandaySettingsVendorsVendor();
+                vendor.vendorName = "MICROSOFT";
+                vendor.vendorVersion = "3.5";
+                npandaySettingsVendorsVendorFrameworksFramework[] vendorFrameworks = new npandaySettingsVendorsVendorFrameworksFramework[1];
+                npandaySettingsVendorsVendorFrameworksFramework vf11 = new npandaySettingsVendorsVendorFrameworksFramework();
+                vf11.installRoot = dirInfo35.FullName;
+                vf11.frameworkVersion = "3.5";
+                vendorFrameworks[0] = vf11;
+                vf11.sdkInstallRoot = sdkInstallRoot20;
+                vendor.frameworks = vendorFrameworks;
+                vendors[vendorCounter++] = vendor;
+            }
             if (dirInfo40.Exists)
             {
                 npandaySettingsVendorsVendor vendor = new npandaySettingsVendorsVendor();
