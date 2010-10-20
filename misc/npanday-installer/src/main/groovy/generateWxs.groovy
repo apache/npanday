@@ -8,7 +8,7 @@ if ( index >= 0 ) {
 def repositoryComponentIds = []
 def repositoryBasedir = new File(project.build.directory + "/repository/releases");
 def generateGuid = { "{"+java.util.UUID.randomUUID().toString().toUpperCase() + "}" }
-def visualStudioVersions = ['2005', '2008']
+def visualStudioVersions = ['2005', '2008', '2010']
 
 def addinArtifacts = []
 new File(project.build.directory + "/addin").eachFile { addinArtifacts << it }
@@ -39,8 +39,13 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
       Property(Id:"VS2008INSTALLED") {
         RegistrySearch(Id:"VS2008INSTALLED", Root:"HKCR", Key:"VisualStudio.DTE.9.0", Type: "raw")
       }
+      Property(Id:"VS2010INSTALLED") {
+        RegistrySearch(Id:"VS2010INSTALLED", Root:"HKCR", Key:"VisualStudio.DTE.10.0", Type: "raw")
+      }
 
       Condition(Message:"NPanday cannot be installed on Windows 9x/ME", "VersionNT")
+      Condition(Message:"You need to be an administrator to install this product.", "AdminUser")
+
 
       // TODO: check .NET version -- see http://wix.sourceforge.net/manual-wix3/check_for_dotnet.htm
       //   need to decide on best approach here - require .NET 3.5 SP1 + Windows 6.0A SDK for VS2008 installation feature, and lower for the others?
@@ -107,12 +112,16 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
                            Source:"${project.basedir}/src/main/wix/NPanday.VisualStudio.Addin")
                       'util:XmlFile'(Id:"VS${vs}XmlModifyAssembly", Action:"setValue",
                                      ElementPath:"/Extensibility/Addin/Assembly",
-                                     File:"[VS${vs}Addin]\\NPanday.VisualStudio.Addin",
+                                     File:"[VS${vs}Addin]NPanday.VisualStudio.Addin",
                                      Value:"[BinDir]NPanday.VisualStudio.Addin.dll")
                       'util:XmlFile'(Id:"VS${vs}XmlModifyDescription", Action:"setValue",
                                      ElementPath:"/Extensibility/Addin/Description",
-                                     File:"[VS${vs}Addin]\\NPanday.VisualStudio.Addin",
+                                     File:"[VS${vs}Addin]NPanday.VisualStudio.Addin",
                                      Value:"${project.description}")
+                      'util:XmlFile'(Id:"VS${vs}XmlModifyFriendlyName", Action:"setValue",
+                                     ElementPath:"/Extensibility/Addin/FriendlyName",
+                                     File:"[VS${vs}Addin]NPanday.VisualStudio.Addin",
+                                     Value:"NPanday ${pom.version} Maven in .NET Applications")
                     }
                   }
                 }

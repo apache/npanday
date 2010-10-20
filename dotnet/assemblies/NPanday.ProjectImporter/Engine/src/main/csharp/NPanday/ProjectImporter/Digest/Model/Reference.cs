@@ -17,7 +17,6 @@ namespace NPanday.ProjectImporter.Digest.Model
 
     public class Reference : IncludeBase
     {
-
         #region Constructors
 
         public Reference(string projectBasePath, GacUtility gac) 
@@ -218,7 +217,9 @@ namespace NPanday.ProjectImporter.Digest.Model
                 // compare the assembly name to the filename of the reference to determine if it is a match
                 // as the location might not be set
                 // TODO: why do we need to load the assembly?
-                if (asmm.GetName().Name.Equals(Path.GetFileNameWithoutExtension(path)))
+                // added StringComparison.OrdinalIgnoreCase to assembly name compratison in order to avoid errors with 
+                // already loaded assemblies like nunit.framework and NUnit.Framework etc (note this can be reconsidered)
+                if (asmm.GetName().Name.Equals(Path.GetFileNameWithoutExtension(path), StringComparison.OrdinalIgnoreCase))
                 {
                     asm = asmm;
                     asmNotLoaded = false;
@@ -516,7 +517,7 @@ namespace NPanday.ProjectImporter.Digest.Model
         private void SetAssemblyValuesFromGac(string name)
         {
             this.Name = name.Split(',')[0].Trim();
-            string str = GacUtility.GetAssemblyInfo(this.Name);
+            string str = GacUtility.GetAssemblyInfo(this.Name, version, processorArchitecture);
             SetAssemblyInfoValues(str);
         }
 

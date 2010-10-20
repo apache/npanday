@@ -15,7 +15,7 @@ namespace NPanday.VisualStudio.Addin
             foreach (string f in Directory.GetFiles(referenceDirectory))
             {
                 string fext = Path.GetExtension(f).ToLower();
-                if (fext.Equals(".map") || fext.Equals(".discomap"))
+                if (fext.Equals(".map", StringComparison.InvariantCultureIgnoreCase) || fext.Equals(".discomap", StringComparison.InvariantCultureIgnoreCase))
                 {
                     fname = f;
                     break;
@@ -31,7 +31,7 @@ namespace NPanday.VisualStudio.Addin
             foreach (string f in Directory.GetFiles(referenceDirectory))
             {
                 string fext = Path.GetExtension(f).ToLower();
-                if (fext.Equals(".wsdl"))
+                if (fext.Equals(".wsdl", StringComparison.InvariantCultureIgnoreCase))
                 {
                     fname = f;
                     break;
@@ -265,7 +265,7 @@ namespace NPanday.VisualStudio.Addin
 
         public void Init(string wsPath)
         {
-            if (!this.referenceDirectory.Equals(Path.Combine(wsPath, this.Name)))
+            if (!this.referenceDirectory.Equals(Path.Combine(wsPath, this.Name), StringComparison.InvariantCultureIgnoreCase))
             {
                 this.referenceDirectory = Path.Combine(wsPath, this.Name);
             }

@@ -208,7 +208,7 @@ namespace NPanday.VisualStudio.Addin
                 if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
                 {
                     //change addpluginConfiguration to accept xmlElement instead
-                    pomUtil.AddMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", projectItem.Name);
+                    pomUtil.AddMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, null));
                 }
 
                 if (projectItem.Name.Contains(".resx"))
@@ -280,7 +280,7 @@ namespace NPanday.VisualStudio.Addin
                     if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
                     {
                         //change addpluginConfiguration to accept xmlElement instead
-                        pomUtil.RemoveMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", projectItem.Name);
+                        pomUtil.RemoveMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, null));
                     }
 
                     if (projectItem.Name.Contains(".resx"))
@@ -302,7 +302,7 @@ namespace NPanday.VisualStudio.Addin
                 if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
                 {
                     //change addpluginConfiguration to accept xmlElement instead
-                    pomUtil.RenameMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource",oldName, projectItem.Name);
+                    pomUtil.RenameMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, oldName), GetRelativePathToProject(projectItem, null));
                 }
 
                 if (projectItem.Name.Contains(".resx"))
@@ -315,17 +315,37 @@ namespace NPanday.VisualStudio.Addin
 
         }
 
+        /// <summary>
+        /// Returns either a relative path to project (if a project item is assciated with a file - like *.cs) or just the name of project item
+        /// </summary>
+        /// <param name="projectItem"></param>
+        /// <returns></returns>
+        private static string GetRelativePathToProject(ProjectItem projectItem, string fileName)
+        {
+            if (projectItem.FileCount == 1)
+            {
+                Uri fullPathUri = fileName == null ? new Uri(projectItem.get_FileNames(0)) : new Uri(Path.Combine(Path.GetDirectoryName(projectItem.get_FileNames(0)), fileName));
+                Uri projectUri = new Uri(Path.GetDirectoryName(projectItem.ContainingProject.FullName) + Path.DirectorySeparatorChar);
+                return projectUri.MakeRelativeUri(fullPathUri).ToString();
+            }
+            return projectItem.Name;
+        }    
+
         private static string getWebReference(ProjectItem projectItem)
         {
             string projectPath = Path.GetDirectoryName(projectItem.ContainingProject.FullName);
             string path = projectPath + "\\" + Messages.MSG_D_WEB_REF + "\\" + projectItem.Name;
  
-            string[] files = Directory.GetFiles(path, "*.wsdl");
- 
-            if (files.Length > 0)
+            if (Directory.Exists(path))
             {
-                return Path.GetFileName(files[0]);
+                string[] files = Directory.GetFiles(path, "*.wsdl");
+
+                if (files.Length > 0)
+                {
+                    return Path.GetFileName(files[0]);
+                }
             }
+            
 
             return null;
         }
@@ -738,7 +758,7 @@ namespace NPanday.VisualStudio.Addin
                 if (pReference.Type == prjReferenceType.prjReferenceTypeActiveX)
                 {
                     refType = "com_reference";
-                    if (refName.ToLower().StartsWith("interop."))
+                    if (refName.ToLower().StartsWith("interop.", true, CultureInfo.InvariantCulture))
                         refName = refName.Substring(8);
                     refToken = pReference.Identity.Substring(0, pReference.Identity.LastIndexOf(@"\")).Replace("\\", "-");
                     refGroupId = refName;
@@ -752,8 +772,18 @@ namespace NPanday.VisualStudio.Addin
                     {
                         if (a.Location.ToLower().IndexOf(@"\gac_32\") >= 0)
                             refType = "gac_32";
+                        else if (a.Location.ToLower().IndexOf(@"\gac_64\") >= 0)
+                            refType = "gac_64";
                         else if (a.Location.ToLower().IndexOf(@"\gac\") >= 0)
                             refType = "gac";
+                        else if (a.Location.ToLower().IndexOf(@"\gac-msil4\") >= 0)
+                            refType = "gac-msil4";
+                        else if (a.Location.ToLower().IndexOf(@"\gac-32-4\") >= 0)
+                            refType = "gac-32-4";
+                        else if (a.Location.ToLower().IndexOf(@"\gac-64-4\") >= 0)
+                            refType = "gac-64-4";
+                        else if (a.Location.ToLower().IndexOf(@"\gac-msil\") >= 0)
+                            refType = "gac-msil";
 
                         if (!a.GlobalAssemblyCache)
                         {
@@ -1307,7 +1337,7 @@ namespace NPanday.VisualStudio.Addin
 
                 PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, pReference.ContainingProject);
                 string refName = pReference.Name;
-                if (pReference.Type == prjReferenceType.prjReferenceTypeActiveX && refName.ToLower().StartsWith("interop."))
+                if (pReference.Type == prjReferenceType.prjReferenceTypeActiveX && refName.ToLower().StartsWith("interop.", true, CultureInfo.InvariantCulture))
                     refName = refName.Substring(8);
 
                 pomUtil.RemovePomDependency(refName);

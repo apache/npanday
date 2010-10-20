@@ -47,9 +47,10 @@ namespace NPanday.Utils
 
             string msBuildPath = Path.GetDirectoryName(System.Reflection.Assembly.GetAssembly(typeof(string)).Location);
             string f35 = Path.GetFullPath(Environment.SystemDirectory + @"\..\Microsoft.NET\Framework\v3.5");
-            if (Directory.Exists(f35))
+            string f4 = Path.GetFullPath(Environment.SystemDirectory + @"\..\Microsoft.NET\Framework\v4.0.30319");
+            if (Directory.Exists(f4))
             {
-                msBuildPath = f35;
+                msBuildPath = f4;
             }
             try
             {
@@ -69,16 +70,31 @@ namespace NPanday.Utils
         }
 
 
-        public string GetAssemblyInfo(string assemblyName)
+        public string GetAssemblyInfo(string assemblyName, string version, string processorArchitecture)
         {
             if (string.IsNullOrEmpty(assemblyName))
             {
                 return null;
             }
 
-            Regex regex = new Regex(@"\s*" + assemblyName + @",\s*.*", RegexOptions.IgnoreCase);
-            MatchCollection matches = regex.Matches(gacs);
+            string architecture = String.Empty;
+            if (! string.IsNullOrEmpty(processorArchitecture))
+            {
+                architecture = GetRegexProcessorArchitectureFromString(processorArchitecture);
+            }
 
+            Regex regex;
+            if (string.IsNullOrEmpty(version))
+            {
+                regex = new Regex(@"\s*" + assemblyName + @",.*processorArchitecture=" + architecture + ".*", RegexOptions.IgnoreCase);
+
+            }
+            else
+            {
+                regex = new Regex(@"\s*" + assemblyName + @",\s*Version=" + Regex.Escape(version) + @".*processorArchitecture=" + architecture + ".*", RegexOptions.IgnoreCase);
+            }
+
+            MatchCollection matches = regex.Matches(gacs);
 
             foreach (Match match in matches)
             {
@@ -142,6 +158,23 @@ namespace NPanday.Utils
 
 
             return false;
+        }
+
+        private static string GetRegexProcessorArchitectureFromString(string input)
+        {
+            switch (input)
+            {
+                case "x64":
+                    return "(AMD64|MSIL)";
+                case "Itanium":
+                    return "(IA64|MSIL)";
+                case "x86":
+                    return "(x86|MSIL)";
+                case "AnyCPU":
+                    return "(x86|MSIL)";
+                default:
+                    return input;
+            }
         }
     }
 }

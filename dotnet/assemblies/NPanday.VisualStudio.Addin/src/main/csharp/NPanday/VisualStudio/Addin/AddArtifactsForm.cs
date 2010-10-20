@@ -19,6 +19,7 @@
 //
 #endregion
 
+using System.Globalization;
 using Extensibility;
 using EnvDTE;
 using EnvDTE80;
@@ -233,7 +234,7 @@ namespace NPanday.VisualStudio.Addin
                     return false;
                 }
             }
-            if (uri.ToLower().StartsWith("http") || uri.ToLower().StartsWith("mailto"))
+            if (uri.ToLower().StartsWith("http") || uri.ToLower().StartsWith("mailto", true, CultureInfo.InvariantCulture))
             {
                 return false;
             }
@@ -443,7 +444,7 @@ namespace NPanday.VisualStudio.Addin
                 VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
                 
                 Assembly a = Assembly.LoadFile(artifact.FileInfo.FullName);
-                if (a.ToString().Split(",".ToCharArray())[0].ToLower().StartsWith("interop."))
+                if (a.ToString().Split(",".ToCharArray())[0].ToLower().StartsWith("interop.", true, CultureInfo.InvariantCulture))
                 {
                     MessageBox.Show("Cannot add COM Interop reference from a Maven Artifact, just use Add Reference if you wish to add a COM reference.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return false;

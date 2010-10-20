@@ -156,7 +156,11 @@ public enum ArtifactType
     
     GAC_32 ( "gac_32", null, "dll"),
 
-    GAC_64 ( "gac_64", null, "dll"),	
+    GAC_32_4 ( "gac_32_4", null, "dll"),
+
+    GAC_64 ( "gac_64", null, "dll"),
+
+    GAC_64_4 ( "gac_64_4", null, "dll"),
 
     COM_REFERENCE( "com_reference", null, "dll");
 

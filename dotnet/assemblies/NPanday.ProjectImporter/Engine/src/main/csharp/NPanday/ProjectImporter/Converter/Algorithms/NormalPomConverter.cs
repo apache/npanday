@@ -100,20 +100,28 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                         Plugin msBuildPlugin = AddPlugin("npanday.plugin", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
                         AddPluginExecution(msBuildPlugin, "compile", "validate");
                         msBuildPluginAdded = true;
-                    }
-                    
-                    string gFile;
- 
-                    //if project is imported in 64-bit path should include "x86"
-                    if (projectDigest.Platform.Contains("x86"))
-                    {
-                        gFile = @"obj\x86\Debug";
-                    }
-                    else
-                    {
-                        gFile = @"obj\Debug\";
-                    }
+                    }                    
 
+                    string gFile;
+                    //set the path *.g.cs and *.g.vb files depending on target architecture of WPF projects as this changes path under obj folder
+                    switch (projectDigest.Platform)
+                    {
+                        case "AnyCPU":
+                            gFile = @"obj\Debug\";
+                            break;
+                        case "x64":
+                            gFile = @"obj\x64\Debug\";
+                            break;
+                        case "x86":
+                            gFile = @"obj\x86\Debug\";
+                            break;
+                        case "Itanium":
+                            gFile = @"obj\Itanium\Debug\";
+                            break;
+                        default:
+                            gFile = @"obj\Debug\";
+                            break;
+                    }
                     if (compilesFile.EndsWith(".cs"))
                         gFile += compilesFile.Replace(".xaml.cs", ".g.cs");
                     else
@@ -162,7 +170,13 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     false
                 );
                 AddPluginConfiguration(testPlugin, "integrationTest", "true");
-                
+
+                // for running .net framework 4.0 unit tests add new parameter in order to tell NUnit which runtime to use. If there is a way to get this 
+                // parameter from maven-compile-plugin use it
+                if (projectDigest.TargetFramework == "4.0")
+                {
+                    AddPluginConfiguration(testPlugin, "executionFrameworkVersion", "4.0");
+                }
             }
 
             // Add Com Reference Dependencies

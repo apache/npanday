@@ -104,8 +104,22 @@ public class ArtifactTypeHelper
                 || packaging.equals( ArtifactType.GAC_GENERIC )
                 || packaging.equals( ArtifactType.GAC )
                 || packaging.equals( ArtifactType.GAC_32)
-                || packaging.equals( ArtifactType.GAC_64)				
+                || packaging.equals( ArtifactType.GAC_32_4)
+                || packaging.equals( ArtifactType.GAC_64)
+                || packaging.equals( ArtifactType.GAC_64_4)
                 || packaging.equals( ArtifactType.GAC_MSIL )
                 || packaging.equals( ArtifactType.GAC_MSIL4 );
+    }
+
+    public static boolean isDotnet4Gac(String packaging)
+    {
+        return isDotnet4Gac( ArtifactType.getArtifactTypeForPackagingName( packaging ) );
+    }
+
+    public static boolean isDotnet4Gac(ArtifactType packaging)
+    {
+        return packaging.equals( ArtifactType.GAC_MSIL4 )
+                || packaging.equals( ArtifactType.GAC_32_4)
+                || packaging.equals( ArtifactType.GAC_64_4);
     }
 }

@@ -252,13 +252,25 @@ public class VendorInfoRepositoryImpl
         {
             return new File(System.getenv("SystemRoot"), "\\assembly\\GAC_32\\" );
         }
+        else if ( artifactType.equals( ArtifactType.GAC_32_4.getPackagingType() ) )
+        {
+            return new File(System.getenv("SystemRoot"), "\\Microsoft.NET\\assembly\\GAC_32\\" );
+        }
         else if ( artifactType.equals( ArtifactType.GAC_64.getPackagingType() ) )
         {
             return new File(System.getenv("SystemRoot"), "\\assembly\\GAC_64\\" );
-        }		
+        }
+        else if ( artifactType.equals( ArtifactType.GAC_64_4.getPackagingType() ) )
+        {
+            return new File(System.getenv("SystemRoot"), "\\Microsoft.NET\\assembly\\GAC_64\\" );
+        }
         else if ( artifactType.equals( ArtifactType.GAC_MSIL.getPackagingType() ) )
         {
             return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
+        }
+        else if ( artifactType.equals( ArtifactType.GAC_MSIL4.getPackagingType() ) )
+        {
+            return new File( System.getenv("SystemRoot"), "\\Microsoft.NET\\assembly\\GAC_MSIL\\" );
         }
         throw new PlatformUnsupportedException("NPANDAY-xxx-000: Could not locate a valid GAC");
     }

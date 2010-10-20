@@ -164,6 +164,18 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 break;
                             case "Reference":
                                 Reference reference = new Reference(projectBasePath, gac);
+                                //quick workaround for cases of importing .net 4.0 targeted projects, as their referneces has to be also for 
+                                //.net framework 4.0 (that is their version in GAC is 4.0.0.0). Then we will use this 
+                                if (projectDigest.TargetFramework == "4.0")
+                                {
+                                    reference.Version = "4.0.0.0"; //Then we will use this version when resolving references from GAC
+                                }
+                                //set processorArchitecture property to platform, it will be used by GacUtility in 
+                                // order to resolve artifact to right processor architecture
+                                if (!string.IsNullOrEmpty(projectDigest.Platform))
+                                {
+                                    reference.ProcessorArchitecture = projectDigest.Platform;
+                                }
                                 string hintPath = buildItem.GetMetadata("HintPath");
                                 if (!string.IsNullOrEmpty(hintPath))
                                 {

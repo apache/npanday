@@ -97,8 +97,8 @@ namespace NPanday.Utils
 
             foreach (Plugin plugin in model.build.plugins)
             {
-                if (pluginGroupId.Equals(plugin.groupId.ToLower())
-                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                if (pluginGroupId.Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 {
                     return true;
                 }
@@ -673,7 +673,7 @@ namespace NPanday.Utils
             {
                 foreach (Dependency dependency in model.dependencies)
                 {
-                    if (artifactId.ToLower().Equals(dependency.artifactId.ToLower()))
+                    if (artifactId.ToLower().Equals(dependency.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                     {
                         // consider groupId and version if not empty
                         if (!string.IsNullOrEmpty(groupId)
@@ -989,8 +989,8 @@ namespace NPanday.Utils
 
             foreach (Plugin plugin in model.build.plugins)
             {
-                if ("npanday.plugin".Equals(plugin.groupId.ToLower())
-                    && "maven-compile-plugin".Equals(plugin.artifactId.ToLower()))
+                if ("npanday.plugin".Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                    && "maven-compile-plugin".Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (plugin.configuration == null && plugin.configuration.Any == null)
                     {
@@ -1078,8 +1078,8 @@ namespace NPanday.Utils
                 {
                     XmlDocument xmlDocument = new XmlDocument();
 
-                    if (pluginGroupId.Equals(plugin.groupId.ToLower())
-                        && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                    if (pluginGroupId.Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                        && pluginArtifactId.Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                     {
                         if (plugin.configuration == null && plugin.configuration.Any == null)
                         {
@@ -1128,8 +1128,8 @@ namespace NPanday.Utils
             {
                 XmlDocument xmlDocument = new XmlDocument();
 
-                if (pluginGroupId.Equals(plugin.groupId.ToLower())
-                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                if (pluginGroupId.Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (plugin.configuration == null && plugin.configuration.Any == null)
                     {
@@ -1181,8 +1181,8 @@ namespace NPanday.Utils
             {
                 XmlDocument xmlDocument = new XmlDocument();
 
-                if (pluginGroupId.Equals(plugin.groupId.ToLower())
-                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                if (pluginGroupId.Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (plugin.configuration == null && plugin.configuration.Any == null)
                     {
@@ -1232,8 +1232,8 @@ namespace NPanday.Utils
             {
                 XmlDocument xmlDocument = new XmlDocument();
 
-                if (pluginGroupId.Equals(plugin.groupId.ToLower())
-                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                if (pluginGroupId.Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (plugin.configuration == null && plugin.configuration.Any == null)
                     {
@@ -1303,8 +1303,8 @@ namespace NPanday.Utils
             {
                 XmlDocument xmlDocument = new XmlDocument();
 
-                if (pluginGroupId.Equals(plugin.groupId.ToLower())
-                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                if (pluginGroupId.Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (plugin.configuration == null && plugin.configuration.Any == null)
                     {
@@ -1371,8 +1371,8 @@ namespace NPanday.Utils
             {
                 XmlDocument xmlDocument = new XmlDocument();
 
-                if (pluginGroupId.Equals(plugin.groupId.ToLower())
-                    && pluginArtifactId.Equals(plugin.artifactId.ToLower()))
+                if (pluginGroupId.Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (plugin.configuration == null && plugin.configuration.Any == null)
                     {
@@ -1573,7 +1573,7 @@ namespace NPanday.Utils
         {
             foreach (XmlElement elem in elems)
             {
-                if (!string.IsNullOrEmpty(elem.Name) && elem.Name.ToLower().Equals(elementName.ToLower()))
+                if (!string.IsNullOrEmpty(elem.Name) && elem.Name.ToLower().Equals(elementName.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                     return elem;
             }
             return null;
@@ -1598,8 +1598,8 @@ namespace NPanday.Utils
                         }
                     }
 
-                    if ("npanday.plugin".Equals(plugin.groupId.ToLower())
-                        && "maven-compile-plugin".Equals(plugin.artifactId.ToLower()))
+                    if ("npanday.plugin".Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                        && "maven-compile-plugin".Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                     {
                         XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
                         for (int count = elems.Length; count-- > 0; )
@@ -1657,16 +1657,16 @@ namespace NPanday.Utils
                 {
                     XmlNode removeMe = null;
                     if (!string.IsNullOrEmpty(elem.Name) &&
-                        elem.Name.ToLower().Equals("webreferences"))
+                        elem.Name.ToLower().Equals("webreferences", StringComparison.InvariantCultureIgnoreCase))
                     {
                         foreach (XmlNode node in elem.ChildNodes)
                         {
-                            if (node.Name.ToLower().Equals("webreference"))
+                            if (node.Name.ToLower().Equals("webreference", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 foreach (XmlNode node1 in node.ChildNodes)
                                 {
-                                    if (node1.Name.ToLower().Equals("namespace") &&
-                                        node1.InnerText.ToLower().Equals(name.ToLower()))
+                                    if (node1.Name.ToLower().Equals("namespace", StringComparison.InvariantCultureIgnoreCase) &&
+                                        node1.InnerText.ToLower().Equals(name.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         removeMe = node;
                                         break;

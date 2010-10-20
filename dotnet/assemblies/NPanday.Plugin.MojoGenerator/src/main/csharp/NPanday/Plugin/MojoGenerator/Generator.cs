@@ -100,11 +100,9 @@ namespace NPanday.Plugin.MojoGenerator
 				jcuLocal.unmarshall(javaClass, fileInfo);
 			}
 			
-			ResourceManager resourceManager = new ResourceManager("NPanday.Plugin.MojoGenerator", 
-			                                                      Assembly.GetExecutingAssembly());
-			String pomXml = (String) resourceManager.GetObject("pom-java.xml");
-			TextReader reader = new StringReader(pomXml);
-		    XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Pom.Model));
+            TextReader reader = new StreamReader(Assembly.GetExecutingAssembly().
+            GetManifestResourceStream(Assembly.GetExecutingAssembly().GetManifestResourceNames()[0]));
+			XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Pom.Model));
 			NPanday.Model.Pom.Model model = (NPanday.Model.Pom.Model) serializer.Deserialize(reader);	
 			model.artifactId = artifactId + ".JavaBinding";
 			model.groupId = groupId;
