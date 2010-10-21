@@ -174,7 +174,7 @@ public class InstallerMojo
             //UAC install
             try
             {
-                artifactContext.getArtifactInstaller().installArtifactWithPom( project.getArtifact(), pomFile, true );
+               artifactContext.getArtifactInstaller().installArtifactWithPom( project.getArtifact(), pomFile, true );
             }
             catch ( ArtifactInstallationException e )
             {

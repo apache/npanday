@@ -473,7 +473,12 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         public static string GetLocalUacPath(Artifact.Artifact artifact, string ext)
         {
-            return Path.Combine(Directory.GetParent(SettingsUtil.GetLocalRepositoryPath()).FullName, string.Format(@"uac\gac_msil\{1}\{2}__{0}\{1}{3}", artifact.GroupId, artifact.ArtifactId, artifact.Version, ext));
+            return Path.Combine(SettingsUtil.GetLocalRepositoryPath(), string.Format(@"{0}\{1}\{1}{2}-{3}", Tokenize(artifact.GroupId), artifact.ArtifactId, artifact.Version, ext));
+        }
+        
+        public static string Tokenize(string id)
+        {
+            return id.Replace(".",Path.DirectorySeparatorChar.ToString());
         }
         
 

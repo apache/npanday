@@ -131,8 +131,14 @@ public class RepositoryAssemblerMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        File dataDir = new File( localRepository.getParentFile(), "/uac/rdfRepository" );
-        org.openrdf.repository.Repository rdfRepository = new SailRepository( new MemoryStore( dataDir ) );
+       
+        if ( localRepository == null )
+        {
+            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
+        }
+        
+        org.openrdf.repository.Repository rdfRepository = new SailRepository( new MemoryStore( localRepository ) );
+        
         try
         {
             rdfRepository.initialize();
@@ -141,7 +147,8 @@ public class RepositoryAssemblerMojo
         {
             throw new MojoExecutionException( "NPANDAY-1700-007: Message = " + e.getMessage() );
         }
-
+        
+        
         artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
 
         List<Dependency> netDependencies = new ArrayList<Dependency>();
@@ -152,15 +159,7 @@ public class RepositoryAssemblerMojo
         }
 
         assemblyRepository( netDependencies, new DefaultRepositoryLayout() );
-
-        //try
-        //{
-            //repositoryConverter.convertRepositoryFormat( rdfRepository, localRepository );
-        //}
-        //catch ( IOException e )
-        //{
-            //throw new MojoExecutionException("NPANDAY-1700-008: Message = " +  e.getMessage(), e );
-        //}
+        
     }
 
     private void assemblyRepository( List<Dependency> dependencies, ArtifactRepositoryLayout layout )

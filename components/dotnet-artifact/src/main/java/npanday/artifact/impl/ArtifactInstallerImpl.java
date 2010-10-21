@@ -268,13 +268,14 @@ public class ArtifactInstallerImpl
                                                                                     dependency.getType(),
                                                                                     dependency.getClassifier(), scope,
                                                                                     null );
-            File artifactDependencyFile = PathUtil.getUserAssemblyCacheFileFor( artifactDependency, localRepository );
+           
+            File artifactDependencyFile = PathUtil.getDotNetArtifact( artifactDependency , localRepository );
             
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
                 if (!ArtifactTypeHelper.isDotnetAnyGac( artifactDependency.getType() ))
                 {
-                    logger.warn( "NPANDAY-000-017: Could not find artifact dependency to copy in PAB: Artifact ID = " +
+                    logger.warn( "NPANDAY-000-017: Could not find artifact dependency to copy in local repository: Artifact ID = " +
                         artifactDependency.getId() + ", File Path = " +
                         ( ( artifactDependencyFile != null ) ? artifactDependencyFile.getAbsolutePath() : null ) );
                 }
@@ -296,6 +297,7 @@ public class ArtifactInstallerImpl
             }
             artifactDependencies.add( artifact );
         }
+        //File installDirectory = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository ).getParentFile();
         File installDirectory = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository ).getParentFile();
         for ( Artifact artifactDependency : artifactDependencies )
         {
@@ -317,6 +319,7 @@ public class ArtifactInstallerImpl
         logger.debug( "NPANDAY-001-031: artifact:" + artifact);
         logger.debug( "NPANDAY-001-032: artifact file:" + artifact.getFile());    
         ApplicationConfig applicationConfig = artifactContext.getApplicationConfigFor( artifact );
+        
         File configExeFile = applicationConfig.getConfigBuildPath();
         logger.debug( "NPANDAY-001-032: config file:" + configExeFile);
         
@@ -324,8 +327,9 @@ public class ArtifactInstallerImpl
         {
             try
             {
-                FileUtils.copyFileToDirectory( configExeFile, PathUtil.getUserAssemblyCacheFileFor( artifact,
-                                                                                                    localRepository ).getParentFile() );
+                
+                FileUtils.copyFileToDirectory( configExeFile, PathUtil.getUserAssemblyCacheFileFor( artifact,localRepository ).getParentFile() );
+                
             }
             catch ( IOException e )
             {
@@ -341,6 +345,7 @@ public class ArtifactInstallerImpl
             {
 
                 File artifactFile = artifact.getFile();
+                 
                 File destFile = PathUtil.getUserAssemblyCacheFileFor( artifact, localRepository );
                                 logger.info(
                     "NPANDAY-001-007: Installing file into repository: File = " + artifact.getFile().getAbsolutePath()

@@ -264,7 +264,7 @@ public final class ProjectDaoImpl
         long startTime = System.currentTimeMillis();
 
         ValueFactory valueFactory = rdfRepository.getValueFactory();
-
+      
         ProjectDependency project = new ProjectDependency();
         project.setArtifactId( artifactId );
         project.setGroupId( groupId );
@@ -294,12 +294,16 @@ public final class ProjectDaoImpl
 
             if ( !result.hasNext() )
             {
-                if ( artifactType != null && ArtifactTypeHelper.isDotnetAnyGac( artifactType ) )
+                
+                //if ( artifactType != null && ArtifactTypeHelper.isDotnetAnyGac( artifactType ) )
+                if ( artifactType != null )
                 {
+                    
                     Artifact artifact = createArtifactFrom( project, artifactFactory );
+                    
                     if ( !artifact.getFile().exists() )
                     {
-                        throw new IOException( "NPANDAY-180-003: Could not find GAC assembly: Group ID = " + groupId
+                        throw new IOException( "NPANDAY-180-123: Could not find GAC assembly: Group ID = " + groupId
                             + ", Artifact ID = " + artifactId + ", Version = " + version + ", Artifact Type = "
                             + artifactType + ", File Path = " + artifact.getFile().getAbsolutePath() );
                     }
@@ -307,8 +311,8 @@ public final class ProjectDaoImpl
                     return project;
                 }
 
-                throw new IOException( "NPANDAY-180-004: Could not find the project: Group ID = " + groupId
-                    + ", Artifact ID = " + artifactId + ", Version = " + version + ", Artifact Type = " + artifactType );
+                throw new IOException( "NPANDAY-180-124: Could not find the project: Group ID = " + groupId
+                    + ", Artifact ID =  " + artifactId + ", Version = " + version + ", Artifact Type = " + artifactType );
             }
 
             while ( result.hasNext() )
@@ -492,7 +496,7 @@ public final class ProjectDaoImpl
 
                 snapshotVersion = null;
                 
-                logger.finest( "NPANDAY-180-011: Project Dependency: Artifact ID = "
+                logger.info( "NPANDAY-180-011: Project Dependency: Artifact ID = "
                     + projectDependency.getArtifactId() + ", Group ID = " + projectDependency.getGroupId()
                     + ", Version = " + projectDependency.getVersion() + ", Artifact Type = "
                     + projectDependency.getArtifactType() );
@@ -504,8 +508,9 @@ public final class ProjectDaoImpl
                     {
                         projectDependency.setSystemPath( generateDependencySystemPath( projectDependency ) );
                     }
-
-                    File dependencyFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
+                    
+                    File dependencyFile = PathUtil.getDotNetArtifact( assembly , localRepository );
+                    
                     if ( !dependencyFile.exists() )
                     {
                         projectDependency.setResolved( false );
@@ -675,7 +680,7 @@ public final class ProjectDaoImpl
                                                       localArtifactRepository );
 
                             projectDependency.setResolved( true );                          
-                                                      
+                            
                             logger.info( "NPANDAY-180-024: resolving pom artifact: " + pomArtifact.toString() );
                             snapshotVersion = pomArtifact.getVersion();
 
@@ -698,6 +703,7 @@ public final class ProjectDaoImpl
 
                             MavenXpp3Reader reader = new MavenXpp3Reader();
                             Model model;
+                            
                             try
                             {
                                 model = reader.read( fileReader ); // TODO: interpolate values
@@ -737,7 +743,7 @@ public final class ProjectDaoImpl
                             }
                             if( model.getArtifactId().equals( projectDependency.getArtifactId() ) && projectDependency.isResolved() )
                             {
-                                modelDependencies.add( model );
+                               modelDependencies.add( model );
                             }
                         }
 
@@ -748,13 +754,13 @@ public final class ProjectDaoImpl
                         assembly.setVersion( snapshotVersion );
                     }
 
-                    File uacFile = PathUtil.getUserAssemblyCacheFileFor( assembly, localRepository );
-                    logger.finest( "NPANDAY-180-0181: P = " + projectDependency);                    
-                    logger.info( "NPANDAY-180-018: Not found in UAC, now retrieving artifact from wagon:"
+                    File dotnetFile = PathUtil.getDotNetArtifact( assembly , localRepository );
+                    
+                    logger.info( "NPANDAY-180-018: Not found in local repository, now retrieving artifact from wagon:"
                             + assembly.getId()
-                            + ", Failed UAC Path Check = " + uacFile.getAbsolutePath());
+                            + ", Failed Path Check = " + dotnetFile.getAbsolutePath());
 
-                    if ( !ArtifactTypeHelper.isDotnetExecutableConfig( type ) || !uacFile.exists() )// TODO: Generalize to any attached artifact
+                    if ( !ArtifactTypeHelper.isDotnetExecutableConfig( type ) || !dotnetFile.exists() )// TODO: Generalize to any attached artifact
                     {
                         try
                         {
@@ -765,9 +771,9 @@ public final class ProjectDaoImpl
                             
                             if ( assembly != null && assembly.getFile().exists() )
                             {
-                                uacFile.getParentFile().mkdirs();
-                                FileUtils.copyFile( assembly.getFile(), uacFile );
-                                assembly.setFile( uacFile );
+                                dotnetFile.getParentFile().mkdirs();
+                                FileUtils.copyFile( assembly.getFile(), dotnetFile );
+                                assembly.setFile( dotnetFile );
                             }
                         }
                         catch ( ArtifactNotFoundException e )
@@ -1288,11 +1294,12 @@ public final class ProjectDaoImpl
             logger.warning( "NPANDAY-180-004: Project Artifact Type is missing: Group Id" + groupId +
                 ", Artifact Id = " + artifactId + ", Version = " + version );
         }
-
+        
         Artifact assembly = artifactFactory.createDependencyArtifact( groupId, artifactId,
                                                                       VersionRange.createFromVersion( version ),
                                                                       artifactType, publicKeyTokenId, scope,
                                                                       null );
+ 
         //using PathUtil
         File artifactFile = null;
         if (ArtifactTypeHelper.isDotnetAnyGac( artifactType ))

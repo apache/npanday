@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>npanday.ClassLibrary1</groupId>
+  <artifactId>ClassLibrary1</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <versioning>
+    <versions>
+      <version>1.0-SNAPSHOT</version>
+      <version>1.0</version>
+    </versions>
+    <lastUpdated>20101019132913</lastUpdated>
+  </versioning>
+</metadata>

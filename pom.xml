@@ -93,7 +93,7 @@ under the License.
     <developer> 
       <name>Joe Ocaba</name>  
       <id>jocaba</id>  
-      <email>jocaba@exist.com</email>  
+      <email>jocaba@maestrodev.com</email>  
     </developer>     
     <developer> 
       <name>Adelita Padilla</name>  
@@ -478,7 +478,8 @@ under the License.
     <mavenVersion>2.0.9</mavenVersion>  
     <npanday.snapshots.url>http://repo.npanday.org/archiva/repository/npanday-snapshots</npanday.snapshots.url>
     <npanday.releases.url>http://repo.npanday.org/archiva/repository/npanday-releases</npanday.releases.url>
-    <stable.npanday.version>1.2</stable.npanday.version>
+    <!--<stable.npanday.version>1.2</stable.npanday.version>-->
+     <stable.npanday.version>1.2.2-incubating-SNAPSHOT</stable.npanday.version>
   </properties>  
   <distributionManagement>
     <snapshotRepository>

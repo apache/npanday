@@ -35,7 +35,8 @@ under the License.
   </modules>  
   <build> 
     <sourceDirectory>src/main/csharp</sourceDirectory>  
-    <testSourceDirectory>src/test/csharp</testSourceDirectory>  
+    <!-- Disabled because of NUnit-console Issue NPANDAY-332 -->
+    <!-- <testSourceDirectory>src/test/csharp</testSourceDirectory> -->
     <plugins> 
       <plugin> 
         <groupId>npanday.plugin</groupId>  

@@ -36,16 +36,15 @@ namespace NPanday.Plugin.Launcher
 
 		[STAThread]
 		static int Main(string[] args)
-		{
+        {
+            Console.WriteLine("NPanday: Start Process = " + DateTime.Now);
+            Console.WriteLine(@flattenArgs(args));
+            String vendor = GetArgFor("vendor", args);
+            String startProcessAssembly = @GetArgFor("startProcessAssembly", args);
+            ProcessStartInfo processStartInfo = null;
 
-			Console.WriteLine("NPanday: Start Process = " + DateTime.Now);
-			Console.WriteLine(@flattenArgs(args));
-			String vendor = GetArgFor("vendor", args);
-			String startProcessAssembly = @GetArgFor("startProcessAssembly", args);
-			ProcessStartInfo processStartInfo = null;
-
-			if(vendor != null && vendor.Equals("MONO"))
-			{
+            if (vendor != null && vendor.Equals("MONO"))
+            {
                 processStartInfo =
                     new ProcessStartInfo("mono", startProcessAssembly + " " + @flattenArgs(args));
             }
@@ -56,16 +55,17 @@ namespace NPanday.Plugin.Launcher
             }
 
             String version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            
+            processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_ASM"]
+                = "NPanday.Plugin, Version=" + version + ", PublicKeyToken=4b435f4d76e2f0e6, culture=neutral";
+            processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_TYPE"]
+                = "NPanday.Plugin.PluginDomainManager";
 
-			processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_ASM"]
-				= "NPanday.Plugin, Version="+ version + ", PublicKeyToken=4b435f4d76e2f0e6, culture=neutral";
-			processStartInfo.EnvironmentVariables["APPDOMAIN_MANAGER_TYPE"]
-				= "NPanday.Plugin.PluginDomainManager";
-
-			processStartInfo.UseShellExecute = false;
-			Process p = Process.Start(processStartInfo);
+            processStartInfo.UseShellExecute = false;
+            Process p = Process.Start(processStartInfo);
             p.WaitForExit();
             Console.WriteLine("NPanday: End Process = " + DateTime.Now + "; exit code = " + p.ExitCode);
+                
             return p.ExitCode;
         }
 

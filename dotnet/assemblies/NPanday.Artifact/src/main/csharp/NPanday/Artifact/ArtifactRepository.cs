@@ -26,6 +26,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Windows.Forms;
+using NPanday.Model.Setting;
 
 namespace NPanday.Artifact
 {
@@ -34,8 +35,14 @@ namespace NPanday.Artifact
 
         public string GetLocalUacPath(Artifact artifact, string ext)
         {
-            return Path.Combine(localRepository.FullName, string.Format(@"uac\gac_msil\{1}\{2}__{0}\{1}{3}", artifact.GroupId, artifact.ArtifactId, artifact.Version, ext));
+            return Path.Combine(SettingsUtil.GetLocalRepositoryPath(), string.Format(@"{0}\{1}\{1}{2}-{3}", Tokenize(artifact.GroupId), artifact.ArtifactId, artifact.Version, ext));
         }
+        
+        public string Tokenize(string id)
+        {
+            return id.Replace(".",Path.DirectorySeparatorChar.ToString());
+        }
+        
 
         public string GetLocalRepositoryPath(Artifact artifact, string ext)
         {
@@ -56,7 +63,7 @@ namespace NPanday.Artifact
         {
             Artifact artifact = new Artifact();
 
-            DirectoryInfo uac = new DirectoryInfo(localRepository.FullName + @"\uac\gac_msil\");
+            DirectoryInfo uac = new DirectoryInfo(localRepository.FullName);
 
             String[] tokens = uri.Split("/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             int size = tokens.Length;
@@ -93,8 +100,8 @@ namespace NPanday.Artifact
                 artifact.Extension = extToken[extToken.Length - 1];
             }
 
-            artifact.FileInfo = new FileInfo(uac.FullName + artifact.ArtifactId + @"\" +
-                    artifact.Version + "__" + artifact.GroupId + @"\" + artifact.ArtifactId + ".dll");
+            artifact.FileInfo = new FileInfo(uac.FullName + Tokenize( artifact.GroupId )+ Path.DirectorySeparatorChar + artifact.ArtifactId + Path.DirectorySeparatorChar 
+                + artifact.Version + Path.DirectorySeparatorChar + artifact.ArtifactId+ "-" + artifact.Version+ ".dll");
             return artifact;
         }
 
@@ -103,7 +110,7 @@ namespace NPanday.Artifact
             List<Artifact> artifacts = new List<Artifact>();
             try
             {
-                DirectoryInfo uac = new DirectoryInfo(localRepository.FullName + @"\uac\gac_msil\");
+                DirectoryInfo uac = new DirectoryInfo(localRepository.FullName);
                 int directoryStartPosition = uac.FullName.Length;
 
                 List<FileInfo> fileInfos = GetArtifactsFromDirectory(uac);
@@ -132,7 +139,7 @@ namespace NPanday.Artifact
 
         public Artifact GetArtifact(FileInfo artifactFile)
         {
-            DirectoryInfo uacDirectory = new DirectoryInfo(localRepository.FullName + @"\uac\gac_msil\");
+            DirectoryInfo uacDirectory = new DirectoryInfo( localRepository.FullName );
             return GetArtifact(uacDirectory, artifactFile);
         }
 
@@ -182,6 +189,9 @@ namespace NPanday.Artifact
             artifact.Version = version;
             artifact.GroupId = groupId;
             artifact.FileInfo = new FileInfo(GetLocalUacPath(artifact, ext));
+            
+            
+            
             return artifact;
         }
 

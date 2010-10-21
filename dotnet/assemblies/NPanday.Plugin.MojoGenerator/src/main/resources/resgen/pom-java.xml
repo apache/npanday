@@ -8,24 +8,24 @@
   <name></name>
   <dependencies>
     <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
+      <groupId>npanday</groupId>
       <artifactId>dotnet-assembler</artifactId>
-      <version>0.14</version>
+      <version>1.2.2-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
+      <groupId>npanday</groupId>
       <artifactId>dotnet-executable</artifactId>
-      <version>0.14</version>
+      <version>1.2.2-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
+      <groupId>npanday</groupId>
       <artifactId>dotnet-artifact</artifactId>
-      <version>0.14</version>
+      <version>1.2.2-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.dotnet</groupId>
+      <groupId>npanday</groupId>
       <artifactId>dotnet-plugin</artifactId>
-      <version>0.14</version>
+      <version>1.2.2-incubating-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <build>

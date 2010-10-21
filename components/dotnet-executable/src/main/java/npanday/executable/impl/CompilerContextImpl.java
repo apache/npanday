@@ -28,6 +28,7 @@ import npanday.executable.compiler.*;
 import npanday.artifact.ArtifactContext;
 import npanday.artifact.ArtifactException;
 import npanday.ArtifactType;
+import npanday.PathUtil;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
@@ -388,7 +389,19 @@ public final class CompilerContextImpl
                 logger.debug( "NPANDAY-061-006: Artifact Type:" + type);
                 logger.debug( "NPANDAY-061-007: Artifact Type:" + ArtifactTypeHelper.isDotnetGenericGac( type ));
                 ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( type );
-
+                if ( ArtifactTypeHelper.isDotnetModule( type ))
+                {
+                    modules.add( artifact );
+                }
+                else if ( (artifactType != ArtifactType.NULL && (
+                            StringUtils.equals( artifactType.getTargetCompileType(), "library" )
+                            || artifactType.getExtension().equals( "dll" )
+                            || artifactType.getExtension().equals( "exe" ))
+                          )
+                          || type.equals( "jar" ) )
+                {
+                    libraries.add( artifact );
+                }
                 //Resolving here since the GAC path is vendor and framework aware
                 if ( ArtifactTypeHelper.isDotnetGenericGac( type ) )                
                 {
@@ -657,7 +670,6 @@ public final class CompilerContextImpl
         }
 
         logger.debug( "NPANDAY-061-001: gacFile to:" + gacFile.getAbsolutePath() );
-
         // first check if the artifact is not yet installed
         if ( !gacFile.exists() )
         {
@@ -668,6 +680,7 @@ public final class CompilerContextImpl
         {
             // TODO: this will only work on Windows
             //check for gac_msil
+            
             gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
             gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
                                 artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );

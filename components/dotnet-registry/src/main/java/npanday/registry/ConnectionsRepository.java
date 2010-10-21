@@ -22,6 +22,8 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.sail.memory.MemoryStore;
 
+import org.apache.maven.artifact.factory.ArtifactFactory;
+
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.File;
@@ -45,6 +47,11 @@ public class ConnectionsRepository
     private Set<DataAccessObject> daos = new HashSet<DataAccessObject>();
 
     private Hashtable properties;
+    
+     /**
+     * The artifact factory component, which is used for creating artifacts.
+     */
+    private ArtifactFactory artifactFactory;
 
     /**
      * Loads all the data access objects. This is considered a lazy load because the framework (plexus) invoke the
@@ -55,9 +62,9 @@ public class ConnectionsRepository
      */
     public void lazyLoad() throws IOException
     {
-        long start = System.currentTimeMillis();
+       long start = System.currentTimeMillis();
 
-        File dataDir = new File( System.getProperty( "user.home" ), ".m2/uac/rdfRepository" );
+        File dataDir = new File( System.getProperty( "user.home" ), ".m2/repository" );
         MemoryStore store = new MemoryStore( dataDir );
         store.setPersist( true );
         store.setSyncDelay( 0 );
@@ -87,6 +94,7 @@ public class ConnectionsRepository
                             "NPANDAY-080-000: dao tag references a class that does not implement the DataAccessObject interface." );
                     }
                     DataAccessObject dao = (DataAccessObject) o;
+                    
                     dao.init( rdfRepository, keyName, daoClassName );
                     dao.setRepositoryRegistry( registry );
                     daos.add( dao );
