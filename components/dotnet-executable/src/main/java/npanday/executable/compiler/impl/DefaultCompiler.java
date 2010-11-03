@@ -293,15 +293,6 @@ public final class DefaultCompiler
         filteredCommands.clear();
         filteredCommands.add("@" + escapeCmdParams(responseFilePath) );
         
-        try
-        {
-             FileUtils.copyFile(new File(responseFilePath),new File( "c:/responsefile.txt"));
-        }
-        catch (java.io.IOException e) {
-    		throw new ExecutionException( "Error while creating response file for the commands.", e );
-        }
-       
-        
         return filteredCommands;
     }
 
