@@ -297,17 +297,6 @@ public class ArtifactInstallerImpl
             }
             artifactDependencies.add( artifact );
         }
-        //File installDirectory = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository ).getParentFile();
-        File installDirectory = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository ).getParentFile();
-        for ( Artifact artifactDependency : artifactDependencies )
-        {
-            if ( !ArtifactTypeHelper.isDotnetAnyGac( artifactDependency.getType() ) )
-            {
-                logger.info( "NPANDAY-001-005: Installing file into private assembly bin: File = " +
-                    artifactDependency.getFile().getAbsolutePath() );
-                FileUtils.copyFileToDirectory( artifactDependency.getFile(), installDirectory );
-            }
-        }
     }
 
     /**

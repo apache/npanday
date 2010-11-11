@@ -36,6 +36,8 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.settings.Settings;
+import org.apache.commons.io.filefilter.*;
+import org.apache.commons.io.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
@@ -47,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 
 /**
@@ -193,6 +196,8 @@ public class VsInstallerMojo
         {
             writePlugin( vsAddinsDir );
         }
+
+        copyDependenciesToBin();
     }
 
     /**
@@ -266,8 +271,8 @@ public class VsInstallerMojo
             File outputFile = new File( addinPath, "NPanday.VisualStudio.AddIn" );
 
             writer = new OutputStreamWriter( new FileOutputStream( outputFile ), "Unicode" );
-            String pab = new File( localRepository ).getParent() + "\\pab";
-            writer.write( addin.replaceAll( "\\$\\{localRepository\\}", pab.replaceAll( "\\\\", "\\\\\\\\" ) ) );
+            String repo = System.getenv( "PROGRAMFILES" );
+            writer.write( addin.replaceAll( "\\$\\{localRepository\\}", repo.replaceAll( "\\\\", "\\\\\\\\" ) ) );
         }
         catch ( IOException e )
         {
@@ -303,6 +308,33 @@ public class VsInstallerMojo
         public boolean match( NetDependency netDependency )
         {
             return netDependency.isIsGacInstall() == isGacInstall;
-		}
-	}
+        }
+    }
+
+    private void copyDependenciesToBin()
+         throws MojoExecutionException
+    {
+        try
+        {
+            String src = System.getProperty( "user.dir" ) + File.separator + "target";
+
+            String dest = System.getenv( "PROGRAMFILES" ) + File.separator + "NPanday\\bin";
+
+            File srcFolder = new File( src );
+            File destFolder = new File( dest );
+
+            new File( dest ).mkdirs();
+
+            IOFileFilter dllSuffixFilter = FileFilterUtils.suffixFileFilter( ".dll" );
+            IOFileFilter dllFiles = FileFilterUtils.andFileFilter( FileFileFilter.FILE, dllSuffixFilter );
+
+            FileUtils.copyDirectory(srcFolder, destFolder, dllFiles, true);
+        }
+
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+    }
+
 }
