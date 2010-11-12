@@ -32,14 +32,14 @@ Building NPanday
   
 * Checking out the Source Code
 
-  You can check out the latest source code from {{https://npanday.svn.codeplex.com/svn/trunk}}. You can also
+  You can check out the latest source code from {{https://svn.apache.org/repos/asf/incubator/npanday/trunk}}. You can also
   download a previous version as an archive from the web site, or from check it out from the subdirectory of
-  {{https://npanday.svn.codeplex.com/svn/tags}}.
+  {{https://svn.apache.org/repos/asf/incubator/npanday/tags}}.
 
   For example:
 
 ----
-svn co https://npanday.svn.codeplex.com/svn/trunk npanday
+svn co https://svn.apache.org/repos/asf/incubator/npanday/trunk npanday
 ----
 
 * Enabling additional Remote Repositories
@@ -103,12 +103,12 @@ mvn clean install -PintegrationTests
 
   The Maven command line plugins feature a series of integration tests to ensure that everything is working as
   expected. They can be obtained by checking out the source code at
-  {{https://npanday.svn.codeplex.com/svn/npanday-its/trunk}}.
+  {{https://svn.apache.org/repos/asf/incubator/npanday/npanday-its/trunk}}.
 
   For example:
 
 ----
-svn co https://npanday.svn.codeplex.com/svn/npanday-its/trunk npanday-its
+svn co https://svn.apache.org/repos/asf/incubator/npanday/npanday-its/trunk npanday-its
 ----
 
   From within that directory, you can run it against the latest available version of NPanday (likely the one you have

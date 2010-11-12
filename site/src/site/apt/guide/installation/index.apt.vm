@@ -56,10 +56,10 @@ Preparation
 
   The correct PATH should include the following:
 
-    * The .NET framework runtime(s) - all that are needed (<<<C:\WINDOWS\Microsoft.NET\Framework\v3.5>>> and/or
+    * The .NET framework runtime(s) - all that are needed (<<<C:\Windows\Microsoft.NET\Framework\v4.0.30319>>> and/or <<<C:\WINDOWS\Microsoft.NET\Framework\v3.5>>> and/or
       <<<C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727>>>)
 
-    * The .NET SDK - only the latest (<<<C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin>>> or
+    * The .NET SDK - only the latest (<<<C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\NETFX 4.0 Tools>>> or <<<C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin>>> or
       <<<C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin>>> or other location if installed aside from
       Visual Studio)
 
@@ -94,6 +94,16 @@ Visual Studio 2008
     add <<<C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727>>> to the PATH.
     
     Found here:  (x86: {{{http://www.microsoft.com/downloads/details.aspx?FamilyID=fe6f2099-b7b4-4f47-a244-c96d69c35dec&displaylang=en} .NET 2.0 SDK}})
+
+Visual Studio 2010
+
+    Add the following to the path:
+
+----
+C:\Windows\Microsoft.NET\Framework\v4.0.30319;
+C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\NETFX 4.0 Tools;
+----
+  
 
 Obtaining NPanday
 
@@ -208,7 +218,7 @@ Installing the Visual Studio Add-in using the NPanday Installer
  
   After running the installer the add-in will be located here:
   <<<C:\\Documents and Settings\\[user_home]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
-  (or equivalent for Visual Studio 2008).
+  (or equivalent for Visual Studio 2008 or equivalent for Visual Studio 2010).
 
   You can verify that the Maven plugins are also installed correctly by following the same steps as shown in the previous section.
   

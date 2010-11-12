@@ -20,7 +20,7 @@ Debugging the Visual Studio Add-in
 
     [[4]] Open this file using a text editor (notepad will do):
           <<<My Documents\Visual Studio 2005\Addins\NPanday.VisualStudio.AddIn>>>. This should be the file for the
-          version of Visual Studio you intend to debug it in, so change 2005 to 2008 if desired (it need not be the same
+          version of Visual Studio you intend to debug it in, so change 2005 to 2008/2010 if desired (it need not be the same
           as the one you have the main solution open in).
 
     [[5]] Change the value of the <<<\<Extensibility\>\<AddIn\>\<Assembly\>>>> to the following file within your
@@ -34,6 +34,7 @@ Debugging the Visual Studio Add-in
 
     [[8]] Go to the Debug tab and select <Start External Program> in the <Action> section. Locate the <<<devenv.exe>>>
           of the version of Visual Studio that you want to debug. This is likely to be either
+		  <<<C:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe>>> (Visual Studio 2010) or
           <<<C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\devenv.exe>>> (Visual Studio 2008) or
           <<<C:\Program Files\Microsoft Visual Studio 8.0\Common7\IDE\devenv.exe>>> (Visual Studio 2005)
 
