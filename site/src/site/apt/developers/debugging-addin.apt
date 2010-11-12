@@ -34,7 +34,7 @@ Debugging the Visual Studio Add-in
 
     [[8]] Go to the Debug tab and select <Start External Program> in the <Action> section. Locate the <<<devenv.exe>>>
           of the version of Visual Studio that you want to debug. This is likely to be either
-		  <<<C:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe>>> (Visual Studio 2010) or
+          <<<C:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe>>> (Visual Studio 2010) or
           <<<C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\devenv.exe>>> (Visual Studio 2008) or
           <<<C:\Program Files\Microsoft Visual Studio 8.0\Common7\IDE\devenv.exe>>> (Visual Studio 2005)
 
