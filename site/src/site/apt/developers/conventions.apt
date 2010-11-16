@@ -13,7 +13,7 @@ NPanday Conventions
 
  The following sections describe the conventions used within NPanday itself. This section is useful for developers wishing to
  contribute to NPanday, as well as developers looking for a baseline for their own projects.
- These conventions are evolving and subject to change as better ideas emerge: {{{mailto:npanday@discussions.codeplex.com} Got better ideas?}}
+ These conventions are evolving and subject to change as better ideas emerge.
 
  * Artifact ID - specified within the pom - is equivalent to the project's module name.
 

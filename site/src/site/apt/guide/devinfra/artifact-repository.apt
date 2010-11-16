@@ -40,7 +40,7 @@ Setting up an Artifact Repository
 
 * Proxying Future Releases
 
-  An alternative to downloading the releases from the Codeplex site is to automatically obtain them from the NPanday
+  An alternative to downloading the releases from the NPanday site is to automatically obtain them from the NPanday
   repository on demand using Archiva's repository proxy feature.
 
   To do so, first go to the <Repositories> tab and add a new <remote> repository (below the <managed> repositories at

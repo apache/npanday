@@ -106,9 +106,9 @@
           </reportSet>
         </reportSets>
         <configuration>
-          <anonymousConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</anonymousConnection>
-          <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/</developerConnection>
-          <webAccessUrl>https://npanday.svn.codeplex.com/svn/trunk/</webAccessUrl>
+          <anonymousConnection>scm:svn:http://svn.apache.org/repos/asf/incubator/npanday/trunk/</anonymousConnection>
+          <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/trunk/</developerConnection>
+          <webAccessUrl>http://svn.apache.org/viewvc/incubator/npanday/trunk/</webAccessUrl>
           <checkoutDirectoryName>npanday</checkoutDirectoryName>
         </configuration>
       </plugin>

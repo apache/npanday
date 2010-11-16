@@ -37,7 +37,7 @@ Creating a Release Candidate
   
 * Steps in releasing NPanday:
 
-  [[1]] Check out the code from https://npanday.svn.codeplex.com/svn/npanday-its/trunk/
+  [[1]] Check out the code from {{https://svn.apache.org/repos/asf/incubator/npanday/npanday-its/trunk/}}
   
   [[2]] Run the following command:
   
@@ -53,7 +53,7 @@ mvn release:prepare
      
    * check the values for the <Release version> and <Next development version> are correct	 
   
-  [[4]] Check if the tag was successfully created in https://npanday.svn.codeplex.com/svn/releases/<<<SCM tag>>>
+  [[4]] Check if the tag was successfully created in {{https://svn.apache.org/repos/asf/incubator/npanday/tags/}}
   
   [[5]] After successful release:prepare, run the following command:
 
@@ -63,7 +63,7 @@ mvn release:perform -Pnpanday-release -Dtag=url_tag
 
 * Steps in releasing NPanday-ITs
 
-  [[1]] Check out the code from https://npanday.svn.codeplex.com/svn/npanday-its/trunk/
+  [[1]] Check out the code from {{https://svn.apache.org/repos/asf/incubator/npanday/npanday-its/trunk/}}
 
   [[2]] Run the following command:
 
@@ -79,7 +79,7 @@ mvn release:prepare
      
    * check the values for the <Release version> and <Next development version> are correct
   
-  [[4]] Check if the tag was successfully created in https://npanday.svn.codeplex.com/svn/npanday-its/releases/<<<SCM tag>>>
+  [[4]] Check if the tag was successfully created in {{https://svn.apache.org/repos/asf/incubator/npanday/npanday-its/tags/}}
   
   [[5]] After successful release:prepare, run the following command:
 

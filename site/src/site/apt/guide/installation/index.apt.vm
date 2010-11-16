@@ -109,8 +109,11 @@ Obtaining NPanday
 
   NPanday releases are made available in two locations:
 
-    * {{{http://npanday.codeplex.com/Release/ProjectReleases.aspx} NPanday Download page}} - for downloading a full
-      repository to install locally
+    * {{{http://www.apache.org/dist/incubator/npanday/} NPanday Download page}} - for downloading a full
+      repository to install locally (once releases have been made from Apache)
+
+    * {{{http://npanday.codeplex.com/Release/ProjectReleases.aspx} Codeplex NPanday Download page}} - for downloading a full
+      repository to install locally (releases before entering the Apache Incubator)
 
     * {{{http://repo.npanday.org/archiva/repository/npanday-group} NPanday Release and Dependencies Repository Group}} - for downloading directly from Maven.
 
