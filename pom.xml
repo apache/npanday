@@ -86,9 +86,39 @@ under the License.
     </license>
   </licenses>
   <developers> 
+    <developer> 
+      <name>Craig Bachelor</name>  
+      <id>craig</id>  
+    </developer>  
+    <developer> 
+      <name>Marecor Baclay</name>  
+      <id>mbaclay</id>  
+      <email>mbaclay@exist.com</email>  
+    </developer>  
+    <developer>
+      <name>Maria Odea Ching</name>
+      <id>oching</id>
+      <roles>
+        <role>Mentor</role>
+      </roles>
+    </developer>
     <developer>
       <name>Lars Corneliussen</name>
       <id>lcorneliussen</id>
+    </developer>
+    <developer>
+      <name>Dennis Lundberg</name>
+      <id>dennisl</id>
+      <roles>
+        <role>Mentor</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Gavin McDonald</name>
+      <id>gmcdonald</id>
+      <roles>
+        <role>Mentor</role>
+      </roles>
     </developer>
     <developer> 
       <name>Joe Ocaba</name>  
@@ -103,11 +133,7 @@ under the License.
     <developer> 
       <name>Brett Porter</name>  
       <id>brett</id>  
-    </developer>  
-    <developer> 
-      <name>Marecor Baclay</name>  
-      <id>mbaclay</id>  
-      <email>mbaclay@exist.com</email>  
+      <email>brett@apache.org</email>
     </developer>  
     <developer>
       <name>Wendy Smoak</name>
@@ -156,16 +182,25 @@ under the License.
   </developers>
   <contributors>
     <contributor>
+      <name>Chris Bown</name>
+    </contributor>
+    <contributor>
+      <name>John Fallows</name>
+    </contributor>
+    <contributor>
+      <name>Artem Fedorenko</name>
+    </contributor>
+    <contributor>
       <name>Kurt Harriger</name>
     </contributor>
     <contributor>
       <name>Thorsten Kamann</name>
     </contributor>
     <contributor>
-      <name>John Fallows</name>
+      <name>Nap Ramirez</name>
     </contributor>
     <contributor>
-      <name>supkitchen (codeplex)</name>
+      <name>Franz Allan Valencia See</name>
     </contributor>
   </contributors>
   <modules> 
