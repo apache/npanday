@@ -291,7 +291,13 @@ public final class DefaultCompiler
             throw new ExecutionException( "Error while creating response file for the commands.", e );
         }
         filteredCommands.clear();
-        filteredCommands.add("@" + escapeCmdParams(responseFilePath) );
+        responseFilePath = "@" + responseFilePath;
+        if ( responseFilePath.indexOf( " " ) > 0)
+        {
+            responseFilePath = "\"" + responseFilePath + "\"";
+        }
+
+        filteredCommands.add( responseFilePath );
         
         return filteredCommands;
     }

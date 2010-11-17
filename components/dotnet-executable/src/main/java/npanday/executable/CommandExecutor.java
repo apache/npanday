@@ -29,7 +29,7 @@ import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.cli.shell.Shell;
 import java.io.IOException;
 
-  
+
 
 import java.util.List;
 import java.util.ArrayList;
@@ -196,28 +196,28 @@ public interface CommandExecutor
                     Commandline commandline = new Commandline()
                     {
                          protected Map envVars = Collections.synchronizedMap( new LinkedHashMap() );
-                         
-                         
+
+
                          public Process execute()
                              throws CommandLineException
                          {
                              // TODO: Provided only for backward compat. with <= 1.4
                              //verifyShellState();
-                     
+
                              Process process;
-                     
+
                              //addEnvironment( "MAVEN_TEST_ENVAR", "MAVEN_TEST_ENVAR_VALUE" );
-                     
+
                              String[] environment = getEnvironmentVariables();
-                             
+
                              File workingDir = getWorkingDirectory();
-                     
+
                              try
                              {
-                                 String cmd = this.toString();
+                                 String[] cmd = getEscapedShellCommandline();
+
                                  if ( workingDir == null )
                                  {
-                                     //process = Runtime.getRuntime().exec( getShellCommandline(), environment );
                                      process = Runtime.getRuntime().exec( cmd, environment );
                                  }
                                  else
@@ -232,8 +232,7 @@ public interface CommandExecutor
                                          throw new CommandLineException( "Path \"" + workingDir.getPath()
                                              + "\" does not specify a directory." );
                                      }
-                     
-                                     //process = Runtime.getRuntime().exec( getShellCommandline(), environment, workingDir );
+
                                      process = Runtime.getRuntime().exec( cmd, environment, workingDir );
                                  }
                              }
@@ -241,10 +240,10 @@ public interface CommandExecutor
                              {
                                  throw new CommandLineException( "Error while executing process.", ex );
                              }
-                     
+
                              return process;
                          }
-                         
+
                          public String[] getEnvironmentVariables()
                              throws CommandLineException
                          {
@@ -267,23 +266,21 @@ public interface CommandExecutor
                              }
                              return environmentVars;
                          }
-                         
-                         
-                         
+
                          public void addEnvironment( String name, String value )
                          {
                              //envVars.add( name + "=" + value );
                              envVars.put( name, value );
                          }
-                     
+
                          /**
-                                                                    * Add system environment variables
-                                                                    */
+                                                              * Add system environment variables
+                                                             */
                          public void addSystemEnvironment()
                              throws Exception
                         {
                              Properties systemEnvVars = CommandLineUtils.getSystemEnvVars();
-                     
+
                              for ( Iterator i = systemEnvVars.keySet().iterator(); i.hasNext(); )
                              {
                                  String key = (String) i.next();
@@ -293,7 +290,7 @@ public interface CommandExecutor
                                  }
                              }
                         }
-                        
+
                         public String toString()
                         {
                             StringBuffer strBuff = new StringBuffer("");
@@ -304,51 +301,53 @@ public interface CommandExecutor
                             }
                             return strBuff.toString().trim();
                         }
-                        
+
+                        public String[] getEscapedShellCommandline()
+                        {
+                            String[] scl = getShellCommandline();
+                            for ( int i = 0; i < scl.length; i++ ) {
+                                scl[i] = escapeCmdParams( scl[i] );
+                            }
+                            return scl;
+                        }
+
                         // escaped to make use of dotnet style of command escapes .
                         // Eg. /define:"CONFIG=\"Debug\",DEBUG=-1,TRACE=-1,_MyType=\"Windows\",PLATFORM=\"AnyCPU\""
                         private String escapeCmdParams(String param)
                         {
                             if(param == null)
                                 return null;
-                            
+
                             String str = param;
                             if(param.startsWith("/") && param.indexOf(":") > 0)
                             {
                                 int delem = param.indexOf(":") + 1;
                                 String command = param.substring(0, delem);
                                 String value = param.substring(delem);
-                                
+
                                 if(value.indexOf(" ") > 0 || value.indexOf("\"") > 0)
                                 {
                                     value = "\"" + value.replaceAll("\"", "\\\\\"")  + "\"";
                                 }
-                                
+
                                 str = command + value;
                             }
                             else if(param.startsWith("@"))
                             {
-                            	str = param;
+                                str = param;
                             }
-                            else if(param.indexOf(" ") > 0)
+                            else if(param.indexOf(" ") > 0 && !( param.startsWith( "\"" ) &&  param.endsWith( "\"" ) ) )
                             {
                                 str = "\"" + param  + "\"";
                             }
-                            
+
                             return str;
                         }
-
-
-
-
-                    
-                    
                     };
-                    
-                    
-                    
+
                     commandline.setExecutable( executable );
                     commandline.addArguments( commands.toArray( new String[commands.size()]));
+
                     if ( workingDirectory != null && workingDirectory.exists() )
                     {
                         commandline.setWorkingDirectory( workingDirectory.getAbsolutePath() );
