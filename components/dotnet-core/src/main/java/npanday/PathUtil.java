@@ -113,7 +113,19 @@ public final class PathUtil
         logger.finest( "NPANDAY-040-003: Read global assembly cache folder for: " + artifact);        
         //TODO: gac_generic
         //String processArchitecture = ( artifact.getType().equals( "gac_generic" ) );
-        return getDotNetArtifact( artifact , gacRepository );
+        
+        File defaultGac = new File(
+            "C:\\WINDOWS\\assembly\\" + artifact.getType() + File.separator + artifact.getArtifactId() + File.separator + version + "__" +
+                artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+        if(defaultGac.exists())
+        {
+            return defaultGac;
+        }
+        else
+        {
+            return getDotNetArtifact( artifact , gacRepository );
+        }
+        
     }
 
     /**

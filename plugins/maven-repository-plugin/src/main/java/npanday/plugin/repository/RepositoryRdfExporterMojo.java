@@ -71,7 +71,7 @@ public class RepositoryRdfExporterMojo
         RDFHandler rdfxmlWriter;
         try
         {
-            rdfxmlWriter = new RDFXMLWriter( new FileOutputStream( localRepository ) );
+            rdfxmlWriter = new RDFXMLWriter( new FileOutputStream( localRepository+"/rdf-repository-export.xml" ) );
         }
         catch ( IOException e )
         {

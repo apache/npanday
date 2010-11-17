@@ -73,6 +73,14 @@ public abstract class AbstractMojo
     implements DotNetMojo, Contextualizable
 {
     private PlexusContainer container;
+    
+     /**
+     * Output directory
+     *
+     * @parameter expression = "${outputDirectory}" default-value="${project.build.directory}/build-sources"
+     * @required
+     */
+    private String outputDirectory;
 
     public void contextualize(Context context) throws ContextException {
         container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
@@ -174,6 +182,7 @@ public abstract class AbstractMojo
 
     private void resolveArtifact(Artifact artifact) throws ComponentLookupException, MojoExecutionException {
         File localRepository = new File(getLocalRepository());
+        
         if (PathUtil.getPrivateApplicationBaseFileFor(artifact, localRepository).exists())
         {
             return;

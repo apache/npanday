@@ -63,11 +63,6 @@ namespace NPanday.ProjectImporter.Verifiers
 
             projectDigest.UnitTest = IsProjectAnIntegrationTest(model);
 
-            if (projectDigest.UnitTest)
-            {
-                System.Windows.Forms.MessageBox.Show(">>>>>>>>>" + pomFile.FullName);
-            }
-
         }
 
 
