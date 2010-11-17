@@ -150,34 +150,48 @@ under the License.
       <id>melvinsembrano</id>  
       <email>melvinsembrano@gmail.com</email>  
       <roles> 
-        <role>coordinator</role>  
+        <role>Emeritus</role>  
       </roles> 
     </developer>
     <developer> 
       <name>Leopoldo Agdeppa</name>  
       <id>lagdeppa</id>  
       <email>lagdeppa@exist.com</email>  
+      <roles> 
+        <role>Emeritus</role>  
+      </roles> 
     </developer>  
     <developer> 
       <name>Jan Ancajas</name>  
       <id>jancajas</id>  
       <email>jancajas@exist.com</email>  
+      <roles> 
+        <role>Emeritus</role>  
+      </roles> 
     </developer>
     <developer> 
       <name>Shein Ernacio</name>  
       <id>sernacio</id>  
       <email>sernacio@exist.com</email>  
+      <roles> 
+        <role>Emeritus</role>  
+      </roles> 
     </developer>  
     <developer> 
       <name>Shane Isbell</name>  
       <id>sisbell</id>  
       <email>sisbell@apache.org</email>  
-      <url>http://jroller.com/page/random7</url>  
+      <roles> 
+        <role>Emeritus</role>  
+      </roles> 
     </developer>      
     <developer> 
       <name>Evan Worley</name>  
       <id>eworley</id>  
       <email>eworley@apache.org</email>  
+      <roles> 
+        <role>Emeritus</role>  
+      </roles> 
     </developer>        
   </developers>
   <contributors>
