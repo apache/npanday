@@ -175,10 +175,17 @@ vsinstaller:install
 
   To install the Add-in, first ensure that Visual Studio is not running.
 
-  Next, from a command prompt with the path set as indicated above, run the following command:
+  Next, from a command prompt with the path set as indicated above, run the following command.  This command will generate the addin and copies the necessary libraries needed to 
+  run the addin to a default location <<C:\\[PROGRAMFILES]\\NPanday>>>.
 
 ----
 mvn npanday.plugin:maven-vsinstaller-plugin:[version]:install
+----
+ 
+  You can also specify the location where you want the libraries to be copied by running the following command:
+  
+----
+mvn npanday.plugin:maven-vsinstaller-plugin:[version]:install -DinstallationLocation=url
 ----
 
   <<Note:>> On Windows Vista, Windows 7 and above, you will need to run the command as an administrator. This can be
@@ -186,7 +193,7 @@ mvn npanday.plugin:maven-vsinstaller-plugin:[version]:install
 
   After running the <<<maven-vsinstaller-plugin>>> the add-in will be located here:
   <<<C:\\Documents and Settings\\[user_home]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
-  (or equivalent for Visual Studio 2008).
+  (or equivalent for Visual Studio 2008 or Visual Studio 2010).
 
   More information on how to verify the Add-in installation are located at the end of this guide.
 

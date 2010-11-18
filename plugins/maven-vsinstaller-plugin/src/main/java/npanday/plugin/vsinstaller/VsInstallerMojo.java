@@ -63,7 +63,10 @@ import javax.swing.filechooser.FileSystemView;
 public class VsInstallerMojo
     extends AbstractMojo
 {
-
+    /**
+    * @parameter expression ="${installationLocation}"
+    */ 
+    public String installationLocation;
     /**
      * @parameter expression = "${project}"
      */
@@ -271,8 +274,14 @@ public class VsInstallerMojo
             File outputFile = new File( addinPath, "NPanday.VisualStudio.AddIn" );
 
             writer = new OutputStreamWriter( new FileOutputStream( outputFile ), "Unicode" );
-            String repo = System.getenv( "PROGRAMFILES" );
-            writer.write( addin.replaceAll( "\\$\\{localRepository\\}", repo.replaceAll( "\\\\", "\\\\\\\\" ) ) );
+
+
+            if ( installationLocation == null || installationLocation.length() == 0 )
+            {
+                 installationLocation = System.getenv( "PROGRAMFILES" ) + File.separator + "NPanday";
+            }
+
+            writer.write( addin.replaceAll( "\\$\\{installationLocation\\}", installationLocation.replaceAll( "\\\\", "\\\\\\\\" ) ) );
         }
         catch ( IOException e )
         {
@@ -318,7 +327,16 @@ public class VsInstallerMojo
         {
             String src = System.getProperty( "user.dir" ) + File.separator + "target";
 
-            String dest = System.getenv( "PROGRAMFILES" ) + File.separator + "NPanday\\bin";
+            String dest;
+
+            if ( installationLocation == null || installationLocation.length() == 0 )
+            {
+                dest = System.getenv( "PROGRAMFILES" ) + File.separator + "NPanday";
+            }
+            else
+            {
+                dest = installationLocation;
+            }
 
             File srcFolder = new File( src );
             File destFolder = new File( dest );
