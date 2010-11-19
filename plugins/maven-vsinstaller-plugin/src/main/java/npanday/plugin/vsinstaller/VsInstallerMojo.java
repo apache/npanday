@@ -195,6 +195,8 @@ public class VsInstallerMojo
 
         collectDefaultVSAddinDirectories();
 
+        getInstallationLocation();
+
         for ( File vsAddinsDir : vsAddinDirectories )
         {
             writePlugin( vsAddinsDir );
@@ -275,12 +277,6 @@ public class VsInstallerMojo
 
             writer = new OutputStreamWriter( new FileOutputStream( outputFile ), "Unicode" );
 
-
-            if ( installationLocation == null || installationLocation.length() == 0 )
-            {
-                 installationLocation = System.getenv( "PROGRAMFILES" ) + File.separator + "NPanday";
-            }
-
             writer.write( addin.replaceAll( "\\$\\{installationLocation\\}", installationLocation.replaceAll( "\\\\", "\\\\\\\\" ) ) );
         }
         catch ( IOException e )
@@ -327,21 +323,10 @@ public class VsInstallerMojo
         {
             String src = System.getProperty( "user.dir" ) + File.separator + "target";
 
-            String dest;
-
-            if ( installationLocation == null || installationLocation.length() == 0 )
-            {
-                dest = System.getenv( "PROGRAMFILES" ) + File.separator + "NPanday";
-            }
-            else
-            {
-                dest = installationLocation;
-            }
-
             File srcFolder = new File( src );
-            File destFolder = new File( dest );
+            File destFolder = new File( installationLocation );
 
-            new File( dest ).mkdirs();
+            new File( installationLocation ).mkdirs();
 
             IOFileFilter dllSuffixFilter = FileFilterUtils.suffixFileFilter( ".dll" );
             IOFileFilter dllFiles = FileFilterUtils.andFileFilter( FileFileFilter.FILE, dllSuffixFilter );
@@ -353,6 +338,22 @@ public class VsInstallerMojo
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }
+    }
+
+    private void getInstallationLocation()
+    {
+        if ( installationLocation == null || installationLocation.length() == 0 )
+        {
+            String programFilesPath = System.getenv( "PROGRAMFILES" );
+
+            if ( programFilesPath == null || programFilesPath.length() == 0 )
+            {
+			    programFilesPath = System.getProperty( "user.dir" );
+			}
+                installationLocation = programFilesPath + File.separator + "NPanday";
+        }
+
+        installationLocation = installationLocation + File.separator + "bin";
     }
 
 }
