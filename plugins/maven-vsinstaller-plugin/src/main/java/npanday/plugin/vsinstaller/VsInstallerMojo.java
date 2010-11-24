@@ -64,9 +64,9 @@ public class VsInstallerMojo
     extends AbstractMojo
 {
     /**
-    * @parameter expression ="${installationLocation}"
-    */ 
-    public String installationLocation;
+     * @parameter expression ="${installationLocation}"
+     */ 
+    public File installationLocation;
     /**
      * @parameter expression = "${project}"
      */
@@ -277,7 +277,7 @@ public class VsInstallerMojo
 
             writer = new OutputStreamWriter( new FileOutputStream( outputFile ), "Unicode" );
 
-            writer.write( addin.replaceAll( "\\$\\{installationLocation\\}", installationLocation.replaceAll( "\\\\", "\\\\\\\\" ) ) );
+            writer.write( addin.replaceAll( "\\$\\{installationLocation\\}", installationLocation.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) ) );
         }
         catch ( IOException e )
         {
@@ -324,14 +324,11 @@ public class VsInstallerMojo
             String src = System.getProperty( "user.dir" ) + File.separator + "target";
 
             File srcFolder = new File( src );
-            File destFolder = new File( installationLocation );
-
-            new File( installationLocation ).mkdirs();
 
             IOFileFilter dllSuffixFilter = FileFilterUtils.suffixFileFilter( ".dll" );
             IOFileFilter dllFiles = FileFilterUtils.andFileFilter( FileFileFilter.FILE, dllSuffixFilter );
 
-            FileUtils.copyDirectory(srcFolder, destFolder, dllFiles, true);
+            FileUtils.copyDirectory(srcFolder, installationLocation, dllFiles, true);
         }
 
         catch ( IOException e )
@@ -342,18 +339,26 @@ public class VsInstallerMojo
 
     private void getInstallationLocation()
     {
-        if ( installationLocation == null || installationLocation.length() == 0 )
+        if ( installationLocation == null )
         {
             String programFilesPath = System.getenv( "PROGRAMFILES" );
 
             if ( programFilesPath == null || programFilesPath.length() == 0 )
             {
-			    programFilesPath = System.getProperty( "user.dir" );
-			}
-                installationLocation = programFilesPath + File.separator + "NPanday";
+                programFilesPath = System.getProperty( "user.dir" );
+            }
+
+            installationLocation = new File ( programFilesPath + "/NPanday/bin" );
+        }
+        else
+        {
+            installationLocation = new File ( installationLocation.getAbsolutePath() + "/bin" );
         }
 
-        installationLocation = installationLocation + File.separator + "bin";
+        if ( !installationLocation.exists() )
+        {
+            installationLocation.mkdirs();
+        }
     }
 
 }

@@ -96,7 +96,7 @@ public class VsInstallerMojoTest{
 		mojo.collectDefaultVSAddinDirectories()
 		List results = mojo.vsAddinDirectories
 		
-		mojo.installationLocation = tempDir.getPath()+"/bin"
+		mojo.installationLocation = new File ( tempDir.getAbsolutePath() + "/bin" )
 		mojo.localRepository = tempDir.getPath()+"/m2/repo"
 		
 		results.each{ mojo.writePlugin it  }
@@ -116,7 +116,7 @@ public class VsInstallerMojoTest{
 		mojo.collectDefaultVSAddinDirectories()
 		List results = mojo.vsAddinDirectories
 		
-		mojo.installationLocation = tempDir.getPath()+"/bin"
+		mojo.installationLocation = new File ( tempDir.getAbsolutePath() + "/bin" )
 		mojo.localRepository = tempDir.getPath()+"/m2/repo"
 		
 		results.each{ mojo.writePlugin it }
