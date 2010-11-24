@@ -216,7 +216,7 @@ extends AbstractMojo
 
         String switchChar = "/";
 
-		String vendorName = vendor.getVendorName();
+        String vendorName = vendor.getVendorName();
         if ( vendor != null && "MONO".equals( vendorName ) )        
         {
             switchChar = "-";
@@ -234,11 +234,11 @@ extends AbstractMojo
         }
         
                 // Not supported on NUnit < 2.5 - see NPANDAY-332
-		// String frameworkVersion = vendorInfo.getFrameworkVersion();
-		// getLog().debug( "NPANDAY-1100-012: Framework version:" + frameworkVersion );
-		// if (!"MONO".equals( vendorName ) && (frameworkVersion != null && frameworkVersion.length() > 0 )) {
-			// commands.add( switchChar + "framework:" + "v"+frameworkVersion);
-		// }
+        // String frameworkVersion = vendorInfo.getFrameworkVersion();
+        // getLog().debug( "NPANDAY-1100-012: Framework version:" + frameworkVersion );
+        // if (!"MONO".equals( vendorName ) && (frameworkVersion != null && frameworkVersion.length() > 0 )) {
+            // commands.add( switchChar + "framework:" + "v"+frameworkVersion);
+        // }
         
         return commands;
     }
@@ -363,14 +363,14 @@ extends AbstractMojo
         FileUtils.mkdir( reportsDirectory );
 
         VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-		getLog().debug( "NPANDAY-1100-014.1: Vendor info:" + vendorInfo );        
+        getLog().debug( "NPANDAY-1100-014.1: Vendor info:" + vendorInfo );        
         vendorInfo.setVendorVersion( "" );
         vendorInfo.setFrameworkVersion( executionFrameworkVersion );
-		getLog().debug( "NPANDAY-1100-014.2: Vendor info:" + vendorInfo );        
+        getLog().debug( "NPANDAY-1100-014.2: Vendor info:" + vendorInfo );        
 
         try
         {
-			getLog().debug( "NPANDAY-1100-015: Processor type:" + processor );        
+            getLog().debug( "NPANDAY-1100-015: Processor type:" + processor );        
             processor.process( vendorInfo );
         }
         catch ( IllegalStateException e )
@@ -378,7 +378,7 @@ extends AbstractMojo
             throw new MojoExecutionException( e.getMessage(), e );
         }
         //List<String> commands = getCommandsFor( vendorInfo.getVendor() );
-		getLog().debug( "NPANDAY-1100-014.3: Vendor info:" + vendorInfo );
+        getLog().debug( "NPANDAY-1100-014.3: Vendor info:" + vendorInfo );
         List<String> commands = getCommandsFor( vendorInfo );        
         getLog().debug( "NPANDAY-1100-008: " + commands.toString() );
 
