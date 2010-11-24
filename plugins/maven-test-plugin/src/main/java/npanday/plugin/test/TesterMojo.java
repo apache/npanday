@@ -233,11 +233,12 @@ extends AbstractMojo
             commands.add( switchChar + "xmlConsole" );
         }
         
-		String frameworkVersion = vendorInfo.getFrameworkVersion();
-		getLog().debug( "NPANDAY-1100-012: Framework version:" + frameworkVersion );
-		if (!"MONO".equals( vendorName ) && (frameworkVersion != null && frameworkVersion.length() > 0 )) {
-			commands.add( switchChar + "framework:" + frameworkVersion);
-		}
+                // Not supported on NUnit < 2.5 - see NPANDAY-332
+		// String frameworkVersion = vendorInfo.getFrameworkVersion();
+		// getLog().debug( "NPANDAY-1100-012: Framework version:" + frameworkVersion );
+		// if (!"MONO".equals( vendorName ) && (frameworkVersion != null && frameworkVersion.length() > 0 )) {
+			// commands.add( switchChar + "framework:" + "v"+frameworkVersion);
+		// }
         
         return commands;
     }
