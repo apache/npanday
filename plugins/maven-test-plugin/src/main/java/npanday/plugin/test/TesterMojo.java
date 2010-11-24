@@ -236,7 +236,7 @@ extends AbstractMojo
 		String frameworkVersion = vendorInfo.getFrameworkVersion();
 		getLog().debug( "NPANDAY-1100-012: Framework version:" + frameworkVersion );
 		if (!"MONO".equals( vendorName ) && (frameworkVersion != null && frameworkVersion.length() > 0 )) {
-			commands.add( switchChar + "framework:" + "v"+frameworkVersion);
+			commands.add( switchChar + "framework:" + frameworkVersion);
 		}
         
         return commands;
