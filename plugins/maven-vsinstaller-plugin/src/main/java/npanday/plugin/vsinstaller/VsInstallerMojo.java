@@ -348,11 +348,11 @@ public class VsInstallerMojo
                 programFilesPath = System.getProperty( "user.dir" );
             }
 
-            installationLocation = new File ( programFilesPath + "/NPanday/bin" );
+            installationLocation = new File ( programFilesPath, "NPanday/bin" );
         }
         else
         {
-            installationLocation = new File ( installationLocation.getAbsolutePath() + "/bin" );
+            installationLocation = new File ( installationLocation, "bin" );
         }
 
         if ( !installationLocation.exists() )
