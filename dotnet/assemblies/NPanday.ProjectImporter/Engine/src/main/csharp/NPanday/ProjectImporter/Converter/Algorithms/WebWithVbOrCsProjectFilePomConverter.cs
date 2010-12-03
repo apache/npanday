@@ -57,16 +57,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             Plugin aspxPlugin = AddPlugin("npanday.plugin", "maven-aspx-plugin");
             if (!string.IsNullOrEmpty(projectDigest.TargetFramework))
                 AddPluginConfiguration(aspxPlugin, "frameworkVersion", projectDigest.TargetFramework);
-			
-            // add msbuild plugin config in pom if there's a maven-resgen-plugin but no msbuild config 
-            // generates resources in target/bin folder
-			
-            if ((FindPlugin("npanday.plugin", "maven-resgen-plugin")) != null && (FindPlugin("npanday.plugin", "NPanday.Plugin.Msbuild.JavaBinding")) == null)
-            {
-                Plugin msbuildPlugin = AddPlugin("npanday.plugin", "NPanday.Plugin.Msbuild.JavaBinding");
-                AddPluginExecution(msbuildPlugin, "compile", "validate");
-            }
-			
 
             if (writePom)
             {
