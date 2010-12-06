@@ -336,10 +336,6 @@ public interface CommandExecutor
                             {
                                 str = param;
                             }
-                            else if(param.indexOf(" ") > 0 && !( param.startsWith( "\"" ) &&  param.endsWith( "\"" ) ) )
-                            {
-                                str = "\"" + param  + "\"";
-                            }
 
                             return str;
                         }

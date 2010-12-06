@@ -238,7 +238,7 @@ public final class DefaultCompiler
             for(String includeSource : config.getIncludeSources())
             {
                 
-                String[] sourceTokens = includeSource.split(File.separator+File.separator);
+                String[] sourceTokens = includeSource.replace(' ', '/').split("/");
                 
                 String lastToken = sourceTokens[sourceTokens.length-1];
                 
