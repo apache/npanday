@@ -315,10 +315,8 @@ public class ArtifactInstallerImpl
         if ( configExeFile.exists() )
         {
             try
-            {
-                
-                FileUtils.copyFileToDirectory( configExeFile, PathUtil.getUserAssemblyCacheFileFor( artifact,localRepository ).getParentFile() );
-                
+            {             
+		FileUtils.copyFileToDirectory( configExeFile, PathUtil.getUserAssemblyCacheFileFor( artifact,localRepository ).getParentFile() );   
             }
             catch ( IOException e )
             {
@@ -328,23 +326,25 @@ public class ArtifactInstallerImpl
             }
         }
 
-        try
+       // Removed because there is no longer a uac folder in the repository. 
+       // this part of the code creates a zero size artifact.
+       /* try
         {
             if ( artifact.getFile() != null && artifact.getFile().exists() )//maybe just a test compile and no install
             {
 
                 File artifactFile = artifact.getFile();
                  
-                File destFile = PathUtil.getUserAssemblyCacheFileFor( artifact, localRepository );
+		File destFile = PathUtil.getUserAssemblyCacheFileFor( artifact, localRepository );
                                 logger.info(
                     "NPANDAY-001-007: Installing file into repository: File = " + artifact.getFile().getAbsolutePath()
                         + ", Dest Directory = " + destFile.getParent());
                 try
                 {
                     //this is previously using copyFile(File, File)
-                    FileUtils.copyFileToDirectory( artifactFile.getAbsolutePath(), destFile.getParent() );
+                    FileUtils.copyFileToDirectory( new File(artifactFile.getAbsolutePath()), destFile);
                 }
-                catch ( IOException e )
+                catch ( Exception e ) //should be IOException
                 {
                     throw new ArtifactInstallationException( "NPANDAY-001-008: Failed to install artifact: ID = " +
                         artifact.getId() + ", File = " +
@@ -363,7 +363,7 @@ public class ArtifactInstallerImpl
                 artifact.getId() + ", File = " +
                 ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
         }
-
+	*/
         if ( !artifact.getType().equals( "exe.config" ) )//TODO: Generalize for any attached artifact
         {
             MavenXpp3Reader reader = new MavenXpp3Reader();
