@@ -496,6 +496,30 @@ public final class ProjectDaoImpl
 
                 snapshotVersion = null;
                 
+                if(!assembly.getFile().exists())
+                {
+                    
+                    try
+                    {                    
+                     ArtifactRepository localArtifactRepository =
+                        new DefaultArtifactRepository( "local", "file://" + localRepository,
+                                                       new DefaultRepositoryLayout() );
+                    
+                    artifactResolver.resolve( assembly, artifactRepositories,
+                                                      localArtifactRepository );
+                    }
+                    catch ( ArtifactNotFoundException e )
+                    {
+                        logger.info( "NPANDAY-181-121:  Problem in resolving assembly: " + assembly.toString()
+                        + ", Message = " + e.getMessage() );
+                    }
+                    catch ( ArtifactResolutionException e )
+                    {
+                        logger.info( "NPANDAY-181-122: Problem in resolving assembly: " + assembly.toString()
+                        + ", Message = " + e.getMessage() );
+                    }
+                }
+                
                 logger.info( "NPANDAY-180-011: Project Dependency: Artifact ID = "
                     + projectDependency.getArtifactId() + ", Group ID = " + projectDependency.getGroupId()
                     + ", Version = " + projectDependency.getVersion() + ", Artifact Type = "
