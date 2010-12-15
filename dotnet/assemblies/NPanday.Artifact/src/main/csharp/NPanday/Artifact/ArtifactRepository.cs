@@ -110,16 +110,17 @@ namespace NPanday.Artifact
             List<Artifact> artifacts = new List<Artifact>();
             try
             {
-                DirectoryInfo uac = new DirectoryInfo(localRepository.FullName);
-                int directoryStartPosition = uac.FullName.Length;
+                String repo = localRepository.FullName + "\\repository";
+                DirectoryInfo localRepo = new DirectoryInfo(repo);
+                int directoryStartPosition = localRepo.FullName.Length;
 
-                List<FileInfo> fileInfos = GetArtifactsFromDirectory(uac);
+                List<FileInfo> fileInfos = GetArtifactsFromDirectory(localRepo);
 
                 foreach (FileInfo fileInfo in fileInfos)
                 {
                     try
                     {
-                        Artifact artifact = GetArtifact(uac, fileInfo);
+                        Artifact artifact = GetArtifact(localRepo, fileInfo);
                         artifacts.Add(artifact);
                     }
                     catch
@@ -174,15 +175,21 @@ namespace NPanday.Artifact
                 return null;
             }
 
-            string ext = Path.GetExtension(tokens[2]);
+            string fileName = tokens[tokens.Length - 1];
+            int index = fileName.LastIndexOf( "." );
+            
+            string ext = fileName.Substring( index + 1 );
+            string version = tokens[tokens.Length - 2];
+            string artifactId = tokens[tokens.Length - 3];
 
+            StringBuilder group = new StringBuilder();
 
-            // first file token is the artifact
-            // eg. NPanday.VisualStudio.Addin\1.1.1.1__NMaven.VisualStudio\NPanday.VisualStudio.Addin.dll
-            string artifactId = tokens[0];
-            string groupId = getGroupId(tokens[1]);
-            string version = getVersion(tokens[1]);
+            for( int i = 0; i < tokens.Length - 3; i++ )
+            {
+                group.Append( tokens[i]).Append( "." );
+            }
 
+            string groupId = group.ToString( 0, group.Length - 1 );
 
             Artifact artifact = new Artifact();
             artifact.ArtifactId = artifactId;
@@ -239,16 +246,17 @@ namespace NPanday.Artifact
 
         private List<FileInfo> GetArtifactsFromDirectory(DirectoryInfo baseDirectoryInfo)
         {
-            DirectoryInfo[] directories = baseDirectoryInfo.GetDirectories();
             List<FileInfo> fileInfos = new List<FileInfo>();
+
+            DirectoryInfo[] directories = baseDirectoryInfo.GetDirectories();
             foreach (DirectoryInfo directoryInfo in directories)
             {
                 foreach (FileInfo fileInfo in directoryInfo.GetFiles())
                 {
-                    if (fileInfo.Name.EndsWith(".dll") || fileInfo.Name.EndsWith(".exe") || fileInfo.Name.EndsWith(".netmodule") )
+                    if (fileInfo.Name.EndsWith(".dll") || fileInfo.Name.EndsWith(".exe") || fileInfo.Name.EndsWith(".netmodule"))
                     {
                         fileInfos.Add(fileInfo);
-                    }              
+                    }
                 }
                 fileInfos.AddRange(GetArtifactsFromDirectory(directoryInfo));
             }

@@ -88,7 +88,7 @@ namespace NPanday.Artifact
 
 
             list.AddRange(child);
-            list.RemoveRange(0, parent.Length - 1);
+            list.RemoveRange( 0, parent.Length );
 
             return list.ToArray();
 
