@@ -99,6 +99,7 @@ namespace NPanday.VisualStudio.Addin
         public const string MSG_C_BUILD = "Build [compile]";
         public const string MSG_C_TEST = "Test";
         public const string MSG_C_INSTALL = "Install";
+        public const string MSG_C_DEPLOY = "Deploy";
         public const string MSG_C_CLEAN_ALLPROJECT = "All Projects: Clean";
         public const string MSG_C_TEST_ALLPROJECT = "All Projects: Test";
         public const string MSG_C_INSTALL_ALLPROJECT = "All Projects: Install";
@@ -1074,6 +1075,7 @@ namespace NPanday.VisualStudio.Addin
         CommandBarButton cleanButton;
         CommandBarButton testButton;
         CommandBarButton installButton;
+        CommandBarButton deployButton;
         CommandBarButton buildButton;
         CommandBarButton resetReferenceButton;
 
@@ -1105,6 +1107,11 @@ namespace NPanday.VisualStudio.Addin
             installButton.Visible = true;
             installButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbInstall_Click);
 
+            deployButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            deployButton.Caption = Messages.MSG_C_DEPLOY;
+            deployButton.Visible = true;
+            deployButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbDeploy_Click);
             buildButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
                 System.Type.Missing, System.Type.Missing, 1, true);
             buildButton.Caption = Messages.MSG_C_BUILD;
@@ -1115,6 +1122,7 @@ namespace NPanday.VisualStudio.Addin
 
             buildControls.Add(buildButton);
             buildControls.Add(installButton);
+            buildControls.Add(deployButton);
             buildControls.Add(cleanButton);
             buildControls.Add(testButton);
             buildControls.Add(resetReferenceButton);
@@ -1871,6 +1879,21 @@ namespace NPanday.VisualStudio.Addin
             try
             {
                 NPandayBuildSelectedProject("install");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(Messages.MSG_E_EXEC_ERROR + e.Message, Messages.MSG_C_ERROR, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        #endregion
+
+        #region cbInstall_Click(CommandBarButton,bool)
+
+        private void cbDeploy_Click(CommandBarButton btn, ref bool Cancel)
+        {
+            try
+            {
+                NPandayBuildSelectedProject("deploy");
             }
             catch (Exception e)
             {
