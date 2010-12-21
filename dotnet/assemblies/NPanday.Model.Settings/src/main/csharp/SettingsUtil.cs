@@ -309,7 +309,10 @@ namespace NPanday.Model.Setting
 
             foreach (Profile profile in settings.profiles)
             {
-                repos.AddRange(profile.repositories);
+                if (profile.repositories != null)
+                {
+                    repos.AddRange(profile.repositories);
+                }
             }
             return repos;
         }
@@ -328,11 +331,14 @@ namespace NPanday.Model.Setting
             {
                 foreach (Profile profile in settings.profiles)
                 {
-                    foreach (Repository repo in profile.repositories)
+                    if (profile.repositories != null)
                     {
-                        if (url.Equals(repo.url))
+                        foreach (Repository repo in profile.repositories)
                         {
-                            return repo;
+                            if (url.Equals(repo.url))
+                            {
+                                return repo;
+                            }
                         }
                     }
                 }
