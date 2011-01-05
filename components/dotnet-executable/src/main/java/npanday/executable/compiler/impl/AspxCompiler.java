@@ -66,7 +66,7 @@ public class AspxCompiler
     {
         logger.info( "NPANDAY-068-003: Compiling Artifact: Vendor = "
             + compilerContext.getCompilerRequirement().getVendor() + ", Language = "
-            + compilerContext.getCompilerRequirement().getVendor() + ", Assembly Name = "
+            + compilerContext.getCompilerRequirement().getLanguage() + ", Assembly Name = "
             + compilerContext.getArtifact().getAbsolutePath() );
 
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();

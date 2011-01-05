@@ -512,12 +512,16 @@ public abstract class AbstractCompilerMojo
 
     /**
      * Allow 'unsafe' code
+     *     
+     * @parameter
      */
     protected boolean unsafe;
 
 
     /**
      * Allow 'unsafe' code
+     *
+     * @parameter
      */
     protected boolean testUnsafe;
 
@@ -665,8 +669,35 @@ public abstract class AbstractCompilerMojo
      * @parameter  expression = "${outputDirectory}"
      */
     protected File outputDirectory;
+	
+    /**
+     * warn
+     *
+     * @parameter expression = "${warn}"
+     */
+    protected Integer warn;
     
+    /**
+     * testWarn
+     *
+     * @parameter expression = "${testWarn}"
+     */
+    protected Integer testWarn;
+    
+    /**
+     * nowarn
+     *
+     * @parameter expression = "${nowarn}"
+     */
+    protected String nowarn;
 
+ 
+    /**
+     * testNowarn
+     *
+     * @parameter expression = "${testNowarn}"
+     */
+    protected String testNowarn;
 
 
 
@@ -784,7 +815,6 @@ public abstract class AbstractCompilerMojo
             //returns if assemblyInfoFile does not exist
             if(!FileUtils.fileExists(assemblyInfoFile))
             {
-                System.out.println("[INFO] No Assembly Info File found");
                 return;
 			}
 			String contents = getContents(new File(assemblyInfoFile));

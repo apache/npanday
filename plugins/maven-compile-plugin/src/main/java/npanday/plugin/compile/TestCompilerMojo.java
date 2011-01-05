@@ -319,6 +319,15 @@ public final class TestCompilerMojo
             params.add("/define:" + testDefine);
         }
 
+        if (testWarn != null)
+        {
+            params.add("/warn:" + testWarn);
+        }
+        
+        if (testNowarn != null)
+        {
+            params.add("/nowarn:" + testNowarn);
+        }
 
         return params;
     }

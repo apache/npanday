@@ -320,6 +320,15 @@ public final class CompilerMojo
             params.add("/define:" + define);
         }
 
+        if (warn != null)
+        {
+            params.add("/warn:" + warn);
+        }
+        
+        if (nowarn != null)
+        {
+            params.add("/nowarn:" + nowarn);
+        }
 
         return params;
     }
