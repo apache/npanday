@@ -49,6 +49,8 @@ namespace NPanday.Model.Setting
 
     public static class SettingsUtil
     {
+        public static string defaultProfileID = "NPanday.id";
+
         #region GetDefaultSettingsPath()
         /// <summary>
         /// Gets the default settings path.
@@ -229,12 +231,91 @@ namespace NPanday.Model.Setting
         /// <param name="path">The settings path</param>
         public static void WriteSettings(Settings settings, string path)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-            TextWriter writer = new StreamWriter(path);
-            serializer.Serialize(writer, settings);
-            writer.Close();
+            // read original settings.xml
+            XmlDocument settingsXmlDoc = new XmlDocument();
+            settingsXmlDoc.Load(path);
+
+            Profile profile = GetProfile(settings, defaultProfileID);
+            //convert NPanday Profile to XmlNode
+            XmlNode newProfileNode = new XmlDocument();
+            ((XmlDocument) newProfileNode).LoadXml(SerializeProfileToXml(profile));
+
+            newProfileNode = newProfileNode.SelectSingleNode("//profile[id='" + defaultProfileID + "']");
+            XmlNode importedNewProfileNode = settingsXmlDoc.ImportNode(newProfileNode, true);
+
+            // search for npanday profile in settings.xml
+            XmlNode oldProfileNode = settingsXmlDoc.SelectSingleNode("//profiles/profile[id='" + defaultProfileID + "']");
+            if (oldProfileNode != null)
+            {
+                oldProfileNode.ParentNode.ReplaceChild(importedNewProfileNode, oldProfileNode);
+            }
+            else
+            {
+                XmlNode profilesNode = settingsXmlDoc.SelectSingleNode("//profiles");
+                if (profilesNode == null)
+                {
+                    // create profiles
+                    profilesNode = settingsXmlDoc.CreateElement("", "profiles", "");
+                    settingsXmlDoc.DocumentElement.AppendChild(profilesNode);
+                }
+
+                profilesNode.AppendChild(importedNewProfileNode);
+            }
+
+            bool createActiveProfile = false;
+            XmlNode activeProfileNode;
+
+            // search for activeProfiles in settings.xml
+            XmlNode activeProfilesNode = settingsXmlDoc.SelectSingleNode("//activeProfiles");
+            if (activeProfilesNode == null)
+            {
+                activeProfilesNode = settingsXmlDoc.CreateElement("", "activeProfiles", "");
+                settingsXmlDoc.DocumentElement.AppendChild(activeProfilesNode);
+                createActiveProfile = true;
+            }
+            else
+            {
+                activeProfileNode = settingsXmlDoc.SelectSingleNode("//activeProfiles/activeProfile[.='" + defaultProfileID + "']");
+                if (activeProfileNode == null)
+                {
+                    createActiveProfile = true;
+                }
+            }
+
+            // add NPanday.id to <activeProfiles>
+            if (createActiveProfile)
+            {
+                activeProfileNode = settingsXmlDoc.CreateElement("", "activeProfile", "");
+                activeProfileNode.InnerText = defaultProfileID;
+                activeProfilesNode.AppendChild(activeProfileNode);
+            }
+
+            settingsXmlDoc.Save(path);
         }
         #endregion
+
+
+        private static string SerializeProfileToXml(Profile profile)
+        {
+            XmlRootAttribute profileRoot = new XmlRootAttribute("profile");
+
+            XmlAttributes attributes = new XmlAttributes();
+            attributes.XmlRoot = profileRoot;
+
+            XmlAttributeOverrides overrides = new XmlAttributeOverrides();
+            overrides.Add(profile.GetType(), attributes);
+
+            XmlSerializerNamespaces xmlnsEmpty = new XmlSerializerNamespaces();
+            xmlnsEmpty.Add("", "");
+
+            XmlSerializer xs = new XmlSerializer(profile.GetType(), overrides);
+            StringWriter xout = new StringWriter();
+            xs.Serialize(xout, profile, xmlnsEmpty);
+            String SerializedProfile = xout.ToString();
+            xout.Close();
+
+            return SerializedProfile;
+        }
 
         #region AddActiveProfile(Settings, string)
         /// <summary>
@@ -487,4 +568,3 @@ namespace NPanday.Model.Setting
 
     #endregion
 }
-
