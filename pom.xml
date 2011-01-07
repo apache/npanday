@@ -233,7 +233,7 @@ under the License.
     <module>misc/npanday-installer</module>	
   </modules>  
   <build> 
-    <plugins> 
+    <plugins>
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>      
         <artifactId>maven-release-plugin</artifactId>  
@@ -521,6 +521,19 @@ under the License.
               <execution>
                 <goals>
                   <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.rat</groupId>
+            <artifactId>apache-rat-plugin</artifactId>
+            <version>0.7</version>
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>check</goal>
                 </goals>
               </execution>
             </executions>
