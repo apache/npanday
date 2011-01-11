@@ -91,7 +91,7 @@ namespace NPanday.VisualStudio.Addin
             if (!initialized)
                 throw new Exception("Reference manager not initialized.");
 
-            if (!artifact.FileInfo.Exists)
+            if (!artifact.FileInfo.Exists || artifact.Version.EndsWith("SNAPSHOT"))
             {
                 if (!NPanday.ProjectImporter.Digest.Model.Reference.DownloadArtifact(artifact,logger))
                 {
