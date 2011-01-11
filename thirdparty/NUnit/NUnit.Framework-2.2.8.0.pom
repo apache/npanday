@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>NUnit</groupId>
-  <artifactId>NUnit.Framework</artifactId>
-  <packaging>library</packaging>
-  <version>2.2.8.0</version>
-</project>
