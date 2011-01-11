@@ -139,14 +139,17 @@ final class DefaultAssemblyInfoMarshaller
         String line;
         while ( ( line = reader.readLine() ) != null )
         {
-            String[] tokens = line.split( "[:]" );
+            if ( !line.trim().startsWith("//") )
+			{
+				String[] tokens = line.split( "[:]" );
 
-            if ( tokens.length == 2 )
-            {
-                String[] assemblyTokens = tokens[1].split( "[(]" );
-                String name = assemblyTokens[0].trim();
-                String value = assemblyTokens[1].trim().split( "[\"]" )[1].trim();
-                setAssemblyInfo( assemblyInfo, name, value );
+				if ( tokens.length == 2 )
+				{
+					String[] assemblyTokens = tokens[1].split( "[(]" );
+					String name = assemblyTokens[0].trim();
+					String value = assemblyTokens[1].trim().split( "[\"]" )[1].trim();
+					setAssemblyInfo( assemblyInfo, name, value );
+				}
             }
         }
         return assemblyInfo;
