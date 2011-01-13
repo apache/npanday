@@ -30,29 +30,51 @@ namespace ConnectTest.UtilsTest
     [TestFixture]
     public class MavenCompilePluginConfigurationTest
     {
-        private PomHelperUtility pomHelper;
+        private PomHelperUtility pomCopy;
+        private String pomPath;
+        private String pomCopyPath;
+
+
 
         public MavenCompilePluginConfigurationTest()
         {
-            pomHelper = new PomHelperUtility(new FileInfo(Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().LastIndexOf("target")) + "\\src\\test\\resource\\ClassLibrary1\\ClassLibrary1\\pom.xml"));
+
         }
 
+        [SetUp]
+        public void TestSetUp()
+        {
+            pomPath = (new FileInfo(Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().LastIndexOf("target")) + "\\src\\test\\resource\\ClassLibrary1\\ClassLibrary1\\pom.xml").FullName);
+
+            pomCopyPath = pomPath.Replace("pom.xml", "pomCopy.xml");
+
+            pomCopy = new PomHelperUtility(pomCopyPath);
+
+            File.Copy(pomPath, pomCopyPath);
+        }
+        
         [Test]
         public void AddMavenCompilePluginConfigurationTest()
         {
-            pomHelper.AddMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs");
+            pomCopy.AddMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs");
         }
 
         [Test]
         public void RenameMavenCompilePluginConfigurationTest()
         {
-            pomHelper.RenameMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs","IISHandlerRenamed.cs");
+            pomCopy.RenameMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs","IISHandlerRenamed.cs");
         }
 
         [Test]
         public void RemoveMavenCompilePluginConfigurationTest()
         {
-            pomHelper.RemoveMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs");
+            pomCopy.RemoveMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs");
+        }
+
+        [TearDown]
+        public void TestCleanUp()
+        {
+            File.Delete(pomCopyPath);
         }
 
     }
