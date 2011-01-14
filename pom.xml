@@ -483,7 +483,10 @@ under the License.
                 <exclude>**/**.xslt</exclude>
                 <exclude>**/**.snk</exclude>
                 <exclude>**/**.sln</exclude>
-                <exclude>**/target/**</exclude>
+                <exclude>netplugins/**/target/**/*</exclude>
+                <exclude>javabinding/target/**/*</exclude>
+                <exclude>npanday-it-runner/target/**/*</exclude>
+                <exclude>site/target/**/*</exclude>
                 <exclude>**/pom-java.xml</exclude>
                 <exclude>**/src/main/java/NPanday/Plugin/Addin/AutomationExtensibilityMojo.java</exclude>
                 <exclude>**/src/main/java/NPanday/Plugin/Devenv/DevenvMojo.java</exclude>
