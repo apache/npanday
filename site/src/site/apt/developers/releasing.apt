@@ -20,11 +20,19 @@
 
 Pre-release checklist
 
-  * Make sure that the copyright and licenses are on all source code
-
   * Check the build is successful for both NPanday and NPanday-ITs
 
   * Ensure all issues in the tracker for that version have been resolved, or are moved to a later version
+  
+  * Make sure that the copyright and licenses are on all source code
+  
+  To do this, run the following command:
+  
+----
+mvn clean install -Ppre-release
+----
+
+  Ensure that the build is successful before proceeding to the release proper.  
   
 <Note: (This is needed for the signature of the artifacts to be deployed)>
   
@@ -49,7 +57,7 @@ Creating a Release Candidate
 
   Send a proposal in the discussion forum regarding the release and the issues that would be fix in the said release.
 
-  The release will be done in through the command line.
+  The release will be done using the command line.
   
 * Steps in releasing NPanday:
 
