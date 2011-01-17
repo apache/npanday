@@ -49,33 +49,29 @@ public class PartCoverConverterMojo
      
     /**
      * The path where msxsl.exe file is located.
-     * This executable converts the xml report to a more readable html report.
-     * This should be added in the "C:/WINDOWS/msxsle.exe"
+     * This executable enables you to perform command line xsl transformations using the MS XSL processor
+     * This should be added in the "C:/WINDOWS/"
      *
      * @parameter expression="${msxsl}" default-value="C:\\WINDOWS\\msxsl.exe"
      */
     private String msxsl;
- 
+
+    /**
+     * The path where xslt file is located.
+     * This files converts the xml report to a more readable html report.
+     * @parameter expression="${xslt}" default-value="C:\\Program Files\\PartCover\\PartCover .NET 4.0\\xslt\\Report By Assembly.xslt"
+     * @required
+     */
+    private String xslt;
+   
     public void execute()
         throws MojoExecutionException
     { 
         try 
         {
 
-            // copy resources
-            
-            copyFileToOutputDirectory( "/partcover-report-by-class.xslt", "partcover-report-by-class.xslt");
-            copyFileToOutputDirectory( "/common-footer.xslt", "common-footer.xslt" );
-            copyFileToOutputDirectory( "/common-header.xslt", "common-header.xslt" );
-            copyFileToOutputDirectory( "/common-partcover-report.xslt", "common-partcover-report.xslt" );
-            copyFileToOutputDirectory( "/partcover-report-by-assembly.xslt", "partcover-report-by-assembly.xslt" );
-            copyFileToOutputDirectory( "/coverage-report.css", "coverage-report.css" );
-            
-            // convert xml result using xslt;            
-                      
-            String line = " \"" + msxsl + "\" \"" + outputDirectory + "/coverage.xml\" \"" + outputDirectory
-                + "/common-partcover-report.xslt\" -o  \"" + outputDirectory + "/coverage.html\"";
-
+            String line = " \"" + msxsl + "\" \"" + outputDirectory + "/coverage.xml\" \"" 
+                + xslt + "\" -o  \"" + outputDirectory + "/coverage.html\"";
 
             int exitValue = executeCommandLine( line );
                     
