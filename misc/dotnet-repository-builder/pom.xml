@@ -21,7 +21,7 @@ under the License.
   <parent>
     <groupId>npanday</groupId>  
     <artifactId>npanday-project</artifactId>  
-    <version>1.3-incubating-SNAPSHOT</version>
+    <version>1.3-incubating-RC1</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -29,9 +29,9 @@ under the License.
   <name>NPanday :: .NET Repository Builder</name>
   <packaging>pom</packaging>
   <scm> 
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</connection>
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</developerConnection>
-    <url>https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/tags/npanday-1.3-incubating-RC1/misc/dotnet-repository-builder</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/tags/npanday-1.3-incubating-RC1/misc/dotnet-repository-builder</developerConnection>
+    <url>https://svn.apache.org/repos/asf/incubator/npanday/tags/npanday-1.3-incubating-RC1/misc/dotnet-repository-builder</url>
   </scm>  
   <dependencies>
     <!--assemblies-->
