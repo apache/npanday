@@ -32,12 +32,6 @@ under the License.
   <name>NPanday</name>  
   <url>http://incubator.apache.org/npanday/</url>
   <description>NPanday provides Maven plugins to support building of .NET applications</description>  
-  <!-- Temporary until we move to using the ASF parent POM. Organization must be specified for the installer to
-       build successfully. -->
-  <organization>
-    <name>The Apache Software Foundation</name>
-    <url>http://www.apache.org/</url>
-  </organization>
   <mailingLists> 
     <mailingList> 
       <name>NPanday Developers List</name>  
@@ -83,13 +77,6 @@ under the License.
     <system>continuum</system>
     <url>http://ci.npanday.org/continuum/</url>
   </ciManagement>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
   <developers> 
     <developer> 
       <name>Craig Bachelor</name>  
@@ -614,15 +601,9 @@ under the License.
     <!--<stable.npanday.version>1.2.2-incubating-SNAPSHOT</stable.npanday.version>-->
   </properties>  
   <distributionManagement>
-    <snapshotRepository>
-      <id>npanday.snapshots</id>
-      <name>NPanday Snapshots Repository</name>
-      <url>${npanday.snapshots.url}</url>
-    </snapshotRepository>
     <repository>
-      <id>npanday.releases</id>
-      <name>NPanday Releases Repository</name>
-      <url>${npanday.releases.url}</url>
+      <id>vmbuild.staging</id>
+      <url>http://vmbuild.apache.org/archiva/repository/staged-npanday/</url>
     </repository>
   </distributionManagement>
   <!-- TODO: need to get these into central after 1.1 -->
