@@ -61,7 +61,7 @@ Creating a Release Candidate
   
 * Steps in releasing NPanday:
 
-  [[1]] Check out the code from {{https://svn.apache.org/repos/asf/incubator/npanday/npanday-its/trunk/}}
+  [[1]] Check out the code from {{https://svn.apache.org/repos/asf/incubator/npanday/trunk//}}
   
   [[2]] Run the following command:
   
