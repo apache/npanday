@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+s<?xml version="1.0" encoding="UTF-8"?>
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -134,11 +134,10 @@ under the License.
       </plugin> 
     </plugins> 
   </reporting>  
-  <distributionManagement> 
-    <site> 
-      <id>npanday.site</id>
-      <name>NPanday Site</name>  
-      <url>scm:svn:https://npanday.svn.codeplex.com/svn/docs/${project.version}/plugins</url>
-    </site> 
+  <distributionManagement>
+    <site>
+      <id>apache.website</id>
+      <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}</url>
+    </site>
   </distributionManagement>
 </project>
