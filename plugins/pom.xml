@@ -137,7 +137,7 @@ under the License.
   <distributionManagement>
     <site>
       <id>apache.website</id>
-      <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}</url>
+      <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}/plugins</url>
     </site>
   </distributionManagement>
 </project>
