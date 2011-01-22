@@ -22,7 +22,7 @@ under the License.
    
   <parent> 
     <groupId>npanday</groupId>  
-    <version>1.3-incubating-SNAPSHOT</version>  
+    <version>1.3-incubating</version>  
     <artifactId>NPanday.Project</artifactId>
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
