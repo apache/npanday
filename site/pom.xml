@@ -23,7 +23,7 @@ under the License.
   <parent>
     <groupId>npanday</groupId>
     <artifactId>npanday-project</artifactId>
-    <version>1.3-incubating-SNAPSHOT</version>
+    <version>1.3-incubating</version>
   </parent>
   <artifactId>npanday-site</artifactId>
   <packaging>pom</packaging>
