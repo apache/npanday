@@ -40,7 +40,7 @@ namespace NPanday.Artifact
 
         public string GetLocalRepositoryPath(Artifact artifact, string ext)
         {
-            return Path.Combine(localRepository.FullName, string.Format(@"repository\{0}\{1}\{2}\{1}-{2}{3}", artifact.GroupId.Replace(@".",@"\"), artifact.ArtifactId, artifact.Version,ext));
+            return string.Format(@"{0}\{1}\{2}\{3}\{2}-{3}{4}", localRepository.FullName, artifact.GroupId.Replace(@".",@"\"), artifact.ArtifactId, artifact.Version, ext);
         }
 
         public string GetRemoteRepositoryPath(Artifact artifact, string url, string ext)
@@ -56,8 +56,6 @@ namespace NPanday.Artifact
         public Artifact GetArtifactFor(String uri)
         {
             Artifact artifact = new Artifact();
-
-            DirectoryInfo uac = new DirectoryInfo(localRepository.FullName);
 
             String[] tokens = uri.Split("/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             int size = tokens.Length;
@@ -93,8 +91,7 @@ namespace NPanday.Artifact
                 String[] extToken = tokens[size - 1].Split(".".ToCharArray());
                 artifact.Extension = extToken[extToken.Length - 1];
             }
-
-            artifact.FileInfo = new FileInfo(uac.FullName + Tokenize( artifact.GroupId )+ Path.DirectorySeparatorChar + artifact.ArtifactId + Path.DirectorySeparatorChar 
+            artifact.FileInfo = new FileInfo(localRepository.FullName + Path.DirectorySeparatorChar + Tokenize( artifact.GroupId )+ Path.DirectorySeparatorChar + artifact.ArtifactId + Path.DirectorySeparatorChar 
                 + artifact.Version + Path.DirectorySeparatorChar + artifact.ArtifactId+ "-" + artifact.Version+ ".dll");
             return artifact;
         }
@@ -104,17 +101,13 @@ namespace NPanday.Artifact
             List<Artifact> artifacts = new List<Artifact>();
             try
             {
-                String repo = localRepository.FullName + "\\repository";
-                DirectoryInfo localRepo = new DirectoryInfo(repo);
-                int directoryStartPosition = localRepo.FullName.Length;
-
-                List<FileInfo> fileInfos = GetArtifactsFromDirectory(localRepo);
+                List<FileInfo> fileInfos = GetArtifactsFromDirectory(localRepository);
 
                 foreach (FileInfo fileInfo in fileInfos)
                 {
                     try
                     {
-                        Artifact artifact = GetArtifact(localRepo, fileInfo);
+                        Artifact artifact = GetArtifact(localRepository, fileInfo);
                         artifacts.Add(artifact);
                     }
                     catch
@@ -134,8 +127,7 @@ namespace NPanday.Artifact
 
         public Artifact GetArtifact(FileInfo artifactFile)
         {
-            DirectoryInfo uacDirectory = new DirectoryInfo( localRepository.FullName );
-            return GetArtifact(uacDirectory, artifactFile);
+            return GetArtifact(localRepository, artifactFile);
         }
 
         public Artifact GetArtifact(NPanday.Model.Pom.Dependency dependency)
