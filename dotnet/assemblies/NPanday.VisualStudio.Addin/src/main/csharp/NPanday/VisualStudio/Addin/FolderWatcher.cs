@@ -35,7 +35,8 @@ namespace NPanday.VisualStudio.Addin
             foreach (string f in Directory.GetFiles(referenceDirectory))
             {
                 string fext = Path.GetExtension(f).ToLower();
-                if (fext.Equals(".map", StringComparison.InvariantCultureIgnoreCase) || fext.Equals(".discomap", StringComparison.InvariantCultureIgnoreCase))
+                if (fext.Equals(".map", StringComparison.InvariantCultureIgnoreCase) || fext.Equals(".discomap", StringComparison.InvariantCultureIgnoreCase)
+                    || fext.Equals(".svcmap", StringComparison.InvariantCultureIgnoreCase))
                 {
                     fname = f;
                     break;
@@ -66,16 +67,25 @@ namespace NPanday.VisualStudio.Addin
         {
             XPathDocument xDoc = new XPathDocument(referencePath);
             XPathNavigator xNav = xDoc.CreateNavigator();
-            string xpathExpression = @"DiscoveryClientResultsFile/Results/DiscoveryClientResult[@referenceType='System.Web.Services.Discovery.ContractReference']/@url";
-            System.Xml.XPath.XPathNodeIterator xIter = xNav.Select(xpathExpression);
+            string xpathExpression;
             string url = "";
+
+            if (referencePath.Contains(Messages.MSG_D_SERV_REF))
+            {
+                xpathExpression = @"ReferenceGroup/Metadata/MetadataFile[MetadataType='Wsdl']/@SourceUrl";
+            }
+            else
+            {
+                xpathExpression = @"DiscoveryClientResultsFile/Results/DiscoveryClientResult[@referenceType='System.Web.Services.Discovery.ContractReference']/@url";
+            }
+
+            System.Xml.XPath.XPathNodeIterator xIter = xNav.Select(xpathExpression);
             if (xIter.MoveNext())
             {
                 url = xIter.Current.TypedValue.ToString();
             }
             return url;
         }
-
     }
 
     public class WebsiteAssemblyReferenceWatcher

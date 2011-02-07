@@ -388,31 +388,20 @@ namespace NPanday.Utils
             {
                 pomFile.Directory.Create();
             }
-            string webDir = pomFile.Directory + "/Web References";
-            if(Directory.Exists(webDir))
+            List<NPanday.Model.Pom.Plugin> plugins = new List<NPanday.Model.Pom.Plugin>();
+            if (model.build != null && model.build.plugins != null)
             {
-                if (Directory.GetDirectories(webDir).Length == 0)
+                foreach (Plugin item in model.build.plugins)
                 {
-                    List<NPanday.Model.Pom.Plugin> plugins = new List<NPanday.Model.Pom.Plugin>();
-                    if (model.build.plugins != null)
+                    plugins.Add(item);
+                    if ((item.artifactId.Equals("maven-compile-plugin")) || (item.artifactId.Equals("maven-aspx-plugin")))
                     {
-                        foreach (Plugin item in model.build.plugins)
-                        {
-                            if (!item.artifactId.Equals("maven-wsdl-plugin"))
-                            {
-                                plugins.Add(item);
-                            }
-
-                            if ((item.artifactId.Equals("maven-compile-plugin")) || (item.artifactId.Equals("maven-aspx-plugin")))
-                            {
-                                item.extensions = true;
-                            }
-                        }
+                        item.extensions = true;
                     }
-
-                    model.build.plugins = plugins.ToArray();
                 }
+                model.build.plugins = plugins.ToArray();
             }
+
             TextWriter writer = new StreamWriter(pomFile.FullName);
             XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Pom.Model));
             serializer.Serialize(writer, model);

@@ -117,6 +117,7 @@ namespace NPanday.VisualStudio.Addin
         public const string MSG_C_ALL_PROJECTS = "All NPanday Projects";
         public const string MSG_C_CUR_PROJECT = "Current NPanday Project";
         public const string MSG_D_WEB_REF = "Web References";
+        public const string MSG_D_SERV_REF = "Service References";
     }
     public class NPandayBuildSystemProperties : System.ComponentModel.ISynchronizeInvoke
     {
@@ -196,12 +197,28 @@ namespace NPanday.VisualStudio.Addin
             {
                 PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
 
-                // add web configuration
+                // added configuration when including web or service reference
 
-                string webRef = getWebReference(projectItem);
-                if (webRef != null && !pomUtil.isWebRefExisting(projectItem.Name))
+                if (!pomUtil.isWebRefExisting(projectItem.Name))
                 {
-                    addWebReference(pomUtil, projectItem.Name, Messages.MSG_D_WEB_REF + "\\" + projectItem.Name + "\\" + webRef, string.Empty);
+                    string refType = IsWebReference(projectItem) ? Messages.MSG_D_WEB_REF : Messages.MSG_D_SERV_REF;
+                    String reference = GetReference(projectItem, refType);
+                    if (reference != null)
+                    {
+                        addWebReference(pomUtil, projectItem.Name, refType + "\\" + projectItem.Name + "\\" + reference, string.Empty);
+ 
+                        String path = GetReferencePath(projectItem, refType);
+                        if (Directory.Exists(path))
+                        {
+                            string[] files = Directory.GetFiles(path, "*.cs");
+
+                            if (files.Length > 0)
+                            {
+                                
+                            }
+                        }
+
+                    }
                 }                
 
                 //determine which plugin the projectItem belongs to
@@ -267,16 +284,20 @@ namespace NPanday.VisualStudio.Addin
 
                     // remove web reference configuration in pom.xml when using "Exclude in Project"
 
-                    string webRef = getWebReference(projectItem);
-                    if (webRef != null)
+                    string fullPath = projectItem.get_FileNames(0);
+                    string refType = Messages.MSG_D_WEB_REF;
+
+                    if ( fullPath.StartsWith(Path.GetDirectoryName(projectItem.ContainingProject.FullName) + "\\" + Messages.MSG_D_SERV_REF))
                     {
-                        string projectPath = Path.GetDirectoryName(projectItem.ContainingProject.FullName);
-                        string path = projectPath + "\\" + Messages.MSG_D_WEB_REF + "\\" + projectItem.Name;
+                        refType = Messages.MSG_D_SERV_REF;                            
+                    }
 
-                        pomUtil.RemoveWebReference(path, projectItem.Name);
-                        
-                    }                
-
+                    string reference = GetReference(projectItem, refType);
+                    if (reference != null)
+                    {
+                         string path = GetReferencePath(projectItem, refType);
+                         pomUtil.RemoveWebReference(path, projectItem.Name);
+                    }
 
                     if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
                     {
@@ -327,16 +348,19 @@ namespace NPanday.VisualStudio.Addin
             {
                 Uri fullPathUri = fileName == null ? new Uri(projectItem.get_FileNames(0)) : new Uri(Path.Combine(Path.GetDirectoryName(projectItem.get_FileNames(0)), fileName));
                 Uri projectUri = new Uri(Path.GetDirectoryName(projectItem.ContainingProject.FullName) + Path.DirectorySeparatorChar);
-                return projectUri.MakeRelativeUri(fullPathUri).ToString();
+                return projectUri.MakeRelativeUri(fullPathUri).LocalPath;
             }
             return projectItem.Name;
         }    
 
-        private static string getWebReference(ProjectItem projectItem)
+        private static string GetReferencePath(ProjectItem projectItem, string refType)
         {
-            string projectPath = Path.GetDirectoryName(projectItem.ContainingProject.FullName);
-            string path = projectPath + "\\" + Messages.MSG_D_WEB_REF + "\\" + projectItem.Name;
+            return Path.GetDirectoryName(projectItem.ContainingProject.FullName) + "\\" + refType + "\\" + projectItem.Name;            
+        }
  
+        private static string GetReference(ProjectItem projectItem, string refType)
+        {
+            string path = GetReferencePath(projectItem, refType); 
             if (Directory.Exists(path))
             {
                 string[] files = Directory.GetFiles(path, "*.wsdl");
@@ -345,12 +369,29 @@ namespace NPanday.VisualStudio.Addin
                 {
                     return Path.GetFileName(files[0]);
                 }
-            }
-            
+            }          
 
             return null;
         }
 
+        private static bool IsWebReference(ProjectItem item)
+        {
+            if (item.ContainingProject.Object is VSProject)
+            {
+                ProjectItem webrefs = ((VSProject) item.ContainingProject.Object).WebReferencesFolder;
+                if (webrefs != null && webrefs.ProjectItems != null)
+                {
+                    foreach (ProjectItem webref in webrefs.ProjectItems)
+                    {
+                        if (webref == item)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
         #endregion
         static bool projectRefEventLoaded;
 
@@ -650,12 +691,14 @@ namespace NPanday.VisualStudio.Addin
             Solution2 solution = (Solution2)_applicationObject.Solution;
 
             this.wsRefWatcher = new List<WebServicesReferenceWatcher>();
+            this.svRefWatcher = new List<WebServicesReferenceWatcher>();
 
             foreach (Project project in solution.Projects)
             {
                 projectRefEventLoaded = true;
 
                 string referenceFolder = string.Empty;
+                string serviceRefFolder = string.Empty;
 
                 if (IsWebProject(project))
                 {
@@ -682,6 +725,7 @@ namespace NPanday.VisualStudio.Addin
                             webReferenceFolder = classProject.CreateWebReferencesFolder();
                         }
                         referenceFolder = Path.Combine(Path.GetDirectoryName(project.FullName), webReferenceFolder.Name);
+                        serviceRefFolder = Path.Combine(Path.GetDirectoryName(project.FullName), Messages.MSG_D_SERV_REF);
                     }
                     catch
                     {
@@ -704,6 +748,16 @@ namespace NPanday.VisualStudio.Addin
                         this.wsRefWatcher.Add(wsw);
                     }
 
+                    if (!string.IsNullOrEmpty(serviceRefFolder))
+                    {
+                        string svPath = serviceRefFolder;
+                        WebServicesReferenceWatcher srw = new WebServicesReferenceWatcher(svPath);
+                        srw.Created += new EventHandler<WebReferenceEventArgs>(srw_Created);
+                        srw.Deleted += new EventHandler<WebReferenceEventArgs>(srw_Deleted);
+                        srw.Renamed += new EventHandler<WebReferenceEventArgs>(srw_Renamed);
+                        srw.Start();
+                        this.svRefWatcher.Add(srw);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -909,7 +963,7 @@ namespace NPanday.VisualStudio.Addin
             try
             {
                 //wait for the files to be created
-                System.Threading.Thread.Sleep(1500);
+                System.Threading.Thread.Sleep(2500);
                 Solution2 solution = (Solution2)_applicationObject.Solution;
                 e.Init(projectReferenceFolder(CurrentSelectedProject));
 
@@ -922,6 +976,53 @@ namespace NPanday.VisualStudio.Addin
             catch (Exception ex)
             {
                 outputWindowPane.OutputString("\nError on webservice create: " + ex.Message);
+            }
+        }
+
+        void srw_Renamed(object sender, WebReferenceEventArgs e)
+        {
+            try
+            {
+                System.Threading.Thread.Sleep(1500);
+                e.Init(Path.Combine(Path.GetDirectoryName(CurrentSelectedProject.FullName), Messages.MSG_D_SERV_REF));
+                PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+                pomUtil.RenameWebReference(e.ReferenceDirectory, e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                outputWindowPane.OutputString("\nError on webservice rename: " + ex.Message);
+            }
+        }
+
+        void srw_Deleted(object sender, WebReferenceEventArgs e)
+        {
+            try
+            {
+                e.Init(Path.Combine(Path.GetDirectoryName(CurrentSelectedProject.FullName), Messages.MSG_D_SERV_REF));
+                PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+                pomUtil.RemoveWebReference(e.ReferenceDirectory, e.Namespace);
+            }
+            catch (Exception ex)
+            {
+                outputWindowPane.OutputString("\nError on webservice delete: " + ex.Message);
+            }
+        }
+
+        void srw_Created(object sender, WebReferenceEventArgs e)
+        {
+            try
+            {
+                System.Threading.Thread.Sleep(2500);
+                Solution2 solution = (Solution2)_applicationObject.Solution;
+
+                string path = Path.Combine(Path.GetDirectoryName(CurrentSelectedProject.FullName), Messages.MSG_D_SERV_REF);
+                e.Init(path);
+                PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+                pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                outputWindowPane.OutputString("\nError on webservice create");
             }
         }
 
@@ -2115,6 +2216,7 @@ namespace NPanday.VisualStudio.Addin
 
 
         List<WebServicesReferenceWatcher> wsRefWatcher = new List<WebServicesReferenceWatcher>();
+        List<WebServicesReferenceWatcher> svRefWatcher = new List<WebServicesReferenceWatcher>();
 
         #endregion
 
