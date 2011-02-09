@@ -48,10 +48,10 @@ under the License.
     </plugins> 
     <pluginManagement>
       <plugins>
-        <!-- Must peg to a previous release to avoid MNG-1911 bug -->
         <plugin>
           <groupId>npanday.plugin</groupId>
           <artifactId>maven-compile-plugin</artifactId>  
+		  <extensions>true</extensions>
           <version>${stable.npanday.version}</version>
         </plugin>
         <plugin>
@@ -72,13 +72,30 @@ under the License.
         <plugin>
           <groupId>npanday.plugin</groupId>
           <artifactId>maven-resolver-plugin</artifactId>
+		  <version>${stable.npanday.version}</version>
           <configuration>
             <skip>true</skip>
           </configuration>
         </plugin>
+		<plugin>
+          <groupId>npanday.plugin</groupId>
+		  <artifactId>maven-xsd-plugin</artifactId>
+          <version>${stable.npanday.version}</version>
+        </plugin>
+		<plugin>
+          <groupId>npanday.plugin</groupId>
+		  <artifactId>maven-test-plugin</artifactId>
+          <version>${stable.npanday.version}</version>
+        </plugin>
+		<plugin>
+          <groupId>npanday.plugin</groupId>
+		  <artifactId>maven-mojo-generator-plugin</artifactId>
+          <version>${stable.npanday.version}</version>
+        </plugin>
         <plugin>
           <groupId>npanday.plugin</groupId>
           <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>
+		  <version>${stable.npanday.version}</version>
           <configuration>
             <skip>true</skip>
           </configuration>
