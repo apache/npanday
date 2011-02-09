@@ -79,6 +79,13 @@ extends AbstractMojo
     private boolean xmlConsole;
 
     /**
+     * On 64bit-systems, the tests will automatically perform in .NET 64bit-version. If you need to
+     * run your tests using 32bit (native calls, i.e.) set this option to true.
+     * @parameter default-value = "false"
+     */
+    private boolean forceX86;
+
+    /**
      * Skips unit test
      * 
      * @parameter expression = "${skipTests}" default-value = "false"
@@ -167,7 +174,8 @@ extends AbstractMojo
         String exe;
         if ( nunitCommand == null )
         {
-            exe = "nunit-console";
+            // nunit-console-x86 is included since 2.4.2 (August 2007, http://www.nunit.org/index.php?p=releaseNotes&r=2.4.3)
+            exe = "nunit-console" + (forceX86 ? "-x86" : "");
 
             if ( vendorInfo != null )
             {
