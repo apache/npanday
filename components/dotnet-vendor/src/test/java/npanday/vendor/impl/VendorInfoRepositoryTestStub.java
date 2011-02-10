@@ -59,6 +59,10 @@ public class VendorInfoRepositoryTestStub
         return null;
     }
 
+    public List<File> getExecutablePathsFor(VendorInfo vendorInfo) throws PlatformUnsupportedException {
+        return null;
+    }
+
     public List<VendorInfo> getVendorInfos()
     {
         return new ArrayList<VendorInfo>();
