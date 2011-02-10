@@ -58,6 +58,9 @@ public class CommandExecutorTest
             File dir = new File( path );
 
             assertTrue( dir.exists() );
+
+            if (dir.exists())
+                dir.delete();
         }
 
         @Test
@@ -73,6 +76,9 @@ public class CommandExecutorTest
             File dir = new File( path );
 
             assertTrue( dir.exists() );
+
+            if (dir.exists())
+                dir.delete();
          }
 
     }
