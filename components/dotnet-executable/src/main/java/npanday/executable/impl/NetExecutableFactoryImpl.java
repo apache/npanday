@@ -114,49 +114,40 @@ public class NetExecutableFactoryImpl
         compilerRequirement.setVendor( vendorInfo.getVendor() );
         compilerRequirement.setVendorVersion( vendorInfo.getVendorVersion() );
         compilerRequirement.setFrameworkVersion( vendorInfo.getFrameworkVersion() );
-        List<String> executionPaths = ( compilerConfig.getExecutionPaths() == null ) ? new ArrayList<String>()
-            : compilerConfig.getExecutionPaths();
-        if ( vendorInfoRepository != null && vendorInfoRepository.exists() )
-        {
-            File sdkInstallRoot = null;
-            try
-            {
-                sdkInstallRoot = vendorInfoRepository.getSdkInstallRootFor( vendorInfo );
-            }
-            catch ( PlatformUnsupportedException e )
-            {
-                logger.debug( "NPANDAY-066-017: Did not find an SDK install root: " + vendorInfo, e );
-            }
-            File installRoot = vendorInfoRepository.getInstallRootFor( vendorInfo );
 
-            if ( installRoot != null )
-            {
-                executionPaths.add( installRoot.getAbsolutePath() );
-            }
-            if ( sdkInstallRoot != null )
-            {
-                executionPaths.add( sdkInstallRoot.getAbsolutePath() );
-            }
-        }
-
+        // init does not need the executable paths to be set
         compilerContext.init( compilerRequirement, compilerConfig, project, capabilityMatcher );
+
         if ( assemblyPath != null )
         {
             compilerContext.getCompilerCapability().setAssemblyPath( assemblyPath.getAbsolutePath() );
         }
 
-        String netDependencyId = compilerContext.getCompilerCapability().getNetDependencyId();
-        if ( netDependencyId != null )
+        List<String> executionPaths = ( compilerConfig.getExecutionPaths() == null ) ? new ArrayList<String>()
+            : compilerConfig.getExecutionPaths();
+        if (executionPaths == null  || executionPaths.size() == 0 )
         {
-            Artifact artifact = artifactContext.getArtifactByID( netDependencyId );
-            if ( artifact != null )
-            {
-                File artifactPath =
-                    PathUtil.getPrivateApplicationBaseFileFor( artifact, compilerConfig.getLocalRepository() );
-                executionPaths.add( artifactPath.getParentFile().getAbsolutePath() );
+            for(File path : vendorInfo.getExecutablePaths()){
+                executionPaths.add(path.getAbsolutePath());
             }
+
+
+            String netDependencyId = compilerContext.getCompilerCapability().getNetDependencyId();
+
+            if ( netDependencyId != null )
+            {
+                Artifact artifact = artifactContext.getArtifactByID( netDependencyId );
+                if ( artifact != null )
+                {
+                    File artifactPath =
+                        PathUtil.getPrivateApplicationBaseFileFor( artifact, compilerConfig.getLocalRepository() );
+                    executionPaths.add( artifactPath.getParentFile().getAbsolutePath() );
+                }
+            }
+
+            compilerConfig.setExecutionPaths( executionPaths );
         }
-        compilerConfig.setExecutionPaths( executionPaths );
+
         try
         {
             return compilerContext.getCompilerExecutable();
@@ -430,27 +421,27 @@ public class NetExecutableFactoryImpl
 
         List<String> executablePaths = ( executableConfig.getExecutionPaths() == null ) ? new ArrayList<String>()
             : executableConfig.getExecutionPaths();
-        if ( netHome != null && netHome.exists() )
+        if ( netHome != null )
         {
-            logger.info( "NPANDAY-066-014: Found executable path from pom: Path = " + netHome.getAbsolutePath() );
+            logger.info( "NPANDAY-066-014: Found executable path in pom: Path = " + netHome.getAbsolutePath() );
             executablePaths.add( netHome.getAbsolutePath() );
         }
-        else if ( vendorInfo.getExecutablePaths() != null )
+
+        // should not fallback, if there are explicit configures
+        if ( executablePaths.isEmpty() && vendorInfo.getExecutablePaths() != null )
         {
             for ( File path : vendorInfo.getExecutablePaths() )
             {
-                if ( path.exists() )
-                {
-                    logger.debug( "NPANDAY-066-015: Found executable path: Path = " + path.getAbsolutePath() );
-                    executablePaths.add( path.getAbsolutePath() );
-                }
+                executablePaths.add( path.getAbsolutePath() );
             }
         }
-        else
+
+        if (executablePaths.isEmpty())
         {
             logger.info( "NPANDAY-066-016: Did not find executable path, will try system path" );
         }
         executableConfig.setExecutionPaths( executablePaths );
+
         executableContext.init( executableRequirement, executableConfig, capabilityMatcher );
 
         try

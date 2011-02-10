@@ -81,8 +81,9 @@ public class VendorInfoRepositoryImpl
     }
 
     /**
-     * @see VendorInfoRepository#getInstallRootFor(npanday.vendor.VendorInfo)
+     * @deprecated getExecutablePathsFor should do the job
      */
+    @Deprecated
     public File getInstallRootFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException
     {
@@ -96,6 +97,15 @@ public class VendorInfoRepositoryImpl
     {
         SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
         return settingsRepository.getSdkInstallRootFor( vendorInfo.getVendor().getVendorName(),
+                                                        vendorInfo.getVendorVersion(),
+                                                        vendorInfo.getFrameworkVersion() );
+    }
+
+    public List<File> getExecutablePathsFor( VendorInfo vendorInfo )
+        throws PlatformUnsupportedException
+    {
+        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
+        return settingsRepository.getExecutablePathsFor( vendorInfo.getVendor().getVendorName(),
                                                         vendorInfo.getVendorVersion(),
                                                         vendorInfo.getFrameworkVersion() );
     }

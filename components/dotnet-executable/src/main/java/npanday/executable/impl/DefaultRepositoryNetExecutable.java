@@ -74,10 +74,13 @@ public class DefaultRepositoryNetExecutable
                 File exe = new File( executablePath );
                 if ( exe.exists() )
                 {
+                    logger.info("NPANDAY-068-005: Choose executable path's parent as execution path: "
+                            + new File( executablePath ).getParentFile().getAbsolutePath());
                     return new File( executablePath ).getParentFile();
                 }
             }
         }
+        logger.warn("NPANDAY-068-006: Did not find any of " + executablePaths);
         return null;
     }
 

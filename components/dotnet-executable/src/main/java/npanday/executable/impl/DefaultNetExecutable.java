@@ -79,10 +79,12 @@ public class DefaultNetExecutable
                 File exe = new File( executablePath + File.separator + executable );
                 if ( exe.exists() )
                 {
+                    logger.info("NPANDAY-070-003: Choose executable path for " + executable + ": " + executablePath);
                     return new File( executablePath );
                 }
             }
         }
+        logger.warn("NPANDAY-070-004: Did not find path for " + executable + " in " + executablePaths);
         return null;
     }
 

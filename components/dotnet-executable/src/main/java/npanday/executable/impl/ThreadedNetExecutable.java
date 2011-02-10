@@ -96,10 +96,12 @@ public class ThreadedNetExecutable
                 File exe = new File( executablePath + File.separator + executable );
                 if ( exe.exists() )
                 {
+                    logger.info("NPANDAY-063-005: Choose executable path for " + executable + ": " + executablePath);
                     return new File( executablePath );
                 }
             }
         }
+        logger.warn("NPANDAY-063-006: Did not find path for " + executable + " in " + executablePaths);
         return null;
     }
 

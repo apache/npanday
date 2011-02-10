@@ -89,7 +89,9 @@ public interface VendorInfoRepository
      * @return file pointing to the .NET framework installation root used for compiling artifacts
      * @throws npanday.PlatformUnsupportedException
      *
+     * @deprecated getExecutablePathsFor should do the job
      */
+    @Deprecated
     File getInstallRootFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException;
 
@@ -101,6 +103,16 @@ public interface VendorInfoRepository
      * @throws PlatformUnsupportedException
      */
     File getSdkInstallRootFor( VendorInfo vendorInfo )
+        throws PlatformUnsupportedException;
+
+    /**
+     * Returns a list of configured paths where executables for compiling, eg. are found.
+     *
+     * @param vendorInfo the vendor info
+     * @return file pointing to the .NET SDK installation root used for compiling artifacts
+     * @throws PlatformUnsupportedException
+     */
+    List<File> getExecutablePathsFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException;
 
     /**

@@ -121,35 +121,26 @@ final class VendorInfoTransitionRuleFactory
         {
             public VendorInfoState process( VendorInfo vendorInfo )
             {
-                logger.debug( "NPANDAY-103-034: Entering State = Post Process" );
+                logger.debug( "NPANDAY-103-034: Entering State = Post Process, applying executable paths" );
                 if ( ( vendorInfo.getExecutablePaths() == null || vendorInfo.getExecutablePaths().size() == 0 ) &&
                     vendorInfoRepository.exists() )
                 {
-                    File sdkInstallRoot = null;
-                    List<File> executablePaths = new ArrayList<File>();
                     try
                     {
-                        sdkInstallRoot = vendorInfoRepository.getSdkInstallRootFor( vendorInfo );
-                    }
-                    catch ( PlatformUnsupportedException e )
-                    {
-                        logger.debug( "NPANDAY-103-36: Failed to resolve install sdk root." );
-                    }
-                    try
-                    {                       
-                        executablePaths.add( vendorInfoRepository.getInstallRootFor( vendorInfo ) );
-                        vendorInfo.setExecutablePaths( executablePaths );
-                    }
-                    catch ( PlatformUnsupportedException e )
-                    {
-                        logger.debug( "NPANDAY-103-35: Failed to resolve install root." );
-                    }
-                    finally
-                    {
-                        if ( sdkInstallRoot != null )
-                        {
-                            executablePaths.add( sdkInstallRoot );
+                        List<File> existingPaths = new ArrayList<File>();
+                        for(File path : vendorInfoRepository.getExecutablePathsFor(vendorInfo)){
+                            if (!path.exists()) {
+                                logger.debug( "NPANDAY-103-61: Configured path does not exist and is therefore omitted: " + path );
+                            }
+                            else {
+                                existingPaths.add(path);
+                            }
                         }
+                        vendorInfo.setExecutablePaths( existingPaths );
+                    }
+                    catch ( PlatformUnsupportedException e )
+                    {
+                        logger.debug( "NPANDAY-103-36: Failed to resolve configured executable paths." );
                     }
                 }
                 return VendorInfoState.EXIT;

@@ -202,6 +202,36 @@ public final class SettingsRepository
             ", Vendor Version = " + vendorVersion + ", Framework Version = " + frameworkVersion );
     }
 
+    List<File> getExecutablePathsFor( String vendor, String vendorVersion, String frameworkVersion )
+        throws PlatformUnsupportedException
+    {
+        List<File> executablePaths = new ArrayList<File>();
+        if ( vendor == null || vendorVersion == null || frameworkVersion == null )
+        {
+            throw new PlatformUnsupportedException( "NPANDAY-104-006: One of more of the parameters is null: Vendor = " +
+                vendor + ", Vendor Version = " + vendorVersion + ", Framework Version = " + frameworkVersion );
+        }
+        for ( Vendor v : vendors )
+        {
+            if ( vendor.equals( v.getVendorName().trim() ) && vendorVersion.equals( v.getVendorVersion().trim() ) )
+            {
+                List<Framework> frameworks = v.getFrameworks();
+                for ( Framework framework : frameworks )
+                {
+                    if ( frameworkVersion.equals( framework.getFrameworkVersion().trim() ) )
+                    {
+                        List paths = framework.getExecutablePaths();
+                        for(Object path : paths)
+                        {
+                            executablePaths.add(new File((String)path));
+                        }
+                    }
+                }
+            }
+        }
+        return executablePaths;
+    }
+
     /**
      * Returns the default setup: framework version, vendor, vendor version. If no information is provided by the user, then
      * this information will be used to choose the environment. It may also be used for partial matches, if appropriate.

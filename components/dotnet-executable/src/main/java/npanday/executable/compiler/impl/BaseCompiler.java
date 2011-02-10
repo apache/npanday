@@ -101,10 +101,12 @@ abstract class BaseCompiler implements CompilerExecutable
 				File exe = new File( executablePath + File.separator +  executable + ".exe");
                 if ( exe.exists() )
                 {
+                    logger.info("NPANDAY-068-005: Choose executable path for " + executable + ".exe: " + executablePath);
                     return new File(executablePath);
                 }
             }
         }
+        logger.warn("NPANDAY-068-006: Did not find path for " + executable + ".exe in " + executablePaths);
         return null;
     }
 
