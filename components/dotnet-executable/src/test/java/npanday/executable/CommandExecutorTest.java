@@ -42,6 +42,11 @@ public class CommandExecutorTest
         {
             File f = new File( "test" );
             parentPath = System.getProperty( "user.dir" ) + File.separator + "target" + File.separator + "test-resources";
+
+            File parentPathFile = new File(parentPath);
+            if (!parentPathFile.exists())
+                parentPathFile.mkdir();
+
             cmdExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         }
 
