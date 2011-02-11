@@ -510,17 +510,17 @@ public final class ProjectDaoImpl
                     }
                     catch ( ArtifactNotFoundException e )
                     {
-                        logger.info( "NPANDAY-181-121:  Problem in resolving assembly: " + assembly.toString()
+                        logger.warning( "NPANDAY-181-121:  Problem in resolving assembly: " + assembly.toString()
                         + ", Message = " + e.getMessage() );
                     }
                     catch ( ArtifactResolutionException e )
                     {
-                        logger.info( "NPANDAY-181-122: Problem in resolving assembly: " + assembly.toString()
+                        logger.warning( "NPANDAY-181-122: Problem in resolving assembly: " + assembly.toString()
                         + ", Message = " + e.getMessage() );
                     }
                 }
                 
-                logger.info( "NPANDAY-180-011: Project Dependency: Artifact ID = "
+                logger.finer( "NPANDAY-180-011: Project Dependency: Artifact ID = "
                     + projectDependency.getArtifactId() + ", Group ID = " + projectDependency.getGroupId()
                     + ", Version = " + projectDependency.getVersion() + ", Artifact Type = "
                     + projectDependency.getArtifactType() );
@@ -565,7 +565,7 @@ public final class ProjectDaoImpl
 
                     projectDependency.setResolved( true );
 
-                    logger.info( "NPANDAY-180-011.1: Project Dependency Resolved: Artifact ID = "
+                    logger.finer( "NPANDAY-180-011.1: Project Dependency Resolved: Artifact ID = "
                         + projectDependency.getArtifactId() + ", Group ID = " + projectDependency.getGroupId()
                         + ", Version = " + projectDependency.getVersion() + ", Scope = " + projectDependency.getScope()
                         + "SystemPath = " + projectDependency.getSystemPath()
@@ -600,7 +600,7 @@ public final class ProjectDaoImpl
 
                     projectDependency.setResolved( true );
 
-                    logger.info( "NPANDAY-180-011.1: Project Dependency Resolved: Artifact ID = "
+                    logger.fine( "NPANDAY-180-011.1: Project Dependency Resolved: Artifact ID = "
                         + projectDependency.getArtifactId() + ", Group ID = " + projectDependency.getGroupId()
                         + ", Version = " + projectDependency.getVersion() + ", Scope = " + projectDependency.getScope()
                         + "SystemPath = " + projectDependency.getSystemPath()
@@ -683,7 +683,7 @@ public final class ProjectDaoImpl
 
                     ArtifactType type = ArtifactType.getArtifactTypeForPackagingName( assembly.getType() );
 
-                    logger.info( "NPANDAY-180-012: Resolving artifact for unresolved dependency: "
+                    logger.finer( "NPANDAY-180-012: Resolving artifact for unresolved dependency: "
                                 + assembly.getId());
 
                     ArtifactRepository localArtifactRepository =
@@ -705,19 +705,19 @@ public final class ProjectDaoImpl
 
                             projectDependency.setResolved( true );                          
                             
-                            logger.info( "NPANDAY-180-024: resolving pom artifact: " + pomArtifact.toString() );
+                            logger.finer( "NPANDAY-180-024: resolving pom artifact: " + pomArtifact.toString() );
                             snapshotVersion = pomArtifact.getVersion();
 
                         }
                         catch ( ArtifactNotFoundException e )
                         {
-                            logger.info( "NPANDAY-180-025:  Problem in resolving pom artifact: " + pomArtifact.toString()
+                            logger.warning( "NPANDAY-180-025:  Problem in resolving pom artifact: " + pomArtifact.toString()
                                 + ", Message = " + e.getMessage() );
 
                         }
                         catch ( ArtifactResolutionException e )
                         {
-                            logger.info( "NPANDAY-180-026: Problem in resolving pom artifact: " + pomArtifact.toString()
+                            logger.warning( "NPANDAY-180-026: Problem in resolving pom artifact: " + pomArtifact.toString()
                                 + ", Message = " + e.getMessage() );
                         }
 
@@ -780,7 +780,7 @@ public final class ProjectDaoImpl
 
                     File dotnetFile = PathUtil.getDotNetArtifact( assembly , localRepository );
                     
-                    logger.info( "NPANDAY-180-018: Not found in local repository, now retrieving artifact from wagon:"
+                    logger.warning( "NPANDAY-180-018: Not found in local repository, now retrieving artifact from wagon:"
                             + assembly.getId()
                             + ", Failed Path Check = " + dotnetFile.getAbsolutePath());
 
@@ -802,7 +802,7 @@ public final class ProjectDaoImpl
                         }
                         catch ( ArtifactNotFoundException e )
                         {
-                            logger.log(Level.SEVERE, "NPANDAY-180-0201: Error resolving artifact. Reason:", e);                        
+                            logger.log(Level.SEVERE, "NPANDAY-180-0201: Error resolving artifact. Reason:", e);
                             throw new IOException(
                                                    "NPANDAY-180-020: Problem in resolving artifact: Artifact = "
                                                        + assembly.getId()

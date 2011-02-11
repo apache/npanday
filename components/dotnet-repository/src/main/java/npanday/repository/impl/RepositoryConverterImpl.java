@@ -97,7 +97,7 @@ public class RepositoryConverterImpl
         Set<Project> projects = dao.getAllProjects();
         for ( Project project : projects )
         {
-            logger.info( "NPANDAY-190-000: Converting Project: Artifact ID = " + project.getArtifactId() +
+            logger.finest( "NPANDAY-190-000: Converting Project: Artifact ID = " + project.getArtifactId() +
                 ", Dependency Count =" + project.getProjectDependencies().size() );
             Artifact artifact = ProjectFactory.createArtifactFrom( project, artifactFactory, mavenRepository );
             Model model = ProjectFactory.createModelFrom( project );
@@ -115,7 +115,7 @@ public class RepositoryConverterImpl
                 }
                 else
                 {
-                    logger.info( "NPANDAY-190-001: Could not find file: " + artifact.getFile().getAbsolutePath() );
+                    logger.warning( "NPANDAY-190-001: Could not find file: " + artifact.getFile().getAbsolutePath() );
                     continue;
                 }
             }
@@ -153,7 +153,7 @@ public class RepositoryConverterImpl
         Project project = dao.getProjectFor( artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                              artifact.getType(), artifact.getClassifier() );
 
-        logger.info( "NPANDAY-190-002: Converting Project: Artifact ID = " + project.getArtifactId() +
+        logger.finest( "NPANDAY-190-002: Converting Project: Artifact ID = " + project.getArtifactId() +
             ", Dependency Count =" + project.getProjectDependencies().size() );
         Model model = ProjectFactory.createModelFrom( project );
 
@@ -170,7 +170,7 @@ public class RepositoryConverterImpl
             }
             else
             {
-                logger.info( "NPANDAY-190-003: Could not find file: " + artifact.getFile().getAbsolutePath() );
+                logger.warning( "NPANDAY-190-003: Could not find file: " + artifact.getFile().getAbsolutePath() );
                 return;
             }
         }

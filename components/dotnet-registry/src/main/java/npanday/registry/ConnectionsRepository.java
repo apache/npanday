@@ -98,7 +98,7 @@ public class ConnectionsRepository
                     dao.init( rdfRepository, keyName, daoClassName );
                     dao.setRepositoryRegistry( registry );
                     daos.add( dao );
-                    logger.info( "NPANDAY-080-001: Adding data access object: Class Name = " + daoClassName );
+                    logger.finest( "NPANDAY-080-001: Adding data access object: Class Name = " + daoClassName );
                 }
                 catch ( Exception e )
                 {
@@ -114,7 +114,7 @@ public class ConnectionsRepository
                 }
             }
         }
-        logger.info( "NPANDAY-080-004: Connection Start Up: Time = " + ( System.currentTimeMillis() - start ) );
+        logger.finest( "NPANDAY-080-004: Connection Start Up: Time = " + ( System.currentTimeMillis() - start ) );
     }
 
     /**
