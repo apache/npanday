@@ -127,8 +127,10 @@ public class NetExecutableFactoryImpl
             : compilerConfig.getExecutionPaths();
         if (executionPaths == null  || executionPaths.size() == 0 )
         {
-            for(File path : vendorInfo.getExecutablePaths()){
-                executionPaths.add(path.getAbsolutePath());
+            if (vendorInfo.getExecutablePaths() != null) {
+                for(File path : vendorInfo.getExecutablePaths()){
+                    executionPaths.add(path.getAbsolutePath());
+                }
             }
 
 
