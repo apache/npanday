@@ -82,7 +82,13 @@ namespace NPanday.SettingsUtil_Test
 
         private Settings GetSettings(string settingsXml)
         {
-            settingsPath = (new FileInfo(Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().LastIndexOf("target")) + "\\src\\test\\resource\\m2\\" + settingsXml)).FullName;
+			string root = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().LastIndexOf("target"));
+			string path = Path.Combine(root, "src");
+			path = Path.Combine(path, "test");
+			path = Path.Combine(path, "resource");
+			path = Path.Combine(path, "test");
+			path = Path.Combine(path, "m2");
+			settingsPath = new FileInfo(Path.Combine(path, settingsXml)).FullName;
             
             return SettingsUtil.ReadSettings(settingsPath);
         }
