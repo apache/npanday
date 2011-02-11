@@ -66,21 +66,21 @@ public class DefaultRepositoryNetExecutable
             logger.info( "NPANDAY-063-002: Executable has not been initialized with a context" );
             return null;
         }
-        List<String> executablePaths = executableContext.getExecutableConfig().getExecutionPaths();
-        if ( executablePaths != null )
+        List<String> executables = executableContext.getExecutableConfig().getExecutionPaths();
+        if ( executables != null )
         {
-            for ( String executablePath : executablePaths )
+            for ( String executable : executables )
             {
-                File exe = new File( executablePath );
+                File exe = new File( executable );
                 if ( exe.exists() )
                 {
                     logger.info("NPANDAY-068-005: Choose executable path's parent as execution path: "
-                            + new File( executablePath ).getParentFile().getAbsolutePath());
-                    return new File( executablePath ).getParentFile();
+                            + new File( executable ).getParentFile().getAbsolutePath());
+                    return new File( executable ).getParentFile();
                 }
             }
         }
-        logger.warn("NPANDAY-068-006: Did not find any of " + executablePaths);
+        logger.warn("NPANDAY-068-006: Did not find any of " + executables);
         return null;
     }
 

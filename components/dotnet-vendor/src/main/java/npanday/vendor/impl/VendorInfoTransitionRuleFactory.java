@@ -128,7 +128,8 @@ final class VendorInfoTransitionRuleFactory
                     try
                     {
                         List<File> existingPaths = new ArrayList<File>();
-                        for(File path : vendorInfoRepository.getExecutablePathsFor(vendorInfo)){
+                        List<File> configuredExecutablePaths = vendorInfoRepository.getConfiguredVendorInfoByExample(vendorInfo).getExecutablePaths();
+                        for(File path : configuredExecutablePaths){
                             if (!path.exists()) {
                                 logger.debug( "NPANDAY-103-61: Configured path does not exist and is therefore omitted: " + path );
                             }

@@ -293,5 +293,27 @@ public final class PathUtil
         
         return dotnetFile;
     }
-    
+
+
+    public static boolean containsExecutable(String executablePath, String executable) {
+        File path = new File(executablePath);
+        if (!path.exists())
+            return false;
+
+        File file = new File(path, executable);
+        if (file.exists())
+            return true;
+
+        // TODO: handle linux/mac ?
+        String[] extensions = new String[] {"exe", "com", "bat", "cmd"};
+
+        for (String extension : extensions)
+        {
+            file = new File(path, executable + "." + extension);
+            if (file.exists())
+                return true;
+        }
+
+        return false;
+    }
 }

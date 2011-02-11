@@ -39,6 +39,9 @@ namespace NPanday.Utils
 
         public GacUtility()
         {
+            /*
+            TODO: Why is this done?
+
             Process p = new Process();
 
             try
@@ -63,6 +66,7 @@ namespace NPanday.Utils
             {
                 throw new Exception( "Unable to execute gacutil - check that your PATH has been set correctly (Message: " + exception.Message + ")" );
             }
+            */
 
 
             string msBuildPath = Path.GetDirectoryName(System.Reflection.Assembly.GetAssembly(typeof(string)).Location);

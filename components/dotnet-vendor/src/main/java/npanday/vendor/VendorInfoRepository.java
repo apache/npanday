@@ -18,7 +18,6 @@
  */
 package npanday.vendor;
 
-import npanday.vendor.VendorInfo;
 import npanday.PlatformUnsupportedException;
 
 import java.util.List;
@@ -37,13 +36,6 @@ public interface VendorInfoRepository
      * Role used to register component implementations with the container.
      */
     String ROLE = VendorInfoRepository.class.getName();
-
-    /**
-     * Returns a list of all vendor infos in the repository.
-     *
-     * @return a list of all vendor infos in the repository
-     */
-    List<VendorInfo> getVendorInfos();
 
     /**
      * Returns a list of vendor infos for the specified vendor name, vendor version and framework version.
@@ -83,36 +75,14 @@ public interface VendorInfoRepository
         throws InvalidVersionFormatException;
 
     /**
-     * Returns file pointing to the .NET framework installation root used for compiling artifacts.
+     * Finds a configured matching vendor info. This will then include details about
+     * if it is the default, and on which paths executables are found.
      *
-     * @param vendorInfo the vendor info
-     * @return file pointing to the .NET framework installation root used for compiling artifacts
-     * @throws npanday.PlatformUnsupportedException
-     *
-     * @deprecated getExecutablePathsFor should do the job
-     */
-    @Deprecated
-    File getInstallRootFor( VendorInfo vendorInfo )
-        throws PlatformUnsupportedException;
-
-    /**
-     * Returns file pointing to the .NET SDK installation root used for compiling artifacts.
-     *
-     * @param vendorInfo the vendor info
-     * @return file pointing to the .NET SDK installation root used for compiling artifacts
+     * @param vendorInfoExample Source for the search criteria.
+     * @return VendorInfo as it is configured.
      * @throws PlatformUnsupportedException
      */
-    File getSdkInstallRootFor( VendorInfo vendorInfo )
-        throws PlatformUnsupportedException;
-
-    /**
-     * Returns a list of configured paths where executables for compiling, eg. are found.
-     *
-     * @param vendorInfo the vendor info
-     * @return file pointing to the .NET SDK installation root used for compiling artifacts
-     * @throws PlatformUnsupportedException
-     */
-    List<File> getExecutablePathsFor( VendorInfo vendorInfo )
+    VendorInfo getConfiguredVendorInfoByExample(VendorInfo vendorInfoExample)
         throws PlatformUnsupportedException;
 
     /**

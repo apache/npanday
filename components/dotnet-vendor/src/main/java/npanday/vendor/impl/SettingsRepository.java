@@ -23,6 +23,7 @@ import npanday.registry.RepositoryRegistry;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
@@ -58,11 +59,6 @@ public final class SettingsRepository
     private DefaultSetup defaultSetup;
 
     /**
-     * List of all vendors from the npanday-settings file.
-     */
-    private List<VendorInfo> vendorInfos;
-
-    /**
      * Constructor. This method is intended to be invoked by the <code>RepositoryRegistry<code>, not by the
      * application developer.
      */
@@ -90,36 +86,15 @@ public final class SettingsRepository
         }
         vendors = settings.getVendors();
         defaultSetup = settings.getDefaultSetup();
-        vendorInfos = new ArrayList<VendorInfo>();
+    }
 
-        for ( Vendor v : vendors )
-        {
-            List<Framework> frameworks = v.getFrameworks();
-            for ( Framework framework : frameworks )
-            {
-                VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-                vendorInfo.setVendorVersion( v.getVendorVersion() );
-                List<File> executablePaths = new ArrayList<File>();
-                executablePaths.add(new File( framework.getInstallRoot() ));
-                if(framework.getSdkInstallRoot() != null)
-                {
-                    executablePaths.add( new File(framework.getSdkInstallRoot()));
-                }
-                vendorInfo.setExecutablePaths( executablePaths );
-                vendorInfo.setFrameworkVersion( framework.getFrameworkVersion() );
-                try
-                {
-                    vendorInfo.setVendor( VendorFactory.createVendorFromName( v.getVendorName() ) );
-                }
-                catch ( VendorUnsupportedException e )
-                {
-                    continue;
-                }
-                vendorInfo.setDefault(
-                    v.getIsDefault() != null && v.getIsDefault().toLowerCase().trim().equals( "true" ) );
-                vendorInfos.add( vendorInfo );
-            }
-        }
+    /**
+     * Gets the raw configured model.
+     *
+     * @return Unmodifiable list.
+     */
+    public List<Vendor> getVendors() {
+        return Collections.unmodifiableList(vendors);
     }
 
     /**
@@ -127,16 +102,6 @@ public final class SettingsRepository
      */
     public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
     {
-    }
-
-    /**
-     * Returns all vendor infos from the npanday-settings file.
-     *
-     * @return all vendor infos from the npanday-settings file
-     */
-    List<VendorInfo> getVendorInfos()
-    {
-        return vendorInfos;
     }
 
     File getSdkInstallRootFor( String vendor, String vendorVersion, String frameworkVersion )

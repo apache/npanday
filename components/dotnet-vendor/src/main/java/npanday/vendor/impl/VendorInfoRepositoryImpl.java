@@ -20,11 +20,8 @@ package npanday.vendor.impl;
 
 import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
-import npanday.vendor.VendorInfoRepository;
-import npanday.vendor.VendorInfo;
-import npanday.vendor.VendorInfoMatchPolicy;
-import npanday.vendor.InvalidVersionFormatException;
-import npanday.vendor.Vendor;
+import npanday.model.settings.Framework;
+import npanday.vendor.*;
 import npanday.registry.RepositoryRegistry;
 import npanday.PlatformUnsupportedException;
 
@@ -58,6 +55,11 @@ public class VendorInfoRepositoryImpl
     private Logger logger;
 
     /**
+     * Cache
+     */
+    private List<VendorInfo> cachedVendorInfos;
+
+    /**
      * Constructor. This method is intended to be invoked by the plexus-container, not by the application developer.
      */
     public VendorInfoRepositoryImpl()
@@ -80,11 +82,7 @@ public class VendorInfoRepositoryImpl
         return ( repositoryRegistry.find( "npanday-settings" ) != null );
     }
 
-    /**
-     * @deprecated getExecutablePathsFor should do the job
-     */
-    @Deprecated
-    public File getInstallRootFor( VendorInfo vendorInfo )
+    private File getInstallRootFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException
     {
         SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
@@ -92,7 +90,7 @@ public class VendorInfoRepositoryImpl
                                                      vendorInfo.getVendorVersion(), vendorInfo.getFrameworkVersion() );
     }
 
-    public File getSdkInstallRootFor( VendorInfo vendorInfo )
+    private File getSdkInstallRootFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException
     {
         SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
@@ -101,22 +99,62 @@ public class VendorInfoRepositoryImpl
                                                         vendorInfo.getFrameworkVersion() );
     }
 
-    public List<File> getExecutablePathsFor( VendorInfo vendorInfo )
+    public VendorInfo getConfiguredVendorInfoByExample(VendorInfo vendorInfoExample)
         throws PlatformUnsupportedException
     {
-        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-        return settingsRepository.getExecutablePathsFor( vendorInfo.getVendor().getVendorName(),
-                                                        vendorInfo.getVendorVersion(),
-                                                        vendorInfo.getFrameworkVersion() );
+        List<VendorInfo> infos = getVendorInfosFor(vendorInfoExample, false);
+        if (infos.size() == 0) {
+           throw new PlatformUnsupportedException( "NPANDAY-200-001: Could not find configuration for " + vendorInfoExample );
+        }
+
+        if (infos.size() > 2) {
+            // reload default
+            infos = getVendorInfosFor(vendorInfoExample, true);
+        }
+
+        assert infos.size() == 1;
+
+        return infos.get(0);
     }
 
-    /**
-     * @see npanday.vendor.VendorInfoRepository#getVendorInfos()
-     */
-    public List<VendorInfo> getVendorInfos()
+    private List<VendorInfo> getVendorInfos()
     {
         SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-        return Collections.unmodifiableList( settingsRepository.getVendorInfos() );
+
+        if (cachedVendorInfos != null)
+            return Collections.unmodifiableList( cachedVendorInfos );;
+
+        cachedVendorInfos = new ArrayList<VendorInfo>();
+
+        for ( npanday.model.settings.Vendor v : settingsRepository.getVendors() )
+        {
+            List<Framework> frameworks = v.getFrameworks();
+            for ( Framework framework : frameworks )
+            {
+                VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
+                vendorInfo.setVendorVersion( v.getVendorVersion() );
+                List<File> executablePaths = new ArrayList<File>();
+                executablePaths.add(new File( framework.getInstallRoot() ));
+                if(framework.getSdkInstallRoot() != null)
+                {
+                    executablePaths.add( new File(framework.getSdkInstallRoot()));
+                }
+                vendorInfo.setExecutablePaths( executablePaths );
+                vendorInfo.setFrameworkVersion( framework.getFrameworkVersion() );
+                try
+                {
+                    vendorInfo.setVendor( VendorFactory.createVendorFromName(v.getVendorName()) );
+                }
+                catch ( VendorUnsupportedException e )
+                {
+                    continue;
+                }
+                vendorInfo.setDefault(
+                    v.getIsDefault() != null && v.getIsDefault().toLowerCase().trim().equals( "true" ) );
+                cachedVendorInfos.add( vendorInfo );
+            }
+        }
+        return Collections.unmodifiableList( cachedVendorInfos );
     }
 
     /**
@@ -132,7 +170,7 @@ public class VendorInfoRepositoryImpl
      * @see VendorInfoRepository#getVendorInfosFor(String, String, String, boolean)
      */
     public List<VendorInfo> getVendorInfosFor( String vendorName, String vendorVersion, String frameworkVersion,
-                                               boolean isDefault )
+                                               boolean defaultOnly )
     {
         List<VendorInfo> vendorInfos = new ArrayList<VendorInfo>();
         MatchPolicyFactory matchPolicyFactory = new MatchPolicyFactory();
@@ -151,7 +189,7 @@ public class VendorInfoRepositoryImpl
         {
             matchPolicies.add( matchPolicyFactory.createFrameworkVersionPolicy( frameworkVersion ) );
         }
-        if ( isDefault )
+        if ( defaultOnly )
         {
             matchPolicies.add( matchPolicyFactory.createVendorIsDefaultPolicy() );
         }
@@ -168,14 +206,14 @@ public class VendorInfoRepositoryImpl
     /**
      * @see VendorInfoRepository#getVendorInfosFor(npanday.vendor.VendorInfo, boolean)
      */
-    public List<VendorInfo> getVendorInfosFor( VendorInfo vendorInfo, boolean isDefault )
+    public List<VendorInfo> getVendorInfosFor( VendorInfo vendorInfo, boolean defaultOnly )
     {
         if ( vendorInfo == null )
         {
             return getVendorInfos();
         }
         return getVendorInfosFor( ( vendorInfo.getVendor() != null ? vendorInfo.getVendor().getVendorName() : null ),
-                                  vendorInfo.getVendorVersion(), vendorInfo.getFrameworkVersion(), isDefault );
+                                  vendorInfo.getVendorVersion(), vendorInfo.getFrameworkVersion(), defaultOnly );
     }
 
     /**

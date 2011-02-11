@@ -18,6 +18,7 @@
  */
 package npanday.executable.impl;
 
+import npanday.PathUtil;
 import npanday.executable.NetExecutable;
 import npanday.executable.ExecutableContext;
 import npanday.executable.ExecutionException;
@@ -93,10 +94,9 @@ public class ThreadedNetExecutable
         {
             for ( String executablePath : executablePaths )
             {
-                File exe = new File( executablePath + File.separator + executable );
-                if ( exe.exists() )
+                if ( PathUtil.containsExecutable(executablePath, executable) )
                 {
-                    logger.info("NPANDAY-063-005: Choose executable path for " + executable + ": " + executablePath);
+                    logger.info("NPANDAY-063-005: Found executable path for " + executable + ": " + executablePath);
                     return new File( executablePath );
                 }
             }

@@ -18,6 +18,7 @@
  */
 package npanday.executable.compiler.impl;
 
+import npanday.PathUtil;
 import npanday.executable.compiler.CompilerContext;
 import npanday.executable.compiler.InvalidArtifactException;
 import npanday.executable.compiler.CompilerExecutable;
@@ -98,15 +99,14 @@ abstract class BaseCompiler implements CompilerExecutable
         {
             for ( String executablePath : executablePaths )
             {
-				File exe = new File( executablePath + File.separator +  executable + ".exe");
-                if ( exe.exists() )
+				if ( PathUtil.containsExecutable(executablePath, executable) )
                 {
-                    logger.info("NPANDAY-068-005: Choose executable path for " + executable + ".exe: " + executablePath);
+                    logger.info("NPANDAY-068-005: Found executable path for " + executable + ": " + executablePath);
                     return new File(executablePath);
                 }
             }
         }
-        logger.warn("NPANDAY-068-006: Did not find path for " + executable + ".exe in " + executablePaths);
+        logger.warn("NPANDAY-068-006: Did not find path for " + executable + " in " + executablePaths);
         return null;
     }
 

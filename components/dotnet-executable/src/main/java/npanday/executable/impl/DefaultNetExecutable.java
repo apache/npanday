@@ -18,6 +18,7 @@
  */
 package npanday.executable.impl;
 
+import npanday.PathUtil;
 import npanday.executable.ExecutionException;
 import npanday.executable.*;
 import npanday.NPandayContext;
@@ -76,10 +77,9 @@ public class DefaultNetExecutable
         {
             for ( String executablePath : executablePaths )
             {
-                File exe = new File( executablePath + File.separator + executable );
-                if ( exe.exists() )
+                if ( PathUtil.containsExecutable(executablePath, executable) )
                 {
-                    logger.info("NPANDAY-070-003: Choose executable path for " + executable + ": " + executablePath);
+                    logger.info("NPANDAY-070-003: Found executable path for " + executable + ": " + executablePath);
                     return new File( executablePath );
                 }
             }

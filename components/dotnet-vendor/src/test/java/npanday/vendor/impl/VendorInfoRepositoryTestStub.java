@@ -59,13 +59,8 @@ public class VendorInfoRepositoryTestStub
         return null;
     }
 
-    public List<File> getExecutablePathsFor(VendorInfo vendorInfo) throws PlatformUnsupportedException {
+    public VendorInfo getConfiguredVendorInfoByExample(VendorInfo vendorInfoExample) throws PlatformUnsupportedException {
         return null;
-    }
-
-    public List<VendorInfo> getVendorInfos()
-    {
-        return new ArrayList<VendorInfo>();
     }
 
     public String getMaxVersion( Set<String> versions )
