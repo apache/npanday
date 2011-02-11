@@ -220,9 +220,9 @@ under the License.
     <module>archetypes</module>  
     <module>plugins</module>  
     <module>dotnet</module>
-    <module>misc/dotnet-repository-builder</module>
+    <!--module>misc/dotnet-repository-builder</module>
     <module>misc/npanday-repository-builder</module>
-    <module>misc/npanday-installer</module>	
+    <module>misc/npanday-installer</module-->
   </modules>  
   <build> 
     <plugins>	
@@ -578,6 +578,7 @@ under the License.
     <mavenVersion>2.0.9</mavenVersion>  
     <npanday.snapshots.url>http://repo.npanday.org/archiva/repository/npanday-snapshots</npanday.snapshots.url>
     <npanday.releases.url>http://repo.npanday.org/archiva/repository/npanday-releases</npanday.releases.url>
+    <!--stable.npanday.version>${project.version}</stable.npanday.version-->
     <stable.npanday.version>1.3-incubating</stable.npanday.version>
   </properties>  
   <distributionManagement>
