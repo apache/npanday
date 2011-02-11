@@ -92,6 +92,8 @@ mvn clean install
   <Note:> On Windows Vista and Windows 7, this presently needs to be run as an administrator to build successfully,
           as it installs 3 libraries into the GAC.
 
+  <Note:> Building NPanday on Windows 64bit needs {{{./building-on-64bit.html} some workarounds}}, until NPANDAY-369 is fixed.
+
   Once this command has completed, you can proceed to use the Maven plugins immediately. To install the Visual Studio
   Add-in, you will need to still run the <<<mvn npanday.plugin:maven-vsinstaller-plugin:install>>> command as described
   in the {{{../guide/installation/index.html} Installation Guide}}.
