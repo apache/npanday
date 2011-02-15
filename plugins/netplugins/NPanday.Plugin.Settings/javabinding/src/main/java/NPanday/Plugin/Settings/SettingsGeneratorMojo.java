@@ -133,9 +133,6 @@ public class SettingsGeneratorMojo
             return false;
         }
 
-        String npandaySettings =
-            System.getProperty( "user.home" ) + File.separator + ".m2" + File.separator + "npanday-settings.xml";
-
-        return !new File( npandaySettings ).exists();
+        return true;
     }
 }
