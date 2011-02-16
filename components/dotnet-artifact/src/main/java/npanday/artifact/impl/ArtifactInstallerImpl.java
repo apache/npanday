@@ -227,25 +227,6 @@ public class ArtifactInstallerImpl
             }
         }
 
-        ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.openConnection();
-        for ( Dependency dependency : repository.getDependenciesFor( matchPolicies ) )
-        {
-            Project project = dao.getProjectFor( dependency.getGroupId(), dependency.getArtifactId(),
-                                                 dependency.getVersion(), dependency.getType(),
-                                                 dependency.getClassifier() );
-
-            Artifact sourceArtifact = ProjectFactory.createArtifactFrom( project, artifactFactory, localRepository );
-
-            List<Dependency> sourceArtifactDependencies = new ArrayList<Dependency>();
-            for ( ProjectDependency projectDependency : project.getProjectDependencies() )
-            {
-                sourceArtifactDependencies.add( ProjectFactory.createDependencyFrom( projectDependency ) );
-            }
-            installArtifactAndDependenciesIntoPrivateApplicationBase( localRepository, sourceArtifact,
-                                                                      sourceArtifactDependencies );
-        }
-        dao.closeConnection();
     }
 
     /**
@@ -326,44 +307,6 @@ public class ArtifactInstallerImpl
             }
         }
 
-       // Removed because there is no longer a uac folder in the repository. 
-       // this part of the code creates a zero size artifact.
-       /* try
-        {
-            if ( artifact.getFile() != null && artifact.getFile().exists() )//maybe just a test compile and no install
-            {
-
-                File artifactFile = artifact.getFile();
-                 
-		File destFile = PathUtil.getUserAssemblyCacheFileFor( artifact, localRepository );
-                                logger.info(
-                    "NPANDAY-001-007: Installing file into repository: File = " + artifact.getFile().getAbsolutePath()
-                        + ", Dest Directory = " + destFile.getParent());
-                try
-                {
-                    //this is previously using copyFile(File, File)
-                    FileUtils.copyFileToDirectory( new File(artifactFile.getAbsolutePath()), destFile);
-                }
-                catch ( Exception e ) //should be IOException
-                {
-                    throw new ArtifactInstallationException( "NPANDAY-001-008: Failed to install artifact: ID = " +
-                        artifact.getId() + ", File = " +
-                        ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
-                }
-            }
-            else
-            {
-                logger.info( "NPANDAY-001-010: Artifact does not exist. Nothing to install: Artifact = " +
-                    artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion() );
-            }
-        }
-        catch ( ArtifactInstallationException e )
-        {
-            throw new ArtifactInstallationException( "NPANDAY-001-011: Failed to install artifact: ID = " +
-                artifact.getId() + ", File = " +
-                ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
-        }
-	*/
         if ( !artifact.getType().equals( "exe.config" ) )//TODO: Generalize for any attached artifact
         {
             MavenXpp3Reader reader = new MavenXpp3Reader();
@@ -393,25 +336,6 @@ public class ArtifactInstallerImpl
                 throw new ArtifactInstallationException( "NPANDAY-001-013: Unable to read pom file" );
             }
 
-            ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-            dao.openConnection();
-            try
-            {
-                logger.debug( "NPANDAY-001-034: ProjectDao. Call storeModelAndResolveDependencies on :" + dao.getClass());        
-                dao.storeModelAndResolveDependencies( model, pomFile.getParentFile(), localRepository,
-                                                      new ArrayList<ArtifactRepository>() );
-            }
-            catch ( java.io.IOException e )
-            {
-                e.printStackTrace();
-                throw new ArtifactInstallationException(
-                    "NPANDAY-001-014: Unable to store model: Message = " + e.getMessage() );
-            }
-            finally
-            {
-                dao.closeConnection();
-                deleteTempDir(pomFile);
-            }
         }
     }
     
