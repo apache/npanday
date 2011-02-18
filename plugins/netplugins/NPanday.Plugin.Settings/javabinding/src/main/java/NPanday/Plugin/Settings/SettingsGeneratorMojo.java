@@ -23,7 +23,21 @@ import npanday.plugin.FieldAnnotation;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.FileReader;
+
 import java.io.File;
+import java.util.List;
+import java.util.Iterator;
+import org.apache.maven.model.Plugin;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 
 /**
  * @phase validate
@@ -32,6 +46,7 @@ import java.io.File;
 public class SettingsGeneratorMojo
     extends npanday.plugin.AbstractMojo
 {
+
     /**
      * @parameter expression = "${project}"
      */
@@ -132,7 +147,88 @@ public class SettingsGeneratorMojo
         {
             return false;
         }
+        
+        Plugin compilePlugin = lookupCompilePlugin();
+
+        if ( compilePlugin != null )
+        {
+            frameworkVersion = getProjectFrameworkVersion( (Xpp3Dom) compilePlugin.getConfiguration() );
+            if ( isFrameworkVersionExisting( frameworkVersion ) )
+            {
+                return false;
+            }
+        }
 
         return true;
     }
+
+    public boolean isFrameworkVersionExisting(String frameworkVersion)
+        throws MojoExecutionException
+    {
+
+        String npandaySettings = System.getProperty( "user.home" ) + File.separator + ".m2" + File.separator + "npanday-settings.xml";
+        File file = new File( npandaySettings );
+
+        if ( !file.exists() )
+        {
+            return false;
+        }
+
+        try
+        {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse( file );
+            doc.getDocumentElement().normalize();
+
+            NodeList nodeList = doc.getElementsByTagName( "frameworkVersion" );
+            for ( int i = 0; i < nodeList.getLength(); i++ )
+            {
+                Node currentNode = nodeList.item( i );
+
+                if ( frameworkVersion.equals( currentNode.getFirstChild().getNodeValue() ) )
+                {
+                    return true;
+                }
+            }
+        }
+        catch ( Exception ex )
+        {
+        }
+        return false; 
+    }
+
+    private Plugin lookupCompilePlugin()
+    {
+
+        List plugins = project.getBuildPlugins();
+
+        if ( plugins != null )
+        {
+            for ( Iterator iterator = plugins.iterator(); iterator.hasNext(); )
+            {
+                Plugin plugin = (Plugin) iterator.next();
+                if ( "npanday.plugin:maven-compile-plugin".equalsIgnoreCase( plugin.getKey() ) );
+                {
+                   return plugin;
+                }
+            }
+        }
+        return null;
+    }
+
+    private String getProjectFrameworkVersion( Xpp3Dom config )
+    {
+       if ( config != null && config.getChildCount() > 0 )
+       {
+           final Xpp3Dom subelement = config.getChild( "frameworkVersion" );
+
+           if ( subelement != null )
+           {
+               return subelement.getValue();
+           }
+       }
+       return null;
+    }
+
 }
