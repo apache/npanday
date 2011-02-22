@@ -127,26 +127,5 @@ public interface ProjectDao
     Set<Project> getAllProjects()
         throws IOException;
 
-    /**
-     * Sets the repository for the data access object. This method overrides the data source object set in the
-     * DataAccessObject#init
-     *
-     * @param repository the rdf repository
-     */
-    void setRdfRepository( Repository repository );
-
-    /**
-     * Opens the repository connection specified within ProjectDao#setRdfRepository or DataAccessObject#init method
-     *
-     * @return true if the rdf repository successfully opens, otherwise return false
-     */
-    boolean openConnection();
-
-    /**
-     * Closes the repository connection specified within ProjectDao#setRdfRepository or DataAccessObject#init method
-     *
-     * @return true if the rdf repository successfully closes, otherwise return false
-     */
-    boolean closeConnection();
 
 }

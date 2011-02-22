@@ -27,14 +27,6 @@ import npanday.dao.Requirement;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.rio.RDFHandler;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.rdfxml.RDFXMLWriter;
-import org.openrdf.sail.memory.MemoryStore;
-import org.openrdf.sail.memory.MemoryStoreRDFSInferencer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,31 +46,16 @@ public class ProjectDaoImplTest
 
     private static File localRepository = new File( System.getProperty( "basedir" ), "/target/local-test-repo" );
 
-    private org.openrdf.repository.Repository rdfRepository;
-
-    private File dataDir;
-
     public void testBogus()
     {
 
     }
 
     private ProjectDao createProjectDao()
-    {
-        dataDir = new File( basedir, ( "/target/rdf-repos/rdf-repo-" + System.currentTimeMillis() ) );
-        rdfRepository = new SailRepository( new MemoryStoreRDFSInferencer( new MemoryStore( dataDir ) ) );
-        try
-        {
-            rdfRepository.initialize();
-        }
-        catch ( RepositoryException e )
-        {
-            return null;
-        }
+    {    
         ProjectDaoImpl dao = new ProjectDaoImpl();
         ArtifactResolver stub = mock(ArtifactResolver.class);
-        dao.initForUnitTest( rdfRepository, "", "", stub, new ArtifactFactoryTestStub() );
-        dao.openConnection();
+        dao.initForUnitTest( "", "", stub, new ArtifactFactoryTestStub() );
         return dao;
     }
 
@@ -96,15 +73,6 @@ public class ProjectDaoImplTest
                                      "31bf3856ad364e35" );
         project.addProjectDependency( test2 );
 
-        try
-        {
-            dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
-        }
-        catch ( java.io.IOException e )
-        {
-            e.printStackTrace();
-            fail( "Could not store the project: " + e.getMessage() );
-        }
 
         Set<Project> projects = null;
         try
@@ -117,7 +85,7 @@ public class ProjectDaoImplTest
             fail( "Could not retrieve the project: " + e.getMessage() );
         }
 
-        dao.closeConnection();
+
     }
 
     public void testGetAllProjects()
@@ -155,7 +123,7 @@ public class ProjectDaoImplTest
             fail( "Could not retrieve the project: " + e.getMessage() );
         }
 
-        dao.closeConnection();
+
     }
 
     public void testStore_WithRequirements()
@@ -215,7 +183,7 @@ public class ProjectDaoImplTest
                     hasRequirement( ProjectUri.FRAMEWORK_VERSION.getPredicate(), "2.0", requirements ) );
         assertTrue( "Could not find vendor requirement", hasRequirement( ProjectUri.VENDOR.getPredicate(), "MICROSOFT",
                                                                          requirements ) );
-        dao.closeConnection();
+
     }
 
     private boolean hasRequirement( String uri, String value, Set<Requirement> requirements )
@@ -286,7 +254,6 @@ public class ProjectDaoImplTest
             fail( "Could not retrieve the project: " + e.getMessage() );
         }
 
-        this.exportRepositoryToRdf( "testDependency-rdf.xml" );
 
         Set<ProjectDependency> projectDependencies = testProject.getProjectDependencies();
         assertEquals( "Incorrect number of dependencies", 1, projectDependencies.size() );
@@ -294,7 +261,7 @@ public class ProjectDaoImplTest
         assertTrue( "Could not find required dependency. Found Dependency: GroupId = " + projectDependency.getGroupId()
             + ", Artifact Id = " + projectDependency.getArtifactId(), this.hasDependency( "NPanday", "NPanday.Test4",
                                                                                           "1.0.0", projectDependencies ) );
-        dao.closeConnection();
+
     }
 
     public void testSingleStore()
@@ -334,7 +301,7 @@ public class ProjectDaoImplTest
         assertEquals( "Versions do not match", project.getVersion(), proj.getVersion() );
 
         assertEquals( "Found dependency when there should be none", 0, artifacts.size() );
-        dao.closeConnection();
+
     }
 
     public void testSingleStore_WithIncorrectVersion()
@@ -367,7 +334,7 @@ public class ProjectDaoImplTest
             return;
 
         }
-        dao.closeConnection();
+
         fail( "Found project when none should exist." );
     }
 
@@ -393,35 +360,6 @@ public class ProjectDaoImplTest
         projectDependency.setArtifactType( type );
 
         return projectDependency;
-    }
-
-    private void exportRepositoryToRdf( String fileName )
-    {
-        RDFHandler rdfxmlWriter;
-        try
-        {
-            File exportFile = new File( localRepository.getParentFile(), fileName );
-            rdfxmlWriter = new RDFXMLWriter( new FileOutputStream( exportFile ) );
-        }
-        catch ( IOException e )
-        {
-            // fail( e.getMessage() );
-            return;
-        }
-
-        try
-        {
-            RepositoryConnection repositoryConnection = rdfRepository.getConnection();
-            repositoryConnection.export( rdfxmlWriter );
-        }
-        catch ( RepositoryException e )
-        {
-            e.printStackTrace();
-        }
-        catch ( RDFHandlerException e )
-        {
-            e.printStackTrace();
-        }
     }
 
 }

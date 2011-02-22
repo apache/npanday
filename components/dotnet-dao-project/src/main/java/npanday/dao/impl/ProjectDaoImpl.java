@@ -38,6 +38,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
@@ -64,6 +65,7 @@ import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.io.EOFException;
@@ -111,12 +113,27 @@ public final class ProjectDaoImpl
     private String projectQuery;
 
     private ArtifactResolver artifactResolver;
+    
+    public void init( Object dataStoreObject, String id, String className )
+        throws IllegalArgumentException
+    {
+        if ( dataStoreObject == null || !( dataStoreObject instanceof org.openrdf.repository.Repository ) )
+        {
+            throw new IllegalArgumentException(
+                                                "NPANDAY-180-023: Must initialize with an instance of org.openrdf.repository.Repository" );
+        }
 
-    public void init( ArtifactFactory artifactFactory, ArtifactResolver artifactResolver )
+        this.id = id;
+        this.className = className;
+        this.rdfRepository = (org.openrdf.repository.Repository) dataStoreObject;
+    }
+
+    public void init( ArtifactFactory artifactFactory, ArtifactResolver artifactResolver)
     {
         this.artifactFactory = artifactFactory;
         this.artifactResolver = artifactResolver;
-
+        this.className = className;
+        
         List<ProjectUri> projectUris = new ArrayList<ProjectUri>();
         projectUris.add( ProjectUri.GROUP_ID );
         projectUris.add( ProjectUri.ARTIFACT_ID );
@@ -271,8 +288,48 @@ public final class ProjectDaoImpl
         project.setVersion( version );
         project.setArtifactType( artifactType );
         project.setPublicKeyTokenId( publicKeyTokenId );
+        
+        
+        
+        //Read default settings.xml of maven to get LocalRepository Location
+        String m2_home = System.getenv("M2_HOME");
+        
+        String localRepo = getLocalRepository(m2_home+"/conf/settings.xml");
+        
+        String pomFile = localRepo + groupId.replace(".","/")+"/"+artifactId+"/"+version+"/"+artifactId+"-"+version+".pom.sha1";
+        
+        Model model = null;
+        FileReader reader = null;
+        MavenXpp3Reader mavenreader = new MavenXpp3Reader();
+        try 
+        {
+            reader = new FileReader(pomFile);
+            model = mavenreader.read(reader);
+            model.setPomFile(new File( pomFile ) );
+        }catch(Exception ex){}
+        MavenProject mavenProject = new MavenProject(model);
 
-        TupleQueryResult result = null;
+        List<Dependency> deps = mavenProject.getDependencies();
+        
+        for(Dependency dep : deps)
+        {
+            ProjectDependency projectDep = new ProjectDependency();
+            project.setArtifactId( dep.getArtifactId() );
+            project.setGroupId( dep.getGroupId() );
+            project.setVersion( dep.getVersion() );
+            Artifact artifact = createArtifactFrom( projectDep, artifactFactory );
+                    
+                    if ( !artifact.getFile().exists() )
+                    {
+                        throw new IOException( "NPANDAY-180-123: Could not find GAC assembly: Group ID = " + groupId
+                            + ", Artifact ID = " + artifactId + ", Version = " + version + ", Artifact Type = "
+                            + artifactType + ", File Path = " + artifact.getFile().getAbsolutePath() );
+                    }
+        }
+        
+        
+        
+        /*TupleQueryResult result = null;
 
         try
         {
@@ -292,6 +349,9 @@ public final class ProjectDaoImpl
 
             result = tupleQuery.evaluate();
 
+            System.out.println(">>>> RESULT "+ result);
+             System.out.println(">>>> binding names "+ result.getBindingNames() );
+            
             if ( !result.hasNext() )
             {
                 
@@ -318,10 +378,7 @@ public final class ProjectDaoImpl
             while ( result.hasNext() )
             {
                 BindingSet set = result.next();
-                /*
-                 * for ( Iterator<Binding> i = set.iterator(); i.hasNext(); ) { Binding b = i.next();
-                 * System.out.println( b.getName() + ":" + b.getValue() ); }
-                 */
+               
                 if ( set.hasBinding( ProjectUri.IS_RESOLVED.getObjectBinding() )
                     && set.getBinding( ProjectUri.IS_RESOLVED.getObjectBinding() ).getValue().toString().equalsIgnoreCase(
                                                                                                                            "true" ) )
@@ -330,12 +387,7 @@ public final class ProjectDaoImpl
                 }
 
                 project.setArtifactType( set.getBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding() ).getValue().toString() );
-                /*
-                 * if ( set.hasBinding( ProjectUri.PARENT.getObjectBinding() ) ) { String pid = set.getBinding(
-                 * ProjectUri.PARENT.getObjectBinding() ).getValue().toString(); String[] tokens = pid.split( "[:]" );
-                 * Project parentProject = getProjectFor( tokens[0], tokens[1], tokens[2], null, null );
-                 * project.setParentProject( parentProject ); }
-                 */
+               
                 if ( set.hasBinding( ProjectUri.DEPENDENCY.getObjectBinding() ) )
                 {
                     Binding binding = set.getBinding( ProjectUri.DEPENDENCY.getObjectBinding() );
@@ -374,7 +426,7 @@ public final class ProjectDaoImpl
 
                 }
             }
-        }
+        }*/
 
         // TODO: If has parent, then need to modify dependencies, etc of returned project
         logger.finest( "NPANDAY-180-008: ProjectDao.GetProjectFor - Artifact Id = " + project.getArtifactId()
@@ -900,29 +952,15 @@ public final class ProjectDaoImpl
         return id;
     }
 
-    public void init( Object dataStoreObject, String id, String className )
-        throws IllegalArgumentException
-    {
-        if ( dataStoreObject == null || !( dataStoreObject instanceof org.openrdf.repository.Repository ) )
-        {
-            throw new IllegalArgumentException(
-                                                "NPANDAY-180-023: Must initialize with an instance of org.openrdf.repository.Repository" );
-        }
-
-        this.id = id;
-        this.className = className;
-        this.rdfRepository = (org.openrdf.repository.Repository) dataStoreObject;
-    }
-
     public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
     {
 
     }
 
-    protected void initForUnitTest( Object dataStoreObject, String id, String className,
+    protected void initForUnitTest( String id, String className,
                                     ArtifactResolver artifactResolver, ArtifactFactory artifactFactory )
     {
-        this.init( dataStoreObject, id, className );
+        this.className = className;
         init( artifactFactory, artifactResolver );
     }
 
@@ -1166,6 +1204,50 @@ public final class ProjectDaoImpl
         }
 
         return attributes;
+    }
+    
+    /*
+     * Read Default settings from M2_HOME value of ENV Var to check if there local repository is not in default Location
+     * Related to NPanday-361
+    */
+    private String getLocalRepository( String defaultMavenSettings)
+    {
+        List<String> attributes = new ArrayList<String>();
+        String localRepo = "";
+        try
+        {
+            File file = new File( defaultMavenSettings );
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse( file );
+            doc.getDocumentElement().normalize();
+
+           NodeList nodeLst = doc.getElementsByTagName( "localRepository");
+            
+
+             for ( int s = 0; s < nodeLst.getLength(); s++ )
+            {
+                Node currentNode = nodeLst.item( s );
+
+                NodeList childrenList = currentNode.getChildNodes();
+
+                Node child = childrenList.item( 0 );
+                localRepo = child.getNodeValue();     
+            }
+            
+        }
+        catch ( Exception e )
+        {
+             logger.warning( "NPANDAY-181-218:  Default Maven Settings not found, localRepo is set to default " + ", Message = " + e.getMessage() );
+        }
+        
+        if (localRepo == "")
+        {
+            localRepo = System.getProperty("user.home")+"/.m2/repository/";
+        }
+
+        return localRepo;
     }
 
     private List<String> getInteropParameters( String interopAbsolutePath, String comRerefenceAbsolutePath,
