@@ -29,8 +29,9 @@ import npanday.ArtifactType;
 
 import static LifecycleMappingBuilder.build as forType
 /**
- * The mapping of all compilable types to an almost empty lifecycle. It only 
- * executes the default install and deploy plugins in the corresponding phases.
+ * The mapping of all types to an almost empty lifecycle. It only recognizes the main
+ * artifact in package and executes the default install and deploy plugins
+ * in the corresponding phases.
  * 
  * @author Lars Corneliussen
  */
@@ -48,7 +49,7 @@ class CustomLifecycleMap extends LifecycleMap
 		}
 		
 		ArtifactType.values()
-    		.findAll{ArtifactType type -> type != npanday.ArtifactType.NULL && type.targetCompileType != null}
+    		.findAll{ArtifactType type -> type != npanday.ArtifactType.NULL}
     		.each{
 				add(forType(it, phases))
 			}
