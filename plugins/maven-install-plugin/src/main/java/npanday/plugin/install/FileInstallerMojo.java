@@ -125,7 +125,7 @@ public class FileInstallerMojo
     {
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
         dao.init( artifactFactory, artifactResolver );
-        dao.openConnection();
+       
 
         artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
         if ( pomFile != null && !pomFile.exists() )

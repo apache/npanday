@@ -209,7 +209,7 @@ public abstract class AbstractMojo
                     localRepository, false);
 
             ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-            dao.openConnection();
+            
             Project project = dao.getProjectFor(dependency.getGroupId(), dependency.getArtifactId(),
                     dependency.getVersion(), dependency.getType(),
                     dependency.getClassifier());
@@ -220,7 +220,7 @@ public abstract class AbstractMojo
             }
             artifactContext.getArtifactInstaller().installArtifactAndDependenciesIntoPrivateApplicationBase(localRepository, artifact,
                     sourceArtifactDependencies);
-            dao.closeConnection();
+          
         }
         catch (IOException e) {
             throw new MojoExecutionException(e.getMessage(), e);

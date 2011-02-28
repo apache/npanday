@@ -170,7 +170,6 @@ public final class ProjectDaoImpl
             while ( result.hasNext() )
             {
                 BindingSet set = result.next();
-
                 String groupId = set.getBinding( ProjectUri.GROUP_ID.getObjectBinding() ).getValue().toString();
                 String version = set.getBinding( ProjectUri.VERSION.getObjectBinding() ).getValue().toString();
                 String artifactId = set.getBinding( ProjectUri.ARTIFACT_ID.getObjectBinding() ).getValue().toString();
@@ -289,8 +288,6 @@ public final class ProjectDaoImpl
         project.setArtifactType( artifactType );
         project.setPublicKeyTokenId( publicKeyTokenId );
         
-        
-        
         //Read default settings.xml of maven to get LocalRepository Location
         String m2_home = System.getenv("M2_HOME");
         
@@ -306,7 +303,11 @@ public final class ProjectDaoImpl
             reader = new FileReader(pomFile);
             model = mavenreader.read(reader);
             model.setPomFile(new File( pomFile ) );
-        }catch(Exception ex){}
+        }
+        catch(Exception ex)
+        {
+            throw new IOException( "NPANDAY-180-224: Message = " + ex.getMessage() );
+        }
         MavenProject mavenProject = new MavenProject(model);
 
         List<Dependency> deps = mavenProject.getDependencies();
@@ -326,107 +327,6 @@ public final class ProjectDaoImpl
                             + artifactType + ", File Path = " + artifact.getFile().getAbsolutePath() );
                     }
         }
-        
-        
-        
-        /*TupleQueryResult result = null;
-
-        try
-        {
-            TupleQuery tupleQuery = repositoryConnection.prepareTupleQuery( QueryLanguage.SERQL, projectQuery );
-            tupleQuery.setBinding( ProjectUri.GROUP_ID.getObjectBinding(), valueFactory.createLiteral( groupId ) );
-            tupleQuery.setBinding( ProjectUri.ARTIFACT_ID.getObjectBinding(), valueFactory.createLiteral( artifactId ) );
-            tupleQuery.setBinding( ProjectUri.VERSION.getObjectBinding(), valueFactory.createLiteral( version ) );
-            tupleQuery.setBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding(),
-                                   valueFactory.createLiteral( artifactType ) );
-
-            if ( publicKeyTokenId != null )
-            {
-                tupleQuery.setBinding( ProjectUri.CLASSIFIER.getObjectBinding(),
-                                       valueFactory.createLiteral( publicKeyTokenId ) );
-                project.setPublicKeyTokenId( publicKeyTokenId.replace( ":", "" ) );
-            }
-
-            result = tupleQuery.evaluate();
-
-            System.out.println(">>>> RESULT "+ result);
-             System.out.println(">>>> binding names "+ result.getBindingNames() );
-            
-            if ( !result.hasNext() )
-            {
-                
-                //if ( artifactType != null && ArtifactTypeHelper.isDotnetAnyGac( artifactType ) )
-                if ( artifactType != null )
-                {
-                    
-                    Artifact artifact = createArtifactFrom( project, artifactFactory );
-                    
-                    if ( !artifact.getFile().exists() )
-                    {
-                        throw new IOException( "NPANDAY-180-123: Could not find GAC assembly: Group ID = " + groupId
-                            + ", Artifact ID = " + artifactId + ", Version = " + version + ", Artifact Type = "
-                            + artifactType + ", File Path = " + artifact.getFile().getAbsolutePath() );
-                    }
-                    project.setResolved( true );
-                    return project;
-                }
-
-                throw new IOException( "NPANDAY-180-124: Could not find the project: Group ID = " + groupId
-                    + ", Artifact ID =  " + artifactId + ", Version = " + version + ", Artifact Type = " + artifactType );
-            }
-
-            while ( result.hasNext() )
-            {
-                BindingSet set = result.next();
-               
-                if ( set.hasBinding( ProjectUri.IS_RESOLVED.getObjectBinding() )
-                    && set.getBinding( ProjectUri.IS_RESOLVED.getObjectBinding() ).getValue().toString().equalsIgnoreCase(
-                                                                                                                           "true" ) )
-                {
-                    project.setResolved( true );
-                }
-
-                project.setArtifactType( set.getBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding() ).getValue().toString() );
-               
-                if ( set.hasBinding( ProjectUri.DEPENDENCY.getObjectBinding() ) )
-                {
-                    Binding binding = set.getBinding( ProjectUri.DEPENDENCY.getObjectBinding() );
-                    addDependenciesToProject( project, repositoryConnection, binding.getValue() );
-                }
-
-                if ( set.hasBinding( ProjectUri.CLASSIFIER.getObjectBinding() ) )
-                {
-                    Binding binding = set.getBinding( ProjectUri.CLASSIFIER.getObjectBinding() );
-                    addClassifiersToProject( project, repositoryConnection, binding.getValue() );
-                }
-            }
-        }
-        catch ( QueryEvaluationException e )
-        {
-            throw new IOException( "NPANDAY-180-005: Message = " + e.getMessage() );
-        }
-        catch ( RepositoryException e )
-        {
-            throw new IOException( "NPANDAY-180-006: Message = " + e.getMessage() );
-        }
-        catch ( MalformedQueryException e )
-        {
-            throw new IOException( "NPANDAY-180-007: Message = " + e.getMessage() );
-        }
-        finally
-        {
-            if ( result != null )
-            {
-                try
-                {
-                    result.close();
-                }
-                catch ( QueryEvaluationException e )
-                {
-
-                }
-            }
-        }*/
 
         // TODO: If has parent, then need to modify dependencies, etc of returned project
         logger.finest( "NPANDAY-180-008: ProjectDao.GetProjectFor - Artifact Id = " + project.getArtifactId()
@@ -472,7 +372,10 @@ public final class ProjectDaoImpl
                                                              Map<String, Set<Artifact>> cache )
         throws IOException, IllegalArgumentException
     {
+        
+       
         String key = getKey( project );
+        
         if ( cache.containsKey( key ) )
         {
             return cache.get( key );
@@ -480,7 +383,7 @@ public final class ProjectDaoImpl
 
         long startTime = System.currentTimeMillis();
         String snapshotVersion;
-
+      
         if ( project == null )
         {
             throw new IllegalArgumentException( "NPANDAY-180-009: Project is null" );
@@ -495,49 +398,14 @@ public final class ProjectDaoImpl
 
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();
 
-        ValueFactory valueFactory = rdfRepository.getValueFactory();
-        URI id =
-            valueFactory.createURI( project.getGroupId() + ":" + project.getArtifactId() + ":" + project.getVersion()
-                + ":" + project.getArtifactType() );
-        URI groupId = valueFactory.createURI( ProjectUri.GROUP_ID.getPredicate() );
-        URI artifactId = valueFactory.createURI( ProjectUri.ARTIFACT_ID.getPredicate() );
-        URI version = valueFactory.createURI( ProjectUri.VERSION.getPredicate() );
-        URI artifactType = valueFactory.createURI( ProjectUri.ARTIFACT_TYPE.getPredicate() );
-        URI classifier = valueFactory.createURI( ProjectUri.CLASSIFIER.getPredicate() );
-        URI isResolved = valueFactory.createURI( ProjectUri.IS_RESOLVED.getPredicate() );
-
-        URI artifact = valueFactory.createURI( ProjectUri.ARTIFACT.getPredicate() );
-        URI dependency = valueFactory.createURI( ProjectUri.DEPENDENCY.getPredicate() );
-        URI parent = valueFactory.createURI( ProjectUri.PARENT.getPredicate() );
-
+       
         Set<Model> modelDependencies = new HashSet<Model>();
         try
         {
-
-            repositoryConnection.add( id, RDF.TYPE, artifact );
-            repositoryConnection.add( id, groupId, valueFactory.createLiteral( project.getGroupId() ) );
-            repositoryConnection.add( id, artifactId, valueFactory.createLiteral( project.getArtifactId() ) );
-            repositoryConnection.add( id, version, valueFactory.createLiteral( project.getVersion() ) );
-            repositoryConnection.add( id, artifactType, valueFactory.createLiteral( project.getArtifactType() ) );
-            if ( project.getPublicKeyTokenId() != null )
-            {
-                URI classifierNode = valueFactory.createURI( project.getPublicKeyTokenId() + ":" );
-                for ( Requirement requirement : project.getRequirements() )
-                {
-                    URI uri = valueFactory.createURI( requirement.getUri().toString() );
-                    repositoryConnection.add( classifierNode, uri, valueFactory.createLiteral( requirement.getValue() ) );
-                }
-
-                repositoryConnection.add( id, classifier, classifierNode );
-            }
-
             if ( project.getParentProject() != null )
             {
                 Project parentProject = project.getParentProject();
-                URI pid =
-                    valueFactory.createURI( parentProject.getGroupId() + ":" + parentProject.getArtifactId() + ":"
-                        + parentProject.getVersion() + ":" + project.getArtifactType() );
-                repositoryConnection.add( id, parent, pid );
+             
                 artifactDependencies.addAll( storeProjectAndResolveDependencies( parentProject, null,
                                                                                  artifactRepositories, cache ) );
             }
@@ -557,8 +425,10 @@ public final class ProjectDaoImpl
                         new DefaultArtifactRepository( "local", "file://" + localRepository,
                                                        new DefaultRepositoryLayout() );
                     
-                    artifactResolver.resolve( assembly, artifactRepositories,
+                     artifactResolver.resolve( assembly, artifactRepositories,
                                                       localArtifactRepository );
+                                 
+                     projectDependency.setResolved( true );                                 
                     }
                     catch ( ArtifactNotFoundException e )
                     {
@@ -578,6 +448,7 @@ public final class ProjectDaoImpl
                     + projectDependency.getArtifactType() );
 
                 // If artifact has been deleted, then re-resolve
+               
                 if ( projectDependency.isResolved() && !ArtifactTypeHelper.isDotnetAnyGac( projectDependency.getArtifactType() ) )
                 {
                     if ( projectDependency.getSystemPath() == null )
@@ -591,8 +462,13 @@ public final class ProjectDaoImpl
                     {
                         projectDependency.setResolved( false );
                     }
+                    else
+                    {
+                         projectDependency.setResolved( true );        
+                    }
+                    
                 }
-
+               
                 // resolve system scope dependencies
                 if ( projectDependency.getScope() != null && projectDependency.getScope().equals( "system" ) )
                 {
@@ -873,48 +749,15 @@ public final class ProjectDaoImpl
                     }
                     artifactDependencies.add( assembly );
                 }// end if dependency not resolved
-                URI did =
-                    valueFactory.createURI( projectDependency.getGroupId() + ":" + projectDependency.getArtifactId()
-                        + ":" + projectDependency.getVersion() + ":" + projectDependency.getArtifactType() );
-                repositoryConnection.add( did, RDF.TYPE, artifact );
-                repositoryConnection.add( did, groupId, valueFactory.createLiteral( projectDependency.getGroupId() ) );
-                repositoryConnection.add( did, artifactId,
-                                          valueFactory.createLiteral( projectDependency.getArtifactId() ) );
-                repositoryConnection.add( did, version, valueFactory.createLiteral( projectDependency.getVersion() ) );
-                repositoryConnection.add( did, artifactType,
-                                          valueFactory.createLiteral( projectDependency.getArtifactType() ) );
-                if ( projectDependency.getPublicKeyTokenId() != null )
-                {
-                    repositoryConnection.add(
-                                              did,
-                                              classifier,
-                                              valueFactory.createLiteral( projectDependency.getPublicKeyTokenId() + ":" ) );
-                }
-                repositoryConnection.add( id, dependency, did );
-
             }// end for
-            repositoryConnection.add( id, isResolved, valueFactory.createLiteral( true ) );
-            repositoryConnection.commit();
         }
-        catch ( OpenRDFException e )
+        catch ( Exception e )
         {
-            if ( repositoryConnection != null )
-            {
-                try
-                {
-                    repositoryConnection.rollback();
-                }
-                catch ( RepositoryException e1 )
-                {
-
-                }
-            }
-            throw new IOException( "NPANDAY-180-021: Could not open RDF Repository: Message =" + e.getMessage() );
+            throw new IOException( "NPANDAY-180-021: Could not resolve project: Message =" + e);
         }
 
         for ( Model model : modelDependencies )
         {
-            // System.out.println( "Storing dependency: Artifact Id = " + model.getArtifactId() );
             Project projectModel = ProjectFactory.createProjectFrom( model, null );
             artifactDependencies.addAll( storeProjectAndResolveDependencies( projectModel, localRepository,
                                                                              artifactRepositories, cache ) );

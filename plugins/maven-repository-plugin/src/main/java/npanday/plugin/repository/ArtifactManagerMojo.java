@@ -95,7 +95,7 @@ public class ArtifactManagerMojo
 
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
         dao.init( artifactFactory, artifactResolver );
-        dao.openConnection();
+        
 
         try
         {
@@ -106,7 +106,7 @@ public class ArtifactManagerMojo
             e.printStackTrace();
             throw new MojoExecutionException( e.getMessage() );
         }
-        dao.closeConnection();
+      
       
     }
 }

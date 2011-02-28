@@ -123,19 +123,18 @@ public class AssemblyResolverImpl
         
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
         dao.init( artifactFactory, artifactResolver );
-        dao.openConnection();
-
-        Set<Artifact> artifactDependencies = new HashSet<Artifact>();
+     
+	 Set<Artifact> artifactDependencies = new HashSet<Artifact>();
         try
         {
             artifactDependencies =
                 dao.storeProjectAndResolveDependencies( project, localArtifactRepository, remoteArtifactRepositories );
         }
-        finally
+		catch ( Exception e )
         {
-            dao.closeConnection();
+            throw new IOException( e.getMessage() );
         }
-
+       
         if ( addResolvedDependenciesToProject )
         {
             mavenProject.setDependencyArtifacts( artifactDependencies );
