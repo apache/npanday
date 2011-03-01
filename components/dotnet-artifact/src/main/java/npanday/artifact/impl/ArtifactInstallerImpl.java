@@ -287,7 +287,7 @@ public class ArtifactInstallerImpl
         throws ArtifactInstallationException
     {
         logger.debug( "NPANDAY-001-031: artifact:" + artifact);
-        logger.debug( "NPANDAY-001-032: artifact file:" + artifact.getFile());    
+        logger.debug( "NPANDAY-001-032: artifact file:" + artifact.getFile());
         ApplicationConfig applicationConfig = artifactContext.getApplicationConfigFor( artifact );
         
         File configExeFile = applicationConfig.getConfigBuildPath();
@@ -329,11 +329,11 @@ public class ArtifactInstallerImpl
             }
             catch ( XmlPullParserException e )
             {
-                throw new ArtifactInstallationException( "NPANDAY-001-012: Unable to read pom file" );
+                throw new ArtifactInstallationException( "NPANDAY-001-012: Unable to read pom file: " + pomFile.getAbsolutePath(), e);
             }
             catch ( IOException e )
             {
-                throw new ArtifactInstallationException( "NPANDAY-001-013: Unable to read pom file" );
+                throw new ArtifactInstallationException( "NPANDAY-001-013: Unable to read pom file: " + pomFile.getAbsolutePath(), e );
             }
 
         }
