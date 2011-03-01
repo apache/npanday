@@ -76,9 +76,15 @@ namespace NPanday.VisualStudio.Addin
                 txtBrowseDotNetSolutionFile.Text = applicationObject.Solution.FileName;
                 try
                 {                    
-                    string groupId = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion").GetValue("RegisteredOrganization","mycompany").ToString();
-                    groupId = ConvertToPascalCase(groupId);
-                    groupId = FilterID(groupId) + "." + FilterID(ConvertToPascalCase(new FileInfo(applicationObject.Solution.FileName).Name.Replace(".sln", "")));
+                    string companyId = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion").GetValue("RegisteredOrganization","mycompany").ToString();
+                    string groupId = string.Empty;
+                    
+                    if (companyId != string.Empty)
+                    {
+                        groupId = FilterID( ConvertToPascalCase(companyId) )+ ".";
+                    }
+                    
+                    groupId = groupId +  FilterID(ConvertToPascalCase(new FileInfo(applicationObject.Solution.FileName).Name.Replace(".sln", "")));
                     txtGroupId.Text = groupId;
                     string scmTag = string.Empty;  //getSCMTag(applicationObject.Solution.FileName);
                     string version = "1.0-SNAPSHOT";
