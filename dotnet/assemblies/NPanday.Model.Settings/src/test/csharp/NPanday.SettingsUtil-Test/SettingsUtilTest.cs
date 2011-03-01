@@ -86,7 +86,6 @@ namespace NPanday.SettingsUtil_Test
 			string path = Path.Combine(root, "src");
 			path = Path.Combine(path, "test");
 			path = Path.Combine(path, "resource");
-			path = Path.Combine(path, "test");
 			path = Path.Combine(path, "m2");
 			settingsPath = new FileInfo(Path.Combine(path, settingsXml)).FullName;
             
