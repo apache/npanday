@@ -89,6 +89,11 @@ namespace NPanday.ProjectImporter.ImporterTests
             // argument validation goes here, CBA to do it now
 
             DirectoryInfo destDir = new DirectoryInfo(destination);
+
+            // do not copy subversion information
+            if (destDir.Name == ".svn" || destDir.Name == "_svn")
+                return;
+
             if (!destDir.Exists)
             {
                 destDir.Create();
