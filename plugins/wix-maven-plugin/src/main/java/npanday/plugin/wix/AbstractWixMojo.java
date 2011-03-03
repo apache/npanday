@@ -31,4 +31,11 @@ public abstract class AbstractWixMojo
     * @parameter
     */
     protected String[] extensions;
+    
+    /**
+     * Agruments to pass to WiX executable as is
+     * @parameter expression="${arguments}"
+     */
+
+     protected String arguments;
 }
