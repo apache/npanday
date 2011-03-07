@@ -27,4 +27,4 @@ Building NPanday on 64bit-Windows
   all frameworks in <<<.m2\npanday-settings.xml>>>.
 
   We expect to enable native support for building with 32-bit even on 64-bit operating systems in the next version
-  of NPanday, though. For Details see {{{https://issues.apache.org/jira/browse/NPANDAY-369}} NPANDAY-369}.
+  of NPanday, though. For Details see {{{https://issues.apache.org/jira/browse/NPANDAY-369} NPANDAY-369}}.

@@ -22,7 +22,11 @@ Pre-release checklist
 
   * Check the build is successful for both NPanday and NPanday-ITs
 
-  * Ensure all issues in the tracker for that version have been resolved, or are moved to a later version
+  * Ensure all issues in the jira for that version have been resolved, or are moved to a later version
+  
+  * NPanday staging repo {{http://vmbuild.apache.org/archiva/repository/staged-npanday/}} should be re-created before the release to ensure that the repo only contains the 
+    artifacts for the said release version.
+
   
   * Make sure that the copyright and licenses are on all source code
   
@@ -71,9 +75,9 @@ mvn release:prepare
 
   [[3]] Fill in the following values:
   
-   * the release version should be <<<1.2.1-RC1>>> or similar (use the release version)
+   * the release version should be <<<1.3.1-incubating>>> or similar (use the release version)
      
-   * the SCM tag should be <<<npanday-1.2.1-RC1>>> or similar (use the release version)
+   * the SCM tag should be <<<npanday-1.3.1-incubating>>> or similar (use the release version)
      
    * check the values for the <Release version> and <Next development version> are correct	 
   
@@ -97,9 +101,9 @@ mvn release:prepare
 
   [[3]] Fill in the following values: 
 
-   * the release version should ve <<<1.2.1-RC1>>> or similar (use the release version)
-	 
-   * the SCM tag should be <<<npanday-its-1.2.1-RC1>>> or similar (use the release version)
+   * the release version should ve <<<1.3.1-incubating>>> or similar (use the release version)
+
+   * the SCM tag should be <<<npanday-its-1.3.1-incubating>>> or similar (use the release version)
      
    * check the values for the <Release version> and <Next development version> are correct
   
@@ -111,12 +115,12 @@ mvn release:prepare
 mvn release:perform -Pnpanday-release -Dtag=url_tag
 ----
 
-  To verify if the release was successful, check that the artifacts has been populated in {{http://repo.npanday.org/archiva/repository/npanday-releases/}}
+  To verify if the release was successful, check that the artifacts has been populated in {{http://vmbuild.apache.org/archiva/repository/staged-npanday/}}
 
 Testing the Release Candidate
 
-  Announce the RC and the community will be given a 48hr window to test. If the RC passes, same process would be done
-  for the final version. eg. <<<1.2.1>>>.
+  Announce the RC and the community will be given a 72hr window to test. If the RC passes, same process would be done
+  for the final version. eg. <<<1.3.1-incubating>>>.
 
 Voting on the Release
 
@@ -128,11 +132,23 @@ Finalising the Release
 
     * {{{./publishing-docs.html} Publish the site}} for the released version
 
-    * Update Download Page to upload the repository builder from the latest release and mark the version as released
+    * Binaries and sources should be copied to <<<//www/www.apache.org/dist/incubator/npanday/>>>.
 
-    * Make the announcement on the forum
+    * Artifacts should be merged and synched to ibiblio by executing the ff command:
+    
+----
+mvn stage:copy -Dsource="http://vmbuild.apache.org/archiva/repository/staged-npanday/" -Dtarget="scp://[APACHE_USERNAME]@people.apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository" 
+-Dversion=1.3.1-incubating -DrepositoryId=apache.releases
+----
+
+    * Send out an announcement of the release to:
+
+        ** npanday-users@incubator.apache.org
+
+        ** announce@apache.org
+
 
     []
 
   <<Note:>> If a serious flaw is found in the release, the release version will not be removed in the distribution list
-            but instead a new release (1.2.2) should be provided.
+            but instead a new release (1.3.2-incubating) should be provided.
