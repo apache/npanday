@@ -81,6 +81,22 @@ public final class CompilerPluginsRepository
     }
 
     /**
+     * @see Repository#setSourceUri(String)
+     */
+    public void setSourceUri( String fileUri )
+    {
+        // not supported
+    }
+
+    /**
+     * @see Repository#reload()
+     */
+    public void reload() throws IOException
+    {
+        // not supported
+    }
+
+    /**
      * Returns config information as list of platform capabilities.
      *
      * @return config information as list of platform capabilities.

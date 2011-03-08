@@ -107,6 +107,22 @@ public class NetDependenciesRepositoryImpl
     public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
     {
     }
+    
+    /**
+     * @see Repository#setSourceUri(String)
+     */
+    public void setSourceUri( String fileUri )
+    {
+        // not supported
+    }
+
+    /**
+     * @see Repository#reload()
+     */
+    public void reload() throws IOException
+    {
+        // not supported
+    }
 
     /**
      * Returns a list of .NET dependencies as given within the net dependencies config file. This dependency list

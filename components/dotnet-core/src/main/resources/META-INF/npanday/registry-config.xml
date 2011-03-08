@@ -29,15 +29,6 @@ under the License.
       </init-param>
     </repository>
     <repository>
-      <repository-name>npanday-settings</repository-name>
-      <repository-class>npanday.vendor.impl.SettingsRepository</repository-class>
-      <repository-config>${npanday.settings}</repository-config>
-      <init-param>
-        <param-name>optional</param-name>
-        <param-value>true</param-value>
-      </init-param>
-    </repository>
-    <repository>
       <repository-name>compiler-plugins</repository-name>
       <repository-class>npanday.executable.impl.CompilerPluginsRepository</repository-class>
       <repository-config>/META-INF/npanday/compiler-plugins.xml</repository-config>

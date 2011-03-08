@@ -46,6 +46,7 @@ public class VendorInfoRepositoryImpl
 
     /**
      * A registry component of repository (config) files
+     * @component
      */
     private RepositoryRegistry repositoryRegistry;
 
@@ -80,6 +81,15 @@ public class VendorInfoRepositoryImpl
     public boolean exists()
     {
         return ( repositoryRegistry.find( "npanday-settings" ) != null );
+    }
+
+    public void clearCache()
+    {
+        if ( cachedVendorInfos != null )
+        {
+            cachedVendorInfos.clear();
+            cachedVendorInfos = null;
+        }
     }
 
     private File getInstallRootFor( VendorInfo vendorInfo )
@@ -121,8 +131,25 @@ public class VendorInfoRepositoryImpl
     {
         SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
 
-        if (cachedVendorInfos != null)
-            return Collections.unmodifiableList( cachedVendorInfos );;
+        if ( settingsRepository.isReloaded() )
+        {
+            clearCache();
+            settingsRepository.setReloaded(false);
+        }
+
+        try
+        {
+            settingsRepository.reload();
+        }
+        catch(Exception e)
+        {
+            //e.printStackTrace();
+        }
+ 
+        if ( cachedVendorInfos != null && cachedVendorInfos.size() > 0 &&  !settingsRepository.isReloaded() )
+        {
+            return Collections.unmodifiableList( cachedVendorInfos );
+        }
 
         cachedVendorInfos = new ArrayList<VendorInfo>();
 
@@ -154,6 +181,7 @@ public class VendorInfoRepositoryImpl
                 cachedVendorInfos.add( vendorInfo );
             }
         }
+        settingsRepository.setReloaded( false );
         return Collections.unmodifiableList( cachedVendorInfos );
     }
 

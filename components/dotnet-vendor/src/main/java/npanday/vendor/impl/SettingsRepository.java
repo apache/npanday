@@ -58,6 +58,12 @@ public final class SettingsRepository
      */
     private DefaultSetup defaultSetup;
 
+    private String fileUri;
+
+    private Hashtable props;
+
+    private boolean reloaded = false;
+
     /**
      * Constructor. This method is intended to be invoked by the <code>RepositoryRegistry<code>, not by the
      * application developer.
@@ -86,6 +92,7 @@ public final class SettingsRepository
         }
         vendors = settings.getVendors();
         defaultSetup = settings.getDefaultSetup();
+        props = properties;
     }
 
     /**
@@ -103,6 +110,74 @@ public final class SettingsRepository
     public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
     {
     }
+
+    public void setSourceUri( String fileUri )
+    {
+        this.fileUri = fileUri;
+    }
+
+    public void reload()
+        throws IOException
+    {
+
+        if ( fileUri == null || fileUri.trim().equals( "" ) )
+        {
+            throw new IOException( "NPANDAY-084-001: File uri must be provided." );
+        }
+
+        InputStream stream;
+
+        try
+        {
+            stream = new FileInputStream( fileUri );
+        }
+        catch ( IOException e )
+        {
+            stream = this.getClass().getResourceAsStream( fileUri );
+        }
+        String message =
+            "File Name = " + fileUri + ", Repository Class = " + this.getClass().getName() + ", Properties = " + props.toString();
+        boolean optional = ( props.containsKey( "optional" ) &&
+            ( (String) props.get( "optional" ) ).equalsIgnoreCase( "true" ) );
+        if ( stream == null )
+        {
+            if ( !optional )
+            {
+                throw new IOException( "NPANDAY-084-003: Unable to loadRegistry config file: " + message );
+            }
+        }
+        else
+        {
+            try
+            {
+                load( stream, props );
+            }
+            catch ( IOException e )
+            {
+                throw new IOException( "NPANDAY-084-004: " + e.toString() + " : " + message );
+            }
+            catch ( Exception e )
+            {
+                throw new IOException( "NPANDAY-084-005: " + e.toString() + " : " + message );
+            }
+            catch ( Error e )
+            {
+                throw new IOException( "NPANDAY-084-006: " + e.toString() + " : " + message );
+            }
+        }
+
+        reloaded = true;
+    }
+
+    public void setReloaded( boolean status )
+    {
+        this.reloaded = status;
+    }
+
+    public boolean isReloaded()
+    {
+        return this.reloaded;
+    }    
 
     File getSdkInstallRootFor( String vendor, String vendorVersion, String frameworkVersion )
         throws PlatformUnsupportedException

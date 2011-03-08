@@ -80,4 +80,20 @@ public class ConfigurationAppendersRepository implements Repository
     {
 
     }
+    
+    /**
+     * @see Repository#setSourceUri(String)
+     */
+    public void setSourceUri( String fileUri )
+    {
+        // not supported
+    }
+
+    /**
+     * @see Repository#reload()
+     */
+    public void reload() throws IOException
+    {
+        // not supported
+    }
 }

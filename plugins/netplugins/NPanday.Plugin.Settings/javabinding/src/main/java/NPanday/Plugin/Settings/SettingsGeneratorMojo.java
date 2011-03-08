@@ -19,10 +19,15 @@
 
  package NPanday.Plugin.Settings;
 
+import npanday.artifact.ArtifactContext;
+import npanday.registry.RepositoryRegistry;
+import npanday.registry.impl.StandardRepositoryLoader;
+import npanday.vendor.impl.SettingsRepository;
 import npanday.plugin.FieldAnnotation;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -31,13 +36,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.FileReader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Iterator;
 import org.apache.maven.model.Plugin;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import java.io.BufferedReader;
-import java.io.FileReader;
-
+import java.util.Hashtable;
+import java.io.*;
 
 /**
  * @phase validate
@@ -72,6 +78,11 @@ public class SettingsGeneratorMojo
      */
     private String frameworkVersion;
 
+    /**    
+     * @parameter default-value="false" 
+     */
+    private boolean skip;
+    
     /**
      * @component
      */
@@ -82,6 +93,17 @@ public class SettingsGeneratorMojo
      */
     private npanday.plugin.PluginContext pluginContext;
 
+    /**  
+     * @parameter expression ="${npanday.settings}"
+     */
+    private String settingsPath;
+    
+    /**
+     * @parameter expression = "${npanday.settings}"
+     */
+    @FieldAnnotation()
+    public java.lang.String npandaySettingsPath;    
+    
     public String getMojoArtifactId()
     {
         return "NPanday.Plugin.Settings";
@@ -132,8 +154,10 @@ public class SettingsGeneratorMojo
         return frameworkVersion;
     }
 
-    /** @parameter default-value="false" */
-    private boolean skip;
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
 
     public boolean preExecute()
         throws MojoExecutionException, MojoFailureException
@@ -166,8 +190,12 @@ public class SettingsGeneratorMojo
         throws MojoExecutionException
     {
 
-        String npandaySettings = System.getProperty( "user.home" ) + File.separator + ".m2" + File.separator + "npanday-settings.xml";
-        File file = new File( npandaySettings );
+        if ( settingsPath == null )
+        {
+            settingsPath = System.getProperty( "user.home" ) + "/.m2";
+        }
+        
+        File file = new File( settingsPath, "npanday-settings.xml" );
 
         if ( !file.exists() )
         {
@@ -176,7 +204,19 @@ public class SettingsGeneratorMojo
 
         try
         {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            SettingsRepository settingsRepository = ( SettingsRepository) repositoryRegistry.find( "npanday-settings" );
+
+            if ( settingsRepository != null )
+            {
+                repositoryRegistry.removeRepository( "npanday-settings" );
+            }
+            Hashtable props = new Hashtable();
+            InputStream stream = new FileInputStream( file );    
+            settingsRepository = new SettingsRepository();
+            settingsRepository.setSourceUri( file.getAbsolutePath() );
+            settingsRepository.setRepositoryRegistry( repositoryRegistry );
+            settingsRepository.load( stream, props );
+            repositoryRegistry.addRepository( "npanday-settings", settingsRepository );            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse( file );
             doc.getDocumentElement().normalize();
@@ -231,4 +271,26 @@ public class SettingsGeneratorMojo
        return null;
     }
 
+    public void postExecute()
+        throws MojoExecutionException, MojoFailureException
+    {
+        try
+        {
+            RepositoryRegistry repositoryRegistry = (RepositoryRegistry) container.lookup( RepositoryRegistry.ROLE );
+            SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
+            if ( settingsRepository != null )
+            {
+                settingsRepository.reload();
+            }
+        }
+        catch ( ComponentLookupException e )
+        {
+            e.printStackTrace();
+        }
+        catch ( IOException e )
+        {
+            e.printStackTrace();
+        }
+
+    }
 }

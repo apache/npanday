@@ -33,6 +33,9 @@ namespace NPanday.Plugin.Settings
     {
         public SettingsGeneratorMojo() { }
 
+        [FieldAttribute("npandaySettingsPath", Expression = "${npanday.settings}", Type = "java.lang.String")]
+        public string npandaySettingsPath;
+
 		public override Type GetMojoImplementationType()
 		{
 			return this.GetType();
@@ -40,7 +43,16 @@ namespace NPanday.Plugin.Settings
 
         public override void Execute()
         {
-        	string outputFile = Environment.GetEnvironmentVariable("USERPROFILE") + "/.m2/npanday-settings.xml";
+            string outputFile;
+            if (String.IsNullOrEmpty( npandaySettingsPath ))
+            {
+                outputFile = Environment.GetEnvironmentVariable("USERPROFILE") + "/.m2/npanday-settings.xml";
+            }
+            else
+            {
+                outputFile = npandaySettingsPath + "/npanday-settings.xml";
+            }
+
             XmlSerializer serializer = new XmlSerializer(typeof(npandaySettings));
 
             npandaySettings  settings = new npandaySettings();

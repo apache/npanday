@@ -95,6 +95,22 @@ public final class AssemblyPluginsRepository
     }
 
     /**
+     * @see Repository#setSourceUri(String)
+     */
+    public void setSourceUri( String fileUri )
+    {
+        // not supported
+    }
+
+    /**
+     * @see Repository#reload()
+     */
+    public void reload() throws IOException
+    {
+        // not supported
+    }
+
+    /**
      * Returns all assembly plugins. This list is live and any modification will remain until the next time the application
      * starts.
      *

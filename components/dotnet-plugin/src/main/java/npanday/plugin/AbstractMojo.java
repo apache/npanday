@@ -72,7 +72,7 @@ public abstract class AbstractMojo
     extends org.apache.maven.plugin.AbstractMojo
     implements DotNetMojo, Contextualizable
 {
-    private PlexusContainer container;
+    protected PlexusContainer container;
     
      /**
      * Output directory
@@ -178,6 +178,8 @@ public abstract class AbstractMojo
         } catch (ComponentLookupException e) {
             throw new MojoExecutionException( "NPANDAY-xxx-000", e );
         }
+
+        postExecute();
     }
 
     private void resolveArtifact(Artifact artifact) throws ComponentLookupException, MojoExecutionException {
@@ -322,6 +324,12 @@ public abstract class AbstractMojo
         throws MojoExecutionException, MojoFailureException
     {
         return true;
+    }
+    
+    public void postExecute()
+        throws MojoExecutionException, MojoFailureException
+    {
+
     }
 
 }

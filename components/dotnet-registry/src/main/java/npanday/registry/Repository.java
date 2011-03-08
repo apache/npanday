@@ -72,5 +72,16 @@ public interface Repository
      * @param repositoryRegistry
      */
     void setRepositoryRegistry( RepositoryRegistry repositoryRegistry );
+    
+    /**
+     * Sets the URI of the file used to initialize the repository.
+     * @param fileUri
+     */
+    void setSourceUri( String fileUri );
+
+    /**
+     * Reloads this repository based on the file uri.
+     */
+    void reload() throws IOException;
 
 }

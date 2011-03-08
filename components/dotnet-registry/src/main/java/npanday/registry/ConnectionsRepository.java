@@ -135,6 +135,22 @@ public class ConnectionsRepository
     }
 
     /**
+     * @see Repository#setSourceUri(String)
+     */
+    public void setSourceUri( String fileUri )
+    {
+        // not supported
+    }
+
+    /**
+     * @see Repository#reload()
+     */
+    public void reload()
+    {
+        // not supported
+    }    
+
+    /**
      * Returns unmodifiable set of all data access objects.
      *
      * @return unmodifiable set of all data access objects

@@ -26,6 +26,8 @@ import npanday.executable.ExecutionException;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.impl.SettingsRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -51,6 +53,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.*;
+import java.util.Hashtable;
+import java.io.*;
 
 /**
  * Abstract Class for compile mojos for both test-compile and compile.
@@ -61,6 +65,10 @@ public abstract class AbstractCompilerMojo
         extends AbstractMojo
 {
 
+    /**
+     * @parameter expression ="${npanday.settings}"
+     */
+    private String settingsPath;
 
     /**
      * Skips compiling of unit tests
@@ -699,7 +707,10 @@ public abstract class AbstractCompilerMojo
      */
     protected String testNowarn;
 
-
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
 
     /**
      * Compiles the class files.
@@ -1072,7 +1083,8 @@ public abstract class AbstractCompilerMojo
 		
 		}
 		
-		
+        getNPandaySettingsPath();
+        
 		if (localRepository == null)
         {
             
@@ -1170,7 +1182,12 @@ public abstract class AbstractCompilerMojo
 
     protected boolean isUpToDateWithPomAndSettingsAndDependencies(File targetFile)
     {
-        File settingsFile = new File(localRepository, ".m2/npanday-settings.xml");
+        if ( settingsPath == null )
+        {
+            settingsPath = System.getProperty( "user.home" ) + "/.m2";
+        }
+                
+        File settingsFile = new File( settingsPath, "npanday-settings.xml" );
         Artifact latestDependencyModification =
                 this.getLatestDependencyModification(project.getDependencyArtifacts());
 
@@ -1221,4 +1238,37 @@ public abstract class AbstractCompilerMojo
     }
 
 
+    protected void getNPandaySettingsPath()
+    {
+        if ( settingsPath == null )
+        {
+            settingsPath = System.getProperty( "user.home" ) + "/.m2";
+        }
+                
+        File settingsFile = new File( settingsPath, "npanday-settings.xml" );
+        
+        try
+        {
+            SettingsRepository settingsRepository = ( SettingsRepository) repositoryRegistry.find( "npanday-settings" );
+
+            if ( settingsRepository != null )
+            {
+                System.out.println(  "Removing settingsRepository" );
+                repositoryRegistry.removeRepository( "npanday-settings" );
+            }
+            Hashtable props = new Hashtable();
+            InputStream stream = new FileInputStream( settingsFile );    
+            settingsRepository = new SettingsRepository();
+            settingsRepository.setSourceUri( settingsFile.getAbsolutePath() );
+            settingsRepository.setRepositoryRegistry( repositoryRegistry );
+            settingsRepository.load( stream, props );
+            repositoryRegistry.addRepository( "npanday-settings", settingsRepository );        
+        }   
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }    
+    }
+
+    
 }

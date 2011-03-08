@@ -99,7 +99,7 @@ public class StandardRepositoryLoader
             repository = (Repository) c.newInstance();
             repository.setRepositoryRegistry( repositoryRegistry );
             repository.load( stream, props );
-
+            repository.setSourceUri( fileUri );
         }
         catch ( IOException e )
         {

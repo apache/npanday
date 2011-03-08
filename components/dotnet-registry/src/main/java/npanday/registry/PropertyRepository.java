@@ -81,4 +81,20 @@ public class PropertyRepository
     {
         this.repositoryRegistry = repositoryRegistry;
     }
+
+    /**
+     * @see Repository#setSourceUri(String)
+     */
+    public void setSourceUri( String fileUri )
+    {
+        // not supported
+    }
+
+    /**
+     * @see Repository#reload()
+     */
+    public void reload() throws IOException
+    {
+        // not supported
+    }
 }

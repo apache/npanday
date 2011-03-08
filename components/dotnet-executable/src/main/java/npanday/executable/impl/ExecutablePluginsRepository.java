@@ -81,6 +81,22 @@ public final class ExecutablePluginsRepository
     }
 
     /**
+     * @see Repository#setSourceUri(String)
+     */
+    public void setSourceUri( String fileUri )
+    {
+        // not supported
+    }
+
+    /**
+     * @see Repository#reload()
+     */
+    public void reload() throws IOException
+    {
+        // not supported
+    }
+
+    /**
      * Returns a list of executable capabilities as specified within the executable-plugins.xml file.
      *
      * @return a list of executable capabilities as specified within the executable-plugins.xml file
