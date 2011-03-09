@@ -21,7 +21,7 @@
 Release Notes for NPanday 1.3-incubating
 
   NPanday .NET Build Tool 1.3-incubating release is now available for
-  {{{http://vmbuild.apache.org/archiva/repository/staged-npanday/} download}}.
+  {{{./download.html} download}}.
   
   The {{{./faqs.html} NPanday FAQs}} provides answers to common questions regarding NPanday .NET Build Tool.
 
