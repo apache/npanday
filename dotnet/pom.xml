@@ -35,7 +35,7 @@ under the License.
   </modules>  
   <build> 
     <sourceDirectory>src/main/csharp</sourceDirectory>  
-    <testSourceDirectory>src/test/csharp</testSourceDirectory>
+    <!--<testSourceDirectory>src/test/csharp</testSourceDirectory>-->
     <plugins> 
       <plugin> 
         <groupId>npanday.plugin</groupId>  
@@ -93,7 +93,6 @@ under the License.
 		<plugin>
           <groupId>npanday.plugin</groupId>
 		  <artifactId>maven-mojo-generator-plugin</artifactId>
-          <version>${stable.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>npanday.plugin</groupId>

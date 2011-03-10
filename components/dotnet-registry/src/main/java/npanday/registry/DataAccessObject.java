@@ -42,7 +42,8 @@ public interface DataAccessObject
      * @param className
      * @throws IllegalArgumentException
      */
-    void init(Object dataStoreObject, String id, String className ) throws IllegalArgumentException;
+    //void init(Object dataStoreObject, String id, String className ) throws IllegalArgumentException;
+	void init(String id, String className );
 
     void setRepositoryRegistry(RepositoryRegistry repositoryRegistry);
 }

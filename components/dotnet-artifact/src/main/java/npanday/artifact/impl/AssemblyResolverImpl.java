@@ -122,7 +122,8 @@ public class AssemblyResolverImpl
         }
         
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, artifactResolver );
+
+		dao.init( artifactFactory, artifactResolver );
      
 	 Set<Artifact> artifactDependencies = new HashSet<Artifact>();
         try

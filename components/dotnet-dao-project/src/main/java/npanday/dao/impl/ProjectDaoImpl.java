@@ -48,7 +48,7 @@ import org.codehaus.plexus.util.cli.Commandline;
 import org.codehaus.plexus.util.cli.DefaultConsumer;
 import org.codehaus.plexus.util.cli.StreamConsumer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.openrdf.OpenRDFException;
+/*import org.openrdf.OpenRDFException;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
@@ -63,7 +63,7 @@ import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.w3c.dom.Document;
+*/import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -106,26 +106,17 @@ public final class ProjectDaoImpl
 
     private int storeCounter = 0;
 
-    private RepositoryConnection repositoryConnection;
-
     private String dependencyQuery;
 
     private String projectQuery;
 
     private ArtifactResolver artifactResolver;
     
-    public void init( Object dataStoreObject, String id, String className )
+    public void init( String id, String className )
         throws IllegalArgumentException
-    {
-        if ( dataStoreObject == null || !( dataStoreObject instanceof org.openrdf.repository.Repository ) )
-        {
-            throw new IllegalArgumentException(
-                                                "NPANDAY-180-023: Must initialize with an instance of org.openrdf.repository.Repository" );
-        }
-
+    {   
         this.id = id;
-        this.className = className;
-        this.rdfRepository = (org.openrdf.repository.Repository) dataStoreObject;
+        this.className = className;    
     }
 
     public void init( ArtifactFactory artifactFactory, ArtifactResolver artifactResolver)
@@ -133,36 +124,13 @@ public final class ProjectDaoImpl
         this.artifactFactory = artifactFactory;
         this.artifactResolver = artifactResolver;
         this.className = className;
-        
-        List<ProjectUri> projectUris = new ArrayList<ProjectUri>();
-        projectUris.add( ProjectUri.GROUP_ID );
-        projectUris.add( ProjectUri.ARTIFACT_ID );
-        projectUris.add( ProjectUri.VERSION );
-        projectUris.add( ProjectUri.ARTIFACT_TYPE );
-        projectUris.add( ProjectUri.IS_RESOLVED );
-        projectUris.add( ProjectUri.DEPENDENCY );
-        projectUris.add( ProjectUri.CLASSIFIER );
-
-        dependencyQuery = "SELECT * FROM " + this.constructQueryFragmentFor( "{x}", projectUris );
-
-        projectUris = new ArrayList<ProjectUri>();
-        projectUris.add( ProjectUri.GROUP_ID );
-        projectUris.add( ProjectUri.ARTIFACT_ID );
-        projectUris.add( ProjectUri.VERSION );
-        projectUris.add( ProjectUri.ARTIFACT_TYPE );
-        projectUris.add( ProjectUri.IS_RESOLVED );
-        projectUris.add( ProjectUri.DEPENDENCY );
-        projectUris.add( ProjectUri.CLASSIFIER );
-        projectUris.add( ProjectUri.PARENT );
-
-        projectQuery = "SELECT * FROM " + this.constructQueryFragmentFor( "{x}", projectUris );
     }
 
     public Set<Project> getAllProjects()
         throws IOException
     {
         Set<Project> projects = new HashSet<Project>();
-        TupleQueryResult result = null;
+       /* TupleQueryResult result = null;
         try
         {
             TupleQuery tupleQuery = repositoryConnection.prepareTupleQuery( QueryLanguage.SERQL, projectQuery );
@@ -182,10 +150,7 @@ public final class ProjectDaoImpl
                 }
 
                 // Project project = getProjectFor( groupId, artifactId, version, artifactType, null );
-                /*
-                 * for ( Iterator<Binding> i = set.iterator(); i.hasNext(); ) { Binding b = i.next();
-                 * System.out.println( b.getName() + ":" + b.getValue() ); }
-                 */
+               
                 projects.add( getProjectFor( groupId, artifactId, version, artifactType, classifier ) );
             }
         }
@@ -215,53 +180,17 @@ public final class ProjectDaoImpl
                 }
             }
         }
+		*/
+		
+		//Implement a new getAllProjects
 
         return projects;
-    }
-
-    public void setRdfRepository( Repository repository )
-    {
-        this.rdfRepository = repository;
-    }
-
-    public boolean openConnection()
-    {
-        try
-        {
-            repositoryConnection = rdfRepository.getConnection();
-            repositoryConnection.setAutoCommit( false );
-        }
-        catch ( RepositoryException e )
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    public boolean closeConnection()
-    {
-
-        if ( repositoryConnection != null )
-        {
-            try
-            {
-                repositoryConnection.commit();
-                repositoryConnection.close();
-            }
-            catch ( RepositoryException e )
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public void removeProjectFor( String groupId, String artifactId, String version, String artifactType )
         throws IOException
     {
-        ValueFactory valueFactory = rdfRepository.getValueFactory();
+       /* ValueFactory valueFactory = rdfRepository.getValueFactory();
         URI id = valueFactory.createURI( groupId + ":" + artifactId + ":" + version + ":" + artifactType );
         try
         {
@@ -271,6 +200,9 @@ public final class ProjectDaoImpl
         {
             throw new IOException( e.getMessage() );
         }
+		*/
+		
+		//Investigate behavior of removeProjectFor and Implment 
     }
 
     public Project getProjectFor( String groupId, String artifactId, String version, String artifactType,
@@ -278,8 +210,6 @@ public final class ProjectDaoImpl
         throws IOException
     {
         long startTime = System.currentTimeMillis();
-
-        ValueFactory valueFactory = rdfRepository.getValueFactory();
       
         ProjectDependency project = new ProjectDependency();
         project.setArtifactId( artifactId );
@@ -807,118 +737,11 @@ public final class ProjectDaoImpl
         init( artifactFactory, artifactResolver );
     }
 
-    private void addClassifiersToProject( Project project, RepositoryConnection repositoryConnection,
-                                          Value classifierUri )
-        throws RepositoryException, MalformedQueryException, QueryEvaluationException
+    private void addDependenciesToProject( Project project )
     {
-        String query = "SELECT * FROM {x} p {y}";
-        TupleQuery tq = repositoryConnection.prepareTupleQuery( QueryLanguage.SERQL, query );
-        tq.setBinding( "x", classifierUri );
-        TupleQueryResult result = tq.evaluate();
-
-        while ( result.hasNext() )
-        {
-            BindingSet set = result.next();
-            for ( Iterator<Binding> i = set.iterator(); i.hasNext(); )
-            {
-                Binding binding = i.next();
-                if ( binding.getValue().toString().startsWith( "http://maven.apache.org/artifact/requirement" ) )
-                {
-                    try
-                    {
-                        project.addRequirement( Requirement.Factory.createDefaultRequirement(
-                                                                                              new java.net.URI(
-                                                                                                                binding.getValue().toString() ),
-                                                                                              set.getValue( "y" ).toString() ) );
-                    }
-                    catch ( URISyntaxException e )
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
+         //Implement new way on how to get and add the project dependencies
     }
 
-    private void addDependenciesToProject( Project project, RepositoryConnection repositoryConnection,
-                                           Value dependencyUri )
-        throws RepositoryException, MalformedQueryException, QueryEvaluationException
-    {
-        TupleQuery tq = repositoryConnection.prepareTupleQuery( QueryLanguage.SERQL, dependencyQuery );
-        tq.setBinding( "x", dependencyUri );
-        TupleQueryResult dependencyResult = tq.evaluate();
-        try
-        {
-            while ( dependencyResult.hasNext() )
-            {
-                ProjectDependency projectDependency = new ProjectDependency();
-                BindingSet bs = dependencyResult.next();
-                projectDependency.setGroupId( bs.getBinding( ProjectUri.GROUP_ID.getObjectBinding() ).getValue().toString() );
-                projectDependency.setArtifactId( bs.getBinding( ProjectUri.ARTIFACT_ID.getObjectBinding() ).getValue().toString() );
-                projectDependency.setVersion( bs.getBinding( ProjectUri.VERSION.getObjectBinding() ).getValue().toString() );
-                projectDependency.setArtifactType( bs.getBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding() ).getValue().toString() );
-
-                Binding classifierBinding = bs.getBinding( ProjectUri.CLASSIFIER.getObjectBinding() );
-                if ( classifierBinding != null )
-                {
-                    projectDependency.setPublicKeyTokenId( classifierBinding.getValue().toString().replace( ":", "" ) );
-                }
-
-                project.addProjectDependency( projectDependency );
-                if ( bs.hasBinding( ProjectUri.DEPENDENCY.getObjectBinding() ) )
-                {
-                    addDependenciesToProject( projectDependency, repositoryConnection,
-                                              bs.getValue( ProjectUri.DEPENDENCY.getObjectBinding() ) );
-                }
-            }
-        }
-        finally
-        {
-            dependencyResult.close();
-        }
-    }
-
-    private String constructQueryFragmentFor( String subject, List<ProjectUri> projectUris )
-    {
-        // ProjectUri nonOptionalUri = this.getNonOptionalUriFrom( projectUris );
-        // projectUris.remove( nonOptionalUri );
-
-        StringBuffer buffer = new StringBuffer();
-        buffer.append( subject );
-        for ( Iterator<ProjectUri> i = projectUris.iterator(); i.hasNext(); )
-        {
-            ProjectUri projectUri = i.next();
-            buffer.append( " " );
-            if ( projectUri.isOptional() )
-            {
-                buffer.append( "[" );
-            }
-            buffer.append( "<" ).append( projectUri.getPredicate() ).append( "> {" ).append(
-                                                                                             projectUri.getObjectBinding() ).append(
-                                                                                                                                     "}" );
-            if ( projectUri.isOptional() )
-            {
-                buffer.append( "]" );
-            }
-            if ( i.hasNext() )
-            {
-                buffer.append( ";" );
-            }
-        }
-        return buffer.toString();
-    }
-
-    private ProjectUri getNonOptionalUriFrom( List<ProjectUri> projectUris )
-    {
-        for ( ProjectUri projectUri : projectUris )
-        {
-            if ( !projectUri.isOptional() )
-            {
-                return projectUri;
-            }
-        }
-        return null;
-    }
 
     // TODO: move generateInteropDll, getInteropParameters, getTempDirectory, and execute methods to another class
     private String generateInteropDll( String name, String classifier )

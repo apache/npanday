@@ -82,14 +82,16 @@ public class DataAccessObjectRegistryImpl
         for ( String name : repositoryRegistry.getRepositoryNames() )
         {
             Repository repository = repositoryRegistry.find( name );
+
             if ( repository instanceof ConnectionsRepository )
             {
                 ConnectionsRepository connectionsRepository = (ConnectionsRepository) repository;
+             
                 if ( !isConnectionsRepoLoaded )
                 {
                     try
                     {
-                        connectionsRepository.lazyLoad();
+                           connectionsRepository.lazyLoad();
                         isConnectionsRepoLoaded = true;
                     }
                     catch ( IOException e )

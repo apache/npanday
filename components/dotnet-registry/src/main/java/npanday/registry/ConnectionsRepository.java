@@ -18,10 +18,6 @@
  */
 package npanday.registry;
 
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.sail.memory.MemoryStore;
-
 import org.apache.maven.artifact.factory.ArtifactFactory;
 
 import java.io.InputStream;
@@ -64,20 +60,6 @@ public class ConnectionsRepository
     {
        long start = System.currentTimeMillis();
 
-        File dataDir = new File( System.getProperty( "user.home" ), ".m2/repository" );
-        MemoryStore store = new MemoryStore( dataDir );
-        store.setPersist( true );
-        store.setSyncDelay( 0 );
-        org.openrdf.repository.Repository rdfRepository = new SailRepository( store );
-        try
-        {
-            rdfRepository.initialize();
-        }
-        catch ( RepositoryException e )
-        {
-            throw new IOException("NPANDAY-080-005: Failed to initialized repository. Message = " + e.getMessage());
-        }
-
         Set<String> keys = properties.keySet();
         for ( String keyName : keys )
         {
@@ -95,7 +77,7 @@ public class ConnectionsRepository
                     }
                     DataAccessObject dao = (DataAccessObject) o;
                     
-                    dao.init( rdfRepository, keyName, daoClassName );
+                    dao.init( keyName, daoClassName );
                     dao.setRepositoryRegistry( registry );
                     daos.add( dao );
                     logger.finest( "NPANDAY-080-001: Adding data access object: Class Name = " + daoClassName );

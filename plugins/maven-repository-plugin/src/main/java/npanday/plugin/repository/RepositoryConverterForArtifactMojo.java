@@ -86,8 +86,7 @@ public class RepositoryConverterForArtifactMojo
                                                                                                  project.getBuild().getDirectory() ) );
         try
         {
-            repositoryConverter.convertRepositoryFormatFor( project.getArtifact(), config, rdfRepository,
-                                                            localRepository );
+            repositoryConverter.convertRepositoryFormatFor( project.getArtifact(), config, localRepository );
         }
         catch ( IOException e )
         {
