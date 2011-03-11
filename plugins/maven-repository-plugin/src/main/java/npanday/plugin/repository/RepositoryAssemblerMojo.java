@@ -185,7 +185,7 @@ public class RepositoryAssemblerMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "NPANDAY-1700-009: Message = " + e.getMessage() );
+            throw new MojoExecutionException( "NPANDAY-1700-009: Message = " + e.getMessage(), e );
         }
 
         for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )
@@ -281,7 +281,7 @@ public class RepositoryAssemblerMojo
             }
             catch ( FileNotFoundException e )
             {
-                throw new MojoExecutionException( "NPANDAY-1700-004: Unable to read pom" );
+                throw new MojoExecutionException( "NPANDAY-1700-004: Unable to read pom", e );
             }
             MavenXpp3Reader reader = new MavenXpp3Reader();
             Model model;
@@ -291,12 +291,12 @@ public class RepositoryAssemblerMojo
             }
             catch ( XmlPullParserException e )
             {
-                throw new MojoExecutionException( "NPANDAY-1700-005: Unable to read model" );
+                throw new MojoExecutionException( "NPANDAY-1700-005: Unable to read model", e );
 
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "NPANDAY-1700-006: Unable to read model" );
+                throw new MojoExecutionException( "NPANDAY-1700-006: Unable to read model", e );
             }
 
             Parent parent = model.getParent();

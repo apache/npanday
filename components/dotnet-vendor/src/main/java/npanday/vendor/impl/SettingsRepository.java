@@ -154,15 +154,15 @@ public final class SettingsRepository
             }
             catch ( IOException e )
             {
-                throw new IOException( "NPANDAY-084-004: " + e.toString() + " : " + message );
+                throw new IOException( "NPANDAY-084-004: " + e.toString() + " : " + message, e );
             }
             catch ( Exception e )
             {
-                throw new IOException( "NPANDAY-084-005: " + e.toString() + " : " + message );
+                throw new IOException( "NPANDAY-084-005: " + e.toString() + " : " + message, e );
             }
             catch ( Error e )
             {
-                throw new IOException( "NPANDAY-084-006: " + e.toString() + " : " + message );
+                throw new IOException( "NPANDAY-084-006: " + e.toString() + " : " + message, e );
             }
         }
 

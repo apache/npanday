@@ -74,8 +74,7 @@ public final class AssemblyPluginsRepository
         }
         catch ( XmlPullParserException e )
         {
-            e.printStackTrace();
-            throw new IOException( "NPANDAY-021-000: Could not read plugins-compiler.xml" );
+            throw new IOException( "NPANDAY-021-000: Could not read plugins-compiler.xml", e );
         }
         assemblyPlugins = plugins.getAssemblyPlugins();
         Set languages = getAssemblyPluginLanguages();

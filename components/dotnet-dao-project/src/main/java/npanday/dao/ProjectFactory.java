@@ -132,7 +132,7 @@ public final class ProjectFactory
                 }
                 catch ( XmlPullParserException e )
                 {
-                    throw new IOException( "NPANDAY-180-000: Unable to read model: Message = " + e.getMessage() );
+                    throw new IOException( "NPANDAY-180-000: Unable to read model: Message = " + e.getMessage(), e );
 
                 }
                 //Project parentProject = createProjectFrom( parentModel, parentPomFile.getParentFile() );

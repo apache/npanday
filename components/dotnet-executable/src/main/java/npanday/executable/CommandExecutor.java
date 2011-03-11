@@ -370,7 +370,7 @@ public interface CommandExecutor
                     catch ( CommandLineException e )
                     {
                         throw new ExecutionException(
-                            "NPANDAY-040-002: Could not execute: Command = " + commandline.toString() );
+                            "NPANDAY-040-002: Could not execute: Command = " + commandline.toString(), e );
                     }
                 }
 

@@ -175,15 +175,15 @@ public final class ProjectDaoImpl
         }
         catch ( RepositoryException e )
         {
-            throw new IOException( "NPANDAY-180-000: Message = " + e.getMessage() );
+            throw new IOException( "NPANDAY-180-000: Message = " + e.getMessage(), e );
         }
         catch ( MalformedQueryException e )
         {
-            throw new IOException( "NPANDAY-180-001: Message = " + e.getMessage() );
+            throw new IOException( "NPANDAY-180-001: Message = " + e.getMessage(), e );
         }
         catch ( QueryEvaluationException e )
         {
-            throw new IOException( "NPANDAY-180-002: Message = " + e.getMessage() );
+            throw new IOException( "NPANDAY-180-002: Message = " + e.getMessage(), e );
         }
         finally
         {
@@ -351,15 +351,15 @@ public final class ProjectDaoImpl
         }
         catch ( QueryEvaluationException e )
         {
-            throw new IOException( "NPANDAY-180-005: Message = " + e.getMessage() );
+            throw new IOException( "NPANDAY-180-005: Message = " + e.getMessage(), e);
         }
         catch ( RepositoryException e )
         {
-            throw new IOException( "NPANDAY-180-006: Message = " + e.getMessage() );
+            throw new IOException( "NPANDAY-180-006: Message = " + e.getMessage(), e);
         }
         catch ( MalformedQueryException e )
         {
-            throw new IOException( "NPANDAY-180-007: Message = " + e.getMessage() );
+            throw new IOException( "NPANDAY-180-007: Message = " + e.getMessage(), e);
         }
         finally
         {
@@ -857,7 +857,7 @@ public final class ProjectDaoImpl
 
                 }
             }
-            throw new IOException( "NPANDAY-180-021: Could not open RDF Repository: Message =" + e.getMessage() );
+            throw new IOException( "NPANDAY-180-021: Could not open RDF Repository: Message =" + e.getMessage(), e);
         }
 
         for ( Model model : modelDependencies )
@@ -1280,7 +1280,7 @@ public final class ProjectDaoImpl
         }
         catch ( CommandLineException e )
         {
-            throw new Exception( "NPANDAY-040-002: Could not execute: Command = " + commandline.toString() );
+            throw new Exception( "NPANDAY-040-002: Could not execute: Command = " + commandline.toString(), e);
         }
     }
 

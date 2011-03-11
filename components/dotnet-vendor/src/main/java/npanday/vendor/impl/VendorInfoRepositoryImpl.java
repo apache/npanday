@@ -348,6 +348,6 @@ public class VendorInfoRepositoryImpl
         {
             return new File( System.getenv("SystemRoot"), "\\Microsoft.NET\\assembly\\GAC_MSIL\\" );
         }
-        throw new PlatformUnsupportedException("NPANDAY-xxx-000: Could not locate a valid GAC");
+        throw new PlatformUnsupportedException("NPANDAY-200-002: Could not locate a valid GAC");
     }
 }

@@ -108,8 +108,7 @@ final class DefaultAssemblyInfoMarshaller
         }
         catch ( IOException e )
         {
-            e.printStackTrace();
-            throw new IOException( "NPANDAY-022-000: Failed to generate AssemblyInfo" );
+            throw new IOException( "NPANDAY-022-000: Failed to generate AssemblyInfo", e );
         }
         finally
         {

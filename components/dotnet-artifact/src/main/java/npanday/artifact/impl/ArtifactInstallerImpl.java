@@ -195,12 +195,12 @@ public class ArtifactInstallerImpl
                 catch ( ArtifactResolutionException e )
                 {
                     throw new IOException(
-                        "NPANDAY-001-000: Problem resolving artifact for java binding: Message = " + e.getMessage() );
+                        "NPANDAY-001-000: Problem resolving artifact for java binding: Message = " + e.getMessage(), e);
                 }
                 catch ( ArtifactNotFoundException e )
                 {
                     throw new IOException(
-                        "NPANDAY-001-001: Could not find artifact for java binding: Message =" + e.getMessage() );
+                        "NPANDAY-001-001: Could not find artifact for java binding: Message =" + e.getMessage(), e);
                 }
             }
         }
@@ -218,12 +218,12 @@ public class ArtifactInstallerImpl
             catch ( ArtifactResolutionException e )
             {
                 throw new IOException(
-                    "NPANDAY-001-002: Problem resolving java dependency artifact: Message = " + e.getMessage() );
+                    "NPANDAY-001-002: Problem resolving java dependency artifact: Message = " + e.getMessage(), e);
             }
             catch ( ArtifactNotFoundException e )
             {
                 throw new IOException(
-                    "NPANDAY-001-003: Could not find java dependency artifact: Message = " + e.getMessage() );
+                    "NPANDAY-001-003: Could not find java dependency artifact: Message = " + e.getMessage(), e);
             }
         }
 
@@ -423,7 +423,7 @@ public class ArtifactInstallerImpl
         catch ( IOException e )
         {
             throw new ArtifactInstallationException(
-                "NPANDAY-001-015: Unable to read model: Message =" + e.getMessage() );
+                "NPANDAY-001-015: Unable to read model: Message =" + e.getMessage(), e);
         }
         IOUtil.close( fileWriter );
         installArtifactWithPom( artifact, tempFile, false );

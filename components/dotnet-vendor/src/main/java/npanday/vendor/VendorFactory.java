@@ -75,7 +75,7 @@ public final class VendorFactory
         }
         else
         {
-            throw new VendorUnsupportedException( "NAMVEN-100-000: Unknown vendor: Name = " + vendorName );
+            throw new VendorUnsupportedException( "NPANDAY-100-000: Unknown vendor: Name = " + vendorName );
         }
     }
 }

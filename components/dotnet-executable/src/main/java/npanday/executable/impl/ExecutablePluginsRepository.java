@@ -70,8 +70,7 @@ public final class ExecutablePluginsRepository
         }
         catch ( XmlPullParserException e )
         {
-            e.printStackTrace();
-            throw new IOException( "NPANDAY-067-000: Could not read executable-plugins.xml" );
+            throw new IOException( "NPANDAY-067-000: Could not read executable-plugins.xml", e );
         }
         executablePlugins = plugins.getExecutablePlugins();
     }

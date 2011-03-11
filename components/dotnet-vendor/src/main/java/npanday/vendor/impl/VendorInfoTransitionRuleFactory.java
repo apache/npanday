@@ -108,7 +108,7 @@ final class VendorInfoTransitionRuleFactory
         }
         catch ( VendorUnsupportedException e )
         {
-            throw new InitializationException( "NPANDAY-103-002: Unknown Default Vendor: Name = " + defaultVendor );
+            throw new InitializationException( "NPANDAY-103-002: Unknown Default Vendor: Name = " + defaultVendor, e );
         }
         defaultVendorVersion = settingsRepository.getDefaultSetup().getVendorVersion().trim();
         defaultFrameworkVersion = settingsRepository.getDefaultSetup().getFrameworkVersion().trim();

@@ -86,8 +86,7 @@ public class NetDependenciesRepositoryImpl
         }
         catch ( XmlPullParserException e )
         {
-            e.printStackTrace();
-            throw new IOException( "NPANDAY-003-000: Could not read net-dependencies.xml" );
+            throw new IOException( "NPANDAY-003-000: Could not read net-dependencies.xml", e );
         }
         netDependencies = model.getNetDependencies();
         String npandayVersion = (String) properties.get( "npanday.version" );

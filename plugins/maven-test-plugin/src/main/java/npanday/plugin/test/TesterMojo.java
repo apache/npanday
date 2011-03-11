@@ -437,7 +437,7 @@ extends AbstractMojo
         catch ( ExecutionException e )
         {
             String line = System.getProperty( "line.separator" );
-            throw new MojoFailureException( "NPANDAY-1100-007: There are test failures." + line + line + e.getMessage() );
+            throw new MojoFailureException( "NPANDAY-1100-007: There are test failures." + line + line + e.getMessage(), e);
         }
     }
 }

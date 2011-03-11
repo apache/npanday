@@ -174,7 +174,7 @@ public class AssemblyInfoGeneratorMojo
         }
         catch ( VendorUnsupportedException e )
         {
-            throw new MojoExecutionException( "NPANDAY-902-007: Vendor not supported: Vendor = " + vendor );
+            throw new MojoExecutionException( "NPANDAY-902-007: Vendor not supported: Vendor = " + vendor, e);
         }
 
         AssemblyInfo assemblyInfo = assemblerContext.getAssemblyInfo();
@@ -187,7 +187,7 @@ public class AssemblyInfoGeneratorMojo
         catch ( npanday.vendor.IllegalStateException e )
         {
             throw new MojoExecutionException(
-                "NPANDAY-902-008: Illegal state of vendor info: Message =  " + e.getMessage() );
+                "NPANDAY-902-008: Illegal state of vendor info: Message =  " + e.getMessage(), e);
         }
 
         if ( vendorInfo.getVendor().equals( Vendor.MICROSOFT ) && vendorInfo.getVendorVersion().equals( "1.1.4322" ) )
