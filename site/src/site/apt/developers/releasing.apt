@@ -124,7 +124,9 @@ Testing the Release Candidate
 
 Voting on the Release
 
-  Post the Majority of Vote on the results of the release.
+  After the 72 hr window for testing, send out an email to the dev list <<<npanday-dev@incubator.apache.org>>> for the official <<VOTE>> that would be open for 72 hours.  
+  
+  <<Note:>> If the project is still under incubator, send out an email to the incubator PMC <<<general@incubator.apache.org>>> for approval of the release.
 
 Finalising the Release
 
