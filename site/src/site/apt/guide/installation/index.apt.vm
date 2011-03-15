@@ -27,8 +27,8 @@ Pre-requisites
 
     * Maven 2.0.9 or above (see {{{http://maven.apache.org/download.html} Maven's download page}} for instructions).
 
-    * Java Runtime Environment (JRE) 1.5 or greater. Also, the <<<JAVA_HOME>>> environment variable
-      must be set to the directory where the JRE is installed, for example, <<<C:\\Program Files\\Java\\jre1.5.0_06>>>.
+    * Java Development Kit (JDK) 1.6 or greater. Also, the <<<JAVA_HOME>>> environment variable
+      must be set to the directory where the JDK is installed, for example, <<<C:\\Program Files\\Java\\jdk1.6.0>>>.
       The <<<java>>> executable must also be available on your path.
 
     * Visual Studio 2005 (SP1) or the .NET 2.0 SDK for developing .NET 2.0 applications and libraries
