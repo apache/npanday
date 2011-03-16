@@ -1253,7 +1253,6 @@ public abstract class AbstractCompilerMojo
 
             if ( settingsRepository != null )
             {
-                System.out.println(  "Removing settingsRepository" );
                 repositoryRegistry.removeRepository( "npanday-settings" );
             }
             Hashtable props = new Hashtable();
