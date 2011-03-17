@@ -29,7 +29,7 @@ under the License.
   <artifactId>npanday-project</artifactId>  
   <packaging>pom</packaging>  
   <version>2.0-SNAPSHOT</version>  
-  <name>NPanday</name>  
+  <name>Apache NPanday</name>  
   <url>http://incubator.apache.org/npanday/</url>
   <description>NPanday provides Maven plugins to support building of .NET applications</description>  
   <mailingLists> 
