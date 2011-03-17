@@ -704,9 +704,10 @@
 
 
 ===========================================================================================================================
-=   For jdom-1.0.jar:                                                                                                     =
+=   The following librarie(s) are licensed under MIT License:                                                             =
 =                                                                                                                         =
-===                                                                                                                     ===
+=   * org/slf4j/slf4j-api/1.3.0/slf4j-api-1.3.0.jar                                                                       =
+=   * org/slf4j/slf4j-jdk14/1.3.0/slf4j-jdk14-1.3.0.jar                                                                   = ====                                                                                                                    ===                   
    
    Copyright (c) 2004-2008 QOS.ch All rights reserved. Permission is hereby granted, free 
    of charge, to any person obtaining a copy of this software and associated documentation 
@@ -723,10 +724,8 @@
 ===========================================================================================================================
 
 ===========================================================================================================================
-=   The following librarie(s) are licensed under MIT License:                                                             =
 =                                                                                                                         =
-=   * org/slf4j/slf4j-api/1.3.0/slf4j-api-1.3.0.jar                                                                       =
-=   * org/slf4j/slf4j-jdk14/1.3.0/slf4j-jdk14-1.3.0.jar                                                                   =
+=   For jdom-1.0.jar:                                                                                                     =
 ===                                                                                                                     === 
 /*--
 
