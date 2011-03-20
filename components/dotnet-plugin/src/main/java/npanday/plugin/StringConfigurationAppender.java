@@ -34,11 +34,17 @@ public class StringConfigurationAppender
         Object value = fieldInfo.getValue();
         if ( ! ( value instanceof String ) )
         {
-            throw new MojoExecutionException( "" );
+            if ( value != null )
+            {
+                System.out.println( "CLASS:" + value.getClass().getName() );
+                throw new MojoExecutionException( "" );
+            }
         }
-
-        Node n1 = document.createElement( fieldInfo.getName());
-        n1.setTextContent( (String) fieldInfo.getValue() );
-        element.appendChild( n1 );
+        else
+        {
+            Node n1 = document.createElement( fieldInfo.getName());
+            n1.setTextContent( (String) fieldInfo.getValue() );
+            element.appendChild( n1 );
+        }
     }
 }
