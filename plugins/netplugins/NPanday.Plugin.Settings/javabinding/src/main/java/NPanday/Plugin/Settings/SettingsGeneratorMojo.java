@@ -210,13 +210,17 @@ public class SettingsGeneratorMojo
             {
                 repositoryRegistry.removeRepository( "npanday-settings" );
             }
-            Hashtable props = new Hashtable();
-            InputStream stream = new FileInputStream( file );    
-            settingsRepository = new SettingsRepository();
-            settingsRepository.setSourceUri( file.getAbsolutePath() );
-            settingsRepository.setRepositoryRegistry( repositoryRegistry );
-            settingsRepository.load( stream, props );
-            repositoryRegistry.addRepository( "npanday-settings", settingsRepository );            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            try
+            {
+                StandardRepositoryLoader repoLoader = new StandardRepositoryLoader();
+                repoLoader.setRepositoryRegistry( repositoryRegistry );
+                settingsRepository = (SettingsRepository) repoLoader.loadRepository( file.getAbsolutePath(), SettingsRepository.class.getName(), new Hashtable() );
+                repositoryRegistry.addRepository( "npanday-settings", settingsRepository );
+            }
+            catch ( IOException e )
+            {
+            }
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse( file );
             doc.getDocumentElement().normalize();

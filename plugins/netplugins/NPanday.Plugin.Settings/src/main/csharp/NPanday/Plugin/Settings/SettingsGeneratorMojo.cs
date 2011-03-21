@@ -74,27 +74,23 @@ namespace NPanday.Plugin.Settings
             }
 
             npandaySettingsVendorsVendor[] monoVendors = null;
-            npandaySettingsVendorsVendor dotGnuVendor = null;
-            
-            if ( File.Exists( outputFile ))
+            try
             {
-                try
-                {
-                    monoVendors = GetVendorsForMono(monoRegistryKey, defaultMonoCLR);
-                }
-                catch(ExecutionException e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
+                monoVendors = GetVendorsForMono(monoRegistryKey, defaultMonoCLR);
+            }
+            catch(ExecutionException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
 
-                try
-                {
-                    dotGnuVendor = GetVendorForGnu(Environment.GetEnvironmentVariable("CSCC_LIB_PATH"));
-                }
-                catch(ExecutionException e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
+            npandaySettingsVendorsVendor dotGnuVendor = null;
+            try
+            {
+                dotGnuVendor = GetVendorForGnu(Environment.GetEnvironmentVariable("CSCC_LIB_PATH"));
+            }
+            catch(ExecutionException e)
+            {
+                Console.WriteLine(e.ToString());
             }
             int monoVendorsLength = (monoVendors == null) ? 0: monoVendors.Length;
             int dotGnuVendorLength = (dotGnuVendor == null) ? 0: 1;
