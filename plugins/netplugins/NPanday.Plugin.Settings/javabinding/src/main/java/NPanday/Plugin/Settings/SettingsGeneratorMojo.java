@@ -78,11 +78,11 @@ public class SettingsGeneratorMojo
      */
     private String frameworkVersion;
 
-    /**    
-     * @parameter default-value="false" 
+    /**
+     * @parameter default-value="false"
      */
     private boolean skip;
-    
+
     /**
      * @component
      */
@@ -93,17 +93,17 @@ public class SettingsGeneratorMojo
      */
     private npanday.plugin.PluginContext pluginContext;
 
-    /**  
+    /**
      * @parameter expression ="${npanday.settings}"
      */
     private String settingsPath;
-    
+
     /**
      * @parameter expression = "${npanday.settings}"
      */
     @FieldAnnotation()
-    public java.lang.String npandaySettingsPath;    
-    
+    public java.lang.String npandaySettingsPath;
+
     public String getMojoArtifactId()
     {
         return "NPanday.Plugin.Settings";
@@ -171,13 +171,20 @@ public class SettingsGeneratorMojo
         {
             return false;
         }
-        
+
         Plugin compilePlugin = lookupCompilePlugin();
 
         if ( compilePlugin != null )
         {
             frameworkVersion = getProjectFrameworkVersion( (Xpp3Dom) compilePlugin.getConfiguration() );
-            if ( isFrameworkVersionExisting( frameworkVersion ) )
+            try
+            {
+                if ( isFrameworkVersionExisting( frameworkVersion ) )
+                {
+                    return false;
+                }
+            }
+            catch ( IOException e )
             {
                 return false;
             }
@@ -187,14 +194,14 @@ public class SettingsGeneratorMojo
     }
 
     public boolean isFrameworkVersionExisting(String frameworkVersion)
-        throws MojoExecutionException
+        throws MojoExecutionException, IOException
     {
 
         if ( settingsPath == null )
         {
             settingsPath = System.getProperty( "user.home" ) + "/.m2";
         }
-        
+
         File file = new File( settingsPath, "npanday-settings.xml" );
 
         if ( !file.exists() )
@@ -202,29 +209,26 @@ public class SettingsGeneratorMojo
             return false;
         }
 
+        SettingsRepository settingsRepository = ( SettingsRepository) repositoryRegistry.find( "npanday-settings" );
+
+        if ( settingsRepository != null )
+        {
+            repositoryRegistry.removeRepository( "npanday-settings" );
+        }
+
         try
         {
-            SettingsRepository settingsRepository = ( SettingsRepository) repositoryRegistry.find( "npanday-settings" );
+            // load npanday-settings and store in registry
+            StandardRepositoryLoader repoLoader = new StandardRepositoryLoader();
+            repoLoader.setRepositoryRegistry( repositoryRegistry );
+            settingsRepository = (SettingsRepository) repoLoader.loadRepository( file.getAbsolutePath(), SettingsRepository.class.getName(), new Hashtable() );
+            repositoryRegistry.addRepository( "npanday-settings", settingsRepository );
 
-            if ( settingsRepository != null )
-            {
-                repositoryRegistry.removeRepository( "npanday-settings" );
-            }
-            try
-            {
-                StandardRepositoryLoader repoLoader = new StandardRepositoryLoader();
-                repoLoader.setRepositoryRegistry( repositoryRegistry );
-                settingsRepository = (SettingsRepository) repoLoader.loadRepository( file.getAbsolutePath(), SettingsRepository.class.getName(), new Hashtable() );
-                repositoryRegistry.addRepository( "npanday-settings", settingsRepository );
-            }
-            catch ( IOException e )
-            {
-            }
+            // check if npanday-settings contains the framework
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse( file );
             doc.getDocumentElement().normalize();
-
             NodeList nodeList = doc.getElementsByTagName( "frameworkVersion" );
             for ( int i = 0; i < nodeList.getLength(); i++ )
             {
@@ -236,10 +240,12 @@ public class SettingsGeneratorMojo
                 }
             }
         }
-        catch ( Exception ex )
+        catch ( Exception e )
         {
+            throw new IOException( "Error opening/parsing settings.xml", e );
         }
-        return false; 
+
+        return false;
     }
 
     private Plugin lookupCompilePlugin()
