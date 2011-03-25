@@ -22,7 +22,7 @@ under the License.
     <repository>
       <repository-name>npanday-settings</repository-name>
       <repository-class>npanday.vendor.impl.SettingsRepository</repository-class>
-      <repository-config>${npanday.settings}</repository-config>
+      <repository-config>${user.home}/.m2/npanday-settings.xml</repository-config>
       <init-param>
         <param-name>optional</param-name>
         <param-value>true</param-value>
