@@ -419,18 +419,11 @@ public class NetExecutableFactoryImpl
         executableRequirement.setProfile( profile );
 
         ExecutableConfig executableConfig = ExecutableConfig.Factory.createDefaultExecutableConfig();
-        
-		executableConfig.setCommands( commands );
+        executableConfig.setCommands( commands );
 
         List<String> executablePaths = ( executableConfig.getExecutionPaths() == null ) ? new ArrayList<String>()
             : executableConfig.getExecutionPaths();
-        
-		if (netHome == null)
-		{
-			netHome = getNetHome();
-		}
-		
-		if ( netHome != null )
+        if ( netHome != null )
         {
             logger.info( "NPANDAY-066-014: Found executable path in pom: Path = " + netHome.getAbsolutePath() );
             executablePaths.add( netHome.getAbsolutePath() );
@@ -462,34 +455,4 @@ public class NetExecutableFactoryImpl
             throw new PlatformUnsupportedException( "NPANDAY-066-001: Unable to find net executable", e );
         }
     }
-	
-	private File getNetHome()
-	{
-		String nHome = "";
-		
-		// 32 bit system
-		if( new File("C:/Program Files/Microsoft SDKs/Windows/v6.0A/bin/gacutil.exe").exists() &&  new File("C:/Program Files/Microsoft SDKs/Windows/v6.0A/bin/xsd.exe").exists() )
-		{
-			nHome = "C:/Program Files/Microsoft SDKs/Windows/v6.0A/bin";
-		}
-		if( new File("C:/Program Files/Microsoft SDKs/Windows/v7.0A/bin/gacutil.exe").exists() &&  new File("C:/Program Files/Microsoft SDKs/Windows/v7.0A/bin/xsd.exe").exists() )
-		{
-			nHome = "C:/Program Files/Microsoft SDKs/Windows/v7.0A/bin";
-		}
-		
-		// 64 bit system
-		if ( nHome != "" )
-		{
-			if( new File("C:/Program Files (x86)/Microsoft SDKs/Windows/v6.0A/bin/gacutil.exe").exists() &&  new File("C:/Program Files (x86)/Microsoft SDKs/Windows/v6.0A/bin/xsd.exe").exists() )
-			{
-				nHome = "C:/Program Files/Microsoft SDKs/Windows/v6.0A/bin";
-			}
-			if( new File("C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/bin/gacutil.exe").exists() &&  new File("C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/bin/xsd.exe").exists() )
-			{
-				nHome = "C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/bin";
-			}
-		}
-		
-		return new File(nHome);
-	}
 }
