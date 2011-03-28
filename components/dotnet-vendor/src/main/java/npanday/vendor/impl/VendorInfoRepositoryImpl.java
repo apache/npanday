@@ -161,10 +161,21 @@ public class VendorInfoRepositoryImpl
                 VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
                 vendorInfo.setVendorVersion( v.getVendorVersion() );
                 List<File> executablePaths = new ArrayList<File>();
+
+                // add .NET install root as path
                 executablePaths.add(new File( framework.getInstallRoot() ));
+
+                // add .NET-SDK install root as path
                 if(framework.getSdkInstallRoot() != null)
                 {
                     executablePaths.add( new File(framework.getSdkInstallRoot()));
+                }
+
+                // copy configured additional execution paths
+                if (framework.getExecutablePaths() != null) {
+                    for(Object path: framework.getExecutablePaths()) {
+                        executablePaths.add( new File((String)path) );
+                    }
                 }
                 vendorInfo.setExecutablePaths( executablePaths );
                 vendorInfo.setFrameworkVersion( framework.getFrameworkVersion() );
