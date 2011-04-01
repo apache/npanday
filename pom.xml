@@ -221,9 +221,12 @@ under the License.
     <module>archetypes</module>  
     <module>plugins</module>  
     <module>dotnet</module>
-    <module>misc/dotnet-repository-builder</module>
+    <!--
+	  MOVED TO RELEASE PROFILE
+	  <module>misc/dotnet-repository-builder</module>
     <module>misc/npanday-repository-builder</module>
     <module>misc/npanday-installer</module>
+    -->
   </modules>  
   <build> 
     <plugins>	
@@ -250,7 +253,7 @@ under the License.
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>  
         <artifactId>maven-compiler-plugin</artifactId>  
-        <configuration> 
+        <configuration>
           <source>1.5</source>  
           <target>1.5</target> 
         </configuration> 
@@ -501,6 +504,11 @@ under the License.
     </profile>
     <profile>
       <id>npanday-release</id>
+	  <modules>
+		<module>misc/dotnet-repository-builder</module>
+		<module>misc/npanday-repository-builder</module>
+		<module>misc/npanday-installer</module>	
+	  </modules>
       <build>
         <plugins>
           <!-- Fail fast: the release build must run on Windows for the Add-in -->
