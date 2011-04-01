@@ -51,27 +51,27 @@ under the License.
         <plugin>
           <groupId>npanday.plugin</groupId>
           <artifactId>maven-compile-plugin</artifactId>  
-          <version>${stable.npanday.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>npanday.plugin</groupId>
           <artifactId>maven-resgen-plugin</artifactId>  
-          <version>${stable.npanday.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>npanday.plugin</groupId>
           <artifactId>maven-repository-plugin</artifactId>  
-          <version>${stable.npanday.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>npanday.plugin</groupId>
           <artifactId>maven-install-plugin</artifactId>  
-          <version>${stable.npanday.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>npanday.plugin</groupId>
           <artifactId>maven-resolver-plugin</artifactId>
-		  <version>${stable.npanday.version}</version>
+		  <version>${bootstrap.npanday.version}</version>
           <configuration>
             <skip>true</skip>
           </configuration>
@@ -79,12 +79,12 @@ under the License.
 		<plugin>
           <groupId>npanday.plugin</groupId>
 		  <artifactId>maven-xsd-plugin</artifactId>
-          <version>${stable.npanday.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
 		<plugin>
           <groupId>npanday.plugin</groupId>
 		  <artifactId>maven-test-plugin</artifactId>
-          <version>${stable.npanday.version}</version>
+          <version>${bootstrap.npanday.version}</version>
           <configuration>
              <forceX86>true</forceX86>
           </configuration>
@@ -92,12 +92,12 @@ under the License.
 		<plugin>
           <groupId>npanday.plugin</groupId>
 		  <artifactId>maven-mojo-generator-plugin</artifactId>
-          <version>${stable.npanday.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>npanday.plugin</groupId>
           <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>
-		  <version>${stable.npanday.version}</version>
+		  <version>${bootstrap.npanday.version}</version>
           <configuration>
             <skip>true</skip>
           </configuration>

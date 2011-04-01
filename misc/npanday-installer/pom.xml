@@ -134,7 +134,7 @@ under the License.
       <plugin>
         <groupId>npanday.plugin</groupId>
         <artifactId>maven-compile-plugin</artifactId>
-        <version>${stable.npanday.version}</version>
+        <version>${bootstrap.npanday.version}</version>
         <extensions>true</extensions>
       </plugin>
       <plugin>
