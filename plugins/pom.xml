@@ -130,7 +130,8 @@ under the License.
       </plugin>  
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>  
-        <artifactId>maven-jxr-plugin</artifactId> 
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.2</version>
       </plugin> 
     </plugins> 
   </reporting>  
