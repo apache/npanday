@@ -83,7 +83,8 @@ namespace NPanday.Plugin.Settings
                 }
                 catch (ExecutionException e)
                 {
-                    Console.WriteLine(e.ToString());
+                    if (microsoftVendors == null)
+                        Console.WriteLine(e.ToString());
                 }
 
                 try
@@ -92,7 +93,8 @@ namespace NPanday.Plugin.Settings
                 }
                 catch (ExecutionException e)
                 {
-                    Console.WriteLine(e.ToString());
+                    if (microsoftVendors == null)
+                        Console.WriteLine(e.ToString());
                 }
             }
             int monoVendorsLength = (monoVendors == null) ? 0 : monoVendors.Length;
@@ -151,7 +153,7 @@ namespace NPanday.Plugin.Settings
         protected npandaySettingsVendorsVendor GetVendorForGnu(String libPath)
         {
             if (libPath == null)
-                throw new ExecutionException("NPANDAY-9011-000: No CSCC_LIB_PATH Found");
+                throw new ExecutionException("NPANDAY-9011-000: Could not detect GNU vendor: No CSCC_LIB_PATH Found");
 
             if (libPath.EndsWith("lib" + Path.DirectorySeparatorChar + "cscc" + Path.DirectorySeparatorChar + "lib"))
             {
@@ -249,6 +251,10 @@ namespace NPanday.Plugin.Settings
                 vf.frameworkVersion = "3.0";
                 vendorFrameworks[0] = vf;
                 vf.sdkInstallRoot = sdkInstallRoot20;
+
+                // 3.0 does not have it's own compilers, so the bins from 2.0 will do the job here
+                vf.executablePaths = new string[] { dirInfo20.FullName };
+
                 FindAndAssignExecutablePaths(vf);
                 vendor.frameworks = vendorFrameworks;
                 vendors.Add(vendor);
@@ -313,7 +319,8 @@ namespace NPanday.Plugin.Settings
         private npandaySettingsVendorsVendor[] GetVendorsForMono(RegistryKey monoRegistryKey, string defaultMonoCLR)
         {
             if (monoRegistryKey == null)
-                throw new ExecutionException("NPANDAY-9011-007: Mono installation czould not be found.");
+                throw new ExecutionException("NPANDAY-9011-007: Mono installation could not be found.");
+
             npandaySettingsVendorsVendor[] vendors = new npandaySettingsVendorsVendor[monoRegistryKey.SubKeyCount];
             int i = 0;
             foreach (string keyName in monoRegistryKey.GetSubKeyNames())
