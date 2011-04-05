@@ -294,12 +294,12 @@ public interface CommandExecutor
                         public String toString()
                         {
                             StringBuffer strBuff = new StringBuffer("");
-                            for(String command : getShellCommandline())
+                            for(String command : getEscapedShellCommandline())
                             {
                                 strBuff.append(" ");
-                                strBuff.append(escapeCmdParams(command));
+                                strBuff.append(command);
                             }
-                            return strBuff.toString().trim();
+                            return strBuff.toString();
                         }
 
                         public String[] getEscapedShellCommandline()

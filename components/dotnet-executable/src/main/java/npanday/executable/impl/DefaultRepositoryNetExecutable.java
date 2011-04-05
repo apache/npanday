@@ -98,14 +98,16 @@ public class DefaultRepositoryNetExecutable
         catch ( ExecutionException e )
         {
             throw new ExecutionException( "NPANDAY-063-000: Execution Path = " +
-                ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Command = " +
+                ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Executable = " + getExecutable() + ", Args = " +
                 commands, e );
         }
         if ( commandExecutor.getStandardOut().contains( "error" )
           && !commandExecutor.getStandardOut().contains( "exit code = 0" ) )        
         {
             throw new ExecutionException(
-                "NPANDAY-063-001: Executable = " + getExecutable() + ",Command = " + commands );
+                "NPANDAY-063-001: Execution Path = " +
+                ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Executable = " + getExecutable() + ", Args = " +
+                commands );
         }
     }
 

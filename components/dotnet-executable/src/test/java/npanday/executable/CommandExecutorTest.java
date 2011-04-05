@@ -18,72 +18,158 @@
  */
 package npanday.executable;
 
+import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import npanday.executable.CommandExecutor;
 
 
 public class CommandExecutorTest
+{
+    private static final String MKDIR = "mkdir";
+
+    private String parentPath;
+
+    private List<String> params = new ArrayList<String>();
+
+    private CommandExecutor cmdExecutor;
+
+    public CommandExecutorTest()
     {
-        private static final String MKDIR = "mkdir";
-        private String parentPath;
-        private List<String> params = new ArrayList<String>();
-        private CommandExecutor cmdExecutor;
+        File f = new File( "test" );
+        parentPath = System.getProperty( "user.dir" ) + File.separator + "target" + File.separator + "test-resources";
 
-        public CommandExecutorTest()
+        File parentPathFile = new File( parentPath );
+        if ( !parentPathFile.exists() )
         {
-            File f = new File( "test" );
-            parentPath = System.getProperty( "user.dir" ) + File.separator + "target" + File.separator + "test-resources";
-
-            File parentPathFile = new File(parentPath);
-            if (!parentPathFile.exists())
-                parentPathFile.mkdir();
-
-            cmdExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+            parentPathFile.mkdir();
         }
 
-        @Test
-        public void testParamWithNoSpaces()
-            throws ExecutionException
-        {
-            String path = parentPath + File.separator + "sampledirectory";
-
-            params.clear();
-            params.add(path);
-
-            cmdExecutor.executeCommand( MKDIR, params );
-            File dir = new File( path );
-
-            assertTrue( dir.exists() );
-
-            if (dir.exists())
-                dir.delete();
-        }
-
-        @Test
-        public void testParamWithSpaces()
-            throws ExecutionException
-        { 
-            String path = parentPath + File.separator + "sample directory";
-
-            params.clear(); 
-            params.add(path);
-
-            cmdExecutor.executeCommand( MKDIR, params );
-            File dir = new File( path );
-
-            assertTrue( dir.exists() );
-
-            if (dir.exists())
-                dir.delete();
-         }
-
+        cmdExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
     }
+
+    @Test
+    public void testParamWithNoSpaces()
+        throws ExecutionException
+    {
+        String path = parentPath + File.separator + "sampledirectory";
+
+        params.clear();
+        params.add( path );
+
+        cmdExecutor.executeCommand( MKDIR, params );
+        File dir = new File( path );
+
+        assertTrue( dir.exists() );
+
+        if ( dir.exists() )
+        {
+            dir.delete();
+        }
+    }
+
+    @Test
+    public void testParamWithSpaces()
+        throws ExecutionException
+    {
+        String path = parentPath + File.separator + "sample directory";
+
+        params.clear();
+        params.add( path );
+
+        cmdExecutor.executeCommand( MKDIR, params );
+        File dir = new File( path );
+
+        assertTrue( dir.exists() );
+
+        if ( dir.exists() )
+        {
+            dir.delete();
+        }
+    }
+
+    @Test
+    /**
+     test is related to NPANDAY-366
+     */
+    public void testTooLongCommandName()
+        throws ExecutionException
+    {
+        params.clear();
+
+        cmdExecutor.setLogger( new ConsoleLogger( 0, null ) );
+
+        try
+        {
+            cmdExecutor.executeCommand( repeat( 'x', 260 ), params, null, false );
+            fail( "Expected the command to fail!" );
+        }
+        catch ( ExecutionException e )
+        {
+            System.out.println( cmdExecutor.toString() );
+            // the message is language-specific, but better to ensure an error than
+            // ignoring the test
+            // assertEquals( "The input line is too long.", cmdExecutor.getStandardError() );
+            assertEquals( 1, cmdExecutor.getResult() );
+        }
+    }
+
+    @Test
+    /**
+     test is related to NPANDAY-366
+     */
+    public void testTooLongCommandName_withSpace()
+        throws ExecutionException
+    {
+        params.clear();
+
+        cmdExecutor.setLogger( new ConsoleLogger( 0, null ) );
+
+        try
+        {
+            cmdExecutor.executeCommand( "echo " + repeat( 'x', 255 ), params, null, false );
+            fail( "Expected the command to fail!" );
+        }
+        catch ( ExecutionException e )
+        {
+            System.out.println( cmdExecutor.toString() );
+            // the message is language-specific, but better to ensure an error than
+            // ignoring the test
+            // assertEquals( "The input line is too long.", cmdExecutor.getStandardError() );
+            assertEquals( 1, cmdExecutor.getResult() );
+        }
+    }
+
+
+    @Test
+    /**
+     test is related to NPANDAY-366
+     */
+    public void testLongCommand()
+        throws ExecutionException
+    {
+        params.clear();
+
+        cmdExecutor.setLogger( new ConsoleLogger( 0, null ) );
+        params.add( repeat( 'a', 260 ) );
+
+        cmdExecutor.executeCommand( "echo", params, null, false );
+        System.out.println( cmdExecutor.toString() );
+
+        assertEquals( repeat( 'a', 260 ), cmdExecutor.getStandardOut() );
+    }
+
+    private static String repeat( char c, int i )
+    {
+        String tst = "";
+        for ( int j = 0; j < i; j++ )
+        {
+            tst = tst + c;
+        }
+        return tst;
+    }
+}
