@@ -67,20 +67,6 @@ mvn clean install
   If you just wish to work on the Visual Studio Add-in, it can be loaded into Visual Studio and built there. More
   information is available in {{{./debugging-addin.html} Debugging the Visual Studio Add-in}}.
 
-* Building All and executing the ITs
-
-  You can also build the source code and execute the ITs. But first you have to install the ITs in your local repository using the following command:
-  
-----
-mvn clean install
-----
-
-  After you have installed the ITs locally, you can now build the source code and execute the ITs by using the following command:
-  
-----
-mvn clean install -PintegrationTests
-----
-  
 * Running Integration Tests
 
   The Maven command line plugins feature a series of integration tests to ensure that everything is working as
@@ -100,6 +86,9 @@ svn co https://svn.apache.org/repos/asf/incubator/npanday/npanday-its/trunk npan
 mvn test -Prun-its
 ----
 
+  NOTE: In order to successfully run the integration tests, <<<ildasm>>> needs to be on the PATH.
+  (this is to be fixed {{{https://issues.apache.org/jira/browse/NPANDAY-393} NPANDAY-393}})
+
   The command will indicate which version of NPanday is being used, and which tests pass and fail. It will also
   indicate which version of .NET SDK is installed and used by the tests - for example, if .NET 3.5 SDK is not available,
   tests that depend on it will be skipped.
@@ -115,13 +104,32 @@ mvn test -Prun-its -Dnpanday.version=${project.version}
   They are written in Java, using JUnit, and contain a sample project against which <<<mvn>>> is run against, and the
   the expected results are then verified. Existing integration tests can be used as a guide.
 
-* Cleaning the Environment
+* Building NPanday and executing the ITs
 
-  It is common under the current architecture of NPanday to get clashes between versions, so if you are developing on a
-  different version to the one previously run, you may wish to clean up your environment beforehand. The full steps to
-  do so can be found in the {{{../guide/installation/uninstall.html} Uninstalling NPanday}} guide. You will need to
-  rebuild NPanday with the steps above afterwards.
+  You can also build the source code and execute the ITs in one command. But first you have to install the ITs in your
+  local repository using the following command:
 
-  <Note:> Not all steps are always required. The most common source of problems is the <<<uac>>> directory, and in
-          particular the <<<rdfRepository>>> subdirectory, and the <<<npanday.artifacts.resolved>>> file. These can be
-          safely deleted at any time without affecting the system as they will be regenerated.  
+----
+mvn clean install
+----
+
+  After you have installed the ITs locally, you can now build the source code and execute the ITs by
+  using the following command:
+
+----
+mvn clean install -PintegrationTests
+----
+
+* Generating NPanday's documentation locally
+
+  NPanday documentation is generated from {{{http://maven.apache.org/doxia/references/apt-format.html} APT-files}}
+  using the {{{http://maven.apache.org/doxia/index.html} Maven Doxia Tools}}. Some
+
+  The documentation site and PDF can be generated using the following command within the <<<site>>> directory of the
+  NPanday trunk:
+
+----
+mvn site
+----
+
+  Open <<<target/site/index.html>>> in your browser to view the documentation.
