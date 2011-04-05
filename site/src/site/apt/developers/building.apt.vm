@@ -25,26 +25,15 @@ Building NPanday
 
 * Pre-requisites
 
-  You must first have any pre-requisites installed:
+  Since NPanday is built using NPanday, you must fulfil all the prerequisites documented in the
+  {{{../guide/installation/index.html} Installation Guide}}. NPanday trunk usually builds against one
+  of the latest releases. If you want
 
-    * Visual Studio 2005 or above
+  <<NPanday builds using .NET 2.0.>> So, if you do not have Visual Studio 2005 installed, you must install
+  .NET SDK 2.0 or Windows SDK 6.1 (includes .NET SDK 2.0) manually. This is, because neither VS 2008 or VS 2010
+  include the SDK for .NET 2.0. Find the download locations in the Installation Guide.
 
-    * .NET 2.0 runtime, or above
-
-    * .NET 2.0 SDK, or above
-
-    * NUnit 2.2.8 or above
-
-    * Apache Maven 2.0.9 or above
-
-    []
-
-  See the {{{../guide/installation/index.html} Installation Guide}}, and particularly the information on how to
-  {{{../guide/installation/index.html#Set_the_PATH} Set the PATH}} for more information. The easiest way to do this
-  is to run the <Visual Studio 2005 Command Prompt> from the Windows Start menu.
-
-  NUnit in particular must be installed and in the PATH. In some versions, you may need to include the <<<bin\net-2.0>>>
-  directory instead of just the <<<bin>>> directory in your PATH to get the correct test runner version.
+  NUnit-Binaries must be on the PATH environment variable.
   
 * Checking out the Source Code
 
@@ -57,29 +46,6 @@ Building NPanday
 ----
 svn co https://svn.apache.org/repos/asf/incubator/npanday/trunk npanday
 ----
-
-* Enabling additional Remote Repositories
-
-  NPanday has some dependencies that are not in Maven Central. In order to have them downloaded to your local
-  repository you have to uncomment some additional repositories in the <<<repositories>>> section of NPanday's
-  <<<pom.xml>>>, or you can add the following remote repositories to your local <<<settings.xml>>>.
-  
-----
-<repository>
-  <id>npanday.3rdparty</id>
-  <name>NPanday 3rd-Party Repository</name>
-  <url>http://repo.npanday.org/archiva/repository/3rdparty</url>
-  <snapshots>
-	<enabled>false</enabled>
-  </snapshots>
-</repository>
-<repository> 
-  <id>aduna.org</id>  
-  <url>http://repository.aduna-software.org/maven2</url> 
-</repository>
-----
-
-  For performance reasons you should disable them again after the first successful build.
 
 * Building All with Maven
 

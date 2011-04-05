@@ -65,53 +65,15 @@ Version 3.5 SP1
   The SDK usually installs automatically when you install Visual Studio, but you might have to download it
   separately and put it into the right place.
 
-** .NET 2.0 SDK (Visual Studio 2005)
+  When NPanday runs the first time, it will try to detect all installed .NET Frameworks and their
+  corresponding SDKs. The findings are stored into <<<%HOME%\.m2\npanday-settings.xml>>>.
 
-  To make sure you have the SDK, navigate to the following directory on your system: either in
-  <<<C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0>>> or <<<C:\Program Files\Microsoft.NET\SDK\v2.0>>>
+  After installing a required SDK, delete the file in order to let NPanday generate a fresh one.
 
-  Make sure the \v2.0 directory shown above contains all the pieces of the SDK (for example, the \Bin, \include,
-  \CompactFramework, and \Lib directories, among others).
+  Then check if the paths to the targeted .NET Framework and SDK are listed correctly. If not, feel free to
+  file a bug in the projects {{{../../issue-tracking.html} issue tracker}}.
 
-  <<Note>>: These are the default directories and it may be installed elsewhere on your system.
-
-  If the directory structure/folder shown above does not exist or is empty, download the SDK from the following
-  location: {{http://msdn2.microsoft.com/enus/downloads/default.aspx}}
-
-  <<Note>>: It is not necessary to move the SDK after you download it (for example, to the location where Visual Studio
-  puts it). Just make sure your PATH environment variable points to its location, as described in the PATH environment
-  variable prerequisite information, below.
-
-** .NET 3.5 SDK (Visual Studio 2008)
-
-  Verify that your system includes the following .NET Install Root directory:
-  <<<C:\WINDOWS\Microsoft.NET\Framework\v3.5>>>
-
-  <<Note>>: This directory should be in place by default from your Microsoft installation procedures.
-  If it is not, refer to the appropriate Microsoft documentation for help.
-
-** PATH
-
-  The PATH environment variable must be set such that it can find the following:
-
-    * The csc executable directory, the default path for which is: <<<C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5>>>
-      (or equivalent for .NET 2.0)
-
-    * The devenv executable directory, the default path is typically:
-      <<<C:\\Program Files\\Microsoft Visual Studio 9.0\\Common7\\IDE>>> (or equivalent for Visual Studio 2005)
-
-    []
-
-  Typically, the the <<<PATH>>> environment variable will look similar to this:
-
-+------+
-PATH=%PATH%;C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE;C:\WINDOWS\Microsoft.NET\Framework\v3.5;
-C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft Visual Studio 9\SDK\v3.5\bin;
-C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin
-+------+
-
-  <<Note>>: To successfully install the NPanday add-in on machines with only Visual Studio 2008 installed, add this in 
-  the PATH: <<<C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A\bin>>>.
+  As a workaround, you can execute NPanday in the corresponding command prompt (e.g. Visual Studio 2010 Command Prompt).
 
 * Clearing the Visual Studio Add-in Cache
 

@@ -27,98 +27,27 @@ Pre-requisites
 
     * Maven 2.0.9 or above (see {{{http://maven.apache.org/download.html} Maven's download page}} for instructions).
 
-    * Java Development Kit (JDK) 1.6 or greater. Also, the <<<JAVA_HOME>>> environment variable
+    * Java Development Kit (JDK) 1.6 or greater ({{{http://www.oracle.com/technetwork/java/javase/downloads/index.html} Java SE Downloads}}). Also, the <<<JAVA_HOME>>> environment variable
       must be set to the directory where the JDK is installed, for example, <<<C:\\Program Files\\Java\\jdk1.6.0>>>.
       The <<<java>>> executable must also be available on your path.
 
-    * Visual Studio 2005 (SP1) or the .NET 2.0 SDK for developing .NET 2.0 applications and libraries
+    * Visual Studio 2005 (SP1) or the .NET 2.0 SDK for developing .NET 2.0 applications and libraries (.NET 2.0 SDK: {{{http://www.microsoft.com/downloads/details.aspx?FamilyID=fe6f2099-b7b4-4f47-a244-c96d69c35dec&displaylang=en} x86}}, {{{http://www.microsoft.com/downloads/en/details.aspx?FamilyID=1AEF6FCE-6E06-4B66-AFE4-9AAD3C835D3D} x64}})
 
-    * Visual Studio 2008 (SP1) or the {{{http://www.microsoft.com/downloads/en/details.aspx?FamilyID=c17ba869-9671-4330-a63e-1fd44e0e2505&displaylang=en} Windows 7 SDK for .NET 3.5 SP1 }} for developing .NET 3.5 (and earlier) applications and
-      libraries
+    * Visual Studio 2008 (SP1) or the {{{http://www.microsoft.com/downloads/en/details.aspx?FamilyID=c17ba869-9671-4330-a63e-1fd44e0e2505&displaylang=en} Microsoft Windows SDK for Windows 7 and .NET 3.5 SP1 }} for developing .NET 3.5 applications and
+      libraries. Note: The SDK can be installed on XP or Vista, too.
+
+    * Visual Studio 2010 (SP1) or the {{{ http://www.microsoft.com/downloads/en/details.aspx?FamilyID=6b6c21d2-2006-4afa-9702-529fa782d63b&displaylang=en} Microsoft Windows SDK for Windows 7 and .NET 4 SP1 }} for developing .NET 4 applications and
+      libraries. Note: The SDK can be installed on XP or Vista, too.
+
+    * {{{http://www.nunit.org/?p=download} NUnit}} in order to run unit tests with NPanday. Make sure the <<<bin>>> directory is on the PATH.
 
   If you later have problems relating to being unable to find the SDK, refer to the
   {{{../reference/troubleshooting.html} Troubleshooting}} section. 
 
-Preparation
-
-  Before installing NPanday, you may need to do some further preparation.
-
-* Removing a Previous Version
+Removing a Previous Version
 
   While it is generally safe to install the new version without uninstalling the previous version, to ensure a clean
   system you may want to follow the {{{./uninstall.html} Uninstalling NPanday}} instructions.
-
-* {Set the PATH}
-
-  All Maven commands must be run with the PATH set for the .NET SDKs. This can usually be achieved by
-  starting the appropriate command prompt shortcuts supplied with the SDK or Visual Studio.
-
-  In addition, at present the NPanday Add-in runs Maven directly and so also requires that all the SDKs are already on
-  the path - something which is not usually the case when Visual Studio is run.
-
-  The method you use to set the PATH environment can vary, depending on how you usually launch Visual Studio:
-
-    * If you are starting Visual Studio from the Windows Start menu, use the following to set the PATH environment
-      variable in the System Properties:
-      <<<Start \> My Computer \> View System Information \> Advanced \> Environment variables>>>. The variable must have
-      all the additional elements that are added when you run the Visual Studio Command Prompt.
-
-    * From within the Visual Studio Command Prompt, you can start Visual Studio using the <<<devenv>>> command.
-
-    []
-    
-  The easiest way to obtain the full PATH is to call <<<set path>>> from the Visual Studio Commmand Prompt of 
-  the corresponding Visual Studio version. Then use copy-paste to set this PATH permanently to your Environment Variables.
-
-  The correct PATH should include the following:
-
-    * The .NET framework runtime(s) - all that are needed (<<<C:\Windows\Microsoft.NET\Framework\v4.0.30319>>> and/or <<<C:\WINDOWS\Microsoft.NET\Framework\v3.5>>> and/or
-      <<<C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727>>>)
-
-    * The .NET SDK - only the latest (<<<C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\NETFX 4.0 Tools>>> or <<<C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin>>> or
-      <<<C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin>>> or other location if installed aside from
-      Visual Studio)
-
-    * The Maven <<<bin>>> directory
-
-    * The NUnit <<<bin>>> directory if writing NUnit tests
-
-  If you are building .NET SDK 3.5 or Visual Studio 2008 projects, you must ensure that the elements for that
-  environment are <before> any previous SDK versions.
-
-  The additional PATH fragment for Visual Studio 2008 will probably look like the following:
-
-----
-C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE;C:\Program Files\Microsoft Visual Studio 9.0\VC\BIN;
-C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools;C:\WINDOWS\Microsoft.NET\Framework\v3.5;
-C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft Visual Studio 9.0\VC\VCPackages;
-C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin;
-----
-
-   For Visual Studio 2005, it will likely be:
-
-----
-C:\Program Files\Microsoft Visual Studio 8\Common7\IDE;C:\Program Files\Microsoft Visual Studio 8\VC\BIN;
-C:\Program Files\Microsoft Visual Studio 8\Common7\Tools;C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\bin;
-C:\Program Files\Microsoft Visual Studio 8\VC\PlatformSDK\bin;C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin;
-C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft Visual Studio 8\VC\VCPackages;
-----
-
-Visual Studio 2008 or 2010
-
-    If you only have a newer version, but no Visual Studio 2005 installed, you need to install .NET 2.0 SDK and
-    add <<<C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727>>> to the PATH.
-    
-    Found here:  (.NET 2.0 SDK: {{{http://www.microsoft.com/downloads/details.aspx?FamilyID=fe6f2099-b7b4-4f47-a244-c96d69c35dec&displaylang=en} x86}}, {{{http://www.microsoft.com/downloads/en/details.aspx?FamilyID=1AEF6FCE-6E06-4B66-AFE4-9AAD3C835D3D} x64}})
-
-Visual Studio 2010
-
-    Add the following to the path:
-
-----
-C:\Windows\Microsoft.NET\Framework\v4.0.30319;
-C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\NETFX 4.0 Tools;
-----
   
 
 Obtaining NPanday
