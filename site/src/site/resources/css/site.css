@@ -19,3 +19,34 @@ under the License.*/
 /*  background-color: rgb(166, 140, 125);*/
   background-color: white;
 }
+
+body, h2, h3, #rightcol h2, pre, code, #apphead h2 small, h3, th, td {
+    /* a little bit bigger than 'small' */
+    font-size: 0.9em;
+}
+
+/* More fluffy navigation */
+#navcolumn h5 {
+    margin: 1em 0.5em 0;
+    font-size: 1.2em;
+}
+
+#navcolumn ul li {
+    line-height: 1.3em;
+    margin: 0.5em 0;
+}
+
+/* Lists with some more space */
+#bodyColumn li {
+    margin: 0.5em;
+}
+
+/* "real" titles */
+#bodyColumn h2 {
+    background: none;
+    background-color: none;
+    color: black;
+    font-size: 1.5em;
+}
+
+
