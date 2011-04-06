@@ -24,7 +24,7 @@
 Using Continuum to release .NET projects
 
   This guide shows how to use Continuum to release NPanday based projects. It is based on the same commands used for
-  Maven. For more information on that topic, see {{{../maven/releasing.html} Releasing .NET Projects with Maven}}.
+  Maven. For more information on that topic, see {{{../advanced/releasing.html} Releasing .NET Projects with Maven}}.
 
 * Pre-release build definition
 

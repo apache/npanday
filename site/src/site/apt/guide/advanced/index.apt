@@ -20,7 +20,7 @@
 ~~specific language governing permissions and limitations
 ~~under the License.
 
-Maven Command Line Users's Guide
+Advanced Users's Guide
 
   This guide is for those that wish to run builds from the command line using Maven, and to author or alter POMs
   themselves without the help of the Visual Studio Add-in. It assumes that you already have NPanday successfully

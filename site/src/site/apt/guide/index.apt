@@ -30,9 +30,9 @@ NPanday User's Guide
 
     * {{{./vs/index.html} Visual Studio Add-in User's Guide}} - for Visual Studio users
 
-    * {{{./maven/index.html} Maven Command Line Users's Guide}} - for Maven users or Visual Studio users wishing to
-                                                                  run builds outside of Visual Studio, or customize the
-                                                                  generated POM
+    * {{{./advanced/index.html} Advanced Users's Guide}} - for Maven users or Visual Studio users wishing to
+                                                           run and maintain builds outside of Visual Studio,
+                                                           or customize the generated POM
 
     * {{{./devinfra/index.html} Using NPanday with your Maven Development Infrastructure}}
 
@@ -44,6 +44,7 @@ NPanday User's Guide
 
       * {{{./reference/supported-dir-structures.html} Supported Directory Structures}}
 
+      * {{{./advanced/project-types.html} Available Project Types}} - if you want to understand how NPanday's lifecycles works
       []
 
     []

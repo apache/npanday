@@ -114,7 +114,7 @@ vsinstaller:install
 
   ~~TODO: add a troubleshooting guide and reference here in case it all goes wrong
 
-  If you don't intend to use the Visual Studio Add-in, you can now {{{../maven/index.html} get started using Maven}}.  
+  If you don't intend to use the Visual Studio Add-in, you can now {{{../advanced/index.html} get started using NPanday's Maven extensions}}.
   
 * Installing the Visual Studio Add-in
 

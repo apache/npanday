@@ -66,7 +66,7 @@ Using the NPanday Visual Studio Add-in
 
   * {{{./settings.html} Maven settings}} - how to configure an alternate Maven settings file
 
-  * {{{../maven/releasing.html} Releasing .NET projects with Maven}} - how to use the Maven release mechanism from the
+  * {{{../advanced/releasing.html} Releasing .NET projects with Maven}} - how to use the Maven release mechanism from the
     command line
 
   []

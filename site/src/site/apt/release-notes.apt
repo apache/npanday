@@ -121,7 +121,7 @@ Release Notes for NPanday 1.3-incubating
 
 * Compatibility Changes 
   
-  * Most previous project packaging and dependency types have been deprecated in favour of more specific <<<dotnet-*>>> alternatives. For more information, see {{{./guide/maven/project-types.html} Available Project Types}}.
+  * Most previous project packaging and dependency types have been deprecated in favour of more specific <<<dotnet-*>>> alternatives. For more information, see {{{./guide/advanced/project-types.html} Available Project Types}}.
   
 * Release Notes
 
