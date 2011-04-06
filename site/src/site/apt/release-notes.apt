@@ -37,6 +37,10 @@ Release Notes for NPanday 1.3-incubating
 
 * Release Notes
 
+** Known issues in NPanday 1.3-incubating
+
+  * NPANDAY-234  Visual Studio Addin only works for english Visual Studio versions.
+
 ** Changes in NPanday 1.3-incubating
 
   <<Date staged: 22 January 2011>>
