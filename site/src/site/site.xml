@@ -43,25 +43,30 @@ under the License.
       <item name="NPanday ${npandayReleaseVersion}" href="/" />
     </breadcrumbs>
 
-    <menu name="General Info">
-      <item name="NPanday Overview" href="/index.html"/>
-      <item name="NPanday Release Notes" href="/release-notes.html"/>
-      <item name="NPanday FAQs" href="/faqs.html"/>
-      <item name="NPanday Features" href="/features.html"/>
-      <item name="Documentation PDF" href="/npanday.pdf"/>
-      <item name="Download NPanday" href="/download.html"/>      
+    <menu name="General">
+      <item name="Overview" href="/index.html"/>
+      <item name="Features" href="/features.html"/>
+
+      <item name="FAQs" href="/faqs.html"/>
+
+      <item name="Download" href="/download.html"/>
+      <item name="Release Notes" href="/release-notes.html"/>
     </menu>
 
-    <menu name="User's Guide">
-      <item name="Introduction" href="./guide/index.html" />
+    <menu name="Using NPanday">
+      <item name="Guides overview" href="./guide/index.html" />
       <item name="Installation" href="./guide/installation/index.html" />
       <item name="Visual Studio Add-in" href="./guide/vs/index.html" />
       <item name="Advanced Use without VS Add-in" href="./guide/advanced/index.html" />
-      <item name="Using Maven Development Infrastructure" href="./guide/devinfra/index.html" />
-      <item name="NPanday Plugin Reference" href="/plugins/index.html"/>
+      <item name="NPanday Plugin Reference" href="./plugins/index.html"/>
     </menu>
 
-    <menu name="Contributing">
+    <menu name="ALM">
+      <item name="Artifact Repositories and Automated Builds" href="./guide/devinfra/index.html" />
+      <item name="Release- and Version Management" href="./guide/advanced/releasing.html" />
+    </menu>
+
+    <menu name="Get Involved">
       <item name="Developer's Guide" href="./developers/index.html" />
       <item name="Issue Tracking" href="./issue-tracking.html"/>
       <item name="Mailing Lists" href="./mail-lists.html"/>
@@ -70,6 +75,7 @@ under the License.
     <menu ref="reports" />
 
     <menu name="Resources">
+      <item name="Documentation as PDF" href="./npanday.pdf"/>
       <item name="Apache Maven" href="http://maven.apache.org/" />
     </menu>
   </body>
