@@ -61,7 +61,7 @@ under the License.
       <item name="NPanday Plugin Reference" href="./plugins/index.html"/>
     </menu>
 
-    <menu name="ALM">
+    <menu name="Beyond Building">
       <item name="Artifact Repositories and Automated Builds" href="./guide/devinfra/index.html" />
       <item name="Release- and Version Management" href="./guide/advanced/releasing.html" />
     </menu>
