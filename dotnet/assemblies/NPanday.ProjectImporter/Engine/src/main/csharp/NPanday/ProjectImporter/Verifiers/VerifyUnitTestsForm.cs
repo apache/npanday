@@ -52,12 +52,33 @@ namespace NPanday.ProjectImporter.Verifiers
             }
 
             // select all selected projects
-            foreach (ProjectDigest checkedProjectDigest in chkListTestUnits.CheckedItems)
+            foreach (ProjectDigest projectDigest in projectDigets)
             {
-                checkedProjectDigest.UnitTest = true;
-            }
-            
+                String[] projectNameTokens = projectDigest.FullFileName.Split("\\".ToCharArray());
+                String projectName = projectNameTokens[projectNameTokens.Length - 1];
 
+                if (projectName.Equals(string.Empty))
+                {
+                    projectName = projectNameTokens[projectNameTokens.Length - 2];
+                }
+
+                if (projectName.Contains(".csproj") || projectName.Contains(".vbproj"))
+                {
+                    if (projectName.Contains(".csproj"))
+                    {
+                        projectName = projectName.Substring(0, projectName.LastIndexOf(".csproj"));
+                   }
+                    else
+                    {
+                        projectName = projectName.Substring(0, projectName.LastIndexOf(".vbproj"));
+                    }
+                    
+                    if (chkListTestUnits.CheckedItems.Contains(projectName))
+                    {
+                        projectDigest.UnitTest = true;
+                    }
+                }
+            }
             this.Close();
         }
 

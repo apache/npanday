@@ -203,13 +203,13 @@ namespace NPanday.ProjectImporter
 
             prjDigests = filteredPrjDigests.ToArray();
 
-            result =ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag);
-
             if (verifyProjectToImport != null && filteredPrjDigests.Count > 0)
             {
                verifyProjectToImport(ref prjDigests, structureType, solutionFile, ref groupId, ref artifactId, ref version);
             }
-                
+
+            result =ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag);
+
             return result;
 
         }

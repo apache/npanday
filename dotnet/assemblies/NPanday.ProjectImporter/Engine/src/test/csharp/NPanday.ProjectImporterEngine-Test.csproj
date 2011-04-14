@@ -55,6 +55,7 @@ under the License.
     <Compile Include="ImporterTests\FlatSingleModuleVBTest.cs" />
     <Compile Include="ImporterTests\InterModuleDependency.cs" />
     <Compile Include="ImporterTests\MultipleFolderLevelTest.cs" />
+    <Compile Include="ImporterTests\NPandayImporterTest.cs" />
     <Compile Include="ImporterTests\ProjectImporterAssertions.cs" />
     <Compile Include="ImporterTests\ProjectImporterTestFixture.cs" />
     <Compile Include="ImporterTests\SampleVBDependencyTest.cs" />
