@@ -198,5 +198,10 @@ namespace NPanday.ProjectImporter.ImporterTests
             }
             return null;
         }
+
+        public static string GetBaseDirectory()
+        {
+            return new FileInfo(Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().LastIndexOf("target"))).FullName;
+        }
     }
 }

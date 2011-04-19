@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Microsoft.MavenTestProjectWithoutNUnit</groupId>
+  <artifactId>MavenTestProjectWithoutNUnit-parent</artifactId>
+  <packaging>pom</packaging>
+  <name>Microsoft.MavenTestProjectWithoutNUnit : MavenTestProjectWithoutNUnit-parent</name>
+  <version>1.0-SNAPSHOT</version>
+  <modules>
+    <module>MavenTestProjectWithoutNUnit</module>
+  </modules>
+</project>

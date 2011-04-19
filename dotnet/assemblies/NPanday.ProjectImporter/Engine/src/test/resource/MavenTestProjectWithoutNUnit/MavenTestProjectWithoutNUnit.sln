@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MavenTestProjectWithoutNUnit", "MavenTestProjectWithoutNUnit\MavenTestProjectWithoutNUnit.csproj", "{3C81B2C6-AFA4-4364-9228-962FBC18F14B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C81B2C6-AFA4-4364-9228-962FBC18F14B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C81B2C6-AFA4-4364-9228-962FBC18F14B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C81B2C6-AFA4-4364-9228-962FBC18F14B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C81B2C6-AFA4-4364-9228-962FBC18F14B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -54,13 +54,14 @@ namespace NPanday.ProjectImporter.Verifiers
             // select all selected projects
             foreach (ProjectDigest projectDigest in projectDigets)
             {
+                //instances where in the project name has added \\ at the end of the full file name
+                if (projectDigest.FullFileName.EndsWith("\\"))
+                {
+                    projectDigest.FullFileName = projectDigest.FullFileName.Substring(0, projectDigest.FullFileName.LastIndexOf("\\"));
+                }
+
                 String[] projectNameTokens = projectDigest.FullFileName.Split("\\".ToCharArray());
                 String projectName = projectNameTokens[projectNameTokens.Length - 1];
-
-                if (projectName.Equals(string.Empty))
-                {
-                    projectName = projectNameTokens[projectNameTokens.Length - 2];
-                }
 
                 if (projectName.Contains(".csproj") || projectName.Contains(".vbproj"))
                 {
