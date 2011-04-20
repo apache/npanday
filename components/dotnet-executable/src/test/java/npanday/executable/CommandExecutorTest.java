@@ -99,6 +99,11 @@ public class CommandExecutorTest
     public void testTooLongCommandName()
         throws ExecutionException
     {
+	    // we are only interested in exectuing this test
+	    // on Windows, to catch the "Command line to long" issue for cmd.exe.
+	    if (!isWindows())
+	      return;
+
         params.clear();
 
         cmdExecutor.setLogger( new ConsoleLogger( 0, null ) );
@@ -125,6 +130,11 @@ public class CommandExecutorTest
     public void testTooLongCommandName_withSpace()
         throws ExecutionException
     {
+	    // we are only interested in exectuing this test
+	    // on Windows, to catch the "Command line to long" issue for cmd.exe.
+	    if (!isWindows())
+	      return;
+
         params.clear();
 
         cmdExecutor.setLogger( new ConsoleLogger( 0, null ) );
@@ -171,5 +181,15 @@ public class CommandExecutorTest
             tst = tst + c;
         }
         return tst;
+    }
+
+    /**
+     * Simple check if the test is executed on Windows...
+     */
+    private static boolean isWindows()
+    {
+        String osName = System.getProperty("os.name");
+        boolean isWin = (osName.toLowerCase().indexOf("win")) >= 0;
+        return isWin;
     }
 }
