@@ -28,5 +28,12 @@ under the License.
   <artifactId>maven-resgen-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>NPanday :: ResGen Maven Plugin</name>  
-  <description>Maven Plugin for .NET: Generates assembly resources</description>  
+  <description>Maven Plugin for .NET: Generates assembly resources</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>${plexus.utils.version}</version>
+    </dependency>
+  </dependencies>
 </project>

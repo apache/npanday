@@ -55,6 +55,11 @@ under the License.
       <version>1.7.0</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>${plexus.utils.version}</version>
+    </dependency>
   </dependencies>
   
   <build>

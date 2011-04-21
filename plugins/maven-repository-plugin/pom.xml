@@ -38,6 +38,11 @@ under the License.
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-repository</artifactId>  
-    </dependency> 
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>${plexus.utils.version}</version>
+    </dependency>
   </dependencies>  
 </project>

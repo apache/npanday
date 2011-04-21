@@ -28,5 +28,12 @@ under the License.
   <artifactId>maven-link-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>NPanday :: Link Maven Plugin</name>  
-  <description>Maven Plugin for .NET: Uses AssemblyLinker utility for linking, embedding and adding resources to an assembly.</description>  
+  <description>Maven Plugin for .NET: Uses AssemblyLinker utility for linking, embedding and adding resources to an assembly.</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>${plexus.utils.version}</version>
+    </dependency>
+  </dependencies>
 </project>

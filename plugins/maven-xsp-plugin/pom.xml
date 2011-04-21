@@ -28,5 +28,12 @@ under the License.
   <artifactId>maven-xsp-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>NPanday :: XSP Maven Plugin</name>  
-  <description>Maven Plugin for .NET: Manages the Mono XSP Server</description>  
+  <description>Maven Plugin for .NET: Manages the Mono XSP Server</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>${plexus.utils.version}</version>
+    </dependency>
+  </dependencies>
 </project>

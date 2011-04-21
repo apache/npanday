@@ -26,7 +26,7 @@ under the License.
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <artifactId>dotnet-model-executable-plugins</artifactId>  
-  <name>NPanday :: Model :: Executable Plugins</name>  
+  <name>NPanday :: Model :: Executable Plugins</name>
   <build> 
     <plugins> 
       <plugin> 

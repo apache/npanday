@@ -45,6 +45,11 @@ under the License.
       <artifactId>dotnet-plugin</artifactId>
       <version>1.2.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>${plexus.utils.version}</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

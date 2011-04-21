@@ -28,5 +28,12 @@ under the License.
   <artifactId>maven-mojo-generator-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>NPanday :: Mojo Generator Maven Plugin</name>  
-  <description>Maven Plugin for .NET: Generates Java Bindings for .NET Mojo</description>  
+  <description>Maven Plugin for .NET: Generates Java Bindings for .NET Mojo</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>${plexus.utils.version}</version>
+    </dependency>
+  </dependencies>
 </project>

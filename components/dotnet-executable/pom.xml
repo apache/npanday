@@ -47,7 +47,7 @@ under the License.
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-vendor</artifactId>  
-    </dependency> 
+    </dependency>
     <dependency> 
       <groupId>junit</groupId>  
       <artifactId>junit</artifactId>  
