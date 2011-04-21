@@ -306,7 +306,10 @@ namespace NPanday.ProjectImporter.Digest.Model
                     foreach (Mirror mirror in settings.mirrors)
                     {
                         string id = mirror.mirrorOf;
-                        if (id == "external:*") id = "*";
+                        if (id.StartsWith("external:*"))
+                        { 
+                            id = "*"; 
+                        }
                         // TODO: support '!' syntax
                         mirrors.Add(id, mirror.url);
                     }
