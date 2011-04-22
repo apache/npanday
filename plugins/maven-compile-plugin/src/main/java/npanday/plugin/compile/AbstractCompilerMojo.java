@@ -26,6 +26,7 @@ import npanday.executable.ExecutionException;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
+import npanday.registry.impl.StandardRepositoryLoader;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.impl.SettingsRepository;
 import org.apache.maven.plugin.AbstractMojo;
@@ -1247,6 +1248,11 @@ public abstract class AbstractCompilerMojo
                 
         File settingsFile = new File( settingsPath, "npanday-settings.xml" );
         
+        if (!settingsFile.exists())
+        {
+            return;
+        }
+
         try
         {
             SettingsRepository settingsRepository = ( SettingsRepository) repositoryRegistry.find( "npanday-settings" );
@@ -1255,19 +1261,23 @@ public abstract class AbstractCompilerMojo
             {
                 repositoryRegistry.removeRepository( "npanday-settings" );
             }
-            Hashtable props = new Hashtable();
-            InputStream stream = new FileInputStream( settingsFile );    
-            settingsRepository = new SettingsRepository();
-            settingsRepository.setSourceUri( settingsFile.getAbsolutePath() );
-            settingsRepository.setRepositoryRegistry( repositoryRegistry );
-            settingsRepository.load( stream, props );
-            repositoryRegistry.addRepository( "npanday-settings", settingsRepository );        
-        }   
+            try
+            {
+                StandardRepositoryLoader repoLoader = new StandardRepositoryLoader();
+                repoLoader.setRepositoryRegistry( repositoryRegistry );
+                settingsRepository = (SettingsRepository) repoLoader.loadRepository( settingsFile.getAbsolutePath(), SettingsRepository.class.getName(), new Hashtable() );
+                repositoryRegistry.addRepository( "npanday-settings", settingsRepository );
+            }
+            catch ( IOException e )
+            {
+                getLog().error( e.getMessage(), e );
+            }
+        }
         catch ( Exception ex )
         {
-            ex.printStackTrace();
-        }    
+            getLog().error( ex.getMessage(), ex );
+        }
     }
 
-    
+
 }
