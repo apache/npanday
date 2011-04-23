@@ -56,7 +56,7 @@ public class AspxCompilerMojo
     private static final String DEFAULT_EXCLUDES = "obj/**, target/**, **/*.pdb, **/*.csproj, **/*.vbproj, **/*.suo, **/*.user,pom.xml, **/*.sln,build.log,PrecompiledApp.config,csproj.user,Properties/**,**.releaseBackup,^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:\\.\\d+)?$/**";
 
     /**
-     * @parameter expression ="${npanday.settings}"
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
      */
     private String settingsPath;
     
@@ -161,7 +161,7 @@ public class AspxCompilerMojo
     {
         long startTime = System.currentTimeMillis();
 
-        getNPandaySettingsPath();
+        populateSettingsRepository();
 
         webSourceDirectory = new File( project.getBuild().getSourceDirectory() ); 
 
@@ -414,13 +414,8 @@ public class AspxCompilerMojo
         }
     }
     
-    protected void getNPandaySettingsPath()
+    protected void populateSettingsRepository()
     {
-        if ( settingsPath == null )
-        {
-            settingsPath = System.getProperty( "user.home" ) + "/.m2";
-        }
-
         File settingsFile = new File( settingsPath, "npanday-settings.xml" );
 
         try

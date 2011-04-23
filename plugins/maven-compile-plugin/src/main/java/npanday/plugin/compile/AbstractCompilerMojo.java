@@ -67,7 +67,7 @@ public abstract class AbstractCompilerMojo
 {
 
     /**
-     * @parameter expression ="${npanday.settings}"
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
      */
     private String settingsPath;
 
@@ -1084,7 +1084,7 @@ public abstract class AbstractCompilerMojo
 		
 		}
 		
-        getNPandaySettingsPath();
+        populateSettingsRepository();
         
 		if (localRepository == null)
         {
@@ -1183,11 +1183,6 @@ public abstract class AbstractCompilerMojo
 
     protected boolean isUpToDateWithPomAndSettingsAndDependencies(File targetFile)
     {
-        if ( settingsPath == null )
-        {
-            settingsPath = System.getProperty( "user.home" ) + "/.m2";
-        }
-                
         File settingsFile = new File( settingsPath, "npanday-settings.xml" );
         Artifact latestDependencyModification =
                 this.getLatestDependencyModification(project.getDependencyArtifacts());
@@ -1239,13 +1234,8 @@ public abstract class AbstractCompilerMojo
     }
 
 
-    protected void getNPandaySettingsPath()
+    protected void populateSettingsRepository()
     {
-        if ( settingsPath == null )
-        {
-            settingsPath = System.getProperty( "user.home" ) + "/.m2";
-        }
-                
         File settingsFile = new File( settingsPath, "npanday-settings.xml" );
         
         if (!settingsFile.exists())

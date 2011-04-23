@@ -94,7 +94,7 @@ public class SettingsGeneratorMojo
     private npanday.plugin.PluginContext pluginContext;
 
     /**
-     * @parameter expression ="${npanday.settings}"
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
      */
     private String settingsPath;
 
@@ -196,12 +196,6 @@ public class SettingsGeneratorMojo
     public boolean isFrameworkVersionExisting(String frameworkVersion)
         throws MojoExecutionException, IOException
     {
-
-        if ( settingsPath == null )
-        {
-            settingsPath = System.getProperty( "user.home" ) + "/.m2";
-        }
-
         File file = new File( settingsPath, "npanday-settings.xml" );
 
         if ( !file.exists() )
