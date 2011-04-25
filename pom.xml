@@ -100,15 +100,12 @@ under the License.
       <email>me@lcorneliussen.de</email>
     </developer>
     <developer>
+      <name>John Fallows</name>
+      <id>jfallows</id>
+    </developer> 
+    <developer>
       <name>Dennis Lundberg</name>
       <id>dennisl</id>
-      <roles>
-        <role>Mentor</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Gavin McDonald</name>
-      <id>gmcdonald</id>
       <roles>
         <role>Mentor</role>
       </roles>
@@ -133,19 +130,18 @@ under the License.
       <id>wsmoak</id>
       <email>wsmoak@gmail.com</email>
     </developer> 
+    <developer>
+      <name>Matthias Wessendorf</name>
+      <id>matzew</id>
+      <roles>
+        <role>Mentor</role>
+      </roles>
+    </developer>
     <!--Emeritus Committers-->
     <developer> 
       <name>C�dric</name>  
       <id>mimil</id>  
     </developer>  
-    <developer> 
-      <name>Melvin Sembrano</name>  
-      <id>melvinsembrano</id>  
-      <email>melvinsembrano@gmail.com</email>  
-      <roles> 
-        <role>Emeritus</role>  
-      </roles> 
-    </developer>
     <developer> 
       <name>Leopoldo Agdeppa</name>  
       <id>lagdeppa</id>  
@@ -178,6 +174,21 @@ under the License.
         <role>Emeritus</role>  
       </roles> 
     </developer>      
+    <developer>
+      <name>Gavin McDonald</name>
+      <id>gmcdonald</id>
+      <roles>
+        <role>Former Mentor</role>
+      </roles>
+    </developer>
+    <developer> 
+      <name>Melvin Sembrano</name>  
+      <id>melvinsembrano</id>  
+      <email>melvinsembrano@gmail.com</email>  
+      <roles> 
+        <role>Emeritus</role>  
+      </roles> 
+    </developer>
     <developer> 
       <name>Evan Worley</name>  
       <id>eworley</id>  
@@ -190,9 +201,6 @@ under the License.
   <contributors>
     <contributor>
       <name>Chris Bown</name>
-    </contributor>
-    <contributor>
-      <name>John Fallows</name>
     </contributor>
     <contributor>
       <name>Artem Fedorenko</name>
