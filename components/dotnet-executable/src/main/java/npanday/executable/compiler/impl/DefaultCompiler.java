@@ -164,7 +164,13 @@ public final class DefaultCompiler
                 "\\Microsoft.NET\\Framework\\v3.5\\";
             //TODO: This is a hard-coded path: Don't have a registry value either.
             commands.add( wcfRef + "Microsoft.Build.Tasks.v3.5.dll" );
-            commands.add( wcfRef + "Microsoft.CompactFramework.Build.Tasks.dll" );
+
+            String cfBuildTasks = wcfRef + "Microsoft.CompactFramework.Build.Tasks.dll";
+            if (new File( cfBuildTasks ).exists())
+            {
+                commands.add( cfBuildTasks );
+            }
+
             commands.add( wcfRef + "Microsoft.Data.Entity.Build.Tasks.dll" );
             commands.add( wcfRef + "Microsoft.VisualC.STLCLR.dll" );
         }
