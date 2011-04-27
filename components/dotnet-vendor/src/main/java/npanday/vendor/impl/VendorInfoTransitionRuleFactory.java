@@ -93,8 +93,16 @@ final class VendorInfoTransitionRuleFactory
             throw new InitializationException( "NPANDAY-103-000: Unable to find the repository registry" );
         }
         logger.debug( "NPANDAY-103-036.0: Respository registry: " + repositoryRegistry);
-        
-        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
+
+        SettingsRepository settingsRepository = null;
+        try
+        {
+            settingsRepository = SettingsUtil.getOrPopulateSettingsRepository( repositoryRegistry );
+        }
+        catch ( SettingsException e )
+        {
+            throw new InitializationException( "NPANDAY-103-067: Could not get settings." , e);
+        }
         if ( settingsRepository == null )
         {
             throw new InitializationException(
@@ -450,11 +458,11 @@ final class VendorInfoTransitionRuleFactory
             public VendorInfoState process( VendorInfo vendorInfo )
             {
                 logger.debug( "NPANDAY-103-011: Entering State = FTF" );
-                logger.debug( "NPANDAY-103-050: Compare vendor version :" + defaultVendorVersion + ":width:" + vendorInfo.getVendorVersion());
+                logger.debug( "NPANDAY-103-067: Compare vendor version :" + defaultVendorVersion + ":width:" + vendorInfo.getVendorVersion());
 
                 if ( vendorInfo.getVendorVersion().equals( defaultVendorVersion ) )
                 {
-                    logger.debug( "NPANDAY-103-050: Set to default version:" + defaultFrameworkVersion);
+                    logger.debug( "NPANDAY-103-065: Set to default version:" + defaultFrameworkVersion);
 
                     vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
                     vendorInfo.setVendor( defaultVendor );
@@ -478,11 +486,11 @@ final class VendorInfoTransitionRuleFactory
                     {
                         for ( VendorInfo vi : v )
                         {
-                            logger.debug( "NPANDAY-103-050: Compare vendor version :" + vi.getVendorVersion() + ":width:" + vendorInfo.getVendorVersion());
+                            logger.debug( "NPANDAY-103-064: Compare vendor version :" + vi.getVendorVersion() + ":width:" + vendorInfo.getVendorVersion());
 
                             if ( vi.getVendorVersion().equals( vendorInfo.getVendorVersion() ) )
                             {
-                                logger.debug( "NPANDAY-103-050: Set framework version:" + vi.getFrameworkVersion());
+                                logger.debug( "NPANDAY-103-063: Set framework version:" + vi.getFrameworkVersion());
 
                                 vendorInfo.setFrameworkVersion( vi.getFrameworkVersion() );
                                 vendorInfo.setVendor( vi.getVendor() );
@@ -507,11 +515,11 @@ final class VendorInfoTransitionRuleFactory
                         v = vendorInfoRepository.getVendorInfosFor( vendorInfo, false );
                         for ( VendorInfo vi : v )
                         {
-                            logger.debug( "NPANDAY-103-050: Compare vendor version :" + vi.getVendorVersion() + ":width:" + vendorInfo.getVendorVersion());
+                            logger.debug( "NPANDAY-103-062: Compare vendor version :" + vi.getVendorVersion() + ":width:" + vendorInfo.getVendorVersion());
                         
                             if ( vi.getVendorVersion().equals( vendorInfo.getVendorVersion() ) )
                             {
-                                logger.debug( "NPANDAY-103-050: Set framework version:" + vi.getFrameworkVersion());
+                                logger.debug( "NPANDAY-103-061: Set framework version:" + vi.getFrameworkVersion());
                             
                                 vendorInfo.setFrameworkVersion( vi.getFrameworkVersion() );
                                 vendorInfo.setVendor( vi.getVendor() );

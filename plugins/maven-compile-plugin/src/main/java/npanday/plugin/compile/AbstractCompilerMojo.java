@@ -20,15 +20,16 @@
 package npanday.plugin.compile;
 
 import npanday.ArtifactTypeHelper;
+import npanday.PathUtil;
+import npanday.vendor.SettingsException;
+import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutionException;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
-import npanday.registry.impl.StandardRepositoryLoader;
 import npanday.registry.RepositoryRegistry;
-import npanday.vendor.impl.SettingsRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -46,16 +47,12 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import java.util.List;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-import java.util.*;
-import java.util.Hashtable;
-import java.io.*;
 
 /**
  * Abstract Class for compile mojos for both test-compile and compile.
@@ -1083,10 +1080,17 @@ public abstract class AbstractCompilerMojo
 		{
 		
 		}
-		
-        populateSettingsRepository();
-        
-		if (localRepository == null)
+
+        try
+        {
+            SettingsUtil.populateSettingsRepository( repositoryRegistry, settingsPath );
+        }
+        catch ( SettingsException e )
+        {
+            throw new MojoExecutionException( "NPANDAY-900-012: Error reading settings from " + settingsPath, e );
+        }
+
+        if (localRepository == null)
         {
             
 			localRepository = new File(System.getProperty("user.home"), ".m2/repository");
@@ -1183,7 +1187,7 @@ public abstract class AbstractCompilerMojo
 
     protected boolean isUpToDateWithPomAndSettingsAndDependencies(File targetFile)
     {
-        File settingsFile = new File( settingsPath, "npanday-settings.xml" );
+        File settingsFile = PathUtil.buildSettingsFilePath(settingsPath);
         Artifact latestDependencyModification =
                 this.getLatestDependencyModification(project.getDependencyArtifacts());
 
@@ -1232,42 +1236,5 @@ public abstract class AbstractCompilerMojo
         }
         return lastModArtifact;
     }
-
-
-    protected void populateSettingsRepository()
-    {
-        File settingsFile = new File( settingsPath, "npanday-settings.xml" );
-        
-        if (!settingsFile.exists())
-        {
-            return;
-        }
-
-        try
-        {
-            SettingsRepository settingsRepository = ( SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-
-            if ( settingsRepository != null )
-            {
-                repositoryRegistry.removeRepository( "npanday-settings" );
-            }
-            try
-            {
-                StandardRepositoryLoader repoLoader = new StandardRepositoryLoader();
-                repoLoader.setRepositoryRegistry( repositoryRegistry );
-                settingsRepository = (SettingsRepository) repoLoader.loadRepository( settingsFile.getAbsolutePath(), SettingsRepository.class.getName(), new Hashtable() );
-                repositoryRegistry.addRepository( "npanday-settings", settingsRepository );
-            }
-            catch ( IOException e )
-            {
-                getLog().error( e.getMessage(), e );
-            }
-        }
-        catch ( Exception ex )
-        {
-            getLog().error( ex.getMessage(), ex );
-        }
-    }
-
 
 }

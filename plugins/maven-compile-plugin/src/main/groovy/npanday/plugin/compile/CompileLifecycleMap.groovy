@@ -39,7 +39,7 @@ class CompileLifecycleMap extends LifecycleMap
 	def mv_deploy = "org.apache.maven.plugins:maven-deploy-plugin:deploy" 
 	
 	def np_generate_settings = "npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings" 
-	def np_compile_init = "npanday.plugin:maven-compile-plugin:initialize" 
+	def np_compile_init = "npanday.plugin:maven-compile-plugin:initialize"
 	def np_resolve = "npanday.plugin:maven-resolver-plugin:resolve" 
 	def np_generate_assemblyinfo = "npanday.plugin:maven-compile-plugin:generate-assembly-info" 
 	def np_compile_process_sources = "npanday.plugin:maven-compile-plugin:process-sources" 

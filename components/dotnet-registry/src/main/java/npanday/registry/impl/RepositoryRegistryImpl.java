@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.FileInputStream;
 
+import org.apache.maven.settings.SettingsUtils;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 

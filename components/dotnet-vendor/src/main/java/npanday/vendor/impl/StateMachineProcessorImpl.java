@@ -74,6 +74,16 @@ public final class StateMachineProcessorImpl
     public void initialize()
         throws InitializationException
     {
+        SettingsRepository settingsRepository;
+        try
+        {
+            settingsRepository = SettingsUtil.getOrPopulateSettingsRepository( repositoryRegistry );
+        }
+        catch ( SettingsException e )
+        {
+            throw new InitializationException( "NPANDAY-102-007: Could not get settings." , e);
+        }
+
         VendorInfoTransitionRuleFactory factory = new VendorInfoTransitionRuleFactory();
         transitionRules = new HashMap<VendorInfoState, VendorInfoTransitionRule>();
         transitionRules.put( VendorInfoState.MTT, factory.createVendorInfoSetterForMTT() );
@@ -81,11 +91,17 @@ public final class StateMachineProcessorImpl
         transitionRules.put( VendorInfoState.MFT, factory.createVendorInfoSetterForMFT() );
         transitionRules.put( VendorInfoState.NTT, factory.createVendorInfoSetterForNTT() );
         transitionRules.put( VendorInfoState.POST_PROCESS, factory.createPostProcessRule() );
-        try
+
+        if ( settingsRepository != null )
         {
-            logger.debug( "NPANDAY-102-012: Initialized rule factory repositoryRegistry:" + repositoryRegistry );        
-            factory.init( repositoryRegistry, vendorInfoRepository, logger );
-            logger.debug( "NPANDAY-102-000: Initialized rule factory." );
+            try
+            {
+                factory.init( repositoryRegistry, vendorInfoRepository, logger );
+            }
+            catch ( npanday.InitializationException e )
+            {
+                throw new InitializationException( "NPANDAY-102-008: Initializing rule factory failed." , e);
+            }
             transitionRules.put( VendorInfoState.MFF, factory.createVendorInfoSetterForMFF() );
             transitionRules.put( VendorInfoState.FTF, factory.createVendorInfoSetterForFTF() );
             transitionRules.put( VendorInfoState.FFT, factory.createVendorInfoSetterForFFT() );
@@ -97,9 +113,9 @@ public final class StateMachineProcessorImpl
             transitionRules.put( VendorInfoState.NFF, factory.createVendorInfoSetterForNFF() );
             transitionRules.put( VendorInfoState.GFF, factory.createVendorInfoSetterForGFF() );
         }
-        catch ( npanday.InitializationException e )
+        else
         {
-            logger.debug( "NPANDAY-102-001: Unable to initialize rule factory.", e );
+            logger.info( "NPANDAY-102-001: No NPanday settings available. Using Defaults." );
             transitionRules.put( VendorInfoState.MFF, factory.createVendorInfoSetterForMFF_NoSettings() );
             transitionRules.put( VendorInfoState.NFT, factory.createVendorInfoSetterForNFT_NoSettings() );
             transitionRules.put( VendorInfoState.NTF, factory.createVendorInfoSetterForNTF_NoSettings() );
@@ -127,14 +143,14 @@ public final class StateMachineProcessorImpl
         }
         for ( VendorInfoState state = VendorInfoState.START; !state.equals( VendorInfoState.EXIT ); )
         {
-            logger.debug( "NPANDAY-102-002: Apply rule:" + rule );        
+            logger.debug( "NPANDAY-102-003: Apply rule:" + rule );
             state = rule.process( vendorInfo );
-            logger.debug( "NPANDAY-102-003: Vendor info after rule:" + vendorInfo );            
+            logger.debug( "NPANDAY-102-004: Vendor info after rule:" + vendorInfo );
             rule = transitionRules.get( state );
             if ( rule == null && !state.equals( VendorInfoState.EXIT ) )
             {
                 throw new IllegalStateException(
-                    "NPANDAY-102-003: Could not find rule for state: State = " + state.name() );
+                    "NPANDAY-102-005: Could not find rule for state: State = " + state.name() );
             }
         }
     }

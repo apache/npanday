@@ -316,4 +316,17 @@ public final class PathUtil
 
         return false;
     }
+
+    public static File buildSettingsFilePath( String settingsPathOrFile )
+    {
+        if (settingsPathOrFile.endsWith( "xml" ))
+            return new File(settingsPathOrFile);
+
+        return new File( settingsPathOrFile, "npanday-settings.xml" );
+    }
+
+    public static String getHomeM2Folder()
+    {
+        return new File(System.getProperty( "user.home" ), ".m2").getAbsolutePath();
+    }
 }

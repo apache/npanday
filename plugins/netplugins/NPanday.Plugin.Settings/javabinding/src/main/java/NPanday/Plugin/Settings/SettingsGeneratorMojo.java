@@ -19,9 +19,11 @@
 
  package NPanday.Plugin.Settings;
 
-import npanday.artifact.ArtifactContext;
+import npanday.PathUtil;
 import npanday.registry.RepositoryRegistry;
 import npanday.registry.impl.StandardRepositoryLoader;
+import npanday.vendor.SettingsException;
+import npanday.vendor.SettingsUtil;
 import npanday.vendor.impl.SettingsRepository;
 import npanday.plugin.FieldAnnotation;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -33,7 +35,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.FileReader;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,9 +42,8 @@ import java.util.List;
 import java.util.Iterator;
 import org.apache.maven.model.Plugin;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import java.io.BufferedReader;
+
 import java.util.Hashtable;
-import java.io.*;
 
 /**
  * @phase validate
@@ -196,28 +196,24 @@ public class SettingsGeneratorMojo
     public boolean isFrameworkVersionExisting(String frameworkVersion)
         throws MojoExecutionException, IOException
     {
-        File file = new File( settingsPath, "npanday-settings.xml" );
+        File file = PathUtil.buildSettingsFilePath( settingsPath );
 
         if ( !file.exists() )
         {
             return false;
         }
 
-        SettingsRepository settingsRepository = ( SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-
-        if ( settingsRepository != null )
+        try
         {
-            repositoryRegistry.removeRepository( "npanday-settings" );
+            SettingsUtil.populateSettingsRepository( repositoryRegistry, settingsPath );
+        }
+        catch ( SettingsException e )
+        {
+            throw new MojoExecutionException( "NPANDAY-112: Could not populate settings", e );
         }
 
         try
         {
-            // load npanday-settings and store in registry
-            StandardRepositoryLoader repoLoader = new StandardRepositoryLoader();
-            repoLoader.setRepositoryRegistry( repositoryRegistry );
-            settingsRepository = (SettingsRepository) repoLoader.loadRepository( file.getAbsolutePath(), SettingsRepository.class.getName(), new Hashtable() );
-            repositoryRegistry.addRepository( "npanday-settings", settingsRepository );
-
             // check if npanday-settings contains the framework
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();

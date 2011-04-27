@@ -22,7 +22,6 @@ package npanday.plugin.aspx;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
 import npanday.ArtifactType;
@@ -32,14 +31,13 @@ import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
-import npanday.registry.impl.StandardRepositoryLoader;
+import npanday.vendor.SettingsException;
+import npanday.vendor.SettingsUtil;
 import npanday.vendor.VendorFactory;
-import npanday.vendor.impl.SettingsRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Maven Mojo for precompiling ASPx files
@@ -161,9 +159,16 @@ public class AspxCompilerMojo
     {
         long startTime = System.currentTimeMillis();
 
-        populateSettingsRepository();
+        try
+        {
+            SettingsUtil.populateSettingsRepository( repositoryRegistry, settingsPath );
+        }
+        catch ( SettingsException e )
+        {
+            throw new MojoExecutionException( "NPANDAY-109-001: Error reading settings from " + settingsPath, e );
+        }
 
-        webSourceDirectory = new File( project.getBuild().getSourceDirectory() ); 
+        webSourceDirectory = new File( project.getBuild().getSourceDirectory() );
 
         if ( profileAssemblyPath != null && !profileAssemblyPath.exists() )
         {
@@ -413,35 +418,4 @@ public class AspxCompilerMojo
             deleteDirectoryIfEmpty( directory.getParentFile() );
         }
     }
-    
-    protected void populateSettingsRepository()
-    {
-        File settingsFile = new File( settingsPath, "npanday-settings.xml" );
-
-        try
-        {
-            SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-
-            if ( settingsRepository != null )
-            {
-                repositoryRegistry.removeRepository( "npanday-settings" );
-            }
-            try
-            {
-                StandardRepositoryLoader repoLoader = new StandardRepositoryLoader();
-                repoLoader.setRepositoryRegistry( repositoryRegistry );
-                settingsRepository = (SettingsRepository) repoLoader.loadRepository( settingsFile.getAbsolutePath(), SettingsRepository.class.getName(), new Hashtable() );
-                repositoryRegistry.addRepository( "npanday-settings", settingsRepository );
-            }
-            catch ( IOException e )
-            {
-                getLog().error( e.getMessage(), e );            
-            }            
-        }
-        catch ( Exception ex )
-        {
-            getLog().error( ex.getMessage(), ex );
-        }
-    }
-    
 }
