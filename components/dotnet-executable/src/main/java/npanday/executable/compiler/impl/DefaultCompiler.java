@@ -200,12 +200,22 @@ public final class DefaultCompiler
         }
         commands.add( "/warnaserror-" );
         //commands.add( "/nowarn" );
-//        if ( compilerContext.getCompilerRequirement().getVendor().equals( Vendor.MONO ) )
-//        {
-//            commands.add( "/reference:System.Drawing" );
-//            commands.add( "/reference:System.Windows.Forms" );
-//            commands.add( "/reference:System.Web.Services" );
-//        }
+        if ( compilerContext.getCompilerRequirement().getVendor().equals( Vendor.MONO ) )
+        {
+            commands.add( "/nostdlib" );
+            commands.add( "/noconfig" );
+            commands.add( "/reference:mscorlib" );
+            commands.add( "/reference:System.Data" );
+            commands.add( "/reference:System" );
+            commands.add( "/reference:System.Drawing" );
+            commands.add( "/reference:System.Messaging" );
+            commands.add( "/reference:System.Web.Services" );
+            commands.add( "/reference:System.Windows.Forms" );
+            commands.add( "/reference:System.Xml" );
+            commands.add( "/reference:System.Core" );
+            commands.add( "/reference:System.Data.DataSetExtensions" );
+            commands.add( "/reference:System.Xml.Linq" );
+        }
         if ( !compilerContext.getNetCompilerConfig().isTestCompile() )
         {
             commands.add(
