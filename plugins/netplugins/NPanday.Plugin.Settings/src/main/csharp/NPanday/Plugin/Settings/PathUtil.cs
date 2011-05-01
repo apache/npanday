@@ -17,12 +17,29 @@
 // under the License.
 //
 
+using System;
 using System.IO;
 
 namespace NPanday.Plugin.Settings
 {
+    // TODO: Move this to common PathUtil, when NPANDAY-422 is fixed
     public static class PathUtil
     {
+        public static string GetHomeM2Folder()
+        {
+            return Environment.GetEnvironmentVariable("USERPROFILE") + "/.m2";
+        }
+
+        public static string BuildSettingsFilePath( string settingsPathOrFile )
+        {
+            if (settingsPathOrFile.EndsWith( "xml" ))
+            {
+                return settingsPathOrFile;
+            }
+
+            return Path.Combine(settingsPathOrFile, "npanday-settings.xml");
+        }
+
         public static string FirstExisting(params string[] probingPaths)
         {
             foreach (string dir in probingPaths)

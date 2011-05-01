@@ -35,7 +35,7 @@ import java.util.Hashtable;
 public class SettingsUtil
 {
     /**
-     * Return the registered settings, or create from default settings file location (.m2/npanday-settings.xml)
+     * Return the registered settings, or create from configured (-Dnpanday-settings=...) or default settings file location (.m2/npanday-settings.xml)
      * @param repositoryRegistry The registry.
      * @return The current, or just created SettingsRepository
      * @throws SettingsException If anything goes wrong reading or registering the settings
@@ -43,7 +43,13 @@ public class SettingsUtil
     public static SettingsRepository getOrPopulateSettingsRepository( RepositoryRegistry repositoryRegistry)
         throws SettingsException
     {
-          return getOrPopulateSettingsRepository(repositoryRegistry, PathUtil.getHomeM2Folder());
+        String settingsFolder = PathUtil.getHomeM2Folder();
+        String customFolder = System.getProperty( "npanday.settings" );
+        if (customFolder != null && customFolder != "")
+        {
+            settingsFolder = customFolder;
+        }
+        return getOrPopulateSettingsRepository(repositoryRegistry, settingsFolder );
     }
 
     /**

@@ -88,6 +88,8 @@ final class VendorInfoTransitionRuleFactory
     {
         this.vendorInfoRepository = vendorInfoRepository;
         this.logger = logger;
+        this.versionMatcher = new VersionMatcher();
+
         if ( repositoryRegistry == null )
         {
             throw new InitializationException( "NPANDAY-103-000: Unable to find the repository registry" );
@@ -103,24 +105,21 @@ final class VendorInfoTransitionRuleFactory
         {
             throw new InitializationException( "NPANDAY-103-067: Could not get settings." , e);
         }
-        if ( settingsRepository == null )
-        {
-            throw new InitializationException(
-                "NPANDAY-103-001: Settings Repository is null. Aborting initialization of VendorInfoTranstionRuleFactory" );
-        }
 
-        try
+        if (settingsRepository != null)
         {
-            defaultVendor = VendorFactory.createVendorFromName( settingsRepository.getDefaultSetup().getVendorName() );
-            logger.debug( "NPANDAY-103-036: Default Vendor Initialized: Name = " + defaultVendor );
+            try
+            {
+                defaultVendor = VendorFactory.createVendorFromName( settingsRepository.getDefaultSetup().getVendorName() );
+                logger.debug( "NPANDAY-103-036: Default Vendor Initialized: Name = " + defaultVendor );
+            }
+            catch ( VendorUnsupportedException e )
+            {
+                throw new InitializationException( "NPANDAY-103-002: Unknown Default Vendor: Name = " + defaultVendor, e );
+            }
+            defaultVendorVersion = settingsRepository.getDefaultSetup().getVendorVersion().trim();
+            defaultFrameworkVersion = settingsRepository.getDefaultSetup().getFrameworkVersion().trim();
         }
-        catch ( VendorUnsupportedException e )
-        {
-            throw new InitializationException( "NPANDAY-103-002: Unknown Default Vendor: Name = " + defaultVendor, e );
-        }
-        defaultVendorVersion = settingsRepository.getDefaultSetup().getVendorVersion().trim();
-        defaultFrameworkVersion = settingsRepository.getDefaultSetup().getFrameworkVersion().trim();
-        this.versionMatcher = new VersionMatcher();
     }
 
     VendorInfoTransitionRule createPostProcessRule()

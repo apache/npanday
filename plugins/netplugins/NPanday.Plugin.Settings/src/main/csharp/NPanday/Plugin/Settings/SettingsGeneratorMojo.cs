@@ -45,9 +45,9 @@ namespace NPanday.Plugin.Settings
             string outputFile;
             if (String.IsNullOrEmpty(npandaySettingsPath))
             {
-                npandaySettingsPath = Environment.GetEnvironmentVariable("USERPROFILE") + "/.m2";
+                npandaySettingsPath = PathUtil.GetHomeM2Folder();
             }
-            outputFile = npandaySettingsPath + "/npanday-settings.xml";
+            outputFile = PathUtil.BuildSettingsFilePath(npandaySettingsPath);
 
             XmlSerializer serializer = new XmlSerializer(typeof(npandaySettings));
 

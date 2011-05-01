@@ -85,6 +85,16 @@ public final class StateMachineProcessorImpl
         }
 
         VendorInfoTransitionRuleFactory factory = new VendorInfoTransitionRuleFactory();
+
+        try
+        {
+            factory.init( repositoryRegistry, vendorInfoRepository, logger );
+        }
+        catch ( npanday.InitializationException e )
+        {
+            throw new InitializationException( "NPANDAY-102-008: Initializing rule factory failed." , e);
+        }
+
         transitionRules = new HashMap<VendorInfoState, VendorInfoTransitionRule>();
         transitionRules.put( VendorInfoState.MTT, factory.createVendorInfoSetterForMTT() );
         transitionRules.put( VendorInfoState.MTF, factory.createVendorInfoSetterForMTF() );
@@ -94,14 +104,6 @@ public final class StateMachineProcessorImpl
 
         if ( settingsRepository != null )
         {
-            try
-            {
-                factory.init( repositoryRegistry, vendorInfoRepository, logger );
-            }
-            catch ( npanday.InitializationException e )
-            {
-                throw new InitializationException( "NPANDAY-102-008: Initializing rule factory failed." , e);
-            }
             transitionRules.put( VendorInfoState.MFF, factory.createVendorInfoSetterForMFF() );
             transitionRules.put( VendorInfoState.FTF, factory.createVendorInfoSetterForFTF() );
             transitionRules.put( VendorInfoState.FFT, factory.createVendorInfoSetterForFFT() );
@@ -115,7 +117,7 @@ public final class StateMachineProcessorImpl
         }
         else
         {
-            logger.info( "NPANDAY-102-001: No NPanday settings available. Using Defaults." );
+            logger.warn( "NPANDAY-102-001: No NPanday settings available. Using Defaults." );
             transitionRules.put( VendorInfoState.MFF, factory.createVendorInfoSetterForMFF_NoSettings() );
             transitionRules.put( VendorInfoState.NFT, factory.createVendorInfoSetterForNFT_NoSettings() );
             transitionRules.put( VendorInfoState.NTF, factory.createVendorInfoSetterForNTF_NoSettings() );
