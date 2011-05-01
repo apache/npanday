@@ -190,7 +190,7 @@ public class FxCopAggregateMojo
         }
         catch ( XmlPullParserException e )
         {
-            throw new IOException( "NPANDAY-xxx-005: Unable to read pom file", e );
+            throw new IOException( "NPANDAY-xxx-005: Unable to read pom file" );
         }
         return model;
     }

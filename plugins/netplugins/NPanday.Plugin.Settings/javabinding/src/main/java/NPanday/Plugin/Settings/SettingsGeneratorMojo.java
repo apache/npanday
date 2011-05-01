@@ -232,7 +232,7 @@ public class SettingsGeneratorMojo
         }
         catch ( Exception e )
         {
-            throw new IOException( "Error opening/parsing settings.xml", e );
+            throw new IOException( "Error opening/parsing settings.xml" );
         }
 
         return false;
