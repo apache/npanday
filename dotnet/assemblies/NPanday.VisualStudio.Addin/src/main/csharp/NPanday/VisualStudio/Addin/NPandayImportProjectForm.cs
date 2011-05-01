@@ -35,6 +35,7 @@ using Microsoft.Win32;
 
 
 using NPanday.ProjectImporter;
+using NPanday.Logging;
 using System.Xml;
 
 namespace NPanday.VisualStudio.Addin
@@ -66,9 +67,10 @@ namespace NPanday.VisualStudio.Addin
             return filtered;
         }
 		
-        public NPandayImportProjectForm(DTE2 applicationObject)
+        public NPandayImportProjectForm(DTE2 applicationObject, Logger logger)
         {
             this.applicationObject = applicationObject;
+            this.logger = logger;
             InitializeComponent();
 
             if (applicationObject != null && applicationObject.Solution != null && applicationObject.Solution.FileName != null)

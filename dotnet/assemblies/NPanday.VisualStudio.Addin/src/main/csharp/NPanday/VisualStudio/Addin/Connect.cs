@@ -2079,7 +2079,7 @@ namespace NPanday.VisualStudio.Addin
                     else if (result == DialogResult.OK)
                     {
                         SaveAllDocuments();
-                        NPandayImportProjectForm frm = new NPandayImportProjectForm(_applicationObject);
+                        NPandayImportProjectForm frm = new NPandayImportProjectForm(_applicationObject, logger);
                         frm.SetOutputWindowPane(outputWindowPane);
                         frm.ShowDialog();
                         currentPom = this.CurrentSelectedProjectPom;
@@ -2130,7 +2130,7 @@ namespace NPanday.VisualStudio.Addin
         private void cbChangeProjectImportForm_Click(CommandBarButton btn, ref bool Cancel)
         {
             SaveAllDocuments();
-            NPandayImportProjectForm frm = new NPandayImportProjectForm(_applicationObject);
+            NPandayImportProjectForm frm = new NPandayImportProjectForm(_applicationObject, logger);
             frm.SetOutputWindowPane(outputWindowPane);
             frm.ShowDialog();
         }
