@@ -51,7 +51,7 @@ public class ConfigurationAppendersRepository implements Repository
         }
         catch ( XmlPullParserException e )
         {
-            throw new IOException( "NPANDAY-062-000: Could not read plugins-compiler.xml", e );
+            throw new IOException( "NPANDAY-062-000: Could not read plugins-compiler.xml" );
         }
         List<ConfigurationAppender> appenders  = model.getConfigurationAppenders();
         appenderClasses = new HashSet<Class>();
@@ -63,7 +63,7 @@ public class ConfigurationAppendersRepository implements Repository
             }
             catch ( ClassNotFoundException e )
             {
-                throw new IOException("NPANDAY-xxx-000: Could not load class appender: Name = " + appender.getName(), e);
+                throw new IOException("NPANDAY-xxx-000: Could not load class appender: Name = " + appender.getName() );
             }
         }
 

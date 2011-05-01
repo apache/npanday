@@ -175,15 +175,15 @@ public final class ProjectDaoImpl
         }
         catch ( RepositoryException e )
         {
-            throw new IOException( "NPANDAY-180-000: Message = " + e.getMessage(), e );
+            throw new IOException( "NPANDAY-180-000: Message = " + e.getMessage() );
         }
         catch ( MalformedQueryException e )
         {
-            throw new IOException( "NPANDAY-180-001: Message = " + e.getMessage(), e );
+            throw new IOException( "NPANDAY-180-001: Message = " + e.getMessage() );
         }
         catch ( QueryEvaluationException e )
         {
-            throw new IOException( "NPANDAY-180-002: Message = " + e.getMessage(), e );
+            throw new IOException( "NPANDAY-180-002: Message = " + e.getMessage() );
         }
         finally
         {
@@ -351,15 +351,15 @@ public final class ProjectDaoImpl
         }
         catch ( QueryEvaluationException e )
         {
-            throw new IOException( "NPANDAY-180-005: Message = " + e.getMessage(), e);
+            throw new IOException( "NPANDAY-180-005: Message = " + e.getMessage() );
         }
         catch ( RepositoryException e )
         {
-            throw new IOException( "NPANDAY-180-006: Message = " + e.getMessage(), e);
+            throw new IOException( "NPANDAY-180-006: Message = " + e.getMessage() );
         }
         catch ( MalformedQueryException e )
         {
-            throw new IOException( "NPANDAY-180-007: Message = " + e.getMessage(), e);
+            throw new IOException( "NPANDAY-180-007: Message = " + e.getMessage() );
         }
         finally
         {
@@ -857,7 +857,7 @@ public final class ProjectDaoImpl
 
                 }
             }
-            throw new IOException( "NPANDAY-180-021: Could not open RDF Repository: Message =" + e.getMessage(), e);
+            throw new IOException( "NPANDAY-180-021: Could not open RDF Repository: Message =" + e.getMessage() );
         }
 
         for ( Model model : modelDependencies )

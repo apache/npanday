@@ -75,7 +75,7 @@ public class ConnectionsRepository
         }
         catch ( RepositoryException e )
         {
-            throw new IOException("NPANDAY-080-005: Failed to initialized repository. Message = " + e.getMessage(), e);
+            throw new IOException("NPANDAY-080-005: Failed to initialized repository. Message = " + e.getMessage() );
         }
 
         Set<String> keys = properties.keySet();
@@ -103,12 +103,12 @@ public class ConnectionsRepository
                 catch ( Exception e )
                 {
                     throw new IOException(
-                        "NPANDAY-080-002: Problem instantiating the DAO Class: Class Name = " + daoClassName, e );
+                        "NPANDAY-080-002: Problem instantiating the DAO Class: Class Name = " + daoClassName );
                 }
                 catch ( Error e )
                 {
                     throw new IOException(
-                        "NPANDAY-080-003: Problem instantiating the DAO Class: Class Name = " + daoClassName, e );
+                        "NPANDAY-080-003: Problem instantiating the DAO Class: Class Name = " + daoClassName );
                 }
             }
         }

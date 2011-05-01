@@ -113,11 +113,11 @@ public class RepositoryRegistryImpl
                 }
                 catch ( Exception e )
                 {
-                    throw new IOException( "NPANDAY-082-003: Unable to load repository: " + message, e );
+                    throw new IOException( "NPANDAY-082-003: Unable to load repository: " + message );
                 }
                 catch ( Error e )
                 {
-                    throw new IOException( "NPANDAY-082-004: Unable to load repository: " + message, e );
+                    throw new IOException( "NPANDAY-082-004: Unable to load repository: " + message );
                 }
             }
 
@@ -137,11 +137,11 @@ public class RepositoryRegistryImpl
                 }
                 catch ( Exception e )
                 {
-                    throw new IOException( "NPANDAY-082-006: Unable to load registry: " + message, e );
+                    throw new IOException( "NPANDAY-082-006: Unable to load registry: " + message );
                 }
                 catch ( Error e )
                 {
-                    throw new IOException( "NPANDAY-082-007: Unable to load registry: " + message, e );
+                    throw new IOException( "NPANDAY-082-007: Unable to load registry: " + message );
                 }
             }
         }

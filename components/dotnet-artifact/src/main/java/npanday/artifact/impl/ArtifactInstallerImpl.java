@@ -195,12 +195,12 @@ public class ArtifactInstallerImpl
                 catch ( ArtifactResolutionException e )
                 {
                     throw new IOException(
-                        "NPANDAY-001-000: Problem resolving artifact for java binding: Message = " + e.getMessage(), e);
+                        "NPANDAY-001-000: Problem resolving artifact for java binding: Message = " + e.getMessage() );
                 }
                 catch ( ArtifactNotFoundException e )
                 {
                     throw new IOException(
-                        "NPANDAY-001-001: Could not find artifact for java binding: Message =" + e.getMessage(), e);
+                        "NPANDAY-001-001: Could not find artifact for java binding: Message =" + e.getMessage() );
                 }
             }
         }
@@ -218,12 +218,12 @@ public class ArtifactInstallerImpl
             catch ( ArtifactResolutionException e )
             {
                 throw new IOException(
-                    "NPANDAY-001-002: Problem resolving java dependency artifact: Message = " + e.getMessage(), e);
+                    "NPANDAY-001-002: Problem resolving java dependency artifact: Message = " + e.getMessage() );
             }
             catch ( ArtifactNotFoundException e )
             {
                 throw new IOException(
-                    "NPANDAY-001-003: Could not find java dependency artifact: Message = " + e.getMessage(), e);
+                    "NPANDAY-001-003: Could not find java dependency artifact: Message = " + e.getMessage() );
             }
         }
 
@@ -303,7 +303,7 @@ public class ArtifactInstallerImpl
             {
                 throw new ArtifactInstallationException( "NPANDAY-001-006: Failed to install artifact: ID = " +
                     artifact.getId() + ", File = " +
-                    ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
+                    ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ) );
             }
         }
 

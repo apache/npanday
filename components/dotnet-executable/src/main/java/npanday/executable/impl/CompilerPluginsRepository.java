@@ -67,7 +67,7 @@ public final class CompilerPluginsRepository
         }
         catch ( XmlPullParserException e )
         {
-            throw new IOException( "NPANDAY-062-000: Could not read plugins-compiler.xml", e );
+            throw new IOException( "NPANDAY-062-000: Could not read plugins-compiler.xml" );
         }
         compilerPlugins = plugins.getCompilerPlugins();
     }
