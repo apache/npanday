@@ -56,19 +56,19 @@ namespace ConnectTest.UtilsTest
         [Test]
         public void AddMavenCompilePluginConfigurationTest()
         {
-            pomCopy.AddMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs");
+            pomCopy.AddMavenCompilePluginConfiguration("org.apache.npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs");
         }
 
         [Test]
         public void RenameMavenCompilePluginConfigurationTest()
         {
-            pomCopy.RenameMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs","IISHandlerRenamed.cs");
+            pomCopy.RenameMavenCompilePluginConfiguration("org.apache.npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs","IISHandlerRenamed.cs");
         }
 
         [Test]
         public void RemoveMavenCompilePluginConfigurationTest()
         {
-            pomCopy.RemoveMavenCompilePluginConfiguration("npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs");
+            pomCopy.RemoveMavenCompilePluginConfiguration("org.apache.npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs");
         }
 
         [TearDown]

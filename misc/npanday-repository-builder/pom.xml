@@ -19,7 +19,7 @@ under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <parent> 
-    <groupId>npanday</groupId>  
+    <groupId>org.apache.npanday</groupId>
     <artifactId>npanday-project</artifactId>  
     <version>1.3.1-incubating-SNAPSHOT</version> 
     <relativePath>../../pom.xml</relativePath>
@@ -39,87 +39,87 @@ under the License.
     NPANDAY PLUGINS
     -->
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-compile-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-aspx-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-fxcop-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-install-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-link-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-mojo-generator-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-repository-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-resgen-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-resolver-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-test-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-vsinstaller-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-webapp-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-wsdl-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-xsd-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-xsp-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
 	<dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>wix-maven-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>custom-lifecycle-maven-plugin</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
     </dependency>
@@ -128,27 +128,27 @@ under the License.
     NPANDAY NETPLUGINS
      -->  
     <dependency> 
-      <groupId>npanday.plugin</groupId>  
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Addin.JavaBinding</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>npanday.plugin</groupId>  
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Devenv.JavaBinding</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>npanday.plugin</groupId>  
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version> 
     </dependency>
 	<dependency> 
-      <groupId>npanday.plugin</groupId>  
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.SysRef.JavaBinding</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version> 
     </dependency>
 	<dependency> 
-      <groupId>npanday.plugin</groupId>  
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version> 
     </dependency>
@@ -157,17 +157,17 @@ under the License.
     NPANDAY ARCHETYPES
     -->
     <dependency> 
-      <groupId>npanday</groupId>  
+      <groupId>org.apache.npanday</groupId>
       <artifactId>maven-archetype-dotnet-simple</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version> 
     </dependency>  
     <dependency> 
-      <groupId>npanday</groupId>  
+      <groupId>org.apache.npanday</groupId>
       <artifactId>maven-archetype-netexecutable</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version> 
     </dependency>
     <dependency> 
-      <groupId>npanday</groupId>  
+      <groupId>org.apache.npanday</groupId>
       <artifactId>maven-archetype-vb-simple</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version> 
     </dependency>
@@ -186,7 +186,7 @@ under the License.
               <outputDirectory>${project.build.directory}/dotnet</outputDirectory>
               <artifactItems>
                 <artifactItem>
-                  <groupId>npanday</groupId>
+                  <groupId>org.apache.npanday</groupId>
                   <artifactId>dotnet-repository-builder</artifactId>
                   <version>${project.version}</version>
                   <type>tar.gz</type>

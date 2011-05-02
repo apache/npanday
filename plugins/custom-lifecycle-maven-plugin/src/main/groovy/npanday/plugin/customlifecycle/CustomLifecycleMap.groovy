@@ -38,7 +38,7 @@ import static LifecycleMappingBuilder.build as forType
 class CustomLifecycleMap extends LifecycleMap
 {
     void defineMappings(String npandayVersion) {
-        def self_setArtifact = "npanday.plugin:custom-lifecycle-maven-plugin:$npandayVersion:set-artifact"
+        def self_setArtifact = "org.apache.npanday.plugin:custom-lifecycle-maven-plugin:$npandayVersion:set-artifact"
         def mv_install = "org.apache.maven.plugins:maven-install-plugin:install"
         def mv_deploy = "org.apache.maven.plugins:maven-deploy-plugin:deploy"
 

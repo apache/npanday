@@ -21,10 +21,10 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>maven-dotnet-plugins</artifactId>
-    <groupId>npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugin</groupId>
     <version>1.3.1-incubating-SNAPSHOT</version>
   </parent>
-  <groupId>npanday.plugin</groupId>
+  <groupId>org.apache.npanday.plugin</groupId>
   <artifactId>custom-lifecycle-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>NPanday :: Custom Lifecycle Extensions Plugin</name>
@@ -84,7 +84,7 @@ under the License.
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>npanday</groupId>
+      <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-core</artifactId>
       <version>1.3.1-incubating-SNAPSHOT</version>
       <type>jar</type>

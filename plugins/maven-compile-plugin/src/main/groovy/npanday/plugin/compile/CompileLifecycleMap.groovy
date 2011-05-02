@@ -40,25 +40,25 @@ class CompileLifecycleMap extends LifecycleMap
       	def mv_install = "org.apache.maven.plugins:maven-install-plugin:install"
         def mv_deploy = "org.apache.maven.plugins:maven-deploy-plugin:deploy"
 
-        def np_generate_settings = "npanday.plugin:NPanday.Plugin.Settings.JavaBinding:$npandayVersion:generate-settings"
-        def np_compile_init = "npanday.plugin:maven-compile-plugin:$npandayVersion:initialize"
-        def np_resolve = "npanday.plugin:maven-resolver-plugin:$npandayVersion:resolve"
-        def np_generate_assemblyinfo = "npanday.plugin:maven-compile-plugin:$npandayVersion:generate-assembly-info"
-        def np_compile_process_sources = "npanday.plugin:maven-compile-plugin:$npandayVersion:process-sources"
-        def np_compile_process_test_sources = "npanday.plugin:maven-compile-plugin:$npandayVersion:process-test-sources"
-        def np_resgen_copy = "npanday.plugin:maven-resgen-plugin:$npandayVersion:copy-resources"
-        def np_resgen_generate = "npanday.plugin:maven-resgen-plugin:$npandayVersion:generate"
-        def np_resgen_resx = "npanday.plugin:maven-resgen-plugin:$npandayVersion:generate-existing-resx-to-resource"
-        def np_compile = "npanday.plugin:maven-compile-plugin:$npandayVersion:compile"
-        def np_test_compile = "npanday.plugin:maven-compile-plugin:$npandayVersion:testCompile"
-        def np_test = "npanday.plugin:maven-test-plugin:$npandayVersion:test"
-        def np_convert = "npanday.plugin:maven-repository-plugin:$npandayVersion:convert-artifact"
+        def np_generate_settings = "org.apache.npanday.plugin:NPanday.Plugin.Settings.JavaBinding:$npandayVersion:generate-settings"
+        def np_compile_init = "org.apache.npanday.plugin:maven-compile-plugin:$npandayVersion:initialize"
+        def np_resolve = "org.apache.npanday.plugin:maven-resolver-plugin:$npandayVersion:resolve"
+        def np_generate_assemblyinfo = "org.apache.npanday.plugin:maven-compile-plugin:$npandayVersion:generate-assembly-info"
+        def np_compile_process_sources = "org.apache.npanday.plugin:maven-compile-plugin:$npandayVersion:process-sources"
+        def np_compile_process_test_sources = "org.apache.npanday.plugin:maven-compile-plugin:$npandayVersion:process-test-sources"
+        def np_resgen_copy = "org.apache.npanday.plugin:maven-resgen-plugin:$npandayVersion:copy-resources"
+        def np_resgen_generate = "org.apache.npanday.plugin:maven-resgen-plugin:$npandayVersion:generate"
+        def np_resgen_resx = "org.apache.npanday.plugin:maven-resgen-plugin:$npandayVersion:generate-existing-resx-to-resource"
+        def np_compile = "org.apache.npanday.plugin:maven-compile-plugin:$npandayVersion:compile"
+        def np_test_compile = "org.apache.npanday.plugin:maven-compile-plugin:$npandayVersion:testCompile"
+        def np_test = "org.apache.npanday.plugin:maven-test-plugin:$npandayVersion:test"
+        def np_convert = "org.apache.npanday.plugin:maven-repository-plugin:$npandayVersion:convert-artifact"
 
 		def default_validate = [np_compile_init, np_resolve, np_generate_settings]
 		def default_generate_sources = [np_generate_assemblyinfo]
 		def default_process_resources = [np_resgen_copy, np_resgen_generate, np_resgen_resx]
 		def default_process_sources = [np_compile_process_sources, np_compile_process_test_sources]
-		def default_install = [np_convert, "npanday.plugin:maven-install-plugin:$npandayVersion:install", mv_install]
+		def default_install = [np_convert, "org.apache.npanday.plugin:maven-install-plugin:$npandayVersion:install", mv_install]
 		
 		forTypes( [ArtifactType.DOTNET_LIBRARY, ArtifactType.LIBRARY] ) {
 			LifecycleMappingBuilder b->
@@ -81,8 +81,8 @@ class CompileLifecycleMap extends LifecycleMap
 			b.compile (np_compile)
 			b.test_compile (np_test_compile)
 			b.test (np_test)
-			b._package ("npanday.plugin:maven-webapp-plugin:$npandayVersion:package")
-			b.deploy ("npanday.plugin:maven-webapp-plugin:$npandayVersion:deploy")
+			b._package ("org.apache.npanday.plugin:maven-webapp-plugin:$npandayVersion:package")
+			b.deploy ("org.apache.npanday.plugin:maven-webapp-plugin:$npandayVersion:deploy")
 		}
 		forTypes( [ArtifactType.DOTNET_MODULE, ArtifactType.MODULE] ) {
 			LifecycleMappingBuilder b->
@@ -92,7 +92,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.compile (np_compile)
 			b.test_compile (np_test_compile)
 			b.test (np_test)
-			b._package ("npanday.plugin:maven-link-plugin:$npandayVersion:package")
+			b._package ("org.apache.npanday.plugin:maven-link-plugin:$npandayVersion:package")
 			b.install (default_install)
 			b.deploy (mv_deploy)
 		}
@@ -100,12 +100,12 @@ class CompileLifecycleMap extends LifecycleMap
 			LifecycleMappingBuilder b->
 			b.validate (default_validate)
 			b.generate_sources (default_generate_sources)
-			b.process_sources (np_compile_process_sources, np_compile_process_test_sources, "npanday.plugin:maven-aspx-plugin:$npandayVersion:copy-dependency")
+			b.process_sources (np_compile_process_sources, np_compile_process_test_sources, "org.apache.npanday.plugin:maven-aspx-plugin:$npandayVersion:copy-dependency")
 			b.process_resources (default_process_resources)
-			b.compile (np_compile, "npanday.plugin:maven-aspx-plugin:$npandayVersion:compile")
+			b.compile (np_compile, "org.apache.npanday.plugin:maven-aspx-plugin:$npandayVersion:compile")
 			b.test_compile (np_test_compile)
 			b.test (np_test)
-			b._package ("npanday.plugin:maven-aspx-plugin:$npandayVersion:package")
+			b._package ("org.apache.npanday.plugin:maven-aspx-plugin:$npandayVersion:package")
 			b.install (default_install)
 			b.deploy (mv_deploy)
 		}
@@ -131,7 +131,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.test_compile (np_test_compile)
 			b.test (np_test)
 			b.install (default_install)
-			b._package ("npanday.plugin:maven-mojo-generator-plugin:$npandayVersion:generate-bindings")
+			b._package ("org.apache.npanday.plugin:maven-mojo-generator-plugin:$npandayVersion:generate-bindings")
             b.deploy (mv_deploy)
 		}
 		forType( ArtifactType.VISUAL_STUDIO_ADDIN ) {

@@ -128,7 +128,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (projectDigest != null && projectDigest.EmbeddedResources != null && projectDigest.EmbeddedResources.Length > 0)
             {
                 Plugin embeddedResourcePlugin = AddPlugin(
-                    "npanday.plugin",
+                    "org.apache.npanday.plugin",
                     "maven-resgen-plugin",
                     null,
                     false
@@ -204,7 +204,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (projectDigest != null && projectDigest.WebReferenceUrls != null && projectDigest.WebReferenceUrls.Length > 0)
             {
                 Plugin webReferencePlugin = AddPlugin(
-                    "npanday.plugin",
+                    "org.apache.npanday.plugin",
                     "maven-wsdl-plugin",
                     null,
                     false

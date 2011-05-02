@@ -101,7 +101,7 @@ public class MsbuildMojo
 
     public String getMojoGroupId()
     {
-        return "npanday.plugin";
+        return "org.apache.npanday.plugin";
     }
 
     public String getClassName()

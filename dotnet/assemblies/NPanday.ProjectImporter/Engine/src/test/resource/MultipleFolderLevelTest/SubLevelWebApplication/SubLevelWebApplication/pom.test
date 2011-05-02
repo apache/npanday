@@ -20,7 +20,7 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <parent>
     <artifactId>MultipleFolderLevelExample-parent</artifactId>
-    <groupId>NPanday.MultipleFolderLevelExample</groupId>
+    <groupId>org.apache.npanday.MultipleFolderLevelExample</groupId>
     <version>1.2-SNAPSHOT</version>
     <relativePath>..\..\pom.xml</relativePath>
   </parent>
@@ -32,7 +32,7 @@ under the License.
     <sourceDirectory>.</sourceDirectory>
     <plugins>
       <plugin>
-        <groupId>npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugin</groupId>
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
@@ -73,7 +73,7 @@ under the License.
         </configuration>
       </plugin>
       <plugin>
-        <groupId>npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugin</groupId>
         <artifactId>maven-resgen-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>

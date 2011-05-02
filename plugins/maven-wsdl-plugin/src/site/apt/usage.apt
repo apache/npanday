@@ -32,7 +32,7 @@ Usage
     <build>
         <plugins>
             <plugin>
-                <groupId>npanday.plugin</groupId>
+                <groupId>org.apache.npanday.plugin</groupId>
                 <artifactId>maven-wsdl-plugin</artifactId>
                 <executions>
                     <execution>

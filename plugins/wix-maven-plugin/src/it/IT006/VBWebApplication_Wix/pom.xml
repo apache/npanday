@@ -20,7 +20,7 @@ under the License.
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
     <artifactId>WIXVBWebApp08-parent</artifactId>
-    <groupId>Npanday.examples</groupId>
+    <groupId>org.apache.npanday.examples</groupId>
     <version>1.2-SNAPSHOT</version>
     <relativePath>..\pom.xml</relativePath>
   </parent>
@@ -32,7 +32,7 @@ under the License.
     <sourceDirectory>.</sourceDirectory>
     <plugins>
       <plugin>
-        <groupId>npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugin</groupId>
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
@@ -73,7 +73,7 @@ under the License.
         </configuration>
       </plugin>
       <plugin>
-        <groupId>npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugin</groupId>
         <artifactId>maven-resgen-plugin</artifactId>
         <configuration>
           <embeddedResources>

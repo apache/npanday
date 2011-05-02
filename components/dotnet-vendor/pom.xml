@@ -20,7 +20,7 @@ under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent> 
-    <groupId>npanday</groupId>  
+    <groupId>org.apache.npanday</groupId>
     <version>1.3.1-incubating-SNAPSHOT</version>  
     <artifactId>dotnet-components</artifactId> 
   </parent>  
@@ -29,11 +29,11 @@ under the License.
   <name>NPanday :: Vendor</name>  
   <dependencies> 
     <dependency> 
-      <groupId>npanday</groupId>  
+      <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-core</artifactId>  
     </dependency>  
     <dependency> 
-      <groupId>npanday</groupId>  
+      <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-model-settings</artifactId>  
     </dependency> 
   </dependencies> 

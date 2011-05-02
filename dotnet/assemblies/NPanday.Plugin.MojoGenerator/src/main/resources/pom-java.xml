@@ -26,22 +26,22 @@ under the License.
   <name></name>
   <dependencies>
     <dependency>
-      <groupId>npanday</groupId>
+      <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-assembler</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>npanday</groupId>
+      <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-executable</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>npanday</groupId>
+      <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-artifact</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>npanday</groupId>
+      <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-plugin</artifactId>
       <version>${project.version}</version>
     </dependency>

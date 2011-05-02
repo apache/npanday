@@ -41,12 +41,12 @@ Usage
     <testSourceDirectory>src/test/csharp</testSourceDirectory>
     <plugins>
       <plugin>
-        <groupId>npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugin</groupId>
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
       </plugin>
       <plugin>
-        <groupId>npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugin</groupId>
         <artifactId>maven-xsd-plugin</artifactId>
         <executions>
           <execution>
@@ -70,7 +70,7 @@ Usage
 <project>
   [...]
       <plugin>
-        <groupId>npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugin</groupId>
         <artifactId>maven-xsd-plugin</artifactId>
         <executions>
           <execution>
@@ -107,12 +107,12 @@ Usage
     <testSourceDirectory>src/test/csharp</testSourceDirectory>
     <plugins>
       <plugin>
-        <groupId>npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugin</groupId>
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
       </plugin>
       <plugin>
-        <groupId>npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugin</groupId>
         <artifactId>maven-xsd-plugin</artifactId>
         <executions>
           <execution>

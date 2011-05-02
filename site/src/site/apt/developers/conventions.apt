@@ -52,7 +52,7 @@ NPanday Conventions
 +------+
 <project xmlns="http://maven.apache.org/POM/4.0.0">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>npanday.artifact</groupId>
+  <groupId>org.apache.npanday.artifact</groupId>
   <artifactId>NPanday.Artifact</artifactId>
   <packaging>library</packaging>
   <version>0.9</version>
@@ -65,7 +65,7 @@ NPanday Conventions
 +------+
 <project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>npanday.artifact</groupId>
+  <groupId>org.apache.npanday.artifact</groupId>
   <artifactId>NPanday.Artifact<artifactId>
   <packaging>library</packaging>
   <version>0.9</version>
@@ -98,7 +98,7 @@ child Group ID: NPanday.Model, NPanday.Models or NPanday.Model.VSContent
 +------+
 <project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>npanday.artifact</groupId>
+  <groupId>org.apache.npanday.artifact</groupId>
   <artifactId>NPanday.Artifact<artifactId>
   <packaging>library</packaging>
   <version>0.9</version>
@@ -111,7 +111,7 @@ child Group ID: NPanday.Model, NPanday.Models or NPanday.Model.VSContent
 +------+
  <project xmlns="http://maven.apache.org/POM/4.0.0">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>npanday.plugins</groupId>
+  <groupId>org.apache.npanday.plugins</groupId>
   <artifactId>NPanday.Plugins</artifactId>
   <packaging>pom</packaging>
   <version>0.9</version>
@@ -121,7 +121,7 @@ child Group ID: NPanday.Model, NPanday.Models or NPanday.Model.VSContent
     <testSourceDirectory>src/test/csharp</testSourceDirectory>
     <plugins>
       <plugin>
-        <groupId>npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugin</groupId>
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>

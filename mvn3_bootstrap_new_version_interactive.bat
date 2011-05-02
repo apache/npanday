@@ -11,7 +11,7 @@ echo Open pom.xml, and remove 'dotnet' in the modules-section. Save the file.
 pause
 @echo on
 
-call mvn install --projects npanday.plugin:maven-compile-plugin --also-make
+call mvn install --projects org.apache.npanday.plugin:maven-compile-plugin --also-make
 IF %ERRORLEVEL% NEQ 0 GOTO Error
 
 @echo off

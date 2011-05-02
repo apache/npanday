@@ -20,7 +20,7 @@ under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <groupId>npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugin</groupId>
     <version>1.3.1-incubating-SNAPSHOT</version>
     <artifactId>maven-dotnet-plugins</artifactId>
   </parent>
@@ -31,7 +31,7 @@ under the License.
   <description>Maven Plugin for .NET: Precompiles aspx pages</description>
   <dependencies>
     <dependency>
-      <groupId>npanday</groupId>
+      <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-registry</artifactId>
     </dependency>
     <dependency>

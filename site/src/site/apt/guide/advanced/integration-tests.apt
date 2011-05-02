@@ -38,7 +38,7 @@ Integration Tests
     <plugins>
       [...]
       <plugin>
-      <groupId>npanday.plugin</groupId>
+      <groupId>org.apache.npanday.plugin</groupId>
       <artifactId>maven-test-plugin</artifactId>
       <extensions>true</extensions>
       <configuration>

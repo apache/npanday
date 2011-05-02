@@ -79,7 +79,7 @@ Importing Projects
 
 +------+
   <plugin>
-    <groupId>npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugin</groupId>
     <artifactId>maven-wsdl-plugin</artifactId>
     <extensions>true</extensions>
     <executions>
@@ -155,7 +155,7 @@ Importing Projects
  
 +------+ 
   <plugin>
-    <groupId>npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugin</groupId>
     <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>
     <executions>
       <execution>

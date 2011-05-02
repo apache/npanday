@@ -181,11 +181,11 @@ public class NetExecutableFactoryImpl
         commands.add( "mojoName=" + mojoName );//ArtifactId = namespace
 
         Artifact pluginLoaderArtifact =
-            artifactContext.getArtifactsFor( "npanday.plugin", "NPanday.Plugin.Loader", null, null ).get( 0 );
+            artifactContext.getArtifactsFor( "org.apache.npanday.plugin", "NPanday.Plugin.Loader", null, null ).get( 0 );
         artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ) );
         commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
 
-        return getNetExecutableFromRepository( "npanday.plugin", "NPanday.Plugin.Runner", vendorInfo,
+        return getNetExecutableFromRepository( "org.apache.npanday.plugin", "NPanday.Plugin.Runner", vendorInfo,
                                                new File( localRepository ), commands, false );
     }
 
@@ -233,11 +233,11 @@ public class NetExecutableFactoryImpl
             commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
             //TODO: Replace
             String pluginArtifactPath = PathUtil.getPrivateApplicationBaseFileFor(
-                artifactContext.getArtifactsFor( "npanday.plugin", "NPanday.Plugin", null, null ).get( 0 ),
+                artifactContext.getArtifactsFor( "org.apache.npanday.plugin", "NPanday.Plugin", null, null ).get( 0 ),
                 localRepository ).getAbsolutePath();
 
             commands.add( "pluginArtifactPath=" + pluginArtifactPath );
-            return getNetExecutableFromRepository( "npanday.plugin", "NPanday.Plugin.Runner", vendorInfo, localRepository,
+            return getNetExecutableFromRepository( "org.apache.npanday.plugin", "NPanday.Plugin.Runner", vendorInfo, localRepository,
                                                    commands, false );
         }
 

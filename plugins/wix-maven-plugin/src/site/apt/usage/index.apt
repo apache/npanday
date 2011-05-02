@@ -23,7 +23,7 @@ Usage
   <build>
     <plugins>
       <plugin>
-        <groupId>npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugin</groupId>
         <artifactId>wix-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
         <configuration>

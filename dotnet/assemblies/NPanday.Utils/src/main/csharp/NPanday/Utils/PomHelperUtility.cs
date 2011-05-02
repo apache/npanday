@@ -284,7 +284,7 @@ namespace NPanday.Utils
 
         public string GetNPandayCompilerPluginConfigurationValue(string config)
         {
-            return GetPomXPathExprValue(@"//pom:project/pom:build/pom:plugins[./pom:plugin/pom:groupId = 'npanday.plugin' and  ./pom:plugin/pom:artifactId = 'maven-compile-plugin'][1]/pom:plugin/pom:configuration/pom:" + config);
+            return GetPomXPathExprValue(@"//pom:project/pom:build/pom:plugins[./pom:plugin/pom:groupId = 'org.apache.npanday.plugin' and  ./pom:plugin/pom:artifactId = 'maven-compile-plugin'][1]/pom:plugin/pom:configuration/pom:" + config);
         }
 
         private string PomNamespaceURI
@@ -427,7 +427,7 @@ namespace NPanday.Utils
             {
                 foreach (NPanday.Model.Pom.Plugin plugin in model.build.plugins)
                 {
-                    if ("npanday.plugin".Equals(plugin.groupId)
+                    if ("org.apache.npanday.plugin".Equals(plugin.groupId)
                         && "maven-compile-plugin".Equals(plugin.artifactId))
                     {
                         compilePlugin = plugin;
@@ -441,7 +441,7 @@ namespace NPanday.Utils
             if (compilePlugin == null)
             {
                 compilePlugin = new NPanday.Model.Pom.Plugin();
-                compilePlugin.groupId = "npanday.plugin";
+                compilePlugin.groupId = "org.apache.npanday.plugin";
                 compilePlugin.artifactId = "maven-compile-plugin";
                 compilePlugin.extensions = true;
                 plugins.Add(compilePlugin);
@@ -505,7 +505,7 @@ namespace NPanday.Utils
 
 
 
-        // @"//pom:project/pom:build/pom:plugins[./pom:plugin/pom:groupId = 'npanday.plugin' and  ./pom:plugin/pom:artifactId = 'maven-compile-plugin'][1]/pom:plugin/pom:configuration/pom:keyfile"
+        // @"//pom:project/pom:build/pom:plugins[./pom:plugin/pom:groupId = 'org.apache.npanday.plugin' and  ./pom:plugin/pom:artifactId = 'maven-compile-plugin'][1]/pom:plugin/pom:configuration/pom:keyfile"
 
         public string GetPomXPathExprValue(string xpath_expr)
         {
@@ -985,7 +985,7 @@ namespace NPanday.Utils
                 if (!hasWSDLPlugin)
                 {
                     Plugin webReferencePlugin = addPlugin(model,
-                        "npanday.plugin",
+                        "org.apache.npanday.plugin",
                         "maven-wsdl-plugin",
                         null,
                         false
@@ -998,7 +998,7 @@ namespace NPanday.Utils
 
             foreach (Plugin plugin in model.build.plugins)
             {
-                if ("npanday.plugin".Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                if ("org.apache.npanday.plugin".Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
                     && "maven-compile-plugin".Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (plugin.configuration == null && plugin.configuration.Any == null)
@@ -1497,7 +1497,7 @@ namespace NPanday.Utils
         {
             return (!string.IsNullOrEmpty(plugin.groupId) &&
                                 !string.IsNullOrEmpty(plugin.artifactId) &&
-                                    plugin.groupId.Equals("npanday.plugin") &&
+                                    plugin.groupId.Equals("org.apache.npanday.plugin") &&
                                         plugin.artifactId.Equals("maven-wsdl-plugin"));
         }
 
@@ -1607,7 +1607,7 @@ namespace NPanday.Utils
                         }
                     }
 
-                    if ("npanday.plugin".Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                    if ("org.apache.npanday.plugin".Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
                         && "maven-compile-plugin".Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                     {
                         XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
