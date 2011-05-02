@@ -27,10 +27,10 @@ import npanday.ArtifactType
  */
 class LifecyclePrinter {
 	
-	static void printAll(Class lifecycleMap, Closure printLine) {
+	static void printAll(Class lifecycleMap, String npandayVersion, Closure printLine) {
 		def g = lifecycleMap.newInstance() as LifecycleMap
 		
-		new LifecyclePrinter().print(g.buildMap(), printLine)
+		new LifecyclePrinter().print(g.buildMap(npandayVersion), printLine)
 	}
 	
 	void print(List<LifecycleMapping> lifecycleMappings, Closure printLine){

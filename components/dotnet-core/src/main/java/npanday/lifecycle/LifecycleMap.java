@@ -29,10 +29,10 @@ public abstract class LifecycleMap {
 		map.add(mapping);
 	}
 	
-	protected abstract void defineMappings();
+	protected abstract void defineMappings(String npandayVersion);
 	
-	public List<LifecycleMapping> buildMap() {
-		defineMappings();
+	public List<LifecycleMapping> buildMap(String npandayVersion) {
+		defineMappings(npandayVersion);
 		return map;
 	}
 }

@@ -34,4 +34,4 @@ plexus.mkdirs()
 def componentsXmlFile = new File(plexus, 'components.xml');
 
 LifecycleConfigurationGenerator
-		.persistAllTypesAndLifecycles(CustomLifecycleMap, componentsXmlFile)
+		.persistAllTypesAndLifecycles(CustomLifecycleMap, project.version, componentsXmlFile)

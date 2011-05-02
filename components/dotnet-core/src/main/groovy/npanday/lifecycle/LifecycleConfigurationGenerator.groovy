@@ -107,14 +107,14 @@ class LifecycleConfigurationGenerator {
 		currentXml = resultXml.toString()
 	}
 	
-	static void persistAllTypesAndLifecycles(Class lifecycleMap, File componentsXmlFile) {
+	static void persistAllTypesAndLifecycles(Class lifecycleMap, String npandayVersion, File componentsXmlFile) {
 		def g = lifecycleMap.newInstance() as LifecycleMap
 		
 		def componentsXml = componentsXmlFile.text
 		
 		def generator = new LifecycleConfigurationGenerator(componentsXml)
 		generator.configureAllTypes()
-		generator.configureMappings(g.buildMap())
+		generator.configureMappings(g.buildMap(npandayVersion))
 		generator.saveTo(componentsXmlFile)
 	}
 	

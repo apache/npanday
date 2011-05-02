@@ -29,7 +29,7 @@ import org.junit.Test
  */
 class TestLifecycleMap extends LifecycleMap
 {
-	void defineMappings() {
+	void defineMappings(String npandayVersion) {
 	    add(new LifecycleMapping(type: ArtifactType.DOTNET_LIBRARY, phases: null))
 	}
 	

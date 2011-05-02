@@ -22,7 +22,8 @@ package npanday.plugin.customlifecycle;
 
 import npanday.lifecycle.LifecyclePrinter;
 
-import org.codehaus.gmaven.mojo.GroovyMojo;
+import org.codehaus.gmaven.mojo.GroovyMojo
+import org.apache.maven.project.MavenProject;
 /**
  * @author Lars Corneliussen
  * @goal describe
@@ -31,7 +32,15 @@ import org.codehaus.gmaven.mojo.GroovyMojo;
 class DescribeMojo
     extends GroovyMojo
 {
+     /**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
+     * @required
+     */
+    protected MavenProject project;
+
 	void execute() {
-		LifecyclePrinter.printAll(CustomLifecycleMap, {getLog().info(it)})
+		LifecyclePrinter.printAll(CustomLifecycleMap, project.version, {getLog().info(it)})
 	}
 }

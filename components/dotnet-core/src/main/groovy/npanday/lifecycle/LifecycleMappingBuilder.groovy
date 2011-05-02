@@ -25,7 +25,6 @@ class LifecycleMappingBuilder {
 	
 	LifecycleMappingBuilder(ArtifactType type){
 		mapping = new LifecycleMapping(type: type)
-
 	}
 	
 	def methodMissing(String name, args) {
