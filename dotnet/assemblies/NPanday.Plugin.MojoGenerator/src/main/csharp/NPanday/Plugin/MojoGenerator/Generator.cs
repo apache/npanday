@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Remoting;
+using System.Text;
 using System.Xml.Serialization;
 
 using NPanday.Plugin.Generator;
@@ -49,9 +50,30 @@ namespace NPanday.Plugin.MojoGenerator
             AppDomainSetup setup = new AppDomainSetup();
             setup.ApplicationBase = pluginAssemblyFile.DirectoryName;
 
+            // This is a fix for NPANDAY-398. The AppDomain should never load NPanday.Plugin in the version
+            // that was referenced by the .NET-Plugin itself, but rather the version of NPanday.Plugin that
+            // the Generator is compiled against.
+            setup.SetConfigurationBytes(Encoding.UTF8.GetBytes(@"
+<configuration>
+    <runtime>
+    <assemblyBinding xmlns=""urn:schemas-microsoft-com:asm.v1"">
+        <dependentAssembly>
+            <assemblyIdentity name=""NPanday.Plugin""
+                            publicKeyToken=""4b435f4d76e2f0e6""
+                            culture=""neutral"" />
+            <bindingRedirect oldVersion=""0.0.0.0-65535.65535.65535.65535""
+                            newVersion=""" + typeof(FieldAttribute).Assembly.GetName().Version + @"""/>
+        </dependentAssembly>
+    </assemblyBinding>
+    </runtime>
+</configuration>
+"));
+
             AppDomain applicationDomain = AppDomain.CreateDomain("Loader", null, setup);
+
             PluginDomainManager pluginDomainManager = (PluginDomainManager)applicationDomain.DomainManager;
             pluginDomainManager.LoadPlugin(pluginAssemblyFile);
+
             return applicationDomain;
         }
 
@@ -115,7 +137,6 @@ namespace NPanday.Plugin.MojoGenerator
 
         public static int Main(string[] args)
         {
-
             string targetAssemblyFile = GetArgFor("targetAssemblyFile", args);
             string outputDirectory = GetArgFor("outputDirectory", args);
             string pluginArtifactPath = GetArgFor("pluginArtifactPath", args);
