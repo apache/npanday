@@ -28,7 +28,7 @@ under the License.
   <artifactId>maven-wsdl-plugin</artifactId>  
   <packaging>maven-plugin</packaging>  
   <name>NPanday :: WSDL Maven Plugin</name>  
-  <description>Maven Plugin for .NET: Generates WSDLs</description>
+  <description>Maven Plugin for .NET: Generates Client-side Proxies from WSDLs/Service References</description>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
