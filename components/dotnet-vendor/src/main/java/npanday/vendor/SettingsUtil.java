@@ -24,6 +24,7 @@ import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
 import npanday.registry.impl.StandardRepositoryLoader;
 import npanday.vendor.impl.SettingsRepository;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class SettingsUtil
     {
         String settingsFolder = PathUtil.getHomeM2Folder();
         String customFolder = System.getProperty( "npanday.settings" );
-        if (customFolder != null && customFolder != "")
+        if ( !StringUtils.isEmpty( customFolder ) )
         {
             settingsFolder = customFolder;
         }
