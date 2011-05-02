@@ -18,6 +18,7 @@
  */
 package npanday.registry.impl;
 
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryLoader;
 import npanday.registry.RepositoryRegistry;
@@ -51,7 +52,7 @@ public class StandardRepositoryLoader
      */
 
     public Repository loadRepository( String fileUri, String repositoryClass, Hashtable initParams )
-        throws IOException
+            throws IOException, NPandayRepositoryException
     {
         if ( repositoryRegistry == null )
         {
@@ -101,17 +102,17 @@ public class StandardRepositoryLoader
             repository.load( stream, props );
             repository.setSourceUri( fileUri );
         }
-        catch ( IOException e )
+        catch ( NPandayRepositoryException e )
         {
-            throw new IOException( "NPANDAY-084-004: " + e.toString() + " : " + message );
+            throw new NPandayRepositoryException( "NPANDAY-084-004: " + e.toString() + " : " + message, e );
         }
         catch ( Exception e )
         {
-            throw new IOException( "NPANDAY-084-005: " + e.toString() + " : " + message );
+            throw new NPandayRepositoryException( "NPANDAY-084-005: " + e.toString() + " : " + message, e );
         }
         catch ( Error e )
         {
-            throw new IOException( "NPANDAY-084-006: " + e.toString() + " : " + message );
+            throw new NPandayRepositoryException( "NPANDAY-084-006: " + e.toString() + " : " + message, e );
         }
         return repository;
     }

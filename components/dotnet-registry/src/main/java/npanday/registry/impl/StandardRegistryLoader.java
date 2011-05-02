@@ -18,6 +18,7 @@
  */
 package npanday.registry.impl;
 
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RegistryLoader;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryLoader;
@@ -63,7 +64,7 @@ public class StandardRegistryLoader
      * @throws java.io.IOException
      */
     public final void loadRegistry( InputStream inputStream )
-        throws IOException
+        throws IOException, NPandayRepositoryException
     {
 
         KXmlParser parser = new KXmlParser();
@@ -162,7 +163,7 @@ public class StandardRegistryLoader
      * @throws IOException
      */
     private void loadIntoRegistry()
-        throws IOException
+        throws IOException, NPandayRepositoryException
     {
         if ( repositoryLoader == null )
         {

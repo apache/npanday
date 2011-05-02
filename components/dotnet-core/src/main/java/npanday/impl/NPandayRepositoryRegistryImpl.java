@@ -18,6 +18,7 @@
  */
 package npanday.impl;
 
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
 import npanday.NPandayRepositoryRegistry;
 
@@ -39,7 +40,7 @@ public final class NPandayRepositoryRegistryImpl
      * @throws IOException
      */
     public synchronized RepositoryRegistry createRepositoryRegistry()
-        throws IOException
+        throws IOException, NPandayRepositoryException
     {
         if ( repositoryRegistry.isEmpty() )
         {

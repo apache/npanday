@@ -19,6 +19,7 @@
 package npanday.plugin.fxcop;
 
 import npanday.ArtifactTypeHelper;
+import npanday.artifact.NPandayArtifactResolutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import npanday.executable.ExecutionException;
@@ -121,7 +122,11 @@ public class FxCopMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException(e.getMessage());
+            throw new MojoExecutionException( e.getMessage() );
+        }
+        catch( NPandayArtifactResolutionException e )
+        {
+            throw new MojoExecutionException( e.getMessage() );
         }
 
         Set<Artifact> artifacts = project.getDependencyArtifacts();

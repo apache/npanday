@@ -18,6 +18,7 @@
  */
 package npanday.executable.impl;
 
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryRegistry;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -56,10 +57,10 @@ public final class ExecutablePluginsRepository
      *
      * @param inputStream a stream of the repository file (typically from *.xml)
      * @param properties  additional user-supplied parameters used to customize the behavior of the repository
-     * @throws java.io.IOException if there is a problem loading the repository
+     * @throws npanday.registry.NPandayRepositoryException if there is a problem loading the repository
      */
     public void load( InputStream inputStream, Hashtable properties )
-        throws IOException
+            throws NPandayRepositoryException
     {
         ExecutablePluginXpp3Reader xpp3Reader = new ExecutablePluginXpp3Reader();
         Reader reader = new InputStreamReader( inputStream );
@@ -68,9 +69,13 @@ public final class ExecutablePluginsRepository
         {
             plugins = xpp3Reader.read( reader );
         }
+        catch( IOException e )
+        {
+            throw new NPandayRepositoryException( "NPANDAY-067-000: An error occurred while reading executable-plugins.xml", e );
+        }
         catch ( XmlPullParserException e )
         {
-            throw new IOException( "NPANDAY-067-000: Could not read executable-plugins.xml" );
+            throw new NPandayRepositoryException( "NPANDAY-067-001: Could not read executable-plugins.xml", e );
         }
         executablePlugins = plugins.getExecutablePlugins();
     }

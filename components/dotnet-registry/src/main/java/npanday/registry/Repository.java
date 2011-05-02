@@ -62,11 +62,11 @@ public interface Repository
      *
      * @param inputStream the configuration file
      * @param properties  the properties used to configure the repository
-     * @throws IOException thrown on interrupted I/O. Implementing class may also use this exception to throw
+     * @throws NPandayRepositoryException thrown on interrupted I/O. Implementing class may also use this exception to throw
      *                     other exceptions like invalid properties.
      */
     void load( InputStream inputStream, Hashtable properties )
-        throws IOException;
+        throws NPandayRepositoryException;
 
     /**
      * @param repositoryRegistry
@@ -82,6 +82,6 @@ public interface Repository
     /**
      * Reloads this repository based on the file uri.
      */
-    void reload() throws IOException;
+    void reload() throws IOException, NPandayRepositoryException;
 
 }

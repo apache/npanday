@@ -18,6 +18,7 @@
  */
 package npanday.artifact.impl;
 
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryRegistry;
 import npanday.model.netdependency.NetDependency;
@@ -74,7 +75,7 @@ public class NetDependenciesRepositoryImpl
      * @see Repository#load(java.io.InputStream, java.util.Hashtable)
      */
     public void load( InputStream inputStream, Hashtable properties )
-        throws IOException
+        throws NPandayRepositoryException
     {
         this.properties = properties;
         NetDependencyXpp3Reader xpp3Reader = new NetDependencyXpp3Reader();
@@ -84,9 +85,13 @@ public class NetDependenciesRepositoryImpl
         {
             model = xpp3Reader.read( reader );
         }
+        catch( IOException e )
+        {
+            throw new NPandayRepositoryException( "NPANDAY-003-000: An error occurred while reading net-dependencies.xml", e );
+        }
         catch ( XmlPullParserException e )
         {
-            throw new IOException( "NPANDAY-003-000: Could not read net-dependencies.xml" );
+            throw new NPandayRepositoryException( "NPANDAY-003-001: Could not read net-dependencies.xml", e );
         }
         netDependencies = model.getNetDependencies();
         String npandayVersion = (String) properties.get( "npanday.version" );

@@ -18,6 +18,7 @@
  */
 package npanday;
 
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
 
 import java.io.IOException;
@@ -38,7 +39,8 @@ public interface NPandayRepositoryRegistry
      *
      * @return an repository registry
      * @throws IOException
+     * @throws NPandayRepositoryException
      */
     RepositoryRegistry createRepositoryRegistry()
-        throws IOException;
+        throws IOException, NPandayRepositoryException;
 }

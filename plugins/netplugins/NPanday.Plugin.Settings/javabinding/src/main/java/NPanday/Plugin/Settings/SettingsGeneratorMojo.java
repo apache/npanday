@@ -20,6 +20,7 @@
  package NPanday.Plugin.Settings;
 
 import npanday.PathUtil;
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
 import npanday.registry.impl.StandardRepositoryLoader;
 import npanday.vendor.SettingsException;
@@ -291,6 +292,9 @@ public class SettingsGeneratorMojo
         {
             e.printStackTrace();
         }
-
+        catch( NPandayRepositoryException e )
+        {
+            e.printStackTrace();
+        }
     }
 }

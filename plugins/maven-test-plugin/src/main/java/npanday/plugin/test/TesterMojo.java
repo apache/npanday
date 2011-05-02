@@ -21,6 +21,7 @@ package npanday.plugin.test;
 
 import npanday.ArtifactTypeHelper;
 import npanday.artifact.AssemblyResolver;
+import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutionException;
 import npanday.vendor.IllegalStateException;
@@ -290,6 +291,10 @@ extends AbstractMojo
                                                      project.getRemoteArtifactRepositories(), localRepository, true );
         }
         catch ( IOException e )
+        {
+            throw new MojoExecutionException( e.getMessage() );
+        }
+        catch( NPandayArtifactResolutionException e )
         {
             throw new MojoExecutionException( e.getMessage() );
         }

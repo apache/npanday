@@ -18,6 +18,8 @@
  */
 package npanday.plugin.repository;
 
+import npanday.artifact.NPandayArtifactResolutionException;
+import npanday.registry.NPandayRepositoryException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -90,6 +92,10 @@ public class RepositoryConverterForArtifactMojo
                                                             localRepository );
         }
         catch ( IOException e )
+        {
+            throw new MojoExecutionException( e.getMessage() );
+        }
+        catch( NPandayRepositoryException e )
         {
             throw new MojoExecutionException( e.getMessage() );
         }

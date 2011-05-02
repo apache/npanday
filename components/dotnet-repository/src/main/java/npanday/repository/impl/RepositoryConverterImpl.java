@@ -18,6 +18,8 @@
  */
 package npanday.repository.impl;
 
+import npanday.dao.ProjectDaoException;
+import npanday.registry.NPandayRepositoryException;
 import npanday.repository.RepositoryConverter;
 import npanday.dao.Project;
 import npanday.dao.ProjectDao;
@@ -88,13 +90,23 @@ public class RepositoryConverterImpl
      * @see RepositoryConverter#convertRepositoryFormat(org.openrdf.repository.Repository, java.io.File)
      */
     public void convertRepositoryFormat( Repository repository, File mavenRepository )
-        throws IOException
+            throws IOException, NPandayRepositoryException
     {
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
         dao.init( artifactFactory, artifactResolver );
         dao.setRdfRepository( repository );
         dao.openConnection();
-        Set<Project> projects = dao.getAllProjects();
+        Set<Project> projects;
+
+        try
+        {
+            projects = dao.getAllProjects();
+        }
+        catch( ProjectDaoException e )
+        {
+            throw new NPandayRepositoryException( "NPANDAY-190-004: An error occurred while retrieving projects.", e );
+        }
+
         for ( Project project : projects )
         {
             logger.finest( "NPANDAY-190-000: Converting Project: Artifact ID = " + project.getArtifactId() +
@@ -144,14 +156,24 @@ public class RepositoryConverterImpl
 
     public void convertRepositoryFormatFor( Artifact artifact, ApplicationConfig applicationConfig,
                                             Repository repository, File mavenRepository )
-        throws IOException
+            throws IOException, NPandayRepositoryException
     {
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
         dao.init( artifactFactory, artifactResolver );
         dao.setRdfRepository( repository );
         dao.openConnection();
-        Project project = dao.getProjectFor( artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
+        Project project;
+
+        try
+        {
+            project = dao.getProjectFor( artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                              artifact.getType(), artifact.getClassifier() );
+
+        }
+        catch( ProjectDaoException e )
+        {
+            throw new NPandayRepositoryException( "NPANDAY-190-005: An error occurred while retrieving projects.", e );
+        }
 
         logger.finest( "NPANDAY-190-002: Converting Project: Artifact ID = " + project.getArtifactId() +
             ", Dependency Count =" + project.getProjectDependencies().size() );

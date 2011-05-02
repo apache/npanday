@@ -67,9 +67,16 @@ public class PropertyRepository
      * @see npanday.registry.Repository#load(InputStream inputStream, Hashtable prop)
      */
     public void load( InputStream inputStream, Hashtable prop )
-        throws IOException
+        throws NPandayRepositoryException
     {
-        properties.load( inputStream );
+        try
+        {
+            properties.load( inputStream );
+        }
+        catch( IOException e )
+        {
+            throw new NPandayRepositoryException( "NPANDAY-088-000: Unable to load properties file.", e);
+        }
     }
 
     /**

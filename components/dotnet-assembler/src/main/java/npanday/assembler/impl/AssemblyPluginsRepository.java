@@ -18,6 +18,7 @@
  */
 package npanday.assembler.impl;
 
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryRegistry;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -60,10 +61,10 @@ public final class AssemblyPluginsRepository
      *
      * @param inputStream a stream of the repository file (typically from *.xml)
      * @param properties  additional user-supplied parameters used to customize the behavior of the repository
-     * @throws IOException if there is a problem loading the repository
+     * @throws NPandayRepositoryException if there is a problem loading the repository
      */
     public void load( InputStream inputStream, Hashtable properties )
-        throws IOException
+        throws NPandayRepositoryException
     {
         AssemblyPluginXpp3Reader xpp3Reader = new AssemblyPluginXpp3Reader();
         Reader reader = new InputStreamReader( inputStream );
@@ -72,16 +73,20 @@ public final class AssemblyPluginsRepository
         {
             plugins = xpp3Reader.read( reader );
         }
+        catch( IOException e )
+        {
+            throw new NPandayRepositoryException( "NPANDAY-021-000: An error occurred while reading executable-plugins.xml", e );
+        }
         catch ( XmlPullParserException e )
         {
-            throw new IOException( "NPANDAY-021-000: Could not read plugins-compiler.xml" );
+            throw new NPandayRepositoryException( "NPANDAY-021-001: Could not read plugins-compiler.xml", e );
         }
         assemblyPlugins = plugins.getAssemblyPlugins();
         Set languages = getAssemblyPluginLanguages();
         if ( languages.size() < assemblyPlugins.size() )
         {
-            throw new IOException(
-                "NPANDAY-021-001: Duplicate language entries in the assembly-plugins.xml: Total Language Count = " +
+            throw new NPandayRepositoryException(
+                "NPANDAY-021-002: Duplicate language entries in the assembly-plugins.xml: Total Language Count = " +
                     languages.size() + ", Total Plugins = " + assemblyPlugins.size() );
         }
     }

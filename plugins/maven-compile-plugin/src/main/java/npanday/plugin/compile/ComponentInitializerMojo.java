@@ -18,6 +18,7 @@
  */
 package npanday.plugin.compile;
 
+import npanday.artifact.NPandayArtifactResolutionException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
@@ -88,7 +89,11 @@ public class ComponentInitializerMojo
         }
         catch ( java.io.IOException e )
         {
-            throw new MojoExecutionException(e.getMessage());
+            throw new MojoExecutionException( e.getMessage() );
+        }
+        catch( NPandayArtifactResolutionException e )
+        {
+            throw new MojoExecutionException( e.getMessage() );
         }
 
         try

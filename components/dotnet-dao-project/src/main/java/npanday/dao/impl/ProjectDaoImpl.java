@@ -21,12 +21,7 @@ package npanday.dao.impl;
 import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
 import npanday.PathUtil;
-import npanday.dao.Project;
-import npanday.dao.ProjectDao;
-import npanday.dao.ProjectDependency;
-import npanday.dao.ProjectFactory;
-import npanday.dao.ProjectUri;
-import npanday.dao.Requirement;
+import npanday.dao.*;
 import npanday.registry.RepositoryRegistry;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -142,8 +137,7 @@ public final class ProjectDaoImpl
     }
 
     public Set<Project> getAllProjects()
-        throws IOException
-    {
+            throws ProjectDaoException {
         Set<Project> projects = new HashSet<Project>();
         TupleQueryResult result = null;
         try
@@ -175,15 +169,15 @@ public final class ProjectDaoImpl
         }
         catch ( RepositoryException e )
         {
-            throw new IOException( "NPANDAY-180-000: Message = " + e.getMessage() );
+            throw new ProjectDaoException( "NPANDAY-180-000: Message = " + e.getMessage(), e );
         }
         catch ( MalformedQueryException e )
         {
-            throw new IOException( "NPANDAY-180-001: Message = " + e.getMessage() );
+            throw new ProjectDaoException( "NPANDAY-180-001: Message = " + e.getMessage(), e );
         }
         catch ( QueryEvaluationException e )
         {
-            throw new IOException( "NPANDAY-180-002: Message = " + e.getMessage() );
+            throw new ProjectDaoException( "NPANDAY-180-002: Message = " + e.getMessage(), e );
         }
         finally
         {
@@ -243,7 +237,7 @@ public final class ProjectDaoImpl
     }
 
     public void removeProjectFor( String groupId, String artifactId, String version, String artifactType )
-        throws IOException
+        throws ProjectDaoException
     {
         ValueFactory valueFactory = rdfRepository.getValueFactory();
         URI id = valueFactory.createURI( groupId + ":" + artifactId + ":" + version + ":" + artifactType );
@@ -253,14 +247,13 @@ public final class ProjectDaoImpl
         }
         catch ( RepositoryException e )
         {
-            throw new IOException( e.getMessage() );
+            throw new ProjectDaoException( e.getMessage(), e );
         }
     }
 
     public Project getProjectFor( String groupId, String artifactId, String version, String artifactType,
                                   String publicKeyTokenId )
-        throws IOException
-    {
+            throws ProjectDaoException {
         long startTime = System.currentTimeMillis();
 
         ValueFactory valueFactory = rdfRepository.getValueFactory();
@@ -303,7 +296,7 @@ public final class ProjectDaoImpl
                     
                     if ( !artifact.getFile().exists() )
                     {
-                        throw new IOException( "NPANDAY-180-123: Could not find GAC assembly: Group ID = " + groupId
+                        throw new ProjectDaoException( "NPANDAY-180-123: Could not find GAC assembly: Group ID = " + groupId
                             + ", Artifact ID = " + artifactId + ", Version = " + version + ", Artifact Type = "
                             + artifactType + ", File Path = " + artifact.getFile().getAbsolutePath() );
                     }
@@ -311,7 +304,7 @@ public final class ProjectDaoImpl
                     return project;
                 }
 
-                throw new IOException( "NPANDAY-180-124: Could not find the project: Group ID = " + groupId
+                throw new ProjectDaoException( "NPANDAY-180-124: Could not find the project: Group ID = " + groupId
                     + ", Artifact ID =  " + artifactId + ", Version = " + version + ", Artifact Type = " + artifactType );
             }
 
@@ -351,15 +344,15 @@ public final class ProjectDaoImpl
         }
         catch ( QueryEvaluationException e )
         {
-            throw new IOException( "NPANDAY-180-005: Message = " + e.getMessage() );
+            throw new ProjectDaoException( "NPANDAY-180-005: Message = " + e.getMessage(), e );
         }
         catch ( RepositoryException e )
         {
-            throw new IOException( "NPANDAY-180-006: Message = " + e.getMessage() );
+            throw new ProjectDaoException( "NPANDAY-180-006: Message = " + e.getMessage(), e );
         }
         catch ( MalformedQueryException e )
         {
-            throw new IOException( "NPANDAY-180-007: Message = " + e.getMessage() );
+            throw new ProjectDaoException( "NPANDAY-180-007: Message = " + e.getMessage(), e );
         }
         finally
         {
@@ -383,14 +376,14 @@ public final class ProjectDaoImpl
     }
 
     public Project getProjectFor( MavenProject mavenProject )
-        throws IOException
+        throws ProjectDaoException
     {
         return getProjectFor( mavenProject.getGroupId(), mavenProject.getArtifactId(), mavenProject.getVersion(),
                               mavenProject.getArtifact().getType(), mavenProject.getArtifact().getClassifier() );
     }
 
     public void storeProject( Project project, File localRepository, List<ArtifactRepository> artifactRepositories )
-        throws IOException
+        throws ProjectDaoException
     {
 
     }
@@ -409,7 +402,7 @@ public final class ProjectDaoImpl
 
     public Set<Artifact> storeProjectAndResolveDependencies( Project project, File localRepository,
                                                              List<ArtifactRepository> artifactRepositories )
-        throws IOException, IllegalArgumentException
+            throws IOException, IllegalArgumentException, ProjectDaoException
     {
         return storeProjectAndResolveDependencies( project, localRepository, artifactRepositories,
                                                    new HashMap<String, Set<Artifact>>() );
@@ -418,8 +411,7 @@ public final class ProjectDaoImpl
     public Set<Artifact> storeProjectAndResolveDependencies( Project project, File localRepository,
                                                              List<ArtifactRepository> artifactRepositories,
                                                              Map<String, Set<Artifact>> cache )
-        throws IOException, IllegalArgumentException
-    {
+            throws IOException, IllegalArgumentException, ProjectDaoException {
         String key = getKey( project );
         if ( cache.containsKey( key ) )
         {
@@ -546,7 +538,7 @@ public final class ProjectDaoImpl
                 {
                     if ( projectDependency.getSystemPath() == null )
                     {
-                        throw new IOException( "systemPath required for System Scoped dependencies " + "in Group ID = "
+                        throw new ProjectDaoException( "systemPath required for System Scoped dependencies " + "in Group ID = "
                             + projectDependency.getGroupId() + ", Artiract ID = " + projectDependency.getArtifactId() );
                     }
 
@@ -662,8 +654,9 @@ public final class ProjectDaoImpl
                                 }
                             }
                         }
-                        catch ( IOException e )
+                        catch ( ProjectDaoException e )
                         {
+                            logger.log( Level.WARNING, e.getMessage() );
                             // safe to ignore: dependency not found
                         }
                     }
@@ -758,7 +751,7 @@ public final class ProjectDaoImpl
                             if ( !( g.equals( projectDependency.getGroupId() )
                                 && model.getArtifactId().equals( projectDependency.getArtifactId() ) && v.equals( projectDependency.getVersion() ) ) )
                             {
-                                throw new IOException(
+                                throw new ProjectDaoException(
                                                        "NPANDAY-180-017: Model parameters do not match project dependencies parameters: Model: "
                                                            + g + ":" + model.getArtifactId() + ":" + v + ", Project: "
                                                            + projectDependency.getGroupId() + ":"
@@ -803,20 +796,20 @@ public final class ProjectDaoImpl
                         catch ( ArtifactNotFoundException e )
                         {
                             logger.log(Level.SEVERE, "NPANDAY-180-0201: Error resolving artifact. Reason:", e);
-                            throw new IOException(
+                            throw new ProjectDaoException(
                                                    "NPANDAY-180-020: Problem in resolving artifact: Artifact = "
                                                        + assembly.getId()
-                                                       + ", Message = " + e.getMessage() );
+                                                       + ", Message = " + e.getMessage(), e );
                         }
                         catch ( ArtifactResolutionException e )
                         {
                             logger.log( Level.SEVERE, "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
                                               + assembly.getId()
                                               + ", Message = " + e.getMessage(), e );
-                            throw new IOException(
+                            throw new ProjectDaoException(
                                                    "NPANDAY-180-019: Problem in resolving artifact: Artifact = "
                                                        + assembly.getId()
-                                                       + ", Message = " + e.getMessage() );
+                                                       + ", Message = " + e.getMessage(), e );
                         }
                     }
                     artifactDependencies.add( assembly );
@@ -857,7 +850,7 @@ public final class ProjectDaoImpl
 
                 }
             }
-            throw new IOException( "NPANDAY-180-021: Could not open RDF Repository: Message =" + e.getMessage() );
+            throw new ProjectDaoException( "NPANDAY-180-021: Could not open RDF Repository: Message =" + e.getMessage(), e );
         }
 
         for ( Model model : modelDependencies )
@@ -884,8 +877,7 @@ public final class ProjectDaoImpl
     public Set<Artifact> storeModelAndResolveDependencies( Model model, File pomFileDirectory,
                                                            File localArtifactRepository,
                                                            List<ArtifactRepository> artifactRepositories )
-        throws IOException
-    {
+            throws IOException, ProjectDaoException {
         return storeProjectAndResolveDependencies( ProjectFactory.createProjectFrom( model, pomFileDirectory ),
                                                    localArtifactRepository, artifactRepositories );
     }

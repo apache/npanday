@@ -19,19 +19,11 @@
 package npanday.artifact.impl;
 
 import npanday.ArtifactTypeHelper;
-import npanday.artifact.ArtifactContext;
-import npanday.artifact.ApplicationConfig;
+import npanday.artifact.*;
 import npanday.ArtifactType;
 import npanday.PathUtil;
-import npanday.artifact.NetDependencyMatchPolicy;
-import npanday.artifact.NetDependenciesRepository;
-import npanday.artifact.AssemblyResolver;
 import npanday.registry.RepositoryRegistry;
 import npanday.model.netdependency.NetDependency;
-import npanday.dao.ProjectDao;
-import npanday.dao.Project;
-import npanday.dao.ProjectFactory;
-import npanday.dao.ProjectDependency;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.versioning.VersionRange;
@@ -141,11 +133,11 @@ public class ArtifactInstallerImpl
     }
 
     /**
-     * @see npanday.artifact.ArtifactInstaller#resolveAndInstallNetDependenciesForProfile(String, java.util.List<org.apache.maven.model.Dependency>, java.util.List<org.apache.maven.model.Dependency>)
+     * @see npanday.artifact.ArtifactInstaller#resolveAndInstallNetDependenciesForProfile(String, java.util.List, java.util.List)
      */
     public void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> netDependencies,
                                                             List<Dependency> javaDependencies )
-        throws IOException
+            throws IOException, NPandayArtifactResolutionException
     {
         if ( netDependencies == null )
         {
@@ -163,7 +155,7 @@ public class ArtifactInstallerImpl
         matchPolicies.add( new ProfileMatchPolicy( profile ) );
         netDependencies.addAll( repository.getDependenciesFor( matchPolicies ) );
 
-        assemblyResolver.resolveTransitivelyFor( new MavenProject(), netDependencies, remoteArtifactRepositories,
+         assemblyResolver.resolveTransitivelyFor( new MavenProject(), netDependencies, remoteArtifactRepositories,
                                                  localRepository, false );
 
         //Do Library Installs for Net Dependencies
@@ -194,13 +186,13 @@ public class ArtifactInstallerImpl
                 }
                 catch ( ArtifactResolutionException e )
                 {
-                    throw new IOException(
-                        "NPANDAY-001-000: Problem resolving artifact for java binding: Message = " + e.getMessage() );
+                    throw new NPandayArtifactResolutionException(
+                        "NPANDAY-001-001: Problem resolving artifact for java binding: Message = " + e.getMessage(), e );
                 }
                 catch ( ArtifactNotFoundException e )
                 {
-                    throw new IOException(
-                        "NPANDAY-001-001: Could not find artifact for java binding: Message =" + e.getMessage() );
+                    throw new NPandayArtifactResolutionException(
+                        "NPANDAY-001-002: Could not find artifact for java binding: Message =" + e.getMessage(), e );
                 }
             }
         }
@@ -217,13 +209,13 @@ public class ArtifactInstallerImpl
             }
             catch ( ArtifactResolutionException e )
             {
-                throw new IOException(
-                    "NPANDAY-001-002: Problem resolving java dependency artifact: Message = " + e.getMessage() );
+                throw new NPandayArtifactResolutionException(
+                    "NPANDAY-001-003: Problem resolving java dependency artifact: Message = " + e.getMessage(), e );
             }
             catch ( ArtifactNotFoundException e )
             {
-                throw new IOException(
-                    "NPANDAY-001-003: Could not find java dependency artifact: Message = " + e.getMessage() );
+                throw new NPandayArtifactResolutionException(
+                    "NPANDAY-001-004: Could not find java dependency artifact: Message = " + e.getMessage(), e );
             }
         }
 
@@ -303,7 +295,7 @@ public class ArtifactInstallerImpl
             {
                 throw new ArtifactInstallationException( "NPANDAY-001-006: Failed to install artifact: ID = " +
                     artifact.getId() + ", File = " +
-                    ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ) );
+                    ( ( artifact.getFile() != null ) ? artifact.getFile().getAbsolutePath() : "" ), e );
             }
         }
 
@@ -430,7 +422,7 @@ public class ArtifactInstallerImpl
     }
 
     /**
-     * @see npanday.artifact.ArtifactInstaller#init(npanday.artifact.ArtifactContext, java.util.List<org.apache.maven.artifact.repository.ArtifactRepository>, java.io.File)
+     * @see npanday.artifact.ArtifactInstaller#init(npanday.artifact.ArtifactContext, java.util.List, java.io.File)
      */
     public void init( ArtifactContext artifactContext, List<ArtifactRepository> remoteArtifactRepositories,
                       File localRepository )

@@ -18,16 +18,18 @@
  */
 package npanday.plugin;
 
+import npanday.artifact.NPandayArtifactResolutionException;
+import npanday.dao.ProjectDao;
+import npanday.dao.Project;
+import npanday.dao.ProjectDaoException;
+import npanday.dao.ProjectFactory;
+import npanday.dao.ProjectDependency;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import npanday.PlatformUnsupportedException;
 import npanday.PathUtil;
 import npanday.artifact.ArtifactContext;
 import npanday.artifact.AssemblyResolver;
-import npanday.dao.Project;
-import npanday.dao.ProjectDao;
-import npanday.dao.ProjectDependency;
-import npanday.dao.ProjectFactory;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutableFactory;
 import npanday.registry.DataAccessObjectRegistry;
@@ -207,14 +209,30 @@ public abstract class AbstractMojo
             dependency.setScope(Artifact.SCOPE_RUNTIME);
             dependency.setType(artifact.getType());
 
-            assemblyResolver.resolveTransitivelyFor(new MavenProject(), Collections.singletonList(dependency), getMavenProject().getRemoteArtifactRepositories(),
+            try
+            {
+                assemblyResolver.resolveTransitivelyFor(new MavenProject(), Collections.singletonList(dependency), getMavenProject().getRemoteArtifactRepositories(),
                     localRepository, false);
+            }
+            catch( NPandayArtifactResolutionException e )
+            {
+                throw new MojoExecutionException( e.getMessage(), e );
+            }
 
             ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
             dao.openConnection();
-            Project project = dao.getProjectFor(dependency.getGroupId(), dependency.getArtifactId(),
+            Project project;
+
+            try
+            {
+                project = dao.getProjectFor(dependency.getGroupId(), dependency.getArtifactId(),
                     dependency.getVersion(), dependency.getType(),
                     dependency.getClassifier());
+            }
+            catch( ProjectDaoException e )
+            {
+                 throw new MojoExecutionException( e.getMessage(), e );
+            }
 
             List<Dependency> sourceArtifactDependencies = new ArrayList<Dependency>();
             for (ProjectDependency projectDependency : project.getProjectDependencies()) {

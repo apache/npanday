@@ -18,6 +18,7 @@
  */
 package npanday.plugin.xsd;
 
+import npanday.registry.NPandayRepositoryException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -113,6 +114,11 @@ public class XmlToXsdGeneratorMojo
         {
             throw new MojoExecutionException(
                 "NPANDAY-1401-003: Failed to create the repository registry for this plugin", e );
+        }
+        catch( NPandayRepositoryException e )
+        {
+             throw new MojoExecutionException(
+                "NPANDAY-1401-004: Failed to create the repository registry for this plugin", e );
         }
 
         FileUtils.mkdir( outputDirectory );

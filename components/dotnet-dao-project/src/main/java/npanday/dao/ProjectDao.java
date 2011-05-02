@@ -23,7 +23,6 @@ import npanday.registry.DataAccessObject;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.model.Model;
@@ -45,7 +44,8 @@ public interface ProjectDao
      */
     String ROLE = ProjectDao.class.getName();
 
-    void removeProjectFor( String groupId, String artifactId, String version, String artifactType ) throws IOException;
+    void removeProjectFor( String groupId, String artifactId, String version, String artifactType ) throws ProjectDaoException;
+
     /**
      * Returns a project that matches the specified parameters.
      *
@@ -56,21 +56,21 @@ public interface ProjectDao
      * @param publicKeyTokenId the public key token id. This should match the token id within the manifest of a signed
      *                         .NET assesmbly. This value may be null.
      * @return a project that matches the specified parameters
-     * @throws IOException if there was a problem retrieving the project
+     * @throws ProjectDaoException if there was a problem retrieving the project
      */
     Project getProjectFor( String groupId, String artifactId, String version, String artifactType,
                            String publicKeyTokenId )
-        throws IOException;
+            throws ProjectDaoException;
 
     /**
      * Returns a project that matches the information contained within the specified maven project.
      *
      * @param mavenProject the maven project used in finding the returned project
      * @return a project that matches the information contained within the specified maven project
-     * @throws IOException if there was a problem retrieving the project
+     * @throws ProjectDaoException if there was a problem retrieving the project
      */
     Project getProjectFor( MavenProject mavenProject )
-        throws IOException;
+        throws ProjectDaoException;
 
     /**
      * Method not implemented.
@@ -78,10 +78,10 @@ public interface ProjectDao
      * @param project
      * @param localRepository
      * @param artifactRepositories
-     * @throws IOException
+     * @throws ProjectDaoException
      */
     void storeProject( Project project, File localRepository, List<ArtifactRepository> artifactRepositories )
-        throws IOException;
+        throws ProjectDaoException;
 
     /**
      * Stores the specified project and resolves and stores the project's dependencies.
@@ -94,7 +94,7 @@ public interface ProjectDao
      */
     Set<Artifact> storeProjectAndResolveDependencies( Project project, File localRepository,
                                                       List<ArtifactRepository> artifactRepositories )
-        throws IOException;
+            throws IOException, ProjectDaoException;
 
     /**
      * Stores the project object model and resolves and stores the model's dependencies.
@@ -108,7 +108,7 @@ public interface ProjectDao
      */
     Set<Artifact> storeModelAndResolveDependencies( Model model, File pomFileDirectory, File localArtifactRepository,
                                                     List<ArtifactRepository> artifactRepositories )
-        throws IOException;
+            throws IOException, ProjectDaoException;
 
     /**
      * Initializes the data access object
@@ -122,10 +122,10 @@ public interface ProjectDao
      * Returns all projects.
      *
      * @return all projects
-     * @throws IOException if there is a problem retrieving the projects
+     * @throws ProjectDaoException if there is a problem retrieving the projects
      */
     Set<Project> getAllProjects()
-        throws IOException;
+            throws ProjectDaoException;
 
     /**
      * Sets the repository for the data access object. This method overrides the data source object set in the

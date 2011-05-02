@@ -18,6 +18,7 @@
  */
 package npanday.vendor.impl;
 
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryRegistry;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -76,7 +77,7 @@ public final class SettingsRepository
      * @see Repository#load(java.io.InputStream, java.util.Hashtable)
      */
     public void load( InputStream inputStream, Hashtable properties )
-        throws IOException
+        throws NPandayRepositoryException
     {
         NPandaySettingsXpp3Reader xpp3Reader = new NPandaySettingsXpp3Reader();
         Reader reader = new InputStreamReader( inputStream );
@@ -85,10 +86,13 @@ public final class SettingsRepository
         {
             settings = xpp3Reader.read( reader );
         }
+        catch( IOException e )
+        {
+            throw new NPandayRepositoryException( "NPANDAY-104-000: An error occurred while reading npanday-settings.xml", e );
+        }
         catch ( XmlPullParserException e )
         {
-            e.printStackTrace();
-            throw new IOException( "NPANDAY-104-000: Could not read npanday-settings.xml" );
+            throw new NPandayRepositoryException( "NPANDAY-104-001: Could not read npanday-settings.xml", e );
         }
         vendors = settings.getVendors();
         defaultSetup = settings.getDefaultSetup();
@@ -117,8 +121,7 @@ public final class SettingsRepository
     }
 
     public void reload()
-        throws IOException
-    {
+            throws IOException, NPandayRepositoryException {
 
         if ( fileUri == null || fileUri.trim().equals( "" ) )
         {
@@ -152,17 +155,17 @@ public final class SettingsRepository
             {
                 load( stream, props );
             }
-            catch ( IOException e )
+            catch ( NPandayRepositoryException e )
             {
-                throw new IOException( "NPANDAY-084-004: " + e.toString() + " : " + message );
+                throw new NPandayRepositoryException( "NPANDAY-084-004: " + e.toString() + " : " + message, e );
             }
             catch ( Exception e )
             {
-                throw new IOException( "NPANDAY-084-005: " + e.toString() + " : " + message );
+                throw new NPandayRepositoryException( "NPANDAY-084-005: " + e.toString() + " : " + message, e );
             }
             catch ( Error e )
             {
-                throw new IOException( "NPANDAY-084-006: " + e.toString() + " : " + message );
+                throw new NPandayRepositoryException( "NPANDAY-084-006: " + e.toString() + " : " + message, e );
             }
         }
 

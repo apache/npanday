@@ -21,11 +21,13 @@ package npanday.plugin.vsinstaller;
 
 import npanday.PlatformUnsupportedException;
 import npanday.artifact.ArtifactContext;
+import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.artifact.NetDependenciesRepository;
 import npanday.artifact.NetDependencyMatchPolicy;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.model.netdependency.NetDependency;
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.Vendor;
 import org.apache.maven.artifact.Artifact;
@@ -49,7 +51,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 
 /**
@@ -138,6 +139,11 @@ public class VsInstallerMojo
             throw new MojoExecutionException(
                 "NPANDAY-1600-000: Failed to create the repository registry for this plugin", e );
         }
+        catch( NPandayRepositoryException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-1600-007: Failed to create the repository registry for this plugin", e );
+        }
 
         NetDependenciesRepository netRepository = (NetDependenciesRepository) repositoryRegistry.find(
             "net-dependencies" );
@@ -160,7 +166,11 @@ public class VsInstallerMojo
             artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( "VisualStudio2005", null,
                                                                                                null );
         }
-        catch ( IOException e )
+        catch ( NPandayArtifactResolutionException e )
+        {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+        catch( IOException e )
         {
             throw new MojoExecutionException( e.getMessage(), e );
         }

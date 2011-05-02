@@ -18,6 +18,7 @@
  */
 package npanday.artifact;
 
+import npanday.dao.ProjectDaoException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -53,9 +54,10 @@ public interface AssemblyResolver
      *                            resolving assemblies that the source artifact needs to compile against, this value
      *                            should be set to true.
      * @throws IOException
+     * @throws NPandayArtifactResolutionException
      */
     void resolveTransitivelyFor( MavenProject mavenProject, List<Dependency> dependencies,
                                  List<ArtifactRepository> remoteArtifactRepositories, File localArtifactRepository,
                                  boolean addResolvedDependenciesToProject )
-        throws IOException;
+            throws IOException, NPandayArtifactResolutionException;
 }

@@ -19,11 +19,7 @@
 package npanday.dao.impl;
 
 import junit.framework.TestCase;
-import npanday.dao.Project;
-import npanday.dao.ProjectDao;
-import npanday.dao.ProjectDependency;
-import npanday.dao.ProjectUri;
-import npanday.dao.Requirement;
+import npanday.dao.*;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
@@ -100,7 +96,7 @@ public class ProjectDaoImplTest
         {
             dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
         }
-        catch ( java.io.IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( "Could not store the project: " + e.getMessage() );
@@ -111,7 +107,7 @@ public class ProjectDaoImplTest
         {
             projects = dao.getAllProjects();
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( "Could not retrieve the project: " + e.getMessage() );
@@ -138,7 +134,7 @@ public class ProjectDaoImplTest
         {
             dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
         }
-        catch ( java.io.IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( "Could not store the project: " + e.getMessage() );
@@ -149,7 +145,7 @@ public class ProjectDaoImplTest
         {
             projects = dao.getAllProjects();
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( "Could not retrieve the project: " + e.getMessage() );
@@ -191,7 +187,7 @@ public class ProjectDaoImplTest
             artifacts =
                 dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
         }
-        catch ( java.io.IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( "Could not store the project: " + e.getMessage() );
@@ -202,7 +198,7 @@ public class ProjectDaoImplTest
         {
             proj = dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.14.0.0", "library", null );
         }
-        catch ( java.io.IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( "Could not query the project: " + e.getMessage() );
@@ -262,7 +258,7 @@ public class ProjectDaoImplTest
             artifacts =
                 dao.storeProjectAndResolveDependencies( project1, localRepository, new ArrayList<ArtifactRepository>() );
         }
-        catch ( java.io.IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( "Could not store the project: " + e.getMessage() );
@@ -280,7 +276,7 @@ public class ProjectDaoImplTest
         {
             testProject = dao.getProjectFor( "NPanday", "NPanday.Plugin", "0.14.0.0", "library", null );
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( "Could not retrieve the project: " + e.getMessage() );
@@ -312,7 +308,7 @@ public class ProjectDaoImplTest
             artifacts =
                 dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
         }
-        catch ( java.io.IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( "Could not store the project: " + e.getMessage() );
@@ -323,7 +319,7 @@ public class ProjectDaoImplTest
         {
             proj = dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.14.0.0", "library", null );
         }
-        catch ( java.io.IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( "Could not query the project: " + e.getMessage() );
@@ -352,7 +348,7 @@ public class ProjectDaoImplTest
             dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
 
         }
-        catch ( java.io.IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( e.getMessage() );
@@ -362,7 +358,7 @@ public class ProjectDaoImplTest
         {
             dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.15.0.0", "library", null );
         }
-        catch ( java.io.IOException e )
+        catch ( Exception e )
         {
             return;
 

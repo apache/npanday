@@ -18,6 +18,7 @@
  */
 package npanday.plugin.impl;
 
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryRegistry;
 import npanday.model.configurationappenders.io.xpp3.ConfigurationAppendersXpp3Reader;
@@ -40,7 +41,7 @@ public class ConfigurationAppendersRepository implements Repository
     private Set<Class> appenderClasses;
 
     public void load( InputStream inputStream, Hashtable properties )
-        throws IOException
+        throws NPandayRepositoryException
     {
         ConfigurationAppendersXpp3Reader xpp3Reader = new ConfigurationAppendersXpp3Reader();
         Reader reader = new InputStreamReader( inputStream );
@@ -49,9 +50,13 @@ public class ConfigurationAppendersRepository implements Repository
         {
             model = xpp3Reader.read( reader );
         }
+        catch( IOException e )
+        {
+            throw new NPandayRepositoryException( "NPANDAY-062-000: An error occurred while reading plugins-compiler.xml", e );
+        }
         catch ( XmlPullParserException e )
         {
-            throw new IOException( "NPANDAY-062-000: Could not read plugins-compiler.xml" );
+            throw new NPandayRepositoryException( "NPANDAY-062-001: Could not read plugins-compiler.xml", e );
         }
         List<ConfigurationAppender> appenders  = model.getConfigurationAppenders();
         appenderClasses = new HashSet<Class>();
@@ -63,7 +68,7 @@ public class ConfigurationAppendersRepository implements Repository
             }
             catch ( ClassNotFoundException e )
             {
-                throw new IOException("NPANDAY-xxx-000: Could not load class appender: Name = " + appender.getName() );
+                throw new NPandayRepositoryException("NPANDAY-xxx-000: Could not load class appender: Name = " + appender.getName(), e );
             }
         }
 

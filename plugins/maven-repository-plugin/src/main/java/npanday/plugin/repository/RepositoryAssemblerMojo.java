@@ -19,6 +19,7 @@
 package npanday.plugin.repository;
 
 import npanday.ArtifactTypeHelper;
+import npanday.artifact.NPandayArtifactResolutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -186,6 +187,10 @@ public class RepositoryAssemblerMojo
         catch ( IOException e )
         {
             throw new MojoExecutionException( "NPANDAY-1700-009: Message = " + e.getMessage(), e );
+        }
+        catch( NPandayArtifactResolutionException e )
+        {
+            throw new MojoExecutionException( "NPANDAY-1700-010: Message = " + e.getMessage(), e );
         }
 
         for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )

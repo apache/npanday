@@ -18,6 +18,7 @@
  */
 package npanday.assembler.impl;
 
+import npanday.assembler.AssemblyInfoException;
 import npanday.assembler.AssemblyInfoMarshaller;
 import npanday.assembler.AssemblyInfo;
 import npanday.model.assembly.plugins.AssemblyPlugin;
@@ -53,7 +54,7 @@ final class DefaultAssemblyInfoMarshaller
      *      java.io.OutputStream)
      */
     public void marshal( AssemblyInfo assemblyInfo, MavenProject mavenProject, OutputStream outputStream )
-        throws IOException
+        throws AssemblyInfoException, IOException
     {
         String src = mavenProject.getBuild().getDirectory() + "/build-sources";
         StringBuffer sb = new StringBuffer();
@@ -108,7 +109,7 @@ final class DefaultAssemblyInfoMarshaller
         }
         catch ( IOException e )
         {
-            throw new IOException( "NPANDAY-022-000: Failed to generate AssemblyInfo" );
+            throw new AssemblyInfoException( "NPANDAY-022-000: Failed to generate AssemblyInfo" );
         }
         finally
         {
@@ -131,7 +132,7 @@ final class DefaultAssemblyInfoMarshaller
      * @see AssemblyInfoMarshaller#unmarshall(java.io.InputStream)
      */
     public AssemblyInfo unmarshall( InputStream inputStream )
-        throws IOException
+        throws IOException, AssemblyInfoException
     {
         AssemblyInfo assemblyInfo = new AssemblyInfo();
         BufferedReader reader = new BufferedReader( new InputStreamReader( inputStream ) );
@@ -163,11 +164,11 @@ final class DefaultAssemblyInfoMarshaller
      * @throws IOException if the assembly info is invalid
      */
     private void setAssemblyInfo( AssemblyInfo assemblyInfo, String name, String value )
-        throws IOException
+        throws AssemblyInfoException
     {
         if ( !name.startsWith( "Assembly" ) )
         {
-            throw new IOException(
+            throw new AssemblyInfoException(
                 "NPANDAY-022-001: Invalid assembly info parameter: Name = " + name + ", Value = " + value );
         }
         if ( name.equals( "AssemblyDescription" ) )

@@ -36,9 +36,10 @@ public interface RegistryLoader
      *
      * @param inputStream of the registry-config.xml. This may be of a custom format.
      * @throws IOException if there is a problem loading the registry
+     * @throws NPandayRepositoryException if there is a problem loading the repository
      */
     void loadRegistry( InputStream inputStream )
-        throws IOException;
+        throws IOException, NPandayRepositoryException;
 
     /**
      * Returns the repositories.

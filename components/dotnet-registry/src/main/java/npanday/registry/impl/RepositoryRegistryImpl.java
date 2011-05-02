@@ -18,11 +18,7 @@
  */
 package npanday.registry.impl;
 
-import npanday.registry.RepositoryRegistry;
-import npanday.registry.RepositoryLoader;
-import npanday.registry.RegistryLoader;
-import npanday.registry.Repository;
-import npanday.registry.DataAccessObjectRegistry;
+import npanday.registry.*;
 
 import java.util.Hashtable;
 import java.util.Properties;
@@ -64,6 +60,10 @@ public class RepositoryRegistryImpl
         {
             throw new InitializationException( "NPANDAY-082-000: Message = ", e );
         }
+        catch ( NPandayRepositoryException e )
+        {
+            throw new InitializationException( "NPANDAY-082-010: Message = ", e );
+        }
     }
 
     public boolean isEmpty()
@@ -82,8 +82,7 @@ public class RepositoryRegistryImpl
     }
 
     public synchronized void loadFromInputStream( InputStream inputStream )
-        throws IOException
-    {
+            throws IOException, NPandayRepositoryException {
 
         if ( repositoryLoader == null || registryLoader == null )
         {
@@ -113,11 +112,11 @@ public class RepositoryRegistryImpl
                 }
                 catch ( Exception e )
                 {
-                    throw new IOException( "NPANDAY-082-003: Unable to load repository: " + message );
+                    throw new NPandayRepositoryException( "NPANDAY-082-003: Unable to load repository: " + message, e );
                 }
                 catch ( Error e )
                 {
-                    throw new IOException( "NPANDAY-082-004: Unable to load repository: " + message );
+                    throw new NPandayRepositoryException( "NPANDAY-082-004: Unable to load repository: " + message, e );
                 }
             }
 
@@ -137,11 +136,11 @@ public class RepositoryRegistryImpl
                 }
                 catch ( Exception e )
                 {
-                    throw new IOException( "NPANDAY-082-006: Unable to load registry: " + message );
+                    throw new NPandayRepositoryException( "NPANDAY-082-006: Unable to load registry: " + message, e );
                 }
                 catch ( Error e )
                 {
-                    throw new IOException( "NPANDAY-082-007: Unable to load registry: " + message );
+                    throw new NPandayRepositoryException( "NPANDAY-082-007: Unable to load registry: " + message, e );
                 }
             }
         }
@@ -152,7 +151,7 @@ public class RepositoryRegistryImpl
     }
 
     public synchronized void loadFromFile( String fileName )
-        throws IOException
+        throws IOException, NPandayRepositoryException
     {
         FileInputStream fis = new FileInputStream( fileName );
         loadFromInputStream( fis );
@@ -160,7 +159,7 @@ public class RepositoryRegistryImpl
 
 
     public synchronized void loadFromResource( String fileName, Class sourceClass )
-        throws IOException
+        throws IOException, NPandayRepositoryException
     {
         if ( sourceClass == null )
         {

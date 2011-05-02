@@ -18,6 +18,7 @@
  */
 package npanday.repository;
 
+import npanday.registry.NPandayRepositoryException;
 import org.openrdf.repository.Repository;
 import org.apache.maven.artifact.Artifact;
 import npanday.artifact.ApplicationConfig;
@@ -42,11 +43,12 @@ public interface RepositoryConverter
      * @param mavenRepository the base directory where the converted repository, with the default local repository
      *                        format, should be placed
      * @throws IOException if there is a problem in converting the repository
+     * @throws NPandayRepositoryException
      */
     void convertRepositoryFormat( Repository repository, File mavenRepository )
-        throws IOException;
+            throws IOException, NPandayRepositoryException;
 
     void convertRepositoryFormatFor( Artifact artifact, ApplicationConfig applicationConfig, Repository repository,
                                      File mavenRepository )
-        throws IOException;
+            throws IOException, NPandayRepositoryException;
 }

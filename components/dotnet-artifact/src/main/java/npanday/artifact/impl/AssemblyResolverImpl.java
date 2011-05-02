@@ -19,8 +19,10 @@
 package npanday.artifact.impl;
 
 import npanday.artifact.AssemblyResolver;
+import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.dao.ProjectDao;
 import npanday.dao.Project;
+import npanday.dao.ProjectDaoException;
 import npanday.dao.ProjectDependency;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
@@ -88,12 +90,12 @@ public class AssemblyResolverImpl
     }
 
     /**
-     * @see AssemblyResolver#resolveTransitivelyFor(org.apache.maven.project.MavenProject, java.util.List<org.apache.maven.model.Dependency>, java.util.List<org.apache.maven.artifact.repository.ArtifactRepository>, java.io.File, boolean)
+     * @see AssemblyResolver#resolveTransitivelyFor(org.apache.maven.project.MavenProject, java.util.List, java.util.List, java.io.File, boolean)
      */
     public void resolveTransitivelyFor( MavenProject mavenProject, List<Dependency> dependencies,
                                         List<ArtifactRepository> remoteArtifactRepositories,
                                         File localArtifactRepository, boolean addResolvedDependenciesToProject )
-        throws IOException
+            throws IOException, NPandayArtifactResolutionException
     {
         //Check that the list of dependencies matches the first level RDF Repo
         //If not, resolve missing dependencies and add to repo or delete additional dependencies from repo
@@ -130,6 +132,10 @@ public class AssemblyResolverImpl
         {
             artifactDependencies =
                 dao.storeProjectAndResolveDependencies( project, localArtifactRepository, remoteArtifactRepositories );
+        }
+        catch( ProjectDaoException e )
+        {
+            throw new NPandayArtifactResolutionException( "NPANDAY-089-000: " + e.getMessage(), e );
         }
         finally
         {

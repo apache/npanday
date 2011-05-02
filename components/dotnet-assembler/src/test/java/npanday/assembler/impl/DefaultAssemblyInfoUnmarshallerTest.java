@@ -50,7 +50,7 @@ public class DefaultAssemblyInfoUnmarshallerTest
             AssemblyInfo assemblyInfo = um.unmarshall( fis );
             assertEquals( "Incorrect Assembly Version", "1.0.0", assemblyInfo.getVersion());
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             fail("Problem iwht reading the assembly info input");
         }

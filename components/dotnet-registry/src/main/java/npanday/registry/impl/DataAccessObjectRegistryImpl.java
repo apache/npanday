@@ -18,15 +18,12 @@
  */
 package npanday.registry.impl;
 
-import npanday.registry.RepositoryRegistry;
-import npanday.registry.DataAccessObject;
-import npanday.registry.Repository;
-import npanday.registry.DataAccessObjectRegistry;
-import npanday.registry.ConnectionsRepository;
+import npanday.registry.*;
 
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
 
@@ -61,8 +58,9 @@ public class DataAccessObjectRegistryImpl
                         connectionsRepository.lazyLoad();
                         isConnectionsRepoLoaded = true;
                     }
-                    catch ( IOException e )
+                    catch ( NPandayRepositoryException e )
                     {
+                        logger.warning( "NPANDAY-081-003: " + e.getMessage() );
                         return daos;
                     }
                 }
@@ -92,8 +90,9 @@ public class DataAccessObjectRegistryImpl
                         connectionsRepository.lazyLoad();
                         isConnectionsRepoLoaded = true;
                     }
-                    catch ( IOException e )
+                    catch ( NPandayRepositoryException e )
                     {
+                        logger.warning( "NPANDAY-081-004: " + e.getMessage() );
                         return null;
                     }
                 }
@@ -130,8 +129,9 @@ public class DataAccessObjectRegistryImpl
                         connectionsRepository.lazyLoad();
                         isConnectionsRepoLoaded = true;
                     }
-                    catch ( IOException e )
+                    catch ( NPandayRepositoryException e )
                     {
+                        logger.warning( "NPANDAY-081-005: " + e.getMessage() );
                         return Collections.unmodifiableSet( daoIds );
                     }
                 }

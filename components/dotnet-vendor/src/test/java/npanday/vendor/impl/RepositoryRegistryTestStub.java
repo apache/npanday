@@ -18,10 +18,7 @@
  */
 package npanday.vendor.impl;
 
-import npanday.registry.RepositoryRegistry;
-import npanday.registry.RepositoryLoader;
-import npanday.registry.RegistryLoader;
-import npanday.registry.Repository;
+import npanday.registry.*;
 
 
 import java.io.IOException;
@@ -47,17 +44,17 @@ final class RepositoryRegistryTestStub
     }
 
     public synchronized void loadFromInputStream( InputStream inputStream )
-        throws IOException
+        throws IOException, NPandayRepositoryException
     {
     }
 
     public synchronized void loadFromFile( String fileName )
-        throws IOException
+        throws IOException, NPandayRepositoryException
     {
     }
 
     public synchronized void loadFromResource( String fileName, Class sourceClass )
-        throws IOException
+        throws IOException, NPandayRepositoryException
     {
     }
 

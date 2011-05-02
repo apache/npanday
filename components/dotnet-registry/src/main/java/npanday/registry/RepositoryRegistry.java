@@ -55,18 +55,20 @@ public interface RepositoryRegistry
      *
      * @param inputStream contains the jvending-config file.
      * @throws java.io.IOException thrown on interrupted I/O
+     * @throws npanday.registry.NPandayRepositoryException
      */
     void loadFromInputStream( InputStream inputStream )
-        throws IOException;
+            throws IOException, NPandayRepositoryException;
 
     /**
      * Convenience method for loading a file off of a file system.
      *
      * @param fileName relative or absolute path of the file
      * @throws IOException thrown on interrupted I/O
+     * @throws npanday.registry.NPandayRepositoryException
      */
     void loadFromFile( String fileName )
-        throws IOException;
+        throws IOException, NPandayRepositoryException;
 
 
     /**
@@ -74,9 +76,10 @@ public interface RepositoryRegistry
      *
      * @param fileName relative or absolute path of the file
      * @throws IOException thrown on interrupted I/O
+     * @throws npanday.registry.NPandayRepositoryException
      */
     void loadFromResource( String fileName, Class sourceClass )
-        throws IOException;
+        throws IOException, NPandayRepositoryException;
 
     /**
      * Adds a repository to the registry. If the repository name already exists, this method will overwrite the old

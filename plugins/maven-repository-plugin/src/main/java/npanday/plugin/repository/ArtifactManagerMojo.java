@@ -19,6 +19,7 @@
 
 package npanday.plugin.repository;
 
+import npanday.dao.ProjectDaoException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -101,12 +102,12 @@ public class ArtifactManagerMojo
         {
             dao.removeProjectFor( tokens[0], tokens[1], tokens[2], tokens[3] );
         }
-        catch ( IOException e )
+        catch ( ProjectDaoException e )
         {
             e.printStackTrace();
             throw new MojoExecutionException( e.getMessage() );
         }
+
         dao.closeConnection();
-      
     }
 }

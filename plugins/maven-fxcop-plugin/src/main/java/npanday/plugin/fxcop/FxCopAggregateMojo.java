@@ -18,6 +18,8 @@
  */
 package npanday.plugin.fxcop;
 
+import npanday.artifact.NPandayArtifactResolutionException;
+import npanday.registry.NPandayRepositoryException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -130,7 +132,11 @@ public class FxCopAggregateMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException(e.getMessage());
+            throw new MojoExecutionException( e.getMessage() );
+        }
+        catch( NPandayArtifactResolutionException e )
+        {
+            throw new MojoExecutionException( e.getMessage() );
         }
 
         for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )

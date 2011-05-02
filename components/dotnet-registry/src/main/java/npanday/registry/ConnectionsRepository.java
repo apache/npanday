@@ -58,9 +58,9 @@ public class ConnectionsRepository
      * ConnectionsRepository.load method, which in this case does nothing more than set the properties. It is up to the
      * developer to explicitly call the lazy load method. This is done for performance reasons.
      *
-     * @throws IOException if there is a problem loading the DAOs
+     * @throws NPandayRepositoryException if there is a problem loading the DAOs
      */
-    public void lazyLoad() throws IOException
+    public void lazyLoad() throws NPandayRepositoryException
     {
        long start = System.currentTimeMillis();
 
@@ -75,7 +75,7 @@ public class ConnectionsRepository
         }
         catch ( RepositoryException e )
         {
-            throw new IOException("NPANDAY-080-005: Failed to initialized repository. Message = " + e.getMessage() );
+            throw new NPandayRepositoryException("NPANDAY-080-005: Failed to initialized repository. Message = " + e.getMessage(), e );
         }
 
         Set<String> keys = properties.keySet();
@@ -90,7 +90,7 @@ public class ConnectionsRepository
                     Object o = c.getConstructor().newInstance();
                     if ( !( o instanceof DataAccessObject ) )
                     {
-                        throw new IOException(
+                        throw new NPandayRepositoryException(
                             "NPANDAY-080-000: dao tag references a class that does not implement the DataAccessObject interface." );
                     }
                     DataAccessObject dao = (DataAccessObject) o;
@@ -102,13 +102,13 @@ public class ConnectionsRepository
                 }
                 catch ( Exception e )
                 {
-                    throw new IOException(
-                        "NPANDAY-080-002: Problem instantiating the DAO Class: Class Name = " + daoClassName );
+                    throw new NPandayRepositoryException(
+                        "NPANDAY-080-002: Problem instantiating the DAO Class: Class Name = " + daoClassName, e );
                 }
                 catch ( Error e )
                 {
-                    throw new IOException(
-                        "NPANDAY-080-003: Problem instantiating the DAO Class: Class Name = " + daoClassName );
+                    throw new NPandayRepositoryException(
+                        "NPANDAY-080-003: Problem instantiating the DAO Class: Class Name = " + daoClassName, e );
                 }
             }
         }
@@ -119,7 +119,7 @@ public class ConnectionsRepository
      * @see Repository#load(java.io.InputStream, java.util.Hashtable)
      */
     public void load( InputStream inputStream, Hashtable properties )
-        throws IOException
+        throws NPandayRepositoryException
     {
         this.properties = properties;
     }

@@ -71,7 +71,7 @@ public class RepositoryConverterImplTest
         {
             dao.storeProjectAndResolveDependencies( project, testRepo, new ArrayList<ArtifactRepository>() );
         }
-        catch ( java.io.IOException e )
+        catch ( Exception e )
         {
             e.printStackTrace();
             fail( "Could not store the project: " + e.getMessage() );
@@ -84,7 +84,7 @@ public class RepositoryConverterImplTest
         {
             repositoryConverter.convertRepositoryFormat( repository, testRepo );
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             fail( "Could not convert the repository: " + e.getMessage() );
         }

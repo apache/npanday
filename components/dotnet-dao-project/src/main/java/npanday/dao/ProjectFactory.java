@@ -34,6 +34,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -132,8 +133,8 @@ public final class ProjectFactory
                 }
                 catch ( XmlPullParserException e )
                 {
+                    logger.log( Level.SEVERE, "Unable to read model.", e );
                     throw new IOException( "NPANDAY-180-000: Unable to read model: Message = " + e.getMessage() );
-
                 }
                 //Project parentProject = createProjectFrom( parentModel, parentPomFile.getParentFile() );
                 //project.setParentProject( parentProject );

@@ -41,7 +41,7 @@ public interface AssemblyInfoMarshaller
      * @throws IOException if there was a problem writing out the class file
      */
     void marshal( AssemblyInfo assemblyInfo, MavenProject mavenProject, OutputStream outputStream )
-        throws IOException;
+        throws IOException, AssemblyInfoException;
 
     /**
      * Unmarshalls an AssemblyInfo.* class file.
@@ -50,7 +50,7 @@ public interface AssemblyInfoMarshaller
      * @return an AssemblyInfo object for the specified input stream
      * @throws IOException if there was a problem reading the AssemblyInfo class file
      */
-    AssemblyInfo unmarshall( InputStream inputStream) throws IOException;    
+    AssemblyInfo unmarshall( InputStream inputStream) throws IOException, AssemblyInfoException;
 
     /**
      * Initializes the marshaller.

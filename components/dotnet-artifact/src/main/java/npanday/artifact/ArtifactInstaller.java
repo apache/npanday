@@ -77,6 +77,7 @@ public interface ArtifactInstaller
      * specified .NET and java dependencies. If a profile is specified, this method will includes dependencies
      * with that profile.
      *
+     *
      * @param profile          the specified profile to resolve. This value may be null.
      * @param netDependencies  additional .NET artifacts to resolve and install.
      * @param javaDependencies the Java Dependencies to resolve. Typically these should be the java bindings for the
@@ -85,7 +86,7 @@ public interface ArtifactInstaller
      */
     void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> netDependencies,
                                                      List<Dependency> javaDependencies )
-        throws IOException;
+            throws IOException, NPandayArtifactResolutionException;
 
     /**
      * Installs both the artifact and all of its dependencies into the private application base.

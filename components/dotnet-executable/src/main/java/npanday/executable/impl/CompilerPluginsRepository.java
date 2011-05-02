@@ -18,6 +18,7 @@
  */
 package npanday.executable.impl;
 
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryRegistry;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -56,7 +57,7 @@ public final class CompilerPluginsRepository
      * @see Repository#load(java.io.InputStream, java.util.Hashtable)
      */
     public void load( InputStream inputStream, Hashtable properties )
-        throws IOException
+        throws NPandayRepositoryException
     {
         CompilerPluginXpp3Reader xpp3Reader = new CompilerPluginXpp3Reader();
         Reader reader = new InputStreamReader( inputStream );
@@ -65,9 +66,13 @@ public final class CompilerPluginsRepository
         {
             plugins = xpp3Reader.read( reader );
         }
+        catch( IOException e )
+        {
+            throw new NPandayRepositoryException( "NPANDAY-062-000: An error occurred while reading plugins-compiler.xml", e );
+        }
         catch ( XmlPullParserException e )
         {
-            throw new IOException( "NPANDAY-062-000: Could not read plugins-compiler.xml" );
+            throw new NPandayRepositoryException( "NPANDAY-062-001: Could not read plugins-compiler.xml", e );
         }
         compilerPlugins = plugins.getCompilerPlugins();
     }

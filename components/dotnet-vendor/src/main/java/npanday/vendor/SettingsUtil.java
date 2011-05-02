@@ -20,6 +20,7 @@
 package npanday.vendor;
 
 import npanday.PathUtil;
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
 import npanday.registry.impl.StandardRepositoryLoader;
 import npanday.vendor.impl.SettingsRepository;
@@ -123,6 +124,10 @@ public class SettingsUtil
         catch ( IOException e )
         {
             throw new SettingsException( "NPANDAY-108-003: Error loading " + settingsFile.getAbsolutePath(), e );
+        }
+        catch( NPandayRepositoryException e )
+        {
+            throw new SettingsException( "NPANDAY-108-004: Error loading settings repository.", e );
         }
     }
 }

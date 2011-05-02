@@ -19,6 +19,7 @@
 package npanday.plugin.install;
 
 import npanday.ArtifactTypeHelper;
+import npanday.dao.ProjectDaoException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -262,6 +263,10 @@ public class InstallerMojo
         catch ( java.io.IOException e )
         {
             throw new MojoExecutionException( "NPANDAY-1001-001: Failed to install artifacts", e );
+        }
+        catch( ProjectDaoException e )
+        {
+            throw new MojoExecutionException( "NPANDAY-1001-002: Failed to install artifacts", e );
         }
     }
 }

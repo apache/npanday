@@ -18,6 +18,7 @@
  */
 package npanday.artifact;
 
+import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryRegistry;
 import org.apache.maven.model.Dependency;
@@ -39,7 +40,7 @@ public interface NetDependenciesRepository
      * @see npanday.registry.Repository#load(java.io.InputStream, java.util.Hashtable)
      */
     void load( InputStream inputStream, Hashtable properties )
-        throws IOException;
+        throws NPandayRepositoryException;
 
     /**
      * @see npanday.registry.Repository#setRepositoryRegistry(npanday.registry.RepositoryRegistry)

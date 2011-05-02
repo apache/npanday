@@ -18,12 +18,13 @@
  */
 package npanday.plugin.resolver;
 
+import npanday.artifact.NPandayArtifactResolutionException;
+import npanday.registry.NPandayRepositoryException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.installer.ArtifactInstaller;
 import npanday.registry.RepositoryRegistry;
 
 import java.io.File;
@@ -31,7 +32,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
-import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NetDependenciesRepository;
 import npanday.artifact.NetDependencyMatchPolicy;
 import npanday.artifact.ArtifactContext;
@@ -138,6 +138,11 @@ public class NetDependencyResolverMojo
             throw new MojoExecutionException(
                 "NPANDAY-1600-000: Failed to create the repository registry for this plugin", e );
         }
+        catch( NPandayRepositoryException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-1600-007: Failed to create the repository registry for this plugin", e );
+        }
 
         if ( netDependencies == null )
         {
@@ -163,10 +168,13 @@ public class NetDependencyResolverMojo
                 artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( profile,
                                                                                                    dependencies, null );
             }
+            catch ( NPandayArtifactResolutionException e )
+            {
+               throw new MojoExecutionException( e.getMessage(), e );
+            }
             catch ( IOException e )
             {
-                e.printStackTrace();
-                throw new MojoExecutionException( e.getMessage() );
+               throw new MojoExecutionException( e.getMessage(), e );
             }
 
             new File( localRepository, "npanday.artifacts.resolved" ).mkdir();

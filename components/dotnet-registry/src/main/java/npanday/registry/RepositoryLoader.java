@@ -39,10 +39,11 @@ public interface RepositoryLoader
      * @param initParams      <code>Hashtable</code> containing the repository's configuration parameters.
      * @return instance of repository
      * @throws IOException
+     * @throws NPandayRepositoryException
      */
 
     Repository loadRepository( String fileUri, String repositoryClass, Hashtable initParams )
-        throws IOException;
+            throws IOException, NPandayRepositoryException;
 
     /**
      * Accessor for the name of the <code>RepositoryLoader</code>. Typically will be the class name.
