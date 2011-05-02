@@ -42,5 +42,39 @@ under the License.
       <version>1.3.1-incubating-SNAPSHOT</version>
       <type>library</type>
     </dependency>
-  </dependencies> 
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <!-- make sure that the java-pom.xml is not copied here, but in the configured
+             maven-resources-plugin including filtering -->
+        <directory>nowhere</directory>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/assembly-resources/resource</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/resources</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

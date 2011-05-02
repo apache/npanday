@@ -434,7 +434,7 @@ under the License.
       <dependency> 
         <groupId>org.codehaus.plexus</groupId>  
         <artifactId>plexus-utils</artifactId>  
-        <version>1.4.5</version> 
+        <version>${plexus.utils.version}</version>
       </dependency>  
       <dependency> 
         <groupId>org.codehaus.plexus</groupId>  
@@ -592,7 +592,8 @@ under the License.
     </profile>
   </profiles>
   <properties> 
-    <mavenVersion>2.0.9</mavenVersion>  
+    <mavenVersion>2.0.9</mavenVersion>
+    <plexus.utils.version>1.5.1</plexus.utils.version>
     <npanday.snapshots.url>http://repo.npanday.org/archiva/repository/npanday-snapshots</npanday.snapshots.url>
     <npanday.releases.url>http://repo.npanday.org/archiva/repository/npanday-releases</npanday.releases.url>
     <bootstrap.npanday.version>${project.version}</bootstrap.npanday.version>

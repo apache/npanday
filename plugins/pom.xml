@@ -54,10 +54,7 @@ under the License.
     <module>wix-maven-plugin</module>
     <module>partcover-maven-plugin</module>
   </modules>
-  <properties>
-    <plexus.utils.version>1.5.1</plexus.utils.version>
-  </properties>
-  <dependencies> 
+  <dependencies>
     <dependency> 
       <groupId>npanday</groupId>  
       <artifactId>dotnet-assembler</artifactId>  
@@ -85,7 +82,7 @@ under the License.
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.4.5</version>
+      <version>${plexus.utils.version}</version>
     </dependency>
   </dependencies>  
   <build> 
