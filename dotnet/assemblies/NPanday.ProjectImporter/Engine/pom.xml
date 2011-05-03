@@ -20,7 +20,7 @@ under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <parent> 
-    <groupId>org.apache.npanday.projectimporter</groupId>
+    <groupId>org.apache.npanday.visualstudio</groupId>
     <version>1.3.1-incubating-SNAPSHOT</version>  
     <artifactId>NPanday.ImporterProjectParent</artifactId> 
   </parent>  
@@ -31,7 +31,7 @@ under the License.
   <build> 
     <plugins> 
       <plugin> 
-        <groupId>org.apache.npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-compile-plugin</artifactId>
       </plugin> 
       <plugin> 
@@ -46,31 +46,31 @@ under the License.
   </build>  
   <dependencies> 
     <dependency> 
-      <groupId>org.apache.npanday.artifact</groupId>
+      <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Artifact</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version>  
       <type>library</type>  
     </dependency>  
     <dependency> 
-      <groupId>org.apache.npanday.logging</groupId>
+      <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Logging</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version>  
       <type>library</type>  
     </dependency>  
     <dependency> 
-      <groupId>org.apache.npanday.model</groupId>
+      <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Pom</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version>  
       <type>library</type>  
     </dependency>  
     <dependency> 
-      <groupId>org.apache.npanday.model</groupId>
+      <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Settings</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version>  
       <type>library</type>  
     </dependency>  
     <dependency> 
-      <groupId>org.apache.npanday.utils</groupId>
+      <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Utils</artifactId>  
       <version>1.3.1-incubating-SNAPSHOT</version>  
       <type>library</type>  
@@ -98,7 +98,7 @@ under the License.
       <build>
         <plugins>
           <plugin> 
-            <groupId>org.apache.npanday.plugin</groupId>
+            <groupId>org.apache.npanday.plugins</groupId>
             <artifactId>partcover-maven-plugin</artifactId>  
             <configuration>
               <!--<nUnit>C:\\Program Files\\NUnit 2.5.7\\bin\net-2.0\\nunit-console.exe</nUnit>-->

@@ -56,19 +56,19 @@ namespace ConnectTest.UtilsTest
         [Test]
         public void AddMavenResxPluginConfigurationTest()
         {
-            pomCopy.AddMavenResxPluginConfiguration("org.apache.npanday.plugin", "maven-resgen-plugin", "embeddedResources", "embeddedResource", "Copy of Resource1.resx", "ClassLibrary1.Copy of Resource1");
+            pomCopy.AddMavenResxPluginConfiguration("org.apache.npanday.plugins", "maven-resgen-plugin", "embeddedResources", "embeddedResource", "Copy of Resource1.resx", "ClassLibrary1.Copy of Resource1");
         }
 
         [Test]
         public void RenameMavenResxPluginConfigurationTest()
         {
-            pomCopy.RenameMavenResxPluginConfiguration("org.apache.npanday.plugin", "maven-resgen-plugin", "embeddedResources", "embeddedResource", "Copy of Resource1.resx", "ClassLibrary1.Copy of Resource1", "ToBeDeleted.resx", "ClassLibrary1.ToBeDeleted");
+            pomCopy.RenameMavenResxPluginConfiguration("org.apache.npanday.plugins", "maven-resgen-plugin", "embeddedResources", "embeddedResource", "Copy of Resource1.resx", "ClassLibrary1.Copy of Resource1", "ToBeDeleted.resx", "ClassLibrary1.ToBeDeleted");
         }
 
         [Test]
         public void RemoveMavenResxPluginConfigurationTest()
         {
-            pomCopy.RemoveMavenResxPluginConfiguration("org.apache.npanday.plugin", "maven-resgen-plugin", "embeddedResources", "embeddedResource", "ToBeDeleted.resx", "ClassLibrary1.ToBeDeleted");
+            pomCopy.RemoveMavenResxPluginConfiguration("org.apache.npanday.plugins", "maven-resgen-plugin", "embeddedResources", "embeddedResource", "ToBeDeleted.resx", "ClassLibrary1.ToBeDeleted");
             //File.Delete(pomCopyPath);
         }
 

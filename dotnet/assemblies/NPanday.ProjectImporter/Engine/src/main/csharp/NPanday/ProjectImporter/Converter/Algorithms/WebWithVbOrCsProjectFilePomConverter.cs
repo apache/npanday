@@ -70,11 +70,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             Model.build.sourceDirectory = ".";
 
             // change the outputDirectory of the plugin
-            Plugin compilePlugin = FindPlugin("org.apache.npanday.plugin", "maven-compile-plugin");
+            Plugin compilePlugin = FindPlugin("org.apache.npanday.plugins", "maven-compile-plugin");
             AddPluginConfiguration(compilePlugin, "outputDirectory", "bin");
 
             // Add NPanday compile plugin 
-            Plugin aspxPlugin = AddPlugin("org.apache.npanday.plugin", "maven-aspx-plugin");
+            Plugin aspxPlugin = AddPlugin("org.apache.npanday.plugins", "maven-aspx-plugin");
             if (!string.IsNullOrEmpty(projectDigest.TargetFramework))
                 AddPluginConfiguration(aspxPlugin, "frameworkVersion", projectDigest.TargetFramework);
 

@@ -64,14 +64,14 @@ under the License.
     <pluginManagement>
       <plugins> 
         <plugin> 
-          <groupId>org.apache.npanday.plugin</groupId>
+          <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-compile-plugin</artifactId>  
           <configuration> 
             <keyfile>sample.snk</keyfile> 
           </configuration> 
         </plugin>  
         <plugin> 
-          <groupId>org.apache.npanday.plugin</groupId>
+          <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>  
           <configuration> 
             <isGacInstall>true</isGacInstall> 

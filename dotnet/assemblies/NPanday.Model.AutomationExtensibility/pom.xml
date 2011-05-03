@@ -25,7 +25,7 @@ under the License.
     <artifactId>NPanday.Assemblies</artifactId>  
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>org.apache.npanday.model</groupId>
+  <groupId>org.apache.npanday</groupId>
   <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
   <packaging>library</packaging>  
   <name>NPanday :: .NET Model :: AutomationExtensibility</name>  

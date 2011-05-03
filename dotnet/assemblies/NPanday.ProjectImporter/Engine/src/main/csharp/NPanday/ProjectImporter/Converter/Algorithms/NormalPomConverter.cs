@@ -77,7 +77,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             // Add NPanday compile plugin 
             Plugin compilePlugin = AddPlugin(
-                "org.apache.npanday.plugin",
+                "org.apache.npanday.plugins",
                 "maven-compile-plugin",
                 null,
                 true
@@ -117,7 +117,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     //add the MsBuild plugin to auto generate the .g.cs/g.vb files
                     if (!msBuildPluginAdded)
                     {
-                        Plugin msBuildPlugin = AddPlugin("org.apache.npanday.plugin", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
+                        Plugin msBuildPlugin = AddPlugin("org.apache.npanday.plugins", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
                         AddPluginExecution(msBuildPlugin, "compile", "validate");
                         msBuildPluginAdded = true;
                     }                    
@@ -184,7 +184,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (projectDigest.UnitTest)
             {
                 Plugin testPlugin = AddPlugin(
-                    "org.apache.npanday.plugin",
+                    "org.apache.npanday.plugins",
                     "maven-test-plugin",
                     null,
                     false

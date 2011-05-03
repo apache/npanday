@@ -148,7 +148,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
 
             // Add NPanday compile plugin 
-            Plugin aspxPlugin = AddPlugin("org.apache.npanday.plugin", "maven-aspx-plugin");
+            Plugin aspxPlugin = AddPlugin("org.apache.npanday.plugins", "maven-aspx-plugin");
             if(!string.IsNullOrEmpty(projectDigest.TargetFramework))
                 AddPluginConfiguration(aspxPlugin, "frameworkVersion", projectDigest.TargetFramework);
 

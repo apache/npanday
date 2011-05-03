@@ -130,7 +130,7 @@ namespace NPanday.ProjectImporter.Verifiers
         {
             Plugin plugin = FindPlugin(
                      model, 
-                     "org.apache.npanday.plugin",
+                     "org.apache.npanday.plugins",
                      "maven-test-plugin"
                     );
 

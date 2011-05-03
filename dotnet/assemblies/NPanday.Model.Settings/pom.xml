@@ -25,7 +25,7 @@ under the License.
     <artifactId>NPanday.Assemblies</artifactId>  
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>org.apache.npanday.model</groupId>
+  <groupId>org.apache.npanday</groupId>
   <artifactId>NPanday.Model.Settings</artifactId>  
   <packaging>library</packaging>  
   <name>NPanday :: .NET Model :: Settings</name>  
@@ -44,7 +44,7 @@ under the License.
       <build>
         <plugins>
           <plugin> 
-            <groupId>org.apache.npanday.plugin</groupId>
+            <groupId>org.apache.npanday.plugins</groupId>
             <artifactId>partcover-maven-plugin</artifactId>  
             <configuration>
               <!--<nUnit>C:\\Program Files\\NUnit 2.5.7\\bin\net-2.0\\nunit-console.exe</nUnit>-->

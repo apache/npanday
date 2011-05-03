@@ -32,7 +32,7 @@ under the License.
     <sourceDirectory>.</sourceDirectory>
     <plugins>
       <plugin>
-        <groupId>org.apache.npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
@@ -73,7 +73,7 @@ under the License.
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-resgen-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>

@@ -66,10 +66,10 @@ namespace NPanday.Plugin.Generator
 	        JavaClass javaClass = new JavaClass();
 		 	javaClass.PackageName = abstractMojoType.Namespace;
 		 	javaClass.ClassName = abstractMojoType.Name;
-		 	javaClass.ExtendsClassName = "org.apache.npanday.plugin.AbstractMojo";
+		 	javaClass.ExtendsClassName = "org.apache.npanday.plugins.AbstractMojo";
 	 	    
 		 	ImportPackage importPackage = new ImportPackage();
-		 	javaClass.ImportPackage = importPackage.AddPackage("org.apache.npanday.plugin.FieldAnnotation");
+		 	javaClass.ImportPackage = importPackage.AddPackage("org.apache.npanday.plugins.FieldAnnotation");
 		 	
 		 	List<String> classComments = new List<String>();
 			System.Attribute[] attributes =
@@ -117,7 +117,7 @@ namespace NPanday.Plugin.Generator
         	comments.Add("@component");
         	javaFields.Add(CreateJavaField("private", "npanday.executable.NetExecutableFactory", 
         	                               "netExecutableFactory", comments, null));
-        	javaFields.Add(CreateJavaField("private", "org.apache.npanday.plugin.PluginContext",
+        	javaFields.Add(CreateJavaField("private", "org.apache.npanday.plugins.PluginContext",
         	                               "pluginContext", comments, null)); 
         	
         	//methods
@@ -135,7 +135,7 @@ namespace NPanday.Plugin.Generator
         	                                 new Code().AddLine(@"return """ + abstractMojoType.Namespace 
         	                                                    + "." + abstractMojoType.Name + @""";")));
         	                               
-        	javaMethods.Add(CreateJavaMethod("public", "org.apache.npanday.plugin.PluginContext",
+        	javaMethods.Add(CreateJavaMethod("public", "org.apache.npanday.plugins.PluginContext",
         	                                 "getNetPluginContext",
         	                                 CreateCodeWithSimpleReturnType("pluginContext")));
         	

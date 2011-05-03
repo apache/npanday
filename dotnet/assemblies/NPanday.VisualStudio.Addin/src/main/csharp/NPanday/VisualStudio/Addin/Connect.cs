@@ -214,7 +214,7 @@ namespace NPanday.VisualStudio.Addin
                 if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
                 {
                     //change addpluginConfiguration to accept xmlElement instead
-                    pomUtil.AddMavenCompilePluginConfiguration("org.apache.npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, null));
+                    pomUtil.AddMavenCompilePluginConfiguration("org.apache.npanday.plugins", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, null));
                 }
 
                 if (projectItem.Name.Contains(".resx"))
@@ -222,7 +222,7 @@ namespace NPanday.VisualStudio.Addin
                     string resxName = projectItem.ContainingProject.Name + "." + projectItem.Name.Replace(".resx", "");
 
                     //check if resx plugin already exists
-                    if (!pomUtil.HasPlugin("org.apache.npanday.plugin", "maven-resgen-plugin"))
+                    if (!pomUtil.HasPlugin("org.apache.npanday.plugins", "maven-resgen-plugin"))
                     {
                         try
                         {
@@ -245,7 +245,7 @@ namespace NPanday.VisualStudio.Addin
                             anyHolder.Add(nodeCollection);
                             pluginConf.Any = anyHolder.ToArray();
 
-                            pomUtil.AddPlugin("org.apache.npanday.plugin", "maven-resgen-plugin", null, true, pluginConf);
+                            pomUtil.AddPlugin("org.apache.npanday.plugins", "maven-resgen-plugin", null, true, pluginConf);
                         }
                         catch (Exception e)
                         {
@@ -256,7 +256,7 @@ namespace NPanday.VisualStudio.Addin
                     //add plugin conifguration
                     else
                     {
-                        pomUtil.AddMavenResxPluginConfiguration("org.apache.npanday.plugin", "maven-resgen-plugin", "embeddedResources", "embeddedResource", projectItem.Name, resxName);
+                        pomUtil.AddMavenResxPluginConfiguration("org.apache.npanday.plugins", "maven-resgen-plugin", "embeddedResources", "embeddedResource", projectItem.Name, resxName);
                     }
                 }
             }
@@ -290,13 +290,13 @@ namespace NPanday.VisualStudio.Addin
                     if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
                     {
                         //change addpluginConfiguration to accept xmlElement instead
-                        pomUtil.RemoveMavenCompilePluginConfiguration("org.apache.npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, null));
+                        pomUtil.RemoveMavenCompilePluginConfiguration("org.apache.npanday.plugins", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, null));
                     }
 
                     if (projectItem.Name.Contains(".resx"))
                     {
                         string resxName = projectItem.ContainingProject.Name + "." + projectItem.Name.Replace(".resx", "");
-                        pomUtil.RemoveMavenResxPluginConfiguration("org.apache.npanday.plugin", "maven-resgen-plugin", "embeddedResources", "embeddedResource", projectItem.Name, resxName);
+                        pomUtil.RemoveMavenResxPluginConfiguration("org.apache.npanday.plugins", "maven-resgen-plugin", "embeddedResources", "embeddedResource", projectItem.Name, resxName);
                     }
                 }
             }
@@ -312,14 +312,14 @@ namespace NPanday.VisualStudio.Addin
                 if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
                 {
                     //change addpluginConfiguration to accept xmlElement instead
-                    pomUtil.RenameMavenCompilePluginConfiguration("org.apache.npanday.plugin", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, oldName), GetRelativePathToProject(projectItem, null));
+                    pomUtil.RenameMavenCompilePluginConfiguration("org.apache.npanday.plugins", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, oldName), GetRelativePathToProject(projectItem, null));
                 }
 
                 if (projectItem.Name.Contains(".resx"))
                 {
                     string resxName = projectItem.ContainingProject.Name + "." + projectItem.Name.Replace(".resx", "");
                     string oldResxName = projectItem.ContainingProject.Name+"."+oldName.Replace(".resx","");
-                    pomUtil.RenameMavenResxPluginConfiguration("org.apache.npanday.plugin", "maven-resgen-plugin", "embeddedResources", "embeddedResource", oldName, oldResxName ,projectItem.Name,resxName);
+                    pomUtil.RenameMavenResxPluginConfiguration("org.apache.npanday.plugins", "maven-resgen-plugin", "embeddedResources", "embeddedResource", oldName, oldResxName ,projectItem.Name,resxName);
                 }
             }
 
@@ -1905,7 +1905,7 @@ namespace NPanday.VisualStudio.Addin
         #region cbRunUnitTest_Click(CommandBarButton,bool)
         private void cbRunUnitTest_Click(CommandBarButton btn, ref bool Cancel)
         {
-            executeBuildCommand(CurrentSelectedProjectPom, "org.apache.npanday.plugin:maven-test-plugin:test");
+            executeBuildCommand(CurrentSelectedProjectPom, "org.apache.npanday.plugins:maven-test-plugin:test");
         }
         #endregion
 
