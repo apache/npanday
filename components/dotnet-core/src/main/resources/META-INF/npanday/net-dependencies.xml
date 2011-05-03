@@ -19,32 +19,32 @@ under the License.
 <netDependencies>
   <!--Plugins-->
   <netDependency>
-    <groupId>org.apache.npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugins</groupId>
     <artifactId>NPanday.Plugin.Resx</artifactId>
     <type>exe</type>
   </netDependency>
   <netDependency>
-    <groupId>org.apache.npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugins</groupId>
     <artifactId>NPanday.Plugin.Settings</artifactId>
     <type>netplugin</type>
   </netDependency>
   <netDependency>
-    <groupId>org.apache.npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugins</groupId>
     <artifactId>NPanday.Plugin.Devenv</artifactId>
     <type>netplugin</type>
   </netDependency>
   <netDependency>
-    <groupId>org.apache.npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugins</groupId>
     <artifactId>NPanday.Plugin.Addin</artifactId>
     <type>netplugin</type>
   </netDependency>
   <netDependency>
-    <groupId>org.apache.npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugins</groupId>
     <artifactId>NPanday.Plugin.SysRef</artifactId>
     <type>netplugin</type>
   </netDependency>
   <netDependency>
-    <groupId>org.apache.npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugins</groupId>
     <artifactId>NPanday.Plugin.Msbuild</artifactId>
     <type>netplugin</type>
   </netDependency>
@@ -64,31 +64,31 @@ under the License.
 
   <!--Plugin Framework-->
   <netDependency>
-    <groupId>org.apache.npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugins</groupId>
     <artifactId>NPanday.Plugin</artifactId>
     <type>library</type>
     <isGacInstall>true</isGacInstall>
     <publicKeyToken>4b435f4d76e2f0e6</publicKeyToken>
   </netDependency>
   <netDependency>
-    <groupId>org.apache.npanday.model</groupId>
+    <groupId>org.apache.npanday</groupId>
     <artifactId>NPanday.Model.Pom</artifactId>
     <type>library</type>
     <isGacInstall>true</isGacInstall>
     <publicKeyToken>4b435f4d76e2f0e6</publicKeyToken>
   </netDependency>
   <netDependency>
-    <groupId>org.apache.npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugins</groupId>
     <artifactId>NPanday.Plugin.Runner</artifactId>
     <type>exe</type>
   </netDependency>
   <netDependency>
-    <groupId>org.apache.npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugins</groupId>
     <artifactId>NPanday.Plugin.Loader</artifactId>
     <type>exe</type>
   </netDependency>
   <netDependency>
-    <groupId>org.apache.npanday.plugin</groupId>
+    <groupId>org.apache.npanday.plugins</groupId>
     <artifactId>NPanday.Plugin.MojoGenerator</artifactId>
     <type>exe</type>
   </netDependency>

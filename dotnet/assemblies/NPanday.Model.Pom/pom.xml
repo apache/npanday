@@ -25,14 +25,14 @@ under the License.
     <artifactId>NPanday.Assemblies</artifactId>  
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>org.apache.npanday.model</groupId>
+  <groupId>org.apache.npanday</groupId>
   <artifactId>NPanday.Model.Pom</artifactId>  
   <packaging>library</packaging>  
   <name>NPanday :: .NET Model :: POM</name>  
   <build> 
     <plugins> 
       <plugin> 
-        <groupId>org.apache.npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-xsd-plugin</artifactId>  
         <executions> 
           <execution> 
@@ -73,14 +73,14 @@ under the License.
     <pluginManagement>
       <plugins>
         <plugin> 
-          <groupId>org.apache.npanday.plugin</groupId>
+          <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-compile-plugin</artifactId>  
           <configuration> 
             <keyfile>sample.snk</keyfile> 
           </configuration> 
         </plugin>  
         <plugin> 
-          <groupId>org.apache.npanday.plugin</groupId>
+          <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>  
           <configuration> 
             <isGacInstall>true</isGacInstall> 

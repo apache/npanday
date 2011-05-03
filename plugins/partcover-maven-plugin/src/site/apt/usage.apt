@@ -23,7 +23,7 @@ Usage
     <build>
       <plugins>
         <plugin> 
-          <groupId>org.apache.npanday.plugin</groupId>
+          <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>partcover-maven-plugin</artifactId>  
           <configuration>
             <nUnit>${unit-console.exe}</nUnit>

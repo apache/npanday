@@ -39,7 +39,7 @@ Available Project Types
 
 ----
 <plugin>
-  <groupId>org.apache.npanday.plugin</groupId>
+  <groupId>org.apache.npanday.plugins</groupId>
   <artifactId>maven-compile-plugin</artifactId>
   <version>${project.version}</version>
   <extensions>true</extensions>
@@ -88,7 +88,7 @@ Available Project Types
 
 ----
 <plugin>
-  <groupId>org.apache.npanday.plugin</groupId>
+  <groupId>org.apache.npanday.plugins</groupId>
   <artifactId>custom-lifecycle-maven-plugin</artifactId>
   <version>${project.version}</version>
   <extensions>true</extensions>

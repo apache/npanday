@@ -25,7 +25,7 @@ under the License.
     <artifactId>npanday-project</artifactId> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>org.apache.npanday.plugin</groupId>
+  <groupId>org.apache.npanday.plugins</groupId>
   <artifactId>maven-dotnet-plugins</artifactId>  
   <packaging>pom</packaging>  
   <name>NPanday :: Maven Plugins</name>

@@ -36,7 +36,7 @@ under the License.
     <testSourceDirectory>src/test/csharp</testSourceDirectory>  
     <plugins> 
       <plugin> 
-        <groupId>org.apache.npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-compile-plugin</artifactId>  
         <extensions>true</extensions> 
       </plugin>

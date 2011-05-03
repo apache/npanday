@@ -26,7 +26,7 @@ under the License.
     <relativePath>../../dotnet/pom.xml</relativePath> 
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
-  <groupId>org.apache.npanday.plugin</groupId>
+  <groupId>org.apache.npanday.plugins</groupId>
   <artifactId>npanday.plugins</artifactId>  
   <packaging>pom</packaging>  
   <name>NPanday :: .NET Plugins</name>  

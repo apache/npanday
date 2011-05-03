@@ -32,7 +32,7 @@ Candle Mojo Usage
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>wix-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
         <configuration>
@@ -55,7 +55,7 @@ Candle Mojo Usage
 
 +----+
       <plugin>
-        <groupId>org.apache.npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>wix-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
         <configuration>

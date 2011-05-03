@@ -32,7 +32,7 @@ under the License.
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.npanday.plugin</groupId>
+        <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>wix-maven-plugin</artifactId>
         <version>1.2-SNAPSHOT</version>
         <configuration>

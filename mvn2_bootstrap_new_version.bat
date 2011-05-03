@@ -8,7 +8,7 @@ echo  Bootstrapping the NPanday Compile Plugin
 echo ###################################################################
 @echo on
 
-call mvn install --projects org.apache.npanday.plugin:maven-compile-plugin --also-make
+call mvn install --projects org.apache.npanday.plugins:maven-compile-plugin --also-make
 IF %ERRORLEVEL% NEQ 0 GOTO Error
 
 @echo off

@@ -112,7 +112,7 @@ public class SettingsGeneratorMojo
 
     public String getMojoGroupId()
     {
-        return "org.apache.npanday.plugin";
+        return "org.apache.npanday.plugins";
     }
 
     public String getClassName()
@@ -249,7 +249,7 @@ public class SettingsGeneratorMojo
             for ( Iterator iterator = plugins.iterator(); iterator.hasNext(); )
             {
                 Plugin plugin = (Plugin) iterator.next();
-                if ( "org.apache.npanday.plugin:maven-compile-plugin".equalsIgnoreCase( plugin.getKey() ) );
+                if ( "org.apache.npanday.plugins:maven-compile-plugin".equalsIgnoreCase( plugin.getKey() ) );
                 {
                    return plugin;
                 }

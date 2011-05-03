@@ -82,7 +82,7 @@ public class DevenvMojo
 
         public String getMojoGroupId()
         {
-            return "org.apache.npanday.plugin";
+            return "org.apache.npanday.plugins";
         }
 
         public String getClassName()
