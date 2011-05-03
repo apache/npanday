@@ -18,6 +18,8 @@
 //
 
 using Microsoft.Win32;
+using System;
+using System.IO;
 
 namespace NPanday.Plugin.Settings
 {
@@ -28,6 +30,17 @@ namespace NPanday.Plugin.Settings
         RegistryKey Microsoft_SDKs_Windows_70 = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0");
         RegistryKey Microsoft_SDKs_Windows_70a = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A");
 
+        string ProgramFilesX86(string subfolders){
+            string programFiles = Environment.GetEnvironmentVariable("PROGRAMFILES(X86)")
+                ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            return Path.Combine(programFiles, subfolders);
+        }
+
+        string ProgramFiles(string subfolders){
+            string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            return Path.Combine(programFiles, subfolders);
+        }
+
         public string Find1_1()
         {
             return (string)Microsoft_NETFramework.GetValue("sdkInstallRootv1.1");
@@ -37,7 +50,11 @@ namespace NPanday.Plugin.Settings
         {
             return PathUtil.FirstExisting(
                 registryFind(Microsoft_NETFramework, "sdkInstallRootv2.0"),
-                registryFind(Microsoft_SDKs_NETFramework, "v2.0", "InstallationFolder")
+                registryFind(Microsoft_SDKs_NETFramework, "v2.0", "InstallationFolder"),
+                ProgramFilesX86(@"Microsoft.NET\SDK\v2.0"),
+                ProgramFilesX86(@"Microsoft.NET\SDK\v2.0 64bit"),
+                ProgramFilesX86(@"Microsoft SDKs\Windows\v6.0A\bin"),
+                ProgramFiles(@"Microsoft SDKs\Windows\v6.0A\bin")
                 );
         }
 
