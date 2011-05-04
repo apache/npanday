@@ -19,14 +19,14 @@ under the License.
 <assembly>
   <id>bin</id>
   <formats>
-    <format>tar.gz</format>
+    <format>dir</format>
   </formats>
   <repositories>
     <repository>
-      <outputDirectory>repository/releases</outputDirectory>
+      <outputDirectory>releases</outputDirectory>
       <includeMetadata>true</includeMetadata>
     </repository>
-  </repositories>
+  </repositories> 
   <fileSets>
     <fileSet>
       <directory>target/dotnet</directory>
