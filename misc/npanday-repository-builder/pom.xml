@@ -225,6 +225,7 @@ under the License.
             <phase>package</phase>
             <configuration>
               <tasks>
+                <copy file="${basedir}/../../LICENSE.txt" todir="${project.build.directory}/repository-bin" />
                 <tar destfile="${project.build.directory}/repository-bin.tar">
                   <tarfileset dir="${project.build.directory}/repository-bin"
                               preserveLeadingSlashes="true">
