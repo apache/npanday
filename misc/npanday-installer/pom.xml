@@ -115,23 +115,6 @@ under the License.
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.6</version>
-        <executions>
-          <execution>
-            <phase>generate-resources</phase>
-            <configuration>
-              <tasks>
-                <copy file="${basedir}/../../LICENSE.txt" todir="${project.build.directory}/addin" />
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>      
-      <plugin>
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
         <version>1.2</version>
