@@ -51,7 +51,7 @@ under the License.
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-compile-plugin</artifactId>  
-          <version>${bootstrap.npanday.version}</version>
+          <version>${project.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
