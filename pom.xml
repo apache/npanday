@@ -496,6 +496,8 @@ under the License.
                 <exclude>**/src/main/java/NPanday/Plugin/Settings/SettingsGeneratorMojo.java</exclude>
                 <exclude>**/src/main/java/NPanday/Plugin/SysRef/SysRefMojo.java</exclude>
                 <exclude>**/src/main/java/NPanday/Plugin/Msbuild/MsbuildMojo.java</exclude>
+                <exclude>**/MavenTestProjectWithNUnitCopy/MavenTestProjectWithNUnit/pom.xml</exclude>
+                <exclude>**/MavenTestProjectWithNUnitCopy/pom.xml</exclude>
               </excludes>
             </configuration>
             <executions>
