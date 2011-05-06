@@ -21,7 +21,7 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
    <parent> 
     <groupId>org.apache.npanday</groupId>
-    <version>1.4.1-incubating-SNAPSHOT</version>  
+    <version>1.4.0-incubating-SNAPSHOT</version>  
     <artifactId>npanday-project</artifactId>  
     <relativePath>../pom.xml</relativePath> 
   </parent>
@@ -51,27 +51,27 @@ under the License.
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-compile-plugin</artifactId>  
-          <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-resgen-plugin</artifactId>  
-          <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-repository-plugin</artifactId>  
-          <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>  
-          <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-resolver-plugin</artifactId>
-		  <version>${project.version}</version>
+		  <version>${bootstrap.npanday.version}</version>
           <configuration>
             <skip>true</skip>
           </configuration>
@@ -79,12 +79,12 @@ under the License.
 		<plugin>
           <groupId>org.apache.npanday.plugins</groupId>
 		  <artifactId>maven-xsd-plugin</artifactId>
-          <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
 		<plugin>
           <groupId>org.apache.npanday.plugins</groupId>
 		  <artifactId>maven-test-plugin</artifactId>
-          <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
           <configuration>
              <forceX86>true</forceX86>
           </configuration>
@@ -92,12 +92,12 @@ under the License.
 		<plugin>
           <groupId>org.apache.npanday.plugins</groupId>
 		  <artifactId>maven-mojo-generator-plugin</artifactId>
-          <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>
-		  <version>${project.version}</version>
+		  <version>${bootstrap.npanday.version}</version>
           <configuration>
             <skip>true</skip>
           </configuration>
@@ -154,55 +154,55 @@ under the License.
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Model.Pom</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Model.Settings</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Logging</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Artifact</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Utils</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>NPanday.Plugin</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday.visualstudio</groupId>
         <artifactId>NPanday.ProjectImporterEngine</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday.visualstudio</groupId>
         <artifactId>NPanday.VisualStudio</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
     </dependencies> 
