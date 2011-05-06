@@ -21,7 +21,7 @@ under the License.
   <parent> 
     <groupId>org.apache.npanday</groupId>
     <artifactId>npanday-project</artifactId>  
-    <version>1.4.0-incubating-SNAPSHOT</version> 
+    <version>1.4.0-incubating</version> 
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -29,9 +29,9 @@ under the License.
   <packaging>pom</packaging>
   <name>NPanday Windows Installer</name>
   <scm> 
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</connection>
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</developerConnection>
-    <url>https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/tags/npanday-1.4.0-incubating/misc/npanday-installer</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/tags/npanday-1.4.0-incubating/misc/npanday-installer</developerConnection>
+    <url>https://svn.apache.org/repos/asf/incubator/npanday/tags/npanday-1.4.0-incubating/misc/npanday-installer</url>
   </scm>  
   <dependencies>
     <dependency>

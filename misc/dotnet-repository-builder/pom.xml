@@ -21,7 +21,7 @@ under the License.
   <parent>
     <groupId>org.apache.npanday</groupId>
     <artifactId>npanday-project</artifactId>  
-    <version>1.4.0-incubating-SNAPSHOT</version>
+    <version>1.4.0-incubating</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -29,9 +29,9 @@ under the License.
   <name>NPanday :: .NET Repository Builder</name>
   <packaging>pom</packaging>
   <scm> 
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</connection>
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</developerConnection>
-    <url>https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/tags/npanday-1.4.0-incubating/misc/dotnet-repository-builder</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/tags/npanday-1.4.0-incubating/misc/dotnet-repository-builder</developerConnection>
+    <url>https://svn.apache.org/repos/asf/incubator/npanday/tags/npanday-1.4.0-incubating/misc/dotnet-repository-builder</url>
   </scm>  
   <dependencies>
     <!--assemblies-->
@@ -261,11 +261,10 @@ under the License.
               <tasks>
                 <copy file="${basedir}/../../LICENSE.txt" todir="${project.build.directory}/npanday-repository" />
                 <tar destfile="${project.build.directory}/dotnet-repository-builder.tar">
-                  <tarfileset dir="${project.build.directory}/npanday-repository"
-                              preserveLeadingSlashes="true">
-                    <exclude name="**/junit/**"/>
+                  <tarfileset dir="${project.build.directory}/npanday-repository" preserveLeadingSlashes="true">
+                    <exclude name="**/junit/**" />
                     <exclude name="**/org/apache/apache/**" />
-                    <exclude name="**/org/easymock/**"/>
+                    <exclude name="**/org/easymock/**" />
                   </tarfileset>
                 </tar>
                 <gzip src="${project.build.directory}/dotnet-repository-builder.tar" destfile="${project.build.directory}/dotnet-repository-builder.tar.gz" />
