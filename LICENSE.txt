@@ -1,10 +1,3 @@
-============================================================================================================================
-=   The following libraries are licensed under the Apache License Version 2.0:                                             =
-=                                                                                                                          =
-=   * org/apache/ant/ant/1.7.1/ant-1.7.1.jar                                                                               =
-=   * org/apache/ant/ant-launcher/1.7.1/ant-launcher-1.7.1.jar                                                             =
-===                                                                                                                      === 
-
 
                                  Apache License
                            Version 2.0, January 2004
@@ -233,18 +226,10 @@
    the original software.
 
    3. This notice may not be removed or altered from any source distribution.
-
-   License Note
-
-   This license is based on the open source zlib/libpng license. The idea was to keep the license 
-   as simple as possible to encourage use of NUnit in free and commercial applications and libraries, 
-   but to keep the source code together and to give credit to the NUnit contributors for their efforts. 
-   While this license allows shipping NUnit in source and binary form, if shipping a NUnit variant is the 
-   sole purpose of your product, please let us know.
 ===========================================================================================================================  
     
 ===========================================================================================================================
-=   The following librarie(s) are licensed under BSD License:                                                             =
+=   The following libraries are licensed under BSD License:                                                             =
 =                                                                                                                         =
 =   * info/aduna/aduna-collections/1.2/aduna-collections-1.2.jar                                                          =
 =   * info/aduna/aduna-concurrent/1.2/aduna-concurrent-1.2.jar                                                            =
