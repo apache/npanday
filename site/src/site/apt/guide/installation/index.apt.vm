@@ -93,7 +93,7 @@ Installing Using the Downloaded Binary Repository
   To confirm your installation, run the following command, replacing <<<${project.version}>>> with the version you are installing:
 
 ----
-mvn help:describe -DgroupId=npanday.plugin -DartifactId=maven-vsinstaller-plugin -Dversion=${project.version}
+mvn help:describe -DgroupId=org.apache.npanday.plugins -DartifactId=maven-vsinstaller-plugin -Dversion=${project.version}
 ----
 
   If successful, you should receive the following output:
@@ -101,7 +101,7 @@ mvn help:describe -DgroupId=npanday.plugin -DartifactId=maven-vsinstaller-plugin
 ----
 Name: NPanday :: Visual Studio Addin Installer Maven Plugin
 Description: Maven Plugin for .NET: Installs the Visual Studio Addin
-Group Id: npanday.plugin
+Group Id: org.apache.npanday.plugins
 Artifact Id: maven-vsinstaller-plugin
 Version: ${project.version}
 Goal Prefix: vsinstaller
@@ -124,13 +124,13 @@ vsinstaller:install
   run the addin to a default location <<C:\\[PROGRAMFILES]\\NPanday>>>.
 
 ----
-mvn npanday.plugin:maven-vsinstaller-plugin:[version]:install
+mvn org.apache.npanday.plugins:maven-vsinstaller-plugin:[version]:install
 ----
  
   You can also specify the location where you want the libraries to be copied by running the following command:
   
 ----
-mvn npanday.plugin:maven-vsinstaller-plugin:[version]:install -DinstallationLocation=url
+mvn org.apache.npanday.plugins:maven-vsinstaller-plugin:[version]:install -DinstallationLocation=url
 ----
 
   <<Note:>> On Windows Vista, Windows 7 and above, you will need to run the command as an administrator. This can be
