@@ -65,24 +65,28 @@ namespace NPanday.VisualStudio.Addin
 
         public static string GetWsdlUrl(string referencePath)
         {
-            XPathDocument xDoc = new XPathDocument(referencePath);
-            XPathNavigator xNav = xDoc.CreateNavigator();
-            string xpathExpression;
-            string url = "";
+            string url = string.Empty;
+            
+            if (!string.IsNullOrEmpty(referencePath))
+            {
+                XPathDocument xDoc = new XPathDocument(referencePath);
+                XPathNavigator xNav = xDoc.CreateNavigator();
+                string xpathExpression;
 
-            if (referencePath.Contains(Messages.MSG_D_SERV_REF))
-            {
-                xpathExpression = @"ReferenceGroup/Metadata/MetadataFile[MetadataType='Wsdl']/@SourceUrl";
-            }
-            else
-            {
-                xpathExpression = @"DiscoveryClientResultsFile/Results/DiscoveryClientResult[@referenceType='System.Web.Services.Discovery.ContractReference']/@url";
-            }
+                if (referencePath.Contains(Messages.MSG_D_SERV_REF))
+                {
+                    xpathExpression = @"ReferenceGroup/Metadata/MetadataFile[MetadataType='Wsdl']/@SourceUrl";
+                }
+                else
+                {
+                    xpathExpression = @"DiscoveryClientResultsFile/Results/DiscoveryClientResult[@referenceType='System.Web.Services.Discovery.ContractReference']/@url";
+                }
 
-            System.Xml.XPath.XPathNodeIterator xIter = xNav.Select(xpathExpression);
-            if (xIter.MoveNext())
-            {
-                url = xIter.Current.TypedValue.ToString();
+                System.Xml.XPath.XPathNodeIterator xIter = xNav.Select(xpathExpression);
+                if (xIter.MoveNext())
+                {
+                    url = xIter.Current.TypedValue.ToString();
+                }
             }
             return url;
         }
@@ -295,22 +299,62 @@ namespace NPanday.VisualStudio.Addin
 
         public void Init(string wsPath)
         {
-            if (!this.referenceDirectory.Equals(Path.Combine(wsPath, this.Name), StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(wsPath))
             {
-                this.referenceDirectory = Path.Combine(wsPath, this.Name);
-            }
-            this.Namespace = this.Name;
-            if (this.ChangeType != WatcherChangeTypes.Deleted)
-            {
-                string projectPath = Path.GetDirectoryName(Path.GetDirectoryName(this.referenceDirectory));
-                
-                this.wsdlUrl = WebServicesReferenceUtils.GetWsdlUrl(WebServicesReferenceUtils.GetReferenceFile(this.referenceDirectory));
-                this.wsdlFile = WebServicesReferenceUtils.GetWsdlFile(this.referenceDirectory);
-                this.wsdlFile = this.wsdlFile.Substring(projectPath.Length+1);
+                if (!this.referenceDirectory.Equals(Path.Combine(wsPath, this.Name), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this.referenceDirectory = Path.Combine(wsPath, this.Name);
+                }
+                this.Namespace = this.Name;
+                if (this.ChangeType != WatcherChangeTypes.Deleted)
+                {
+                    string projectPath = Path.GetDirectoryName(Path.GetDirectoryName(this.referenceDirectory));
+                    
+                    this.wsdlUrl = WebServicesReferenceUtils.GetWsdlUrl(WebServicesReferenceUtils.GetReferenceFile(this.referenceDirectory));
+                    this.wsdlFile = WebServicesReferenceUtils.GetWsdlFile(this.referenceDirectory);
+                    this.wsdlFile = this.wsdlFile.Substring(projectPath.Length+1);
 
+                }
             }
         }
 
 	
+    }
+
+    public class WebReferencesClasses
+    {
+        private bool running;
+        private string webRefPath;
+
+        public WebReferencesClasses(string webRefPath)
+        {
+            this.webRefPath = webRefPath;
+            this.running = true;
+        }
+
+        public void WaitForClasses(string nSpace)
+        {
+            while (running)
+            { 
+                //check if classes are generated
+                string[] files = Directory.GetFiles(this.webRefPath);
+                foreach (string file in files)
+                {
+                    if (file.Contains(".cs") || file.Contains(".vb"))
+                    {
+                        if (!string.IsNullOrEmpty(nSpace) && file.Contains(nSpace))
+                        {
+                            running = false;
+                            break;
+                        }
+                        else
+                        {
+                            running = false;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

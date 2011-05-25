@@ -214,7 +214,7 @@ namespace NPanday.VisualStudio.Addin
                 if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
                 {
                     //change addpluginConfiguration to accept xmlElement instead
-                    pomUtil.AddMavenCompilePluginConfiguration("org.apache.npanday.plugins", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, null));
+                    pomUtil.AddMavenCompilePluginConfiguration("org.apache.npanday.plugins", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, projectItem.Name));
                 }
 
                 if (projectItem.Name.Contains(".resx"))
@@ -336,7 +336,7 @@ namespace NPanday.VisualStudio.Addin
             {
                 Uri fullPathUri = fileName == null ? new Uri(projectItem.get_FileNames(0)) : new Uri(Path.Combine(Path.GetDirectoryName(projectItem.get_FileNames(0)), fileName));
                 Uri projectUri = new Uri(Path.GetDirectoryName(projectItem.ContainingProject.FullName) + Path.DirectorySeparatorChar);
-                return projectUri.MakeRelativeUri(fullPathUri).LocalPath;
+                return projectUri.MakeRelativeUri(fullPathUri).ToString().Replace("%20", " ");
             }
             return projectItem.Name;
         }    
@@ -924,11 +924,16 @@ namespace NPanday.VisualStudio.Addin
         {
             try
             {
-                System.Threading.Thread.Sleep(1500);
+                //wait for the files to be created
+                WebReferencesClasses wrc = new WebReferencesClasses(e.ReferenceDirectory);
+                wrc.WaitForClasses(e.Namespace);
+
                 e.Init(projectReferenceFolder(CurrentSelectedProject));
                 PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
-                pomUtil.RenameWebReference(e.ReferenceDirectory, e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
-
+                lock (typeof(PomHelperUtility))
+                {
+                    pomUtil.RenameWebReference(e.ReferenceDirectory, e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
+                }
             }
             catch (Exception ex)
             {
@@ -942,8 +947,10 @@ namespace NPanday.VisualStudio.Addin
             {
                 e.Init(projectReferenceFolder(CurrentSelectedProject));
                 PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
-                pomUtil.RemoveWebReference(e.ReferenceDirectory, e.Namespace);
-
+                lock (typeof(PomHelperUtility))
+                {
+                    pomUtil.RemoveWebReference(e.ReferenceDirectory, e.Namespace);
+                }
             }
             catch (Exception ex)
             {
@@ -955,15 +962,20 @@ namespace NPanday.VisualStudio.Addin
         {
             try
             {
-                //wait for the files to be created
-                System.Threading.Thread.Sleep(3500);
                 Solution2 solution = (Solution2)_applicationObject.Solution;
+                
+                //wait for the files to be created
+                WebReferencesClasses wrc = new WebReferencesClasses(e.ReferenceDirectory);
+                wrc.WaitForClasses(e.Namespace);
+                
                 e.Init(projectReferenceFolder(CurrentSelectedProject));
 
                 PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
+                lock (typeof(PomHelperUtility))
+                {
+                    pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty, logger);
+                }
 
-                pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty);              
-                //addWebReference(pomUtil, e.Namespace, e.WsdlFile, string.Empty);
  
             }
             catch (Exception ex)
@@ -1012,7 +1024,7 @@ namespace NPanday.VisualStudio.Addin
                 e.Init(path);
                 PomHelperUtility pomUtil = new PomHelperUtility(_applicationObject.Solution, CurrentSelectedProject);
 
-                pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty);
+                pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty, logger);
             }
             catch (Exception ex)
             {
@@ -1024,7 +1036,7 @@ namespace NPanday.VisualStudio.Addin
         {
             lock (typeof(PomHelperUtility))
             {
-                pomUtil.AddWebReference(name, path, output);
+                pomUtil.AddWebReference(name, path, output, logger);
             }
         }
 

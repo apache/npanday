@@ -304,6 +304,11 @@ namespace NPanday.Utils
 
         public static NPanday.Model.Pom.Model ReadPomAsModel(FileInfo pomfile)
         {
+            return PomHelperUtility.ReadPomAsModel(pomfile, null);
+        }
+
+        public static NPanday.Model.Pom.Model ReadPomAsModel(FileInfo pomfile, NPanday.Logging.Logger logger)        
+        {
             if (!pomfile.Exists)
             {
                 throw new Exception("Pom file not found: " + pomfile.FullName);
@@ -320,22 +325,47 @@ namespace NPanday.Utils
                 xmlDocument.Save(pomfile.FullName);
             }
 
-            XmlTextReader reader = new XmlTextReader(pomfile.FullName);
-
-            reader.WhitespaceHandling = WhitespaceHandling.Significant;
-            reader.Normalization = true;
-            reader.XmlResolver = null;
-
-            XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Pom.Model));
-
-            if (!serializer.CanDeserialize(reader))
+            XmlTextReader reader = null;
+            NPanday.Model.Pom.Model model = null;
+            try
             {
-                throw new Exception(string.Format("Pom File ({0}) Reading Error, Pom File might contain invalid or deformed data", pomfile.FullName));
+                reader = new XmlTextReader(pomfile.FullName);
+                reader.WhitespaceHandling = WhitespaceHandling.Significant;
+                reader.Normalization = true;
+                reader.XmlResolver = null;
+
+                XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Pom.Model));
+
+                if (!serializer.CanDeserialize(reader))
+                {
+                    throw new Exception(string.Format("Pom File ({0}) Reading Error, Pom File might contain invalid or deformed data", pomfile.FullName));
+                }
+
+                model = (NPanday.Model.Pom.Model)serializer.Deserialize(reader);
             }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                try
+                {
+                    if (reader != null)
+                    {
+                        reader.Close();
+                        ((IDisposable) reader).Dispose();
+                    }
+                }
+                catch
+                {
+                    if (logger != null)
+                    {
+                        logger.Log(NPanday.Logging.Level.WARNING, "Failed to close stream reader after accessing pom.xml."); 
+                    }
+                }
 
-            NPanday.Model.Pom.Model model = (NPanday.Model.Pom.Model)serializer.Deserialize(reader);
-            reader.Close();
-
+            }
             return model;
         }
 
@@ -384,6 +414,11 @@ namespace NPanday.Utils
 		
         public static void WriteModelToPom(FileInfo pomFile, NPanday.Model.Pom.Model model)
         {
+            PomHelperUtility.WriteModelToPom(pomFile, model, null);
+        }
+
+        public static void WriteModelToPom(FileInfo pomFile, NPanday.Model.Pom.Model model, NPanday.Logging.Logger logger)
+        {        
            if (!pomFile.Directory.Exists)
             {
                 pomFile.Directory.Create();
@@ -401,12 +436,37 @@ namespace NPanday.Utils
                 }
                 model.build.plugins = plugins.ToArray();
             }
-
-            TextWriter writer = new StreamWriter(pomFile.FullName);
-            XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Pom.Model));
-            serializer.Serialize(writer, model);
-            writer.Close();
-
+            TextWriter writer = null;
+            XmlSerializer serializer = null;
+            try
+            {
+                writer = new StreamWriter(pomFile.FullName);
+                serializer =new XmlSerializer(typeof(NPanday.Model.Pom.Model));
+                serializer.Serialize(writer, model);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                try
+                {
+                    if (writer != null)
+                    {
+                        writer.Close();
+                        writer.Dispose();
+                    }
+                }
+                catch
+                {
+                    if (logger != null)
+                    {
+                        logger.Log(NPanday.Logging.Level.WARNING, "Failed to close stream writer after writing to pom.xml.");
+                    }
+                }
+                   
+            }
         }
 
         public void SetNPandayCompilerPluginConfigurationValue(string config, string value)
@@ -966,92 +1026,104 @@ namespace NPanday.Utils
         }
 
         #region AddWebReference
-        public void AddWebReference(string name, string path, string output)
+        public void AddWebReference(string name, string path, string output, NPanday.Logging.Logger logger)
         {
             NPanday.Model.Pom.Model model = ReadPomAsModel();
-            bool hasWSDLPlugin = false;
-            if (model != null && model.build != null && model.build.plugins != null)
+
+            if (!isWebRefExistingInPom(path, model))
             {
+                bool hasWSDLPlugin = false;
+                if (model != null && model.build != null && model.build.plugins != null)
+                {
+                    foreach (Plugin plugin in model.build.plugins)
+                    {
+                        if (isWsdlPlugin(plugin))
+                        {
+                            hasWSDLPlugin = true;
+                            addPluginExecution(plugin, "wsdl", null);
+
+                            addWebConfiguration(plugin, "webreferences", name, path, output);
+                        }
+                    }
+                    if (!hasWSDLPlugin)
+                    {
+                        Plugin webReferencePlugin = addPlugin(model,
+                            "org.apache.npanday.plugins",
+                            "maven-wsdl-plugin",
+                            null,
+                            false
+                            );
+                        addPluginExecution(webReferencePlugin, "wsdl", null);
+
+                        addWebConfiguration(webReferencePlugin, "webreferences", name, path, output);
+                    }
+                }
+
                 foreach (Plugin plugin in model.build.plugins)
                 {
-                    if (isWsdlPlugin(plugin))
+                    if ("org.apache.npanday.plugins".Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                        && "maven-compile-plugin".Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                     {
-                        hasWSDLPlugin = true;
-                        addPluginExecution(plugin, "wsdl", null);
-
-                        addWebConfiguration(plugin, "webreferences", name, path, output);
-                    }
-                }
-                if (!hasWSDLPlugin)
-                {
-                    Plugin webReferencePlugin = addPlugin(model,
-                        "org.apache.npanday.plugins",
-                        "maven-wsdl-plugin",
-                        null,
-                        false
-                        );
-                    addPluginExecution(webReferencePlugin, "wsdl", null);
-
-                    addWebConfiguration(webReferencePlugin, "webreferences", name, path, output);
-                }
-            }
-
-            foreach (Plugin plugin in model.build.plugins)
-            {
-                if ("org.apache.npanday.plugins".Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
-                    && "maven-compile-plugin".Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (plugin.configuration == null && plugin.configuration.Any == null)
-                    {
-                        break;
-                    }
-                    XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
-                    for (int count = elems.Length; count-- > 0; )//(XmlElement elem in ((XmlElement[])plugin.configuration.Any))
-                    {
-
-
-                        if ("includeSources".Equals(elems[count].Name))
+                        if (plugin.configuration == null && plugin.configuration.Any == null)
                         {
-
-                            XmlDocument xmlDocument = new XmlDocument();
-                            XmlElement elem = xmlDocument.CreateElement("includeSources", @"http://maven.apache.org/POM/4.0.0");
-
-                            //LOOP THROUGH EXISTING AND ADD
-                            //GET .CS FILE AND ADD
-                            foreach (XmlNode n in elems[count].ChildNodes)
-                            {
-                                if ("includeSource".Equals(n.Name))
-                                {
-                                    XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
-
-                                    node.InnerText = n.InnerText;
-                                    elem.AppendChild(node);
-                                }
-                            }
-                            DirectoryInfo fullPath = new FileInfo(Path.Combine(pom.Directory.FullName, path.Trim('\r', ' ', '\n'))).Directory;
-                            foreach (FileInfo file in fullPath.GetFiles("*.cs"))
-                            {
-                                XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, "includeSource", @"http://maven.apache.org/POM/4.0.0");
-
-                                node.InnerText = GetRelativePath(pom.Directory, file);
-                                elem.AppendChild(node);
-                            }
-                            foreach (FileInfo file in fullPath.GetFiles("*.vb"))
-                            {
-                                XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, "includeSource", @"http://maven.apache.org/POM/4.0.0");
-
-                                node.InnerText = GetRelativePath(pom.Directory, file);
-                                elem.AppendChild(node);
-                            }
-                            elems[count] = elem;
-
                             break;
                         }
+                        XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
+                        for (int count = elems.Length; count-- > 0; )
+                        {
+                            if ("includeSources".Equals(elems[count].Name))
+                            {
 
+                                XmlDocument xmlDocument = new XmlDocument();
+                                XmlElement elem = xmlDocument.CreateElement("includeSources", @"http://maven.apache.org/POM/4.0.0");
+
+                                //LOOP THROUGH EXISTING AND ADD
+                                //GET .CS FILE AND ADD
+                                foreach (XmlNode n in elems[count].ChildNodes)
+                                {
+                                    if ("includeSource".Equals(n.Name))
+                                    {
+                                        XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
+
+                                        node.InnerText = n.InnerText;
+                                        if ((!elem.InnerXml.Contains(node.InnerText)) && (!node.InnerText.Contains(".disco")))
+                                        {
+                                            elem.AppendChild(node);
+                                        }
+                                    }
+                                }
+                                DirectoryInfo fullPath = new FileInfo(Path.Combine(pom.Directory.FullName, path.Trim('\r', ' ', '\n'))).Directory;
+                                foreach (FileInfo file in fullPath.GetFiles("*.cs"))
+                                {
+                                    XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, "includeSource", @"http://maven.apache.org/POM/4.0.0");
+
+                                    node.InnerText = GetRelativePath(pom.Directory, file);
+                                    node.InnerText = node.InnerText.Replace("\\", "/");
+                                    if (!elem.InnerText.Contains(node.InnerText))
+                                    {
+                                        elem.AppendChild(node);
+                                    }
+                                }
+                                foreach (FileInfo file in fullPath.GetFiles("*.vb"))
+                                {
+                                    XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, "includeSource", @"http://maven.apache.org/POM/4.0.0");
+
+                                    node.InnerText = GetRelativePath(pom.Directory, file);
+                                    node.InnerText = node.InnerText.Replace("\\", "/");
+                                    if (!elem.InnerText.Contains(node.InnerText))
+                                    {
+                                        elem.AppendChild(node);
+                                    }
+                                }
+                                elems[count] = elem;
+
+                                break;
+                            }
+                        }
                     }
                 }
+                WriteModelToPom(model);
             }
-            WriteModelToPom(model);
         }
 
         Plugin addPlugin(NPanday.Model.Pom.Model model, string groupId, string artifactId, string version, bool extensions)
@@ -1108,15 +1180,18 @@ namespace NPanday.Utils
                                     if (confProp.Equals(n.Name))
                                     {
                                         XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
-                                        node.InnerText = n.InnerText;
+                                        node.InnerText = n.InnerText.Replace("\\", "/");
                                         elem.AppendChild(node);
                                     }
                                 }
 
                                 XmlNode nodeAdded = xmlDocument.CreateNode(XmlNodeType.Element, confProp, @"http://maven.apache.org/POM/4.0.0");
 
-                                nodeAdded.InnerText = confPropVal;
-                                elem.AppendChild(nodeAdded);
+                                nodeAdded.InnerText = confPropVal.Replace("\\", "/");
+                                if (!elems[count].InnerXml.Contains(nodeAdded.InnerText))
+                                {
+                                    elem.AppendChild(nodeAdded);
+                                }
                                 elems[count] = elem;
 
                                 break;
@@ -1626,12 +1701,15 @@ namespace NPanday.Utils
                                 {
                                     if ("includeSource".Equals(n.Name))
                                     {
-                                        if (n.InnerText != null && !n.InnerText.Trim().StartsWith(compareStr))
+                                        if (n.InnerText != null && !n.InnerText.Trim().StartsWith(compareStr.Replace("\\","/")))
                                         {
-                                            XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
+                                            if (!n.InnerText.Contains(name))
+                                            {
+                                                XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
 
-                                            node.InnerText = n.InnerText;
-                                            elem.AppendChild(node);
+                                                node.InnerText = n.InnerText;
+                                                elem.AppendChild(node);
+                                            }
                                         }
                                     }
                                 }
@@ -1709,7 +1787,7 @@ namespace NPanday.Utils
         {
             string compareStr = Path.Combine(fullpath.Substring(0, fullpath.LastIndexOf("\\")), oldName);
             RemoveWebReference(compareStr, oldName);
-            AddWebReference(newName, path, output);
+            AddWebReference(newName, path, output, null);
         }
         #endregion
 
@@ -1749,6 +1827,29 @@ namespace NPanday.Utils
             }
             return exists;
 
+        }
+
+        public bool isWebRefExistingInPom(string path, NPanday.Model.Pom.Model model)
+        {
+            bool exists = false;
+            List<NPanday.Model.Pom.Plugin> plugins = new List<NPanday.Model.Pom.Plugin>();
+            if (model.build.plugins != null)
+            {
+                foreach (Plugin item in model.build.plugins)
+                {
+                    if (item.artifactId.Equals("maven-wsdl-plugin") && item.configuration != null)
+                    {
+                        List<XmlElement> elems = new List<XmlElement>();
+                        elems.AddRange(item.configuration.Any);
+                        XmlElement elem = getWebReferencesElement(elems.ToArray(), "webreferences");
+                        if (elem.InnerXml.Contains(path.Replace("\\", "/")))
+                        {
+                            exists = true;
+                        }
+                    }
+                }
+            }
+            return exists;
         }
     }
 }
