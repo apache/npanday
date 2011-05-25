@@ -182,112 +182,147 @@ namespace NPanday.VisualStudio.Addin
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            string warningMsg = string.Empty;
+            //Refactored code for easier Unit Testing
             try
             {
-                if (!String.Empty.Equals(txtBrowseDotNetSolutionFile.Text) && System.IO.File.Exists(txtBrowseDotNetSolutionFile.Text)
-                       && (!String.Empty.Equals(txtGroupId.Text.Trim())))
-                {
-                    // Generate here                
-
-                    FileInfo file = new FileInfo(txtBrowseDotNetSolutionFile.Text);
-
-                    string artifactId = FilterID(ConvertToPascalCase(file.Name.Replace(".sln", ""))) + "-parent";
-                    //string groupId = FilterID(ConvertToPascalCase(txtGroupId.Text));
-                    string groupId = FilterID(txtGroupId.Text);
-                    string scmTag = txtSCMTag.Text;
-                    string version = txtVersion.Text;
-
-                    if (scmTag == null)
-                    {
-                        scmTag = string.Empty;
-                    }
-
-                    if (scmTag.ToUpper().Contains("OPTIONAL"))
-                    {
-                        scmTag = string.Empty;
-                    }
-
-                    if (scmTag.Contains("scm:svn:"))
-                    {
-                        scmTag = scmTag.Remove(scmTag.IndexOf("scm:svn:"), 8);
-                    }
-
-                    try
-                    {
-                        if (!scmTag.Equals(string.Empty))
-                        {
-                            if (!scmTag.Contains(@"://"))
-                                scmTag = string.Format(@"http://{0}", scmTag);
-
-                            Regex urlValidator = new Regex(@"^((ht|f)tp(s?)\:\/\/|~/|/)?([\w]+:\w+@)?([a-zA-Z]{1}([\w\-]+\.)+([\w]{2,5}))(:[\d]{1,5})?((/?\w+/)+|/?)(\w+\.[\w]{3,4})?((\?\w+=\w+)?(&\w+=\w+)*)?");
-                            if (!urlValidator.IsMatch(scmTag))
-                                throw new Exception(string.Format("SCM tag {0} is incorrect format", scmTag));
-
-                            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest) System.Net.WebRequest.Create(scmTag);
-                            request.Method = "GET";
-                            System.Net.WebResponse response = request.GetResponse();
-                            if (response.ResponseUri.AbsoluteUri.Contains("url=")) // verify if just forwarded to a external DNS server (e.g. openDNS.com)
-                                throw new Exception(string.Format("SCM tag {0} is not accessible", scmTag));
-                            //repoUri = new Uri(scmTag);
-                        }
-                    }
-                    catch
-                    {
-                        if (DialogResult.Yes == MessageBox.Show(string.Format("SCM tag {0} was not accessible, would you still like to proceed with Project import?", scmTag), "SCM Tag", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
-                        {
-                            warningMsg = string.Format("\n    The SCM URL {0} was added to the POM but could not be resolved and may not be valid.", scmTag);
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
-
-                    validateSolutionStructure();
-                    resyncAllArtifacts();
-                    string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, ref warningMsg);
-                    string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
-
-                    foreach (string pom in generatedPoms)
-                    {
-                        str = str + string.Format("\n    Generated Pom XML File: {0} ", pom);
-                    }
-
-                    if (!string.IsNullOrEmpty(warningMsg))
-                    {
-                        str = string.Format("{0}\n\nwith Warning(s):{1}", str, warningMsg);
-                    }
-
-                    MessageBox.Show(str, "NPanday Import Done:");
-
-
-                    // Close the Dialog Here
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-                }
-                else
-                {
-                    string message = (!(!"".Equals(txtBrowseDotNetSolutionFile.Text) && System.IO.File.Exists(txtBrowseDotNetSolutionFile.Text))) ? string.Format("Solution File Not Found: {0} ", txtBrowseDotNetSolutionFile.Text) : "";
-
-                    if (String.IsNullOrEmpty(message))
-                    {
-                        message = message + (String.IsNullOrEmpty(txtGroupId.Text.Trim()) ? "Group Id is empty." : "");
-                    }
-                    else
-                    {
-                        message = message + Environment.NewLine + (String.IsNullOrEmpty(txtGroupId.Text.Trim()) ? "Group Id is empty." : "");
-                    }
-
-
-                    MessageBox.Show(message, "NPanday Import Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                GeneratePom(txtBrowseDotNetSolutionFile.Text, txtGroupId.Text.Trim(), txtVersion.Text.Trim(), txtSCMTag.Text);
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "NPanday Import Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        
+         protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag)
+        {
+            string warningMsg = string.Empty;
+            String mavenVerRegex = "^[0-9]+(" + Regex.Escape(".") + "?[0-9]+){0,3}$";
+            String hasAlpha = "[a-zA-Z]";
+            String singleMavenVer = "[0-9]+";
+            bool isMatch = false;
 
+             if (version.Length > 1)
+            {
+
+                if (Regex.IsMatch(version, hasAlpha) && version.ToUpper().EndsWith("-SNAPSHOT"))
+                {
+                    isMatch = Regex.IsMatch(version.ToUpper().Replace("-SNAPSHOT",""), mavenVerRegex, RegexOptions.Singleline);
+                }
+                else
+                {
+                    isMatch = Regex.IsMatch(version, mavenVerRegex, RegexOptions.Singleline);
+                }
+            }
+            else if (version.Length == 1)
+            {
+                isMatch = Regex.IsMatch(version, singleMavenVer);
+            }
+
+
+            if (!String.Empty.Equals(solutionFile) && System.IO.File.Exists(solutionFile)
+                   && (!String.Empty.Equals(groupId)) && (!String.Empty.Equals(version)) && isMatch)
+            {
+                // Generate here                
+
+                FileInfo file = new FileInfo(solutionFile);
+
+                string artifactId = FilterID(ConvertToPascalCase(file.Name.Replace(".sln", ""))) + "-parent";
+                groupId = FilterID(groupId);
+
+                if (scmTag == null)
+                {
+                    scmTag = string.Empty;
+                }
+
+                if (scmTag.ToUpper().Contains("OPTIONAL"))
+                {
+                    scmTag = string.Empty;
+                }
+
+                if (scmTag.Contains("scm:svn:"))
+                {
+                    scmTag = scmTag.Remove(scmTag.IndexOf("scm:svn:"), 8);
+                }
+
+                try
+                {
+                    if (!scmTag.Equals(string.Empty))
+                    {
+                        if (!scmTag.Contains(@"://"))
+                            scmTag = string.Format(@"http://{0}", scmTag);
+
+                        Regex urlValidator = new Regex(@"^((ht|f)tp(s?)\:\/\/|~/|/)?([\w]+:\w+@)?([a-zA-Z]{1}([\w\-]+\.)+([\w]{2,5}))(:[\d]{1,5})?((/?\w+/)+|/?)(\w+\.[\w]{3,4})?((\?\w+=\w+)?(&\w+=\w+)*)?");
+                        if (!urlValidator.IsMatch(scmTag))
+                            throw new Exception(string.Format("SCM tag {0} is incorrect format", scmTag));
+
+                        System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(scmTag);
+                        request.Method = "GET";
+                        System.Net.WebResponse response = request.GetResponse();
+                        if (response.ResponseUri.AbsoluteUri.Contains("url=")) // verify if just forwarded to a external DNS server (e.g. openDNS.com)
+                            throw new Exception(string.Format("SCM tag {0} is not accessible", scmTag));
+                    }
+                }
+                catch
+                {
+                    if (DialogResult.Yes == MessageBox.Show(string.Format("SCM tag {0} was not accessible, would you still like to proceed with Project import?", scmTag), "SCM Tag", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                    {
+                        warningMsg = string.Format("\n    The SCM URL {0} was added to the POM but could not be resolved and may not be valid.", scmTag);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                validateSolutionStructure();
+                resyncAllArtifacts();
+                string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, ref warningMsg);
+                string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
+
+                foreach (string pom in generatedPoms)
+                {
+                    str = str + string.Format("\n    Generated Pom XML File: {0} ", pom);
+                }
+
+                if (!string.IsNullOrEmpty(warningMsg))
+                {
+                    str = string.Format("{0}\n\nwith Warning(s):{1}", str, warningMsg);
+                }
+
+                MessageBox.Show(str, "NPanday Import Done:");
+
+
+                // Close the Dialog Here
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                string message = (!(!"".Equals(solutionFile) && System.IO.File.Exists(solutionFile))) ? string.Format("Solution File Not Found: {0} ", solutionFile) : "";
+
+                if (String.IsNullOrEmpty(message))
+                {
+                    message = message + (String.IsNullOrEmpty(groupId) ? "Group Id is empty." : "");
+                }
+                else
+                {
+                    message = message + Environment.NewLine + (String.IsNullOrEmpty(groupId) ? "Group Id is empty." : "");
+                }
+
+                //Adding error message for empty Version field
+                if (String.IsNullOrEmpty(version))
+                {
+                    message += Environment.NewLine + "Version is empty.";
+                }
+                
+                else if (!isMatch)
+                {
+                    message += Environment.NewLine + "Version should be in the form major.minor.build.revision-SNAPSHOT";
+                }
+                
+                throw new Exception(message);
+            }
+            
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
