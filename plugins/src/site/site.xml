@@ -31,9 +31,9 @@ under the License.
   </bannerRight>
 
   <skin>
-    <groupId>org.apache.maven.skins</groupId>
-    <artifactId>maven-classic-skin</artifactId>
-    <version>1.0</version>
+    <groupId>org.apache.npanday</groupId>
+    <artifactId>npanday-skin</artifactId>
+    <version>${project.version}</version>
   </skin>
 
   <publishDate position="right" format="d MMM yyyy" />

@@ -23,23 +23,35 @@
 
 NPanday
 
-  NPanday is a project to integrate {{{http://maven.apache.org} Apache Maven}} into .NET development environments.
-  It includes both a Visual Studio add-in to integrate Maven, and a set of {{{./plugins/}plugins}} for Maven
-  that can build .NET projects uniformly from the command line.
+  <<... brings Maven to the .NET developer>>
 
-  NPanday enables you to use Visual Studio with a Maven-based development infrastructure, including:
+  NPanday primarily provides two capabilities: a set of Maven plugins, for
+  constructing builds in Maven that use the .NET command-line tools; and a Visual Studio Addin
+  that keeps a Visual Studio project in sync with the Maven POM and adds reference resolution
+  from Maven artifact repositories.
 
-    * continuous integration servers for scheduled or triggered automated builds
+  Together this allows you to use a single tool across .NET,
+  Java or any other Maven-based projects, including the same benefits of dependency management,
+  automated release and source control management, and so on.
 
-    * source control systems for assistance with the release process
+  The <<Core Benefits>> of using NPanday + Maven infrastructure are:
 
     * build artifact repositories for inter-project dependency management and centralised management of build output
+
+    * many continuous integration servers support Maven - this makes it much easier to create automated scheduled builds
+
+    * use Maven Release for assisted release process including creation of tags, maintainance branches, and so on
+
 
   You can read more about {{{http://maven.apache.org/maven-features.html} Maven's features}} on the Maven
   web site.
 
-  NPanday doesn't intend to replicate MSBuild's (or Visual Studio's build) behavior exactly, or necessarily serve as
-  a replacement for Visual Studio users, but rather to:
+* NPanday Mindset
+
+  NPanday doesn't intend to replicate MSBuild's (or Visual Studio's build) behavior, or serve as
+  a replacement for Visual Studio users.
+
+  It rather intends to:
 
     * augment Visual Studio with dependency management and make the build reproducible in clean environments
 
@@ -98,6 +110,18 @@ NPanday
   * {{{./issue-tracking.html} issue tracking}}
 
   * {{{./mail-lists.html} mailing list information}}
+
+
+* Project History
+
+ Originally developed in the Apache incubator as NMaven, NPanday is the continuation
+ of the 0.14 development line and its expanded set of features.
+
+ The project aims to provide production level support for Maven in .NET environments today,
+ while working towards a unified solution with other technologies for the future.
+
+ At first, NPanday was located at Codeplex. Late 2010 it moved back under the umbrellea of ASF Incubator,
+ where it now waits for being accepted as a top level project.
 
 Documentation PDF
 
