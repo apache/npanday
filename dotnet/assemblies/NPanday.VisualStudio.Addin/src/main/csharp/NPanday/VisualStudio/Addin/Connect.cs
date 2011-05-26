@@ -1549,6 +1549,11 @@ namespace NPanday.VisualStudio.Addin
         /// <seealso class='IDTExtensibility2' />
         public void OnDisconnection(ext_DisconnectMode disconnectMode, ref Array custom)
         {
+            //check if NPanday is already closed
+            if ( _applicationObject == null )
+            {
+                return;
+            }
             mavenConnected = false;
             //remove maven menus
             DTE2 dte2 = _applicationObject;
@@ -1559,17 +1564,28 @@ namespace NPanday.VisualStudio.Addin
             outputWindowPane.Clear();
             mavenRunner.ClearOutputWindow();
 
+            List<CommandBarControl> npandayCmdBarCtrl = new List<CommandBarControl>();
+
             foreach (CommandBar commandBar in (CommandBars)dte2.CommandBars)
             {
                 foreach (CommandBarControl control in commandBar.Controls)
                 {
                     if (control.Caption.ToLower().Contains("maven") || control.Caption.ToLower().Contains("npanday") || control.Caption.ToLower().Contains("pom"))
                     {
-                        // i dont know what 'false' means. but it works.
-                        control.Delete(false);
+                        //getting the npanday controls instead of deleting
+                        //to prevent index out of bounds exception being thrown 
+                        //when deleting from within the List of CommandBarControls
+                        npandayCmdBarCtrl.Add(control);
                     }
 
                 }
+            }
+
+            //Delete the npandayCtrls
+            foreach (CommandBarControl delCtrl in npandayCmdBarCtrl)
+            {
+                //false works a temporary control
+                delCtrl.Delete(false);
             }
 
             //unregister maven event listener
@@ -1585,8 +1601,8 @@ namespace NPanday.VisualStudio.Addin
                     continue;
                 }
 
-                //vsProject.Events.ReferencesEvents.ReferenceRemoved
-                //        -= new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
+                vsProject.Events.ReferencesEvents.ReferenceRemoved
+                        -= new _dispReferencesEvents_ReferenceRemovedEventHandler(ReferencesEvents_ReferenceRemoved);
 
             }
 
@@ -1599,6 +1615,22 @@ namespace NPanday.VisualStudio.Addin
             {
                 s.Stop();
             }
+            
+            if (disconnectMode != Extensibility.ext_DisconnectMode.ext_dm_HostShutdown)
+            {
+                this.OnBeginShutdown(ref custom);
+            }
+            _applicationObject = null;
+        }
+
+        //used for Unit Testing on Disconnect
+        protected bool IsApplicationObjectNull()
+        {
+            if (_applicationObject == null)
+            {
+                return true;
+            }
+            return false;
         }
         #endregion
 

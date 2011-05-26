@@ -66,7 +66,11 @@ namespace NPanday.VisualStudio.Addin
 
             return filtered;
         }
-		
+
+        public NPandayImportProjectForm()
+        {
+        }
+
         public NPandayImportProjectForm(DTE2 applicationObject, Logger logger)
         {
             this.applicationObject = applicationObject;

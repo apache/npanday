@@ -79,6 +79,7 @@ under the License.
     <Compile Include="MavenSettingsConfigurationTest.cs" />
     <Compile Include="RenameWebReferenceTest.cs" />
     <Compile Include="ResyncArtifactSnapshot.cs" />
+    <Compile Include="SuccessfulDisconnectTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
