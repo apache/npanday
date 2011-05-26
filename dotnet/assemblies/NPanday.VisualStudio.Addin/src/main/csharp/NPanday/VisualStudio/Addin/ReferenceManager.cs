@@ -104,6 +104,12 @@ namespace NPanday.VisualStudio.Addin
             {
                 return referenceFolder;
             }
+            //for testing purposes
+            set
+            {
+                initialized = true;
+                referenceFolder = value;
+            }
         }
 
         public void CopyArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
@@ -159,7 +165,15 @@ namespace NPanday.VisualStudio.Addin
             if (!File.Exists(artifactFileName) ||
                 (artifactTimestamp.CompareTo(new FileInfo(artifactFileName).LastWriteTime) > 0))
             {
-                File.Copy(artifact.FileInfo.FullName, artifactFileName, true);
+                try
+                {
+                    byte[] contents = File.ReadAllBytes(artifact.FileInfo.FullName);
+                    File.WriteAllBytes(artifactFileName, contents);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
             }
             return artifactFileName;
         }

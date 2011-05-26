@@ -190,6 +190,14 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
+        void SolutionEvents_ProjectAdded(EnvDTE.Project project)
+        {
+            if (_applicationObject != null && _applicationObject.Solution != null)
+            {
+                attachReferenceEvent();
+            }
+        }
+
         //to hold eventhandler for projectItemsEvents
         void ProjectItemEvents_ItemAdded(ProjectItem projectItem)
         {
@@ -412,6 +420,7 @@ namespace NPanday.VisualStudio.Addin
             globalSolutionEvents = (EnvDTE.SolutionEvents)((Events2)_applicationObject.Events).SolutionEvents;
             globalSolutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler(SolutionEvents_BeforeClosing);
             globalSolutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler(SolutionEvents_Opened);
+            globalSolutionEvents.ProjectAdded += new _dispSolutionEvents_ProjectAddedEventHandler(SolutionEvents_ProjectAdded);
 
             projectItemsEvents = (EnvDTE.ProjectItemsEvents)((Events2)_applicationObject.Events).ProjectItemsEvents;
             projectItemsEvents.ItemAdded += new _dispProjectItemsEvents_ItemAddedEventHandler(ProjectItemEvents_ItemAdded);

@@ -73,7 +73,9 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <compile Include="AddLocalMavenArtifactTest.cs />
     <Compile Include="AddWebReferenceTest.cs" />
+    <Compile Include="FileUtils.cs" />
     <Compile Include="MavenCompilePluginConfigurationTest.cs" />
     <Compile Include="MavenResxPluginConfigurationTest.cs" />
     <Compile Include="MavenSettingsConfigurationTest.cs" />
