@@ -117,7 +117,7 @@ public class VsInstallerMojo
      */
     private Settings settings;
 
-    private FileSystemView filesystemView = new JFileChooser().getFileSystemView();
+    private FileSystemView filesystemView = FileSystemView.getFileSystemView();
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
