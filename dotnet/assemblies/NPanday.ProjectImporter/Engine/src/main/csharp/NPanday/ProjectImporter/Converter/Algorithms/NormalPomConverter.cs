@@ -119,6 +119,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     {
                         Plugin msBuildPlugin = AddPlugin("org.apache.npanday.plugins", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
                         AddPluginExecution(msBuildPlugin, "compile", "validate");
+                        AddPluginConfiguration(msBuildPlugin, "frameworkVersion", ProjectDigest.TargetFramework);
                         msBuildPluginAdded = true;
                     }                    
 

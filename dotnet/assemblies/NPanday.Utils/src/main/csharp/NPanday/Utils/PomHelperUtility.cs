@@ -1851,6 +1851,82 @@ namespace NPanday.Utils
             }
             return exists;
         }
+        
+        //Gets the frameworkVersion of a given project and plugin
+        public static string GetFrameworkVersion(NPanday.Model.Pom.Model mavenProject, string pluginName)
+        {
+            XmlElement frameworkConfig = null;
+            String frameworkVersion = string.Empty;
+
+            //Loop through the plugins to locate the ms build plugin and get it's frameworkVersion
+            if (mavenProject.build.plugins != null)
+            {
+                foreach (NPanday.Model.Pom.Plugin item in mavenProject.build.plugins)
+                {
+                    if (item.artifactId.Equals(pluginName) && item.configuration != null)
+                    {
+                        foreach (XmlElement el in item.configuration.Any)
+                        {
+                            if ("frameworkVersion".Equals(el.Name))
+                            {
+                                frameworkConfig = el;
+                                frameworkVersion = frameworkConfig.InnerText;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //We need to cast the 3.0 frameworkVersion to 3.5 because 3.0 is not a complete working path
+            if (frameworkVersion.Equals("3.0"))
+            {
+                frameworkVersion = "3.5";
+            }
+            
+            //Set to default value of 2.0.50727 framework if no frameworkVersion configured
+            if ("".Equals(frameworkVersion) || null == frameworkVersion)
+            {
+                frameworkVersion = "2.0.50727";
+            }
+
+            return frameworkVersion;
+        }
+
+        //Reading the npanday-settings.xml file to get the sdkInstallRoot
+        public static string GetSdkInstallRoot(String npandaySettings, string frameworkVersion)
+        {
+           String userHomePath = (Environment.OSVersion.Platform == PlatformID.Unix ||
+            Environment.OSVersion.Platform == PlatformID.MacOSX)
+? Environment.GetEnvironmentVariable("HOME")
+: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+            
+            userHomePath += "/.m2/npanday-settings.xml";
+
+            if (File.Exists(userHomePath))
+            {
+                npandaySettings = userHomePath;
+            }
+            else
+            {
+                //Use the USERPROFILE for machines without  homedrive homepath env var setup
+                npandaySettings = Environment.GetEnvironmentVariable("USERPROFILE") + "/.m2/npanday-settings.xml";
+            }
+            
+            XmlDocument doc = new XmlDocument();
+            doc.Load(npandaySettings);
+
+            string frameworkPath = string.Empty;
+
+            foreach (XmlElement elem in doc.SelectNodes("npandaySettings/vendors/vendor/frameworks/framework"))
+            {
+                if (frameworkVersion.Equals(elem.SelectSingleNode("frameworkVersion").InnerXml))
+                {
+                    frameworkPath = elem.SelectSingleNode("installRoot").InnerXml;
+                }
+
+            }
+            return frameworkPath;
+        }
     }
 }
 
