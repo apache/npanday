@@ -61,7 +61,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             }
             catch (Exception exception)
             {
-                throw new Exception("Unknown error occurred parsing solution file: " + solutionFile + " (embedded error is: " + exception.Message + ")");
+                throw new Exception("Unknown error occurred parsing solution file: " + solutionFile + " (embedded error is: \"" + exception.Message + "\")");
             }
 
             String UnsupportedProjectsMessage = string.Empty;
