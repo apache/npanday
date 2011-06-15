@@ -1052,7 +1052,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
         {
             if (expected != expect)
             {
-                throw new Exception(string.Format("Expecting {0} but it is {1}!", expected, expect));
+                throw new Exception(string.Format("Expecting token {0} but it is {1} with surrounding tokens '{2}' and '{3}'", expected, expect, Previous.Value, Next.Value));
             }
         }
 

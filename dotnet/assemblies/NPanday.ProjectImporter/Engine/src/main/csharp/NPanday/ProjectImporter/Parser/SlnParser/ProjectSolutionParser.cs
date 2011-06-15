@@ -52,9 +52,17 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
 
         public List<Dictionary<string, object>> Parse(FileInfo solutionFile, ref string warningMsg)
         {
+            NPanday.ProjectImporter.Parser.SlnParser.Model.Solution solution;
 
             List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
-            NPanday.ProjectImporter.Parser.SlnParser.Model.Solution solution = SolutionFactory.GetSolution(solutionFile);
+            try
+            {
+                solution = SolutionFactory.GetSolution(solutionFile);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception("Unknown error occurred parsing solution file: " + solutionFile + " (embedded error is: " + exception.Message + ")");
+            }
 
             String UnsupportedProjectsMessage = string.Empty;
 
