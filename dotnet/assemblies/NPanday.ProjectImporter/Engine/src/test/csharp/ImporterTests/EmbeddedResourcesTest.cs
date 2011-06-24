@@ -46,18 +46,5 @@ namespace NPanday.ProjectImporter.ImporterTests
         {
             get { return @"\src\test\resource\EmbeddedResourcesTest\"; }
         }
-
-        [Test]
-        public void CheckPomFileHasResources()
-        {
-            XpathValues.Add("build.resources", "project/build/resources");
-            XpathValues.Add("build.resources.resource", "project/build/resources/resource");
-            XpathValues.Add("build.resources.resource.includes", "project/build/resources/resource/includes");
-            XpathValues.Add("build.resources.resource.includes.include", "project/build/resources/resource/includes/include");
-            
-            ProjectImporterAssertions.AssertPomElementValues(TestResourcePath, GeneratedPomFiles, XpathValues);
-        }
-
-
     }
 }

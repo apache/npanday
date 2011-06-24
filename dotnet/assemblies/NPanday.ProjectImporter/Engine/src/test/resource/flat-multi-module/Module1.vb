@@ -20,6 +20,7 @@ Module Module1
 
     Sub Main()
         Console.WriteLine("hello")
+        Dim engine as new Microsoft.Build.BuildEngine.Engine()
     End Sub
 
 End Module

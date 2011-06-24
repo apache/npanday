@@ -31,10 +31,6 @@ under the License.
   <build> 
     <plugins> 
       <plugin> 
-        <groupId>org.apache.npanday.plugins</groupId>
-        <artifactId>maven-compile-plugin</artifactId>
-      </plugin> 
-      <plugin> 
         <artifactId>maven-assembly-plugin</artifactId>  
         <configuration> 
           <descriptorRefs> 
@@ -116,6 +112,20 @@ under the License.
               </execution> 
             </executions> 
           </plugin>  
+        </plugins> 
+      </build>
+    </profile>  
+    <profile>
+      <id>net40</id>
+      <build>
+        <plugins>
+          <plugin> 
+            <groupId>org.apache.npanday.plugins</groupId>
+            <artifactId>maven-compile-plugin</artifactId>
+            <configuration>
+              <testFrameworkVersion>4.0</testFrameworkVersion>
+            </configuration>
+          </plugin> 
         </plugins> 
       </build>
     </profile>  

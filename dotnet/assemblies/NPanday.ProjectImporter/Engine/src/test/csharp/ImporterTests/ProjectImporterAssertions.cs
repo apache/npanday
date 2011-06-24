@@ -85,15 +85,14 @@ namespace NPanday.ProjectImporter.ImporterTests
             }
         }
 		
-		public static void AssertPomElementValues(string testPomLocation, string[] pomFiles, Dictionary<string, string> testXPaths)
+		public static void AssertPomElementValues(string testPomLocation, string[] pomFiles)
         {
             string[] testPomFiles = FileUtil.GetTestPomFiles(Path.GetFullPath(Directory.GetCurrentDirectory() + @"\..\..") + testPomLocation, pomFiles);
             Assert.AreEqual(testPomFiles.Length, pomFiles.Length);
             int pomCount = testPomFiles.Length;
             for (int index = 0; index < pomCount; index++)
             {
-
-                string returnMsg = FileUtil.CrossCheckPomElement(testPomFiles[index], pomFiles[0], testXPaths);
+                string returnMsg = FileUtil.CrossCheckPomElement(testPomFiles[index], pomFiles[index]);
                 if (!string.IsNullOrEmpty(returnMsg))
                 {
                     Assert.Fail(returnMsg);

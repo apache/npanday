@@ -1,42 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements.  See the NOTICE file
-distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
-to you under the Apache License, Version 2.0 (the
-"License"); you may not use this file except in compliance
-with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on an
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied.  See the License for the
-specific language governing permissions and limitations
-under the License.
--->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
-    <artifactId>test.artfact.80304494-70d1-4305-acfa-065f41f92f72</artifactId>
-    <groupId>test.group.42241c48-3e90-4695-abf2-e844a15dd423</groupId>
+    <artifactId>test-parent</artifactId>
+    <groupId>test.group</groupId>
     <version>1.2.3-SNAPSHOT</version>
     <relativePath>..\pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>Shell32Example</artifactId>
   <packaging>winexe</packaging>
-  <name>test.group.42241c48-3e90-4695-abf2-e844a15dd423 : Shell32Example</name>
+  <name>test.group : Shell32Example</name>
   <build>
     <sourceDirectory>./</sourceDirectory>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.dotnet.plugins</groupId>
+        <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
-          <rootNamespace>Shell32Example</rootNamespace>
           <includeSources>
             <includeSource>Form1.cs</includeSource>
             <includeSource>Form1.Designer.cs</includeSource>
@@ -45,7 +26,22 @@ under the License.
             <includeSource>Properties\Resources.Designer.cs</includeSource>
             <includeSource>Properties\Settings.Designer.cs</includeSource>
           </includeSources>
-          <define>PLATFORM="AnyCPU"</define>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.npanday.plugins</groupId>
+        <artifactId>maven-resgen-plugin</artifactId>
+        <configuration>
+          <embeddedResources>
+            <embeddedResource>
+              <sourceFile>Form1.resx</sourceFile>
+              <name>Shell32Example.Form1</name>
+            </embeddedResource>
+            <embeddedResource>
+              <sourceFile>Properties\Resources.resx</sourceFile>
+              <name>Shell32Example.Properties.Resources</name>
+            </embeddedResource>
+          </embeddedResources>
         </configuration>
       </plugin>
     </plugins>
@@ -56,6 +52,7 @@ under the License.
       <artifactId>Shell32</artifactId>
       <version>1.0.0.0</version>
       <type>com_reference</type>
+      <classifier>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}-1.0-0</classifier>
     </dependency>
   </dependencies>
 </project>

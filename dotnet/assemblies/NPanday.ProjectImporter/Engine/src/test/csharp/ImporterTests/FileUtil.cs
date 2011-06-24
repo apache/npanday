@@ -21,6 +21,7 @@ using System.Xml;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Security.Cryptography;
 
 using NPanday.Utils;
 
@@ -149,7 +150,7 @@ namespace NPanday.ProjectImporter.ImporterTests
             returnValue = returnValue.Substring(0, endIndex + 1);
             return returnValue;
         }
-        public static string CrossCheckPomElement(string refLocation, string pomPath, Dictionary<string, string> testXPaths)
+        public static string CrossCheckPomElement(string refLocation, string pomPath)
         {
             if (!File.Exists(refLocation))
             {
@@ -159,42 +160,18 @@ namespace NPanday.ProjectImporter.ImporterTests
             {
                 return string.Format(MSG_ERROR_ACTUALFILE_NOTFOUND, pomPath);
             }
-            if (testXPaths == null || testXPaths.Count == 0)
-            {
-                return MSG_ERROR_NOXPATH;
-            }
-            XmlDocument xDocRef = new XmlDocument();
-            xDocRef.Load(refLocation);
-            XmlDocument xDocPom = new XmlDocument();
-            xDocPom.Load(pomPath);
-            XmlNamespaceManager xmlNamespace = new XmlNamespaceManager(xDocRef.NameTable);
 
-            xmlNamespace.AddNamespace("foo", "http://maven.apache.org/POM/4.0.0");
-            xmlNamespace.AddNamespace("xsd", "http://www.w3.org/2001/XMLSchema");
-            xmlNamespace.AddNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            foreach (KeyValuePair<string, string> testXPath in testXPaths)
+            FileInfo first = new FileInfo(pomPath);
+            FileInfo second = new FileInfo(refLocation);
+
+            using (FileStream fs1 = first.OpenRead())
+            using (FileStream fs2 = second.OpenRead())
             {
-                if (testXPath.Key.Equals("Name") || testXPath.Key.Equals("GroupId"))
-                    continue;
-                XmlNodeList nodeRefList = xDocRef.SelectNodes(testXPath.Value, xmlNamespace);
-                XmlNodeList nodePomList = xDocPom.SelectNodes(testXPath.Value, xmlNamespace);
-                if(nodePomList.Count != nodeRefList.Count)
+                for (int i = 0; i < first.Length; i++)
                 {
-                    return string.Format("Actual number of element NOT equal to Expected number of the element {0}: {1} should be {2}.", testXPath.Key, nodePomList.Count, nodeRefList.Count);
+                    if (fs1.ReadByte() != fs2.ReadByte())
+                        return string.Format("POMs {0} and {1} do not match @ byte {2}", pomPath, refLocation, i);
                 }
-
-                for (int index = 0; index < nodeRefList.Count; index++)
-                {
-                    XmlNode nodeRef = nodeRefList[index];
-                    XmlNode nodePom = nodePomList[index];
-
-                    string actualValue = nodePom.InnerXml;
-                    string expectedValue = nodeRef.InnerXml;
-                    if (actualValue != expectedValue)
-                    {
-                        return string.Format("Actual value NOT equal to Expected value of the element {0}: {1} should be {2}.", nodePom.Name, actualValue, expectedValue);
-                    }
-                };
             }
             return null;
         }
