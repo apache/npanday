@@ -39,9 +39,9 @@ namespace NPanday.Utils
 
         public GacUtility()
         {
-            /*
-            TODO: Why is this done?
-
+            // Used to determine which references exist in the GAC, used during VS project import
+            // TODO: we need a better way to determine this by querying the GAC using .NET
+            //  rather than parsing command output
             Process p = new Process();
 
             try
@@ -66,7 +66,6 @@ namespace NPanday.Utils
             {
                 throw new Exception( "Unable to execute gacutil - check that your PATH has been set correctly (Message: " + exception.Message + ")" );
             }
-            */
 
 
             string msBuildPath = Path.GetDirectoryName(System.Reflection.Assembly.GetAssembly(typeof(string)).Location);
