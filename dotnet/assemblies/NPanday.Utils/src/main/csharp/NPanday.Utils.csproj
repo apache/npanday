@@ -66,6 +66,7 @@ under the License.
     <Compile Include="NPanday\Utils\MavenRunner.cs" />
     <Compile Include="NPanday\Utils\PomHelperUtility.cs" />
     <Compile Include="NPanday\Utils\RepositoryUtility.cs" />
+    <Compile Include="NPanday\Utils\RspUtility.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />

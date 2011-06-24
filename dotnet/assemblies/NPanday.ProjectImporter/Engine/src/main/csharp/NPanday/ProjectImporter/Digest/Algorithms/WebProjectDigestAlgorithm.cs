@@ -40,8 +40,6 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
     {
         public ProjectDigest DigestProject(Dictionary<string, object> projectMap)
         {
-            GacUtility gac = new GacUtility();
-
             ProjectDigest projectDigest = new ProjectDigest();
             projectDigest.ProjectType = (VisualStudioProjectTypeEnum)projectMap["ProjectType"];
             projectDigest.FullFileName = projectMap["ProjectFullPath"].ToString();

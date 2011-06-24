@@ -20,6 +20,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Text;
 
 using System.Diagnostics;
@@ -34,14 +35,15 @@ namespace NPanday.Utils
     public class GacUtility
     {
         private string gacs = "";
-        private string vbRsp = "";
-        private string csRsp = "";
 
         public GacUtility()
         {
             // Used to determine which references exist in the GAC, used during VS project import
             // TODO: we need a better way to determine this by querying the GAC using .NET
             //  rather than parsing command output
+            //  consider this: http://www.codeproject.com/KB/dotnet/undocumentedfusion.aspx
+            //  (works, but seems to be missing the processor architecture)
+            
             Process p = new Process();
 
             try
@@ -66,39 +68,17 @@ namespace NPanday.Utils
             {
                 throw new Exception( "Unable to execute gacutil - check that your PATH has been set correctly (Message: " + exception.Message + ")" );
             }
-
-
-            string msBuildPath = Path.GetDirectoryName(System.Reflection.Assembly.GetAssembly(typeof(string)).Location);
-            string f35 = Path.GetFullPath(Environment.SystemDirectory + @"\..\Microsoft.NET\Framework\v3.5");
-            string f4 = Path.GetFullPath(Environment.SystemDirectory + @"\..\Microsoft.NET\Framework\v4.0.30319");
-            if (Directory.Exists(f4))
-            {
-                msBuildPath = f4;
-            }
-            try
-            {
-                csRsp = File.OpenText(msBuildPath + @"\csc.rsp").ReadToEnd();
-            }
-            catch (Exception){}
-
-
-            try
-            {
-                vbRsp = File.OpenText(msBuildPath + @"\vbc.rsp").ReadToEnd();
-            }
-            catch (Exception){}
-
-
-
         }
 
 
-        public string GetAssemblyInfo(string assemblyName, string version, string processorArchitecture)
+        public List<string> GetAssemblyInfo(string assemblyName, string version, string processorArchitecture)
         {
             if (string.IsNullOrEmpty(assemblyName))
             {
                 return null;
             }
+
+            List<string> results = new List<string>();
 
             string architecture = String.Empty;
             if (! string.IsNullOrEmpty(processorArchitecture))
@@ -121,66 +101,9 @@ namespace NPanday.Utils
 
             foreach (Match match in matches)
             {
-                return match.Value.Trim();
+                results.Add(match.Value.Trim());
             }
-
-
-            return null;
-        }
-
-        public bool IsRspIncluded(string assemblyName, string language)
-        {
-            if ("vb".Equals(language, StringComparison.OrdinalIgnoreCase))
-            {
-                return IsVbcRspIncluded(assemblyName);
-            }
-            else
-            {
-                return IsCscRspIncluded(assemblyName);
-            }
-        }
-        
-
-
-        public bool IsCscRspIncluded(string assemblyName)
-        {
-            if (string.IsNullOrEmpty(assemblyName))
-            {
-                return false;
-            }
-
-            Regex regex = new Regex(@"\s*/r:" + assemblyName + @"\.dll", RegexOptions.IgnoreCase);
-            MatchCollection matches = regex.Matches(csRsp);
-
-
-            foreach (Match match in matches)
-            {
-                return true;
-            }
-
-
-            return false;
-        }
-
-
-        public bool IsVbcRspIncluded(string assemblyName)
-        {
-            if (string.IsNullOrEmpty(assemblyName))
-            {
-                return false;
-            }
-
-            Regex regex = new Regex(@"\s*/r:" + assemblyName + @"\.dll", RegexOptions.IgnoreCase);
-            MatchCollection matches = regex.Matches(csRsp);
-
-
-            foreach (Match match in matches)
-            {
-                return true;
-            }
-
-
-            return false;
+            return results;
         }
 
         private static string GetRegexProcessorArchitectureFromString(string input)

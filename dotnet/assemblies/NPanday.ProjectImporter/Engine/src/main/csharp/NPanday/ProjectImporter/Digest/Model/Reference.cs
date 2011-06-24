@@ -39,29 +39,14 @@ namespace NPanday.ProjectImporter.Digest.Model
     {
         #region Constructors
 
-        public Reference(string projectBasePath, GacUtility gac) 
+        public Reference(string projectBasePath)
             : base(projectBasePath)
         {
-            this.gac = gac;
         }
 
         #endregion
 
         #region Properties
-
-        private GacUtility gac; 
-        public GacUtility GacUtility
-        {
-            get 
-            {
-                if (gac == null)
-                {
-                    gac = new GacUtility();
-                }
- 
-                return gac; 
-            }
-        }
 
         private string name;
         public string Name
@@ -103,21 +88,6 @@ namespace NPanday.ProjectImporter.Digest.Model
                     return Path.GetFullPath(Path.Combine(projectBasePath, hintPath));
                 }
 
-            }
-        }
-
-        public string AssemblyInfo
-        {
-            set
-            {
-                if (value.Split(',').Length > 1)
-                {
-                    SetAssemblyInfoValues(value);
-                }
-                else
-                {
-                    SetAssemblyValuesFromGac(value);
-                }
             }
         }
 
@@ -512,11 +482,9 @@ namespace NPanday.ProjectImporter.Digest.Model
         public static string Tokenize(string id)
         {
             return id.Replace(".",Path.DirectorySeparatorChar.ToString());
-        }
-        
+        }        
 
-
-        private void SetAssemblyInfoValues(string assemblyInfo)
+        public void SetAssemblyInfoValues(string assemblyInfo)
         {
             if (!string.IsNullOrEmpty(assemblyInfo))
             {
@@ -548,15 +516,6 @@ namespace NPanday.ProjectImporter.Digest.Model
 
             }
 
-        }
-
-
-
-        private void SetAssemblyValuesFromGac(string name)
-        {
-            this.Name = name.Split(',')[0].Trim();
-            string str = GacUtility.GetAssemblyInfo(this.Name, version, processorArchitecture);
-            SetAssemblyInfoValues(str);
         }
 
         #endregion

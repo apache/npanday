@@ -20,7 +20,9 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.IO;
+using System.Reflection;
 using Microsoft.Build.BuildEngine;
 using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
 using NPanday.ProjectImporter.Digest.Model;
@@ -54,9 +56,6 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                     projectMap.Add("ProjectType", VisualStudioProjectTypeEnum.Windows__VbDotNet);
                 }
             }
-
-            GacUtility gac = new GacUtility();
-            
 
             ProjectDigest projectDigest = new ProjectDigest();
             string projectBasePath = Path.GetDirectoryName(project.FullFileName);
@@ -113,7 +112,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
 			List<ComReference> comReferenceList = new List<ComReference>();
 
             DigestBuildProperties(project, projectDigest);
-            DigestBuildItems(project, projectDigest, projectBasePath, projectReferences, gac, references, compiles, nones, webReferenceUrls, contents, folders, webReferencesList, embeddedResources, bootstrapperPackages, globalNamespaceImports, comReferenceList);
+            DigestBuildItems(project, projectDigest, projectBasePath, projectReferences, references, compiles, nones, webReferenceUrls, contents, folders, webReferencesList, embeddedResources, bootstrapperPackages, globalNamespaceImports, comReferenceList);
             DigestImports(project);
 
             projectDigest.ProjectReferences = projectReferences.ToArray();
@@ -165,8 +164,11 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             }
         }
 
-        private static void DigestBuildItems(Project project, ProjectDigest projectDigest, string projectBasePath, ICollection<ProjectReference> projectReferences, GacUtility gac, ICollection<Reference> references, ICollection<Compile> compiles, ICollection<None> nones, ICollection<WebReferenceUrl> webReferenceUrls, ICollection<Content> contents, ICollection<Folder> folders, ICollection<WebReferences> webReferencesList, ICollection<EmbeddedResource> embeddedResources, ICollection<BootstrapperPackage> bootstrapperPackages, ICollection<string> globalNamespaceImports, IList<ComReference> comReferenceList)
+        private static void DigestBuildItems(Project project, ProjectDigest projectDigest, string projectBasePath, ICollection<ProjectReference> projectReferences, ICollection<Reference> references, ICollection<Compile> compiles, ICollection<None> nones, ICollection<WebReferenceUrl> webReferenceUrls, ICollection<Content> contents, ICollection<Folder> folders, ICollection<WebReferences> webReferencesList, ICollection<EmbeddedResource> embeddedResources, ICollection<BootstrapperPackage> bootstrapperPackages, ICollection<string> globalNamespaceImports, IList<ComReference> comReferenceList)
         {
+            string targetFramework = projectDigest.TargetFramework != null ? projectDigest.TargetFramework.Substring(0,3) : "2.0";
+            GacUtility gac = new GacUtility();
+            RspUtility rsp = new RspUtility();
             foreach (BuildItemGroup buildItemGroup in project.ItemGroups)
             {
                 foreach (BuildItem buildItem in buildItemGroup)
@@ -183,7 +185,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 projectReferences.Add(prjRef);
                                 break;
                             case "Reference":
-                                Reference reference = new Reference(projectBasePath, gac);
+                                Reference reference = new Reference(projectBasePath);
                                 //set processorArchitecture property to platform, it will be used by GacUtility in 
                                 // order to resolve artifact to right processor architecture
                                 if (!string.IsNullOrEmpty(projectDigest.Platform))
@@ -201,7 +203,39 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 }
                                 if (string.IsNullOrEmpty(reference.HintPath) || !(new FileInfo(reference.HintPath).Exists))
                                 {
-                                    reference.AssemblyInfo = buildItem.Include;
+                                    if (buildItem.Include.Contains(","))
+                                    {
+                                        // complete name
+                                        reference.SetAssemblyInfoValues(buildItem.Include);
+                                    }
+                                    else if (!rsp.IsRspIncluded(buildItem.Include,projectDigest.Language))
+                                    {
+                                        // simple name needs to be resolved
+                                        List<string> refs = gac.GetAssemblyInfo(buildItem.Include, null, null);
+                                        if (refs.Count == 0)
+                                        {
+                                            Console.WriteLine("Unable to find reference '" + buildItem.Include + "' in " + string.Join("; ", refs.ToArray()));
+                                        }
+                                        else
+                                        {
+                                            if (refs.Count > 1)
+                                            {
+                                                string best = null;
+                                                string bestFramework = "0.0";
+                                                foreach (string s in refs)
+                                                {
+                                                    Assembly a = Assembly.ReflectionOnlyLoad(s);
+                                                    string framework = a.ImageRuntimeVersion.Substring(1,3);
+                                                    if (framework.CompareTo(targetFramework) <= 0 && framework.CompareTo(bestFramework) > 0)
+                                                    {
+                                                        best = s;
+                                                        bestFramework = framework;
+                                                    }
+                                                }
+                                                reference.SetAssemblyInfoValues(best);
+                                            }
+                                        }
+                                    }
                                 }
                                 if ("NUnit.Framework".Equals(reference.Name, StringComparison.OrdinalIgnoreCase))
                                 {

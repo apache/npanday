@@ -241,7 +241,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             {
                 if (!string.IsNullOrEmpty(projectDigest.Language))
                 {
-                    if (!gacUtil.IsRspIncluded(reference.Name, projectDigest.Language))
+                    if (!rspUtil.IsRspIncluded(reference.Name, projectDigest.Language))
                     {
                         list.Add(reference);
                     }

@@ -43,7 +43,7 @@ namespace NPanday.Utils
         private FileInfo pom;
         public bool isWebRefEmpty = false;
 
-        GacUtility gacUtil = new GacUtility();
+        RspUtility rspUtil = new RspUtility();
 
         public PomHelperUtility(Solution solution, Project project)
         {
@@ -814,12 +814,12 @@ namespace NPanday.Utils
             
             if ("vb".Equals(NPandayCompilerPluginLanguage))
             {
-                if (gacUtil.IsVbcRspIncluded(dependency.artifactId))
+                if (rspUtil.IsVbcRspIncluded(dependency.artifactId))
                     return;
             }
             else 
             {
-                if (gacUtil.IsCscRspIncluded((dependency.artifactId)))
+                if (rspUtil.IsCscRspIncluded((dependency.artifactId)))
                     return;
             }
             if (IsPomDependency(dependency))

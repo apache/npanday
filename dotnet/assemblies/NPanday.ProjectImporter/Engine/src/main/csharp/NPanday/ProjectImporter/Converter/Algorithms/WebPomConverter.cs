@@ -186,7 +186,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                   || "dotnet-library".Equals(refDependency.type, StringComparison.OrdinalIgnoreCase)))
             {
                 // ignore gac if already in the RSP 
-                if (gacUtil.IsRspIncluded(refDependency.artifactId, projectDigest.Language))
+                if (rspUtil.IsRspIncluded(refDependency.artifactId, projectDigest.Language))
                 {
                     return;
                 }
