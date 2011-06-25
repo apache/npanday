@@ -222,12 +222,20 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                             string bestFramework = "0.0";
                                             foreach (string s in refs)
                                             {
-                                                Assembly a = Assembly.ReflectionOnlyLoad(s);
-                                                string framework = a.ImageRuntimeVersion.Substring(1,3);
-                                                if (framework.CompareTo(targetFramework) <= 0 && framework.CompareTo(bestFramework) > 0)
+                                                try
                                                 {
-                                                    best = s;
-                                                    bestFramework = framework;
+                                                    Assembly a = Assembly.ReflectionOnlyLoad(s);
+                                                    string framework = a.ImageRuntimeVersion.Substring(1, 3);
+                                                    if (framework.CompareTo(targetFramework) <= 0 && framework.CompareTo(bestFramework) > 0)
+                                                    {
+                                                        best = s;
+                                                        bestFramework = framework;
+                                                    }
+                                                }
+                                                catch (Exception e)
+                                                {
+                                                    // skip this assembly
+                                                    Console.WriteLine("An error occurred loading assembly '" + s + "' - check that your PATH to gacutil matches your runtime environment: " + e.Message);
                                                 }
                                             }
                                             reference.SetAssemblyInfoValues(best);
