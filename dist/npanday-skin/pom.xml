@@ -24,9 +24,8 @@ under the License.
 
   <parent> 
     <groupId>org.apache.npanday</groupId>
-    <artifactId>npanday-project</artifactId>  
+    <artifactId>npanday-dist-parent</artifactId>  
     <version>1.4.1-incubating-SNAPSHOT</version> 
-    <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <artifactId>npanday-skin</artifactId>

@@ -20,64 +20,59 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent> 
     <groupId>org.apache.npanday</groupId>
-    <artifactId>npanday-project</artifactId>  
+    <artifactId>npanday-dist-parent</artifactId>  
     <version>1.4.1-incubating-SNAPSHOT</version> 
-    <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>npanday-installer</artifactId>
   <packaging>pom</packaging>
   <name>NPanday Windows Installer</name>
-  <scm> 
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</connection>
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</developerConnection>
-    <url>https://npanday.svn.codeplex.com/svn/trunk/misc/npanday-installer</url>
-  </scm>  
   <dependencies>
     <dependency>
       <groupId>org.apache.npanday.visualstudio</groupId>
       <artifactId>NPanday.VisualStudio.Addin</artifactId>
       <version>${project.version}</version>
-	  <exclusions>
-	    <exclusion>
-		  <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
-		  <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>EnvDTE</groupId>  
-		  <artifactId>EnvDTE</artifactId>  
- 		</exclusion>
-	    <exclusion>
-		  <groupId>EnvDTE80</groupId>  
-		  <artifactId>EnvDTE80</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>Extensibility</groupId>  
-		  <artifactId>Extensibility</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>VSLangProj</groupId>  
-		  <artifactId>VSLangProj</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>VSLangProj80</groupId>  
-		  <artifactId>VSLangProj80</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>VsWebSite.Interop</groupId>  
-		  <artifactId>VsWebSite.Interop</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>Microsoft.Build.Engine</groupId>  
-		  <artifactId>Microsoft.Build.Engine</artifactId>  
-		</exclusion>		
-	  </exclusions>
+      <exclusions>
+        <exclusion>
+          <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
+          <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>EnvDTE</groupId>  
+          <artifactId>EnvDTE</artifactId>  
+         </exclusion>
+        <exclusion>
+          <groupId>EnvDTE80</groupId>  
+          <artifactId>EnvDTE80</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>Extensibility</groupId>  
+          <artifactId>Extensibility</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>VSLangProj</groupId>  
+          <artifactId>VSLangProj</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>VSLangProj80</groupId>  
+          <artifactId>VSLangProj80</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>VsWebSite.Interop</groupId>  
+          <artifactId>VsWebSite.Interop</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>Microsoft.Build.Engine</groupId>  
+          <artifactId>Microsoft.Build.Engine</artifactId>  
+        </exclusion>        
+      </exclusions>
       <type>library</type>
     </dependency>
   </dependencies>
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.0</version>
         <executions>

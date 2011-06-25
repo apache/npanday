@@ -20,19 +20,13 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>org.apache.npanday</groupId>
-    <artifactId>npanday-project</artifactId>  
+    <artifactId>npanday-dist-parent</artifactId>  
     <version>1.4.1-incubating-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>dotnet-repository-builder</artifactId>
   <name>NPanday :: .NET Repository Builder</name>
   <packaging>pom</packaging>
-  <scm> 
-    <connection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</connection>
-    <developerConnection>scm:svn:https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</developerConnection>
-    <url>https://npanday.svn.codeplex.com/svn/trunk/misc/dotnet-repository-builder</url>
-  </scm>  
   <dependencies>
     <!--assemblies-->
     <dependency>
@@ -107,40 +101,40 @@ under the License.
       <groupId>org.apache.npanday.visualstudio</groupId>
       <artifactId>NPanday.VisualStudio.Addin</artifactId>
       <version>${project.version}</version>
-	  <exclusions>
-	    <exclusion>
-		  <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
-		  <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>EnvDTE</groupId>  
-		  <artifactId>EnvDTE</artifactId>  
- 		</exclusion>
-	    <exclusion>
-		  <groupId>EnvDTE80</groupId>  
-		  <artifactId>EnvDTE80</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>Extensibility</groupId>  
-		  <artifactId>Extensibility</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>VSLangProj</groupId>  
-		  <artifactId>VSLangProj</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>VSLangProj80</groupId>  
-		  <artifactId>VSLangProj80</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>VsWebSite.Interop</groupId>  
-		  <artifactId>VsWebSite.Interop</artifactId>  
-		</exclusion>
-	    <exclusion>
-		  <groupId>Microsoft.Build.Engine</groupId>  
-		  <artifactId>Microsoft.Build.Engine</artifactId>  
-		</exclusion>		
-	  </exclusions>  
+      <exclusions>
+        <exclusion>
+          <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
+          <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>EnvDTE</groupId>  
+          <artifactId>EnvDTE</artifactId>  
+         </exclusion>
+        <exclusion>
+          <groupId>EnvDTE80</groupId>  
+          <artifactId>EnvDTE80</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>Extensibility</groupId>  
+          <artifactId>Extensibility</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>VSLangProj</groupId>  
+          <artifactId>VSLangProj</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>VSLangProj80</groupId>  
+          <artifactId>VSLangProj80</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>VsWebSite.Interop</groupId>  
+          <artifactId>VsWebSite.Interop</artifactId>  
+        </exclusion>
+        <exclusion>
+          <groupId>Microsoft.Build.Engine</groupId>  
+          <artifactId>Microsoft.Build.Engine</artifactId>  
+        </exclusion>        
+      </exclusions>  
       <type>visual-studio-addin</type>
     </dependency>
 
