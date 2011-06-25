@@ -216,24 +216,25 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                         {
                                             Console.WriteLine("Unable to find reference '" + buildItem.Include + "' in " + string.Join("; ", refs.ToArray()));
                                         }
-                                        else
+                                        else if (refs.Count > 1)
                                         {
-                                            if (refs.Count > 1)
+                                            string best = null;
+                                            string bestFramework = "0.0";
+                                            foreach (string s in refs)
                                             {
-                                                string best = null;
-                                                string bestFramework = "0.0";
-                                                foreach (string s in refs)
+                                                Assembly a = Assembly.ReflectionOnlyLoad(s);
+                                                string framework = a.ImageRuntimeVersion.Substring(1,3);
+                                                if (framework.CompareTo(targetFramework) <= 0 && framework.CompareTo(bestFramework) > 0)
                                                 {
-                                                    Assembly a = Assembly.ReflectionOnlyLoad(s);
-                                                    string framework = a.ImageRuntimeVersion.Substring(1,3);
-                                                    if (framework.CompareTo(targetFramework) <= 0 && framework.CompareTo(bestFramework) > 0)
-                                                    {
-                                                        best = s;
-                                                        bestFramework = framework;
-                                                    }
+                                                    best = s;
+                                                    bestFramework = framework;
                                                 }
-                                                reference.SetAssemblyInfoValues(best);
                                             }
+                                            reference.SetAssemblyInfoValues(best);
+                                        }
+                                        else 
+                                        {
+                                            reference.SetAssemblyInfoValues(refs[0]);
                                         }
                                     }
                                 }
