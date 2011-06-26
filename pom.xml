@@ -240,7 +240,7 @@ under the License.
           <tagBase>https://svn.apache.org/repos/asf/incubator/npanday/tags</tagBase>  
           <useReleaseProfile>false</useReleaseProfile>
           <goals>deploy</goals>  
-          <arguments>-Pnpanday-release</arguments>
+          <arguments>-Pnpanday-release,dist</arguments>
           <preparationGoals>clean install</preparationGoals>  
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <mavenExecutorId>forked-path</mavenExecutorId>
@@ -507,10 +507,13 @@ under the License.
       </build>
     </profile>
     <profile>
-      <id>npanday-release</id>
+      <id>dist</id>
       <modules>
         <module>dist</module>
       </modules>
+    </profile>
+    <profile>
+      <id>npanday-release</id>
       <build>
         <plugins>
           <!-- Fail fast: the release build must run on Windows for the Add-in -->
