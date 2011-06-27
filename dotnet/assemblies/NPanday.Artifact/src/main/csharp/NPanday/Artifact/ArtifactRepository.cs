@@ -57,12 +57,12 @@ namespace NPanday.Artifact
         {
             Artifact artifact = new Artifact();
 
-            String[] tokens = uri.Split("/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            String[] tokens = uri.Split("/".ToCharArray(), Int32.MaxValue, StringSplitOptions.RemoveEmptyEntries);
             int size = tokens.Length;
             if (size < 3)
             {
                 System.Reflection.Assembly a = System.Reflection.Assembly.LoadFile(uri);
-                string[] info = a.FullName.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                string[] info = a.FullName.Split(",".ToCharArray(), Int32.MaxValue, StringSplitOptions.RemoveEmptyEntries);
                 artifact.ArtifactId = info[0];
                 artifact.GroupId = info[0];
                 artifact.Version = info[1].Split(new char[] { '='})[1];
