@@ -793,6 +793,7 @@ namespace NPanday.VisualStudio.Addin
                 }
                 catch
                 {
+                    // TODO: should this really be ignored?
                 }
 
                 //check if reference is already in pom
@@ -802,11 +803,11 @@ namespace NPanday.VisualStudio.Addin
                     return;
                 }
 
-                //setup default dependecy values
+                //setup default dependency values
                 string refType = "gac_msil";
                 string refName = pReference.Name;
                 string refGroupId = pReference.Name;
-                string refToken = pReference.PublicKeyToken;
+                string refToken = pReference.PublicKeyToken.ToLower();
                 string refVersion = pReference.Version;
                 string systemPath = string.Empty;
                 string scope = string.Empty;
@@ -820,34 +821,10 @@ namespace NPanday.VisualStudio.Addin
                     refToken = pReference.Identity.Substring(0, pReference.Identity.LastIndexOf(@"\")).Replace("\\", "-");
                     refGroupId = refName;
                 }
-                else
+                else if (pReference.Type == prjReferenceType.prjReferenceTypeAssembly)
                 {
                     //if reference is assembly
-                    Assembly a = System.Reflection.Assembly.LoadWithPartialName(pReference.Name);
-
-                    if (a != null)
-                    {
-                        if (a.Location.ToLower().IndexOf(@"\gac_32\") >= 0)
-                            refType = "gac_32";
-                        else if (a.Location.ToLower().IndexOf(@"\gac_64\") >= 0)
-                            refType = "gac_64";
-                        else if (a.Location.ToLower().IndexOf(@"\gac\") >= 0)
-                            refType = "gac";
-                        else if (a.Location.ToLower().IndexOf(@"\gac-msil4\") >= 0)
-                            refType = "gac-msil4";
-                        else if (a.Location.ToLower().IndexOf(@"\gac-32-4\") >= 0)
-                            refType = "gac-32-4";
-                        else if (a.Location.ToLower().IndexOf(@"\gac-64-4\") >= 0)
-                            refType = "gac-64-4";
-                        else if (a.Location.ToLower().IndexOf(@"\gac-msil\") >= 0)
-                            refType = "gac-msil";
-
-                        if (!a.GlobalAssemblyCache)
-                        {
-                            refType = "dotnet-library";
-                        }
-                    }
-                    else if (pReference.SourceProject != null && pReference.ContainingProject.DTE.Solution.FullName == pReference.SourceProject.DTE.Solution.FullName)
+                    if (pReference.SourceProject != null && pReference.ContainingProject.DTE.Solution.FullName == pReference.SourceProject.DTE.Solution.FullName)
                     {
                         // if intra-project reference, let's mimic Add Maven Artifact
 
@@ -856,10 +833,10 @@ namespace NPanday.VisualStudio.Addin
 
                         NPanday.Model.Pom.Model solutionPOM = NPanday.Utils.PomHelperUtility.ReadPomAsModel(CurrentSolutionPom);
                         NPanday.Model.Pom.Model projectPOM = NPanday.Utils.PomHelperUtility.ReadPomAsModel(CurrentSelectedProjectPom);
-                        
+
                         refGroupId = solutionPOM.groupId;
 
-                        if (projectPOM.version != null && projectPOM.version!="0.0.0.0")
+                        if (projectPOM.version != null && projectPOM.version != "0.0.0.0")
                         {
                             refVersion = projectPOM.version;
                         }
@@ -875,18 +852,38 @@ namespace NPanday.VisualStudio.Addin
                     }
                     else
                     {
-                        scope = "system";
-                        systemPath = pReference.Path;
-                        refType = "dotnet-library";
-                        if (!iNPandayRepo)
+                        Assembly a = Assembly.ReflectionOnlyLoadFrom(pReference.Path);
+
+                        // original is probably a reference assembly, so now check if it's in the GAC
+                        // for that, we must load (runtime) instead of just reflection, or from the reference path
+                        AppDomain appDomain = AppDomain.CreateDomain("NPandayTempDomain");
+                        Assembly asm = appDomain.Load(a.FullName);
+                        if (asm.GlobalAssemblyCache)
                         {
-                            MessageBox.Show(string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
-                                     + "\nReference: {0}"
-                                     + "\nDeploying the reference to a Repository, will make the code portable to other machines",
-                             pReference.Name
-                         ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            // use the original assembly to get the GAC type so we don't get the wrong image version
+                            // but use processor architecture from the GAC version as it is None otherwise
+                            refType = GacUtility.GetNPandayGacType(a.ImageRuntimeVersion, asm.GetName().ProcessorArchitecture, refToken);
                         }
+                        else
+                        {
+                            scope = "system";
+                            systemPath = pReference.Path;
+                            refType = "dotnet-library";
+                            if (!iNPandayRepo)
+                            {
+                                MessageBox.Show(string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
+                                         + "\nReference: {0}"
+                                         + "\nDeploying the reference to a Repository, will make the code portable to other machines",
+                                 pReference.Name
+                             ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                        }
+                        AppDomain.Unload(appDomain);
                     }
+                }
+                else
+                {
+                    throw new Exception("Unrecognized reference type: " + pReference.Type);
                 }
 
                 Dependency dep = new Dependency();
@@ -908,7 +905,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception e)
             {
-                //outputWindowPane.OutputString(e.Message);
+                MessageBox.Show("Error converting reference to artifact, not added to POM: " + e.Message, "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

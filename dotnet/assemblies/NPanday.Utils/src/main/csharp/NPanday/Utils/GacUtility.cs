@@ -34,15 +34,18 @@ namespace NPanday.Utils
 {
     public class GacUtility
     {
-        private string gacs = "";
+        private string gacs;
 
-        public GacUtility()
+        private static GacUtility instance;
+
+        private GacUtility()
         {
             // Used to determine which references exist in the GAC, used during VS project import
             // TODO: we need a better way to determine this by querying the GAC using .NET
             //  rather than parsing command output
             //  consider this: http://www.codeproject.com/KB/dotnet/undocumentedfusion.aspx
             //  (works, but seems to be missing the processor architecture)
+            // Can also use LoadWithPartialName, but it is deprecated
             
             Process p = new Process();
 
@@ -70,6 +73,64 @@ namespace NPanday.Utils
             }
         }
 
+        public static GacUtility GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new GacUtility();
+            }
+            return instance;
+        }
+
+        public static string GetNPandayGacType(System.Reflection.Assembly a, string publicKeyToken)
+        {
+            ProcessorArchitecture architecture = a.GetName().ProcessorArchitecture;
+            return GetNPandayGacType(a.ImageRuntimeVersion, architecture, publicKeyToken);
+        }
+
+        public static string GetNPandayGacType(string runtimeVersion, ProcessorArchitecture architecture, string publicKeyToken)
+        {
+            string type;
+
+            if (architecture == ProcessorArchitecture.MSIL)
+            {
+                if (runtimeVersion.StartsWith("v4.0"))
+                {
+                    type = "gac_msil4";
+                }
+                else
+                {
+                    type = "gac_msil";
+                }
+            }
+            else if (architecture == ProcessorArchitecture.X86)
+            {
+                if (runtimeVersion.StartsWith("v4.0"))
+                {
+                    type = "gac_32_4";
+                }
+                else
+                {
+                    type = "gac_32";
+                }
+            }
+            else if (architecture == ProcessorArchitecture.IA64 || architecture == ProcessorArchitecture.Amd64)
+            {
+                if (runtimeVersion.StartsWith("v4.0"))
+                {
+                    type = "gac_64_4";
+                }
+                else
+                {
+                    type = "gac_64";
+                }
+            }
+            else
+            {
+                type = "gac";
+            }
+            return type;
+        }
 
         public List<string> GetAssemblyInfo(string assemblyName, string version, string processorArchitecture)
         {

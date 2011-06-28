@@ -39,7 +39,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 {
     public abstract class AbstractPomConverter : IPomConverter
     {
-        protected GacUtility gacUtil;
         protected RspUtility rspUtil;
         protected ArtifactContext artifactContext;
         protected List<Artifact.Artifact> localArtifacts;
@@ -78,7 +77,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             this.version = parent != null ? parent.version : null;
 
             this.rspUtil = new RspUtility();
-            this.gacUtil = new GacUtility();
             this.model = new NPanday.Model.Pom.Model();
             
             // Add build Tag
@@ -749,7 +747,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 return dependency;
             }
 
-            List<string> refs = gacUtil.GetAssemblyInfo(reference.Name, null, projectDigest.Platform);
+            List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(reference.Name, null, projectDigest.Platform);
 
             // resolve from GAC
             if (refs.Count > 0)
@@ -757,65 +755,15 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 // Assembly is found at the gac
 
                 //exclude ProcessArchitecture when loading assembly on a non-32 bit machine
-                refs = gacUtil.GetAssemblyInfo(reference.Name, reference.Version, null);
+                refs = GacUtility.GetInstance().GetAssemblyInfo(reference.Name, reference.Version, null);
 
                 System.Reflection.Assembly a = System.Reflection.Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(refs[0]).FullName);
  
                 Dependency refDependency = new Dependency();
                 refDependency.artifactId = reference.Name;
                 refDependency.groupId = reference.Name;
-                
-                if ("MSIL".Equals(reference.ProcessorArchitecture, StringComparison.OrdinalIgnoreCase))
-                {
-                    if (a.ImageRuntimeVersion.StartsWith("v4.0"))
-                    {
-                        refDependency.type = "gac_msil4";
-                    }
-                    else
-                    {
-                        refDependency.type = "gac_msil";
-                    }
-                }
-                else if ("x86".Equals(reference.ProcessorArchitecture, StringComparison.OrdinalIgnoreCase))
-                {
-                    if (a.ImageRuntimeVersion.StartsWith("v4.0"))
-                    {
-                        refDependency.type = "gac_32_4";
-                    }
-                    else
-                    {
-                        refDependency.type = "gac_32";
-                    }
-                }
-                else if ("IA64".Equals(reference.ProcessorArchitecture, StringComparison.OrdinalIgnoreCase) || 
-                     "AMD64".Equals(reference.ProcessorArchitecture, StringComparison.OrdinalIgnoreCase))
-                {
-                    if (a.ImageRuntimeVersion.StartsWith("v4.0"))
-                    {
-                        refDependency.type = "gac_64_4";
-                    }
-                    else
-                    {
-                        refDependency.type = "gac_64";
-                    }
-                }
 
-                //Assemblies that with null ProcessorArchitecture esp ASP.net assmblies (e.g MVC)
-                else if ((reference.ProcessorArchitecture == null) && ("31bf3856ad364e35".Equals(reference.PublicKeyToken.ToLower(), StringComparison.OrdinalIgnoreCase)))
-                {
-                    if (a.ImageRuntimeVersion.StartsWith("v4.0"))
-                    {
-                        refDependency.type = "gac_msil4";
-                    }
-                    else
-                    {
-                        refDependency.type = "gac_msil";
-                    }
-                }
-                else
-                {
-                    refDependency.type = "gac";
-                }
+                refDependency.type = GacUtility.GetNPandayGacType(a, reference.PublicKeyToken);
                 
                 refDependency.version = reference.Version ?? "1.0.0.0";
                 

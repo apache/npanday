@@ -167,7 +167,6 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
         private static void DigestBuildItems(Project project, ProjectDigest projectDigest, string projectBasePath, ICollection<ProjectReference> projectReferences, ICollection<Reference> references, ICollection<Compile> compiles, ICollection<None> nones, ICollection<WebReferenceUrl> webReferenceUrls, ICollection<Content> contents, ICollection<Folder> folders, ICollection<WebReferences> webReferencesList, ICollection<EmbeddedResource> embeddedResources, ICollection<BootstrapperPackage> bootstrapperPackages, ICollection<string> globalNamespaceImports, IList<ComReference> comReferenceList)
         {
             string targetFramework = projectDigest.TargetFramework != null ? projectDigest.TargetFramework.Substring(0,3) : "2.0";
-            GacUtility gac = new GacUtility();
             RspUtility rsp = new RspUtility();
             foreach (BuildItemGroup buildItemGroup in project.ItemGroups)
             {
@@ -211,7 +210,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                     else if (!rsp.IsRspIncluded(buildItem.Include,projectDigest.Language))
                                     {
                                         // simple name needs to be resolved
-                                        List<string> refs = gac.GetAssemblyInfo(buildItem.Include, null, null);
+                                        List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(buildItem.Include, null, null);
                                         if (refs.Count == 0)
                                         {
                                             Console.WriteLine("Unable to find reference '" + buildItem.Include + "' in " + string.Join("; ", refs.ToArray()));
