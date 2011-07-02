@@ -24,6 +24,8 @@ under the License.
     <executable>NCover.Console</executable>
     <profile>NCover:NCover.Console</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
@@ -39,6 +41,8 @@ under the License.
     <executable>FxCopCmd</executable>
     <profile>Microsoft:FxCop:FxCopCmd</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
@@ -54,6 +58,8 @@ under the License.
     <executable>BuildAssembler</executable>
     <profile>Microsoft:SandCastle:BuildAssembler</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
@@ -69,6 +75,8 @@ under the License.
     <executable>XslTransform</executable>
     <profile>Microsoft:SandCastle:XslTransform</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
@@ -84,6 +92,8 @@ under the License.
     <executable>MRefBuilder</executable>
     <profile>Microsoft:SandCastle:MRefBuilder</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
@@ -99,6 +109,8 @@ under the License.
     <executable>java</executable>
     <profile>dotnet-jetty:start</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
@@ -114,6 +126,8 @@ under the License.
     <executable>startXSP</executable>
     <profile>XSP:START</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
@@ -142,6 +156,8 @@ under the License.
     <executable>xsd</executable>
     <profile>XSD:SCHEMA</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
@@ -183,6 +199,8 @@ under the License.
     <executable>xsd</executable>
     <profile>XSD:XML_INSTANCE</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
@@ -216,6 +234,8 @@ under the License.
     <executable>xsd</executable>
     <profile>XSD:XML_INSTANCE</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
@@ -237,6 +257,8 @@ under the License.
     <executable>xsd</executable>
     <profile>XSD:SCHEMA</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
@@ -269,6 +291,8 @@ under the License.
     <executable>resgen</executable>
     <profile>RESGEN</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
@@ -285,6 +309,8 @@ under the License.
     <executable>gacutil</executable>
     <profile>GACUTIL</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
@@ -301,6 +327,8 @@ under the License.
     <executable>gacutil</executable>
     <profile>GACUTIL</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
@@ -329,6 +357,8 @@ under the License.
     <executable>resgen</executable>
     <profile>RESGEN</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
@@ -357,6 +387,8 @@ under the License.
     <executable>al</executable>
     <profile>AL</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
@@ -373,6 +405,8 @@ under the License.
     <executable>al</executable>
     <profile>AL</profile>
     <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
