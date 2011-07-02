@@ -19,6 +19,7 @@
 package npanday.assembler;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -83,7 +84,11 @@ public class AssemblyInfo
 
     private File keyFile;
 
+    private TargetFramework targetFramework;
+
     private Map<String, String> customStringAttributes;
+    
+    private static final Map<String, String> EMPTY_CUSTOM_STRING_ATTRIBUTES = Collections.emptyMap();;
     
     /**
      * Default constructor
@@ -104,7 +109,8 @@ public class AssemblyInfo
             .append( "\r\nCopyright: " ).append( copyright )
             .append( "\r\nTrademark: " ).append( trademark )
             .append( "\r\nCulture: " ).append( culture )
-            .append( "\r\nConfiguration: " ).append( configuration );
+            .append( "\r\nConfiguration: " ).append( configuration )
+            .append( "\r\nTargetFramework: " ).append( targetFramework );
         return sb.toString();
     }
 
@@ -135,7 +141,7 @@ public class AssemblyInfo
 
     public String getVersion()
     {
-        return ( version != null ) ? version : "";
+        return version;
     }
 
     public void setVersion( String version )
@@ -145,7 +151,7 @@ public class AssemblyInfo
     
     public String getInformationalVersion()
     {
-        return ( informationalVersion != null ) ? informationalVersion : "";
+        return informationalVersion;
     }
 
     public void setInformationalVersion( String informationalVersion )
@@ -156,7 +162,7 @@ public class AssemblyInfo
 
     public String getDescription()
     {
-        return ( description != null ) ? description : "";
+        return description;
     }
 
     public void setDescription( String description )
@@ -166,7 +172,7 @@ public class AssemblyInfo
 
     public String getTitle()
     {
-        return ( title != null ) ? title : "";
+        return title;
     }
 
     public void setTitle( String title )
@@ -176,7 +182,7 @@ public class AssemblyInfo
 
     public String getCompany()
     {
-        return ( company != null ) ? company : "";
+        return company;
     }
 
     public void setCompany( String company )
@@ -186,7 +192,7 @@ public class AssemblyInfo
 
     public String getProduct()
     {
-        return ( product != null ) ? product : "";
+        return product;
     }
 
     public void setProduct( String product )
@@ -196,7 +202,7 @@ public class AssemblyInfo
 
     public String getCopyright()
     {
-        return ( copyright != null ) ? copyright : "";
+        return copyright;
     }
 
     public void setCopyright( String copyright )
@@ -206,7 +212,7 @@ public class AssemblyInfo
 
     public String getTrademark()
     {
-        return ( trademark != null ) ? trademark : "";
+        return trademark;
     }
 
     public void setTrademark( String trademark )
@@ -216,7 +222,7 @@ public class AssemblyInfo
 
     public String getCulture()
     {
-        return ( culture != null ) ? culture : "";
+        return culture;
     }
 
     public void setCulture( String culture )
@@ -226,7 +232,7 @@ public class AssemblyInfo
 
     public String getConfiguration()
     {
-        return ( configuration != null ) ? configuration : "";
+        return configuration;
     }
 
     public void setConfiguration( String configuration )
@@ -234,9 +240,19 @@ public class AssemblyInfo
         this.configuration = configuration;
     }
 
+    public void setTargetFramework( TargetFramework targetFramework )
+    {
+        this.targetFramework = targetFramework;
+    }
+
+    public TargetFramework getTargetFramework()
+    {
+        return targetFramework;
+    }
+
     public Map<String, String> getCustomStringAttributes()
     {
-        return customStringAttributes;
+        return (customStringAttributes != null) ? customStringAttributes : EMPTY_CUSTOM_STRING_ATTRIBUTES;
     }
 
     public void setCustomStringAttributes(Map<String, String> attributes)
@@ -293,6 +309,10 @@ public class AssemblyInfo
         {
             return false;
         }
+        if ( targetFramework != null ? !targetFramework.equals( that.targetFramework ) : that.targetFramework != null )
+        {
+            return false;
+        }
 
         return true;
     }
@@ -310,7 +330,81 @@ public class AssemblyInfo
         result = 29 * result + ( trademark != null ? trademark.hashCode() : 0 );
         result = 29 * result + ( culture != null ? culture.hashCode() : 0 );
         result = 29 * result + ( configuration != null ? configuration.hashCode() : 0 );
+        result = 29 * result + ( targetFramework != null ? targetFramework.hashCode() : 0 );
         return result;
+    }
+
+    public static class TargetFramework
+    {
+        /**
+         * Target framework name
+         */
+        private String frameworkName;
+
+        /**
+         * Target framework display name
+         */
+        private String frameworkDisplayName;
+
+        public void setFrameworkName(String frameworkName)
+        {
+            this.frameworkName = frameworkName;
+        }
+
+        public String getFrameworkName()
+        {
+            return this.frameworkName;
+        }
+
+        public void setFrameworkDisplayName(String frameworkDisplayName)
+        {
+            this.frameworkDisplayName = frameworkDisplayName;
+        }
+
+        public String getFrameworkDisplayName()
+        {
+            return this.frameworkDisplayName;
+        }
+
+        public boolean equals( Object o )
+        {
+            if ( this == o )
+            {
+                return true;
+            }
+            if ( o == null || getClass() != o.getClass() )
+            {
+                return false;
+            }
+
+            final TargetFramework that = (TargetFramework) o;
+            if ( frameworkName != null ? !frameworkName.equals( that.frameworkName ) : that.frameworkName != null )
+            {
+                return false;
+            }
+            if ( frameworkDisplayName != null ? !frameworkDisplayName.equals( that.frameworkDisplayName ) : that.frameworkDisplayName != null )
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public int hashCode()
+        {
+            int result;
+            result = ( frameworkName != null ? frameworkName.hashCode() : 0 );
+            result = 29 * result + ( frameworkDisplayName != null ? frameworkDisplayName.hashCode() : 0 );
+            return result;
+        }
+
+        public String toString()
+        {
+            StringBuffer sb = new StringBuffer();
+            sb.append( "FrameworkName: " ).append( frameworkName )
+                .append( "\r\nFrameworkDisplayName: " ).append( frameworkDisplayName );
+            return sb.toString();
+        }
+
     }
 
 }

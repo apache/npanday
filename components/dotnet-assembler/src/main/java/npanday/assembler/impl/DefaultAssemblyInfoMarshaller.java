@@ -21,6 +21,7 @@ package npanday.assembler.impl;
 import npanday.assembler.AssemblyInfoException;
 import npanday.assembler.AssemblyInfoMarshaller;
 import npanday.assembler.AssemblyInfo;
+import npanday.assembler.AssemblyInfo.TargetFramework;
 import npanday.model.assembly.plugins.AssemblyPlugin;
 
 import java.io.OutputStream;
@@ -56,33 +57,48 @@ final class DefaultAssemblyInfoMarshaller
     public void marshal( AssemblyInfo assemblyInfo, MavenProject mavenProject, OutputStream outputStream )
         throws AssemblyInfoException, IOException
     {
-        String src = mavenProject.getBuild().getDirectory() + "/build-sources";
         StringBuffer sb = new StringBuffer();
         sb.append( "using System.Reflection;\r\n" )
-            .append( "using System.Runtime.CompilerServices;\r\n" )
-            .append( createEntry( "Description", assemblyInfo.getDescription() ) )
-            .append( createEntry( "Title", assemblyInfo.getTitle() ) )
-            .append( createEntry( "Company", assemblyInfo.getCompany() ) )
-            .append( createEntry( "Product", assemblyInfo.getProduct() ) )
-            .append( createEntry( "Copyright", assemblyInfo.getCopyright().replace( "\"", "\\" ) ) )
-            .append( createEntry( "Trademark", assemblyInfo.getTrademark() ) )
-            .append( createEntry( "Culture", assemblyInfo.getCulture() ) )
-            .append( createEntry( "Version", assemblyInfo.getVersion() ) )
-            .append( createEntry( "InformationalVersion", assemblyInfo.getInformationalVersion() ) )
-            .append( createEntry( "Configuration", assemblyInfo.getConfiguration() ) );
-        if ( assemblyInfo.getKeyName() != null )
+            .append( "using System.Runtime.CompilerServices;\r\n" );
+        appendEntry( sb, "Description", assemblyInfo.getDescription() );
+        appendEntry( sb, "Title", assemblyInfo.getTitle() );
+        appendEntry( sb, "Company", assemblyInfo.getCompany() );
+        appendEntry( sb, "Product", assemblyInfo.getProduct() );
+        if (assemblyInfo.getCopyright() != null)
         {
-            sb.append( createEntry( "KeyName", assemblyInfo.getKeyName() ) );
+            appendEntry( sb, "Copyright", assemblyInfo.getCopyright().replace( "\"", "\\" ) );
         }
+        appendEntry( sb, "Trademark", assemblyInfo.getTrademark() );
+        appendEntry( sb, "Culture", assemblyInfo.getCulture() );
+        appendEntry( sb, "Version", assemblyInfo.getVersion() );
+        appendEntry( sb, "InformationalVersion", assemblyInfo.getInformationalVersion() );
+        appendEntry( sb, "Configuration", assemblyInfo.getConfiguration() );
+        appendEntry( sb, "KeyName", assemblyInfo.getKeyName() );
+
         if ( assemblyInfo.getKeyFile() != null )
         {
-            sb.append( createEntry( "KeyFile", assemblyInfo.getKeyFile().getAbsolutePath().replace( "\\", "\\\\" ) ) );
+            appendEntry( sb, "KeyFile", assemblyInfo.getKeyFile().getAbsolutePath().replace( "\\", "\\\\" ) );
+        }
+
+        TargetFramework targetFramework = assemblyInfo.getTargetFramework();
+        if (targetFramework != null)
+        {
+            String frameworkName = targetFramework.getFrameworkName();
+            String frameworkDisplayName = targetFramework.getFrameworkDisplayName();
+            sb.append( "[assembly: global::System.Runtime.Versioning.TargetFrameworkAttribute" )
+              .append( "(\"" ).append( frameworkName ).append("\"");
+            if (frameworkDisplayName != null)
+            {
+                sb.append(",FrameworkDisplayName=\"").append(frameworkDisplayName).append("\"");
+            }
+            sb.append( ")]" ).append("\r\n" );
         }
 
         boolean wroteCustomStringAttribute = false;
         for(Entry<String, String> e: assemblyInfo.getCustomStringAttributes().entrySet()) {
             if(StringUtils.isEmpty(e.getValue()))
                 continue;
+
             sb.append(createCustomStringEntry(e.getKey(), e.getValue()));
             wroteCustomStringAttribute = true;
         }
@@ -100,12 +116,17 @@ final class DefaultAssemblyInfoMarshaller
         FileOutputStream man = null;
         try
         {
-            String groupIdAsDir = mavenProject.getGroupId().replace( ".", File.separator );
-            File file = new File( src + "/META-INF/" + groupIdAsDir );
-            file.mkdirs();
-            man = new FileOutputStream(
-                src + "/META-INF/" + groupIdAsDir + File.separator + "AssemblyInfo." + plugin.getExtension() );
-            man.write( sb.toString().getBytes() );
+            if ( outputStream == null )
+            {
+                String src = mavenProject.getBuild().getDirectory() + "/build-sources";
+                String groupIdAsDir = mavenProject.getGroupId().replace( ".", File.separator );
+                File file = new File( src + "/META-INF/" + groupIdAsDir );
+                file.mkdirs();
+                man = new FileOutputStream(
+                    src + "/META-INF/" + groupIdAsDir + File.separator + "AssemblyInfo." + plugin.getExtension() );
+                outputStream = man;
+            }
+            outputStream.write( sb.toString().getBytes() );
         }
         catch ( IOException e )
         {
@@ -222,18 +243,19 @@ final class DefaultAssemblyInfoMarshaller
     }
 
     /**
-     * Returns an assembly entry with a name-value pair surrounded by brackets.
+     * Appends an assembly entry with a name-value pair surrounded by brackets.
      *
+     * @param sb    the string buffer to be appended
      * @param name  the name of the assembly entry
      * @param value the value of the assembly entry
-     * @return an assembly entry with a name-value pair surrounded by brackets
      */
-    private String createEntry( String name, String value )
+    private void appendEntry( StringBuffer sb, String name, String value )
     {
-        StringBuffer sb = new StringBuffer();
-        sb.append( "[assembly: Assembly" ).append( name ).append( "(\"" ).append( value ).append( "\")]" ).append(
-            "\r\n" );
-        return sb.toString();
+        if (value != null)
+        {
+            sb.append( "[assembly: Assembly" ).append( name ).append( "(\"" ).append( value ).append( "\")]" ).append(
+                "\r\n" );
+        }
     }
 
     private String createCustomStringEntry( String name, String value )

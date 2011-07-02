@@ -89,12 +89,12 @@ public final class AssemblerContextImpl
     {
         String basedir = mavenProject.getBasedir().toString();
         AssemblyInfo assemblyInfo = new AssemblyInfo();
-        String description = mavenProject.getDescription();
-        String version = mavenProject.getVersion();
+        String description = ( mavenProject.getDescription() != null ) ? mavenProject.getDescription() : "";
+        String version = ( mavenProject.getVersion() != null ) ? mavenProject.getVersion() : "";
         String name = mavenProject.getName();
         Organization org = mavenProject.getOrganization();
         String company = ( org != null ) ? org.getName() : "";
-        String copyright = null;
+        String copyright = "";
         String informationalVersion = "";
         String configuration = "";
 

@@ -26,16 +26,19 @@ import org.codehaus.plexus.util.FileUtils;
 
 import java.io.IOException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import npanday.InitializationException;
+import npanday.PlatformUnsupportedException;
 import npanday.vendor.*;
 import npanday.assembler.AssemblerContext;
 import npanday.assembler.AssemblyInfoMarshaller;
 import npanday.assembler.AssemblyInfoException;
 import npanday.assembler.AssemblyInfo;
+import npanday.assembler.AssemblyInfo.TargetFramework;
 
 /**
  * Generates an AssemblyInfo.* class based on information within the pom file.
@@ -110,6 +113,20 @@ public class AssemblyInfoGeneratorMojo
     private String sourceDirectory;
 
     /**
+     * The framework name to target.
+     *
+     * @parameter expression = "${frameworkName}"
+     */
+    private String frameworkName;
+
+    /**
+     * The framework display name to target.
+     *
+     * @parameter expression = "${frameworkDisplayName}"
+     */
+    private String frameworkDisplayName;
+
+    /**
      * @component
      */ 
     private AssemblerContext assemblerContext;
@@ -137,6 +154,57 @@ public class AssemblyInfoGeneratorMojo
         if ( ArtifactTypeHelper.isDotnetModule( project.getArtifact().getType() ))
         {
             return;
+        }
+
+
+        // auto-generate the target framework attribute metadata (needed for .NETPortable)
+        if ( frameworkName != null )
+        {
+            TargetFramework targetFramework = new TargetFramework();
+            targetFramework.setFrameworkName(frameworkName);
+            targetFramework.setFrameworkDisplayName(frameworkDisplayName);
+
+            AssemblyInfo assemblyInfo = new AssemblyInfo();
+            assemblyInfo.setTargetFramework(targetFramework);
+
+            try
+            {
+                FileOutputStream assemblyAttrs = null;
+                try
+                {
+                    String sourcesDir = project.getBuild().getDirectory() + "/build-sources";
+                    String groupIdAsDir = project.getGroupId().replace( ".", File.separator );
+
+                    File assemblyAttrsDir = new File( sourcesDir + "/META-INF/" + groupIdAsDir );
+                    String assemblyAttrsExt = assemblerContext.getClassExtensionFor( language.trim() );
+
+                    assemblyAttrsDir.mkdirs();
+                    assemblyAttrs = new FileOutputStream(
+                        assemblyAttrsDir + File.separator + frameworkName + ".AssemblyAttributes." + assemblyAttrsExt );
+
+                    AssemblyInfoMarshaller marshaller = assemblerContext.getAssemblyInfoMarshallerFor( language.trim() );
+                    marshaller.marshal( assemblyInfo, project, assemblyAttrs );
+                }
+                finally
+                {
+                    if ( assemblyAttrs != null )
+                    {
+                        assemblyAttrs .close();
+                    }
+                }
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "NPANDAY-902-008: Problem generating assembly attributes class", e );
+            }
+            catch ( AssemblyInfoException e )
+            {
+                throw new MojoExecutionException( "NPANDAY-902-009: Problem generating assembly attributes class", e );
+            }
+            catch ( PlatformUnsupportedException e )
+            {
+                throw new MojoExecutionException( "NPANDAY-902-010: Problem generating assembly attributes class", e );
+            }
         }
 
         File srcFile = new File( sourceDirectory );
