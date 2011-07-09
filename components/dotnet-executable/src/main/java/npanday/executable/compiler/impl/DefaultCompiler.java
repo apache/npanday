@@ -207,8 +207,9 @@ public final class DefaultCompiler
         }
         commands.add( "/warnaserror-" );
         //commands.add( "/nowarn" );
+
         if ( compilerContext.getCompilerRequirement().getVendor().equals( Vendor.MONO ) &&
-                 compilerContext.getCompilerRequirement().getProfile() == null)
+                 "FULL".equals( compilerContext.getCompilerRequirement().getProfile() ) )
         {
             commands.add( "/nostdlib" );
             commands.add( "/noconfig" );
