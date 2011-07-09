@@ -120,6 +120,7 @@ public final class CompilerPluginsRepository
             List<String> frameworkVersions = plugin.getFrameworkVersions();
             List<String> coreAssemblies = plugin.getAssemblies();
             String defaultAssemblyPath = plugin.getDefaultAssemblyPath();
+            String targetFramework = plugin.getTargetFramework();
 
             List platforms = plugin.getPlatforms();
             for ( Iterator j = platforms.iterator(); j.hasNext(); )
@@ -137,6 +138,7 @@ public final class CompilerPluginsRepository
                 platformCapability.setFrameworkVersions( frameworkVersions );
                 platformCapability.setProfile( profile );
                 platformCapability.setAssemblyPath( defaultAssemblyPath );
+                platformCapability.setTargetFramework( targetFramework );
                 String arch = platform.getArchitecture();
                 CommandFilter filter = plugin.getCommandFilter();
                 platformCapability.setCoreAssemblies( coreAssemblies );

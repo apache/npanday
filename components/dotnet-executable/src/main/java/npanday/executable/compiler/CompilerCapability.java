@@ -67,6 +67,13 @@ public interface CompilerCapability
     boolean isHasJustInTime();
 
     /**
+     * Returns the target framework of the plugin.
+     *
+     * @return the target framework of the plugin.
+     */
+    String getTargetFramework();
+
+    /**
      * Sets the assembly path.
      *
      * @param assemblyPath
@@ -94,5 +101,12 @@ public interface CompilerCapability
      * @param hasJustInTime
      */
     void setHasJustInTime( boolean hasJustInTime );
+
+    /**
+     * Set the target framework capability of the compiler.
+     *
+     * @param targetFramework
+     */
+    void setTargetFramework( String targetFramework );
 
 }

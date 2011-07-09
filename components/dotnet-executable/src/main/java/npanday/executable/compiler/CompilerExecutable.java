@@ -33,6 +33,13 @@ public interface CompilerExecutable
 {
 
     /**
+     * Returns the target framework for this compiler executable.
+     * 
+     * @return  the target framework for this compiler executable
+     */
+     String getTargetFramework();
+
+    /**
      * Returns a file pointing to the compiled artifact for this executable.
      *
      * @return a file pointing to the compiled artifact for this executable

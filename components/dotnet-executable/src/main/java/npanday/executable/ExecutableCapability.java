@@ -232,6 +232,8 @@ public interface ExecutableCapability
 
                 private String netDependencyId;
 
+                private String targetFramework;
+
                 public String getAssemblyPath()
                 {
                     return assemblyPath;
@@ -310,6 +312,16 @@ public interface ExecutableCapability
                 public void setLanguage( String language )
                 {
                     this.language = language;
+                }
+
+                public String getTargetFramework()
+                {
+                    return targetFramework;
+                }
+
+                public void setTargetFramework( String targetFramework )
+                {
+                    this.targetFramework = targetFramework;
                 }
 
                 public String getOperatingSystem()

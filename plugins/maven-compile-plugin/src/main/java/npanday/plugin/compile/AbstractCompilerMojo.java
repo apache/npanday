@@ -25,6 +25,11 @@ import npanday.vendor.SettingsException;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
 import npanday.PlatformUnsupportedException;
+import npanday.assembler.AssemblerContext;
+import npanday.assembler.AssemblyInfoMarshaller;
+import npanday.assembler.AssemblyInfoException;
+import npanday.assembler.AssemblyInfo;
+import npanday.assembler.AssemblyInfo.TargetFramework;
 import npanday.executable.ExecutionException;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
@@ -35,14 +40,19 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
-import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.Arrays;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -67,6 +77,11 @@ public abstract class AbstractCompilerMojo
      * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
      */
     private String settingsPath;
+
+    /**
+     * @component
+     */ 
+    private AssemblerContext assemblerContext;
 
     /**
      * Skips compiling of unit tests
@@ -1106,6 +1121,8 @@ public abstract class AbstractCompilerMojo
                     profileAssemblyPath);
             if (!test)
             {
+                // System.Runtime.Versioning.TargetFrameworkAttribute support
+                generateAssemblyAttributesIfNecessary(compilerExecutable.getTargetFramework());
 
                 Boolean sourceFilesUpToDate = (Boolean) super.getPluginContext().get("SOURCE_FILES_UP_TO_DATE");
                 if (((sourceFilesUpToDate == null) || sourceFilesUpToDate) &&
@@ -1235,6 +1252,83 @@ public abstract class AbstractCompilerMojo
             }
         }
         return lastModArtifact;
+    }
+
+    private void generateAssemblyAttributesIfNecessary(String frameworkName) throws MojoExecutionException
+    {
+        if (frameworkName != null)
+        {
+            TargetFramework targetFramework = new TargetFramework();
+            targetFramework.setFrameworkName(frameworkName);
+            //targetFramework.setFrameworkDisplayName(frameworkDisplayName);
+
+            AssemblyInfo assemblyInfo = new AssemblyInfo();
+            assemblyInfo.setTargetFramework(targetFramework);
+
+            try
+            {
+                FileInputStream assemblyAttrsInput = null;
+                FileOutputStream assemblyAttrsOutput = null;
+                try
+                {
+                    String sourcesDir = project.getBuild().getDirectory() + "/build-sources";
+                    String groupIdAsDir = project.getGroupId().replace( ".", File.separator );
+
+                    File assemblyAttrsDir = new File( sourcesDir + "/META-INF/" + groupIdAsDir );
+                    String assemblyAttrsExt = assemblerContext.getClassExtensionFor( language.trim() );
+                    File assemblyAttrsFile = new File(assemblyAttrsDir, frameworkName + ".AssemblyAttributes." + assemblyAttrsExt);
+
+                    ByteArrayOutputStream bytesOutput = new ByteArrayOutputStream();
+                    AssemblyInfoMarshaller marshaller = assemblerContext.getAssemblyInfoMarshallerFor( language.trim() );
+                    marshaller.marshal( assemblyInfo, project, bytesOutput );
+                    bytesOutput.close();
+                    byte[] byteArrayOutput = bytesOutput.toByteArray();
+
+                    byte[] byteArrayInput = null;
+                    if (assemblyAttrsFile.exists())
+                    {
+                        assemblyAttrsInput = new FileInputStream(assemblyAttrsFile);
+                        if (assemblyAttrsInput.available() == byteArrayOutput.length)
+                        {
+                            byteArrayInput = new byte[byteArrayOutput.length];
+                            int bytesRead = assemblyAttrsInput.read(byteArrayInput);
+                        }
+                    }
+
+                    if (byteArrayInput == null || !Arrays.equals(byteArrayInput, byteArrayOutput))
+                    {
+                        assemblyAttrsDir.mkdirs();
+                        assemblyAttrsOutput = new FileOutputStream(assemblyAttrsFile);
+                        assemblyAttrsOutput.write(byteArrayOutput);
+                    }
+
+                }
+                finally
+                {
+                    if ( assemblyAttrsOutput != null )
+                    {
+                        assemblyAttrsOutput.close();
+                    }
+
+                    if ( assemblyAttrsInput != null )
+                    {
+                        assemblyAttrsInput.close();
+                    }
+                }
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "NPANDAY-902-008: Problem generating assembly attributes class", e );
+            }
+            catch ( AssemblyInfoException e )
+            {
+                throw new MojoExecutionException( "NPANDAY-902-009: Problem generating assembly attributes class", e );
+            }
+            catch ( PlatformUnsupportedException e )
+            {
+                throw new MojoExecutionException( "NPANDAY-902-010: Problem generating assembly attributes class", e );
+            }
+        }
     }
 
 }

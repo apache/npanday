@@ -104,6 +104,13 @@ under the License.
           <type>String</type>
         </field>
         <field>
+          <name>targetFramework</name>
+          <description>
+            Target framework for the compiled artifact.
+          </description>
+          <type>String</type>
+        </field>
+        <field>
           <name>assemblies</name>
           <description>
             Assemblies to reference from the command line. This is used to create custom profiles (such as

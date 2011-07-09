@@ -59,6 +59,14 @@ abstract class BaseCompiler implements CompilerExecutable
     }
 
     /**
+     * @see npanday.executable.compiler.CompilerExecutable#getTargetFramework()
+     */
+    public String getTargetFramework()
+    {
+        return compilerContext.getCompilerCapability().getTargetFramework();
+    }
+
+    /**
      * @see npanday.executable.compiler.CompilerExecutable#getCompiledArtifact()
      */
     public File getCompiledArtifact()
