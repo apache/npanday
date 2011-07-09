@@ -522,6 +522,61 @@ under the License.
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>3.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+      <platform>      
+        <operatingSystem>Mac OS X</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Linux</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Solaris</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>FreeBSD</operatingSystem>
+      </platform>
+    </platforms>
+    <commandFilter>
+      <includes>
+        <include>out</include>
+        <include>target</include>
+        <include>delaysign</include>
+        <include>doc</include>
+        <include>keyfile</include>
+        <include>keycontainer</include>
+        <include>recurse</include>
+        <include>reference</include>
+        <include>addmodule</include>
+        <include>checked</include>
+        <include>codepage</include>
+        <include>clscheck</include>
+        <include>debug</include>
+        <include>optimize</include>
+        <include>warnaserror</include>
+        <include>warn</include>
+        <include>unsafe</include>
+        <include>define</include>
+        <include>langversion</include>
+        <include>main</include>
+        <include>noconfig</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>resource</include>
+      </includes>
+    </commandFilter>
+  </compilerPlugin>
+  <compilerPlugin>
+    <identifier>MONO-CS-4</identifier>
+    <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
+    <vendor>MONO</vendor>
+    <language>C_SHARP</language>
+    <profile>FULL</profile>
+    <executable>dmcs</executable>
+    <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>      
     </frameworkVersions>
     <platforms>
@@ -574,7 +629,7 @@ under the License.
     <identifier>MONO-CS:4.0+.NETPortable,Profile2</identifier>
     <pluginClass>npanday.executable.compiler.impl.CSharpCompilerForProfile</pluginClass>
     <vendor>MONO</vendor>
-    <executable>gmcs</executable>
+    <executable>dmcs</executable>
     <language>C_SHARP</language>
     <profile>.NETPortable,Profile2</profile>
     <frameworkVersions>
