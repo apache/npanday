@@ -209,12 +209,12 @@ under the License.
     </commandFilter>
   </compilerPlugin>
   <compilerPlugin>
-    <identifier>MS-CS:4.0:Portable</identifier>
+    <identifier>MS-CS:4.0+.NETPortable,Profile2</identifier>
     <pluginClass>npanday.executable.compiler.impl.CSharpCompilerForProfile</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>csc</executable>
     <language>C_SHARP</language>
-    <profile>PORTABLE</profile>
+    <profile>.NETPortable,Profile2</profile>
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>      
     </frameworkVersions>
@@ -224,7 +224,7 @@ under the License.
         <architecture>x86</architecture>
       </platform>
     </platforms>
-    <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0</defaultAssemblyPath>
+    <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile2</defaultAssemblyPath>
     <assemblies>
       <assembly>mscorlib</assembly>
       <assembly>System</assembly>
@@ -569,6 +569,87 @@ under the License.
         <include>nostdlib</include>
         <include>nowarn</include>
         <include>resource</include>
+      </includes>
+    </commandFilter>
+  </compilerPlugin>
+  <compilerPlugin>
+    <identifier>MONO-CS:4.0+.NETPortable,Profile2</identifier>
+    <pluginClass>npanday.executable.compiler.impl.CSharpCompilerForProfile</pluginClass>
+    <vendor>MONO</vendor>
+    <executable>gmcs</executable>
+    <language>C_SHARP</language>
+    <profile>.NETPortable,Profile2</profile>
+    <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>      
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+      <platform>      
+        <operatingSystem>Mac OS X</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Linux</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Solaris</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>FreeBSD</operatingSystem>
+      </platform>
+    </platforms>
+    <!-- Mono 2.10.2 missing .NETPortable defaultAssemblyPath, requires profileAssemblyPath -->
+    <assemblies>
+      <assembly>mscorlib</assembly>
+      <assembly>System</assembly>
+      <assembly>System.Core</assembly>
+      <assembly>System.Net</assembly>
+      <assembly>System.Runtime.Serialization</assembly>
+      <assembly>System.ServiceModel</assembly>
+      <assembly>System.Xml</assembly>
+      <assembly>System.Xml.Serialization</assembly>
+    </assemblies>
+    <commandFilter>
+      <includes>
+        <include>out</include>
+        <include>target</include>
+        <include>delaysign</include>
+        <include>doc</include>
+        <include>keyfile</include>
+        <include>keycontainer</include>
+        <include>platform</include>
+        <include>recurse</include>
+        <include>reference</include>
+        <include>addmodule</include>
+        <include>win32res</include>
+        <include>win32icon</include>
+        <include>resource</include>
+        <include>linkresource</include>
+        <include>debug</include>
+        <include>optimize</include>
+        <include>warnaserror</include>
+        <include>warn</include>
+        <include>nowarn</include>
+        <include>checked</include>
+        <include>unsafe</include>
+        <include>define</include>
+        <include>langversion</include>
+        <include>help</include>
+        <include>nologo</include>
+        <include>noconfig</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>codepage</include>
+        <include>utf8output</include>
+        <include>main</include>
+        <include>fullpaths</include>
+        <include>filealign</include>
+        <include>pdb</include>
+        <include>nostdlib</include>
+        <include>lib</include>
+        <include>errorreport</include>
+        <include>moduleassemblyname</include>
       </includes>
     </commandFilter>
   </compilerPlugin>

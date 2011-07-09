@@ -18,7 +18,7 @@
  */
 package npanday.executable.compiler.impl;
 
-import npanday.executable.NetExecutable;
+import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.ExecutionException;
 import npanday.NPandayContext;
 import npanday.executable.compiler.CompilerContext;
@@ -34,24 +34,37 @@ import java.io.File;
 public final class CSharpCompilerForProfile
     extends BaseCompiler
 {
-    private NetExecutable netCompiler;
-
+    private CompilerExecutable netCompiler;
     private CompilerContext compilerContext;
-
-    public boolean failOnErrorOutput()
-    {
-        return true;
-    }
 
     public CSharpCompilerForProfile()
     {
         netCompiler = new DefaultCompiler();
     }
 
+    public void init( NPandayContext npandayContext )
+    {
+        super.init( npandayContext);
+        netCompiler.init( npandayContext );
+        this.compilerContext = (CompilerContext) npandayContext;
+    }
+
+    public boolean failOnErrorOutput()
+    {
+        return netCompiler.failOnErrorOutput();
+    }
+
     public List<String> getCommands()
         throws ExecutionException
     {
-        File path = new File( compilerContext.getCompilerCapability().getAssemblyPath() );
+        String assemblyPath = compilerContext.getCompilerCapability().getAssemblyPath();
+        if ( assemblyPath == null )
+        {
+            throw new ExecutionException(
+                "NPANDAY-067-003: The assembly path is not specified" );
+        }
+
+        File path = new File( assemblyPath );
         if ( !path.exists() )
         {
             throw new ExecutionException(
@@ -71,12 +84,5 @@ public final class CSharpCompilerForProfile
     public void resetCommands( List<String> commands )
     {
         
-    }
-
-    public void init( NPandayContext npandayContext )
-    {
-        super.init( npandayContext);
-        netCompiler.init( npandayContext );
-        this.compilerContext = (CompilerContext) npandayContext;
     }
 }
