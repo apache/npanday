@@ -228,12 +228,10 @@ under the License.
     <assemblies>
       <assembly>mscorlib</assembly>
       <assembly>System</assembly>
-      <assembly>System.ComponentModel.Composition</assembly>
       <assembly>System.Core</assembly>
       <assembly>System.Net</assembly>
       <assembly>System.Runtime.Serialization</assembly>
       <assembly>System.ServiceModel</assembly>
-      <assembly>System.Windows</assembly>
       <assembly>System.Xml</assembly>
       <assembly>System.Xml.Serialization</assembly>
     </assemblies>
