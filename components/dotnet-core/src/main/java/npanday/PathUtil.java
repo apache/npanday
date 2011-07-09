@@ -296,25 +296,29 @@ public final class PathUtil
 
 
     public static boolean containsExecutable(String executablePath, String executable) {
-        File path = new File(executablePath);
-        if (!path.exists())
-            return false;
+        return (getExecutable(new File(executablePath), executable) != null);
+    }
 
-        File file = new File(path, executable);
-        if (file.exists())
-            return true;
+    public static File getExecutable(File executablePath, String executable) {
+
+        if (executablePath == null || !executablePath.exists())
+            return null;
+
+        File executableFile = new File(executablePath, executable);
+        if (executableFile.exists())
+            return executableFile;
 
         // TODO: handle linux/mac ?
         String[] extensions = new String[] {"exe", "com", "bat", "cmd"};
 
         for (String extension : extensions)
         {
-            file = new File(path, executable + "." + extension);
-            if (file.exists())
-                return true;
+            executableFile = new File(executablePath, executable + "." + extension);
+            if (executableFile.exists())
+                return executableFile;
         }
 
-        return false;
+        return null;
     }
 
     public static File buildSettingsFilePath( String settingsPathOrFile )

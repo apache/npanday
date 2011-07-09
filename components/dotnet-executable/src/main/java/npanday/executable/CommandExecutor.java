@@ -18,6 +18,8 @@
  */
 package npanday.executable;
 
+import npanday.PathUtil;
+
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.cli.*;
 
@@ -340,6 +342,21 @@ public interface CommandExecutor
                             return str;
                         }
                     };
+
+                    // NPANDAY-409
+                    // On non-Windows platforms, such as Linux, "gmcs" not resolved 
+                    // to gmcs.exe in working directory due to /usr/bin/gmcs
+                    // but "./gmcs.exe" resolved as desired in working directory
+                    String osName = System.getProperty("os.name");
+                    if (!osName.toLowerCase().contains("win"))
+                    {
+                        File executableFile = PathUtil.getExecutable(workingDirectory, executable);
+                        // do not prefix for internal commands, such as mkdir
+                        if (executableFile != null && workingDirectory.equals(executableFile.getParentFile()))
+                        {
+                            executable = new File("./", executableFile.getName()).toString();
+                        }
+                    }
 
                     commandline.setExecutable( executable );
                     commandline.addArguments( commands.toArray( new String[commands.size()]));
