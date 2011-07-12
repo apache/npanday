@@ -20,10 +20,12 @@
 package npanday.plugin.test;
 
 import npanday.ArtifactTypeHelper;
+import npanday.PlatformUnsupportedException;
 import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NPandayArtifactResolutionException;
-import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutionException;
+import npanday.executable.NetExecutable;
+import npanday.executable.NetExecutableFactory;
 import npanday.vendor.IllegalStateException;
 import npanday.vendor.StateMachineProcessor;
 import npanday.vendor.Vendor;
@@ -170,13 +172,20 @@ extends AbstractMojo
      */
     private String executionFrameworkVersion;
 
-    private String getExecutableFor( VendorInfo vendorInfo )
+    /**
+     * @component
+     */
+    private NetExecutableFactory netExecutableFactory;
+    
+    private NetExecutable getExecutableFor( VendorInfo vendorInfo, List<String> commands ) throws PlatformUnsupportedException
     {
-        String exe;
-        if ( nunitCommand == null )
+        String executableName = nunitCommand;
+
+        // default the executable name if not explicitly specified
+        if ( executableName == null )
         {
             // nunit-console-x86 is included since 2.4.2 (August 2007, http://www.nunit.org/index.php?p=releaseNotes&r=2.4.3)
-            exe = "nunit-console" + (forceX86 ? "-x86" : "");
+            executableName = "nunit-console" + (forceX86 ? "-x86" : "");
 
             if ( vendorInfo != null )
             {
@@ -186,17 +195,18 @@ extends AbstractMojo
                 {
                     if ( frameworkVersion == null || !frameworkVersion.startsWith( "1.1" ) )
                     {
-                        exe = "nunit-console2";
+                        executableName = "nunit-console2";
                     }
                 }
             }
+
         }
-        else
-        {
-            exe = nunitCommand;
-        }
-        return !( nunitHome == null || nunitHome.equals( "" ) ) ? nunitHome + File.separator + "bin" + File.separator
-            + exe : exe;
+         
+        File executableHome = (nunitHome != null) ? new File(nunitHome, "bin") : null;
+        Vendor vendor = vendorInfo.getVendor();
+        String vendorName = vendor.getVendorName();
+
+        return netExecutableFactory.getNetExecutableFor( vendorName, executionFrameworkVersion, executableName, commands, executableHome );
     }
 
     private List<String> getCommandsFor( VendorInfo vendorInfo )    
@@ -398,46 +408,14 @@ extends AbstractMojo
         // pretty print nunit logs
         getLog().info( System.getProperty( "line.separator" ) );
 
-        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         try
         {
-            commandExecutor.setLogger( new org.codehaus.plexus.logging.AbstractLogger( 0, "nunit-logger" )
-            {
-                Log log = getLog();
-
-                public void debug( String message, Throwable throwable )
-                {
-                    log.debug( message, throwable );
-
-                }
-
-                public void error( String message, Throwable throwable )
-                {
-                    log.error( message, throwable );
-                }
-
-                public void fatalError( String message, Throwable throwable )
-                {
-                    log.error( message, throwable );
-                }
-
-                public Logger getChildLogger( String message )
-                {
-                    return null;
-                }
-
-                public void info( String message, Throwable throwable )
-                {
-                    log.info( message, throwable );
-                }
-
-                public void warn( String message, Throwable throwable )
-                {
-                    log.warn( message, throwable );
-                }
-
-            } );
-            commandExecutor.executeCommand( getExecutableFor( vendorInfo ), commands );
+            NetExecutable executable = getExecutableFor( vendorInfo, commands );
+            executable.execute();
+        }
+        catch (PlatformUnsupportedException e)
+        {
+            throw new MojoFailureException( "NPANDAY-1100-008: Platform unsupported, is your npanday-settings.xml configured correctly?", e);
         }
         catch ( ExecutionException e )
         {
