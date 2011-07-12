@@ -23,6 +23,7 @@ import npanday.ArtifactTypeHelper;
 import npanday.PlatformUnsupportedException;
 import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NPandayArtifactResolutionException;
+import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.executable.NetExecutableFactory;
@@ -177,7 +178,12 @@ extends AbstractMojo
      */
     private NetExecutableFactory netExecutableFactory;
     
-    private NetExecutable getExecutableFor( VendorInfo vendorInfo, List<String> commands ) throws PlatformUnsupportedException
+    private File getExecutableHome() 
+    {
+        return (nunitHome != null) ? new File(nunitHome, "bin") : null;
+    }
+
+    private String getExecutableNameFor( VendorInfo vendorInfo ) 
     {
         String executableName = nunitCommand;
 
@@ -202,11 +208,7 @@ extends AbstractMojo
 
         }
          
-        File executableHome = (nunitHome != null) ? new File(nunitHome, "bin") : null;
-        Vendor vendor = vendorInfo.getVendor();
-        String vendorName = vendor.getVendorName();
-
-        return netExecutableFactory.getNetExecutableFor( vendorName, executionFrameworkVersion, executableName, commands, executableHome );
+        return executableName;
     }
 
     private List<String> getCommandsFor( VendorInfo vendorInfo )    
@@ -408,14 +410,61 @@ extends AbstractMojo
         // pretty print nunit logs
         getLog().info( System.getProperty( "line.separator" ) );
 
+        String executableName = getExecutableNameFor( vendorInfo );
+        File executableHome = getExecutableHome();
+
         try
         {
-            NetExecutable executable = getExecutableFor( vendorInfo, commands );
-            executable.execute();
-        }
-        catch (PlatformUnsupportedException e)
-        {
-            throw new MojoFailureException( "NPANDAY-1100-008: Platform unsupported, is your npanday-settings.xml configured correctly?", e);
+            try
+            {
+                Vendor vendor = vendorInfo.getVendor();
+                String vendorName = vendor.getVendorName();
+
+                NetExecutable executable = netExecutableFactory.getNetExecutableFor( vendorName, executionFrameworkVersion, executableName, commands, executableHome );
+                executable.execute();
+            }
+            catch (PlatformUnsupportedException pue)
+            {
+                getLog().debug( "NPANDAY-1100-008: Platform unsupported, is your npanday-settings.xml configured correctly?", pue );        
+                CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+                commandExecutor.setLogger( new org.codehaus.plexus.logging.AbstractLogger( 0, "nunit-logger" )
+                {
+                    Log log = getLog();
+
+                    public void debug( String message, Throwable throwable )
+                    {
+                        log.debug( message, throwable );
+                    }
+
+                    public void error( String message, Throwable throwable )
+                    {
+                        log.error( message, throwable );
+                    }
+
+                    public void fatalError( String message, Throwable throwable )
+                    {
+                        log.error( message, throwable );
+                    }
+
+                    public Logger getChildLogger( String message )
+                    {
+                        return null;
+                    }
+
+                    public void info( String message, Throwable throwable )
+                    {
+                        log.info( message, throwable );
+                    }
+
+                    public void warn( String message, Throwable throwable )
+                    {
+                        log.warn( message, throwable );
+                    }
+                } );
+
+                String executablePath = (executableHome != null) ? new File(executableHome, executableName).toString() : executableName;
+                commandExecutor.executeCommand( executablePath, commands );
+            }
         }
         catch ( ExecutionException e )
         {

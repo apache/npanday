@@ -35,6 +35,23 @@ under the License.
     </platforms>
   </executablePlugin>
   <executablePlugin>
+    <identifier>nunit-console-x86</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>nunit-console-x86</executable>
+    <profile>nunit-console-x86</profile>
+    <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
     <identifier>nunit-console</identifier>
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MONO</vendor>
