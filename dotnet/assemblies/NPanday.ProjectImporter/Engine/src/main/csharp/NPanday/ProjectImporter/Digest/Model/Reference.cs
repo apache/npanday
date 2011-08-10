@@ -406,6 +406,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                     return null;
                 }
 
+                logger.Log(NPanday.Logging.Level.INFO, "Resolved SNAPSHOT: Timestamp = " + timeStamp + "; Build Number = " + buildNumber);
                 timeStampVersion = timeStamp + "-" + buildNumber;
             }
             catch (Exception e)
