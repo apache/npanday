@@ -21,12 +21,17 @@ package NPanday.Plugin.Msbuild;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import npanday.plugin.FieldAnnotation;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
@@ -53,6 +58,11 @@ public class MsbuildMojo
      * @parameter expression = "${project}"
      */
     private org.apache.maven.project.MavenProject project;
+
+    /**
+     * @parameter expression = "${reactorProjects}"
+     */
+    private List<org.apache.maven.project.MavenProject> reactorProjects;
 
     /**
      * @parameter expression = "${settings.localRepository}"
@@ -150,15 +160,36 @@ public class MsbuildMojo
     {
         if ( copyReferences )
         {
+            Map<String,MavenProject> projects = new HashMap<String,MavenProject>();
+            for ( MavenProject p : reactorProjects )
+            {
+                projects.put( ArtifactUtils.versionlessKey( p.getGroupId(), p.getArtifactId() ), p );
+            }
+            getLog().info( "projects = " + projects.keySet() );
+
             for ( Object artifact : project.getDependencyArtifacts() )
             {
                 Artifact a = (Artifact) artifact;
 
-                String path =
-                    a.getGroupId() + "/" + a.getArtifactId() + "-" + a.getBaseVersion() + "/" + a.getArtifactId() + "." +
-                        a.getArtifactHandler().getExtension();
-                File targetFile = new File( referencesDirectory, path );
-
+                File targetDir;
+                String vKey = ArtifactUtils.versionlessKey( a );
+                if ( !projects.containsKey( vKey ) )
+                {
+                    String path =
+                        a.getGroupId() + "/" + a.getArtifactId() + "-" + a.getBaseVersion();
+                    targetDir = new File( referencesDirectory, path );
+                }
+                else
+                {
+                    // Likely a project reference in MSBuild. 
+                    // If the other project was not built with MSBuild, make sure the artifact is present where it will look for it
+                    // Note: deliberately limited for now - will only work with reactor projects and doesn't test what are references and what are not
+                    // TODO: support other configurations, or more aligned MSBuild-based builds
+                    targetDir = new File( projects.get( vKey ).getBasedir(), "bin/Debug" );
+                }
+                File targetFile = new File( targetDir, a.getArtifactId() + "." + a.getArtifactHandler().getExtension() );
+    
+                getLog().info( "Copying reference " + vKey + " to " + targetFile );
                 if ( !targetFile.exists() )
                 {
                     targetFile.getParentFile().mkdirs();

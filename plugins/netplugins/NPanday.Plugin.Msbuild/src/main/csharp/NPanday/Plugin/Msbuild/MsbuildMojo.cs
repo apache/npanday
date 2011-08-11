@@ -75,8 +75,9 @@ namespace NPanday.Plugin.Msbuild
             }
             // must use /v:q here, as /v:m and above report the csc command, that includes '/errorprompt', which
             // erroneously triggers the NPANDAY-063-001 error
+            // BuildingInsideVisualStudio is required to avoid building project references on framework 2.0
             ProcessStartInfo processStartInfo =
-               new ProcessStartInfo("msbuild", "/v:q " + projectName);
+               new ProcessStartInfo("msbuild", "/v:q /p:BuildProjectReferences=false /p:BuildingInsideVisualStudio=true " + projectName);
             processStartInfo.UseShellExecute = false;
             Process p = System.Diagnostics.Process.Start(processStartInfo);
             p.WaitForExit();
