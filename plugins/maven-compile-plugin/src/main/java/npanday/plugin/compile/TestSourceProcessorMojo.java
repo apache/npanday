@@ -48,7 +48,7 @@ public class TestSourceProcessorMojo
      * @parameter expression = "${sourceDirectory}" default-value="${project.build.testSourceDirectory}"
      * @required
      */
-    private String sourceDirectory;
+    private File sourceDirectory;
 
     /**
      * Output directory for the test sources.
@@ -56,7 +56,7 @@ public class TestSourceProcessorMojo
      * @parameter expression = "${outputDirectory}" default-value="${project.build.directory}/build-test-sources"
      * @required
      */
-    private String outputDirectory;
+    private File outputDirectory;
 
     /**
      * @parameter expression = "${testExcludes}"
@@ -86,13 +86,13 @@ public class TestSourceProcessorMojo
     {
         long startTime = System.currentTimeMillis();
 
-        if ( !new File( sourceDirectory ).exists() )
+        if ( !sourceDirectory.exists() )
         {
             getLog().info( "NPANDAY-905-001: No test source files to copy" );
             return;
         }
         DirectoryScanner directoryScanner = new DirectoryScanner();
-        directoryScanner.setBasedir( sourceDirectory );
+        directoryScanner.setBasedir( sourceDirectory.getAbsolutePath() );
 
         List<String> excludeList = new ArrayList<String>();
         excludeList.add( "*.suo" );
@@ -133,8 +133,8 @@ public class TestSourceProcessorMojo
         {
             try
             {
-                File sourceFile = new File( sourceDirectory + File.separator + file );
-                File targetFile = new File( outputDirectory + File.separator + file );
+                File sourceFile = new File( sourceDirectory, file );
+                File targetFile = new File( outputDirectory, file );
                 if ( sourceFile.lastModified() > targetFile.lastModified() )
                 {
                     FileUtils.copyFile( sourceFile, targetFile );

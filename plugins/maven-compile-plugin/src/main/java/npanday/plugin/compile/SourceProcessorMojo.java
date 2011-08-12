@@ -49,7 +49,7 @@ public class SourceProcessorMojo
      * @parameter expression = "${sourceDirectory}" default-value="${project.build.sourceDirectory}"
      * @required
      */
-    private String sourceDirectory;
+    private File sourceDirectory;
 
     /**
      * Output directory
@@ -57,7 +57,7 @@ public class SourceProcessorMojo
      * @parameter expression = "${outputDirectory}" default-value="${project.build.directory}/build-sources"
      * @required
      */
-    private String outputDirectory;
+    private File outputDirectory;
 
     /**
      * @parameter expression = "${includes}"
@@ -87,13 +87,13 @@ public class SourceProcessorMojo
     {
         long startTime = System.currentTimeMillis();
 
-        if ( !new File( sourceDirectory ).exists() )
+        if ( !sourceDirectory.exists() )
         {
             getLog().info( "NPANDAY-904-001: No source files to copy" );
             return;
         }
         DirectoryScanner directoryScanner = new DirectoryScanner();
-        directoryScanner.setBasedir( sourceDirectory );
+        directoryScanner.setBasedir( sourceDirectory.getAbsolutePath() );
 
         List<String> excludeList = new ArrayList<String>();
         //target files
@@ -135,8 +135,8 @@ public class SourceProcessorMojo
         {
             try
             {
-                File sourceFile = new File( sourceDirectory + File.separator + file );
-                File targetFile = new File( outputDirectory + File.separator + file );
+                File sourceFile = new File( sourceDirectory, file );
+                File targetFile = new File( outputDirectory, file );
                 if ( sourceFile.lastModified() > targetFile.lastModified() )
                 {
                     super.getPluginContext().put( "SOURCE_FILES_UP_TO_DATE", Boolean.FALSE );
