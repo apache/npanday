@@ -304,7 +304,13 @@ public final class PathUtil
         if (executablePath == null || !executablePath.exists())
             return null;
 
-        File executableFile = new File(executablePath, executable);
+        File executableFile = new File(executable);
+        if (executableFile.isAbsolute())
+        {
+            executablePath = executableFile.getParentFile();
+            executable = executableFile.getName();
+        }
+
         if (executableFile.exists())
             return executableFile;
 
