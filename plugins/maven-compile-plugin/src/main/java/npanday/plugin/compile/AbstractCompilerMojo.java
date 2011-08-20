@@ -19,6 +19,7 @@
 
 package npanday.plugin.compile;
 
+import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
 import npanday.PathUtil;
 import npanday.vendor.SettingsException;
@@ -38,6 +39,7 @@ import npanday.registry.RepositoryRegistry;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.BufferedReader;
@@ -98,6 +100,14 @@ public abstract class AbstractCompilerMojo
      * @required
      */
     protected MavenProject project;
+
+    /**
+     * The maven project helper.
+     *
+     * @component
+     * @required
+     */
+    protected MavenProjectHelper projectHelper;
 
     /**
      * The location of the local Maven repository.
@@ -310,6 +320,11 @@ public abstract class AbstractCompilerMojo
      * @parameter expression = "${isDebug}" default-value="false"
      */
     protected boolean isDebug;
+
+    /**
+     * @parameter classifier;
+     */
+    protected String classifier;
 
     /**
      * @component
@@ -1119,6 +1134,17 @@ public abstract class AbstractCompilerMojo
                     getCompilerConfig(),
                     project,
                     profileAssemblyPath);
+
+            File compiledArtifact = compilerExecutable.getCompiledArtifact();
+
+            // TODO: see issue with CompilerContextImpl.getArtifact(), which does not incorporate outputDirectory
+            if ( outputDirectory != null )
+            {
+                ArtifactType artifactType = getCompilerConfig().getArtifactType();
+                compiledArtifact = new File(outputDirectory.getAbsolutePath() + File.separator +
+                                            project.getArtifactId() + "." + artifactType.getExtension());
+            }
+
             if (!test)
             {
                 // System.Runtime.Versioning.TargetFrameworkAttribute support
@@ -1132,7 +1158,7 @@ public abstract class AbstractCompilerMojo
                     if (isUpToDateWithPomAndSettingsAndDependencies(compilerExecutable.getCompiledArtifact()))
                     {
                         getLog().info("NPANDAY-900-003: Nothing to compile - all classes are up-to-date");
-                        project.getArtifact().setFile(compilerExecutable.getCompiledArtifact());
+                        attachArtifact(compiledArtifact, classifier);
                         return;
                     }
                 }
@@ -1152,7 +1178,7 @@ public abstract class AbstractCompilerMojo
 
             if (!test)
             {
-                project.getArtifact().setFile(compilerExecutable.getCompiledArtifact());
+                attachArtifact(compiledArtifact, classifier);
             }
 
         }
@@ -1169,6 +1195,19 @@ public abstract class AbstractCompilerMojo
         }
         long endTime = System.currentTimeMillis();
         getLog().info("Mojo Execution Time = " + (endTime - startTime));
+    }
+
+    private void attachArtifact(File artifact, String classifier) {
+        if ( classifier != null )
+        {
+            getLog().debug("Attaching artifact " + artifact.getPath() + " with classifier: " + classifier);
+            projectHelper.attachArtifact(project, artifact, classifier);
+        }
+        else
+        {
+            getLog().debug("Attaching default project artifact " + artifact.getPath());
+            project.getArtifact().setFile(artifact);
+        }
     }
 
 
