@@ -520,4 +520,67 @@ under the License.
       </platform>
     </platforms>
   </executablePlugin>
+  <executablePlugin>
+    <identifier>MS:ILMERGE</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>ilmerge</executable>
+    <profile>ILMERGE</profile>
+    <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>MS:ILREPACK</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>ilrepack</executable>
+    <profile>ILREPACK</profile>
+    <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>MONO:ILREPACK</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MONO</vendor>
+    <executable>ilrepack</executable>
+    <profile>ILREPACK</profile>
+    <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+      <platform>      
+        <operatingSystem>Mac OS X</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Linux</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Solaris</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>FreeBSD</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
 </executablePlugins>

@@ -40,6 +40,7 @@ under the License.
     <module>maven-aspx-plugin</module>
     <module>maven-fxcop-plugin</module>  
     <module>maven-install-plugin</module>  
+    <module>maven-ilmerge-plugin</module>  
     <module>maven-link-plugin</module>  
     <module>maven-mojo-generator-plugin</module>  
     <module>maven-resgen-plugin</module>  

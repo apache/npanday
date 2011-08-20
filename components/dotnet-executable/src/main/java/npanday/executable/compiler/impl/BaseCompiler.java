@@ -69,6 +69,14 @@ abstract class BaseCompiler implements CompilerExecutable
     /**
      * @see npanday.executable.compiler.CompilerExecutable#getCompiledArtifact()
      */
+    public String getAssemblyPath()
+    {
+        return compilerContext.getCompilerCapability().getAssemblyPath();
+    }
+
+    /**
+     * @see npanday.executable.compiler.CompilerExecutable#getCompiledArtifact()
+     */
     public File getCompiledArtifact()
         throws InvalidArtifactException
     {
@@ -134,9 +142,13 @@ abstract class BaseCompiler implements CompilerExecutable
             compilerContext.getCompilerRequirement().getVendor() + ", Assembly Name = " +
             compilerContext.getArtifact().getAbsolutePath() );
 
+	// commands are executed relative to working directory in Windows, but not all platforms
+        File executionPath = getExecutionPath();
+        String executable = new File(executionPath, getExecutable()).toString();
+
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         commandExecutor.setLogger( logger );
-        commandExecutor.executeCommand( getExecutable(), getCommands(), getExecutionPath(), failOnErrorOutput() );
+        commandExecutor.executeCommand( executable, getCommands(), executionPath, failOnErrorOutput() );
     }
 
     public Vendor getVendor()

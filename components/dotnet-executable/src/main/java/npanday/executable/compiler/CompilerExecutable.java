@@ -33,6 +33,13 @@ public interface CompilerExecutable
 {
 
     /**
+     * Returns the assembly path for this executable.
+     *
+     * @return the assembly path for this executable
+     */
+    String getAssemblyPath();
+
+    /**
      * Returns the target framework for this compiler executable.
      * 
      * @return  the target framework for this compiler executable
