@@ -267,7 +267,10 @@ namespace NPanday.ProjectImporter.Digest.Model
                     return false;
                 }
                 List<string> activeProfiles = new List<string>();
-                activeProfiles.AddRange(settings.activeProfiles);
+                if (settings.activeProfiles != null)
+                {
+                    activeProfiles.AddRange(settings.activeProfiles);
+                }
 
                 Dictionary<string, string> mirrors = new Dictionary<string, string>();
 
