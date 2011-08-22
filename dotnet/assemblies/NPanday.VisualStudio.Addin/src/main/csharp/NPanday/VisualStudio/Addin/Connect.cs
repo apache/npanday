@@ -852,17 +852,20 @@ namespace NPanday.VisualStudio.Addin
                     }
                     else
                     {
-                        Assembly a = Assembly.ReflectionOnlyLoadFrom(pReference.Path);
+                        // Because this might be a "reference assembly", which is a copy in a new location,
+                        // we can't just load it from the path - so try to find it in the GAC
+                        List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(pReference.Name, pReference.Version, null);
 
-                        // original is probably a reference assembly, so now check if it's in the GAC
-                        // for that, we must load (runtime) instead of just reflection, or from the reference path
-                        AppDomain appDomain = AppDomain.CreateDomain("NPandayTempDomain");
-                        Assembly asm = appDomain.Load(a.FullName);
-                        if (asm.GlobalAssemblyCache)
+                        Assembly a = null;
+
+                        if (refs.Count > 0)
                         {
-                            // use the original assembly to get the GAC type so we don't get the wrong image version
-                            // but use processor architecture from the GAC version as it is None otherwise
-                            refType = GacUtility.GetNPandayGacType(a.ImageRuntimeVersion, asm.GetName().ProcessorArchitecture, refToken);
+                            a = Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(refs[0]).FullName);
+                        }
+ 
+                        if (a != null)
+                        {
+                            refType = GacUtility.GetNPandayGacType(a.ImageRuntimeVersion, a.GetName().ProcessorArchitecture, refToken);
                         }
                         else
                         {
@@ -878,7 +881,6 @@ namespace NPanday.VisualStudio.Addin
                              ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                         }
-                        AppDomain.Unload(appDomain);
                     }
                 }
                 else
