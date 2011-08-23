@@ -235,8 +235,10 @@ public final class PathUtil
         
         
         try
-        {    
-              FileUtils.copyFile(new File( source ), targetFile);
+        {
+              File artifactFile = artifact.getFile();
+              File sourceFile = ( artifactFile != null && artifactFile.exists() ) ? artifactFile : new File( source );
+              FileUtils.copyFile( sourceFile, targetFile );
         }   
         catch (IOException ioe) 
         {

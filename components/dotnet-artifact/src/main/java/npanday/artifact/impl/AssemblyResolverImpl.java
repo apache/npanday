@@ -26,18 +26,26 @@ import npanday.dao.ProjectDaoException;
 import npanday.dao.ProjectDependency;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.model.Dependency;
-
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.io.File;
 import java.io.IOException;
 
@@ -123,6 +131,8 @@ public class AssemblyResolverImpl
             project.addProjectDependency( projectDependency );
         }
         
+        artifactResolver = new AssemblyArtifactResolver( artifactResolver, mavenProject );
+
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
         dao.init( artifactFactory, artifactResolver );
         dao.openConnection();
@@ -147,4 +157,82 @@ public class AssemblyResolverImpl
             mavenProject.setDependencyArtifacts( artifactDependencies );
         }
     }
+
+    private static final class AssemblyArtifactResolver implements ArtifactResolver
+    {
+        private final ArtifactResolver delegate;
+        private final Map mavenProjectRefs;
+
+        public AssemblyArtifactResolver( ArtifactResolver delegate, MavenProject mavenProject )
+        {
+            this.delegate = delegate;
+            this.mavenProjectRefs = mavenProject.getProjectReferences();
+        }
+
+        public void resolve(Artifact artifact, List remoteRepositories, ArtifactRepository localRepository) throws ArtifactResolutionException, ArtifactNotFoundException
+        {
+            String mavenProjectRefId = artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion();
+            MavenProject mavenProjectRef = (MavenProject) mavenProjectRefs.get( mavenProjectRefId );
+            if ( mavenProjectRef != null )
+            {
+                if ( "pom".equals( artifact.getType() ) )
+                {
+                    artifact.setFile( mavenProjectRef.getFile() );
+                    return;
+                }
+                else
+                {
+                    Map artifactMapByArtifactId = new HashMap();
+                    artifactMapByArtifactId.putAll( ArtifactUtils.artifactMapByArtifactId( Collections.singleton( mavenProjectRef.getArtifact() ) ) );
+                    artifactMapByArtifactId.putAll( ArtifactUtils.artifactMapByArtifactId( mavenProjectRef.getArtifacts() ) );
+                    artifactMapByArtifactId.putAll( ArtifactUtils.artifactMapByArtifactId( mavenProjectRef.getAttachedArtifacts() ) );
+
+                    Artifact projectArtifact = (Artifact) artifactMapByArtifactId.get( artifact.getId() );
+                    if ( projectArtifact != null )
+                    {
+                        artifact.setFile( projectArtifact.getFile() );
+                        return;
+                    }
+                }
+            }
+
+            delegate.resolve( artifact, remoteRepositories, localRepository );
+        }
+
+        public void resolveAlways(Artifact artifact, List remoteRepositories, ArtifactRepository localRepository) throws ArtifactResolutionException, ArtifactNotFoundException
+        {
+            delegate.resolveAlways( artifact, remoteRepositories, localRepository );
+        }
+
+        public ArtifactResolutionResult resolveTransitively(Set artifacts, Artifact originatingArtifact, ArtifactRepository localRepository, List remoteRepositories, ArtifactMetadataSource source, ArtifactFilter filter) throws ArtifactResolutionException, ArtifactNotFoundException
+        {
+            return delegate.resolveTransitively( artifacts, originatingArtifact, localRepository, remoteRepositories, source, filter);
+        }
+
+        public ArtifactResolutionResult resolveTransitively(Set artifacts, Artifact originatingArtifact, List remoteRepositories, ArtifactRepository localRepository, ArtifactMetadataSource source) throws ArtifactResolutionException, ArtifactNotFoundException
+        {
+            return delegate.resolveTransitively( artifacts, originatingArtifact, remoteRepositories, localRepository, source);
+        }
+
+        public ArtifactResolutionResult resolveTransitively(Set artifacts, Artifact originatingArtifact, List remoteRepositories, ArtifactRepository localRepository, ArtifactMetadataSource source, List listeners) throws ArtifactResolutionException, ArtifactNotFoundException
+        {
+            return delegate.resolveTransitively( artifacts, originatingArtifact, remoteRepositories, localRepository, source, listeners);
+        }
+
+        public ArtifactResolutionResult resolveTransitively(Set artifacts, Artifact originatingArtifact, Map managedVersions, ArtifactRepository localRepository, List remoteRepositories, ArtifactMetadataSource source) throws ArtifactResolutionException, ArtifactNotFoundException
+        {
+            return delegate.resolveTransitively( artifacts, originatingArtifact, managedVersions, localRepository, remoteRepositories, source);
+        }
+
+        public ArtifactResolutionResult resolveTransitively(Set artifacts, Artifact originatingArtifact, Map managedVersions, ArtifactRepository localRepository, List remoteRepositories, ArtifactMetadataSource source, ArtifactFilter filter) throws ArtifactResolutionException, ArtifactNotFoundException
+        {
+            return delegate.resolveTransitively( artifacts, originatingArtifact, managedVersions, localRepository, remoteRepositories, source, filter);
+        }
+
+        public ArtifactResolutionResult resolveTransitively(Set artifacts, Artifact originatingArtifact, Map managedVersions, ArtifactRepository localRepository, List remoteRepositories, ArtifactMetadataSource source, ArtifactFilter filter, List listeners) throws ArtifactResolutionException, ArtifactNotFoundException
+        {
+            return delegate.resolveTransitively( artifacts, originatingArtifact, managedVersions, localRepository, remoteRepositories, source, filter, listeners);
+        }
+    }
+
 }
