@@ -199,7 +199,10 @@ extends AbstractMojo
                 String frameworkVersion = vendorInfo.getFrameworkVersion();
                 if ( "MONO".equals( vendor.getVendorName() ) )
                 {
-                    if ( frameworkVersion == null || !frameworkVersion.startsWith( "1.1" ) )
+                    // Note: Mono 2.10 adds support for .NET framework 4.0 and packages nunit-console.exe, 
+                    //       with shell scripts for both nunit-console and nunit-console2 so no need to
+                    //       use nunit-console2 in that case
+                    if ( frameworkVersion == null || (!frameworkVersion.startsWith( "1.1" ) && !frameworkVersion.startsWith( "4.0" ) ) )
                     {
                         executableName = "nunit-console2";
                     }
