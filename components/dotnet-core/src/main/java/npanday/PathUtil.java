@@ -307,15 +307,21 @@ public final class PathUtil
             return null;
 
         File executableFile = new File(executable);
-        if (executableFile.exists())
-            return executableFile;
-
-        // handle case where executable is actually absolute
         if (executableFile.isAbsolute())
         {
+            // handle case where executable is absolute
             executablePath = executableFile.getParentFile();
             executable = executableFile.getName();
         }
+        else 
+        {
+            // handle case where executable is relative to executable path
+            executableFile = new File(executablePath, executable);
+        }
+
+        // determine if the executable exists (without an extension)
+        if (executableFile.exists())
+            return executableFile;
 
         // TODO: handle linux/mac ?
         String[] extensions = new String[] {"exe", "com", "bat", "cmd"};
