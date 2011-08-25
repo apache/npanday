@@ -20,6 +20,7 @@ package npanday.plugin.ilmerge;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -311,9 +312,19 @@ public class AssemblyMerger extends AbstractMojo
                 }
             }
 
+            // ILRepack on non-Windows appears to need a /lib: referring to the target directory
+            // to avoid a problem during the merge process where it is unable to locate the primary assembly
+            File artifactFile = (File) artifacts.iterator().next();
+            Collection<String> searchDirectoryPaths = Arrays.asList( artifactFile.getParent() );
     
             List commands = new ArrayList();
             commands.add("/lib:" + assemblyPath);
+
+            for ( String searchDirectoryPath : searchDirectoryPaths )
+            {
+                commands.add("/lib:" + searchDirectoryPath);
+            }
+
             commands.add("/out:" + mergedArtifactFile);
 
             // TODO: workaround bug in ILMerge when merged .pdb output would overwrite an input .pdb
