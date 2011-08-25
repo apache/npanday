@@ -786,7 +786,7 @@ public final class ProjectDaoImpl
 
                             projectDependency.setResolved( true );
                             
-                            if ( assembly != null && assembly.getFile() != null && assembly.getFile().exists() )
+                            if ( assembly != null && assembly.getFile().exists() )
                             {
                                 dotnetFile.getParentFile().mkdirs();
                                 FileUtils.copyFile( assembly.getFile(), dotnetFile );
