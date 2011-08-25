@@ -134,7 +134,9 @@ public class AssemblyMerger extends AbstractMojo
     private File netHome;
     
     /**
-     * @parameter expression = "${ilmergeCommand}"  default-value="ilmerge"
+     * The ILMerge command name.  Supports either ILMerge (default) or ILRepack.
+     *
+     * @parameter expression = "${ilmergeCommand}"  default-value="ILMerge"
      */
     private String executable;
     

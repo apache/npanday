@@ -524,7 +524,7 @@ under the License.
     <identifier>MS:ILMERGE</identifier>
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MICROSOFT</vendor>
-    <executable>ilmerge</executable>
+    <executable>ILMerge</executable>
     <profile>ILMERGE</profile>
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
@@ -541,7 +541,7 @@ under the License.
     <identifier>MS:ILREPACK</identifier>
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MICROSOFT</vendor>
-    <executable>ilrepack</executable>
+    <executable>ILRepack</executable>
     <profile>ILREPACK</profile>
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
@@ -558,7 +558,7 @@ under the License.
     <identifier>MONO:ILREPACK</identifier>
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MONO</vendor>
-    <executable>ilrepack</executable>
+    <executable>ILRepack</executable>
     <profile>ILREPACK</profile>
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
