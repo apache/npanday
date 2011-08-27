@@ -39,6 +39,7 @@ import npanday.executable.compiler.CompilerCapability;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
+import npanday.vendor.Vendor;
 import npanday.vendor.VendorFactory;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
@@ -395,10 +396,15 @@ public class AssemblyMerger extends AbstractMojo
 
                 if ( mergeDebugSymbols )
                 {
-                    String mergedArtifactSymbolFileName = mergedArtifactFile.getName().replace( ".dll", ".pdb" );
+                    Vendor vendor = compilerExecutable.getVendor();
+                    String debugSymbolsExtension = ( vendor == Vendor.MONO ) ? ".mdb" : ".pdb";
+                    String mergedArtifactSymbolFileName = mergedArtifactFile.getName().replace( ".dll", debugSymbolsExtension );
                     File mergedArtifactSymbolFile = new File( mergedArtifactFile.getParentFile(), mergedArtifactSymbolFileName );
-                    File mergedArtifactTempSymbolFile = new File( mergedArtifactTempDirectory, mergedArtifactSymbolFileName );
-                    FileUtils.rename( mergedArtifactTempSymbolFile, mergedArtifactSymbolFile );
+                    if ( mergedArtifactSymbolFile.exists() )
+                    {
+                        File mergedArtifactTempSymbolFile = new File( mergedArtifactTempDirectory, mergedArtifactSymbolFileName );
+                        FileUtils.rename( mergedArtifactTempSymbolFile, mergedArtifactSymbolFile );
+                    }
                 }
 
                 FileUtils.deleteDirectory( mergedArtifactTempDirectory );
