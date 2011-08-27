@@ -104,6 +104,14 @@ public class AssemblyMerger extends AbstractMojo
      */
     private String keycontainer;
 
+
+    /**
+     * Copy assembly attributes into the merged assembly. Only the primary assembly attributes are copied.
+     *
+     * @parameter default-value = "false"
+     */
+    private boolean copyAttributes;
+
     /**
      * The profile that the compiler should use to compile classes: FULL, COMPACT, (or a custom one specified in a
      * compiler-plugins.xml).
@@ -175,6 +183,11 @@ public class AssemblyMerger extends AbstractMojo
      * @parameter default-value="true"
      */
     private boolean mergeDebugSymbols;
+
+    /**
+     * @parameter default-value="true"
+     */
+    private boolean mergeDocumentation;
 
     /**
      * Defines whether the merged artifact should be attached as classifier to
@@ -261,7 +274,6 @@ public class AssemblyMerger extends AbstractMojo
 
             }
 
-
             ArtifactType packagingType = ArtifactType.getArtifactTypeForPackagingName(project.getPackaging());
             File mergedArtifactFile = new File(outputDirectory, project.getArtifactId() + "." + packagingType.getExtension());
 
@@ -318,7 +330,15 @@ public class AssemblyMerger extends AbstractMojo
             // to avoid a problem during the merge process where it is unable to locate the primary assembly
             File artifactFile = (File) artifacts.iterator().next();
             Collection<String> searchDirectoryPaths = Arrays.asList( artifactFile.getParent() );
-    
+
+            // ILMerge cannot tolerate overwriting an input assembly with the output assembly
+            File mergedArtifactTempDirectory = null;
+            if ( artifacts.contains( mergedArtifactFile ) || internalizeArtifacts.contains( mergedArtifactFile ) )
+            {
+                mergedArtifactTempDirectory = new File( mergedArtifactFile.getParentFile(), "temp" );
+                mergedArtifactTempDirectory.mkdirs();
+            }
+
             List commands = new ArrayList();
             commands.add("/lib:" + assemblyPath);
 
@@ -327,13 +347,29 @@ public class AssemblyMerger extends AbstractMojo
                 commands.add("/lib:" + searchDirectoryPath);
             }
 
-            commands.add("/out:" + mergedArtifactFile);
+            if ( mergedArtifactTempDirectory != null )
+            {
+                File mergedArtifactTempFile = new File( mergedArtifactTempDirectory, mergedArtifactFile.getName() );
+                commands.add("/out:" + mergedArtifactTempFile );
+            }
+            else
+            {
+                commands.add("/out:" + mergedArtifactFile);
+            }
 
-            // TODO: workaround bug in ILMerge when merged .pdb output would overwrite an input .pdb
-            // Note: ILRepack does not have this issue
+            if ( copyAttributes )
+            {
+                commands.add("/copyattrs");
+            }
+
             if (!mergeDebugSymbols)
             {
                 commands.add("/ndebug");
+            }
+
+            if (mergeDocumentation)
+            {
+                commands.add("/xmldocs");
             }
 
             for ( Iterator it = artifacts.iterator(); it.hasNext(); )
@@ -351,6 +387,22 @@ public class AssemblyMerger extends AbstractMojo
             outputDirectory.mkdirs();
             netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, executable, commands,
                                                       netHome ).execute();
+
+            if ( mergedArtifactTempDirectory != null )
+            {
+                File mergedArtifactTempFile = new File( mergedArtifactTempDirectory, mergedArtifactFile.getName() );
+                FileUtils.rename( mergedArtifactTempFile, mergedArtifactFile );
+
+                if ( mergeDebugSymbols )
+                {
+                    String mergedArtifactSymbolFileName = mergedArtifactFile.getName().replace( ".dll", ".pdb" );
+                    File mergedArtifactSymbolFile = new File( mergedArtifactFile.getParentFile(), mergedArtifactSymbolFileName );
+                    File mergedArtifactTempSymbolFile = new File( mergedArtifactTempDirectory, mergedArtifactSymbolFileName );
+                    FileUtils.rename( mergedArtifactTempSymbolFile, mergedArtifactSymbolFile );
+                }
+
+                FileUtils.deleteDirectory( mergedArtifactTempDirectory );
+            }
 
             if ( mergedArtifactAttached )
             {
