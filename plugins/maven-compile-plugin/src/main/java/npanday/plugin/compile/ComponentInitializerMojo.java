@@ -89,11 +89,11 @@ public class ComponentInitializerMojo
         }
         catch ( java.io.IOException e )
         {
-            throw new MojoExecutionException( e.getMessage() );
+            throw new MojoExecutionException( e.getMessage(), e );
         }
         catch( NPandayArtifactResolutionException e )
         {
-            throw new MojoExecutionException( e.getMessage() );
+            throw new MojoExecutionException( e.getMessage(), e );
         }
 
         try
@@ -102,7 +102,7 @@ public class ComponentInitializerMojo
         }
         catch ( InitializationException e )
         {
-            throw new MojoExecutionException( "NPANDAY-901-002: Failed to initialize the assembler context" );
+            throw new MojoExecutionException( "NPANDAY-901-002: Failed to initialize the assembler context", e );
         }
 
         long endTime = System.currentTimeMillis();

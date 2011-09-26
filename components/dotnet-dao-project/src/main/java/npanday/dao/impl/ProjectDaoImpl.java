@@ -1053,7 +1053,7 @@ public final class ProjectDaoImpl
         }
         catch ( Exception e )
         {
-            throw new IOException( e.getMessage() );
+            throw new IOException( e.getMessage(), e );
         }
 
         String interopAbsolutePath = tmpDir.getAbsolutePath() + File.separator + "Interop." + name + ".dll";
@@ -1065,7 +1065,7 @@ public final class ProjectDaoImpl
         }
         catch ( Exception e )
         {
-            throw new IOException( e.getMessage() );
+            throw new IOException( e.getMessage(), e );
         }
 
         return interopAbsolutePath;
