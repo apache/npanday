@@ -23,19 +23,19 @@
 
 Available Project Types
 
-  Currently NPanday has two plugins that register types for dotnet. The <<<maven-compile-plugin>>>
-  and the <<<custom-lifecycle-maven-plugin>>>.
+  Currently NPanday has two plugins that register types for .NET. The 
+  <<<maven-compile-plugin>>> and the <<<custom-lifecycle-maven-plugin>>>.
 
-  While the compile-plugin introduces the NPanday default lifecycle, the other
-  one just does a default maven install and deploy, while leaving it to you
-  to fill up the maven lifecycle with meaningful executions.
+  While the Compile plugin introduces the NPanday default lifecycle, the other
+  one just does a default Maven install and deploy, while leaving it to you
+  to fill up the Maven lifecycle with meaningful executions.
 
   Both plugins can resolve dependencies with the types of the other.
 
 * Maven Compile Plugin
 
-  The following packaging types are supported by the Maven plugins. To make them available, add the Compile plugin
-  with the following definition:
+  The following packaging types are supported by the Maven plugins. To make them
+  available, add the Compile plugin with the following definition:
 
 ----
 <plugin>
@@ -52,7 +52,7 @@ Available Project Types
 
     * <<<dotnet-executable>>> - build and package a console application (Deprecated: <<<exe>>>, <<<winexe>>>)
 
-    * <<<dotnet-module>>> - builds and packages the assembly then uses the Link plugin in the package phase (Deprecated: <<<module>>>)
+    * <<<dotnet-module>>> - builds and packages the assembly then uses the Link plugin in the package phase (Deprecated: <<<netmodule>>>)
 
     * <<<dotnet-maven-plugin>>> - build an assembly from the .NET code and generate a Java binding for Maven (Deprecated: <<<netplugin>>>)
 
@@ -78,7 +78,7 @@ Available Project Types
 
     * <<<dotnet-vsdocs>>> - XML-file containing intellisense information for libraries or executables
 
-    * <<dotnet-gac>>, <<<gac_32>>> - dependencies in the respective GAC types variants (Deprecated: <<<gac>>>, <<<gac_generic>>>, <<<gac_msil>>>)
+    * <<<dotnet-gac>>>, <<<gac_32>>> - dependencies in the respective GAC types variants (Deprecated: <<<gac>>>, <<<gac_generic>>>, <<<gac_msil>>>)
 
     []
 
@@ -95,23 +95,23 @@ Available Project Types
 </plugin>
 ----
 
-    * <<<dotnet-module>>> - a .NET module with extension <<netmodule>>
+    * <<<dotnet-module>>> - a .NET module with extension <<<netmodule>>>
 
-    * <<<dotnet-library>>> - A dll-file compiled by any of the .NET compilers
+    * <<<dotnet-library>>> - A DLL-file compiled by any of the .NET compilers
 
     * <<<dotnet-library-config>>> - Configuration file attachable to a library artifact
 
-    * <<<dotnet-executable>>> - A exe-file compiled by any of the .NET compilers
+    * <<<dotnet-executable>>> - A EXE-file compiled by any of the .NET compilers
 
     * <<<dotnet-executable-config>>> - Configuration file attachable to a executable artifact
 
-    * <<<dotnet-symbols>>> - A pdb-file containing debug symbols for either a dll or executable
+    * <<<dotnet-symbols>>> - A PDB-file containing debug symbols for either a DLL or executable
 
-    * <<<ole-type-library>>> - A tlb-file that contains information about types of a library that are accessible through COM
+    * <<<ole-type-library>>> - A TLB-file that contains information about types of a library that are accessible through COM
 
-    * <<<dotnet-vsdocs>>> - A xml-file containing the inline code documentation for a library or executable
+    * <<<dotnet-vsdocs>>> - A XML-file containing the inline code documentation for a library or executable
 
-    * <<<dotnet-archive>>> - A zip of libraries and their complementary files as debug symbols,
+    * <<<dotnet-archive>>> - A ZIP of libraries and their complementary files as debug symbols,
       docs or local satellite assemblies.
 
     []
