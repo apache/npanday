@@ -51,7 +51,7 @@ public class AspxCompilerMojo
 {
     private static final String DEFAULT_INCLUDES = "**"; //any extension can be made for request handler in ASPX
 
-    private static final String DEFAULT_EXCLUDES = "obj/**, target/**, **/*.pdb, **/*.csproj, **/*.vbproj, **/*.suo, **/*.user,pom.xml, **/*.sln,build.log,PrecompiledApp.config,csproj.user,Properties/**,**.releaseBackup,^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:\\.\\d+)?$/**";
+    private static final String DEFAULT_EXCLUDES = ".svn/**,.references/**,obj/**, target/**, **/*.pdb, **/*.csproj, **/*.vbproj, **/*.suo, **/*.user,pom.xml, **/*.sln,build.log,PrecompiledApp.config,csproj.user,Properties/**,**.releaseBackup,^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:\\.\\d+)?$/**";
 
     /**
      * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
@@ -148,6 +148,11 @@ public class AspxCompilerMojo
     private npanday.NPandayRepositoryRegistry npandayRegistry;
     
     private File webSourceDirectory;
+
+    /**
+     * @parameter expression = "${excludes}"
+     */
+    private String[] excludes;
 
     /** 
      * @component
@@ -248,9 +253,20 @@ public class AspxCompilerMojo
             /* TODO should be removed since target is deleted */
             //FileUtils.deleteDirectory( new File( tmpDir, outputDirectory.getName() ) );
 
+            // NPANDAY-474
+            String combinedExcludes = "";
+            if( excludes != null )
+            {
+                for( int i = 0; i < excludes.length; i++ )
+                {
+                    combinedExcludes = combinedExcludes + excludes[i] + ",";
+                }
+            }
+            combinedExcludes = combinedExcludes + DEFAULT_EXCLUDES;
+
             /* keep only the files needed to run the app */
             List<File> allFiles = FileUtils.getFiles( tmpDestDir, "**", null );
-            List<File> filesToKeep = FileUtils.getFiles( tmpDestDir, DEFAULT_INCLUDES, DEFAULT_EXCLUDES );
+            List<File> filesToKeep = FileUtils.getFiles( tmpDestDir, DEFAULT_INCLUDES, combinedExcludes );
 
             for ( File file : allFiles )
             {
