@@ -606,6 +606,8 @@ under the License.
       <url>http://repo.npanday.org/archiva/repository/npanday-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
+  <!--
+  Theese repos are slow. Enable them once, when needed.
   <pluginRepositories>
     <pluginRepository>
       <id>npanday.group</id>
@@ -626,4 +628,5 @@ under the License.
       </snapshots>
     </repository>
   </repositories>
+  -->
 </project>
