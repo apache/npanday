@@ -1192,15 +1192,22 @@ namespace NPanday.VisualStudio.Addin
         CommandBarButton installButton;
         CommandBarButton deployButton;
         CommandBarButton buildButton;
-        CommandBarButton resetReferenceButton;
+        CommandBarButton resyncProjectReferencesButton;
+        CommandBarButton resyncProjectReferencesFromLocalRepositoryButton;
 
         private void createCurrentProjectMenu(CommandBarPopup ctl)
         {
-            resetReferenceButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+            resyncProjectReferencesButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
                 System.Type.Missing, System.Type.Missing, 1, true);
-            resetReferenceButton.Visible = true;
-            resetReferenceButton.Caption = "Resync References";
-            resetReferenceButton.Click += new _CommandBarButtonEvents_ClickEventHandler(resetReferenceButton_Click);
+            resyncProjectReferencesButton.Visible = true;
+            resyncProjectReferencesButton.Caption = "Resync References";
+            resyncProjectReferencesButton.Click += new _CommandBarButtonEvents_ClickEventHandler(OnResyncProjectReferencesButtonClicked);
+
+            resyncProjectReferencesFromLocalRepositoryButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            resyncProjectReferencesFromLocalRepositoryButton.Visible = true;
+            resyncProjectReferencesFromLocalRepositoryButton.Caption = "Resync References From Local Repository";
+            resyncProjectReferencesFromLocalRepositoryButton.Click += new _CommandBarButtonEvents_ClickEventHandler(OnResyncProjectReferencesFromLocalRepositoryButtonClicked);
 
             cleanButton = (CommandBarButton)ctl.Controls.Add(MsoControlType.msoControlButton,
                 System.Type.Missing, System.Type.Missing, 1, true);
@@ -1240,10 +1247,23 @@ namespace NPanday.VisualStudio.Addin
             buildControls.Add(deployButton);
             buildControls.Add(cleanButton);
             buildControls.Add(testButton);
-            buildControls.Add(resetReferenceButton);
+            buildControls.Add(resyncProjectReferencesButton);
+            buildControls.Add(resyncProjectReferencesFromLocalRepositoryButton);
         }
 
-        void resetReferenceButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
+        void OnResyncProjectReferencesButtonClicked(CommandBarButton button, ref bool cancelDefault)
+        {
+            bool resyncFromRemoteRepository = true;
+            ResyncCurrentProjectArtifacts(resyncFromRemoteRepository);
+        }
+
+        void OnResyncProjectReferencesFromLocalRepositoryButtonClicked(CommandBarButton button, ref bool cancelDefault)
+        {
+            bool resyncFromRemoteRepository = false;
+            ResyncCurrentProjectArtifacts(resyncFromRemoteRepository);
+        }
+
+        private void ResyncCurrentProjectArtifacts(bool fromRemoteRepository)
         {
             refManagerHasError = false;
             outputWindowPane.OutputString(string.Format("\n[INFO] Re-syncing artifacts in {0} project... ", CurrentSelectedProject.Name));
@@ -1252,7 +1272,15 @@ namespace NPanday.VisualStudio.Addin
                 IReferenceManager refmanager = new ReferenceManager();
                 refmanager.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
                 refmanager.Initialize((VSProject2)CurrentSelectedProject.Object);
-                refmanager.ResyncArtifacts(logger);
+
+                if (fromRemoteRepository)
+                {
+                    refmanager.ResyncArtifacts(logger);
+                }
+                else
+                {
+                    refmanager.ResyncArtifactsFromLocalRepository(logger);
+                }
 
                 if (!refManagerHasError)
                 {
@@ -1345,7 +1373,8 @@ namespace NPanday.VisualStudio.Addin
         CommandBarButton testAllButton;
         CommandBarButton installAllButton;
         CommandBarButton buildAllButton;
-        CommandBarButton resetAllButton;
+        CommandBarButton resyncSolutionReferencesButton;
+        CommandBarButton resyncSolutionReferencesFromLocalRepositoryButton;
 
         private void createAllProjectMenu(CommandBar commandBar, CommandBarControl control)
         {
@@ -1357,11 +1386,17 @@ namespace NPanday.VisualStudio.Addin
             ctlAll.BeginGroup = true;
             buildControls.Add(ctlAll);
 
-            resetAllButton = (CommandBarButton)ctlAll.Controls.Add(MsoControlType.msoControlButton,
+            resyncSolutionReferencesButton = (CommandBarButton)ctlAll.Controls.Add(MsoControlType.msoControlButton,
                 System.Type.Missing, System.Type.Missing, 1, true);
-            resetAllButton.Visible = true;
-            resetAllButton.Caption = "Resync References";
-            resetAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(resetAllButton_Click);
+            resyncSolutionReferencesButton.Visible = true;
+            resyncSolutionReferencesButton.Caption = "Resync References";
+            resyncSolutionReferencesButton.Click += new _CommandBarButtonEvents_ClickEventHandler(OnResyncSolutionReferencesButtonClicked);
+
+            resyncSolutionReferencesFromLocalRepositoryButton = (CommandBarButton)ctlAll.Controls.Add(MsoControlType.msoControlButton,
+                System.Type.Missing, System.Type.Missing, 1, true);
+            resyncSolutionReferencesFromLocalRepositoryButton.Visible = true;
+            resyncSolutionReferencesFromLocalRepositoryButton.Caption = "Resync References From Local Repository";
+            resyncSolutionReferencesFromLocalRepositoryButton.Click += new _CommandBarButtonEvents_ClickEventHandler(OnResyncSolutionReferencesFromLocalRepositoryButtonClicked);
 
             cleanAllButton = (CommandBarButton)ctlAll.Controls.Add(MsoControlType.msoControlButton,
                 System.Type.Missing, System.Type.Missing, 1, true);
@@ -1393,10 +1428,23 @@ namespace NPanday.VisualStudio.Addin
             buildControls.Add(installAllButton);
             buildControls.Add(cleanAllButton);
             buildControls.Add(testAllButton);
-            buildControls.Add(resetAllButton);
+            buildControls.Add(resyncSolutionReferencesButton);
+            buildControls.Add(resyncSolutionReferencesFromLocalRepositoryButton);
         }
 
-        void resetAllButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
+        void OnResyncSolutionReferencesButtonClicked(CommandBarButton button, ref bool cancelDefault)
+        {
+            bool resyncFromRemoteRepository = true;
+            ResyncSolutionArtifacts(resyncFromRemoteRepository);
+        }
+
+        void OnResyncSolutionReferencesFromLocalRepositoryButtonClicked(CommandBarButton button, ref bool cancelDefault)
+        {
+            bool resyncFromRemoteRepository = false;
+            ResyncSolutionArtifacts(resyncFromRemoteRepository);
+        }
+
+        private void ResyncSolutionArtifacts(bool fromRemoteRepository)
         {
             refManagerHasError = false;
             outputWindowPane.OutputString("\n[INFO] Re-syncing artifacts in all projects... ");
@@ -1412,7 +1460,14 @@ namespace NPanday.VisualStudio.Addin
                             IReferenceManager mgr = new ReferenceManager();
                             mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
                             mgr.Initialize((VSProject2)project.Object);
-                            mgr.ResyncArtifacts(logger);
+                            if (fromRemoteRepository)
+                            {
+                                mgr.ResyncArtifacts(logger);
+                            }
+                            else
+                            {
+                                mgr.ResyncArtifactsFromLocalRepository(logger);
+                            }
                             mgr = null;
                         }
                     }

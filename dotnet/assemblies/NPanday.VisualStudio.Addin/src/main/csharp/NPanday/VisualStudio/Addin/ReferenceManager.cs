@@ -19,13 +19,9 @@
 //
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using NPanday.Model.Pom;
-using System.Windows.Forms;
 using EnvDTE;
-using EnvDTE80;
 
 namespace NPanday.VisualStudio.Addin
 {
@@ -42,6 +38,7 @@ namespace NPanday.VisualStudio.Addin
         string ReferenceFolder { get; }
         void CopyArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger);
         void ResyncArtifacts(NPanday.Logging.Logger logger);
+        void ResyncArtifactsFromLocalRepository(NPanday.Logging.Logger logger);
         event EventHandler<ReferenceErrorEventArgs> OnError;
     }
 
@@ -66,10 +63,9 @@ namespace NPanday.VisualStudio.Addin
 
         public Artifact.Artifact Add(IReferenceInfo reference)
         {
-            if (!initialized)
-                throw new Exception("Reference manager not initialized.");
+            EnsureInitialized();
 
-            string artifactFileName = copyToReferenceFolder(reference.Artifact, referenceFolder);
+            string artifactFileName = CopyToReferenceFolder(reference.Artifact, referenceFolder);
 
             Artifact.Artifact a = reference.Artifact;
             
@@ -94,7 +90,7 @@ namespace NPanday.VisualStudio.Addin
             {
                 throw new Exception("Project has no valid pom file.");
             }
-            createReferenceFolder();
+            CreateReferenceFolder();
         }
 
         string referenceFolder;
@@ -114,72 +110,89 @@ namespace NPanday.VisualStudio.Addin
 
         public void CopyArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
         {
-            if (!initialized)
-                throw new Exception("Reference manager not initialized.");
-
-            if (!artifact.FileInfo.Exists || artifact.Version.EndsWith("SNAPSHOT"))
-            {
-                if (!NPanday.ProjectImporter.Digest.Model.Reference.DownloadArtifact(artifact,logger))
-                {
-                    ReferenceErrorEventArgs e = new ReferenceErrorEventArgs();
-                    e.Message = string.Format("Unable to get the artifact {0} from any of your repositories.", artifact.ArtifactId);
-                    onError(e);
-                    return;
-                }
-            }
-
-            copyToReferenceFolder(artifact, referenceFolder);
+            CopyArtifactImpl(artifact, logger, ArtifactResyncSource.RemoteRepository);
         }
 
         public void ResyncArtifacts(NPanday.Logging.Logger logger)
         {
-            if (!initialized)
-                throw new Exception("Reference manager not initialized.");
-            getReferencesFromPom(logger);
+            ResyncArtifactsImpl(logger, ArtifactResyncSource.RemoteRepository);
+        }
+
+        public void ResyncArtifactsFromLocalRepository(NPanday.Logging.Logger logger)
+        {
+            ResyncArtifactsImpl(logger, ArtifactResyncSource.LocalRepository);
         }
 
         #endregion
 
         #region privates
 
-        static string copyToReferenceFolder(Artifact.Artifact artifact, string referenceFolder)
+        private enum ArtifactResyncSource
         {
-            //modified artifactFolder to match the .dll searched in NPanday.ProjectImporter.Digest.Model.Reference.cs
-            string artifactFolder = Path.Combine(referenceFolder, string.Format("{0}\\{1}-{2}", artifact.GroupId, artifact.ArtifactId, artifact.Version));
-            //string artifactFolder = Path.Combine(referenceFolder, string.Format("{0}\\{1}", artifact.GroupId, artifact.ArtifactId));
-            
-            DirectoryInfo di = new DirectoryInfo(artifactFolder);
-            if (!di.Exists)
-            {
-                di.Create();
-            }
-            
-            //string artifactFileName = Path.Combine(artifactFolder, artifact.FileInfo.Name);
-            string artifactFileName = Path.Combine(artifactFolder, artifact.ArtifactId+".dll");
-
-            // TODO: Probably we should use value of 
-            // <metadata>/<versioning>/<lastUpdated> node from maven metadata xml file 
-            // as an artifactTimestamp
-            DateTime artifactTimestamp = new FileInfo(artifact.FileInfo.FullName).LastWriteTime;
-
-            if (!File.Exists(artifactFileName) ||
-                (artifactTimestamp.CompareTo(new FileInfo(artifactFileName).LastWriteTime) > 0))
-            {
-                try
-                {
-                    byte[] contents = File.ReadAllBytes(artifact.FileInfo.FullName);
-                    File.WriteAllBytes(artifactFileName, contents);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-            }
-            return artifactFileName;
+            RemoteRepository,
+            LocalRepository
         }
 
+        private void ResyncArtifactsImpl(
+            NPanday.Logging.Logger logger, 
+            ArtifactResyncSource artifactResyncSource)
+        {
+            EnsureInitialized();
 
-        void getReferencesFromPom(NPanday.Logging.Logger logger)
+            GetReferencesFromPom(logger, artifactResyncSource);
+        }
+
+        private void CopyArtifactImpl(
+            Artifact.Artifact artifact, 
+            NPanday.Logging.Logger logger, 
+            ArtifactResyncSource artifactResyncSource)
+        {
+            EnsureInitialized();
+
+            bool isSnapshot = ArtifactUtils.IsSnapshot(artifact);
+            bool resyncFromRemoteRepo = artifactResyncSource == ArtifactResyncSource.RemoteRepository;
+
+            if (!ArtifactUtils.Exists(artifact) || (isSnapshot && resyncFromRemoteRepo))
+            {
+                if (!ArtifactUtils.DownloadFromRemoteRepository(artifact, logger))
+                {
+                    RaiseError("Unable to get the artifact {0} from any of your repositories.", artifact.ArtifactId);
+                    return;
+                }
+            }
+
+            CopyToReferenceFolder(artifact, referenceFolder);
+        }
+
+        static string CopyToReferenceFolder(Artifact.Artifact artifact, string referenceFolder)
+        {
+            string artifactReferenceFilePath = ArtifactUtils.GetArtifactReferenceFilePath(artifact, referenceFolder);
+
+            bool overwriteReferenceFile;
+            DateTime localRepoArtifactTimestamp = ArtifactUtils.GetArtifactTimestamp(artifact);
+            if (File.Exists(artifactReferenceFilePath))
+            {
+                DateTime referenceFileTimestamp = new FileInfo(artifactReferenceFilePath).LastWriteTimeUtc;
+                overwriteReferenceFile = ArtifactUtils.IsEarlierArtifactTimestamp(
+                    referenceFileTimestamp, 
+                    localRepoArtifactTimestamp);
+            }
+            else
+            {
+                overwriteReferenceFile = true;
+            }
+
+            if (overwriteReferenceFile)
+            {
+                File.Copy(artifact.FileInfo.FullName, artifactReferenceFilePath, true);
+                // set the timestamp of the local repo's artifact
+                new FileInfo(artifactReferenceFilePath).LastWriteTimeUtc = localRepoArtifactTimestamp;
+            }
+
+            return artifactReferenceFilePath;
+        }
+
+        void GetReferencesFromPom(NPanday.Logging.Logger logger, ArtifactResyncSource artifactResyncSource)
         {
             Artifact.ArtifactRepository repository = new NPanday.Artifact.ArtifactContext().GetArtifactRepository();
             NPanday.Model.Pom.Model m = NPanday.Utils.PomHelperUtility.ReadPomAsModel(new FileInfo(pomFile));
@@ -188,17 +201,41 @@ namespace NPanday.VisualStudio.Addin
             {
                 foreach (Dependency d in m.dependencies)
                 {
-                    // check if intra-project reference and copy
-                    // artifacts from remote repository only
-                    if (!isIntraProject(m, d) && d.classifier == null)
+                    // check if intra-project reference and copy artifacts
+                    if (!IsIntraProject(m, d) && d.classifier == null)
                     {
-                        CopyArtifact(repository.GetArtifact(d),logger);
+                        Artifact.Artifact artifact = repository.GetArtifact(d);
+                        CopyArtifactImpl(artifact, logger, artifactResyncSource);
                     }
                 }
             }
         }
 
-        bool isIntraProject(NPanday.Model.Pom.Model m, Dependency d)
+        private void EnsureInitialized()
+        {
+            if (!initialized)
+            {
+                throw new InvalidOperationException("Reference manager not initialized.");
+            }
+        }
+
+        private void RaiseError(string format, params object[] args)
+        {
+            ReferenceErrorEventArgs e = new ReferenceErrorEventArgs();
+            e.Message = string.Format(format, args);
+            RaiseError(e);
+        }
+
+        private void RaiseError(ReferenceErrorEventArgs e)
+        {
+            EventHandler<ReferenceErrorEventArgs> handler = OnError;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        private bool IsIntraProject(NPanday.Model.Pom.Model m, Dependency d)
         {
             string pomGroupId = (m.parent != null) ? m.parent.groupId : m.groupId;
             if (d.groupId == pomGroupId)
@@ -217,12 +254,12 @@ namespace NPanday.VisualStudio.Addin
             return false;
         }
 
-        bool pomExist()
+        private bool pomExist()
         {
             return File.Exists(pomFile);
         }
 
-        void createReferenceFolder()
+        void CreateReferenceFolder()
         {
             DirectoryInfo di = new DirectoryInfo(referenceFolder);
             if (!di.Exists)
@@ -237,16 +274,7 @@ namespace NPanday.VisualStudio.Addin
 
         #region IReferenceManager Members
 
-
         public event EventHandler<ReferenceErrorEventArgs> OnError;
-
-        void onError(ReferenceErrorEventArgs e)
-        {
-            if (OnError != null)
-            {
-                OnError(this, e);
-            }
-        }
 
         #endregion
     }

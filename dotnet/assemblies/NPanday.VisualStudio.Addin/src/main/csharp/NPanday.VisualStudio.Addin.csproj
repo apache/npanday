@@ -107,6 +107,7 @@ under the License.
     <Compile Include="NPanday\VisualStudio\Addin\RemoveArtifactsForm.Designer.cs">
       <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="NPanday\VisualStudio\Addin\ArtifactUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="NPanday\VisualStudio\Addin\AddArtifactsForm.resx">
