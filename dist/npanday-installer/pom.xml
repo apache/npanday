@@ -21,7 +21,7 @@ under the License.
   <parent> 
     <groupId>org.apache.npanday</groupId>
     <artifactId>npanday-dist-parent</artifactId>  
-    <version>1.4.1-incubating-SNAPSHOT</version> 
+    <version>1.4.1-incubating-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>npanday-installer</artifactId>
@@ -129,13 +129,13 @@ under the License.
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-compile-plugin</artifactId>
-        <version>${project.version}</version>
+        <version>${bootstrap.npanday.version}</version>
         <extensions>true</extensions>
       </plugin>
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>wix-maven-plugin</artifactId>
-        <version>${project.version}</version>
+        <version>${bootstrap.npanday.version}</version>
         <configuration>
           <extensions>
             <extension>WixNetFxExtension</extension>

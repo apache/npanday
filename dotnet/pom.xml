@@ -39,7 +39,8 @@ under the License.
     <plugins> 
       <plugin> 
         <groupId>org.apache.npanday.plugins</groupId>
-        <artifactId>maven-compile-plugin</artifactId>  
+        <artifactId>maven-compile-plugin</artifactId>
+        <version>${bootstrap.npanday.version}</version>
         <extensions>true</extensions>  
         <configuration> 
           <frameworkVersion>2.0.50727</frameworkVersion> 
@@ -51,53 +52,58 @@ under the License.
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-compile-plugin</artifactId>  
-          <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-resgen-plugin</artifactId>  
-          <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-repository-plugin</artifactId>  
-          <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>  
-          <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-resolver-plugin</artifactId>
-		  <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
           <configuration>
             <skip>true</skip>
           </configuration>
         </plugin>
-		<plugin>
+        <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
-		  <artifactId>maven-xsd-plugin</artifactId>
-          <version>${project.version}</version>
+          <artifactId>maven-xsd-plugin</artifactId>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
-		<plugin>
+        <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
-		  <artifactId>maven-test-plugin</artifactId>
-          <version>${project.version}</version>
+          <artifactId>maven-test-plugin</artifactId>
+          <version>${bootstrap.npanday.version}</version>
           <configuration>
-             <forceX86>true</forceX86>
+            <forceX86>true</forceX86>
           </configuration>
         </plugin>
-		<plugin>
+         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
-		  <artifactId>maven-mojo-generator-plugin</artifactId>
-          <version>${project.version}</version>
+          <artifactId>partcover-maven-plugin</artifactId>
+          <version>${bootstrap.npanday.version}</version>
+        </plugin>
+       <plugin>
+          <groupId>org.apache.npanday.plugins</groupId>
+          <artifactId>maven-mojo-generator-plugin</artifactId>
+          <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>
-		  <version>${project.version}</version>
+          <version>${bootstrap.npanday.version}</version>
           <configuration>
             <skip>true</skip>
           </configuration>
@@ -154,55 +160,55 @@ under the License.
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Model.Pom</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Model.Settings</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Logging</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Artifact</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Utils</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>NPanday.Plugin</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday.visualstudio</groupId>
         <artifactId>NPanday.ProjectImporterEngine</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday.visualstudio</groupId>
         <artifactId>NPanday.VisualStudio</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version>
+        <version>1.4.0-incubating-SNAPSHOT</version>
         <type>library</type>  
       </dependency>  
     </dependencies> 

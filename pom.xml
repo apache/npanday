@@ -31,7 +31,43 @@ under the License.
   <version>1.4.1-incubating-SNAPSHOT</version>  
   <name>Apache NPanday</name>  
   <url>http://incubator.apache.org/npanday/</url>
-  <description>NPanday provides Maven plugins to support building of .NET applications</description>  
+  <description>NPanday provides Maven plugins to support building of .NET applications</description>
+
+  <!-- this is what get edited most, so lets put it on the top -->
+  <properties>
+    <mavenVersion>2.0.9</mavenVersion>
+    <plexus.utils.version>1.5.1</plexus.utils.version>
+    <npanday.snapshots.url>http://repo.npanday.org/archiva/repository/npanday-snapshots</npanday.snapshots.url>
+    <npanday.releases.url>http://repo.npanday.org/archiva/repository/npanday-releases</npanday.releases.url>
+    <bootstrap.npanday.version>${project.version}</bootstrap.npanday.version>
+    <!-- if you want to build NPanday with a specific version, use this, instead of the line above -->
+    <!--bootstrap.npanday.version>1.2.1</bootstrap.npanday.version-->
+  </properties>
+
+  <!--
+  Theese repos are slow. Enable them once, when needed.
+  <pluginRepositories>
+    <pluginRepository>
+      <id>npanday.group</id>
+      <name>NPanday Group Repository</name>
+      <url>http://repo.npanday.org/archiva/repository/npanday-group</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+  <repositories>
+    <repository>
+      <id>npanday.group</id>
+      <name>NPanday Group Repository</name>
+      <url>http://repo.npanday.org/archiva/repository/npanday-group</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  -->
+
   <mailingLists> 
     <mailingList> 
       <name>NPanday Developers List</name>  
@@ -588,14 +624,6 @@ under the License.
       </build>
     </profile>
   </profiles>
-  <properties> 
-    <mavenVersion>2.0.9</mavenVersion>
-    <plexus.utils.version>1.5.1</plexus.utils.version>
-    <npanday.snapshots.url>http://repo.npanday.org/archiva/repository/npanday-snapshots</npanday.snapshots.url>
-    <npanday.releases.url>http://repo.npanday.org/archiva/repository/npanday-releases</npanday.releases.url>
-    <bootstrap.npanday.version>${project.version}</bootstrap.npanday.version>
-    <!--bootstrap.npanday.version>1.2.1</bootstrap.npanday.version-->
-  </properties>  
   <distributionManagement>
     <repository>
       <id>vmbuild.staging</id>
@@ -606,27 +634,4 @@ under the License.
       <url>http://repo.npanday.org/archiva/repository/npanday-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
-  <!--
-  Theese repos are slow. Enable them once, when needed.
-  <pluginRepositories>
-    <pluginRepository>
-      <id>npanday.group</id>
-      <name>NPanday Group Repository</name>
-      <url>http://repo.npanday.org/archiva/repository/npanday-group</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
-  <repositories>
-    <repository>
-      <id>npanday.group</id>
-      <name>NPanday Group Repository</name>
-      <url>http://repo.npanday.org/archiva/repository/npanday-group</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-  -->
 </project>

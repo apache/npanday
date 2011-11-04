@@ -68,15 +68,17 @@ under the License.
       <plugins> 
         <plugin> 
           <groupId>org.apache.npanday.plugins</groupId>
-          <artifactId>maven-compile-plugin</artifactId>  
-          <configuration> 
+          <artifactId>maven-compile-plugin</artifactId>
+          <version>${bootstrap.npanday.version}</version>
+          <configuration>
             <keyfile>sample.snk</keyfile> 
           </configuration> 
         </plugin>  
         <plugin> 
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>  
-          <configuration> 
+          <version>${bootstrap.npanday.version}</version>
+          <configuration>
             <isGacInstall>true</isGacInstall> 
           </configuration> 
         </plugin> 
