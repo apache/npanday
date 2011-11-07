@@ -59,15 +59,15 @@ namespace NPanday.ProjectImporter.Digest.Model
         public string HintPath
         {
             get { return hintPath; }
-            set 
+            set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     return;
                 }
 
-                hintPath = value; 
-                SetReferenceFromFile(value); 
+                hintPath = value;
+                SetReferenceFromFile(value);
             }
         }
 
@@ -136,7 +136,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         private void SetReferenceFromFile(FileInfo dll)
         {
-            Assembly asm = null ;
+            Assembly asm = null;
             string path = string.Empty;
 
             //if (dll.Exists)
@@ -149,51 +149,51 @@ namespace NPanday.ProjectImporter.Digest.Model
             {
                 ArtifactContext artifactContext = new ArtifactContext();
                 Artifact.Artifact a = artifactContext.GetArtifactRepository().GetArtifact(dll);
-                
+
                 if (a != null)
-				{
-					if (!a.FileInfo.Exists)
+                {
+                    if (!a.FileInfo.Exists)
                     {
-						if (!a.FileInfo.Directory.Exists)
-							a.FileInfo.Directory.Create();
+                        if (!a.FileInfo.Directory.Exists)
+                            a.FileInfo.Directory.Create();
 
-						string localRepoPath = artifactContext.GetArtifactRepository().GetLocalRepositoryPath(a, dll.Extension);
-						if (File.Exists(localRepoPath))
-						{
-							File.Copy(localRepoPath, a.FileInfo.FullName);
-							//asm = Assembly.ReflectionOnlyLoadFrom();
-							path = a.FileInfo.FullName;
-						}
-						else
-						{
-							if (downloadArtifactFromRemoteRepository(a, dll.Extension,null))
-							{
-								//asm = Assembly.ReflectionOnlyLoadFrom(a.FileInfo.FullName);
-								path = a.FileInfo.FullName;
-							}
-							else
-							{
-								path = getBinReference(dll.Name);
-								if (!string.IsNullOrEmpty(path))
-								{
-									File.Copy(path, a.FileInfo.FullName);
-								}
-							}
-							//copy assembly to repo if not found.
-							if (!string.IsNullOrEmpty(path) && !File.Exists(localRepoPath))
-							{
-								if (!Directory.Exists(Path.GetDirectoryName(localRepoPath)))
-									Directory.CreateDirectory(Path.GetDirectoryName(localRepoPath));
+                        string localRepoPath = artifactContext.GetArtifactRepository().GetLocalRepositoryPath(a, dll.Extension);
+                        if (File.Exists(localRepoPath))
+                        {
+                            File.Copy(localRepoPath, a.FileInfo.FullName);
+                            //asm = Assembly.ReflectionOnlyLoadFrom();
+                            path = a.FileInfo.FullName;
+                        }
+                        else
+                        {
+                            if (downloadArtifactFromRemoteRepository(a, dll.Extension, null))
+                            {
+                                //asm = Assembly.ReflectionOnlyLoadFrom(a.FileInfo.FullName);
+                                path = a.FileInfo.FullName;
+                            }
+                            else
+                            {
+                                path = getBinReference(dll.Name);
+                                if (!string.IsNullOrEmpty(path))
+                                {
+                                    File.Copy(path, a.FileInfo.FullName);
+                                }
+                            }
+                            //copy assembly to repo if not found.
+                            if (!string.IsNullOrEmpty(path) && !File.Exists(localRepoPath))
+                            {
+                                if (!Directory.Exists(Path.GetDirectoryName(localRepoPath)))
+                                    Directory.CreateDirectory(Path.GetDirectoryName(localRepoPath));
 
-								File.Copy(path, localRepoPath);
-							}
-						}
-					}
-					else
-					{
-						path = a.FileInfo.FullName;
-					}
-				}
+                                File.Copy(path, localRepoPath);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        path = a.FileInfo.FullName;
+                    }
+                }
                 if (a == null || string.IsNullOrEmpty(path))
                 {
                     MessageBox.Show("Cannot find or download the artifact " + dll.Name + ",  project may not build properly.");
@@ -226,9 +226,10 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         }
 
-        string getBinReference(string fileName) {
+        string getBinReference(string fileName)
+        {
             string path = Path.Combine(this.IncludeFullPath, @"bin\" + Path.GetFileName(fileName));
-            
+
             if (File.Exists(path))
                 return path;
 
@@ -253,7 +254,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         public static bool DownloadArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
         {
-            return downloadArtifactFromRemoteRepository(artifact, artifact.FileInfo.Extension,logger);
+            return downloadArtifactFromRemoteRepository(artifact, artifact.FileInfo.Extension, logger);
         }
 
         static bool downloadArtifactFromRemoteRepository(Artifact.Artifact artifact, string ext, NPanday.Logging.Logger logger)
@@ -261,11 +262,7 @@ namespace NPanday.ProjectImporter.Digest.Model
             try
             {
                 Settings settings = SettingsUtil.ReadSettings(SettingsUtil.GetUserSettingsPath());
-                if (settings == null || settings.profiles == null)
-                {
-                    MessageBox.Show("Cannot add reference of "+ artifact.ArtifactId + ", no valid Remote Repository was found that contained the Artifact to be Resolved. Please add a Remote Repository that contains the Unresolved Artifact.");
-                    return false;
-                }
+
                 List<string> activeProfiles = new List<string>();
                 if (settings.activeProfiles != null)
                 {
@@ -280,29 +277,31 @@ namespace NPanday.ProjectImporter.Digest.Model
                     {
                         string id = mirror.mirrorOf;
                         if (id.StartsWith("external:*"))
-                        { 
-                            id = "*"; 
+                        {
+                            id = "*";
                         }
                         // TODO: support '!' syntax
                         mirrors.Add(id, mirror.url);
                     }
                 }
 
-                Dictionary<string,string> repos = new Dictionary<string,string>();
-                
-                foreach (Profile profile in settings.profiles)
+                Dictionary<string, string> repos = new Dictionary<string, string>();
+                if (settings.profiles != null)
                 {
-                    if (activeProfiles.Contains(profile.id) && profile.repositories != null)
+                    foreach (Profile profile in settings.profiles)
                     {
-                        foreach (Repository repo in profile.repositories)
+                        if (activeProfiles.Contains(profile.id) && profile.repositories != null)
                         {
-                            repos.Add(repo.id, repo.url);
+                            foreach (Repository repo in profile.repositories)
+                            {
+                                repos.Add(repo.id, repo.url);
+                            }
                         }
                     }
                 }
 
-                // ensure there is at least one repo defined
-                // TODO: this is just a temporary implementation
+                // Add maven central, as Maven itself does!
+                // https://github.com/apache/maven-3/blob/trunk/maven-core/src/main/java/org/apache/maven/repository/RepositorySystem.java
                 if (repos.Count == 0)
                 {
                     repos.Add("central", "http://repo1.maven.org/maven2");
@@ -336,23 +335,23 @@ namespace NPanday.ProjectImporter.Digest.Model
                         {
                             artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, url, ext);
                         }
-                        
+
                     }
                     else
                     {
                         artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, url, ext);
                     }
 
-                    if (downloadArtifact(artifact,logger))
+                    if (downloadArtifact(artifact, logger))
                     {
                         return true;
                     }
                 }
-                return false;                
+                return false;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Cannot add reference of " + artifact.ArtifactId + ", an exception occurred trying to download it: " + e.Message );
+                MessageBox.Show("Cannot add reference of " + artifact.ArtifactId + ", an exception occurred trying to download it: " + e.Message);
                 return false;
             }
         }
@@ -361,7 +360,7 @@ namespace NPanday.ProjectImporter.Digest.Model
         {
             WebClient client = new WebClient();
             string timeStampVersion = null;
-            string metadataPath = repo + "/" + artifact.GroupId.Replace('.','/') + "/" + artifact.ArtifactId;
+            string metadataPath = repo + "/" + artifact.GroupId.Replace('.', '/') + "/" + artifact.ArtifactId;
             string snapshot = "<snapshot>";
             string metadata = "/maven-metadata.xml";
 
@@ -375,7 +374,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                 string timeStamp = null;
                 string buildNumber = null;
 
-                foreach ( string line in lines )
+                foreach (string line in lines)
                 {
                     int startIndex;
                     int len;
@@ -397,13 +396,13 @@ namespace NPanday.ProjectImporter.Digest.Model
                     }
                 }
 
-                if ( timeStamp == null )
+                if (timeStamp == null)
                 {
                     logger.Log(NPanday.Logging.Level.WARNING, "Timestamp was not specified in maven-metadata.xml - using default snapshot version");
                     return null;
                 }
 
-                if ( buildNumber == null )
+                if (buildNumber == null)
                 {
                     logger.Log(NPanday.Logging.Level.WARNING, "Build number was not specified in maven-metadata.xml - using default snapshot version");
                     return null;
@@ -426,7 +425,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         static bool downloadArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
         {
-            WebClient client = new WebClient();            
+            WebClient client = new WebClient();
             bool dirCreated = false;
 
             try
@@ -460,14 +459,14 @@ namespace NPanday.ProjectImporter.Digest.Model
             }
 
             catch (Exception e)
-            {       
-                if (dirCreated)                        
+            {
+                if (dirCreated)
                 {
                     artifact.FileInfo.Directory.Delete();
                 }
 
                 logger.Log(NPanday.Logging.Level.WARNING, string.Format("Download Failed {0}\n", e.Message));
-                               
+
                 return false;
             }
 
@@ -482,11 +481,11 @@ namespace NPanday.ProjectImporter.Digest.Model
         {
             return Path.Combine(SettingsUtil.GetLocalRepositoryPath(), string.Format(@"{0}\{1}\{1}{2}-{3}", Tokenize(artifact.GroupId), artifact.ArtifactId, artifact.Version, ext));
         }
-        
+
         public static string Tokenize(string id)
         {
-            return id.Replace(".",Path.DirectorySeparatorChar.ToString());
-        }        
+            return id.Replace(".", Path.DirectorySeparatorChar.ToString());
+        }
 
         public void SetAssemblyInfoValues(string assemblyInfo)
         {
