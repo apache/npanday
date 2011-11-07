@@ -73,6 +73,11 @@ under the License.
     <Compile Include="NPanday\VisualStudio\Addin\ChangeMavenSettingsXmlForm.Designer.cs">
       <DependentUpon>ChangeMavenSettingsXmlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="NPanday\VisualStudio\Addin\Commands\ButtonCommandRegistry.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\Commands\AddArtifactsCommand.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\Commands\ButtonCommand.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\Commands\IButtonCommandContext.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\Commands\VSCommandCaptions.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\ConfigureMavenRepositoryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +86,7 @@ under the License.
     </Compile>
     <Compile Include="NPanday\VisualStudio\Addin\Connect.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\FolderWatcher.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\Helper\BuiltinCommandFinder.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
