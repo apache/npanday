@@ -9,20 +9,20 @@ using NPanday.Logging;
 
 namespace NPanday.VisualStudio.Addin.Helper
 {
-    public class BuiltinCommandFinder
+    public class VisualStudioControlsFinder
     {
         private readonly DTE2 _application;
         private readonly Logger _logger;
 
-        IDictionary<string, List<string>> _containingCommandBarsByControlCaption = new Dictionary<string, List<string>>();
-        IDictionary<string, List<string>> _containingCommandBarsByCammandName = new Dictionary<string, List<string>>();
+        readonly IDictionary<string, List<string>> _containingCommandBarsByControlCaption = new Dictionary<string, List<string>>();
+        readonly IDictionary<string, List<string>> _containingCommandBarsByCammandName = new Dictionary<string, List<string>>();
 
-        IDictionary<string, CommandBarControl> _controlByCaptionPath = new Dictionary<string, CommandBarControl>();
-        IDictionary<string, CommandBarControl> _controlByBarAndCommandNamePath = new Dictionary<string, CommandBarControl>();
-        private bool _indexed = false;
+        readonly IDictionary<string, CommandBarControl> _controlByCaptionPath = new Dictionary<string, CommandBarControl>();
+        readonly IDictionary<string, CommandBarControl> _controlByBarAndCommandNamePath = new Dictionary<string, CommandBarControl>();
+        private bool _indexed;
 
 
-        public BuiltinCommandFinder(DTE2 application, Logger logger)
+        public VisualStudioControlsFinder(DTE2 application, Logger logger)
         {
             _application = application;
             _logger = logger;
@@ -117,25 +117,21 @@ namespace NPanday.VisualStudio.Addin.Helper
             ensureIsIndexed();
             CommandBarControl control;
 
-            if (_controlByBarAndCommandNamePath.TryGetValue(buildCommandCaptionPath(commandBar, controlCaptionOrCommandName), out control))
+            var commandNamePath = buildCommandCaptionPath(commandBar, controlCaptionOrCommandName);
+            if (_controlByBarAndCommandNamePath.TryGetValue(commandNamePath, out control))
             {
-                string commandName = getButtonTargetCommand(control).Name;
-                if (!string.IsNullOrEmpty(commandName))
-                {
-                    _logger.Log(Level.DEBUG,
-                                "Control found using it's caption; its better to use the command name: " + commandName);
-                }
                 return control;
             }
 
 
-            if (_controlByCaptionPath.TryGetValue(buildCommandCaptionPath(commandBar, controlCaptionOrCommandName), out control))
+            var commandCaptionPath = buildCommandCaptionPath(commandBar, controlCaptionOrCommandName);
+            if (_controlByCaptionPath.TryGetValue(commandCaptionPath, out control))
             {
                 string commandName = getButtonTargetCommand(control).Name;
                 if (!string.IsNullOrEmpty(commandName))
                 {
                     _logger.Log(Level.DEBUG,
-                                "Control found using it's caption; its better to use the command name: " + commandName);
+                                "Control found using it's caption path '" + commandCaptionPath + "'; its better to use the command name path: " + commandNamePath);
                 }
                 return control;
             }

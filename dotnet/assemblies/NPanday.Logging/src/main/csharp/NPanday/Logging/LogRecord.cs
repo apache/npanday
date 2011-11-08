@@ -20,32 +20,44 @@
 #endregion
 
 using System;
+using System.Threading;
 
 namespace NPanday.Logging
 {
-	/// <summary>
-	/// Description of LogRecord.
-	/// </summary>
-	public class LogRecord
-	{
-		private Level level;
-		
-		private String message;
-		
-		public LogRecord(Level level, String message) 
-		{
-			this.level = level;
-			this.message = message;
-		}
-		
-		public Level GetLevel()
-		{
-			return level;
-		}
-		
-		public String GetMessage()
-		{
-			return message;
-		}
-	}
+    /// <summary>
+    /// Description of LogRecord.
+    /// </summary>
+    public class LogRecord
+    {
+        private Level level;
+        private String message;
+        private int thread;
+
+        public LogRecord(Level level, String message)
+        {
+            this.level = level;
+            this.message = message;
+            thread = Thread.CurrentThread.ManagedThreadId;
+        }
+
+        public Level GetLevel()
+        {
+            return level;
+        }
+
+        public String GetMessage()
+        {
+            return message;
+        }
+
+        public int GetThread()
+        {
+            return thread;
+        }
+
+        public override string ToString()
+        {
+            return "[" + level + ", #" + thread + "] " + message;
+        }
+    }
 }

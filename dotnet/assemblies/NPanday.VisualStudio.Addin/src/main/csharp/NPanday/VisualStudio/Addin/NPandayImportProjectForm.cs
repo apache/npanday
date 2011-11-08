@@ -43,10 +43,9 @@ namespace NPanday.VisualStudio.Addin
     public partial class NPandayImportProjectForm : Form
     {
         private DTE2 applicationObject;
-        private OutputWindowPane outputWindowPane;
         private NPanday.Logging.Logger logger;
 
-		public static string FilterID(string partial)
+        public static string FilterID(string partial)
         {
             string filtered = string.Empty;
             if (partial.EndsWith("."))
@@ -81,16 +80,16 @@ namespace NPanday.VisualStudio.Addin
             {
                 txtBrowseDotNetSolutionFile.Text = applicationObject.Solution.FileName;
                 try
-                {                    
-                    string companyId = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion").GetValue("RegisteredOrganization","mycompany").ToString();
+                {
+                    string companyId = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion").GetValue("RegisteredOrganization", "mycompany").ToString();
                     string groupId = string.Empty;
-                    
+
                     if (companyId != string.Empty)
                     {
-                        groupId = FilterID( ConvertToPascalCase(companyId) )+ ".";
+                        groupId = FilterID(ConvertToPascalCase(companyId)) + ".";
                     }
-                    
-                    groupId = groupId +  FilterID(ConvertToPascalCase(new FileInfo(applicationObject.Solution.FileName).Name.Replace(".sln", "")));
+
+                    groupId = groupId + FilterID(ConvertToPascalCase(new FileInfo(applicationObject.Solution.FileName).Name.Replace(".sln", "")));
                     txtGroupId.Text = groupId;
                     string scmTag = string.Empty;  //getSCMTag(applicationObject.Solution.FileName);
                     string version = "1.0-SNAPSHOT";
@@ -114,7 +113,7 @@ namespace NPanday.VisualStudio.Addin
                         }
                     }
 
-                    if(! string.IsNullOrEmpty(scmTag))
+                    if (!string.IsNullOrEmpty(scmTag))
                     {
                         txtSCMTag.Text = scmTag;
                     }
@@ -151,11 +150,6 @@ namespace NPanday.VisualStudio.Addin
                 }
             }
             return strBuild.ToString();
-        }
-
-        public void SetOutputWindowPane(OutputWindowPane pane)
-        {
-            outputWindowPane = pane;
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -196,8 +190,8 @@ namespace NPanday.VisualStudio.Addin
                 MessageBox.Show(exception.Message, "NPanday Import Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
-         protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag)
+
+        protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag)
         {
             string warningMsg = string.Empty;
             String mavenVerRegex = "^[0-9]+(" + Regex.Escape(".") + "?[0-9]+){0,3}$";
@@ -205,12 +199,12 @@ namespace NPanday.VisualStudio.Addin
             String singleMavenVer = "[0-9]+";
             bool isMatch = false;
 
-             if (version.Length > 1)
+            if (version.Length > 1)
             {
 
                 if (Regex.IsMatch(version, hasAlpha) && version.ToUpper().EndsWith("-SNAPSHOT"))
                 {
-                    isMatch = Regex.IsMatch(version.ToUpper().Replace("-SNAPSHOT",""), mavenVerRegex, RegexOptions.Singleline);
+                    isMatch = Regex.IsMatch(version.ToUpper().Replace("-SNAPSHOT", ""), mavenVerRegex, RegexOptions.Singleline);
                 }
                 else
                 {
@@ -318,15 +312,15 @@ namespace NPanday.VisualStudio.Addin
                 {
                     message += Environment.NewLine + "Version is empty.";
                 }
-                
+
                 else if (!isMatch)
                 {
                     message += Environment.NewLine + "Version should be in the form major.minor.build.revision-SNAPSHOT";
                 }
-                
+
                 throw new Exception(message);
             }
-            
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -337,7 +331,7 @@ namespace NPanday.VisualStudio.Addin
 
         private void txtSCMTag_TextChanged(object sender, EventArgs e)
         {
-           
+
         }
 
         private void txtSCMTag_Click(object sender, EventArgs e)
@@ -379,7 +373,7 @@ namespace NPanday.VisualStudio.Addin
                 if (refManagers.Count > 0)
                 {
                     refManagerHasError = false;
-                    outputWindowPane.OutputString("\n[INFO] Re-syncing artifacts... ");
+                    logger.Log(Level.INFO, "Re-syncing artifacts... ");
                     try
                     {
                         foreach (IReferenceManager mgr in refManagers)
@@ -390,18 +384,18 @@ namespace NPanday.VisualStudio.Addin
 
                         if (!refManagerHasError)
                         {
-                            outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
+                            logger.Log(Level.INFO, string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
                         }
                     }
                     catch (Exception ex)
                     {
                         if (refManagerHasError)
                         {
-                            outputWindowPane.OutputString(string.Format("\n[WARNING] {0}\n\n{1}\n\n", ex.Message, ex.StackTrace));
+                            logger.Log(Level.WARNING, string.Format("{0}\n\n{1}\n\n", ex.Message, ex.StackTrace));
                         }
                         else
                         {
-                            outputWindowPane.OutputString(string.Format("failed: {0}\n\n{1}\n\n", ex.Message, ex.StackTrace));
+                            logger.Log(Level.SEVERE, (string.Format("failed: {0}\n\n{1}\n\n", ex.Message, ex.StackTrace)));
                         }
                     }
                 }
@@ -412,7 +406,7 @@ namespace NPanday.VisualStudio.Addin
         {
             Solution2 solution = (Solution2)applicationObject.Solution;
             string solutionDir = Path.GetDirectoryName(solution.FullName);
-            bool isFlatSingleModule = (solution.Projects.Count == 1 
+            bool isFlatSingleModule = (solution.Projects.Count == 1
                 && Path.GetExtension(solution.Projects.Item(1).FullName).EndsWith("proj")
                 && solutionDir == Path.GetDirectoryName(solution.Projects.Item(1).FullName));
 
@@ -435,10 +429,10 @@ namespace NPanday.VisualStudio.Addin
                     else
                     {
                         // This check seems too arbitrary - removed for now
-//                        if (solutionDir != Path.GetDirectoryName(projDir))
-//                        {
-//                            throw new Exception("Project Importer failed with project " + project.Name + ". Project directory structure may not be supported: in a multi-module project, the project must be in a direct subdirectory of the solution");
-//                        }
+                        //                        if (solutionDir != Path.GetDirectoryName(projDir))
+                        //                        {
+                        //                            throw new Exception("Project Importer failed with project " + project.Name + ". Project directory structure may not be supported: in a multi-module project, the project must be in a direct subdirectory of the solution");
+                        //                        }
                     }
                 }
             }
@@ -448,7 +442,7 @@ namespace NPanday.VisualStudio.Addin
         void refmanager_OnError(object sender, ReferenceErrorEventArgs e)
         {
             refManagerHasError = true;
-            outputWindowPane.OutputString("\n[WARNING] " + e.Message);
+            logger.Log(Level.WARNING, e.Message);
         }
 
         private const string WEB_PROJECT_KIND_GUID = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";

@@ -28,13 +28,11 @@ namespace NPanday.VisualStudio.Addin.Commands
                     DialogResult result = MessageBox.Show("Pom file not found, do you want to import the projects first before adding Maven Artifact?", "Add Maven Artifact", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                     if (result == DialogResult.Cancel)
                         return;
-                    else if (result == DialogResult.OK)
-                    {
-                        context.ExecuteCommand(VSCommandCaptions.Standard_SaveAll);
 
-                        NPandayImportProjectForm frm = new NPandayImportProjectForm(Application, context.Logger);
-                        frm.SetOutputWindowPane(context.OutputWindowPane);
-                        frm.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        context.ExecuteCommand<ImportSelectedProjectCommand>(); ;
+
                         currentPom = context.CurrentSelectedProjectPom;
 
                         // if import failed
@@ -44,6 +42,7 @@ namespace NPanday.VisualStudio.Addin.Commands
                         }
                     }
                 }
+
                 AddArtifactsForm form = new AddArtifactsForm(project, context.ArtifactContext, context.Logger, currentPom);
                 form.Show();
                 break;

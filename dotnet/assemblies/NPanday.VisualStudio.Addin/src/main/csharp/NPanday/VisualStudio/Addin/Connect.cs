@@ -414,58 +414,68 @@ namespace NPanday.VisualStudio.Addin
         /// <seealso class='IDTExtensibility2' />
         public void OnConnection(object application, ext_ConnectMode connectMode, object addInInst, ref Array custom)
         {
-            _applicationObject = (DTE2)application;
-            mavenRunner = new MavenRunner(_applicationObject);
-            mavenRunner.RunnerStopped += new EventHandler(mavenRunner_RunnerStopped);
-            _addInInstance = (AddIn)addInInst;
-            EnvDTE.Command command = null;
-            mavenConnected = true;
-
-            string paneName = "NPanday Build System";
-
-            outputWindowPane = getOrCreateOutputPane(paneName);
-
-            OutputWindowPaneHandler handler = new OutputWindowPaneHandler();
-            handler.SetOutputWindowPaneHandler(outputWindowPane);
-
-            logger = NPanday.Logging.Logger.GetLogger("UC");
-            logger.AddHandler(handler);
-
-            if (_addInInstance.Name.Contains("SNAPSHOT"))
+            if (_applicationObject == null)
             {
-                OutputWindowPaneHandler debugHandler = new OutputWindowPaneHandler();
-                debugHandler.SetOutputWindowPaneHandler(getOrCreateOutputPane(paneName + " (DEBUG)"));
-                debugHandler.SetLevel(Level.DEBUG);
-                logger.AddHandler(debugHandler);
+                // this should only be done once!
+
+                _applicationObject = (DTE2)application;
+                mavenRunner = new MavenRunner(_applicationObject);
+                mavenRunner.RunnerStopped += new EventHandler(mavenRunner_RunnerStopped);
+                _addInInstance = (AddIn)addInInst;
+                mavenConnected = true;
+
+                string paneName = "NPanday Build System";
+
+                outputWindowPane = getOrCreateOutputPane(paneName);
+
+                OutputWindowPaneHandler handler = new OutputWindowPaneHandler();
+                handler.SetOutputWindowPaneHandler(outputWindowPane);
+
+                logger = NPanday.Logging.Logger.GetLogger("UC");
+                logger.AddHandler(handler);
+
+                if (_addInInstance.Name.Contains("SNAPSHOT"))
+                {
+                    OutputWindowPaneHandler debugHandler = new OutputWindowPaneHandler();
+                    debugHandler.SetOutputWindowPaneHandler(getOrCreateOutputPane(paneName + " (DEBUG)"));
+                    debugHandler.SetLevel(Level.DEBUG);
+                    logger.AddHandler(debugHandler);
+                }
+
+                logger.Log(Level.DEBUG, "Intialized panes");
+
+                _buttonCommandRegistry = new ButtonCommandRegistry(_applicationObject, buildCommandContext, logger);
+
+                _finder = new VisualStudioControlsFinder(_applicationObject, logger);
+                _finder.IndexCommands();
+
+                globalSolutionEvents = (EnvDTE.SolutionEvents)((Events2)_applicationObject.Events).SolutionEvents;
+                globalSolutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler(SolutionEvents_BeforeClosing);
+                globalSolutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler(SolutionEvents_Opened);
+                globalSolutionEvents.ProjectAdded += new _dispSolutionEvents_ProjectAddedEventHandler(SolutionEvents_ProjectAdded);
+
+                projectItemsEvents = (EnvDTE.ProjectItemsEvents)((Events2)_applicationObject.Events).ProjectItemsEvents;
+                projectItemsEvents.ItemAdded += new _dispProjectItemsEvents_ItemAddedEventHandler(ProjectItemEvents_ItemAdded);
+                projectItemsEvents.ItemRemoved += new _dispProjectItemsEvents_ItemRemovedEventHandler(ProjectItemEvents_ItemRemoved);
+                projectItemsEvents.ItemRenamed += new _dispProjectItemsEvents_ItemRenamedEventHandler(ProjectItemEvents_ItemRenamed);
             }
 
-            logger.Log(Level.DEBUG, "Intialized panes; connect mode is " + connectMode);
+            logger.Log(Level.DEBUG, "OnConnetion() called with connect mode " + connectMode);
 
-            _buttonCommandRegistry = new ButtonCommandRegistry(_applicationObject, buildCommandContext);
-
-            _finder = new BuiltinCommandFinder(_applicationObject, logger);
-
-
-            globalSolutionEvents = (EnvDTE.SolutionEvents)((Events2)_applicationObject.Events).SolutionEvents;
-            globalSolutionEvents.BeforeClosing += new _dispSolutionEvents_BeforeClosingEventHandler(SolutionEvents_BeforeClosing);
-            globalSolutionEvents.Opened += new _dispSolutionEvents_OpenedEventHandler(SolutionEvents_Opened);
-            globalSolutionEvents.ProjectAdded += new _dispSolutionEvents_ProjectAddedEventHandler(SolutionEvents_ProjectAdded);
-
-            projectItemsEvents = (EnvDTE.ProjectItemsEvents)((Events2)_applicationObject.Events).ProjectItemsEvents;
-            projectItemsEvents.ItemAdded += new _dispProjectItemsEvents_ItemAddedEventHandler(ProjectItemEvents_ItemAdded);
-            projectItemsEvents.ItemRemoved += new _dispProjectItemsEvents_ItemRemovedEventHandler(ProjectItemEvents_ItemRemoved);
-            projectItemsEvents.ItemRenamed += new _dispProjectItemsEvents_ItemRenamedEventHandler(ProjectItemEvents_ItemRenamed);
-
+            // this is only called once per installation
             if (connectMode == ext_ConnectMode.ext_cm_UISetup)
             {
+                logger.Log(Level.DEBUG, "Registering Startup-Command in Tools-Menu");
 
+                Command toolsMenuCommand = null;
                 object[] contextGUIDS = new object[] { };
                 Commands2 commands = (Commands2)_applicationObject.Commands;
+
                 string toolsMenuName = VSCommandCaptions.Tools;
 
                 //Place the command on the tools menu.
                 //Find the MenuBar command bar, which is the top-level command bar holding all the main menu items:
-                Microsoft.VisualStudio.CommandBars.CommandBar menuBarCommandBar = ((Microsoft.VisualStudio.CommandBars.CommandBars)_applicationObject.CommandBars)["MenuBar"];
+                CommandBar menuBarCommandBar = ((CommandBars)_applicationObject.CommandBars)["MenuBar"];
 
                 //Find the Tools command bar on the MenuBar command bar:
                 CommandBarControl toolsControl = menuBarCommandBar.Controls[toolsMenuName];
@@ -483,16 +493,16 @@ namespace NPanday.VisualStudio.Addin
                 try
                 {
                     //Add a command to the Commands collection:
-                    command = commands.AddNamedCommand2(_addInInstance, "NPandayAddin",
+                    toolsMenuCommand = commands.AddNamedCommand2(_addInInstance, "NPandayAddin",
                         Messages.MSG_D_NPANDAY_BUILD_SYSTEM, Messages.MSG_T_NPANDAY_BUILDSYSTEM, true, 480, ref contextGUIDS,
                         (int)vsCommandStatus.vsCommandStatusSupported + (int)vsCommandStatus.vsCommandStatusEnabled,
                         (int)vsCommandStyle.vsCommandStylePictAndText,
                         vsCommandControlType.vsCommandControlTypeButton);
 
                     //Add a control for the command to the tools menu:
-                    if ((command != null) && (toolsPopup != null))
+                    if ((toolsMenuCommand != null) && (toolsPopup != null))
                     {
-                        command.AddControl(toolsPopup.CommandBar, 1);
+                        toolsMenuCommand.AddControl(toolsPopup.CommandBar, 1);
                     }
                     else
                     {
@@ -510,7 +520,9 @@ namespace NPanday.VisualStudio.Addin
                 }
 
             }
-            else if (connectMode == ext_ConnectMode.ext_cm_AfterStartup)
+
+
+            if (connectMode == ext_ConnectMode.ext_cm_AfterStartup)
             {
                 launchNPandayBuildSystem();
             }
@@ -534,51 +546,43 @@ namespace NPanday.VisualStudio.Addin
 
         private IButtonCommandContext buildCommandContext()
         {
-            return new ButtonCommandContext(this);
+            return new ButtonCommandContext(this, _applicationObject);
         }
 
         private class ButtonCommandContext : IButtonCommandContext
         {
-            private Connect _this;
-            public ButtonCommandContext(Connect connect)
+            private Connect _connect;
+            private readonly DTE2 _application;
+
+            public ButtonCommandContext(Connect connect, DTE2 application)
             {
-                _this = connect;
+                _connect = connect;
+                _application = application;
             }
 
             public FileInfo CurrentSelectedProjectPom
             {
-                get { return _this.CurrentSelectedProjectPom; }
+                get { return _connect.CurrentSelectedProjectPom; }
             }
 
             public ArtifactContext ArtifactContext
             {
-                get { return _this.container; }
+                get { return _connect.container; }
             }
 
             public Logger Logger
             {
-                get { return _this.logger; }
+                get { return _connect.logger; }
             }
 
-            public OutputWindowPane OutputWindowPane
+            public void ExecuteCommand(string visualStudioCommandName)
             {
-                get { return _this.outputWindowPane; }
+                _application.ExecuteCommand(visualStudioCommandName, "");
             }
 
-            public bool ExecuteCommand(string barAndCaption)
+            public void ExecuteCommand<TCommand>() where TCommand : ButtonCommand, new()
             {
-                CommandBarControl[] controls;
-                if (_this._finder.TryFindCommands(barAndCaption, out controls))
-                {
-                    // best guess
-                    controls[0].Execute();
-                    return true;
-                }
-                else
-                {
-                    Logger.Log(Level.SEVERE, "Could not find and execute command: " + barAndCaption);
-                    return false;
-                }
+                _connect._buttonCommandRegistry.Excecute<TCommand>(this);
             }
         }
 
@@ -1158,6 +1162,8 @@ namespace NPanday.VisualStudio.Addin
 
         private void launchNPandayBuildSystem()
         {
+            logger.Log(Level.DEBUG, "launchNPandayBuildSystem() called, _npandayLaunched is " + _npandayLaunched);
+
             try
             {
                 // just to be safe, check if NPanday is already launched
@@ -1183,8 +1189,6 @@ namespace NPanday.VisualStudio.Addin
                 bool placedNPandayMenus = false;
                 bool placedAllProjectMenu = false;
 
-                _finder.IndexCommands();
-
                 CommandBarControl[] barControls;
 
                 if (_finder.TryFindCommands(VSCommandCaptions.AddReference, out barControls))
@@ -1203,19 +1207,7 @@ namespace NPanday.VisualStudio.Addin
                 {
                     foreach (CommandBarControl control in commandBar.Controls)
                     {
-                        if (control.Caption.Equals(Messages.MSG_C_ADD_REFERENCE))
-                        {
-                            CommandBarButton ctl = (CommandBarButton)
-                                                   commandBar.Controls.Add(MsoControlType.msoControlButton,
-                                                                           System.Type.Missing, System.Type.Missing,
-                                                                           control.Index, true);
-                            ctl.Click += new _CommandBarButtonEvents_ClickEventHandler(cbShowAddArtifactsForm_Click);
-                            ctl.Caption = Messages.MSG_C_ADD_MAVEN_ARTIFACT;
-                            ctl.Visible = true;
-                            addReferenceControls.Add(ctl);
-
-                        }
-                        else if (control.Caption.Equals("C&onfiguration Manager..."))
+                        if (control.Caption.Equals("C&onfiguration Manager..."))
                         {
                             //add solution menu
                             createStopBuildMenu(commandBar, control);
@@ -1291,6 +1283,8 @@ namespace NPanday.VisualStudio.Addin
 
             if (_applicationObject.Solution != null)
                 attachReferenceEvent();
+
+            logger.Log(Level.DEBUG, "launchNPandayBuildSystem() exited, _npandayLaunched is " + _npandayLaunched);
         }
 
         CommandBarButton cleanButton;
@@ -1431,7 +1425,6 @@ namespace NPanday.VisualStudio.Addin
 
         CommandBarButton ctlSettingsXml;
         CommandBarButton ctlSignAssembly;
-        CommandBarButton ctlProjectImport;
 
         private void createNPandayMenus(CommandBar commandBar, CommandBarControl control)
         {
@@ -1460,18 +1453,7 @@ namespace NPanday.VisualStudio.Addin
             ctlSignAssembly.Visible = true;
             buildControls.Add(ctlSignAssembly);
 
-            ctlProjectImport = (CommandBarButton)
-            commandBar.Controls.Add(MsoControlType.msoControlButton,
-                                      System.Type.Missing,
-                                      System.Type.Missing,
-                                      control.Index + 1,
-                                      true);
-            ctlProjectImport.Click +=
-                new _CommandBarButtonEvents_ClickEventHandler(cbChangeProjectImportForm_Click);
-            ctlProjectImport.Caption = Messages.MSG_C_IMPORT_PROJECT;
-            ctlProjectImport.Visible = true;
-
-            buildControls.Add(ctlProjectImport);
+            _buttonCommandRegistry.Add<ImportSelectedProjectCommand>(commandBar, control.Index + 1);
         }
 
         CommandBarPopup ctlAll;
@@ -1729,6 +1711,8 @@ namespace NPanday.VisualStudio.Addin
 
             addReferenceControls = new List<CommandBarButton>();
             buildControls = new List<CommandBarControl>();
+
+            _buttonCommandRegistry.UnregisterAll();
 
             outputWindowPane.Clear();
             mavenRunner.ClearOutputWindow();
@@ -2279,40 +2263,6 @@ namespace NPanday.VisualStudio.Addin
         }
         #endregion
 
-        #region cbShowAddArtifactsForm_Click(CommandBarButton,bool)
-        private void cbShowAddArtifactsForm_Click(CommandBarButton btn, ref bool Cancel)
-        {
-            //First selected project
-            foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
-            {
-                FileInfo currentPom = this.CurrentSelectedProjectPom;
-                if (currentPom == null || Path.GetDirectoryName(currentPom.FullName) != Path.GetDirectoryName(project.FullName))
-                {
-                    DialogResult result = MessageBox.Show("Pom file not found, do you want to import the projects first before adding Maven Artifact?", "Add Maven Artifact", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                    if (result == DialogResult.Cancel)
-                        return;
-                    else if (result == DialogResult.OK)
-                    {
-                        SaveAllDocuments();
-                        NPandayImportProjectForm frm = new NPandayImportProjectForm(_applicationObject, logger);
-                        frm.SetOutputWindowPane(outputWindowPane);
-                        frm.ShowDialog();
-                        currentPom = this.CurrentSelectedProjectPom;
-
-                        // if import failed
-                        if (currentPom == null || Path.GetDirectoryName(currentPom.FullName) != Path.GetDirectoryName(project.FullName))
-                        {
-                            return;
-                        }
-                    }
-                }
-                AddArtifactsForm form = new AddArtifactsForm(project, container, logger, currentPom);
-                form.Show();
-                break;
-            }
-        }
-        #endregion
-
         // by jan ancajas
         #region cbChangeSettingsXmlForm_Click(CommandBarButton, bool)
         private void cbChangeSettingsXmlForm_Click(CommandBarButton btn, ref bool Cancel)
@@ -2339,16 +2289,6 @@ namespace NPanday.VisualStudio.Addin
 
         }
 
-        #endregion
-
-        #region cbChangeProjectImportForm_Click(CommandBarButton, bool)
-        private void cbChangeProjectImportForm_Click(CommandBarButton btn, ref bool Cancel)
-        {
-            SaveAllDocuments();
-            NPandayImportProjectForm frm = new NPandayImportProjectForm(_applicationObject, logger);
-            frm.SetOutputWindowPane(outputWindowPane);
-            frm.ShowDialog();
-        }
         #endregion
 
         #region OnBeginShutdown(Array)
@@ -2428,7 +2368,7 @@ namespace NPanday.VisualStudio.Addin
         private CommandBarButton stopButton;
 
         private ButtonCommandRegistry _buttonCommandRegistry;
-        private BuiltinCommandFinder _finder;
+        private VisualStudioControlsFinder _finder;
 
 
         List<WebServicesReferenceWatcher> wsRefWatcher = new List<WebServicesReferenceWatcher>();

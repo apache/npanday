@@ -7,11 +7,11 @@ namespace NPanday.VisualStudio.Addin.Commands
 {
     public interface IButtonCommandContext
     {
-        FileInfo CurrentSelectedProjectPom { get; }
-        ArtifactContext ArtifactContext { get; }
         Logger Logger { get; }
-        OutputWindowPane OutputWindowPane { get; }
+        ArtifactContext ArtifactContext { get; }
+        FileInfo CurrentSelectedProjectPom { get; }
 
-        bool ExecuteCommand(string barAndCaption);
+        void ExecuteCommand(string visualStudioCommandName);
+        void ExecuteCommand<TCommand>() where TCommand : ButtonCommand, new();
     }
 }
