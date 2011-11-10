@@ -28,7 +28,7 @@ under the License.
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\target\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>..\..\..\target\</OutputPath>
@@ -60,10 +60,6 @@ under the License.
     <Compile Include="NPanday\Artifact\JavaRepositoryLayout.cs" />
     <Compile Include="NPanday\Artifact\PathUtil.cs" />
     <Compile Include="NPanday\Artifact\RepositoryType.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <WebReferences Include="Web References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

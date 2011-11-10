@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectTest", "NPanday.Utils-Test\ConnectTest.csproj", "{CD2E70EA-44C3-4AA0-9701-F99181332E8F}"
 EndProject
 Global

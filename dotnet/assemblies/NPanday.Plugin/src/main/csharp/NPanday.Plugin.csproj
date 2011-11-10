@@ -30,6 +30,9 @@ under the License.
   <PropertyGroup>
     <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <OutputPath>..\..\..\target\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="NPanday.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -57,8 +60,5 @@ under the License.
     <Compile Include="NPanday\Plugin\PluginDomainManager.cs" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <WebReferences Include="Web References\" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

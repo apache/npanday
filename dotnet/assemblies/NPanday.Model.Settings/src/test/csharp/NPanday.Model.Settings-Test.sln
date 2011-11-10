@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPanday.SettingsUtil-Test", "NPanday.SettingsUtil-Test\NPanday.SettingsUtil-Test.csproj", "{FEEC01CB-2577-4059-9609-531A4913BCDA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPanday.Model.Settings-Test", "NPanday.SettingsUtil-Test\NPanday.Model.Settings-Test.csproj", "{FEEC01CB-2577-4059-9609-531A4913BCDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

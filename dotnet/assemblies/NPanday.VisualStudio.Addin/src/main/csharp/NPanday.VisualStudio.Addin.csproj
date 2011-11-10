@@ -58,7 +58,9 @@ under the License.
     <Reference Include="VSLangProj80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="VsWebSite.Interop, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <Compile Include="NPanday\VisualStudio\Addin\AddArtifactsForm.cs">
@@ -174,9 +176,6 @@ under the License.
       <Project>{95661103-78B8-423A-80CA-41AFC69BD1DE}</Project>
       <Name>NPanday.VisualStudio</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferences Include="Web References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

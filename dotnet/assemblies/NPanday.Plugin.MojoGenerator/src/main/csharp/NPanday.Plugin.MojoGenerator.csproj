@@ -21,7 +21,7 @@ under the License.
   <PropertyGroup>
     <ProjectGuid>{09887944-425A-45A0-870C-AE4C16DA63DF}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <RootNameSpace>NPanday.Plugin</RootNameSpace>
+    <RootNameSpace>NPanday.Plugin.MojoGenerator</RootNameSpace>
     <AssemblyName>NPanday.Plugin.MojoGenerator</AssemblyName>
     <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
     <OutputType>Exe</OutputType>
@@ -30,8 +30,10 @@ under the License.
   <PropertyGroup>
     <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>..\..\..\target\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NMaven.Plugin" />
     <Reference Include="NPanday.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\NPanday.Model.Pom\target\NPanday.Model.Pom.dll</HintPath>
@@ -50,9 +52,6 @@ under the License.
       <Project>{B760D54F-22AC-43E7-A0A6-DE313D4663AF}</Project>
       <Name>NPanday.Plugin</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferences Include="Web References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

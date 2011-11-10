@@ -80,8 +80,5 @@ under the License.
       <Name>NPanday.Logging</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <WebReferences Include="Web References\" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

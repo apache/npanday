@@ -26,15 +26,15 @@ under the License.
     <ProjectGuid>{7466EA93-4978-4BBD-83D0-F1729EB102EE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WindowsApplication2</RootNamespace>
-    <AssemblyName>WindowsApplication2</AssemblyName>
+    <RootNamespace>NPanday.VisualStudio.ProjectWizard</RootNamespace>
+    <AssemblyName>NPanday.VisualStudio.ProjectWizard</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\target\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -74,9 +74,6 @@ under the License.
       <SubType>Designer</SubType>
       <DependentUpon>ArchetypeProjectForm.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
