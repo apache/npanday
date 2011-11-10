@@ -86,9 +86,10 @@ namespace NPanday.VisualStudio.Addin.Commands
 
         public void UnregisterAll()
         {
-            foreach (var commandBarControl in _keepReferences.ToArray())
+            foreach (CommandBarControl commandBarControl in _keepReferences.ToArray())
             {
-                _logger.Log(Level.DEBUG, "Removing control " + commandBarControl.Caption + " on " + commandBarControl.HelpContextId + " at index " + commandBarControl.Index);
+				// TODO: find (or previouvsly cache the commandbar)
+                _logger.Log(Level.DEBUG, "TODO!! Remove " + commandBarControl.Caption + " on ?? at index " + commandBarControl.Index);
             }
         }
     }

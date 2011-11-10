@@ -117,14 +117,14 @@ namespace NPanday.VisualStudio.Addin.Helper
             ensureIsIndexed();
             CommandBarControl control;
 
-            var commandNamePath = buildCommandCaptionPath(commandBar, controlCaptionOrCommandName);
+            string commandNamePath = buildCommandCaptionPath(commandBar, controlCaptionOrCommandName);
             if (_controlByBarAndCommandNamePath.TryGetValue(commandNamePath, out control))
             {
                 return control;
             }
 
 
-            var commandCaptionPath = buildCommandCaptionPath(commandBar, controlCaptionOrCommandName);
+            string commandCaptionPath = buildCommandCaptionPath(commandBar, controlCaptionOrCommandName);
             if (_controlByCaptionPath.TryGetValue(commandCaptionPath, out control))
             {
                 string commandName = getButtonTargetCommand(control).Name;
