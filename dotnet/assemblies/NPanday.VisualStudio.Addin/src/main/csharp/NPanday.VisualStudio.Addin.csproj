@@ -75,6 +75,7 @@ under the License.
     <Compile Include="NPanday\VisualStudio\Addin\ChangeMavenSettingsXmlForm.Designer.cs">
       <DependentUpon>ChangeMavenSettingsXmlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="NPanday\VisualStudio\Addin\Commands\BuildCommandContext.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\Commands\ButtonCommandRegistry.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\Commands\AddArtifactsCommand.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\Commands\ButtonCommand.cs" />
@@ -88,8 +89,13 @@ under the License.
       <DependentUpon>ConfigureMavenRepositoryForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NPanday\VisualStudio\Addin\Connect.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\FolderWatcher.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\WebServicesReferenceUtils.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\Helper\VisualStudioControlsFinder.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\IReferenceInfo.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\IReferenceManager.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\IWebServiceRefInfo.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\IWebServicesRefUtils.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\LocalArtifactItem.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +103,8 @@ under the License.
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NPanday\VisualStudio\Addin\MainFormTest.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\Messages.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\NPandayBuildSystemProperties.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\NPandayImportProjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,7 +117,10 @@ under the License.
     <Compile Include="NPanday\VisualStudio\Addin\NPandaySignAssembly.Designer.cs">
       <DependentUpon>NPandaySignAssembly.cs</DependentUpon>
     </Compile>
+    <Compile Include="NPanday\VisualStudio\Addin\ReferenceErrorEventArgs.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\ReferenceInfo.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\ReferenceManager.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\RemoteArtifactNode.cs" />
     <Compile Include="NPanday\VisualStudio\Addin\RemoveArtifactsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +128,11 @@ under the License.
       <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NPanday\VisualStudio\Addin\ArtifactUtils.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\WebReferenceEventArgs.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\WebReferencesClasses.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\WebServiceRefInfo.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\WebServicesReferenceWatcher.cs" />
+    <Compile Include="NPanday\VisualStudio\Addin\WebsiteAssemblyReferenceWatcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="NPanday\VisualStudio\Addin\AddArtifactsForm.resx">

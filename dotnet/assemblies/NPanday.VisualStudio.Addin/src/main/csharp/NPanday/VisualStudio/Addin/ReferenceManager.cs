@@ -26,29 +26,6 @@ using EnvDTE;
 namespace NPanday.VisualStudio.Addin
 {
     #region Interfaces
-    
-    /// <summary>
-    /// A custom Reference Manager that will handle all artifact reference that can be easily transferable.
-    /// </summary>
-    public interface IReferenceManager
-    {
-        Artifact.Artifact Add(IReferenceInfo reference);
-        void Remove(IReferenceInfo reference);
-        void Initialize(VSLangProj80.VSProject2 project);
-        string ReferenceFolder { get; }
-        void CopyArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger);
-        void ResyncArtifacts(NPanday.Logging.Logger logger);
-        void ResyncArtifactsFromLocalRepository(NPanday.Logging.Logger logger);
-        event EventHandler<ReferenceErrorEventArgs> OnError;
-    }
-
-    public interface IReferenceInfo
-    {
-        string Path { get;set;}
-        string FileName { get;set;}
-        string Version { get; set;}
-        Artifact.Artifact Artifact { get; set; }
-    }
 
     #endregion
 
@@ -278,85 +255,4 @@ namespace NPanday.VisualStudio.Addin
 
         #endregion
     }
-
-    public class ReferenceErrorEventArgs : EventArgs
-    {
-        string message;
-        public string Message
-        {
-            get { return message; }
-            set { message = value; }
-        }
-    }
-
-    public class ReferenceInfo : IReferenceInfo
-    {
-        public ReferenceInfo(){}
-        public ReferenceInfo(Artifact.Artifact artifact)
-        {
-            path = artifact.FileInfo.FullName;
-            fileName = artifact.FileInfo.Name;
-            version = artifact.Version;
-            this.artifact = artifact;
-        }
-
-        #region IReferenceInfo Members
-
-        string path;
-        public string Path
-        {
-            get
-            {
-                return path;
-            }
-            set
-            {
-                path = value;
-            }
-        }
-
-        string fileName;
-        public string FileName
-        {
-            get
-            {
-                return fileName;
-            }
-            set
-            {
-                fileName = value;
-            }
-        }
-
-        string version;
-        public string Version
-        {
-            get
-            {
-                return version;
-            }
-            set
-            {
-                version = value;
-            }
-        }
-
-        Artifact.Artifact artifact;
-        public NPanday.Artifact.Artifact Artifact
-        {
-            get
-            {
-                return artifact;
-            }
-            set
-            {
-                artifact = value;
-            }
-        }
-
-        #endregion
-
-    }
-
-    
 }

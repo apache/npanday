@@ -37,15 +37,6 @@ namespace NPanday.Model.Setting
     // This avoids inconsistencies in Maven settings.xml files that sometimes include the namespace declaration and
     // sometimes omit it
     // See http://stackoverflow.com/questions/870293/can-i-make-xmlserializer-ignore-the-namespace-on-deserialization
-    public class NamespaceIgnorantXmlTextReader : XmlTextReader
-    {
-        public NamespaceIgnorantXmlTextReader(System.IO.TextReader reader) : base(reader) { }
-
-        public override string NamespaceURI
-        {
-            get { return ""; }
-        }
-    }
 
     public static class SettingsUtil
     {
@@ -78,7 +69,7 @@ namespace NPanday.Model.Setting
             }
 
             return null;
-        } 
+        }
         #endregion
 
         #region GetUserSettingsPath()
@@ -141,7 +132,7 @@ namespace NPanday.Model.Setting
                 if (!string.IsNullOrEmpty(path))
                 {
                     return path;
-                } 
+                }
             }
 
             string defaultSettingsPath = GetDefaultSettingsPath();
@@ -164,13 +155,13 @@ namespace NPanday.Model.Setting
                 if (!string.IsNullOrEmpty(path))
                 {
                     return path;
-                } 
+                }
             }
 
             string profileDir = Environment.GetEnvironmentVariable("USERPROFILE");
 
             return profileDir + @"\.m2\repository";
-        } 
+        }
         #endregion
 
         public static Settings ReadSettings(string path)
@@ -215,7 +206,7 @@ namespace NPanday.Model.Setting
             }
             finally
             {
-                if(reader != null)
+                if (reader != null)
                 {
                     reader.Close();
                 }
@@ -238,7 +229,7 @@ namespace NPanday.Model.Setting
             Profile profile = GetProfile(settings, defaultProfileID);
             //convert NPanday Profile to XmlNode
             XmlNode newProfileNode = new XmlDocument();
-            ((XmlDocument) newProfileNode).LoadXml(SerializeProfileToXml(profile));
+            ((XmlDocument)newProfileNode).LoadXml(SerializeProfileToXml(profile));
 
             newProfileNode = newProfileNode.SelectSingleNode("//profile[id='" + defaultProfileID + "']");
             XmlNode importedNewProfileNode = settingsXmlDoc.ImportNode(newProfileNode, true);

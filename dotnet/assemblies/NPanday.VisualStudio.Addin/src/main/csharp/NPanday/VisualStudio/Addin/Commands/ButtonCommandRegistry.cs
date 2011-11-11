@@ -7,8 +7,6 @@ using NPanday.Logging;
 
 namespace NPanday.VisualStudio.Addin.Commands
 {
-    public delegate IButtonCommandContext BuildCommandContext();
-
     /// <summary>
     /// Manages and registers NPanday commands.
     /// </summary>

@@ -43,7 +43,7 @@ under the License.
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NPanday\Plugin\Resx\MimeType.cs" />
-    <Compile Include="NPanday\Plugin\Resx\ResX.cs" />
+    <Compile Include="NPanday\Plugin\Resx\ResourceGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\dotnet\assemblies\NPanday.Artifact\src\main\csharp\NPanday.Artifact.csproj">

@@ -41,7 +41,14 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\Model\AutomationExtensibility.cs" />
+    <Compile Include="NPanday\Model\Extensibility.cs" />
+    <Compile Include="NPanday\Model\ExtensibilityAddin.cs" />
+    <Compile Include="NPanday\Model\ExtensibilityHostApplication.cs" />
+    <Compile Include="NPanday\Model\ExtensibilityToolsOptionsPageCategory.cs" />
+    <Compile Include="NPanday\Model\ExtensibilityToolsOptionsPageCategorySubCategory.cs" />
+    <Compile Include="NPanday\Model\ItemsChoiceType.cs" />
+    <Compile Include="NPanday\Model\ItemsChoiceType1.cs" />
+    <Compile Include="NPanday\Model\ItemsChoiceType2.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />

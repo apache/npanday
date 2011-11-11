@@ -43,7 +43,11 @@ under the License.
   <ItemGroup>
     <Compile Include="NPanday\Plugin\Settings\DotnetSdkLocator.cs" />
     <Compile Include="NPanday\Plugin\Settings\ExecutionException.cs" />
+    <Compile Include="NPanday\Plugin\Settings\NewDataSet.cs" />
     <Compile Include="NPanday\Plugin\Settings\npandaySettings.cs" />
+    <Compile Include="NPanday\Plugin\Settings\npandaySettingsDefaultSetup.cs" />
+    <Compile Include="NPanday\Plugin\Settings\npandaySettingsVendorsVendor.cs" />
+    <Compile Include="NPanday\Plugin\Settings\npandaySettingsVendorsVendorFrameworksFramework.cs" />
     <Compile Include="NPanday\Plugin\Settings\PathUtil.cs" />
     <Compile Include="NPanday\Plugin\Settings\SettingsGeneratorMojo.cs" />
   </ItemGroup>
