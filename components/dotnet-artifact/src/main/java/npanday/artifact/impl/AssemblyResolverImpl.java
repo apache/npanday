@@ -183,9 +183,9 @@ public class AssemblyResolverImpl
                 else
                 {
                     Map artifactMapByArtifactId = new HashMap();
-                    artifactMapByArtifactId.putAll( ArtifactUtils.artifactMapByArtifactId( Collections.singleton( mavenProjectRef.getArtifact() ) ) );
-                    artifactMapByArtifactId.putAll( ArtifactUtils.artifactMapByArtifactId( mavenProjectRef.getArtifacts() ) );
-                    artifactMapByArtifactId.putAll( ArtifactUtils.artifactMapByArtifactId( mavenProjectRef.getAttachedArtifacts() ) );
+                    artifactMapByArtifactId.putAll( ArtifactUtils.artifactMapByVersionlessId( Collections.singleton( mavenProjectRef.getArtifact() ) ) );
+                    artifactMapByArtifactId.putAll( ArtifactUtils.artifactMapByVersionlessId( mavenProjectRef.getArtifacts() ) );
+                    artifactMapByArtifactId.putAll( ArtifactUtils.artifactMapByVersionlessId( mavenProjectRef.getAttachedArtifacts() ) );
 
                     Artifact projectArtifact = (Artifact) artifactMapByArtifactId.get( artifact.getId() );
                     if ( projectArtifact != null )
