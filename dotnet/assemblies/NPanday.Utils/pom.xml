@@ -43,29 +43,44 @@
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday</groupId>
-      <artifactId>NPanday.Artifact</artifactId>  
-      <version>1.4.1-incubating-SNAPSHOT</version>
-      <type>library</type> 
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Settings</artifactId>  
       <version>1.4.1-incubating-SNAPSHOT</version>
       <type>library</type>  
-    </dependency>  
-    <dependency> 
-      <groupId>EnvDTE</groupId>  
-      <artifactId>EnvDTE</artifactId>  
-      <version>8.0.0.0</version>  
-      <type>gac</type>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
-    </dependency>  
-    <dependency> 
-      <groupId>EnvDTE80</groupId>  
-      <artifactId>EnvDTE80</artifactId>  
-      <version>8.0.0.0</version>  
-      <type>gac</type>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
-    </dependency>  
+    </dependency>
+	<dependency> 
+      <groupId>NUnit</groupId>  
+      <artifactId>NUnit.Framework</artifactId>  
+      <version>2.2.8.0</version>  
+      <type>library</type>  
+      <scope>test</scope> 
+    </dependency>
   </dependencies>  
+  <profiles>
+    <profile>
+      <id>partcover</id>
+      <build>
+        <plugins>
+          <plugin> 
+            <groupId>org.apache.npanday.plugins</groupId>
+            <artifactId>partcover-maven-plugin</artifactId>  
+            <configuration>
+              <!--<nUnit>C:\\Program Files\\NUnit 2.5.7\\bin\net-2.0\\nunit-console.exe</nUnit>-->
+              <!--<partCover>C:\\Program Files\PartCover\\PartCover .NET 4.0\\PartCover.exe</partCover>-->
+              <assemblyName>${project.build.directory}/test-assemblies/NPanday.Utils-test.dll</assemblyName>
+              <!--<msxsl>C:\\WINDOWS\\msxsl.exe</msxsl>-->
+              <!--<xslt>C:\\Program Files\\PartCover\\PartCover .NET 4.0\\xslt\\Report By Assembly.xslt"<xslt>-->
+            </configuration>
+            <executions> 
+              <execution> 
+                <goals> 
+                  <goal>generate</goal> 
+                  <goal>convert</goal>
+                </goals> 
+              </execution> 
+            </executions> 
+          </plugin>  
+        </plugins> 
+      </build>
+    </profile>
+  </profiles>
 </project>

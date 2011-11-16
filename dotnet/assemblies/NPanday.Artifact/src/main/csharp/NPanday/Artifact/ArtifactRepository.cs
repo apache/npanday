@@ -26,26 +26,25 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Windows.Forms;
-using NPanday.Model.Setting;
 
 namespace NPanday.Artifact
 {
     public sealed class ArtifactRepository
     {
-        
+
         public string Tokenize(string id)
         {
-            return id.Replace(".",Path.DirectorySeparatorChar.ToString());
-        }        
+            return id.Replace(".", Path.DirectorySeparatorChar.ToString());
+        }
 
         public string GetLocalRepositoryPath(Artifact artifact, string ext)
         {
-            return string.Format(@"{0}\{1}\{2}\{3}\{2}-{3}{4}", localRepository.FullName, artifact.GroupId.Replace(@".",@"\"), artifact.ArtifactId, artifact.Version, ext);
+            return string.Format(@"{0}\{1}\{2}\{3}\{2}-{3}{4}", localRepository.FullName, artifact.GroupId.Replace(@".", @"\"), artifact.ArtifactId, artifact.Version, ext);
         }
 
         public string GetRemoteRepositoryPath(Artifact artifact, string url, string ext)
         {
-            return string.Format("{0}/{1}/{2}/{3}/{2}-{3}{4}", url, artifact.GroupId.Replace('.','/'), artifact.ArtifactId, artifact.Version, ext);
+            return string.Format("{0}/{1}/{2}/{3}/{2}-{3}{4}", url, artifact.GroupId.Replace('.', '/'), artifact.ArtifactId, artifact.Version, ext);
         }
 
         public string GetRemoteRepositoryPath(Artifact artifact, string timeStampVersion, string url, string ext)
@@ -65,13 +64,13 @@ namespace NPanday.Artifact
                 string[] info = a.FullName.Split(",".ToCharArray(), Int32.MaxValue, StringSplitOptions.RemoveEmptyEntries);
                 artifact.ArtifactId = info[0];
                 artifact.GroupId = info[0];
-                artifact.Version = info[1].Split(new char[] { '='})[1];
+                artifact.Version = info[1].Split(new char[] { '=' })[1];
                 artifact.Extension = tokens[0].Split(new char[] { '.' })[1];
 
                 if (artifact.Version == null)
                 {
                     artifact.Version = "1.0.0.0";
-                }                
+                }
             }
 
             else
@@ -91,8 +90,8 @@ namespace NPanday.Artifact
                 String[] extToken = tokens[size - 1].Split(".".ToCharArray());
                 artifact.Extension = extToken[extToken.Length - 1];
             }
-            artifact.FileInfo = new FileInfo(localRepository.FullName + Path.DirectorySeparatorChar + Tokenize( artifact.GroupId )+ Path.DirectorySeparatorChar + artifact.ArtifactId + Path.DirectorySeparatorChar 
-                + artifact.Version + Path.DirectorySeparatorChar + artifact.ArtifactId+ "-" + artifact.Version+ ".dll");
+            artifact.FileInfo = new FileInfo(localRepository.FullName + Path.DirectorySeparatorChar + Tokenize(artifact.GroupId) + Path.DirectorySeparatorChar + artifact.ArtifactId + Path.DirectorySeparatorChar
+                + artifact.Version + Path.DirectorySeparatorChar + artifact.ArtifactId + "-" + artifact.Version + ".dll");
             return artifact;
         }
 
@@ -112,7 +111,7 @@ namespace NPanday.Artifact
                     }
                     catch
                     {
-                        
+
                     }
                 }
             }
@@ -136,7 +135,7 @@ namespace NPanday.Artifact
             artifact.ArtifactId = dependency.artifactId;
             artifact.GroupId = dependency.groupId;
             artifact.Version = dependency.version;
-            artifact.FileInfo = new FileInfo( GetLocalRepositoryPath(artifact, ".dll"));
+            artifact.FileInfo = new FileInfo(GetLocalRepositoryPath(artifact, ".dll"));
             return artifact;
         }
 
@@ -147,14 +146,14 @@ namespace NPanday.Artifact
             {
                 tokens = PathUtil.GetRelativePathTokens(uacDirectory, artifactFile);
             }
-            catch 
+            catch
             {
                 List<string> tk = new List<string>(artifactFile.FullName.Split(@"\".ToCharArray()));
                 tk.RemoveRange(0, tk.Count - 3);
                 tokens = tk.ToArray();
             }
 
-           
+
             //artifact for system path
             if (!artifactFile.FullName.Contains(".m2"))
             {
@@ -162,29 +161,29 @@ namespace NPanday.Artifact
             }
 
             string fileName = tokens[tokens.Length - 1];
-            int index = fileName.LastIndexOf( "." );
-            
-            string ext = fileName.Substring( index );
+            int index = fileName.LastIndexOf(".");
+
+            string ext = fileName.Substring(index);
             string version = tokens[tokens.Length - 2];
             string artifactId = tokens[tokens.Length - 3];
 
             StringBuilder group = new StringBuilder();
 
-            for( int i = 0; i < tokens.Length - 3; i++ )
+            for (int i = 0; i < tokens.Length - 3; i++)
             {
-                group.Append( tokens[i]).Append( "." );
+                group.Append(tokens[i]).Append(".");
             }
 
-            string groupId = group.ToString( 0, group.Length - 1 );
+            string groupId = group.ToString(0, group.Length - 1);
 
             Artifact artifact = new Artifact();
             artifact.ArtifactId = artifactId;
             artifact.Version = version;
             artifact.GroupId = groupId;
             artifact.FileInfo = new FileInfo(GetLocalRepositoryPath(artifact, ext));
-            
-            
-            
+
+
+
             return artifact;
         }
 

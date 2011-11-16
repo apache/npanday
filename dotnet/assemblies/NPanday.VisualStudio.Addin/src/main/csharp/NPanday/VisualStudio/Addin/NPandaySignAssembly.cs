@@ -39,7 +39,7 @@ using VSLangProj;
 using NPanday.Artifact;
 using NPanday.Logging;
 using NPanday.Model.Pom;
-using NPanday.Model.Setting;
+using NPanday.Model.Settings;
 
 using NPanday.Utils;
 

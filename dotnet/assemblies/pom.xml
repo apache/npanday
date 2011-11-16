@@ -33,6 +33,7 @@ under the License.
     <module>NPanday.Model.Pom</module>  
     <module>NPanday.Model.Settings</module>  
     <module>NPanday.Model.AutomationExtensibility</module>
+    <module>NPanday.Utils</module>
     <module>NPanday.Logging</module> 
     <module>NPanday.Artifact</module> 
     <module>NPanday.Plugin</module>
@@ -50,8 +51,7 @@ under the License.
         </os>
       </activation>
       <modules>
-        <!-- TODO: should build without EnvDTE80, etc. but currently has dependencies on windows libs -->
-        <module>NPanday.Utils</module>
+        <!-- TODO: uses MSBuild from gac / could rely on Xbuild from Mono on non-windows... -->
         <module>NPanday.ProjectImporter</module>
 
         <!-- TODO: should be optional -->

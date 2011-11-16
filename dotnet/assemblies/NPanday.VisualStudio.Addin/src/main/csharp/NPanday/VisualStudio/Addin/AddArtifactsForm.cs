@@ -41,7 +41,7 @@ using VSLangProj;
 using NPanday.Artifact;
 using NPanday.Logging;
 using NPanday.Model.Pom;
-using NPanday.Model.Setting;
+using NPanday.Model.Settings;
 
 using NPanday.Utils;
 
@@ -59,10 +59,10 @@ namespace NPanday.VisualStudio.Addin
 
         private string settingsPath;
         private Settings settings;
-        private NPanday.Model.Setting.Profile defaultProfile;
-        private NPanday.Model.Setting.Repository selectedRepo;
+        private NPanday.Model.Settings.Profile defaultProfile;
+        private NPanday.Model.Settings.Repository selectedRepo;
         private string prevSelectedRepoUrl = string.Empty;
-        
+
         /// <summary>
         /// For Testing
         /// </summary>
@@ -77,7 +77,7 @@ namespace NPanday.VisualStudio.Addin
         {
             get { return settingsPath; }
         }
-        
+
         public AddArtifactsForm(Project project, ArtifactContext container, Logger logger, FileInfo pom)
         {
             this.project = project;
@@ -85,7 +85,7 @@ namespace NPanday.VisualStudio.Addin
             InitializeForm();
             InitializeComponent();
             addArtifact.Visible = true;
-            localListView.View = View.Details;           
+            localListView.View = View.Details;
             artifactContext = container;
             this.pom = pom;
         }
@@ -127,11 +127,6 @@ namespace NPanday.VisualStudio.Addin
                 return;
             }
 
-            if (settings.profiles == null || settings.profiles.Length < 1)
-            {
-                addProfilesTag(settingsPath);
-            }
-
             defaultProfile = getDefaultProfile();
             selectedRepo = getDefaultRepository();
 
@@ -152,7 +147,7 @@ namespace NPanday.VisualStudio.Addin
             {
                 repoCombo_Refresh(selectedRepo.url);
             }
-            
+
         }
 
         private void localListView_Refresh()
@@ -174,7 +169,7 @@ namespace NPanday.VisualStudio.Addin
 
             treeView1.Nodes.Clear();
             List<TreeNode> treeNodes = getNodesFor(selectedRepo.url);
-            treeView1.Nodes.AddRange(treeNodes.ToArray());            
+            treeView1.Nodes.AddRange(treeNodes.ToArray());
 
             prevSelectedRepoUrl = selectedRepo.url;
         }
@@ -195,7 +190,7 @@ namespace NPanday.VisualStudio.Addin
             // check if URL is already in NPanday.id profile
             if (defaultProfile != null)
             {
-                foreach (NPanday.Model.Setting.Repository repo in defaultProfile.repositories)
+                foreach (NPanday.Model.Settings.Repository repo in defaultProfile.repositories)
                 {
                     if (repo.url == RepoCombo.Text)
                     {
@@ -213,12 +208,12 @@ namespace NPanday.VisualStudio.Addin
             {
                 return false;
             }
-            
+
             if (uri.StartsWith(".."))
             {
                 return false;
             }
-            
+
             if (uri.Contains("."))
             {
                 string[] tokens = name.Split(".".ToCharArray());
@@ -226,7 +221,7 @@ namespace NPanday.VisualStudio.Addin
                 if (extension.Equals("txt") || extension.Equals("pom") ||
                     extension.Equals("md5") || extension.Equals("sha1") ||
                     extension.Equals("xml") || extension.Equals("tar") ||
-                    extension.Equals("gz") || extension.Equals("rb") || 
+                    extension.Equals("gz") || extension.Equals("rb") ||
                     extension.Equals("htm") || extension.Equals("html") ||
                     extension.Equals("jsp"))
                 {
@@ -246,7 +241,7 @@ namespace NPanday.VisualStudio.Addin
             {
                 string[] tokens = name.Split(".".ToCharArray());
                 string extension = tokens[tokens.Length - 1];
-   
+
                 if (extension.Equals("dll") || extension.Equals("jar") ||
                     extension.Equals("exe"))
                 {
@@ -441,14 +436,14 @@ namespace NPanday.VisualStudio.Addin
             try
             {
                 VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
-                
+
                 Assembly a = Assembly.LoadFile(artifact.FileInfo.FullName);
                 if (a.ToString().Split(",".ToCharArray())[0].ToLower().StartsWith("interop.", true, CultureInfo.InvariantCulture))
                 {
                     MessageBox.Show("Cannot add COM Interop reference from a Maven Artifact, just use Add Reference if you wish to add a COM reference.", "Add Maven Artifact", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return false;
                 }
-                
+
                 bool referenced = false;
                 try
                 {
@@ -467,7 +462,7 @@ namespace NPanday.VisualStudio.Addin
 
                 // not need to written in pom anymore
                 //addArtifactToPom(artifact);
-                
+
                 website.References.AddFromFile(artifact.FileInfo.FullName);
                 return true;
             }
@@ -519,7 +514,7 @@ namespace NPanday.VisualStudio.Addin
                 //paths = uri.Substring(repoUri.LocalPath.Length).Replace(@"\",@"/");
                 paths = uri;
             }
-            else 
+            else
             {
                 paths = normalizePath(uri.Substring(repoUrl.Length));
             }
@@ -607,38 +602,31 @@ namespace NPanday.VisualStudio.Addin
                     defaultProfile = getDefaultProfile();
                 }
 
-                // if NPanday profile is not found, create it
-                if (defaultProfile == null)
-                {
-                    defaultProfile = new NPanday.Model.Setting.Profile();
-                    defaultProfile.id = SettingsUtil.defaultProfileID; ;
-                }
-                
                 // add repository to profile
-                selectedRepo = SettingsUtil.AddRepositoryToProfile(defaultProfile, selectedUrl, checkBoxRelease.Checked, checkBoxSnapshot.Checked, settings);
-                
+                selectedRepo = SettingsUtil.AddRepositoryToProfile(defaultProfile, selectedUrl, checkBoxRelease.Checked, checkBoxSnapshot.Checked);
+
                 // make NPanday.id profile active
                 SettingsUtil.AddActiveProfile(settings, SettingsUtil.defaultProfileID);
 
                 // write to Settings.xml
-                SettingsUtil.WriteSettings(settings, settingsPath);
-                
+                SettingsUtil.MergeSettings(settings, settingsPath);
+
                 // do not specify SelectedUrl to suppress SelectedIndexChanged event
                 repoCombo_Refresh(null);
                 MessageBox.Show(this, "Successfully Changed Remote Repository.", "Repository Configuration");
                 //localListView_Refresh(); 
             }
         }
-    
+
         private void repoCombo_Refresh(string selectedUrl)
         {
             RepoCombo.Items.Clear();
 
             if (settings.profiles != null)
             {
-                List<NPanday.Model.Setting.Repository> repositories = SettingsUtil.GetAllRepositories(settings);
+                List<NPanday.Model.Settings.Repository> repositories = SettingsUtil.GetAllRepositories(settings);
 
-                foreach (NPanday.Model.Setting.Repository repo in repositories)
+                foreach (NPanday.Model.Settings.Repository repo in repositories)
                 {
                     if (!RepoCombo.Items.Contains(repo.url))
                     {
@@ -655,18 +643,8 @@ namespace NPanday.VisualStudio.Addin
 
         private void repoCheckboxes_Refresh()
         {
-            checkBoxRelease.Checked = (selectedRepo.releases != null)? selectedRepo.releases.enabled: false;
-            checkBoxSnapshot.Checked = (selectedRepo.snapshots != null)? selectedRepo.snapshots.enabled: false;
-        }
-
-        public void addProfilesTag(string settingsPath)
-        {
-            XmlDocument doc = new XmlDocument();
-            doc.Load(settingsPath);
-            XmlElement element = doc.CreateElement("profiles");
-
-            doc.DocumentElement.AppendChild(element);
-            doc.Save(settingsPath);
+            checkBoxRelease.Checked = (selectedRepo.releases != null) ? selectedRepo.releases.enabled : false;
+            checkBoxSnapshot.Checked = (selectedRepo.snapshots != null) ? selectedRepo.snapshots.enabled : false;
         }
 
         #region GUI Events
@@ -920,17 +898,17 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
-        private NPanday.Model.Setting.Profile getDefaultProfile()
+        private NPanday.Model.Settings.Profile getDefaultProfile()
         {
             if (settings == null)
             {
                 loadSettings();
             }
 
-            return SettingsUtil.GetProfile(settings, SettingsUtil.defaultProfileID);
+            return SettingsUtil.GetDefaultProfile(settings, true);
         }
 
-        private NPanday.Model.Setting.Repository getRepository(string url)
+        private NPanday.Model.Settings.Repository getRepository(string url)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -943,7 +921,7 @@ namespace NPanday.VisualStudio.Addin
             }
 
             // extract from NPanday repositories first
-            NPanday.Model.Setting.Repository repo;
+            NPanday.Model.Settings.Repository repo;
             if (defaultProfile != null)
             {
                 repo = SettingsUtil.GetRepositoryFromProfile(defaultProfile, url);
@@ -957,7 +935,7 @@ namespace NPanday.VisualStudio.Addin
             return SettingsUtil.GetRepositoryByUrl(settings, url);
         }
 
-        private NPanday.Model.Setting.Repository getDefaultRepository()
+        private NPanday.Model.Settings.Repository getDefaultRepository()
         {
             if (defaultProfile == null)
             {

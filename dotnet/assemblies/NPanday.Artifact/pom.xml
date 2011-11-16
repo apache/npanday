@@ -42,6 +42,12 @@ under the License.
       <version>1.4.1-incubating-SNAPSHOT</version>
       <type>library</type>  
     </dependency>  
+	<dependency> 
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>NPanday.Utils</artifactId>  
+      <version>1.4.1-incubating-SNAPSHOT</version>
+      <type>library</type>  
+    </dependency> 
     <dependency> 
       <groupId>NUnit</groupId>  
       <artifactId>NUnit.Framework</artifactId>  

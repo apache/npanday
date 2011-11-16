@@ -28,10 +28,11 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-using NPanday.Model.Setting;
+using NPanday.Model.Settings;
 
 using System.Xml;
 using System.Xml.Serialization;
+using NPanday.Utils;
 
 namespace NPanday.VisualStudio.Addin
 {
@@ -58,7 +59,7 @@ namespace NPanday.VisualStudio.Addin
 
         private void update_Click(object sender, EventArgs e)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Setting.Settings));
+            XmlSerializer serializer = new XmlSerializer(typeof(NPanday.Model.Settings.Settings));
             TextWriter writer = new StreamWriter(settingsPath);
             if (settings.profiles != null)
             {

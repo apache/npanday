@@ -23,8 +23,9 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using NPanday.Model.Settings;
+using NPanday.Utils;
 
-using NPanday.Model.Setting;
 
 namespace NPanday.Artifact
 {
@@ -66,8 +67,8 @@ namespace NPanday.Artifact
             {
                 return "dll";
             }
-            else if(packaging.Equals("dotnet-executable")
-                    ||  packaging.Equals("winexe") ||  packaging.Equals("exe"))
+            else if (packaging.Equals("dotnet-executable")
+                    || packaging.Equals("winexe") || packaging.Equals("exe"))
             {
                 return "exe";
             }

@@ -18,52 +18,35 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"> 
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.4.1-incubating-SNAPSHOT</version>  
-    <artifactId>NPanday.Assemblies</artifactId>  
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
+    <version>1.4.1-incubating-SNAPSHOT</version>
+    <artifactId>NPanday.Assemblies</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.npanday</groupId>
-  <artifactId>NPanday.Model.Settings</artifactId>  
-  <packaging>library</packaging>  
-  <name>NPanday :: .NET Model :: Settings</name>  
-  <dependencies>
-	<dependency> 
-      <groupId>NUnit</groupId>  
-      <artifactId>NUnit.Framework</artifactId>  
-      <version>2.2.8.0</version>  
-      <type>library</type>  
-      <scope>test</scope> 
-    </dependency>
-  </dependencies>
-  <profiles>
-    <profile>
-      <id>partcover</id>
-      <build>
-        <plugins>
-          <plugin> 
-            <groupId>org.apache.npanday.plugins</groupId>
-            <artifactId>partcover-maven-plugin</artifactId>  
-            <configuration>
-              <!--<nUnit>C:\\Program Files\\NUnit 2.5.7\\bin\net-2.0\\nunit-console.exe</nUnit>-->
-              <!--<partCover>C:\\Program Files\PartCover\\PartCover .NET 4.0\\PartCover.exe</partCover>-->
-              <assemblyName>${project.build.directory}/test-assemblies/NPanday.Model.Settings-test.dll</assemblyName>
-              <!--<msxsl>C:\\WINDOWS\\msxsl.exe</msxsl>-->
-              <!--<xslt>C:\\Program Files\\PartCover\\PartCover .NET 4.0\\xslt\\Report By Assembly.xslt"<xslt>-->
-            </configuration>
-            <executions> 
-              <execution> 
-                <goals> 
-                  <goal>generate</goal> 
-                  <goal>convert</goal>
-                </goals> 
-              </execution> 
-            </executions> 
-          </plugin>  
-        </plugins> 
-      </build>
-    </profile>
-  </profiles>
+  <artifactId>NPanday.Model.Settings</artifactId>
+  <packaging>library</packaging>
+  <name>NPanday :: .NET Model :: Settings</name>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.npanday.plugins</groupId>
+        <artifactId>maven-xsd-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>xsd</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <xsdFile>${basedir}/src/main/xsd/Settings.xsd</xsdFile>
+          <namespace></namespace>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

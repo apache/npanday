@@ -27,7 +27,6 @@ using Microsoft.Win32;
 
 using NPanday.Plugin;
 using NPanday.Model.Pom;
-using NPanday.Model;
 using NPanday.Artifact;
 using System.Reflection;
 

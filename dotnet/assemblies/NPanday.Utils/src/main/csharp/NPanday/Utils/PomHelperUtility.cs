@@ -27,13 +27,11 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
 
-using NPanday.Artifact;
 using NPanday.Logging;
 using NPanday.Model.Pom;
-using NPanday.Model.Setting;
+using NPanday.Model.Settings;
 
 using System.Windows.Forms;
-using EnvDTE;
 
 namespace NPanday.Utils
 {
@@ -45,11 +43,11 @@ namespace NPanday.Utils
 
         RspUtility rspUtil = new RspUtility();
 
-        public PomHelperUtility(Solution solution, Project project)
+        public PomHelperUtility(FileInfo solutionFile, FileInfo projectFile)
         {
             FileInfo pomFile = PomHelperUtility.FindPomFileUntil(
-                new FileInfo(project.FullName).Directory,
-                new FileInfo(solution.FileName).Directory);
+                solutionFile.Directory,
+                projectFile.Directory);
 
             this.pom = pomFile;
         }
@@ -111,8 +109,8 @@ namespace NPanday.Utils
             }
         }
 
-        public bool HasPlugin(string pluginGroupId,string pluginArtifactId)
-        { 
+        public bool HasPlugin(string pluginGroupId, string pluginArtifactId)
+        {
             NPanday.Model.Pom.Model model = ReadPomAsModel();
 
             foreach (Plugin plugin in model.build.plugins)
@@ -126,7 +124,7 @@ namespace NPanday.Utils
             return false;
         }
 
-        public void AddPlugin(string groupId, string artifactId, string version, bool extensions,PluginConfiguration pluginConf)
+        public void AddPlugin(string groupId, string artifactId, string version, bool extensions, PluginConfiguration pluginConf)
         {
             NPanday.Model.Pom.Model model = ReadPomAsModel();
 
@@ -142,7 +140,7 @@ namespace NPanday.Utils
             plugin.artifactId = artifactId;
             plugin.version = version;
             plugin.extensions = extensions;
-            
+
             if (pluginConf != null)
             {
                 plugin.configuration = pluginConf;
@@ -307,7 +305,7 @@ namespace NPanday.Utils
             return PomHelperUtility.ReadPomAsModel(pomfile, null);
         }
 
-        public static NPanday.Model.Pom.Model ReadPomAsModel(FileInfo pomfile, NPanday.Logging.Logger logger)        
+        public static NPanday.Model.Pom.Model ReadPomAsModel(FileInfo pomfile, NPanday.Logging.Logger logger)
         {
             if (!pomfile.Exists)
             {
@@ -354,14 +352,14 @@ namespace NPanday.Utils
                     if (reader != null)
                     {
                         reader.Close();
-                        ((IDisposable) reader).Dispose();
+                        ((IDisposable)reader).Dispose();
                     }
                 }
                 catch
                 {
                     if (logger != null)
                     {
-                        logger.Log(NPanday.Logging.Level.WARNING, "Failed to close stream reader after accessing pom.xml."); 
+                        logger.Log(NPanday.Logging.Level.WARNING, "Failed to close stream reader after accessing pom.xml.");
                     }
                 }
 
@@ -375,7 +373,7 @@ namespace NPanday.Utils
             PomHelperUtility.WriteModelToPom(this.pom, model);
         }
 
-		public bool IsWebReferenceEmpty()
+        public bool IsWebReferenceEmpty()
         {
             string[] directories;
             if (Directory.Exists(pom.DirectoryName + "/Web References"))
@@ -391,7 +389,7 @@ namespace NPanday.Utils
             return isEmpty;
         }
 
-		public void DeletePlugin(Plugin plugin)
+        public void DeletePlugin(Plugin plugin)
         {
             NPanday.Model.Pom.Model model = ReadPomAsModel();
             List<NPanday.Model.Pom.Plugin> plugins = new List<NPanday.Model.Pom.Plugin>();
@@ -409,17 +407,17 @@ namespace NPanday.Utils
             model.build.plugins = plugins.ToArray();
 
             WriteModelToPom(model);
-            
+
         }
-		
+
         public static void WriteModelToPom(FileInfo pomFile, NPanday.Model.Pom.Model model)
         {
             PomHelperUtility.WriteModelToPom(pomFile, model, null);
         }
 
         public static void WriteModelToPom(FileInfo pomFile, NPanday.Model.Pom.Model model, NPanday.Logging.Logger logger)
-        {        
-           if (!pomFile.Directory.Exists)
+        {
+            if (!pomFile.Directory.Exists)
             {
                 pomFile.Directory.Create();
             }
@@ -441,7 +439,7 @@ namespace NPanday.Utils
             try
             {
                 writer = new StreamWriter(pomFile.FullName);
-                serializer =new XmlSerializer(typeof(NPanday.Model.Pom.Model));
+                serializer = new XmlSerializer(typeof(NPanday.Model.Pom.Model));
                 serializer.Serialize(writer, model);
             }
             catch
@@ -465,7 +463,7 @@ namespace NPanday.Utils
                         logger.Log(NPanday.Logging.Level.WARNING, "Failed to close stream writer after writing to pom.xml.");
                     }
                 }
-                   
+
             }
         }
 
@@ -811,13 +809,13 @@ namespace NPanday.Utils
 
         public void AddPomDependency(NPanday.Model.Pom.Dependency dependency)
         {
-            
+
             if ("vb".Equals(NPandayCompilerPluginLanguage))
             {
                 if (rspUtil.IsVbcRspIncluded(dependency.artifactId))
                     return;
             }
-            else 
+            else
             {
                 if (rspUtil.IsCscRspIncluded((dependency.artifactId)))
                     return;
@@ -1151,57 +1149,57 @@ namespace NPanday.Utils
 
         }
 
-        public void AddMavenCompilePluginConfiguration(string pluginGroupId,string pluginArtifactId, string confPropCollection,string confProp, string confPropVal)
+        public void AddMavenCompilePluginConfiguration(string pluginGroupId, string pluginArtifactId, string confPropCollection, string confProp, string confPropVal)
         {
             NPanday.Model.Pom.Model model = ReadPomAsModel();
-            
-                foreach (Plugin plugin in model.build.plugins)
+
+            foreach (Plugin plugin in model.build.plugins)
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+
+                if (pluginGroupId.Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
+                    && pluginArtifactId.Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 {
-                    XmlDocument xmlDocument = new XmlDocument();
-
-                    if (pluginGroupId.Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
-                        && pluginArtifactId.Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
+                    if (plugin.configuration == null && plugin.configuration.Any == null)
                     {
-                        if (plugin.configuration == null && plugin.configuration.Any == null)
+                        return;
+                    }
+                    XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
+                    for (int count = elems.Length; count-- > 0; )
+                    {
+                        if (confPropCollection.Equals(elems[count].Name))
                         {
-                            return;
-                        }
-                        XmlElement[] elems = ((XmlElement[])plugin.configuration.Any);
-                        for (int count = elems.Length; count-- > 0; )
-                        {
-                            if (confPropCollection.Equals(elems[count].Name))
+                            XmlElement elem = xmlDocument.CreateElement(confPropCollection, @"http://maven.apache.org/POM/4.0.0");
+
+                            //Loop throught existing item and
+                            //append everything including the newly added item
+                            foreach (XmlNode n in elems[count].ChildNodes)
                             {
-                                XmlElement elem = xmlDocument.CreateElement(confPropCollection, @"http://maven.apache.org/POM/4.0.0");
-
-                                //Loop throught existing item and
-                                //append everything including the newly added item
-                                foreach (XmlNode n in elems[count].ChildNodes)
+                                if (confProp.Equals(n.Name))
                                 {
-                                    if (confProp.Equals(n.Name))
-                                    {
-                                        XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
-                                        node.InnerText = n.InnerText.Replace("\\", "/");
-                                        elem.AppendChild(node);
-                                    }
+                                    XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
+                                    node.InnerText = n.InnerText.Replace("\\", "/");
+                                    elem.AppendChild(node);
                                 }
-
-                                XmlNode nodeAdded = xmlDocument.CreateNode(XmlNodeType.Element, confProp, @"http://maven.apache.org/POM/4.0.0");
-
-                                nodeAdded.InnerText = confPropVal.Replace("\\", "/");
-                                if (!elems[count].InnerXml.Contains(nodeAdded.InnerText))
-                                {
-                                    elem.AppendChild(nodeAdded);
-                                }
-                                elems[count] = elem;
-
-                                break;
                             }
+
+                            XmlNode nodeAdded = xmlDocument.CreateNode(XmlNodeType.Element, confProp, @"http://maven.apache.org/POM/4.0.0");
+
+                            nodeAdded.InnerText = confPropVal.Replace("\\", "/");
+                            if (!elems[count].InnerXml.Contains(nodeAdded.InnerText))
+                            {
+                                elem.AppendChild(nodeAdded);
+                            }
+                            elems[count] = elem;
+
+                            break;
                         }
                     }
                 }
+            }
 
-                WriteModelToPom(model);    
-            
+            WriteModelToPom(model);
+
         }
 
         public void RenameMavenCompilePluginConfiguration(string pluginGroupId, string pluginArtifactId, string confPropCollection, string confProp, string confPropVal, string newPropVal)
@@ -1245,7 +1243,7 @@ namespace NPanday.Utils
                                     elem.AppendChild(node);
                                 }
                             }
-                            
+
                             elems[count] = elem;
 
                             break;
@@ -1306,8 +1304,8 @@ namespace NPanday.Utils
         }
 
 
-        
-        
+
+
         public void AddMavenResxPluginConfiguration(string pluginGroupId, string pluginArtifactId, string confPropCollection, string confProp, string sourceFile, string resxName)
         {
             NPanday.Model.Pom.Model model = ReadPomAsModel();
@@ -1333,14 +1331,14 @@ namespace NPanday.Utils
 
                             //Loop throught existing item and
                             //append everything including the newly added item
-                            
-                            
+
+
 
                             foreach (XmlNode n in elems[count].ChildNodes)
                             {
                                 if (confProp.Equals(n.Name))
                                 {
-                                   
+
                                     XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
                                     XmlNodeList nList = n.ChildNodes;
                                     foreach (XmlNode nChild in nList)
@@ -1349,13 +1347,13 @@ namespace NPanday.Utils
                                         innerChild.InnerText = nChild.InnerText;
                                         node.AppendChild(innerChild);
                                     }
-                                    
-                                    
+
+
                                     elem.AppendChild(node);
 
                                 }
                             }
-                            
+
                             XmlNode confPropNode = xmlDocument.CreateNode(XmlNodeType.Element, confProp, @"http://maven.apache.org/POM/4.0.0");
                             XmlNode nodeSourceFile = xmlDocument.CreateNode(XmlNodeType.Element, "sourceFile", @"http://maven.apache.org/POM/4.0.0");
                             XmlNode nodeResxName = xmlDocument.CreateNode(XmlNodeType.Element, "name", @"http://maven.apache.org/POM/4.0.0");
@@ -1419,17 +1417,17 @@ namespace NPanday.Utils
                                         {
                                             innerChild.InnerText = newSourceFile;
                                         }
-                                        else if(nChild.InnerText.Equals(resxName) && nChild.Name.Equals("name"))
+                                        else if (nChild.InnerText.Equals(resxName) && nChild.Name.Equals("name"))
                                         {
                                             innerChild.InnerText = newResxName;
                                         }
                                         else
                                         {
                                             innerChild.InnerText = nChild.InnerText;
-                                            
+
                                         }
                                         node.AppendChild(innerChild);
-                                        
+
                                     }
                                     elem.AppendChild(node);
 
@@ -1491,10 +1489,10 @@ namespace NPanday.Utils
                                                 node.AppendChild(innerChild);
                                             }
                                         }
-                                                                            
+
                                         if (nChild.Name.Equals("name"))
                                         {
-                                            if(!nChild.InnerText.Equals(resxName))
+                                            if (!nChild.InnerText.Equals(resxName))
                                             {
                                                 innerChild.InnerText = nChild.InnerText;
                                                 node.AppendChild(innerChild);
@@ -1505,7 +1503,7 @@ namespace NPanday.Utils
                                     {
                                         elem.AppendChild(node);
                                     }
-                                    
+
                                 }
                             }
                             elems[count] = elem;
@@ -1518,7 +1516,7 @@ namespace NPanday.Utils
             WriteModelToPom(model);
         }
 
-        
+
         void addPluginExecution(Plugin plugin, string goal, string phase)
         {
             if (string.IsNullOrEmpty(goal))
@@ -1589,7 +1587,7 @@ namespace NPanday.Utils
                 // there is nothing to write
                 return;
             }
-            
+
             if (string.IsNullOrEmpty(path))
             {
                 // there is nothing to write
@@ -1607,7 +1605,7 @@ namespace NPanday.Utils
                     output = path.Substring(0, endIndex);
                 }
             }
-            
+
             if (plugin.configuration == null)
             {
                 plugin.configuration = new PluginConfiguration();
@@ -1631,9 +1629,9 @@ namespace NPanday.Utils
             XmlNode nodePath = xmlDocument.CreateNode(XmlNodeType.Element, "path", @"http://maven.apache.org/POM/4.0.0");
             XmlNode nodeOutput = xmlDocument.CreateNode(XmlNodeType.Element, "output", @"http://maven.apache.org/POM/4.0.0");
             nodeName.InnerText = name;
-            nodePath.InnerText = path != null? path.Replace("\\", "/") : path;
-            nodeOutput.InnerText = output != null? output.Replace("\\", "/") : output;
-          
+            nodePath.InnerText = path != null ? path.Replace("\\", "/") : path;
+            nodeOutput.InnerText = output != null ? output.Replace("\\", "/") : output;
+
             node.AppendChild(nodeName);
             node.AppendChild(nodePath);
             node.AppendChild(nodeOutput);
@@ -1652,7 +1650,7 @@ namespace NPanday.Utils
 
             plugin.configuration.Any = elems.ToArray();
         }
-       
+
         XmlElement getWebReferencesElement(XmlElement[] elems, string elementName)
         {
             foreach (XmlElement elem in elems)
@@ -1701,7 +1699,7 @@ namespace NPanday.Utils
                                 {
                                     if ("includeSource".Equals(n.Name))
                                     {
-                                        if (n.InnerText != null && !n.InnerText.Trim().StartsWith(compareStr.Replace("\\","/")))
+                                        if (n.InnerText != null && !n.InnerText.Trim().StartsWith(compareStr.Replace("\\", "/")))
                                         {
                                             if (!n.InnerText.Contains(name))
                                             {
@@ -1727,7 +1725,7 @@ namespace NPanday.Utils
 
         void removeWebConfiguration(Plugin plugin, string name)
         {
-            
+
             if (string.IsNullOrEmpty(name))
             {
                 //nothing to remove
@@ -1739,7 +1737,7 @@ namespace NPanday.Utils
             {
                 elems = plugin.configuration.Any;
 
-               
+
                 foreach (XmlElement elem in elems)
                 {
                     XmlNode removeMe = null;
@@ -1772,12 +1770,12 @@ namespace NPanday.Utils
                     }
 
                 }
-				
-                if(isWebRefEmpty)
+
+                if (isWebRefEmpty)
                 {
                     DeletePlugin(plugin);
                 }
-               
+
             }
 
         }
@@ -1851,7 +1849,7 @@ namespace NPanday.Utils
             }
             return exists;
         }
-        
+
         //Gets the frameworkVersion of a given project and plugin
         public static string GetFrameworkVersion(NPanday.Model.Pom.Model mavenProject, string pluginName)
         {
@@ -1882,7 +1880,7 @@ namespace NPanday.Utils
             {
                 frameworkVersion = "3.5";
             }
-            
+
             //Set to default value of 2.0.50727 framework if no frameworkVersion configured
             if ("".Equals(frameworkVersion) || null == frameworkVersion)
             {
@@ -1895,11 +1893,11 @@ namespace NPanday.Utils
         //Reading the npanday-settings.xml file to get the sdkInstallRoot
         public static string GetSdkInstallRoot(String npandaySettings, string frameworkVersion)
         {
-           String userHomePath = (Environment.OSVersion.Platform == PlatformID.Unix ||
-            Environment.OSVersion.Platform == PlatformID.MacOSX)
-? Environment.GetEnvironmentVariable("HOME")
-: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
-            
+            String userHomePath = (Environment.OSVersion.Platform == PlatformID.Unix ||
+             Environment.OSVersion.Platform == PlatformID.MacOSX)
+ ? Environment.GetEnvironmentVariable("HOME")
+ : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+
             userHomePath += "/.m2/npanday-settings.xml";
 
             if (File.Exists(userHomePath))
@@ -1911,7 +1909,7 @@ namespace NPanday.Utils
                 //Use the USERPROFILE for machines without  homedrive homepath env var setup
                 npandaySettings = Environment.GetEnvironmentVariable("USERPROFILE") + "/.m2/npanday-settings.xml";
             }
-            
+
             XmlDocument doc = new XmlDocument();
             doc.Load(npandaySettings);
 

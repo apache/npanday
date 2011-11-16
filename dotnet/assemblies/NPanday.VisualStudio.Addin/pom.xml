@@ -71,49 +71,49 @@ under the License.
       <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
       <version>8.0.0.0</version>
       <type>gac</type>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>  
     <dependency> 
       <groupId>EnvDTE</groupId>  
       <artifactId>EnvDTE</artifactId>  
       <version>8.0.0.0</version>
       <type>gac</type>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>  
     <dependency> 
       <groupId>EnvDTE80</groupId>  
       <artifactId>EnvDTE80</artifactId>  
       <version>8.0.0.0</version>
       <type>gac</type>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>  
     <dependency> 
       <groupId>Extensibility</groupId>  
       <artifactId>Extensibility</artifactId>  
       <version>7.0.3300.0</version>  
       <type>gac</type>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>  
     <dependency> 
       <groupId>VSLangProj</groupId>  
       <artifactId>VSLangProj</artifactId>  
       <type>gac</type>  
       <version>7.0.3300.0</version>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>  
     <dependency> 
       <groupId>VSLangProj80</groupId>  
       <artifactId>VSLangProj80</artifactId>  
       <type>gac</type>  
       <version>8.0.0.0</version>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>  
     <dependency> 
       <groupId>VsWebSite.Interop</groupId>  
       <artifactId>VsWebSite.Interop</artifactId>  
       <type>gac</type>  
       <version>8.0.0.0</version>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday.visualstudio</groupId>

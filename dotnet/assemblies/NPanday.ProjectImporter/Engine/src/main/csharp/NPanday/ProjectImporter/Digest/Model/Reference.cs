@@ -26,7 +26,7 @@ using System.IO;
 using NPanday.Utils;
 using System.Reflection;
 using NPanday.Artifact;
-using NPanday.Model.Setting;
+using NPanday.Model.Settings;
 using System.Windows.Forms;
 using System.Net;
 

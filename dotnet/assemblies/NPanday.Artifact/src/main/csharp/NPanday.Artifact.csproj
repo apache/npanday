@@ -38,11 +38,10 @@ under the License.
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\NPanday.Model.Pom\target\NPanday.Model.Pom.dll</HintPath>
     </Reference>
-    <Reference Include="NPanday.Model.Settings, Version=0.14.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NPanday.Model.Settings, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\NPanday.Model.Settings\target\NPanday.Model.Settings.dll</HintPath>
     </Reference>
-    <Reference Include="NUnit.Framework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
@@ -60,6 +59,12 @@ under the License.
     <Compile Include="NPanday\Artifact\JavaRepositoryLayout.cs" />
     <Compile Include="NPanday\Artifact\PathUtil.cs" />
     <Compile Include="NPanday\Artifact\RepositoryType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\NPanday.Utils\src\main\csharp\NPanday.Utils.csproj">
+      <Project>{CAA4864F-F4C8-4024-8535-8B8C112307CE}</Project>
+      <Name>NPanday.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
