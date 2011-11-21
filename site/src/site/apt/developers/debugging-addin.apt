@@ -28,33 +28,40 @@ Debugging the Visual Studio Add-in
     [[1]] Check out the source code for NPanday if you haven't already. More information on how to build it is
           available in {{{./building.html} Building NPanday}}.
 
-    [[2]] Open solution file: <<<assemblies\NPanday\NPanday.sln>>>. You may need to choose 'Load project normally' in a
-          warning dialog. The solution is for Visual Studio 2005 - if you are using a more recent version it may ask
+    [[2]] Open solution file: <<<dotnet\NPanday.sln>>>. You may need to choose 'Load project normally' in a
+          warning dialog. The solution is for Visual Studio 2010 - if you are using a more recent version it may ask
           you to upgrade the project as well.
 
     [[3]] Build the whole solution using the normal Visual Studio build solution command.
 
     [[4]] Open this file using a text editor (notepad will do):
-          <<<My Documents\Visual Studio 2005\Addins\NPanday.VisualStudio.AddIn>>>. This should be the file for the
-          version of Visual Studio you intend to debug it in, so change 2005 to 2008/2010 if desired (it need not be the same
-          as the one you have the main solution open in).
+          <<<My Documents\Visual Studio 2010\Addins\NPanday.VisualStudio.AddIn>>>. This should be the file for the
+          version of Visual Studio you intend to debug it in, so change 2010 to 2005/2008 if desired
+          (it need not be the same as the one you have the main solution open in).
 
     [[5]] Change the value of the <<<\<Extensibility\>\<AddIn\>\<Assembly\>>>> to the following file within your
-          checkout: <<<assemblies\NPanday.VisualStudio.Addin\target\NPanday.VisualStudio.Addin.dll>>>. You must use
-          the full path, for example: <<<c:\Documents and Settings\[username]\checkouts\npanday\assemblies\...>>>
+          checkout: <<<dotnet\assemblies\NPanday.VisualStudio.Addin\target\NPanday.VisualStudio.Addin.dll>>>. You must
+          use the full path, for example: <<<C:\Documents and Settings\[username]\checkouts\npanday\assemblies\...>>>
 
-    [[6]] Back in Visual Studio, from the NPanday solution, right click on the <<<NPanday.VisualStudio.Addin>>>
+    [[6]] Change the value of <<<\<Extensibility\>\<AddIn\>\<Description\>>>> to the correct version (including -SNAPSHOT) 
+          in order to get an additional output pane showing the debug log.
+
+    [[7]] Back in Visual Studio, from the NPanday solution, right click on the <<<NPanday.VisualStudio.Addin>>>
           project. Set it to be the <Start up project> of the solution.
 
-    [[7]] Right click on <<<NPanday.VisualStudio.Addin>>> again and select <Properties>
+    [[8]] Right click on <<<NPanday.VisualStudio.Addin>>> again and select <Properties>
 
-    [[8]] Go to the Debug tab and select <Start External Program> in the <Action> section. Locate the <<<devenv.exe>>>
+    [[9]] Go to the Debug tab and select <Start External Program> in the <Action> section. Locate the <<<devenv.exe>>>
           of the version of Visual Studio that you want to debug. This is likely to be either
           <<<C:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe>>> (Visual Studio 2010) or
           <<<C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\devenv.exe>>> (Visual Studio 2008) or
           <<<C:\Program Files\Microsoft Visual Studio 8.0\Common7\IDE\devenv.exe>>> (Visual Studio 2005)
 
-    [[9]] You can now set any breakpoint on the project and press the "Run" button to open a new instance of
+    [[10]] You can now set any breakpoint on the project and press the "Run" button to open a new instance of
           Visual Studio with the current Add-in code loaded. <<<Connect.cs>>> is the main class of the Add-in and
           is the place to look for code to set breakpoints in to start with.
+
+    [[11]] The Visual Studio will lock the Add-in libraries as long as it runs. So it is recommended to disable the
+           Add-in (rename AddIn-file to *.AddIn_) whenever you open the main solution. After the main solution
+           is opened you can enable it again before you start/debug again.
 

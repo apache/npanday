@@ -519,6 +519,9 @@ under the License.
                 <exclude>**/**.css</exclude>
                 <exclude>**/**.snk</exclude>
                 <exclude>**/**.sln</exclude>
+                <exclude>**/*.patch</exclude>
+                <exclude>**/*.diff</exclude>
+                <exclude>**/.gitignore</exclude>
                 <exclude>netplugins/**/target/**/*</exclude>
                 <exclude>javabinding/target/**/*</exclude>
                 <exclude>npanday-it-runner/target/**/*</exclude>
@@ -531,6 +534,11 @@ under the License.
                 <exclude>**/src/main/java/NPanday/Plugin/Msbuild/MsbuildMojo.java</exclude>
                 <exclude>**/MavenTestProjectWithNUnitCopy/MavenTestProjectWithNUnit/pom.xml</exclude>
                 <exclude>**/MavenTestProjectWithNUnitCopy/pom.xml</exclude>
+
+                <!-- ui artifacts, usually not checked in -->
+                <exclude>atlassian-ide-plugin.xml</exclude>
+                <exclude>**/*.user</exclude>
+                <exclude>**/*.iml</exclude>
               </excludes>
             </configuration>
             <executions>
