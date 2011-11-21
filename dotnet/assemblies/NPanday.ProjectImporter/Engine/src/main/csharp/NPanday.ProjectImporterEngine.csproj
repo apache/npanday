@@ -53,67 +53,67 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\ProjectImporter\Converter\Algorithms\WebWithVbOrCsProjectFilePomConverter.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Algorithms\BaseProjectDigestAlgorithm.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\ComReference.cs" />
-    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\AbnormalProject.cs" />
-    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\AbstractProjectAlgorithm.cs" />
-    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\FlatMultiModuleProject.cs" />
-    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\FlatSingleModuleProject.cs" />
-    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\NormalMultiModuleProject.cs" />
-    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\NormalSingleProject.cs" />
-    <Compile Include="NPanday\ProjectImporter\Converter\Algorithms\AbstractPomConverter.cs" />
-    <Compile Include="NPanday\ProjectImporter\Converter\Algorithms\IPomConverter.cs" />
-    <Compile Include="NPanday\ProjectImporter\Converter\Algorithms\NormalPomConverter.cs" />
-    <Compile Include="NPanday\ProjectImporter\Converter\Algorithms\WebPomConverter.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\PomConverter.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Algorithms\IProjectDigestAlgorithm.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Algorithms\WebProjectDigestAlgorithm.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\BootstrapperPackage.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\Compile.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\Content.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\EmbeddedResource.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\Folder.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\IncludeBase.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\None.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Algorithms\NormalProjectDigestAlgorithm.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\ProjectReference.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\Reference.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\WebReferences.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\WebReferenceUrl.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\Model\ProjectDigest.cs" />
-    <Compile Include="NPanday\ProjectImporter\Digest\ProjectDigester.cs" />
-    <Compile Include="NPanday\ProjectImporter\ImportProjectStructureAlgorithms\IProjectTypeImporter.cs" />
-    <Compile Include="NPanday\ProjectImporter\NPandayImporter.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\ProjectSolutionParser.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\SolutionParser.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\VisualStudioProjectTypes\VisualStudioProjectTypeEnum.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\VisualStudioProjectTypes\VisualStudioProjectType.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\LexanState.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\LexicalAnalizer.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Model\Global.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Model\GlobalSection.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Model\Project.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Model\ProjectSection.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Model\Solution.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\SemanticalData.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\Semantics.cs" />
-    <Compile Include="NPanday\ProjectImporter\Parser\SlnParser\SolutionFactory.cs" />
-    <Compile Include="NPanday\ProjectImporter\Validator\ProjectStructureType.cs" />
-    <Compile Include="NPanday\ProjectImporter\Validator\ProjectValidator.cs" />
-    <Compile Include="NPanday\ProjectImporter\Verifiers\VerifyProjectImportSyncronization.cs" />
-    <Compile Include="NPanday\ProjectImporter\Verifiers\VerifyUnitTestsForm.cs">
+    <Compile Include="Converter\Algorithms\WebWithVbOrCsProjectFilePomConverter.cs" />
+    <Compile Include="Digest\Algorithms\BaseProjectDigestAlgorithm.cs" />
+    <Compile Include="Digest\Model\ComReference.cs" />
+    <Compile Include="ImportProjectStructureAlgorithms\AbnormalProject.cs" />
+    <Compile Include="ImportProjectStructureAlgorithms\AbstractProjectAlgorithm.cs" />
+    <Compile Include="ImportProjectStructureAlgorithms\FlatMultiModuleProject.cs" />
+    <Compile Include="ImportProjectStructureAlgorithms\FlatSingleModuleProject.cs" />
+    <Compile Include="ImportProjectStructureAlgorithms\NormalMultiModuleProject.cs" />
+    <Compile Include="ImportProjectStructureAlgorithms\NormalSingleProject.cs" />
+    <Compile Include="Converter\Algorithms\AbstractPomConverter.cs" />
+    <Compile Include="Converter\Algorithms\IPomConverter.cs" />
+    <Compile Include="Converter\Algorithms\NormalPomConverter.cs" />
+    <Compile Include="Converter\Algorithms\WebPomConverter.cs" />
+    <Compile Include="Digest\PomConverter.cs" />
+    <Compile Include="Digest\Algorithms\IProjectDigestAlgorithm.cs" />
+    <Compile Include="Digest\Algorithms\WebProjectDigestAlgorithm.cs" />
+    <Compile Include="Digest\Model\BootstrapperPackage.cs" />
+    <Compile Include="Digest\Model\Compile.cs" />
+    <Compile Include="Digest\Model\Content.cs" />
+    <Compile Include="Digest\Model\EmbeddedResource.cs" />
+    <Compile Include="Digest\Model\Folder.cs" />
+    <Compile Include="Digest\Model\IncludeBase.cs" />
+    <Compile Include="Digest\Model\None.cs" />
+    <Compile Include="Digest\Algorithms\NormalProjectDigestAlgorithm.cs" />
+    <Compile Include="Digest\Model\ProjectReference.cs" />
+    <Compile Include="Digest\Model\Reference.cs" />
+    <Compile Include="Digest\Model\WebReferences.cs" />
+    <Compile Include="Digest\Model\WebReferenceUrl.cs" />
+    <Compile Include="Digest\Model\ProjectDigest.cs" />
+    <Compile Include="Digest\ProjectDigester.cs" />
+    <Compile Include="ImportProjectStructureAlgorithms\IProjectTypeImporter.cs" />
+    <Compile Include="NPandayImporter.cs" />
+    <Compile Include="Parser\SlnParser\ProjectSolutionParser.cs" />
+    <Compile Include="Parser\SlnParser\SolutionParser.cs" />
+    <Compile Include="Parser\VisualStudioProjectTypes\VisualStudioProjectTypeEnum.cs" />
+    <Compile Include="Parser\VisualStudioProjectTypes\VisualStudioProjectType.cs" />
+    <Compile Include="Parser\SlnParser\LexanState.cs" />
+    <Compile Include="Parser\SlnParser\LexicalAnalizer.cs" />
+    <Compile Include="Parser\SlnParser\Model\Global.cs" />
+    <Compile Include="Parser\SlnParser\Model\GlobalSection.cs" />
+    <Compile Include="Parser\SlnParser\Model\Project.cs" />
+    <Compile Include="Parser\SlnParser\Model\ProjectSection.cs" />
+    <Compile Include="Parser\SlnParser\Model\Solution.cs" />
+    <Compile Include="Parser\SlnParser\SemanticalData.cs" />
+    <Compile Include="Parser\SlnParser\Semantics.cs" />
+    <Compile Include="Parser\SlnParser\SolutionFactory.cs" />
+    <Compile Include="Validator\ProjectStructureType.cs" />
+    <Compile Include="Validator\ProjectValidator.cs" />
+    <Compile Include="Verifiers\VerifyProjectImportSyncronization.cs" />
+    <Compile Include="Verifiers\VerifyUnitTestsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NPanday\ProjectImporter\Verifiers\VerifyUnitTestsForm.Designer.cs">
+    <Compile Include="Verifiers\VerifyUnitTestsForm.Designer.cs">
       <DependentUpon>VerifyUnitTestsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NPanday\ProjectImporter\Verifiers\VerifyUnitTestsToUser.cs" />
+    <Compile Include="Verifiers\VerifyUnitTestsToUser.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="NPanday\ProjectImporter\Verifiers\VerifyUnitTestsForm.resx">
+    <EmbeddedResource Include="Verifiers\VerifyUnitTestsForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>VerifyUnitTestsForm.cs</DependentUpon>
     </EmbeddedResource>

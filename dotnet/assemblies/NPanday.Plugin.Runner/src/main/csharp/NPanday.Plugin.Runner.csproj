@@ -44,7 +44,7 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\Plugin\Launcher\PluginLauncher.cs" />
+    <Compile Include="PluginLauncher.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />

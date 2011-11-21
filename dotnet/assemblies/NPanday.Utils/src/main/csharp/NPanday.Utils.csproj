@@ -48,13 +48,13 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\Utils\GacUtility.cs" />
-    <Compile Include="NPanday\Utils\ConstantNamespaceXmlTextReader.cs" />
-    <Compile Include="NPanday\Utils\PomHelperUtility.cs" />
-    <Compile Include="NPanday\Utils\RepositoryUtility.cs" />
-    <Compile Include="NPanday\Utils\RspUtility.cs" />
-    <Compile Include="NPanday\Utils\PathUtility.cs" />
-    <Compile Include="NPanday\Utils\SettingsUtil.cs" />
+    <Compile Include="GacUtility.cs" />
+    <Compile Include="ConstantNamespaceXmlTextReader.cs" />
+    <Compile Include="PomHelperUtility.cs" />
+    <Compile Include="RepositoryUtility.cs" />
+    <Compile Include="RspUtility.cs" />
+    <Compile Include="PathUtility.cs" />
+    <Compile Include="SettingsUtil.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />

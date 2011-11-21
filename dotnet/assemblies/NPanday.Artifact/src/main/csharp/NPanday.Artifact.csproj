@@ -49,16 +49,16 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\Artifact\Artifact.cs" />
-    <Compile Include="NPanday\Artifact\ArtifactContext.cs" />
-    <Compile Include="NPanday\Artifact\ArtifactRepository.cs" />
-    <Compile Include="NPanday\Artifact\ArtifactRepositoryLayout.cs" />
-    <Compile Include="NPanday\Artifact\ArtifactScope.cs" />
-    <Compile Include="NPanday\Artifact\AssemblyRepositoryLayout.cs" />
-    <Compile Include="NPanday\Artifact\IArtifactContext.cs" />
-    <Compile Include="NPanday\Artifact\JavaRepositoryLayout.cs" />
-    <Compile Include="NPanday\Artifact\PathUtil.cs" />
-    <Compile Include="NPanday\Artifact\RepositoryType.cs" />
+    <Compile Include="Artifact.cs" />
+    <Compile Include="ArtifactContext.cs" />
+    <Compile Include="ArtifactRepository.cs" />
+    <Compile Include="ArtifactRepositoryLayout.cs" />
+    <Compile Include="ArtifactScope.cs" />
+    <Compile Include="AssemblyRepositoryLayout.cs" />
+    <Compile Include="IArtifactContext.cs" />
+    <Compile Include="JavaRepositoryLayout.cs" />
+    <Compile Include="PathUtil.cs" />
+    <Compile Include="RepositoryType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\NPanday.Utils\src\main\csharp\NPanday.Utils.csproj">

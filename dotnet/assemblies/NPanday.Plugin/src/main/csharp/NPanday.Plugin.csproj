@@ -43,21 +43,21 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\Plugin\AbstractMojo.cs" />
-    <Compile Include="NPanday\Plugin\ClassAttribute.cs" />
-    <Compile Include="NPanday\Plugin\FieldAttribute.cs" />
-    <Compile Include="NPanday\Plugin\FieldInjectorAttribute.cs" />
-    <Compile Include="NPanday\Plugin\Generator\Code.cs" />
-    <Compile Include="NPanday\Plugin\Generator\ImportPackage.cs" />
-    <Compile Include="NPanday\Plugin\Generator\JavaClass.cs" />
-    <Compile Include="NPanday\Plugin\Generator\JavaClassUnmarshaller.cs" />
-    <Compile Include="NPanday\Plugin\Generator\JavaField.cs" />
-    <Compile Include="NPanday\Plugin\Generator\JavaMethod.cs" />
-    <Compile Include="NPanday\Plugin\Injector\IFieldInjector.cs" />
-    <Compile Include="NPanday\Plugin\Injector\Impl\FieldInjectorRepository.cs" />
-    <Compile Include="NPanday\Plugin\Injector\Impl\MavenProjectInjector.cs" />
-    <Compile Include="NPanday\Plugin\Injector\Impl\StringInjector.cs" />
-    <Compile Include="NPanday\Plugin\PluginDomainManager.cs" />
+    <Compile Include="AbstractMojo.cs" />
+    <Compile Include="ClassAttribute.cs" />
+    <Compile Include="FieldAttribute.cs" />
+    <Compile Include="FieldInjectorAttribute.cs" />
+    <Compile Include="Generator\Code.cs" />
+    <Compile Include="Generator\ImportPackage.cs" />
+    <Compile Include="Generator\JavaClass.cs" />
+    <Compile Include="Generator\JavaClassUnmarshaller.cs" />
+    <Compile Include="Generator\JavaField.cs" />
+    <Compile Include="Generator\JavaMethod.cs" />
+    <Compile Include="Injector\IFieldInjector.cs" />
+    <Compile Include="Injector\Impl\FieldInjectorRepository.cs" />
+    <Compile Include="Injector\Impl\MavenProjectInjector.cs" />
+    <Compile Include="Injector\Impl\StringInjector.cs" />
+    <Compile Include="PluginDomainManager.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />

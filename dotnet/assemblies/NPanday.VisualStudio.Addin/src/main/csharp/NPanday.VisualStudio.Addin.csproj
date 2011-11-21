@@ -67,103 +67,103 @@ under the License.
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="NPanday\VisualStudio\Addin\AddArtifactsForm.cs">
+    <Compile Include="AddArtifactsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\AddArtifactsForm.Designer.cs">
+    <Compile Include="AddArtifactsForm.Designer.cs">
       <DependentUpon>AddArtifactsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\ChangeMavenSettingsXmlForm.cs">
+    <Compile Include="ChangeMavenSettingsXmlForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\ChangeMavenSettingsXmlForm.Designer.cs">
+    <Compile Include="ChangeMavenSettingsXmlForm.Designer.cs">
       <DependentUpon>ChangeMavenSettingsXmlForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\Commands\BuildCommandContext.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\Commands\ButtonCommandRegistry.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\Commands\AddArtifactsCommand.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\Commands\ButtonCommand.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\Commands\IButtonCommandContext.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\Commands\ImportSelectedProjectCommand.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\Commands\VSCommandCaptions.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\ConfigureMavenRepositoryForm.cs">
+    <Compile Include="Commands\BuildCommandContext.cs" />
+    <Compile Include="Commands\ButtonCommandRegistry.cs" />
+    <Compile Include="Commands\AddArtifactsCommand.cs" />
+    <Compile Include="Commands\ButtonCommand.cs" />
+    <Compile Include="Commands\IButtonCommandContext.cs" />
+    <Compile Include="Commands\ImportSelectedProjectCommand.cs" />
+    <Compile Include="Commands\VSCommandCaptions.cs" />
+    <Compile Include="ConfigureMavenRepositoryForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\ConfigureMavenRepositoryForm.Designer.cs">
+    <Compile Include="ConfigureMavenRepositoryForm.Designer.cs">
       <DependentUpon>ConfigureMavenRepositoryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\Connect.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\MavenRunner.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\WebServicesReferenceUtils.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\Helper\VisualStudioControlsFinder.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\IReferenceInfo.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\IReferenceManager.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\IWebServiceRefInfo.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\IWebServicesRefUtils.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\LocalArtifactItem.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\LoginForm.cs">
+    <Compile Include="Connect.cs" />
+    <Compile Include="MavenRunner.cs" />
+    <Compile Include="WebServicesReferenceUtils.cs" />
+    <Compile Include="Helper\VisualStudioControlsFinder.cs" />
+    <Compile Include="IReferenceInfo.cs" />
+    <Compile Include="IReferenceManager.cs" />
+    <Compile Include="IWebServiceRefInfo.cs" />
+    <Compile Include="IWebServicesRefUtils.cs" />
+    <Compile Include="LocalArtifactItem.cs" />
+    <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\LoginForm.Designer.cs">
+    <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\MainFormTest.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\Messages.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\NPandayBuildSystemProperties.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\NPandayImportProjectForm.cs">
+    <Compile Include="MainFormTest.cs" />
+    <Compile Include="Messages.cs" />
+    <Compile Include="NPandayBuildSystemProperties.cs" />
+    <Compile Include="NPandayImportProjectForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\NPandayImportProjectForm.Designer.cs">
+    <Compile Include="NPandayImportProjectForm.Designer.cs">
       <DependentUpon>NPandayImportProjectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\NPandaySignAssembly.cs">
+    <Compile Include="NPandaySignAssembly.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\NPandaySignAssembly.Designer.cs">
+    <Compile Include="NPandaySignAssembly.Designer.cs">
       <DependentUpon>NPandaySignAssembly.cs</DependentUpon>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\ReferenceErrorEventArgs.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\ReferenceInfo.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\ReferenceManager.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\RemoteArtifactNode.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\RemoveArtifactsForm.cs">
+    <Compile Include="ReferenceErrorEventArgs.cs" />
+    <Compile Include="ReferenceInfo.cs" />
+    <Compile Include="ReferenceManager.cs" />
+    <Compile Include="RemoteArtifactNode.cs" />
+    <Compile Include="RemoveArtifactsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\RemoveArtifactsForm.Designer.cs">
+    <Compile Include="RemoveArtifactsForm.Designer.cs">
       <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NPanday\VisualStudio\Addin\ArtifactUtils.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\WebReferenceEventArgs.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\WebReferencesClasses.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\WebServiceRefInfo.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\WebServicesReferenceWatcher.cs" />
-    <Compile Include="NPanday\VisualStudio\Addin\WebsiteAssemblyReferenceWatcher.cs" />
+    <Compile Include="ArtifactUtils.cs" />
+    <Compile Include="WebReferenceEventArgs.cs" />
+    <Compile Include="WebReferencesClasses.cs" />
+    <Compile Include="WebServiceRefInfo.cs" />
+    <Compile Include="WebServicesReferenceWatcher.cs" />
+    <Compile Include="WebsiteAssemblyReferenceWatcher.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="NPanday\VisualStudio\Addin\AddArtifactsForm.resx">
+    <EmbeddedResource Include="AddArtifactsForm.resx">
       <DependentUpon>AddArtifactsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NPanday\VisualStudio\Addin\ChangeMavenSettingsXmlForm.resx">
+    <EmbeddedResource Include="ChangeMavenSettingsXmlForm.resx">
       <DependentUpon>ChangeMavenSettingsXmlForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NPanday\VisualStudio\Addin\ConfigureMavenRepositoryForm.resx">
+    <EmbeddedResource Include="ConfigureMavenRepositoryForm.resx">
       <DependentUpon>ConfigureMavenRepositoryForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NPanday\VisualStudio\Addin\LoginForm.resx">
+    <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NPanday\VisualStudio\Addin\NPandayImportProjectForm.resx">
+    <EmbeddedResource Include="NPandayImportProjectForm.resx">
       <DependentUpon>NPandayImportProjectForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NPanday\VisualStudio\Addin\NPandaySignAssembly.resx">
+    <EmbeddedResource Include="NPandaySignAssembly.resx">
       <DependentUpon>NPandaySignAssembly.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NPanday\VisualStudio\Addin\RemoveArtifactsForm.resx">
+    <EmbeddedResource Include="RemoveArtifactsForm.resx">
       <DependentUpon>RemoveArtifactsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

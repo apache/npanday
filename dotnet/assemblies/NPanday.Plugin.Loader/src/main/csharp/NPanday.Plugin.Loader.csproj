@@ -41,7 +41,7 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\Plugin\Loader\PluginLoader.cs" />
+    <Compile Include="PluginLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\NPanday.Plugin\src\main\csharp\NPanday.Plugin.csproj">

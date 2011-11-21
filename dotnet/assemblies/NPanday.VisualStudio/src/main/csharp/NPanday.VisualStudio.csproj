@@ -41,7 +41,7 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\VisualStudio\Logging\OutputWindowPaneHandler.cs" />
+    <Compile Include="Logging\OutputWindowPaneHandler.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -38,12 +38,12 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\Logging\ConsoleHandler.cs" />
-    <Compile Include="NPanday\Logging\IHandler.cs" />
-    <Compile Include="NPanday\Logging\Level.cs" />
-    <Compile Include="NPanday\Logging\Logger.cs" />
-    <Compile Include="NPanday\Logging\LogManager.cs" />
-    <Compile Include="NPanday\Logging\LogRecord.cs" />
+    <Compile Include="ConsoleHandler.cs" />
+    <Compile Include="IHandler.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="LogManager.cs" />
+    <Compile Include="LogRecord.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />

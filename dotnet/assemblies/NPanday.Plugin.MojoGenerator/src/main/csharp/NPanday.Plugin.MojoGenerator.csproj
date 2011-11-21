@@ -44,7 +44,7 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\Plugin\MojoGenerator\Generator.cs" />
+    <Compile Include="Generator.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
