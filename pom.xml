@@ -53,7 +53,26 @@ under the License.
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>npanday.snapshots</id>
+      <name>NPanday Snapshot Repository</name>
+      <url>http://vmbuild.apache.org/archiva/repository/npanday-snapshots</url>
+    </repository>
   </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>npanday.snapshots</id>
+      <name>NPanday Snapshot Repository</name>
+      <url>http://vmbuild.apache.org/archiva/repository/npanday-snapshots</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <mailingLists> 
     <mailingList> 
@@ -634,12 +653,12 @@ under the License.
   </profiles>
   <distributionManagement>
     <repository>
-      <id>vmbuild.staging</id>
-      <url>http://vmbuild.apache.org/archiva/repository/staged-npanday/</url>
+      <id>vmbuild.releases</id>
+      <url>http://vmbuild.apache.org/archiva/repository/npanday-releases/</url>
     </repository>
     <snapshotRepository>
       <id>vmbuild.snapshots</id>
-      <url>http://repo.npanday.org/archiva/repository/npanday-snapshots/</url>
+      <url>http://vmbuild.apache.org/archiva/repository/npanday-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 </project>
