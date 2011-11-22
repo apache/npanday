@@ -267,7 +267,6 @@ under the License.
     <module>components</module>  
     <module>archetypes</module>  
     <module>plugins</module>  
-    <module>dotnet</module>
   </modules>  
   <build> 
     <plugins>    
@@ -497,6 +496,17 @@ under the License.
     </dependencies> 
   </dependencyManagement>  
   <profiles>
+    <profile>
+      <id>dotnet-modules</id>
+      <activation>
+        <property>
+          <name>!bootstrap</name>
+        </property>
+      </activation>
+      <modules>
+        <module>dotnet</module>
+      </modules>
+    </profile>
     <profile>
       <id>integrationTests</id>
       <modules>
