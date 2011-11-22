@@ -44,7 +44,7 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\Plugin\SysRef\SysRefMojo.cs" />
+    <Compile Include="SysRefMojo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\dotnet\assemblies\NPanday.Artifact\src\main\csharp\NPanday.Artifact.csproj">

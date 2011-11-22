@@ -41,7 +41,7 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\Plugin\Devenv\DevenvMojo.cs" />
+    <Compile Include="DevenvMojo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\dotnet\assemblies\NPanday.Plugin\src\main\csharp\NPanday.Plugin.csproj">
@@ -49,5 +49,6 @@ under the License.
       <Name>NPanday.Plugin</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

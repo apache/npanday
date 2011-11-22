@@ -44,7 +44,7 @@ under the License.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NPanday\Plugin\Addin\AutomationExtensibilityMojo.cs" />
+    <Compile Include="AutomationExtensibilityMojo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\dotnet\assemblies\NPanday.Artifact\src\main\csharp\NPanday.Artifact.csproj">
