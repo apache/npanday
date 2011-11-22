@@ -37,11 +37,8 @@ under the License.
   <properties>
     <mavenVersion>2.0.9</mavenVersion>
     <plexus.utils.version>1.5.1</plexus.utils.version>
-    <npanday.snapshots.url>http://repo.npanday.org/archiva/repository/npanday-snapshots</npanday.snapshots.url>
-    <npanday.releases.url>http://repo.npanday.org/archiva/repository/npanday-releases</npanday.releases.url>
+    <!-- if you want to build NPanday with a specific version, replace this -->
     <bootstrap.npanday.version>${project.version}</bootstrap.npanday.version>
-    <!-- if you want to build NPanday with a specific version, use this, instead of the line above -->
-    <!--bootstrap.npanday.version>1.2.1</bootstrap.npanday.version-->
   </properties>
 
   <repositories>
