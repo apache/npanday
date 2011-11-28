@@ -113,8 +113,8 @@ under the License.
     <url>http://issues.apache.org/jira/browse/NPANDAY</url>
   </issueManagement>
   <ciManagement>
-    <system>continuum</system>
-    <url>http://ci.npanday.org/continuum/</url>
+    <system>jenkins</system>
+    <url>https://builds.apache.org/pview/?match=NPanday.*</url>
   </ciManagement>
   <developers> 
     <developer> 
