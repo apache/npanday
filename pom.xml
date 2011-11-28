@@ -28,7 +28,7 @@ under the License.
   <groupId>org.apache.npanday</groupId>
   <artifactId>npanday-project</artifactId>  
   <packaging>pom</packaging>  
-  <version>1.5.0-azuresupport-SNAPSHOT</version>  
+  <version>1.4.1-incubating-SNAPSHOT</version>  
   <name>Apache NPanday</name>  
   <url>http://incubator.apache.org/npanday/</url>
   <description>NPanday provides Maven plugins to support building of .NET applications</description>
@@ -104,9 +104,9 @@ under the License.
     </mailingList>  
   </mailingLists>
   <scm> 
-    <connection>scm:svn:http://svn.apache.org/repos/asf/incubator/npanday/branches/my-branch</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/branches/my-branch</developerConnection>
-    <url>http://svn.apache.org/viewvc/incubator/npanday/branches/my-branch</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/incubator/npanday/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/trunk/</developerConnection>
+    <url>http://svn.apache.org/viewvc/incubator/npanday/trunk</url>
   </scm>  
   <issueManagement> 
     <system>jira</system>  
@@ -358,77 +358,77 @@ under the License.
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-assembler</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-dao-project</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-executable</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-artifact</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-plugin</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-registry</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-repository</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-core</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-vendor</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-model-netdependency</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-model-assembly-plugins</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-model-compiler-plugins</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-model-executable-plugins</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-model-configuration-appenders</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-model-settings</artifactId>  
-        <version>1.5.0-azuresupport-SNAPSHOT</version> 
+        <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 
 
       <dependency> 
