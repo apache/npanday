@@ -279,6 +279,7 @@ under the License.
         <version>2.2.1</version>  
         <configuration>  
           <tagBase>https://svn.apache.org/repos/asf/incubator/npanday/tags</tagBase>  
+          <branchBase>https://svn.apache.org/repos/asf/incubator/npanday/branches</branchBase>  
           <useReleaseProfile>false</useReleaseProfile>
           <goals>deploy</goals>  
           <arguments>-Pnpanday-release,dist</arguments>
