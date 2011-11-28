@@ -79,7 +79,7 @@ public enum ArtifactType
      * A maven plugin authored in .NET.
      */
     DOTNET_MAVEN_PLUGIN("dotnet-maven-plugin", "library", "dll"),
-    
+
     /**
      * A compilation of libraries and their complementary 
      * files as debug symbols, docs or local satellite
@@ -162,7 +162,13 @@ public enum ArtifactType
 
     GAC_64_4 ( "gac_64_4", null, "dll"),
 
-    COM_REFERENCE( "com_reference", null, "dll");
+    COM_REFERENCE( "com_reference", null, "dll"),
+
+    /* Azure support */
+    AZURE_CLOUD_SERVICE ("azure-cloud-service", null, "cspkg"),
+
+    /* MSDeploy support */
+    MSDEPLOY_PACKAGE ("msdeploy-package", null, "msdeploy.zip");
 
     /**
      * The extension used for the artifact(netmodule, dll, exe)
