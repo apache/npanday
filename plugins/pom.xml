@@ -18,84 +18,91 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"> 
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-azuresupport-SNAPSHOT</version>  
-    <artifactId>npanday-project</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
+    <version>1.5.0-azuresupport-SNAPSHOT</version>
+    <artifactId>npanday-project</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.npanday.plugins</groupId>
-  <artifactId>maven-dotnet-plugins</artifactId>  
-  <packaging>pom</packaging>  
+  <artifactId>maven-dotnet-plugins</artifactId>
+  <packaging>pom</packaging>
   <name>NPanday :: Maven Plugins</name>
-  <modules> 
-    <module>netplugins/NPanday.Plugin.Addin/javabinding</module>  
-    <module>netplugins/NPanday.Plugin.Devenv/javabinding</module>  
+  <modules>
+    <module>netplugins/NPanday.Plugin.Addin/javabinding</module>
+    <module>netplugins/NPanday.Plugin.Devenv/javabinding</module>
     <module>netplugins/NPanday.Plugin.Settings/javabinding</module>
     <module>netplugins/NPanday.Plugin.SysRef/javabinding</module>
     <module>netplugins/NPanday.Plugin.Msbuild/javabinding</module>
     <module>custom-lifecycle-maven-plugin</module>
     <module>maven-compile-plugin</module>
     <module>maven-aspx-plugin</module>
-    <module>maven-fxcop-plugin</module>  
-    <module>maven-install-plugin</module>  
-    <module>maven-ilmerge-plugin</module>  
-    <module>maven-link-plugin</module>  
-    <module>maven-mojo-generator-plugin</module>  
-    <module>maven-resgen-plugin</module>  
-    <module>maven-repository-plugin</module>  
-    <module>maven-resolver-plugin</module>  
-    <module>maven-test-plugin</module>  
-    <module>maven-vsinstaller-plugin</module>  
-    <module>maven-webapp-plugin</module>  
-    <module>maven-xsd-plugin</module>  
-    <module>maven-xsp-plugin</module>  
-    <module>maven-wsdl-plugin</module> 
+    <module>aspnet-maven-plugin</module>
+    <module>maven-fxcop-plugin</module>
+    <module>maven-install-plugin</module>
+    <module>maven-ilmerge-plugin</module>
+    <module>maven-link-plugin</module>
+    <module>maven-mojo-generator-plugin</module>
+    <module>maven-resgen-plugin</module>
+    <module>maven-repository-plugin</module>
+    <module>maven-resolver-plugin</module>
+    <module>maven-test-plugin</module>
+    <module>maven-vsinstaller-plugin</module>
+    <module>maven-webapp-plugin</module>
+    <module>maven-xsd-plugin</module>
+    <module>maven-xsp-plugin</module>
+    <module>maven-wsdl-plugin</module>
     <module>wix-maven-plugin</module>
     <module>partcover-maven-plugin</module>
   </modules>
   <dependencies>
-    <dependency> 
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-assembler</artifactId>  
-    </dependency>  
-    <dependency> 
+      <artifactId>dotnet-assembler</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-dao-project</artifactId>  
-    </dependency>  
-    <dependency> 
+      <artifactId>dotnet-dao-project</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-executable</artifactId>  
-    </dependency>  
-    <dependency> 
+      <artifactId>dotnet-executable</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-artifact</artifactId>  
-    </dependency>  
-    <dependency> 
+      <artifactId>dotnet-artifact</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-plugin</artifactId>  
-    </dependency>  
+      <artifactId>dotnet-plugin</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
-      <artifactId>maven-core</artifactId>  
+      <artifactId>maven-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>${plexus.utils.version}</version>
     </dependency>
-  </dependencies>  
-  <build> 
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <!-- version is defined in parent pom -->
+    </dependency>
+  </dependencies>
+  <build>
     <plugins>
-      <plugin> 
-        <groupId>org.apache.maven.plugins</groupId>  
-        <artifactId>maven-surefire-plugin</artifactId>  
-        <configuration> 
-          <reportFormat>plain</reportFormat> 
-        </configuration> 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <reportFormat>plain</reportFormat>
+        </configuration>
       </plugin>
-    </plugins> 
+    </plugins>
     <extensions>
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
@@ -108,19 +115,19 @@ under the License.
         <version>1.1</version>
       </extension>
     </extensions>
-  </build>  
-  <reporting> 
+  </build>
+  <reporting>
     <excludeDefaults>true</excludeDefaults>
-     <plugins>  
-      <plugin>      
+    <plugins>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>emma-maven-plugin</artifactId>
         <version>1.0-alpha-2</version>
       </plugin>
-      <plugin> 
-        <groupId>org.apache.maven.plugins</groupId>  
-        <artifactId>maven-project-info-reports-plugin</artifactId>  
-        <version>2.1.2</version> 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.1.2</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -128,19 +135,19 @@ under the License.
             </reports>
           </reportSet>
         </reportSets>
-      </plugin>  
-      <plugin> 
-        <groupId>org.apache.maven.plugins</groupId>  
-        <artifactId>maven-plugin-plugin</artifactId>  
-        <version>2.5.1</version> 
-      </plugin>  
-      <plugin> 
-        <groupId>org.apache.maven.plugins</groupId>  
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>2.5.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
         <version>2.2</version>
-      </plugin> 
-    </plugins> 
-  </reporting>  
+      </plugin>
+    </plugins>
+  </reporting>
   <distributionManagement>
     <site>
       <id>apache.website</id>

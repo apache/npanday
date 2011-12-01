@@ -20,26 +20,12 @@ package npanday;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
-import npanday.ArtifactTypeHelper;
-import npanday.ArtifactType;
-import org.codehaus.plexus.util.DirectoryScanner;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 import java.util.logging.Logger;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * This class provides methods for obtaining the location of artifacts.
@@ -347,5 +333,11 @@ public final class PathUtil
     public static String getHomeM2Folder()
     {
         return new File(System.getProperty( "user.home" ), ".m2").getAbsolutePath();
+    }
+
+    public static File getPreparedPackageFolder( MavenProject project )
+    {
+        String folderName = project.getArtifactId();
+        return new File(new File(project.getBuild().getDirectory(), "packages"), folderName);
     }
 }
