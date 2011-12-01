@@ -22,7 +22,7 @@ under the License.
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>@project.groupId@.@project.artifactId@-its</groupId>
-  <artifactId>IT002_UserDefinedAssemblyDescriptor</artifactId>
+  <artifactId>IT003_AdditionalComponents</artifactId>
   <version>@project.version@</version>
   <packaging>pom</packaging>
   <build>

@@ -16,7 +16,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-def packageDir = new File(basedir, "target\\packages\\IT002_UserDefinedAssemblyDescriptor")
+def packageDir = new File(basedir, "target\\packages\\IT003_AdditionalComponents")
 assert packageDir.exists()
 assert new File(packageDir, "copy-anyway.aspx").exists();
 assert new File(packageDir, "copy-also.txt").exists();
