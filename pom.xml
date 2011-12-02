@@ -42,6 +42,16 @@ under the License.
   </properties>
 
   <repositories>
+    <!-- Temporary solution until we figure out where to house these properly -->
+    <repository>
+      <id>3rdparty</id>
+      <name>3rd Party .NET Repository</name>
+      <url>http://repo.npanday.org/3rdparty</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
     <repository>
       <id>openrdf</id>
       <name>OpenRDF Repository</name>
