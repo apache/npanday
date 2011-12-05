@@ -35,10 +35,10 @@ under the License.
 
   <!-- this is what get edited most, so lets put it on the top -->
   <properties>
-    <mavenVersion>2.0.9</mavenVersion>
-    <plexus.utils.version>1.5.1</plexus.utils.version>
+    <mavenVersion>2.2.1</mavenVersion>
+    <plexus.utils.version>1.5.11</plexus.utils.version>
     <!-- if you want to build NPanday with a specific version, replace this -->
-    <bootstrap.npanday.version>1.4.0-incubating</bootstrap.npanday.version>
+    <bootstrap.npanday.version>${project.version}</bootstrap.npanday.version>
   </properties>
 
   <repositories>
@@ -286,6 +286,9 @@ under the License.
           <preparationGoals>clean install</preparationGoals>  
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <mavenExecutorId>forked-path</mavenExecutorId>
+          <suppressCommitBeforeTag>true</suppressCommitBeforeTag>
+          <suppressCommitBeforeBranch>true</suppressCommitBeforeBranch>
+          <remoteTagging>false</remoteTagging>
         </configuration>  
       </plugin>
       <plugin> 
@@ -475,7 +478,7 @@ under the License.
       <dependency> 
         <groupId>org.codehaus.plexus</groupId>  
         <artifactId>plexus-container-default</artifactId>  
-        <version>1.0-alpha-32</version> 
+        <version>1.0-alpha-9-stable-1</version>
       </dependency>  
       <dependency> 
         <groupId>org.codehaus.plexus</groupId>  
@@ -496,6 +499,11 @@ under the License.
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>1.5.11</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>10.0.1</version>
       </dependency>
     </dependencies> 
   </dependencyManagement>  
@@ -646,6 +654,27 @@ under the License.
             </executions>
           </plugin>
         </plugins> 
+      </build>
+    </profile>
+    <profile>
+      <id>branch</id>
+      <activation>
+        <property>
+          <name>branchName</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>2.2.1</version>
+            <configuration>
+              <updateBranchVersions>true</updateBranchVersions>
+              <updateWorkingCopyVersions>false</updateWorkingCopyVersions>
+            </configuration>
+          </plugin>
+        </plugins>
       </build>
     </profile>
   </profiles>
