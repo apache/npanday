@@ -64,7 +64,7 @@ public class ConnectionsRepository
     {
        long start = System.currentTimeMillis();
 
-        File dataDir = new File( System.getProperty( "user.home" ), ".m2/repository" );
+        File dataDir = new File( System.getProperty( "user.home" ), ".npanday" );
         MemoryStore store = new MemoryStore( dataDir );
         store.setPersist( true );
         store.setSyncDelay( 0 );

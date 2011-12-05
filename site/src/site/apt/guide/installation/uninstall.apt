@@ -51,6 +51,8 @@ Uninstalling NPanday
   
   [[5]] Remove the following file <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository\\npanday.artifacts.resolved>>>
 
+  [[6]] Remove the following directory <<<C:\\Documents and Settings\\[user_home]\\.npanday>>>
+
   []
   
   An alternative to step 3 is to run the following commands from the command prompt as an administrator:
