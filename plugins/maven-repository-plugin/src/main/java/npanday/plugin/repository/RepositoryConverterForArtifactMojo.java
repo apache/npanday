@@ -93,11 +93,11 @@ public class RepositoryConverterForArtifactMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( e.getMessage() );
+            throw new MojoExecutionException( e.getMessage(), e );
         }
         catch( NPandayRepositoryException e )
         {
-            throw new MojoExecutionException( e.getMessage() );
+            throw new MojoExecutionException( e.getMessage(), e );
         }
     }
 }
