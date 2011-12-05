@@ -37,6 +37,7 @@ public class VendorInfoTransitionRuleFactoryTest
     extends TestCase
 {
     public void testNTF()
+        throws NoSuchFieldException, IllegalAccessException
     {
         List<VendorInfo> vendorInfoList = new ArrayList<VendorInfo>();
         vendorInfoList.add( VendorTestFactory.getVendorInfo( Vendor.MONO, "1.1.18", "1.1.4322" ) );
@@ -55,6 +56,7 @@ public class VendorInfoTransitionRuleFactoryTest
     }
 
     public void testNFF()
+        throws NoSuchFieldException, IllegalAccessException
     {
         List<VendorInfo> vendorInfoList = new ArrayList<VendorInfo>();
         vendorInfoList.add( VendorTestFactory.getVendorInfo( Vendor.MONO, "1.1.18", "1.1.4322" ) );
@@ -73,6 +75,7 @@ public class VendorInfoTransitionRuleFactoryTest
     }
 
     public void testNFF_MatchDefaultVendor()
+        throws NoSuchFieldException, IllegalAccessException
     {
         List<VendorInfo> vendorInfoList = new ArrayList<VendorInfo>();
         vendorInfoList.add( VendorTestFactory.getVendorInfo( Vendor.MONO, "1.1.18", "2.0.50727" ) );
@@ -91,6 +94,7 @@ public class VendorInfoTransitionRuleFactoryTest
     }
 
     public void testNFT()
+        throws NoSuchFieldException, IllegalAccessException
     {
         List<VendorInfo> vendorInfoList = new ArrayList<VendorInfo>();
         vendorInfoList.add( VendorTestFactory.getVendorInfo( Vendor.MONO, "1.1.13", "2.0.50727" ) );
@@ -109,6 +113,7 @@ public class VendorInfoTransitionRuleFactoryTest
     }
 
     public void testNFT_WithMatchingDefault()
+        throws NoSuchFieldException, IllegalAccessException
     {
         List<VendorInfo> vendorInfoList = new ArrayList<VendorInfo>();
         vendorInfoList.add( VendorTestFactory.getVendorInfo( Vendor.MONO, "1.1.18", "2.0.50727" ) );
@@ -126,6 +131,7 @@ public class VendorInfoTransitionRuleFactoryTest
     }
 
     public void testNFT_CantFindMatchingVendorInfo()
+        throws NoSuchFieldException, IllegalAccessException
     {
         VendorInfoTransitionRuleFactory factory = Factory.getVendorInfoTransitionRuleFactory(
             VendorTestFactory.getDefaultSetup( "MICROSOFT", "2.0.50727", "2.0.50727" ), new ArrayList<VendorInfo>() );
@@ -140,22 +146,15 @@ public class VendorInfoTransitionRuleFactoryTest
     {
         static VendorInfoTransitionRuleFactory getVendorInfoTransitionRuleFactory( DefaultSetup defaultSetup,
                                                                                    List<VendorInfo> vendorInfos )
+            throws NoSuchFieldException, IllegalAccessException
         {
             SettingsRepository settingsRepository = new SettingsRepository();
-            try
-            {
-                Field field = settingsRepository.getClass().getDeclaredField( "defaultSetup" );
-                field.setAccessible( true );
-                field.set( settingsRepository, defaultSetup );
-            }
-            catch ( NoSuchFieldException e )
-            {
-                e.printStackTrace();
-            }
-            catch ( IllegalAccessException e )
-            {
-                e.printStackTrace();
-            }
+            settingsRepository.enableLogging( new ConsoleLogger( Logger.LEVEL_DEBUG, "test" ) );
+
+            Field field = settingsRepository.getClass().getDeclaredField( "defaultSetup" );
+            field.setAccessible( true );
+            field.set( settingsRepository, defaultSetup );
+
             RepositoryRegistryTestStub repositoryRegistry = new RepositoryRegistryTestStub();
             repositoryRegistry.setSettingRepository( settingsRepository );
 

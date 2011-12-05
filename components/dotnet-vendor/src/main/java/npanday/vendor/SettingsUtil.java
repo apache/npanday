@@ -22,13 +22,12 @@ package npanday.vendor;
 import npanday.PathUtil;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
-import npanday.registry.impl.StandardRepositoryLoader;
 import npanday.vendor.impl.SettingsRepository;
 import org.codehaus.plexus.util.StringUtils;
 
+import javax.naming.OperationNotSupportedException;
 import java.io.File;
 import java.io.IOException;
-import java.util.Hashtable;
 
 /**
  *   Central handling of creation and retrieval of the SettingsRepository.
@@ -65,8 +64,8 @@ public class SettingsUtil
         throws SettingsException
     {
         SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-        if (settingsRepository == null){
-            return populateSettingsRepository( repositoryRegistry, settingsPathOrFile);
+        if (settingsRepository.isEmpty()){
+            populateSettingsRepository( repositoryRegistry, settingsPathOrFile);
         }
         return settingsRepository;
     }
@@ -78,7 +77,7 @@ public class SettingsUtil
      * @return The new Settings Repository.
      * @throws SettingsException If anything goes wrong reading or registering the settings
      */
-    public static SettingsRepository populateSettingsRepository( RepositoryRegistry repositoryRegistry, String settingsPathOrFile )
+    public static void populateSettingsRepository( RepositoryRegistry repositoryRegistry, String settingsPathOrFile )
         throws SettingsException
     {
         SettingsRepository settingsRepository;
@@ -91,36 +90,25 @@ public class SettingsUtil
             throw new SettingsException( "NPANDAY-108-001: Error finding npanday-settings in registry", ex );
         }
 
-        if ( settingsRepository != null )
-        {
-            try
-            {
-                repositoryRegistry.removeRepository( "npanday-settings" );
-            }
-            catch ( Exception ex )
-            {
-                throw new SettingsException( "NPANDAY-108-002: Error removing npanday-settings from registry", ex );
-            }
-        }
-
         File settingsFile = PathUtil.buildSettingsFilePath( settingsPathOrFile );
 
         if (!settingsFile.exists())
         {
-            return null;
+            throw new SettingsException( "NPANDAY-108-005: Settings file does not exist: " + settingsFile );
         }
 
         try
         {
-            StandardRepositoryLoader repoLoader = new StandardRepositoryLoader();
-            repoLoader.setRepositoryRegistry( repositoryRegistry );
-            settingsRepository = (SettingsRepository) repoLoader.loadRepository( settingsFile.getAbsolutePath(),
-                                                                                 SettingsRepository.class.getName(),
-                                                                                 new Hashtable() );
-            repositoryRegistry.addRepository( "npanday-settings", settingsRepository );
-            assert settingsRepository != null;
+            settingsRepository.clearAll();
+        }
+        catch ( OperationNotSupportedException e )
+        {
+            throw new SettingsException( "NPANDAY-108-006: Error clearing settings repository.", e );
+        }
 
-            return settingsRepository;
+        try
+        {
+            settingsRepository.load( settingsFile.toURI().toURL() );
         }
         catch ( IOException e )
         {

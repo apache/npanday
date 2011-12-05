@@ -20,20 +20,25 @@ package npanday.vendor.impl;
 
 import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
-import npanday.model.settings.Framework;
-import npanday.vendor.*;
-import npanday.registry.RepositoryRegistry;
 import npanday.PlatformUnsupportedException;
-
-import java.util.List;
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
-import java.io.File;
-
+import npanday.model.settings.Framework;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.InvalidVersionFormatException;
+import npanday.vendor.Vendor;
+import npanday.vendor.VendorFactory;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorInfoMatchPolicy;
+import npanday.vendor.VendorInfoRepository;
+import npanday.vendor.VendorUnsupportedException;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Provides an implementation of <code>VendorInfoRepository</code>.
@@ -59,6 +64,11 @@ public class VendorInfoRepositoryImpl
      * Cache
      */
     private List<VendorInfo> cachedVendorInfos;
+
+    /**
+     * The version the repository was at, when the cache was built up.
+     */
+    private int cachedVendorInfosContentVersion;
 
     /**
      * Constructor. This method is intended to be invoked by the plexus-container, not by the application developer.
@@ -114,11 +124,11 @@ public class VendorInfoRepositoryImpl
     {
         List<VendorInfo> infos = getVendorInfosFor(vendorInfoExample, false);
         if (infos.size() == 0) {
-           throw new PlatformUnsupportedException( "NPANDAY-200-001: Could not find configuration for " + vendorInfoExample );
+           throw new PlatformUnsupportedException( "NPANDAY-113-001: Could not find configuration for " + vendorInfoExample );
         }
 
         if (infos.size() > 2) {
-            // reload default
+            // reloadAll default
             infos = getVendorInfosFor(vendorInfoExample, true);
         }
 
@@ -129,28 +139,30 @@ public class VendorInfoRepositoryImpl
 
     private List<VendorInfo> getVendorInfos()
     {
+        ensureCache();
+
+        return Collections.unmodifiableList( cachedVendorInfos );
+    }
+
+    private void ensureCache()
+    {
         SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
 
-        if ( settingsRepository.isReloaded() )
+        if (settingsRepository.isEmpty()) {
+            logger.warn( "NPANDAY-113-000: The settings repository does not contain any vendor information" );
+        }
+
+        if ( settingsRepository.getContentVersion() > cachedVendorInfosContentVersion )
         {
             clearCache();
-            settingsRepository.setReloaded(false);
         }
 
-        try
+        if ( cachedVendorInfos != null && cachedVendorInfos.size() > 0 )
         {
-            settingsRepository.reload();
-        }
-        catch(Exception e)
-        {
-            //e.printStackTrace();
-        }
- 
-        if ( cachedVendorInfos != null && cachedVendorInfos.size() > 0 &&  !settingsRepository.isReloaded() )
-        {
-            return Collections.unmodifiableList( cachedVendorInfos );
+            return;
         }
 
+        cachedVendorInfosContentVersion = settingsRepository.getContentVersion();
         cachedVendorInfos = new ArrayList<VendorInfo>();
 
         for ( npanday.model.settings.Vendor v : settingsRepository.getVendors() )
@@ -181,7 +193,7 @@ public class VendorInfoRepositoryImpl
                 vendorInfo.setFrameworkVersion( framework.getFrameworkVersion() );
                 try
                 {
-                    vendorInfo.setVendor( VendorFactory.createVendorFromName(v.getVendorName()) );
+                    vendorInfo.setVendor( VendorFactory.createVendorFromName( v.getVendorName() ) );
                 }
                 catch ( VendorUnsupportedException e )
                 {
@@ -189,11 +201,10 @@ public class VendorInfoRepositoryImpl
                 }
                 vendorInfo.setDefault(
                     v.getIsDefault() != null && v.getIsDefault().toLowerCase().trim().equals( "true" ) );
+
                 cachedVendorInfos.add( vendorInfo );
             }
         }
-        settingsRepository.setReloaded( false );
-        return Collections.unmodifiableList( cachedVendorInfos );
     }
 
     /**
@@ -309,7 +320,7 @@ public class VendorInfoRepositoryImpl
                 }
                 catch ( InvalidVersionFormatException e )
                 {
-                    throw new PlatformUnsupportedException( "NPANDAY-xxx-000: Invalid version format", e );
+                    throw new PlatformUnsupportedException( "NPANDAY-113-004: Invalid version format", e );
                 }
 
                 for ( VendorInfo vendorInfo : vendorInfos )
@@ -321,7 +332,7 @@ public class VendorInfoRepositoryImpl
                         if ( !gacRoot.exists() )
                         {
                             throw new PlatformUnsupportedException(
-                                "NPANDAY-xxx-000: The Mono GAC path does not exist: Path = " +
+                                "NPANDAY-113-005: The Mono GAC path does not exist: Path = " +
                                     gacRoot.getAbsolutePath() );
                         }
                         return gacRoot;
@@ -359,6 +370,6 @@ public class VendorInfoRepositoryImpl
         {
             return new File( System.getenv("SystemRoot"), "\\Microsoft.NET\\assembly\\GAC_MSIL\\" );
         }
-        throw new PlatformUnsupportedException("NPANDAY-200-002: Could not locate a valid GAC");
+        throw new PlatformUnsupportedException("NPANDAY-113-006: Could not locate a valid GAC");
     }
 }

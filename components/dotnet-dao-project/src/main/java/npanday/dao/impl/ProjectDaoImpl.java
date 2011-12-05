@@ -906,11 +906,6 @@ public final class ProjectDaoImpl
         this.rdfRepository = (org.openrdf.repository.Repository) dataStoreObject;
     }
 
-    public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
-    {
-
-    }
-
     protected void initForUnitTest( Object dataStoreObject, String id, String className,
                                     ArtifactResolver artifactResolver, ArtifactFactory artifactFactory )
     {

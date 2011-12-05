@@ -18,14 +18,6 @@ under the License.
 -->
 <component-set>
   <components>
-    <component>
-      <role>npanday.NPandayRepositoryRegistry</role>
-      <implementation>npanday.impl.NPandayRepositoryRegistryImpl</implementation>
-      <requirements>
-        <requirement>
-          <role>npanday.registry.RepositoryRegistry</role>
-        </requirement>
-      </requirements>
-    </component>
+    <!-- use annotations instead -->
   </components>
 </component-set>

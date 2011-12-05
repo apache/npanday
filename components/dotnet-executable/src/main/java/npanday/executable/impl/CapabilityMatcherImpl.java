@@ -19,35 +19,32 @@
 package npanday.executable.impl;
 
 import npanday.PlatformUnsupportedException;
-import npanday.executable.*;
-import npanday.executable.compiler.*;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import org.codehaus.plexus.logging.LogEnabled;
-import org.codehaus.plexus.logging.Logger;
+import npanday.executable.CapabilityMatcher;
+import npanday.executable.ExecutableCapability;
+import npanday.executable.ExecutableMatchPolicy;
+import npanday.executable.ExecutableRequirement;
+import npanday.executable.compiler.CompilerCapability;
+import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides an implementation of the <code>CapabilityMatcher</code> interface.
  *
  * @author Shane Isbell
  */
+@Component( role = CapabilityMatcher.class )
 public class CapabilityMatcherImpl
-    implements CapabilityMatcher, LogEnabled
+    extends AbstractLogEnabled
+    implements CapabilityMatcher
 {
-    /**
-     * A logger for writing log messages
-     */
-    private Logger logger;
-
+    @Requirement
     private RepositoryRegistry repositoryRegistry;
-
-    public void enableLogging( Logger logger )
-    {
-        this.logger = logger;
-    }
 
     public CompilerCapability matchCompilerCapabilityFor( CompilerRequirement compilerRequirement,
                                                           List<ExecutableMatchPolicy> matchPolicies )
@@ -125,16 +122,17 @@ public class CapabilityMatcherImpl
     {
         for ( ExecutableCapability executableCapability : executableCapabilities )
         {
-            logger.debug( "NPANDAY-065-005: Attempting to match capability: " + executableCapability );
+            getLogger().debug( "NPANDAY-065-005: Attempting to match capability: " + executableCapability );
             if ( matchExecutableCapability( executableCapability, matchPolicies ) )
             {
-                logger.debug( "NPANDAY-065-001: Made a Platform Capability Match: " + executableCapability );
+                getLogger().debug( "NPANDAY-065-001: Made a Platform Capability Match: " + executableCapability );
                 return executableCapability;
             }
         }
-        throw new PlatformUnsupportedException( "NPANDAY-065-002: Could not match platform: OS = " +
-            System.getProperty( "os.name" ) + ", Number of Capabilities = " + executableCapabilities.size() +
-            ", Number of Policies = " + matchPolicies.size() );
+        throw new PlatformUnsupportedException(
+            "NPANDAY-065-002: Could not match platform: OS = " + System.getProperty( "os.name" )
+                + ", Number of Capabilities = " + executableCapabilities.size() + ", Number of Policies = "
+                + matchPolicies.size() );
     }
 
 
@@ -146,7 +144,7 @@ public class CapabilityMatcherImpl
             boolean match = executableMatchPolicy.match( executableCapability );
             if ( !match )
             {
-                logger.debug( "Failed to match policy: " + executableMatchPolicy );
+                getLogger().debug( "Failed to match policy: " + executableMatchPolicy );
                 return false;
             }
         }

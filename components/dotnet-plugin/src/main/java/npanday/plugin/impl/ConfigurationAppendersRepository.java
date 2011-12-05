@@ -18,48 +18,48 @@
  */
 package npanday.plugin.impl;
 
+import npanday.model.configurationappenders.ConfigurationAppender;
+import npanday.model.configurationappenders.ConfigurationAppenderModel;
+import npanday.model.configurationappenders.io.xpp3.ConfigurationAppendersXpp3Reader;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
-import npanday.registry.RepositoryRegistry;
-import npanday.model.configurationappenders.io.xpp3.ConfigurationAppendersXpp3Reader;
-import npanday.model.configurationappenders.ConfigurationAppenderModel;
-import npanday.model.configurationappenders.ConfigurationAppender;
+import npanday.registry.impl.AbstractMultisourceRepository;
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-import java.io.InputStream;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.InputStreamReader;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 
-public class ConfigurationAppendersRepository implements Repository
+/**
+ * @author Shane Isbell
+ * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ */
+@Component(role = ConfigurationAppendersRepository.class)
+public class ConfigurationAppendersRepository
+    extends AbstractMultisourceRepository<ConfigurationAppenderModel>
+    implements Repository
 {
 
-    private Set<Class> appenderClasses;
+    private Set<Class> appenderClasses = new HashSet<Class>();
 
-    public void load( InputStream inputStream, Hashtable properties )
-        throws NPandayRepositoryException
+    @Override
+    protected ConfigurationAppenderModel loadFromReader( Reader reader, Hashtable properties )
+        throws IOException, XmlPullParserException
     {
         ConfigurationAppendersXpp3Reader xpp3Reader = new ConfigurationAppendersXpp3Reader();
-        Reader reader = new InputStreamReader( inputStream );
-        ConfigurationAppenderModel model;
-        try
-        {
-            model = xpp3Reader.read( reader );
-        }
-        catch( IOException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-062-000: An error occurred while reading plugins-compiler.xml", e );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-062-001: Could not read plugins-compiler.xml", e );
-        }
+
+           return xpp3Reader.read( reader );
+    }
+
+    @Override
+    protected void mergeLoadedModel( ConfigurationAppenderModel model )
+        throws NPandayRepositoryException
+    {
         List<ConfigurationAppender> appenders  = model.getConfigurationAppenders();
-        appenderClasses = new HashSet<Class>();
         for(ConfigurationAppender appender : appenders)
         {
             try
@@ -71,7 +71,6 @@ public class ConfigurationAppendersRepository implements Repository
                 throw new NPandayRepositoryException("NPANDAY-xxx-000: Could not load class appender: Name = " + appender.getName(), e );
             }
         }
-
     }
 
     public Set<Class> getAppenderClasses()
@@ -79,24 +78,12 @@ public class ConfigurationAppendersRepository implements Repository
         return appenderClasses;
     }
 
-    public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
-    {
-
-    }
-    
     /**
-     * @see Repository#setSourceUri(String)
+     * Remove all stored values in preparation for a reload.
      */
-    public void setSourceUri( String fileUri )
+    @Override
+    protected void clear()
     {
-        // not supported
-    }
-
-    /**
-     * @see Repository#reload()
-     */
-    public void reload() throws IOException
-    {
-        // not supported
+        appenderClasses.clear();
     }
 }

@@ -18,18 +18,17 @@
  */
 package npanday.plugin.install;
 
+import npanday.artifact.ArtifactContext;
+import npanday.dao.ProjectDao;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.installer.ArtifactInstallationException;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-
-import npanday.artifact.ArtifactContext;
-import npanday.dao.ProjectDao;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
 
 /**
  * Installs assembly file into the local repository
@@ -97,11 +96,6 @@ public class FileInstallerMojo
      * @component
      */
     private ArtifactContext artifactContext;
-
-    /**
-     * @component
-     */
-    private npanday.NPandayRepositoryRegistry npandayRegistry;
 
     /**
      * The artifact factory component, which is used for creating artifacts.

@@ -18,86 +18,67 @@
  */
 package npanday.executable.impl;
 
-import npanday.registry.NPandayRepositoryException;
-import npanday.registry.Repository;
-import npanday.registry.RepositoryRegistry;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-
-import java.io.*;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
-
-import npanday.vendor.Vendor;
 import npanday.executable.CommandCapability;
 import npanday.executable.ExecutableCapability;
 import npanday.executable.compiler.CompilerCapability;
-import npanday.model.compiler.plugins.io.xpp3.CompilerPluginXpp3Reader;
-import npanday.model.compiler.plugins.CompilerPluginsModel;
-import npanday.model.compiler.plugins.CompilerPlugin;
-import npanday.model.compiler.plugins.Platform;
 import npanday.model.compiler.plugins.CommandFilter;
+import npanday.model.compiler.plugins.CompilerPlugin;
+import npanday.model.compiler.plugins.CompilerPluginsModel;
+import npanday.model.compiler.plugins.Platform;
+import npanday.model.compiler.plugins.io.xpp3.CompilerPluginXpp3Reader;
+import npanday.registry.NPandayRepositoryException;
+import npanday.registry.Repository;
+import npanday.registry.impl.AbstractMultisourceRepository;
+import npanday.vendor.Vendor;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Repository for reading and providing access to the compiler-plugins.xml config file.
  *
  * @author Shane Isbell
+ * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  */
+@Component(role = CompilerPluginsRepository.class)
 public final class CompilerPluginsRepository
+    extends AbstractMultisourceRepository<CompilerPluginsModel>
     implements Repository
 {
     /**
-     * List<npanday.model.compiler.plugins.CompilerPlugin> of compiler plugins pulled from the 
-     * compiler-plugins.xml file.
+     * List<npanday.model.compiler.plugins.CompilerPlugin> of compiler plugins pulled from the
+     * various compiler-plugins.xml files.
      */
-    private List compilerPlugins;
+    private List compilerPlugins = new ArrayList();
 
-    /**
-     * @see Repository#load(java.io.InputStream, java.util.Hashtable)
-     */
-    public void load( InputStream inputStream, Hashtable properties )
-        throws NPandayRepositoryException
+    @Override
+    protected CompilerPluginsModel loadFromReader( Reader reader, Hashtable properties )
+        throws IOException, XmlPullParserException
     {
         CompilerPluginXpp3Reader xpp3Reader = new CompilerPluginXpp3Reader();
-        Reader reader = new InputStreamReader( inputStream );
-        CompilerPluginsModel plugins;
-        try
-        {
-            plugins = xpp3Reader.read( reader );
-        }
-        catch( IOException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-062-000: An error occurred while reading plugins-compiler.xml", e );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-062-001: Could not read plugins-compiler.xml", e );
-        }
-        compilerPlugins = plugins.getCompilerPlugins();
+        return xpp3Reader.read( reader );
+    }
+
+    @Override
+    protected void mergeLoadedModel( CompilerPluginsModel model )
+        throws NPandayRepositoryException
+    {
+        compilerPlugins.addAll( model.getCompilerPlugins() );
     }
 
     /**
-     * @see Repository#setRepositoryRegistry(npanday.registry.RepositoryRegistry)
+     * Remove all stored values in preparation for a reload.
      */
-    public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
+    @Override
+    protected void clear()
     {
-    }
-
-    /**
-     * @see Repository#setSourceUri(String)
-     */
-    public void setSourceUri( String fileUri )
-    {
-        // not supported
-    }
-
-    /**
-     * @see Repository#reload()
-     */
-    public void reload() throws IOException
-    {
-        // not supported
+        compilerPlugins.clear();
     }
 
     /**
@@ -143,7 +124,7 @@ public final class CompilerPluginsRepository
                 CommandFilter filter = plugin.getCommandFilter();
                 platformCapability.setCoreAssemblies( coreAssemblies );
 
-                platformCapability.setNetDependencyId( plugin.getNetDependencyId());
+                platformCapability.setNetDependencyId( plugin.getNetDependencyId() );
 
                 List<String> includes = ( filter != null ) ? filter.getIncludes() : new ArrayList<String>();
                 List<String> excludes = ( filter != null ) ? filter.getExcludes() : new ArrayList<String>();

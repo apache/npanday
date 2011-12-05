@@ -18,86 +18,66 @@
  */
 package npanday.executable.impl;
 
+import npanday.executable.CommandCapability;
+import npanday.executable.ExecutableCapability;
+import npanday.model.compiler.plugins.CommandFilter;
+import npanday.model.compiler.plugins.ExecutablePlugin;
+import npanday.model.compiler.plugins.ExecutablePluginsModel;
+import npanday.model.compiler.plugins.Platform;
+import npanday.model.compiler.plugins.io.xpp3.ExecutablePluginXpp3Reader;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
-import npanday.registry.RepositoryRegistry;
+import npanday.registry.impl.AbstractMultisourceRepository;
+import npanday.vendor.Vendor;
+import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-import java.io.InputStream;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.InputStreamReader;
-import java.util.Hashtable;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
-
-import npanday.model.compiler.plugins.io.xpp3.ExecutablePluginXpp3Reader;
-import npanday.model.compiler.plugins.*;
-import npanday.executable.ExecutableCapability;
-import npanday.executable.CommandCapability;
-import npanday.vendor.Vendor;
+import java.util.List;
 
 /**
  * Provides services for accessing the executable information within the executable-plugins.xml file.
  *
  * @author Shane Isbell
+ * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  */
+@Component(role = ExecutablePluginsRepository.class)
 public final class ExecutablePluginsRepository
+    extends AbstractMultisourceRepository<ExecutablePluginsModel>
     implements Repository
 {
 
     /**
      * A list of executable capabilities as specified within the executable-plugins.xml file
      */
-    private List<ExecutablePlugin> executablePlugins;
+    private List<ExecutablePlugin> executablePlugins = new ArrayList<ExecutablePlugin>( );
 
-    /**
-     * Loads the repository
-     *
-     * @param inputStream a stream of the repository file (typically from *.xml)
-     * @param properties  additional user-supplied parameters used to customize the behavior of the repository
-     * @throws npanday.registry.NPandayRepositoryException if there is a problem loading the repository
-     */
-    public void load( InputStream inputStream, Hashtable properties )
-            throws NPandayRepositoryException
+    @Override
+    protected ExecutablePluginsModel loadFromReader( Reader reader, Hashtable properties )
+        throws IOException, XmlPullParserException
     {
         ExecutablePluginXpp3Reader xpp3Reader = new ExecutablePluginXpp3Reader();
-        Reader reader = new InputStreamReader( inputStream );
-        ExecutablePluginsModel plugins = null;
-        try
-        {
-            plugins = xpp3Reader.read( reader );
-        }
-        catch( IOException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-067-000: An error occurred while reading executable-plugins.xml", e );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-067-001: Could not read executable-plugins.xml", e );
-        }
-        executablePlugins = plugins.getExecutablePlugins();
+           return xpp3Reader.read( reader );
     }
 
-    public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
+    @Override
+    protected void mergeLoadedModel( ExecutablePluginsModel model )
+        throws NPandayRepositoryException
     {
+       executablePlugins.addAll( model.getExecutablePlugins() );
     }
 
     /**
-     * @see Repository#setSourceUri(String)
+     * Remove all stored values in preparation for a reload.
      */
-    public void setSourceUri( String fileUri )
+    @Override
+    protected void clear()
     {
-        // not supported
-    }
-
-    /**
-     * @see Repository#reload()
-     */
-    public void reload() throws IOException
-    {
-        // not supported
+        executablePlugins.clear();
     }
 
     /**

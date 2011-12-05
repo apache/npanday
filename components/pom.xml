@@ -18,36 +18,73 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-azuresupport-SNAPSHOT</version>  
-    <artifactId>npanday-project</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>dotnet-components</artifactId>  
-  <packaging>pom</packaging>  
-  <name>NPanday :: Java Components</name>  
-  <modules> 
-    <module>dotnet-artifact</module>  
-    <module>dotnet-assembler</module>  
-    <module>dotnet-core</module>  
-    <module>dotnet-dao-project</module>  
+    <version>1.5.0-azuresupport-SNAPSHOT</version>
+    <artifactId>npanday-project</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>dotnet-components</artifactId>
+  <packaging>pom</packaging>
+  <name>NPanday :: Java Components</name>
+  <modules>
+    <module>dotnet-artifact</module>
+    <module>dotnet-assembler</module>
+    <module>dotnet-core</module>
+    <module>dotnet-dao-project</module>
     <module>dotnet-executable</module>
-    <module>dotnet-model</module>  
-    <module>dotnet-plugin</module>  
-    <module>dotnet-registry</module>  
-    <module>dotnet-repository</module>  
-    <module>dotnet-vendor</module> 
+    <module>dotnet-model</module>
+    <module>dotnet-plugin</module>
+    <module>dotnet-registry</module>
+    <module>dotnet-repository</module>
+    <module>dotnet-vendor</module>
   </modules>
-<reporting> 
+  <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <!-- version is defined in parent pom -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-component-annotations</artifactId>
+      <version>1.5.5</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-component-metadata</artifactId>
+        <version>1.5.5</version>
+        <executions>
+          <execution>
+            <id>process-classes</id>
+            <goals>
+              <goal>generate-metadata</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>process-test-classes</id>
+            <goals>
+              <goal>generate-test-metadata</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <reporting>
     <excludeDefaults>true</excludeDefaults>
-     <plugins>  
-      <plugin>      
+    <plugins>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>emma-maven-plugin</artifactId>
         <version>1.0-alpha-2</version>
       </plugin>
     </plugins>
-</reporting>    
+  </reporting>
 </project>

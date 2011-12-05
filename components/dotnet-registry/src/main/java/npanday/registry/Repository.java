@@ -18,8 +18,9 @@
  */
 package npanday.registry;
 
-import java.io.InputStream;
+import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Hashtable;
 
 /**
@@ -31,10 +32,9 @@ import java.util.Hashtable;
 
 public interface Repository
 {
-
     /**
-     * Loads the configuration file and configuration properties. In the case below, the <code>inputStream</code>
-     * contains the adapters.txt file and the <code>properties</code> holds the init-params. The init params should be
+     * Loads a configuration file or resource. In the case below, the <code>source</code>
+     * contains the <code>Uri</code> for a file or resource and the <code>properties</code> holds the init-params. The init params should be
      * used to specialize the repository configuration.  The example below shows that you can add new properties
      * to <code>MyRepository</code> but not delete them.
      * <pre>
@@ -57,31 +57,29 @@ public interface Repository
      * &lt;/registry-config&gt;
      * </pre>
      * <p/>
-     * Since this method uses an <code>InputStream</code> parameter, the configuration file can be loaded off of the
-     * local file system or from a specific URL located at an HTTP address.
      *
-     * @param inputStream the configuration file
-     * @param properties  the properties used to configure the repository
+     * @param source
      * @throws NPandayRepositoryException thrown on interrupted I/O. Implementing class may also use this exception to throw
-     *                     other exceptions like invalid properties.
+     *                                    other exceptions like invalid properties.
      */
-    void load( InputStream inputStream, Hashtable properties )
+    void load( URL source )
         throws NPandayRepositoryException;
 
     /**
-     * @param repositoryRegistry
+     * Removes all added sources and clears out the contents.
+     * @throws OperationNotSupportedException
      */
-    void setRepositoryRegistry( RepositoryRegistry repositoryRegistry );
-    
-    /**
-     * Sets the URI of the file used to initialize the repository.
-     * @param fileUri
-     */
-    void setSourceUri( String fileUri );
+    void clearAll()
+        throws OperationNotSupportedException;
 
     /**
-     * Reloads this repository based on the file uri.
+     * Reloads this repository based on all provided sources.
      */
-    void reload() throws IOException, NPandayRepositoryException;
+    void reloadAll()
+        throws IOException, NPandayRepositoryException, OperationNotSupportedException;
 
+    /**
+     * The properties configured in the registry.
+     */
+    void setProperties( Hashtable props );
 }

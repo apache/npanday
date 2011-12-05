@@ -30,19 +30,7 @@ import java.io.IOException;
 public interface RepositoryLoader
 {
 
-    /**
-     * Takes information from the registry-config file and dynamically builds a <code>Repository</code>
-     *
-     * @param fileUri         name of the repository's configuration file. It may be located on the file system
-     *                        or within a jar.
-     * @param repositoryClass name of the repository class
-     * @param initParams      <code>Hashtable</code> containing the repository's configuration parameters.
-     * @return instance of repository
-     * @throws IOException
-     * @throws NPandayRepositoryException
-     */
-
-    Repository loadRepository( String fileUri, String repositoryClass, Hashtable initParams )
+    Repository loadRepository( String location, String repositoryClass, Hashtable initParams )
             throws IOException, NPandayRepositoryException;
 
     /**

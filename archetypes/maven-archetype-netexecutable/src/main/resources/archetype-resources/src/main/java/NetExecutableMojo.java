@@ -54,6 +54,7 @@ import java.util.ArrayList;
  * 3) Add any special commands to the getCommands method.
  * 4) Recompile the dotnet-core component.
  * 5) Rename this class and install this Mojo component.
+ * 6) Rename
  */
 public class NetExecutableMojo
     extends AbstractMojo

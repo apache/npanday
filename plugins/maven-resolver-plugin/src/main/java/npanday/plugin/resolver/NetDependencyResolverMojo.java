@@ -18,27 +18,25 @@
  */
 package npanday.plugin.resolver;
 
+import npanday.PlatformUnsupportedException;
+import npanday.artifact.ArtifactContext;
 import npanday.artifact.NPandayArtifactResolutionException;
-import npanday.registry.NPandayRepositoryException;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.artifact.Artifact;
+import npanday.artifact.NetDependenciesRepository;
+import npanday.artifact.NetDependencyMatchPolicy;
+import npanday.executable.ExecutionException;
+import npanday.executable.NetExecutable;
+import npanday.model.netdependency.NetDependency;
 import npanday.registry.RepositoryRegistry;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
-
-import npanday.artifact.NetDependenciesRepository;
-import npanday.artifact.NetDependencyMatchPolicy;
-import npanday.artifact.ArtifactContext;
-import npanday.model.netdependency.NetDependency;
-import npanday.executable.NetExecutable;
-import npanday.executable.ExecutionException;
-import npanday.PlatformUnsupportedException;
+import java.util.List;
 
 /**
  * @author Shane Isbell
@@ -96,7 +94,7 @@ public class NetDependencyResolverMojo
     /**
      * @component
      */
-    private npanday.NPandayRepositoryRegistry npandayRegistry;
+    private RepositoryRegistry repositoryRegistry;
 
     /**
      * @component
@@ -127,22 +125,6 @@ public class NetDependencyResolverMojo
         }
 
         String profile = System.getProperty( "dependencyProfile" );
-
-        RepositoryRegistry repositoryRegistry;
-        try
-        {
-            repositoryRegistry = npandayRegistry.createRepositoryRegistry();
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-1600-000: Failed to create the repository registry for this plugin", e );
-        }
-        catch( NPandayRepositoryException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-1600-007: Failed to create the repository registry for this plugin", e );
-        }
 
         if ( netDependencies == null )
         {

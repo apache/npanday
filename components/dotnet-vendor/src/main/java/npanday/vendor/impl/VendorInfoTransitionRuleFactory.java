@@ -18,18 +18,26 @@
  */
 package npanday.vendor.impl;
 
-import npanday.vendor.*;
 import npanday.InitializationException;
 import npanday.PlatformUnsupportedException;
 import npanday.registry.RepositoryRegistry;
+import npanday.vendor.InvalidVersionFormatException;
+import npanday.vendor.SettingsException;
+import npanday.vendor.SettingsUtil;
+import npanday.vendor.Vendor;
+import npanday.vendor.VendorFactory;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorInfoRepository;
+import npanday.vendor.VendorInfoState;
+import npanday.vendor.VendorInfoTransitionRule;
+import npanday.vendor.VendorUnsupportedException;
+import org.codehaus.plexus.logging.Logger;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.io.File;
-
-import org.codehaus.plexus.logging.Logger;
 
 /**
  * Provides factory methods for creating vendor info transition rules. These rules usually can determine the
@@ -96,6 +104,7 @@ final class VendorInfoTransitionRuleFactory
         }
         logger.debug( "NPANDAY-103-036.0: Respository registry: " + repositoryRegistry);
 
+        // TODO: I think we should make sure settingsrepo is filled prio to this
         SettingsRepository settingsRepository = null;
         try
         {
@@ -138,7 +147,7 @@ final class VendorInfoTransitionRuleFactory
                         List<File> configuredExecutablePaths = vendorInfoRepository.getConfiguredVendorInfoByExample(vendorInfo).getExecutablePaths();
                         for(File path : configuredExecutablePaths){
                             if (!path.exists()) {
-                                logger.debug( "NPANDAY-103-61: Configured path does not exist and is therefore omitted: " + path );
+                                logger.debug( "NPANDAY-103-061: Configured path does not exist and is therefore omitted: " + path );
                             }
                             else {
                                 existingPaths.add(path);
@@ -148,7 +157,7 @@ final class VendorInfoTransitionRuleFactory
                     }
                     catch ( PlatformUnsupportedException e )
                     {
-                        logger.debug( "NPANDAY-103-36: Failed to resolve configured executable paths." );
+                        logger.warn( "NPANDAY-103-036: Failed to resolve configured executable paths.", e );
                     }
                 }
                 return VendorInfoState.EXIT;

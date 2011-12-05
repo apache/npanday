@@ -19,11 +19,6 @@ package npanday.plugin.aspx;
  * under the License.
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import npanday.ArtifactType;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutionException;
@@ -38,6 +33,11 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Maven Mojo for precompiling ASPx files
@@ -141,11 +141,6 @@ public class AspxCompilerMojo
      * @component
      */
     private npanday.executable.NetExecutableFactory netExecutableFactory;
-
-    /**
-     * @component
-     */
-    private npanday.NPandayRepositoryRegistry npandayRegistry;
     
     private File webSourceDirectory;
 

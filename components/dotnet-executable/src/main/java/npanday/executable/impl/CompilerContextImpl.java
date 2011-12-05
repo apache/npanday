@@ -18,39 +18,50 @@
  */
 package npanday.executable.impl;
 
+import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
-import npanday.executable.CommandExecutor;
-import npanday.executable.ExecutionException;
-import npanday.executable.CapabilityMatcher;
-import npanday.executable.CommandFilter;
 import npanday.PlatformUnsupportedException;
-import npanday.executable.compiler.*;
+import npanday.RepositoryNotFoundException;
 import npanday.artifact.ArtifactContext;
 import npanday.artifact.ArtifactException;
-import npanday.ArtifactType;
-import npanday.PathUtil;
-
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.model.Dependency;
+import npanday.executable.CapabilityMatcher;
+import npanday.executable.CommandExecutor;
+import npanday.executable.CommandFilter;
+import npanday.executable.ExecutionException;
+import npanday.executable.compiler.CompilerCapability;
+import npanday.executable.compiler.CompilerConfig;
+import npanday.executable.compiler.CompilerContext;
+import npanday.executable.compiler.CompilerExecutable;
+import npanday.executable.compiler.CompilerRequirement;
+import npanday.executable.compiler.InvalidArtifactException;
+import npanday.executable.compiler.KeyInfo;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryRegistry;
-import npanday.RepositoryNotFoundException;
 import npanday.vendor.Vendor;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.util.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Provides an implementation of the Compiler Context.
  *
  * @author Shane Isbell
  */
+@Component(role = CompilerContext.class)
 public final class CompilerContextImpl
     implements CompilerContext, LogEnabled
 {
@@ -75,8 +86,10 @@ public final class CompilerContextImpl
 
     private CommandFilter commandFilter;
 
+    @Requirement
     private ArtifactContext artifactContext;
 
+    @Requirement
     private RepositoryRegistry repositoryRegistry;
 
     /**

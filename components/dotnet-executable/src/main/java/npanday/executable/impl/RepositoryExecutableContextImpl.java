@@ -18,24 +18,31 @@
  */
 package npanday.executable.impl;
 
-import npanday.executable.*;
-import npanday.executable.ExecutionException;
-import npanday.RepositoryNotFoundException;
 import npanday.InitializationException;
+import npanday.RepositoryNotFoundException;
+import npanday.executable.ExecutableConfig;
+import npanday.executable.ExecutionException;
+import npanday.executable.NetExecutable;
+import npanday.executable.RepositoryExecutableContext;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
-import npanday.registry.RepositoryRegistry;
-import npanday.registry.Repository;
 
 /**
  * Provides an implementation of the repository executable context.
  *
  * @author Shane Isbell
  */
+
+@Component(role = RepositoryExecutableContext.class)
 public class RepositoryExecutableContextImpl
     implements RepositoryExecutableContext, LogEnabled
 {
 
+    @Requirement
     private RepositoryRegistry repositoryRegistry;
 
     private NetExecutable netExecutable;

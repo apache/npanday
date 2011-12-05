@@ -18,33 +18,55 @@
  */
 package npanday.registry.impl;
 
-import npanday.registry.*;
-
-import java.util.Hashtable;
-import java.util.Properties;
-import java.util.Set;
-import java.util.Collections;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.FileInputStream;
-
-import org.apache.maven.settings.SettingsUtils;
+import npanday.registry.NPandayRepositoryException;
+import npanday.registry.RegistryLoader;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryLoader;
+import npanday.registry.RepositoryRegistry;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.Hashtable;
+import java.util.Set;
 
 /**
  * @author Shane Isbell
  */
+@Component( role = RepositoryRegistry.class )
 public class RepositoryRegistryImpl
+    extends AbstractLogEnabled
     implements RepositoryRegistry, Initializable
 {
+    private static int instanceCounter = 0;
+    private int instance;
 
     private Hashtable repositories = new Hashtable();
 
+    @Requirement
     private RepositoryLoader repositoryLoader;
 
+    @Requirement
     private RegistryLoader registryLoader;
 
+    public RepositoryRegistryImpl(){
+        instance = instanceCounter++;
+
+        try{
+            throw new RuntimeException("Stacktrace");
+        }
+        catch(RuntimeException ex)
+        {
+            System.out.println("NPANDAY-082-010: Instantiating RepositoryRegistry #" + instance);
+            ex.printStackTrace();
+        }
+    }
 
     /**
      * @see org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable#initialize()
@@ -52,17 +74,27 @@ public class RepositoryRegistryImpl
     public void initialize()
         throws InitializationException
     {
+
+        try{
+            throw new RuntimeException("Stacktrace");
+        }
+        catch(RuntimeException ex)
+        {
+            getLogger().debug( "NPANDAY-082-011: Initializing RepositoryRegistry #" + instance, ex );
+        }
+
         try
         {
             loadFromResource( "/META-INF/npanday/registry-config.xml", this.getClass() );
         }
         catch ( IOException e )
         {
-            throw new InitializationException( "NPANDAY-082-000: Message = ", e );
+            throw new InitializationException(
+                "NPANDAY-082-000: Error loading registry-config.xml or one of the configured repositories", e );
         }
         catch ( NPandayRepositoryException e )
         {
-            throw new InitializationException( "NPANDAY-082-010: Message = ", e );
+            throw new InitializationException( "NPANDAY-082-010: Error loading registry-config.xml = ", e );
         }
     }
 
@@ -82,68 +114,9 @@ public class RepositoryRegistryImpl
     }
 
     public synchronized void loadFromInputStream( InputStream inputStream )
-            throws IOException, NPandayRepositoryException {
+        throws IOException, NPandayRepositoryException
+    {
 
-        if ( repositoryLoader == null || registryLoader == null )
-        {
-            InputStream stream =
-                npanday.registry.RepositoryRegistry.class.getResourceAsStream( "/registry.properties" );
-            if ( stream == null )
-            {
-                throw new IOException( "NPANDAY-082-001: Could not find /registry.properties file with the jar" );
-            }
-
-            Properties prop = new Properties();
-            prop.load( stream );
-
-            if ( repositoryLoader == null )
-            {
-                String loaderClassName = prop.getProperty( "repositoryLoader" );
-                if ( loaderClassName == null )
-                {
-                    throw new IOException( "NPANDAY-082-002: Missing the repositoryLoader from the /registry.properties" );
-                }
-
-                String message = "Repository Loader = " + loaderClassName;
-                try
-                {
-                    Class c = Class.forName( loaderClassName );
-                    repositoryLoader = (RepositoryLoader) c.newInstance();
-                }
-                catch ( Exception e )
-                {
-                    throw new NPandayRepositoryException( "NPANDAY-082-003: Unable to load repository: " + message, e );
-                }
-                catch ( Error e )
-                {
-                    throw new NPandayRepositoryException( "NPANDAY-082-004: Unable to load repository: " + message, e );
-                }
-            }
-
-            if ( registryLoader == null )
-            {
-                String loaderClassName = prop.getProperty( "registryLoader" );
-                if ( loaderClassName == null )
-                {
-                    throw new IOException( "NPANDAY-082-005: Missing the registryLoader from the /registry.properties" );
-                }
-
-                String message = "Registry Loader = " + loaderClassName;
-                try
-                {
-                    Class c = Class.forName( loaderClassName );
-                    registryLoader = (RegistryLoader) c.newInstance();
-                }
-                catch ( Exception e )
-                {
-                    throw new NPandayRepositoryException( "NPANDAY-082-006: Unable to load registry: " + message, e );
-                }
-                catch ( Error e )
-                {
-                    throw new NPandayRepositoryException( "NPANDAY-082-007: Unable to load registry: " + message, e );
-                }
-            }
-        }
         repositoryLoader.setRepositoryRegistry( this );
         registryLoader.setRepositoryLoader( repositoryLoader );
         registryLoader.loadRegistry( inputStream );

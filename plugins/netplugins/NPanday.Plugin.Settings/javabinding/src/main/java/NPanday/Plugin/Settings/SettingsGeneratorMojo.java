@@ -20,31 +20,27 @@
  package NPanday.Plugin.Settings;
 
 import npanday.PathUtil;
+import npanday.plugin.FieldAnnotation;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
-import npanday.registry.impl.StandardRepositoryLoader;
 import npanday.vendor.SettingsException;
 import npanday.vendor.SettingsUtil;
 import npanday.vendor.impl.SettingsRepository;
-import npanday.plugin.FieldAnnotation;
+import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Iterator;
-import org.apache.maven.model.Plugin;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
-
-import java.util.Hashtable;
+import java.util.List;
 
 /**
  * @phase validate
@@ -281,7 +277,7 @@ public class SettingsGeneratorMojo
             SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
             if ( settingsRepository != null )
             {
-                settingsRepository.reload();
+                settingsRepository.reloadAll();
             }
         }
         catch ( ComponentLookupException e )

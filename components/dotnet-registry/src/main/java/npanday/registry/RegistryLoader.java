@@ -48,11 +48,5 @@ public interface RegistryLoader
      */
     Hashtable getRepositories();
 
-    /**
-     * Sets the repository loader
-     *
-     * @param repositoryLoader the repository loader
-     */
     void setRepositoryLoader( RepositoryLoader repositoryLoader );
-
 }
