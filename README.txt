@@ -7,6 +7,12 @@ Prerequisites
   This is due to needing the .NET 2.0 AppDomainManagers for executing Maven
   .NET plugins. You may still target your own projects with .NET 1.1 build.
 
+Mono
+
+The build has been tested with Mono 2.10.6. Some older versions have problems
+generating the correct XSD if you are compiling NPanday yourself - if the build
+fails due to a missing PluginConfiguration class, consider upgrading.
+
 Deploying NPanday Artifacts
 * Due to a bug with not being able to use snapshots with an executables
   exe.config file, you will need to do this next step manually: Copy the
