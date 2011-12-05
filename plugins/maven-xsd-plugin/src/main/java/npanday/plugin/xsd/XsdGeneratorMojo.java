@@ -18,6 +18,7 @@
  */
 package npanday.plugin.xsd;
 
+import npanday.executable.NetExecutable;
 import npanday.registry.NPandayRepositoryException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -31,6 +32,7 @@ import java.io.IOException;
 
 import npanday.executable.ExecutionException;
 import npanday.PlatformUnsupportedException;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Generates XSD class.
@@ -185,8 +187,14 @@ public class XsdGeneratorMojo
         FileUtils.mkdir( outputDirectory );
         try
         {
-            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, getCommands(),
-                                                      netHome ).execute();
+            NetExecutable exe = netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile,
+                                                                          getCommands(), netHome );
+            if ( getLog().isDebugEnabled() )
+            {
+                getLog().debug( "Running: " + exe.getExecutable() + " " + StringUtils.join(
+                    exe.getCommands().iterator(), " " ) );
+            }
+            exe.execute();
         }
         catch ( ExecutionException e )
         {
