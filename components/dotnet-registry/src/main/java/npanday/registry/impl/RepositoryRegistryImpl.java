@@ -23,8 +23,6 @@ import npanday.registry.RegistryLoader;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryLoader;
 import npanday.registry.RepositoryRegistry;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
@@ -38,8 +36,9 @@ import java.util.Set;
 
 /**
  * @author Shane Isbell
+ * @plexus.component
+ *   role="npanday.registry.RepositoryRegistry"
  */
-@Component( role = RepositoryRegistry.class )
 public class RepositoryRegistryImpl
     extends AbstractLogEnabled
     implements RepositoryRegistry, Initializable
@@ -49,10 +48,14 @@ public class RepositoryRegistryImpl
 
     private Hashtable repositories = new Hashtable();
 
-    @Requirement
+    /**
+     * @plexus.requirement
+     */
     private RepositoryLoader repositoryLoader;
 
-    @Requirement
+    /**
+     * @plexus.requirement
+     */
     private RegistryLoader registryLoader;
 
     public RepositoryRegistryImpl(){

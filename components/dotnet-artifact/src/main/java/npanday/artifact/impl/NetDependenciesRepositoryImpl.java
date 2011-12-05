@@ -29,7 +29,6 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Dependency;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.IOException;
@@ -43,8 +42,9 @@ import java.util.List;
  *
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ * @plexus.component
+ *   role="npanday.artifact.impl.NetDependenciesRepositoryImpl"
  */
-@Component(role = NetDependenciesRepositoryImpl.class)
 public class NetDependenciesRepositoryImpl
     extends AbstractMultisourceRepository<NetDependencyModel>
     implements NetDependenciesRepository

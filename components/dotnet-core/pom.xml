@@ -81,6 +81,12 @@ under the License.
           </execution>
         </executions>
       </plugin>
+      <!-- enable, if you have @plexus.component in your source
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+      </plugin>
+      -->
     </plugins>
     <resources> 
       <resource> 

@@ -19,7 +19,6 @@
 package npanday.registry;
 
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.codehaus.plexus.component.annotations.Component;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.sail.memory.MemoryStore;
@@ -35,8 +34,9 @@ import java.util.logging.Logger;
 
 /**
  * Repository for obtaining sets of DAOs.
+ * @plexus.component
+ *   role="npanday.registry.ConnectionsRepository"
  */
-@Component(role = ConnectionsRepository.class)
 public class ConnectionsRepository
     implements Repository
 {

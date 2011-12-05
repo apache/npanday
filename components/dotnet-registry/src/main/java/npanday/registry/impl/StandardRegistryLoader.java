@@ -22,7 +22,6 @@ import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RegistryLoader;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryLoader;
-import org.codehaus.plexus.component.annotations.Component;
 import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -38,8 +37,9 @@ import java.util.List;
  * The default loader for the registry-config.xml file.
  *
  * @author Shane Isbell
+ * @plexus.component
+ *   role="npanday.registry.RegistryLoader"
  */
-@Component(role = RegistryLoader.class)
 public class StandardRegistryLoader
     implements RegistryLoader
 {

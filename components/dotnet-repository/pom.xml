@@ -44,6 +44,14 @@ under the License.
         <directory>src/test/resources</directory>  
         <targetPath>../test-repo</targetPath> 
       </testResource> 
-    </testResources> 
+    </testResources>
+    <plugins>
+      <!-- enable, if you have @plexus.component in your source
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+      </plugin>
+      -->
+    </plugins>
   </build> 
 </project>

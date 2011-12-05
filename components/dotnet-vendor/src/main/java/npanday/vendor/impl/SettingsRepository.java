@@ -27,7 +27,6 @@ import npanday.model.settings.io.xpp3.NPandaySettingsXpp3Reader;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.impl.AbstractMultisourceRepository;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.File;
@@ -43,8 +42,9 @@ import java.util.List;
  *
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ * @plexus.component
+ *   role="npanday.vendor.impl.SettingsRepository"
  */
-@Component( role = SettingsRepository.class )
 public final class SettingsRepository
     extends AbstractMultisourceRepository<NPandaySettings>
     implements Repository

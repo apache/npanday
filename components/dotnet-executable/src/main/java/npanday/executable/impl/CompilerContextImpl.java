@@ -41,8 +41,6 @@ import npanday.vendor.Vendor;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.DirectoryScanner;
@@ -60,8 +58,9 @@ import java.util.Set;
  * Provides an implementation of the Compiler Context.
  *
  * @author Shane Isbell
+ * @plexus.component
+ *   role="npanday.executable.compiler.CompilerContext"
  */
-@Component(role = CompilerContext.class)
 public final class CompilerContextImpl
     implements CompilerContext, LogEnabled
 {
@@ -86,10 +85,14 @@ public final class CompilerContextImpl
 
     private CommandFilter commandFilter;
 
-    @Requirement
+    /**
+ * @plexus.requirement
+ */
     private ArtifactContext artifactContext;
 
-    @Requirement
+    /**
+ * @plexus.requirement
+ */
     private RepositoryRegistry repositoryRegistry;
 
     /**

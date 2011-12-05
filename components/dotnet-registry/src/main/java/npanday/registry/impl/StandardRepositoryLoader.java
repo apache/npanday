@@ -24,7 +24,6 @@ import npanday.registry.RepositoryLoader;
 import npanday.registry.RepositoryRegistry;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -43,9 +42,10 @@ import java.util.List;
  *
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ *
+ * @plexus.component
+ *   role="npanday.registry.RepositoryLoader"
  */
-
-@Component(role = RepositoryLoader.class)
 public class StandardRepositoryLoader
     extends AbstractLogEnabled
     implements RepositoryLoader, Contextualizable

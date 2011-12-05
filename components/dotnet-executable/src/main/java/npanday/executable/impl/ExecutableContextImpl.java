@@ -30,8 +30,6 @@ import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryRegistry;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 
@@ -39,15 +37,18 @@ import org.codehaus.plexus.logging.Logger;
  * Provides an implementation of the executable context.
  *
  * @author Shane Isbell
+ * @plexus.component
+ *   role="npanday.executable.ExecutableContext"
  */
-@Component(role = ExecutableContext.class)
 public class ExecutableContextImpl
     implements ExecutableContext, LogEnabled
 {
 
     private ExecutableRequirement executableRequirement;
 
-    @Requirement
+    /**
+ * @plexus.requirement
+ */
     private RepositoryRegistry repositoryRegistry;
 
     private ExecutableCapability executableCapability;

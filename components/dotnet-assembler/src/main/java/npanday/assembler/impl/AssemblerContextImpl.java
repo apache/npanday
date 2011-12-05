@@ -39,6 +39,9 @@ import java.io.*;
  * Provides an implementation of the <code>AssemblerContext</code>.
  *
  * @author Shane Isbell
+ *
+ * @plexus.component
+ *   role="npanday.assembler.AssemblerContext"
  */
 public final class AssemblerContextImpl
     implements AssemblerContext, LogEnabled
@@ -48,6 +51,8 @@ public final class AssemblerContextImpl
 
     /**
      * A registry component of repository (config) files
+     *
+     * @plexus.requirement
      */
     private RepositoryRegistry repositoryRegistry;
 

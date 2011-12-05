@@ -24,7 +24,6 @@ import npanday.model.configurationappenders.io.xpp3.ConfigurationAppendersXpp3Re
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.impl.AbstractMultisourceRepository;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.IOException;
@@ -37,8 +36,9 @@ import java.util.Set;
 /**
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ * @plexus.component
+ *   role="npanday.plugin.impl.ConfigurationAppendersRepository"
  */
-@Component(role = ConfigurationAppendersRepository.class)
 public class ConfigurationAppendersRepository
     extends AbstractMultisourceRepository<ConfigurationAppenderModel>
     implements Repository

@@ -26,8 +26,6 @@ import npanday.executable.ExecutableRequirement;
 import npanday.executable.compiler.CompilerCapability;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.ArrayList;
@@ -37,13 +35,16 @@ import java.util.List;
  * Provides an implementation of the <code>CapabilityMatcher</code> interface.
  *
  * @author Shane Isbell
+ * @plexus.component
+ *   role="npanday.executable.CapabilityMatcher"
  */
-@Component( role = CapabilityMatcher.class )
 public class CapabilityMatcherImpl
     extends AbstractLogEnabled
     implements CapabilityMatcher
 {
-    @Requirement
+    /**
+ * @plexus.requirement
+ */
     private RepositoryRegistry repositoryRegistry;
 
     public CompilerCapability matchCompilerCapabilityFor( CompilerRequirement compilerRequirement,

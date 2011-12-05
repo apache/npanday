@@ -43,8 +43,6 @@ import npanday.vendor.VendorInfo;
 import npanday.vendor.VendorInfoRepository;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.io.File;
@@ -57,35 +55,52 @@ import java.util.List;
  *
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ * @plexus.component
+ *   role="npanday.executable.NetExecutableFactory"
  */
-@Component(role = NetExecutableFactory.class)
 public class NetExecutableFactoryImpl
     extends AbstractLogEnabled
     implements NetExecutableFactory
 {
 
-    @Requirement
+    /**
+     * @plexus.requirement
+     */
     private CapabilityMatcher capabilityMatcher;
 
-    @Requirement
+    /**
+     * @plexus.requirement
+     */
     private ArtifactContext artifactContext;
 
-    @Requirement
+    /**
+     * @plexus.requirement
+     */
     private RepositoryExecutableContext repositoryExecutableContext;
 
-    @Requirement
+    /**
+     * @plexus.requirement
+     */
     private ExecutableContext executableContext;
 
-    @Requirement
+    /**
+     * @plexus.requirement
+     */
     private CompilerContext compilerContext;
 
-    @Requirement
+    /**
+     * @plexus.requirement
+     */
     private RepositoryRegistry repositoryRegistry;
 
-    @Requirement
+    /**
+     * @plexus.requirement
+     */
     private VendorInfoRepository vendorInfoRepository;
 
-    @Requirement
+    /**
+     * @plexus.requirement
+     */
     private StateMachineProcessor processor;
 
 

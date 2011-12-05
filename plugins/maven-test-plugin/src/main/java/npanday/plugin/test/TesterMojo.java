@@ -155,7 +155,7 @@ extends AbstractMojo
     protected boolean integrationTest;
 
     /**
-     * @component role="npanday.vendor.StateMachineProcessor"
+     * @component
      */
     private StateMachineProcessor processor;
 

@@ -25,7 +25,6 @@ import npanday.model.assembly.plugins.io.xpp3.AssemblyPluginXpp3Reader;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.impl.AbstractMultisourceRepository;
-import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.IOException;
@@ -41,8 +40,9 @@ import java.util.Set;
  *
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ * @plexus.component
+ *   role="npanday.assembler.impl.AssemblyPluginsRepository"
  */
-@Component(role = AssemblyPluginsRepository.class)
 public final class AssemblyPluginsRepository
     extends AbstractMultisourceRepository<AssemblyPluginsModel>
     implements Repository

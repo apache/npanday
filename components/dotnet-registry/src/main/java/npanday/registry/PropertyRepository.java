@@ -18,8 +18,6 @@
  */
 package npanday.registry;
 
-import org.codehaus.plexus.component.annotations.Component;
-
 import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
 import java.net.URL;
@@ -40,8 +38,9 @@ import java.util.Properties;
  *
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ * @plexus.component
+ *   role="npanday.registry.PropertyRepository"
  */
-@Component(role = PropertyRepository.class)
 public class PropertyRepository
     implements Repository
 {
@@ -62,9 +61,6 @@ public class PropertyRepository
         return properties.getProperty( name );
     }
 
-    /**
-     * @see #load(java.util.Hashtable)
-     */
     public void load( URL source )
         throws NPandayRepositoryException
     {
