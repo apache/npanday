@@ -27,25 +27,25 @@ under the License.
       <configuration>
         <phases>
           <validate>
-            npanday.plugin:maven-compile-plugin:initialize,
-            npanday.plugin:maven-resolver-plugin:resolve,
-            npanday.plugin:NPanday.Plugin.Settings.JavaBinding:generate-settings
+            org.apache.npanday.plugins:maven-compile-plugin:initialize,
+            org.apache.npanday.plugins:maven-resolver-plugin:resolve,
+            org.apache.npanday.plugins:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>            
           </generate-sources>
           <process-sources>
-            npanday.plugin:maven-aspx-plugin:copy-dependency
+            org.apache.npanday.plugins:maven-aspx-plugin:copy-dependency
           </process-sources>
           <process-resources>
           </process-resources>
           <compile>
-            npanday.plugin:maven-aspx-plugin:compile
+            org.apache.npanday.plugins:maven-aspx-plugin:compile
           </compile>
           <test-compile>          
           </test-compile>
           <test></test>
           <package>
-            npanday.plugin:maven-aspx-plugin:package
+            org.apache.npanday.plugins:maven-aspx-plugin:package
           </package>
           <install>
             org.apache.maven.plugins:maven-install-plugin:install
