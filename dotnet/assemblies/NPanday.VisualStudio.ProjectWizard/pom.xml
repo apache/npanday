@@ -71,15 +71,7 @@ under the License.
             <keyfile>sample.snk</keyfile> 
           </configuration> 
         </plugin>  
-        <plugin> 
-          <groupId>org.apache.npanday.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>  
-          <version>${bootstrap.npanday.version}</version>
-          <configuration>
-            <isGacInstall>true</isGacInstall> 
-          </configuration> 
-        </plugin> 
-      </plugins> 
+      </plugins>
     </pluginManagement>
   </build> 
 </project>
