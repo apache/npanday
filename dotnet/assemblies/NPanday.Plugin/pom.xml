@@ -78,9 +78,6 @@ under the License.
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>  
           <version>${bootstrap.npanday.version}</version>
-          <configuration>
-            <isGacInstall>true</isGacInstall> 
-          </configuration> 
         </plugin> 
       </plugins> 
     </pluginManagement>
