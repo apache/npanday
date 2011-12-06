@@ -130,11 +130,8 @@ public class ArtifactInstallerImpl
         this.logger = logger;
     }
 
-    /**
-     * @see npanday.artifact.ArtifactInstaller#resolveAndInstallNetDependenciesForProfile(String, java.util.List, java.util.List)
-     */
     public void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> netDependencies,
-                                                            List<Dependency> javaDependencies )
+                                                            List<Dependency> javaDependencies, MavenProject project )
             throws IOException, NPandayArtifactResolutionException
     {
         if ( netDependencies == null )
@@ -153,7 +150,7 @@ public class ArtifactInstallerImpl
         matchPolicies.add( new ProfileMatchPolicy( profile ) );
         netDependencies.addAll( repository.getDependenciesFor( matchPolicies ) );
 
-         assemblyResolver.resolveTransitivelyFor( new MavenProject(), netDependencies, remoteArtifactRepositories,
+        assemblyResolver.resolveTransitivelyFor( project, netDependencies, remoteArtifactRepositories,
                                                  localRepository, false );
 
         //Do Library Installs for Net Dependencies

@@ -22,6 +22,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.model.Dependency;
+import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,14 +79,16 @@ public interface ArtifactInstaller
      * with that profile.
      *
      *
+     *
      * @param profile          the specified profile to resolve. This value may be null.
      * @param netDependencies  additional .NET artifacts to resolve and install.
      * @param javaDependencies the Java Dependencies to resolve. Typically these should be the java bindings for the
      *                         .NET plugins.
+     * @param project
      * @throws IOException if there is a problem with installation
      */
     void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> netDependencies,
-                                                     List<Dependency> javaDependencies )
+                                                     List<Dependency> javaDependencies, MavenProject project )
             throws IOException, NPandayArtifactResolutionException;
 
     /**
