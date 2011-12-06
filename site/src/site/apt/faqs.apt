@@ -65,9 +65,9 @@ NPanday Frequently Asked Questions
 * How can a custom <<<settings.xml>>> be used for the Visual Studio Addin?
   
   Add the <<<\-DsettingsFile\=\[path_to_custom_settings.xml_file\]>>> parameter when executing
-  <<<mvn npanday.plugin:maven\-vsinstaller\-plugin:install>>>. For example,
+  <<<mvn org.apache.npanday.plugins:maven\-vsinstaller\-plugin:install>>>. For example,
   
-  <<<mvn npanday.plugin:maven\-vsinstaller\-plugin:install \-DsettingsFile\="C:\\common\\settings.xml">>>
+  <<<mvn org.apache.npanday.plugins:maven\-vsinstaller\-plugin:install \-DsettingsFile\="C:\\common\\settings.xml">>>
   
 * How do I set the root namespace for a Visual Basic assembly?
   

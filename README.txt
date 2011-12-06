@@ -20,16 +20,12 @@ Deploying NPanday Artifacts
   in NPanday\Plugins\NPanday.Plugin.Resx\1.1-SNAPSHOT from the local
   repository to the remote repository.
 
-Generating CS Project Files and Solutions:
- * Go to the directory containing a pom file.
- * type: mvn npanday.plugin:maven-solution-plugin:solution
-
 If the project was multi-module, the plugin will pick those up as well.
 
 Setting up the Visual Studio 2005 Addin:
  After building the project:
  * To generate the Addin for VisualStudio type:
-     mvn npanday.plugin:maven-vsinstaller-plugin:install
+     mvn org.apache.npanday.plugins:maven-vsinstaller-plugin:install
  * Start the IDE
  * Click on an NPanday project
  * Click on Tools/NPanday Addin

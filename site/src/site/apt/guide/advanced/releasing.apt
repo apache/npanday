@@ -48,7 +48,7 @@ Releasing .NET Projects with Maven
   Before starting the release, projects with GAC or COM references should run an additional preparation step:
 
 ----
-mvn npanday.plugin:NPanday.Plugin.SysRef.JavaBinding:prepare
+mvn org.apache.npanday.plugins:NPanday.Plugin.SysRef.JavaBinding:prepare
 ----
 
   The reference (DLL) will be searched from <<<C:\\WINDOWS\\assembly\\GAC_MSIL>>> directory and will be put in

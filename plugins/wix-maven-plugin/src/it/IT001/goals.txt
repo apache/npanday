@@ -1,1 +1,1 @@
-npanday.plugin:wix-maven-plugin:candle
+org.apache.npanday.plugins:wix-maven-plugin:candle

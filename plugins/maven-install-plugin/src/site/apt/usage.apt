@@ -28,7 +28,7 @@ Usage
   The example below shows how to install NUnit 2.2.8.0 into your local repository.
 
 +----+
- mvn npanday.plugin:maven-install-plugin:install-file
+ mvn org.apache.npanday.plugins:maven-install-plugin:install-file
         -Dfile=../imports/nunit-2.0/nunit.framework.dll
         -DpomFile=../imports/nunit-2.0/pom.xml
         -DgroupId=NUnit

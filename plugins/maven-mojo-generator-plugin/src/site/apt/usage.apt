@@ -46,7 +46,7 @@ Usage
  Next generate the JavaBinding classes for the .NET Plugin.
 
 +----+
- mvn npanday.plugin:maven-mojo-generator-plugin:generate-bindings
+ mvn org.apache.npanday.plugins:maven-mojo-generator-plugin:generate-bindings
 +----+
 
  Your project structure will now look like this:

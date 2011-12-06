@@ -73,7 +73,7 @@ Project Dependencies
   Use the following command:
 
 +------+
-mvn npanday.plugin:maven-install-plugin:install-file -Dfile=[path_to_file] \
+mvn org.apache.npanday.plugins:maven-install-plugin:install-file -Dfile=[path_to_file] \
   -DgroupId=[group_id] -DartifactId=[artifact_id] -DartifactVersion=[version] \
   -Dpackaging=[packaging_type]
 +------+

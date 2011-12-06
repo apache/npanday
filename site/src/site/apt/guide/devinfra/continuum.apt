@@ -33,25 +33,25 @@ Using Continuum to release .NET projects
 
   Click the <Add> button under the <Build Definitions> tab of the project, and enter the following values:
 
-*----------------------------------+--------------------------------------------------------------+
-|<<Field>>                         |<<Value>>                                                     |
-*----------------------------------+--------------------------------------------------------------+
-|POM filename                      |<<<pom.xml>>>                                                 |
-*----------------------------------+--------------------------------------------------------------+
-|Goals                             |<<<npanday.plugin:NPanday.Plugin.SysRef.JavaBinding:prepare>>>|
-*----------------------------------+--------------------------------------------------------------+
-|Arguments                         |<<<--batch-mode --non-recursive>>>                            |
-*----------------------------------+--------------------------------------------------------------+
-|Schedule, Build Environment, Type |<default values>                                              |
-*----------------------------------+--------------------------------------------------------------+
-|Description                       |<optional>                                                    |
-*----------------------------------+--------------------------------------------------------------+
+*----------------------------------+--------------------------------------------------------------------------+
+|<<Field>>                         |<<Value>>                                                                 |
+*----------------------------------+--------------------------------------------------------------------------+
+|POM filename                      |<<<pom.xml>>>                                                             |
+*----------------------------------+--------------------------------------------------------------------------+
+|Goals                             |<<<org.apache.npanday.plugins:NPanday.Plugin.SysRef.JavaBinding:prepare>>>|
+*----------------------------------+--------------------------------------------------------------------------+
+|Arguments                         |<<<--batch-mode --non-recursive>>>                                        |
+*----------------------------------+--------------------------------------------------------------------------+
+|Schedule, Build Environment, Type |<default values>                                                          |
+*----------------------------------+--------------------------------------------------------------------------+
+|Description                       |<optional>                                                                |
+*----------------------------------+--------------------------------------------------------------------------+
 
   First, make sure that the project has had a successful build with its default build definition (using
   <<<clean install>>>).
   
-  Next, execute the new build definition for <<<npanday.plugin:NPanday.Plugin.SysRef.JavaBinding:prepare goal>>> by
-  clicking the build icon found to the right of the goal.
+  Next, execute the new build definition for <<<org.apache.npanday.plugins:NPanday.Plugin.SysRef.JavaBinding:prepare goal>>>
+  by clicking the build icon found to the right of the goal.
   
   Once this completes successfully, you can proceed with a release as usual.
   
