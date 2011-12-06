@@ -115,13 +115,11 @@ public final class PathUtil
     {
         if ( artifact == null )
         {
-            logger.warning( "NPANDAY-040-007: Artifact is null - Cannot get repository file." );
-            return null;
+            throw new NullPointerException( "NPANDAY-040-007: Artifact is null - Cannot get repository file." );
         }
         if ( localRepository == null )
         {
-            logger.warning( "NPANDAY-040-008: Local Repository is null - Cannot get repository file." );
-            return null;
+            throw new NullPointerException( "NPANDAY-040-008: Local Repository is null - Cannot get repository file." );
         }
         return new File( localRepository, new DefaultRepositoryLayout().pathOf( artifact ) );
     }
