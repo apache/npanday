@@ -18,18 +18,16 @@
  */
 package npanday.plugin;
 
-import npanday.artifact.NPandayArtifactResolutionException;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import npanday.PlatformUnsupportedException;
 import npanday.PathUtil;
+import npanday.PlatformUnsupportedException;
 import npanday.artifact.ArtifactContext;
 import npanday.artifact.AssemblyResolver;
+import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutableFactory;
-import npanday.registry.DataAccessObjectRegistry;
 import npanday.vendor.VendorFactory;
 import npanday.vendor.VendorInfo;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -44,6 +42,13 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -53,11 +58,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.*;
 
 /**
  * The base class for plugins that execute a .NET plugin. Classes that extend this class are only expected to provide
@@ -70,17 +70,6 @@ public abstract class AbstractMojo
     implements DotNetMojo, Contextualizable
 {
     protected PlexusContainer container;
-    
-     /**
-     * Output directory
-     *
-     * @parameter expression = "${outputDirectory}" default-value="${project.build.directory}/build-sources"
-     * @required
-     */
-    private String outputDirectory;
-
-    /** @component */
-    private ArtifactContext artifactContext;
 
     public void contextualize(Context context) throws ContextException {
         container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
@@ -156,6 +145,7 @@ public abstract class AbstractMojo
         // TODO: should be configurable, but relies on it being passed into everywhere
         File targetDir = PathUtil.getPrivateApplicationBaseDirectory( project );
 
+        ArtifactContext artifactContext = null;
         try
         {
             VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
@@ -167,7 +157,10 @@ public abstract class AbstractMojo
             vendorInfo.setVendorVersion( getVendorVersion() );
 
             String localRepository = getLocalRepository();
+
+            artifactContext = (ArtifactContext) container.lookup(ArtifactContext.ROLE);
             artifactContext.init( project, project.getRemoteArtifactRepositories(), new File( localRepository ) );
+
             Artifact artifact = getNetExecutableFactory().getArtifactFor(getMojoGroupId(), getMojoArtifactId());
             resolveArtifact(artifact, targetDir );
             getNetExecutableFactory().getPluginLoaderFor( artifact, vendorInfo, localRepository, paramFile,
@@ -183,6 +176,10 @@ public abstract class AbstractMojo
         } catch (ComponentLookupException e) {
             throw new MojoExecutionException( "NPANDAY-xxx-000", e );
         }
+        finally
+        {
+            release(artifactContext);
+        }
 
         postExecute();
     }
@@ -195,15 +192,9 @@ public abstract class AbstractMojo
             return;
         }
 
-        ArtifactContext artifactContext = null;
         AssemblyResolver assemblyResolver = null;
-        ArtifactFactory artifactFactory = null;
-        DataAccessObjectRegistry daoRegistry = null;
         try {
-            artifactContext = (ArtifactContext) container.lookup(ArtifactContext.ROLE);
             assemblyResolver = (AssemblyResolver) container.lookup(AssemblyResolver.ROLE);
-            artifactFactory = (ArtifactFactory) container.lookup(ArtifactFactory.ROLE);
-            daoRegistry = (DataAccessObjectRegistry) container.lookup(DataAccessObjectRegistry.ROLE);
 
             Dependency dependency = new Dependency();
             dependency.setGroupId(artifact.getGroupId());
@@ -221,38 +212,12 @@ public abstract class AbstractMojo
             {
                 throw new MojoExecutionException( e.getMessage(), e );
             }
-
-//            ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-//            dao.openConnection();
-//            Project project;
-//
-//            try
-//            {
-//                project = dao.getProjectFor(dependency.getGroupId(), dependency.getArtifactId(),
-//                    dependency.getVersion(), dependency.getType(),
-//                    dependency.getClassifier());
-//            }
-//            catch( ProjectDaoException e )
-//            {
-//                 throw new MojoExecutionException( e.getMessage(), e );
-//            }
-//
-//            List<Dependency> sourceArtifactDependencies = new ArrayList<Dependency>();
-//            for (ProjectDependency projectDependency : project.getProjectDependencies()) {
-//                sourceArtifactDependencies.add(ProjectFactory.createDependencyFrom(projectDependency));
-//            }
-//            artifactContext.getArtifactInstaller().installArtifactAndDependenciesIntoPrivateApplicationBase(localRepository, artifact,
-//                    sourceArtifactDependencies);
-//            dao.closeConnection();
         }
         catch (IOException e) {
             throw new MojoExecutionException(e.getMessage(), e);
         }
         finally {
-            release(artifactContext);
             release(assemblyResolver);
-            release(artifactFactory);
-            release(daoRegistry);
         }
     }
 
