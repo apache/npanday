@@ -96,6 +96,12 @@ under the License.
       <artifactId>NPanday.VisualStudio</artifactId>
       <version>${project.version}</version>
       <type>library</type>
+      <exclusions>
+        <exclusion>
+          <groupId>EnvDTE</groupId>  
+          <artifactId>EnvDTE</artifactId>  
+         </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.visualstudio</groupId>
