@@ -48,8 +48,8 @@ namespace NPanday.Plugin.Loader
 			setup.ApplicationBase = pluginAssemblyFile.DirectoryName;
 
 			AppDomain applicationDomain = AppDomain.CreateDomain("Loader", null, setup);
-			PluginDomainManager pluginDomainManager = (PluginDomainManager) applicationDomain.DomainManager;
-                  pluginDomainManager.LoadPlugin(pluginAssemblyFile);
+      string assemblyName = pluginAssemblyFile.Name.Replace(pluginAssemblyFile.Extension,"");
+      applicationDomain.Load(assemblyName);
 			return applicationDomain;
 		}
 		

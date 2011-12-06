@@ -18,19 +18,16 @@
  */
 package npanday.plugin.install;
 
-import npanday.ArtifactTypeHelper;
+import npanday.PathUtil;
 import npanday.dao.ProjectDaoException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import npanday.artifact.ArtifactContext;
-import npanday.ArtifactType;
-import npanday.artifact.ApplicationConfig;
 import npanday.executable.NetExecutable;
 import npanday.executable.ExecutionException;
 import npanday.PlatformUnsupportedException;
@@ -183,43 +180,6 @@ public class InstallerMojo
             }
         }
 
-        // To allow executables to be runnable from the repo
-        Artifact artifact = project.getArtifact();
-
-        if (ArtifactTypeHelper.isDotnetExecutable( artifact.getType() ) ||
-            ArtifactTypeHelper.isDotnetMavenPlugin( artifact.getType() ) ||
-            artifact.getType().equals( ArtifactType.VISUAL_STUDIO_ADDIN.getPackagingType() ) ||
-            artifact.getType().equals( ArtifactType.SHARP_DEVELOP_ADDIN.getPackagingType() ) )
-        {
-            List<Dependency> dependencies = project.getDependencies();
-            if ( ArtifactTypeHelper.isDotnetExecutable( artifact.getType() ) )
-            {
-                ApplicationConfig applicationConfig = artifactContext.getApplicationConfigFor( artifact );
-              //  File configExeFile = new File( applicationConfig.getConfigDestinationPath() );
-                /*
-                if ( configExeFile.exists() )
-                {
-                    Dependency dependency = new Dependency();
-                    dependency.setGroupId( artifact.getGroupId() );
-                    dependency.setArtifactId( artifact.getArtifactId() );
-                    dependency.setVersion( artifact.getVersion() );
-                    dependency.setType( ArtifactType.EXECONFIG.getPackagingType() );
-                    dependencies.add( dependency );
-                }
-                */
-            }
-            try
-            {
-                artifactContext.getArtifactInstaller()
-                    .installArtifactAndDependenciesIntoPrivateApplicationBase( localRepository, artifact,
-                                                                               dependencies );
-            }
-            catch ( java.io.IOException e )
-            {
-                throw new MojoExecutionException( e.getMessage() );
-            }
-        }
-
         long endTime = System.currentTimeMillis();
         getLog().info( "Mojo Execution Time = " + ( endTime - startTime ) );
     }
@@ -258,7 +218,9 @@ public class InstallerMojo
 
         try
         {
-            dao.storeProjectAndResolveDependencies( proj, localRepository, new ArrayList<ArtifactRepository>() );
+            File targetDir = PathUtil.getPrivateApplicationBaseDirectory( project );
+            dao.storeProjectAndResolveDependencies( proj, localRepository, new ArrayList<ArtifactRepository>(),
+                                                    targetDir );
         }
         catch ( java.io.IOException e )
         {

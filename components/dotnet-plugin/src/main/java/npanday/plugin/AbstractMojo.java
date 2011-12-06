@@ -19,11 +19,6 @@
 package npanday.plugin;
 
 import npanday.artifact.NPandayArtifactResolutionException;
-import npanday.dao.ProjectDao;
-import npanday.dao.Project;
-import npanday.dao.ProjectDaoException;
-import npanday.dao.ProjectFactory;
-import npanday.dao.ProjectDependency;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import npanday.PlatformUnsupportedException;
@@ -154,6 +149,9 @@ public abstract class AbstractMojo
             }
         }
 
+        // TODO: should be configurable, but relies on it being passed into everywhere
+        File targetDir = PathUtil.getPrivateApplicationBaseDirectory( getMavenProject() );
+
         try
         {
             VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
@@ -165,10 +163,10 @@ public abstract class AbstractMojo
             vendorInfo.setVendorVersion( getVendorVersion() );
 
             Artifact artifact = getNetExecutableFactory().getArtifactFor(getMojoGroupId(), getMojoArtifactId());
-            resolveArtifact(artifact);
+            resolveArtifact(artifact, targetDir );
             getNetExecutableFactory().getPluginLoaderFor( artifact, vendorInfo,
                                                           getLocalRepository(), paramFile,
-                                                          getClassName() ).execute();
+                                                          getClassName(), targetDir ).execute();
         }
         catch ( PlatformUnsupportedException e )
         {
@@ -184,10 +182,10 @@ public abstract class AbstractMojo
         postExecute();
     }
 
-    private void resolveArtifact(Artifact artifact) throws ComponentLookupException, MojoExecutionException {
+    private void resolveArtifact( Artifact artifact, File targetDir ) throws ComponentLookupException, MojoExecutionException {
         File localRepository = new File(getLocalRepository());
         
-        if (PathUtil.getPrivateApplicationBaseFileFor(artifact, localRepository).exists())
+        if (PathUtil.getPrivateApplicationBaseFileFor(artifact, localRepository, targetDir ).exists())
         {
             return;
         }
@@ -219,28 +217,28 @@ public abstract class AbstractMojo
                 throw new MojoExecutionException( e.getMessage(), e );
             }
 
-            ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-            dao.openConnection();
-            Project project;
-
-            try
-            {
-                project = dao.getProjectFor(dependency.getGroupId(), dependency.getArtifactId(),
-                    dependency.getVersion(), dependency.getType(),
-                    dependency.getClassifier());
-            }
-            catch( ProjectDaoException e )
-            {
-                 throw new MojoExecutionException( e.getMessage(), e );
-            }
-
-            List<Dependency> sourceArtifactDependencies = new ArrayList<Dependency>();
-            for (ProjectDependency projectDependency : project.getProjectDependencies()) {
-                sourceArtifactDependencies.add(ProjectFactory.createDependencyFrom(projectDependency));
-            }
-            artifactContext.getArtifactInstaller().installArtifactAndDependenciesIntoPrivateApplicationBase(localRepository, artifact,
-                    sourceArtifactDependencies);
-            dao.closeConnection();
+//            ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
+//            dao.openConnection();
+//            Project project;
+//
+//            try
+//            {
+//                project = dao.getProjectFor(dependency.getGroupId(), dependency.getArtifactId(),
+//                    dependency.getVersion(), dependency.getType(),
+//                    dependency.getClassifier());
+//            }
+//            catch( ProjectDaoException e )
+//            {
+//                 throw new MojoExecutionException( e.getMessage(), e );
+//            }
+//
+//            List<Dependency> sourceArtifactDependencies = new ArrayList<Dependency>();
+//            for (ProjectDependency projectDependency : project.getProjectDependencies()) {
+//                sourceArtifactDependencies.add(ProjectFactory.createDependencyFrom(projectDependency));
+//            }
+//            artifactContext.getArtifactInstaller().installArtifactAndDependenciesIntoPrivateApplicationBase(localRepository, artifact,
+//                    sourceArtifactDependencies);
+//            dao.closeConnection();
         }
         catch (IOException e) {
             throw new MojoExecutionException(e.getMessage(), e);

@@ -18,6 +18,7 @@
  */
 package npanday.plugin.resolver;
 
+import npanday.artifact.ArtifactInstaller;
 import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.registry.NPandayRepositoryException;
 import org.apache.maven.project.MavenProject;
@@ -165,8 +166,8 @@ public class NetDependencyResolverMojo
         {
             try
             {
-                artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( profile,
-                                                                                                   dependencies, null );
+                ArtifactInstaller installer = artifactContext.getArtifactInstaller();
+                installer.resolveAndInstallNetDependenciesForProfile( profile, dependencies, null, project );
             }
             catch ( NPandayArtifactResolutionException e )
             {

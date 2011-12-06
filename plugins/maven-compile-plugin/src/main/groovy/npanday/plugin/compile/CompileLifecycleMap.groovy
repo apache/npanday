@@ -52,13 +52,12 @@ class CompileLifecycleMap extends LifecycleMap
         def np_compile = "org.apache.npanday.plugins:maven-compile-plugin:$npandayVersion:compile"
         def np_test_compile = "org.apache.npanday.plugins:maven-compile-plugin:$npandayVersion:testCompile"
         def np_test = "org.apache.npanday.plugins:maven-test-plugin:$npandayVersion:test"
-        def np_convert = "org.apache.npanday.plugins:maven-repository-plugin:$npandayVersion:convert-artifact"
 
 		def default_validate = [np_compile_init, np_resolve, np_generate_settings]
 		def default_generate_sources = [np_generate_assemblyinfo]
 		def default_process_resources = [np_resgen_copy, np_resgen_generate, np_resgen_resx]
 		def default_process_sources = [np_compile_process_sources, np_compile_process_test_sources]
-		def default_install = [np_convert, "org.apache.npanday.plugins:maven-install-plugin:$npandayVersion:install", mv_install]
+		def default_install = ["org.apache.npanday.plugins:maven-install-plugin:$npandayVersion:install", mv_install]
 		
 		forTypes( [ArtifactType.DOTNET_LIBRARY, ArtifactType.LIBRARY] ) {
 			LifecycleMappingBuilder b->

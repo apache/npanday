@@ -18,6 +18,8 @@
  */
 package npanday.plugin.generator;
 
+import npanday.PathUtil;
+import npanday.artifact.ArtifactContext;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -91,6 +93,11 @@ public class MojoGeneratorMojo
      */
     private npanday.executable.NetExecutableFactory netExecutableFactory;
 
+    /**
+     * @component
+     */
+    private ArtifactContext artifactContext;
+
     /** @parameter default-value="false" */
     private boolean skip;
 
@@ -102,6 +109,7 @@ public class MojoGeneratorMojo
             return;
         }
 
+        artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
         try
         {    
             List<String> commands = new ArrayList<String>();
@@ -112,8 +120,9 @@ public class MojoGeneratorMojo
             }
             vendorInfo.setFrameworkVersion( frameworkVersion );
             vendorInfo.setVendorVersion( vendorVersion );
+            File targetDir = PathUtil.getPrivateApplicationBaseDirectory( project );
             File targetAssemblyFile =
-                new File( project.getBuild().getDirectory() + "/" + project.getArtifactId() + ".dll" );
+                new File( targetDir, project.getArtifactId() + ".dll" );
             commands.add( "targetAssemblyFile=" + targetAssemblyFile.getAbsolutePath() );
             commands.add( "outputDirectory=" + basedir );
             commands.add( "groupId=" + project.getGroupId() );
@@ -121,7 +130,7 @@ public class MojoGeneratorMojo
             commands.add( "artifactVersion=" + project.getVersion());
             netExecutableFactory.getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.MojoGenerator",
                                                                  vendorInfo, localRepository, commands,
-                                                                 true ).execute();
+                                                                 true, targetDir ).execute();
         }
         catch ( PlatformUnsupportedException e )
         {

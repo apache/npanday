@@ -21,6 +21,7 @@ package npanday.plugin.vsinstaller;
 
 import npanday.PlatformUnsupportedException;
 import npanday.artifact.ArtifactContext;
+import npanday.artifact.ArtifactInstaller;
 import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.artifact.NetDependenciesRepository;
 import npanday.artifact.NetDependencyMatchPolicy;
@@ -37,6 +38,7 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
 import org.apache.commons.io.filefilter.*;
 import org.apache.commons.io.FileUtils;
@@ -50,7 +52,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 
 /**
@@ -163,8 +164,8 @@ public class VsInstallerMojo
 
         try
         {
-            artifactContext.getArtifactInstaller().resolveAndInstallNetDependenciesForProfile( "VisualStudio2005", null,
-                                                                                               null );
+            ArtifactInstaller installer = artifactContext.getArtifactInstaller();
+            installer.resolveAndInstallNetDependenciesForProfile( "VisualStudio2005", null, null, mavenProject );
         }
         catch ( NPandayArtifactResolutionException e )
         {

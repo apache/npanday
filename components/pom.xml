@@ -37,7 +37,6 @@ under the License.
     <module>dotnet-model</module>  
     <module>dotnet-plugin</module>  
     <module>dotnet-registry</module>  
-    <module>dotnet-repository</module>  
     <module>dotnet-vendor</module> 
   </modules>
 <reporting> 

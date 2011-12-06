@@ -18,7 +18,6 @@
  */
 package npanday.dao;
 
-import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
 import npanday.PathUtil;
 import org.apache.maven.artifact.Artifact;
@@ -194,30 +193,6 @@ public final class ProjectFactory
         dependency.setScope(projectDependency.getScope());
         dependency.setSystemPath(projectDependency.getSystemPath());
         return dependency;
-    }
-
-    /**
-     * Creates an artifact using information from the specified project.
-     *
-     * @param project         a project to use as the source of the returned artifact
-     * @param artifactFactory artifact factory used to create the artifact
-     * @param localRepository the local repository
-     * @return an artifact using information from the specified project
-     */
-    public static Artifact createArtifactFrom( Project project, ArtifactFactory artifactFactory, File localRepository )
-    {
-        logAndVerifyProjectParameters( project );
-
-        Artifact assembly = artifactFactory.createArtifactWithClassifier( project.getGroupId(), project.getArtifactId(),
-                                                                          project.getVersion(),
-                                                                          project.getArtifactType(),
-                                                                          project.getPublicKeyTokenId() );
-
-                
-        File artifactFile = ( ( ArtifactTypeHelper.isDotnetAnyGac( project.getArtifactType() ) ) ) ? PathUtil.getGlobalAssemblyCacheFileFor( assembly, localRepository) : PathUtil.getDotNetArtifact( assembly, localRepository ) ;
-        
-        assembly.setFile( artifactFile );
-        return assembly;
     }
 
     /**

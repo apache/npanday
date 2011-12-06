@@ -397,11 +397,6 @@ under the License.
       </dependency> 
       <dependency> 
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-repository</artifactId>  
-        <version>1.4.1-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
-        <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-core</artifactId>  
         <version>1.4.1-incubating-SNAPSHOT</version> 
       </dependency> 

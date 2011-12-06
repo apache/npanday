@@ -19,19 +19,16 @@
 package npanday.dao;
 
 import npanday.registry.DataAccessObject;
-
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.model.Model;
 import org.openrdf.repository.Repository;
 
-import java.util.Set;
-import java.util.List;
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Provides methods for storing and retreiving project information.
@@ -49,65 +46,38 @@ public interface ProjectDao
     /**
      * Returns a project that matches the specified parameters.
      *
+     *
+     *
+     *
      * @param groupId          the group id of the project
      * @param artifactId       the artifact id of the project
      * @param version          the version of the project
      * @param artifactType     the type of artifact: library, exe, winexe, netmodule
      * @param publicKeyTokenId the public key token id. This should match the token id within the manifest of a signed
      *                         .NET assesmbly. This value may be null.
+     * @param localRepository
+     * @param outputDir
      * @return a project that matches the specified parameters
      * @throws ProjectDaoException if there was a problem retrieving the project
      */
     Project getProjectFor( String groupId, String artifactId, String version, String artifactType,
-                           String publicKeyTokenId )
+                           String publicKeyTokenId, File localRepository, File outputDir )
             throws ProjectDaoException;
-
-    /**
-     * Returns a project that matches the information contained within the specified maven project.
-     *
-     * @param mavenProject the maven project used in finding the returned project
-     * @return a project that matches the information contained within the specified maven project
-     * @throws ProjectDaoException if there was a problem retrieving the project
-     */
-    Project getProjectFor( MavenProject mavenProject )
-        throws ProjectDaoException;
-
-    /**
-     * Method not implemented.
-     *
-     * @param project
-     * @param localRepository
-     * @param artifactRepositories
-     * @throws ProjectDaoException
-     */
-    void storeProject( Project project, File localRepository, List<ArtifactRepository> artifactRepositories )
-        throws ProjectDaoException;
 
     /**
      * Stores the specified project and resolves and stores the project's dependencies.
      *
+     *
      * @param project              the project to store
      * @param localRepository      the local artifact repository
      * @param artifactRepositories the remote artifact repositories used in resolving dependencies
+     * @param outputDir
      * @return a set of artifacts, including the project and its dependencies
      * @throws IOException if there was a problem in storing or resolving the artifacts
+     * @throws ProjectDaoException if there was a problem in resolving the artifacts
      */
     Set<Artifact> storeProjectAndResolveDependencies( Project project, File localRepository,
-                                                      List<ArtifactRepository> artifactRepositories )
-            throws IOException, ProjectDaoException;
-
-    /**
-     * Stores the project object model and resolves and stores the model's dependencies.
-     *
-     * @param model                   the project object model
-     * @param pomFileDirectory        the directory containing the pom file
-     * @param localArtifactRepository the local repository
-     * @param artifactRepositories    the remote artifact repositories used in resolving dependencies
-     * @return a set of artifacts, including the model and its dependencies
-     * @throws IOException if there was a problem in storing or resolving the artifacts
-     */
-    Set<Artifact> storeModelAndResolveDependencies( Model model, File pomFileDirectory, File localArtifactRepository,
-                                                    List<ArtifactRepository> artifactRepositories )
+                                                      List<ArtifactRepository> artifactRepositories, File outputDir )
             throws IOException, ProjectDaoException;
 
     /**
@@ -117,15 +87,6 @@ public interface ProjectDao
      *@param artifactResolver    for snapshot artifact
      */
     void init( ArtifactFactory artifactFactory, ArtifactResolver artifactResolver );
-    
-    /**
-     * Returns all projects.
-     *
-     * @return all projects
-     * @throws ProjectDaoException if there is a problem retrieving the projects
-     */
-    Set<Project> getAllProjects()
-            throws ProjectDaoException;
 
     /**
      * Sets the repository for the data access object. This method overrides the data source object set in the
