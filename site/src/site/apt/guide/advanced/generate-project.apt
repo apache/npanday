@@ -71,17 +71,6 @@ mvn archetype:generate -DarchetypeArtifactId=maven-archetype-dotnet-simple -Darc
   The <<<mvn install>>> command typically puts artifacts (installs them) into the repository here,
   <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository>>>.
   
-  NPanday installs the artifacts in a .NET local repository, located in
-  <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac>>>.
-  
-  For the <<<Example.Project>>> solution the artifact is placed here,
-  <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac\\gac_msil\\Example.Project\\1.0-SNAPSHOT__com.example\Example.Project.dll>>>
-  
-  The contents in <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac\\gac_msil>>> SHOULD NOT be manually modified or
-  the project build will fail due to artifacts that are not properly indexed and are not synchronized with the
-  repository. In case the contents have been modified, delete the
-  <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac>>> directory then re-install the project.
-  
   The sample project contains NUnit tests. If the build fails on <<<nunit-console>>>, make sure you have NUnit 2.2+
   installed and located in the PATH.
   

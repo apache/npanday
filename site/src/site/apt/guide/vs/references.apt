@@ -62,9 +62,6 @@ Project Dependencies
 
 [../../images/vs/add_artifact.jpg] Add Maven Artifact screen
 
-  The artifacts will be added as a reference to the project and added as a dependency in the POM file. It is
-  also downloaded to the <<<C:\\Documents and Settings\\[user_home]\\.m2\\uac>>> directory.
-
 ** COM References
 
   When attempting to add an <<<.ocx>>> file into the repository, a warning message similar to the following will be
