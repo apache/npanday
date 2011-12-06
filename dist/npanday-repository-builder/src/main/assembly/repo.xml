@@ -25,6 +25,9 @@ under the License.
     <repository>
       <outputDirectory>releases</outputDirectory>
       <includeMetadata>true</includeMetadata>
+      <excludes>
+        <exclude>org.apache.npanday:dotnet-repository-builder</exclude>
+      </excludes>
     </repository>
   </repositories> 
   <fileSets>

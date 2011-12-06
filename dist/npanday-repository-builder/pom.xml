@@ -164,6 +164,13 @@ under the License.
       <artifactId>maven-archetype-vb-simple</artifactId>  
       <version>1.4.1-incubating-SNAPSHOT</version> 
     </dependency>
+    <dependency> 
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>dotnet-repository-builder</artifactId>  
+      <version>1.4.1-incubating-SNAPSHOT</version> 
+      <type>tar.gz</type>
+      <classifier>bin</classifier>
+    </dependency>
   </dependencies>  
   <build>
     <plugins>   
@@ -178,18 +185,11 @@ under the License.
             <phase>process-resources</phase>
             <configuration>
               <outputDirectory>${project.build.directory}/dotnet</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.apache.npanday</groupId>
-                  <artifactId>dotnet-repository-builder</artifactId>
-                  <version>${project.version}</version>
-                  <type>tar.gz</type>
-                  <classifier>bin</classifier>
-                </artifactItem>
-              </artifactItems>
+              <excludeTransitive>true</excludeTransitive>
+              <includeTypes>tar.gz</includeTypes>
             </configuration>
             <goals>
-              <goal>unpack</goal>
+              <goal>unpack-dependencies</goal>
             </goals>
           </execution>
         </executions>
