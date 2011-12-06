@@ -184,6 +184,11 @@ public class NetExecutableFactoryImpl
         commands.add( "assemblyFile=" + artifactPath.getAbsolutePath() );
         commands.add( "mojoName=" + mojoName );//ArtifactId = namespace
 
+        // make sure plugin artifact is present to run with in the application base
+        Artifact pluginArtifact = artifactContext.getArtifactsFor( "org.apache.npanday.plugins", "NPanday.Plugin", null,
+                                                                   null ).get( 0 );
+        PathUtil.getPrivateApplicationBaseFileFor( pluginArtifact, new File( localRepository ), targetDir );
+
         Artifact pluginLoaderArtifact =
             artifactContext.getArtifactsFor( "org.apache.npanday.plugins", "NPanday.Plugin.Loader", null, null ).get( 0 );
         artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ), targetDir );
