@@ -122,11 +122,6 @@ public class NetDependencyResolverMojo
             return;
         }
 
-        if ( localRepository == null )
-        {
-            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
-        }
-
         String profile = System.getProperty( "dependencyProfile" );
 
         RepositoryRegistry repositoryRegistry;

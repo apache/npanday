@@ -181,11 +181,6 @@ public class AspxCompilerMojo
                 profileAssemblyPath.getAbsolutePath() );
         }
 
-        if ( localRepository == null )
-        {
-            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
-        }
-
         File tmpDir;
         try
         {

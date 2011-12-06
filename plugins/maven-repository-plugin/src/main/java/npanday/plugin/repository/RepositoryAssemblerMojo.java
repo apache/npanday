@@ -126,12 +126,6 @@ public class RepositoryAssemblerMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-       
-        if ( localRepository == null )
-        {
-            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
-        }
-        
         org.openrdf.repository.Repository rdfRepository = new SailRepository( new MemoryStore( localRepository ) );
         
         try

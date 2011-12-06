@@ -129,11 +129,6 @@ public class InstallerMojo
     {
         long startTime = System.currentTimeMillis();
 
-        if ( localRepository == null )
-        {
-            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
-        }
-
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
         dao.init( artifactFactory, artifactResolver );
         dao.openConnection();

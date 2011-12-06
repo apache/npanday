@@ -1120,12 +1120,6 @@ public abstract class AbstractCompilerMojo
             throw new MojoExecutionException( "NPANDAY-900-012: Error reading settings from " + settingsPath, e );
         }
 
-        if (localRepository == null)
-        {
-            
-			localRepository = new File(System.getProperty("user.home"), ".m2/repository");
-        }
-       
         initializeDefaults();
   
         try

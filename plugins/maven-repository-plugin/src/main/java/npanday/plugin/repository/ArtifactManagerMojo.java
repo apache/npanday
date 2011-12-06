@@ -76,11 +76,6 @@ public class ArtifactManagerMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        if ( localRepository == null )
-        {
-            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
-        }
-
         String artifactValue = System.getProperty( "artifact" );
         String[] tokens = artifactValue.split( "[:]" );
 

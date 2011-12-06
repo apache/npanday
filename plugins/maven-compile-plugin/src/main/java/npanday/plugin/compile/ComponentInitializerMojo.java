@@ -77,11 +77,6 @@ public class ComponentInitializerMojo
     {
         long startTime = System.currentTimeMillis();
 
-        if ( localRepository == null )
-        {
-            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
-        }
-
         try
         {
             assemblyResolver.resolveTransitivelyFor( project, project.getDependencies(),

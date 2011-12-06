@@ -295,11 +295,6 @@ extends AbstractMojo
             return;
         }
 
-        if ( localRepository == null )
-        {
-            localRepository = new File( System.getProperty( "user.home" ), ".m2/repository" );
-        }
-
         try
         {
             assemblyResolver.resolveTransitivelyFor( project, project.getDependencies(),
