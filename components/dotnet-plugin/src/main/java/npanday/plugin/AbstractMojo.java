@@ -79,6 +79,9 @@ public abstract class AbstractMojo
      */
     private String outputDirectory;
 
+    /** @component */
+    private ArtifactContext artifactContext;
+
     public void contextualize(Context context) throws ContextException {
         container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
     }
@@ -149,8 +152,9 @@ public abstract class AbstractMojo
             }
         }
 
+        MavenProject project = getMavenProject();
         // TODO: should be configurable, but relies on it being passed into everywhere
-        File targetDir = PathUtil.getPrivateApplicationBaseDirectory( getMavenProject() );
+        File targetDir = PathUtil.getPrivateApplicationBaseDirectory( project );
 
         try
         {
@@ -162,10 +166,11 @@ public abstract class AbstractMojo
             vendorInfo.setFrameworkVersion( getFrameworkVersion() );
             vendorInfo.setVendorVersion( getVendorVersion() );
 
+            String localRepository = getLocalRepository();
+            artifactContext.init( project, project.getRemoteArtifactRepositories(), new File( localRepository ) );
             Artifact artifact = getNetExecutableFactory().getArtifactFor(getMojoGroupId(), getMojoArtifactId());
             resolveArtifact(artifact, targetDir );
-            getNetExecutableFactory().getPluginLoaderFor( artifact, vendorInfo,
-                                                          getLocalRepository(), paramFile,
+            getNetExecutableFactory().getPluginLoaderFor( artifact, vendorInfo, localRepository, paramFile,
                                                           getClassName(), targetDir ).execute();
         }
         catch ( PlatformUnsupportedException e )
