@@ -19,7 +19,12 @@
 package npanday.dao.impl;
 
 import junit.framework.TestCase;
-import npanday.dao.*;
+import npanday.dao.Project;
+import npanday.dao.ProjectDao;
+import npanday.dao.ProjectDaoException;
+import npanday.dao.ProjectDependency;
+import npanday.dao.ProjectUri;
+import npanday.dao.Requirement;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
@@ -54,6 +59,8 @@ public class ProjectDaoImplTest
 
     private File dataDir;
 
+    private File outputDir;
+
     public void testBogus()
     {
 
@@ -61,6 +68,7 @@ public class ProjectDaoImplTest
 
     private ProjectDao createProjectDao()
     {
+        outputDir = new File( basedir, "target/pab" );
         dataDir = new File( basedir, ( "/target/rdf-repos/rdf-repo-" + System.currentTimeMillis() ) );
         rdfRepository = new SailRepository( new MemoryStoreRDFSInferencer( new MemoryStore( dataDir ) ) );
         try
@@ -72,13 +80,14 @@ public class ProjectDaoImplTest
             return null;
         }
         ProjectDaoImpl dao = new ProjectDaoImpl();
-        ArtifactResolver stub = mock(ArtifactResolver.class);
+        ArtifactResolver stub = mock( ArtifactResolver.class );
         dao.initForUnitTest( rdfRepository, "", "", stub, new ArtifactFactoryTestStub() );
         dao.openConnection();
         return dao;
     }
 
     public void testStore_WithGacDependencies()
+        throws ProjectDaoException, IOException
     {
         ProjectDao dao = this.createProjectDao();
 
@@ -87,74 +96,16 @@ public class ProjectDaoImplTest
         project.setArtifactId( "NPanday.Test5" );
         project.setVersion( "1.0.0" );
         project.setArtifactType( "library" );
-        ProjectDependency test2 =
-            createProjectDependency( "Microsoft.Build.Conversion", "Microsoft.Build.Conversion", "2.0.0.0", "gac_msil",
-                                     "31bf3856ad364e35" );
+        ProjectDependency test2 = createProjectDependency( "Microsoft.Build.Conversion", "Microsoft.Build.Conversion",
+                                                           "2.0.0.0", "gac_msil", "31bf3856ad364e35" );
         project.addProjectDependency( test2 );
 
-        try
-        {
-            dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            fail( "Could not store the project: " + e.getMessage() );
-        }
-
-        Set<Project> projects = null;
-        try
-        {
-            projects = dao.getAllProjects();
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            fail( "Could not retrieve the project: " + e.getMessage() );
-        }
-
-        dao.closeConnection();
-    }
-
-    public void testGetAllProjects()
-    {
-        ProjectDao dao = this.createProjectDao();
-
-        Project project = new Project();
-        project.setGroupId( "NPanday" );
-        project.setArtifactId( "NPanday.Test5" );
-        project.setVersion( "1.0.0" );
-        project.setArtifactType( "library" );
-        ProjectDependency test2 =
-            createProjectDependency( "Microsoft.VisualBasic", "Microsoft.VisualBasic", "8.0.0.0", "gac_msil",
-                                     "31bf3856ad364e35" );
-        project.addProjectDependency( test2 );
-
-        try
-        {
-            dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            fail( "Could not store the project: " + e.getMessage() );
-        }
-
-        Set<Project> projects = null;
-        try
-        {
-            projects = dao.getAllProjects();
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            fail( "Could not retrieve the project: " + e.getMessage() );
-        }
-
-        dao.closeConnection();
+        dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>(),
+                                                outputDir );
     }
 
     public void testStore_WithRequirements()
+        throws ProjectDaoException, IOException
     {
         ProjectDao dao = this.createProjectDao();
 
@@ -167,13 +118,10 @@ public class ProjectDaoImplTest
         Set<Requirement> requirements = new HashSet<Requirement>();
         try
         {
-            requirements.add( Requirement.Factory.createDefaultRequirement(
-                                                                            new URI( ProjectUri.VENDOR.getPredicate() ),
+            requirements.add( Requirement.Factory.createDefaultRequirement( new URI( ProjectUri.VENDOR.getPredicate() ),
                                                                             "MICROSOFT" ) );
-            requirements.add( Requirement.Factory.createDefaultRequirement(
-                                                                            new URI(
-                                                                                     ProjectUri.FRAMEWORK_VERSION.getPredicate() ),
-                                                                            "2.0" ) );
+            requirements.add( Requirement.Factory.createDefaultRequirement( new URI(
+                ProjectUri.FRAMEWORK_VERSION.getPredicate() ), "2.0" ) );
         }
         catch ( Exception e )
         {
@@ -181,22 +129,14 @@ public class ProjectDaoImplTest
         }
         project.setRequirements( requirements );
 
-        Set<Artifact> artifacts = null;
-        try
-        {
-            artifacts =
-                dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-            fail( "Could not store the project: " + e.getMessage() );
-        }
+        dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>(),
+                                                outputDir );
 
         Project proj = null;
         try
         {
-            proj = dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.14.0.0", "library", null );
+            proj = dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.14.0.0", "library", null,
+                                      localRepository, outputDir );
         }
         catch ( Exception e )
         {
@@ -207,8 +147,8 @@ public class ProjectDaoImplTest
         requirements = proj.getRequirements();
 
         assertEquals( "Incorrect number of requirements.", 2, requirements.size() );
-        assertTrue( "Could not find framework requirement",
-                    hasRequirement( ProjectUri.FRAMEWORK_VERSION.getPredicate(), "2.0", requirements ) );
+        assertTrue( "Could not find framework requirement", hasRequirement( ProjectUri.FRAMEWORK_VERSION.getPredicate(),
+                                                                            "2.0", requirements ) );
         assertTrue( "Could not find vendor requirement", hasRequirement( ProjectUri.VENDOR.getPredicate(), "MICROSOFT",
                                                                          requirements ) );
         dao.closeConnection();
@@ -231,9 +171,8 @@ public class ProjectDaoImplTest
     {
         for ( ProjectDependency projectDependency : projectDependencies )
         {
-            if ( projectDependency.getGroupId().equals( groupId )
-                && projectDependency.getArtifactId().equals( artifactId )
-                && projectDependency.getVersion().equals( version ) )
+            if ( projectDependency.getGroupId().equals( groupId ) && projectDependency.getArtifactId().equals(
+                artifactId ) && projectDependency.getVersion().equals( version ) )
             {
                 return true;
             }
@@ -255,8 +194,8 @@ public class ProjectDaoImplTest
         Set<Artifact> artifacts = null;
         try
         {
-            artifacts =
-                dao.storeProjectAndResolveDependencies( project1, localRepository, new ArrayList<ArtifactRepository>() );
+            artifacts = dao.storeProjectAndResolveDependencies( project1, localRepository,
+                                                                new ArrayList<ArtifactRepository>(), outputDir );
         }
         catch ( Exception e )
         {
@@ -274,7 +213,8 @@ public class ProjectDaoImplTest
         Project testProject = null;
         try
         {
-            testProject = dao.getProjectFor( "NPanday", "NPanday.Plugin", "0.14.0.0", "library", null );
+            testProject = dao.getProjectFor( "NPanday", "NPanday.Plugin", "0.14.0.0", "library", null, localRepository,
+                                             outputDir );
         }
         catch ( Exception e )
         {
@@ -287,9 +227,11 @@ public class ProjectDaoImplTest
         Set<ProjectDependency> projectDependencies = testProject.getProjectDependencies();
         assertEquals( "Incorrect number of dependencies", 1, projectDependencies.size() );
         ProjectDependency projectDependency = (ProjectDependency) projectDependencies.toArray()[0];
-        assertTrue( "Could not find required dependency. Found Dependency: GroupId = " + projectDependency.getGroupId()
-            + ", Artifact Id = " + projectDependency.getArtifactId(), this.hasDependency( "NPanday", "NPanday.Test4",
-                                                                                          "1.0.0", projectDependencies ) );
+        assertTrue(
+            "Could not find required dependency. Found Dependency: GroupId = " + projectDependency.getGroupId() +
+                ", Artifact Id = " + projectDependency.getArtifactId(), this.hasDependency( "NPanday", "NPanday.Test4",
+                                                                                            "1.0.0",
+                                                                                            projectDependencies ) );
         dao.closeConnection();
     }
 
@@ -305,8 +247,8 @@ public class ProjectDaoImplTest
         Set<Artifact> artifacts = null;
         try
         {
-            artifacts =
-                dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
+            artifacts = dao.storeProjectAndResolveDependencies( project, localRepository,
+                                                                new ArrayList<ArtifactRepository>(), outputDir );
         }
         catch ( Exception e )
         {
@@ -317,7 +259,8 @@ public class ProjectDaoImplTest
         Project proj = null;
         try
         {
-            proj = dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.14.0.0", "library", null );
+            proj = dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.14.0.0", "library", null,
+                                      localRepository, outputDir );
         }
         catch ( Exception e )
         {
@@ -345,8 +288,8 @@ public class ProjectDaoImplTest
 
         try
         {
-            dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>() );
-
+            dao.storeProjectAndResolveDependencies( project, localRepository, new ArrayList<ArtifactRepository>(),
+                                                    outputDir );
         }
         catch ( Exception e )
         {
@@ -356,7 +299,8 @@ public class ProjectDaoImplTest
 
         try
         {
-            dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.15.0.0", "library", null );
+            dao.getProjectFor( "NPanday.Model", "NPanday.Model.Pom", "0.15.0.0", "library", null, localRepository,
+                               outputDir );
         }
         catch ( Exception e )
         {

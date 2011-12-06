@@ -28,8 +28,6 @@ import npanday.PathUtil;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.handler.ArtifactHandler;
-import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
@@ -66,7 +64,7 @@ public final class ArtifactContextImpl
     /**
      * Root path of the local Maven repository
      */
-    private String localRepository;
+    private File localRepository;
 
     /**
      * A logger for writing log messages
@@ -89,15 +87,6 @@ public final class ArtifactContextImpl
     }
 
     /**
-     * @see npanday.artifact.ArtifactContext#getLocalRepository()
-     */
-    public File getLocalRepository()
-    {
-        return ( localRepository != null ) ? new File( localRepository )
-            : new File( System.getProperty( "user.home" ), "/.m2/repository" );
-    }
-
-    /**
      * @see ArtifactContext#getArtifactsFor(String, String, String, String)
      */
     public List<Artifact> getArtifactsFor( String groupId, String artifactId, String version, String type )
@@ -116,7 +105,7 @@ public final class ArtifactContextImpl
         for ( Artifact artifact : artifacts )
         {
             logger.debug("NPANDAY-000-002: set file");        
-            artifact.setFile( PathUtil.getUserAssemblyCacheFileFor( artifact, getLocalRepository() ) );
+            artifact.setFile( PathUtil.getMavenLocalRepositoryFileFor( artifact, localRepository ) );
         }
         return artifacts;
     }
@@ -166,11 +155,6 @@ public final class ArtifactContextImpl
         //return getDirectDependenciesFor( artifact, matchPolicies );
     }
 
-    public List<Artifact> getAllNetArtifactsFromRepository( File repository )
-    {
-        return null;
-    }
-
     /**
      * @see ArtifactContext#init(org.apache.maven.project.MavenProject,java.util.List, File)
      */
@@ -178,27 +162,8 @@ public final class ArtifactContextImpl
                       File localRepository )
     {
         this.project = mavenProject;
-        this.localRepository = localRepository.getAbsolutePath();
+        this.localRepository = localRepository;
         artifactInstaller.init( this, remoteArtifactRepositories, localRepository );
-    }
-
-    /**
-     * Returns true if the artifact matches <i>all</i> match policies, otherwise returns false.
-     *
-     * @param artifact      the artifact to match against the match policies
-     * @param matchPolicies the match policies
-     * @return true if the artifact matches <i>all</i> match policies, otherwise returns false
-     */
-    private boolean matchArtifacts( Artifact artifact, List<ArtifactMatchPolicy> matchPolicies )
-    {
-        for ( ArtifactMatchPolicy matchPolicy : matchPolicies )
-        {
-            if ( !matchPolicy.match( artifact ) )
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
     /*

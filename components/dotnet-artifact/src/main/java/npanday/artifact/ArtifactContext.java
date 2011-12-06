@@ -95,22 +95,6 @@ public interface ArtifactContext
     ApplicationConfig getApplicationConfigFor( Artifact artifact );
 
     /**
-     * Returns the directory containing the local Maven repository
-     *
-     * @return the directory containing the local Maven repository
-     */
-    File getLocalRepository();
-
-    /**
-     * Returns a list of .NET artifacts that reside within the specified repository.
-     *
-     * @param repository the local repository directory. If value is null, the localRepository reference will default to
-     *                   the specified localRepository passed to the init method of the context.
-     * @return list of .NET artifacts that reside within the specified repository.
-     */
-    List<Artifact> getAllNetArtifactsFromRepository( File repository );
-
-    /**
      * Initializes this artifact context. Neither parameter value should be null.
      *
      * @param mavenProject               the maven project

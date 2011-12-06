@@ -91,13 +91,15 @@ public interface ArtifactInstaller
     /**
      * Installs both the artifact and all of its dependencies into the private application base.
      *
+     *
      * @param applicationBase the root directory of the private application base
      * @param artifact        the artifact to install
      * @param dependencies    the dependencies to install
+     * @param outputDir
      * @throws IOException if there is a problem installing any of the artifacts into the private application base
      */
     void installArtifactAndDependenciesIntoPrivateApplicationBase( File applicationBase, Artifact artifact,
-                                                                   List<Dependency> dependencies )
+                                                                   List<Dependency> dependencies, File outputDir )
         throws IOException;
 
     /**

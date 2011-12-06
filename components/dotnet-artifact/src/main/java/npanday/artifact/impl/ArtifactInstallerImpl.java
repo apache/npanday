@@ -51,8 +51,6 @@ import java.io.FileWriter;
 import java.io.FileReader;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
 
 /**
  * Provides an implementation of the <code>ArtifactInstaller</code> interface.
@@ -222,14 +220,14 @@ public class ArtifactInstallerImpl
     }
 
     /**
-     * @see npanday.artifact.ArtifactInstaller#installArtifactAndDependenciesIntoPrivateApplicationBase(java.io.File, org.apache.maven.artifact.Artifact, java.util.List<org.apache.maven.model.Dependency>)
+     * TODO: this should be able to be removed - we're relying on copy side-effects of getDotNetArtifact
      */
     public void installArtifactAndDependenciesIntoPrivateApplicationBase( File localRepository, Artifact artifact,
-                                                                          List<Dependency> dependencies )
+                                                                          List<Dependency> dependencies,
+                                                                          File outputDir )
         throws IOException
     {
 
-        Set<Artifact> artifactDependencies = new HashSet<Artifact>();
         for ( Dependency dependency : dependencies )
         {
 
@@ -241,9 +239,9 @@ public class ArtifactInstallerImpl
                                                                                     dependency.getType(),
                                                                                     dependency.getClassifier(), scope,
                                                                                     null );
-           
-            File artifactDependencyFile = PathUtil.getDotNetArtifact( artifactDependency , localRepository );
-            
+
+            File artifactDependencyFile = PathUtil.getDotNetArtifact( artifactDependency , localRepository, outputDir );
+
             if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
             {
                 if (!ArtifactTypeHelper.isDotnetAnyGac( artifactDependency.getType() ))
@@ -256,7 +254,6 @@ public class ArtifactInstallerImpl
             }
 
             artifactDependency.setFile( artifactDependencyFile );
-            artifactDependencies.add( artifactDependency );
         }
 
         if ( artifact != null )
@@ -268,7 +265,6 @@ public class ArtifactInstallerImpl
                     artifact.getArtifactId() + ", Path = " +
                     ( ( artifactFile != null ) ? artifactFile.getAbsolutePath() : null ) );
             }
-            artifactDependencies.add( artifact );
         }
     }
 
@@ -288,8 +284,9 @@ public class ArtifactInstallerImpl
         if ( configExeFile.exists() )
         {
             try
-            {             
-		FileUtils.copyFileToDirectory( configExeFile, PathUtil.getUserAssemblyCacheFileFor( artifact,localRepository ).getParentFile() );   
+            {
+                File directory = PathUtil.getMavenLocalRepositoryFileFor( artifact, localRepository ).getParentFile();
+                FileUtils.copyFileToDirectory( configExeFile, directory );
             }
             catch ( IOException e )
             {

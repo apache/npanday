@@ -35,10 +35,6 @@ under the License.
       <artifactId>plexus-archiver</artifactId>  
       <version>1.0-alpha-3</version> 
     </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-repository</artifactId>  
-    </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>

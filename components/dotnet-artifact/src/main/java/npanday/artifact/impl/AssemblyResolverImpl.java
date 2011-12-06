@@ -18,6 +18,7 @@
  */
 package npanday.artifact.impl;
 
+import npanday.PathUtil;
 import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.dao.ProjectDao;
@@ -140,8 +141,11 @@ public class AssemblyResolverImpl
         Set<Artifact> artifactDependencies = new HashSet<Artifact>();
         try
         {
+            // TODO: do we really need to copy these?
+            File targetDirectory = PathUtil.getPrivateApplicationBaseDirectory( mavenProject );
             artifactDependencies =
-                dao.storeProjectAndResolveDependencies( project, localArtifactRepository, remoteArtifactRepositories );
+                dao.storeProjectAndResolveDependencies( project, localArtifactRepository, remoteArtifactRepositories,
+                                                        targetDirectory );
         }
         catch( ProjectDaoException e )
         {

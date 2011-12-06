@@ -34,7 +34,6 @@ import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
@@ -136,67 +135,6 @@ public final class ProjectDaoImpl
         projectQuery = "SELECT * FROM " + this.constructQueryFragmentFor( "{x}", projectUris );
     }
 
-    public Set<Project> getAllProjects()
-            throws ProjectDaoException {
-        Set<Project> projects = new HashSet<Project>();
-        TupleQueryResult result = null;
-        try
-        {
-            TupleQuery tupleQuery = repositoryConnection.prepareTupleQuery( QueryLanguage.SERQL, projectQuery );
-            result = tupleQuery.evaluate();
-            while ( result.hasNext() )
-            {
-                BindingSet set = result.next();
-
-                String groupId = set.getBinding( ProjectUri.GROUP_ID.getObjectBinding() ).getValue().toString();
-                String version = set.getBinding( ProjectUri.VERSION.getObjectBinding() ).getValue().toString();
-                String artifactId = set.getBinding( ProjectUri.ARTIFACT_ID.getObjectBinding() ).getValue().toString();
-                String artifactType =
-                    set.getBinding( ProjectUri.ARTIFACT_TYPE.getObjectBinding() ).getValue().toString();
-                String classifier = null;
-                if ( set.hasBinding( ProjectUri.CLASSIFIER.getObjectBinding() ) )
-                {
-                    classifier = set.getBinding( ProjectUri.CLASSIFIER.getObjectBinding() ).getValue().toString();
-                }
-
-                // Project project = getProjectFor( groupId, artifactId, version, artifactType, null );
-                /*
-                 * for ( Iterator<Binding> i = set.iterator(); i.hasNext(); ) { Binding b = i.next();
-                 * System.out.println( b.getName() + ":" + b.getValue() ); }
-                 */
-                projects.add( getProjectFor( groupId, artifactId, version, artifactType, classifier ) );
-            }
-        }
-        catch ( RepositoryException e )
-        {
-            throw new ProjectDaoException( "NPANDAY-180-000: Message = " + e.getMessage(), e );
-        }
-        catch ( MalformedQueryException e )
-        {
-            throw new ProjectDaoException( "NPANDAY-180-001: Message = " + e.getMessage(), e );
-        }
-        catch ( QueryEvaluationException e )
-        {
-            throw new ProjectDaoException( "NPANDAY-180-002: Message = " + e.getMessage(), e );
-        }
-        finally
-        {
-            if ( result != null )
-            {
-                try
-                {
-                    result.close();
-                }
-                catch ( QueryEvaluationException e )
-                {
-
-                }
-            }
-        }
-
-        return projects;
-    }
-
     public void setRdfRepository( Repository repository )
     {
         this.rdfRepository = repository;
@@ -252,7 +190,7 @@ public final class ProjectDaoImpl
     }
 
     public Project getProjectFor( String groupId, String artifactId, String version, String artifactType,
-                                  String publicKeyTokenId )
+                                  String publicKeyTokenId, File localRepository, File outputDir )
             throws ProjectDaoException {
         long startTime = System.currentTimeMillis();
 
@@ -292,7 +230,7 @@ public final class ProjectDaoImpl
                 if ( artifactType != null )
                 {
                     
-                    Artifact artifact = createArtifactFrom( project, artifactFactory );
+                    Artifact artifact = createArtifactFrom( project, artifactFactory, localRepository, outputDir );
                     
                     if ( !artifact.getFile().exists() )
                     {
@@ -375,19 +313,6 @@ public final class ProjectDaoImpl
         return project;
     }
 
-    public Project getProjectFor( MavenProject mavenProject )
-        throws ProjectDaoException
-    {
-        return getProjectFor( mavenProject.getGroupId(), mavenProject.getArtifactId(), mavenProject.getVersion(),
-                              mavenProject.getArtifact().getType(), mavenProject.getArtifact().getClassifier() );
-    }
-
-    public void storeProject( Project project, File localRepository, List<ArtifactRepository> artifactRepositories )
-        throws ProjectDaoException
-    {
-
-    }
-
     /**
      * Generates the system path for gac dependencies.
      */
@@ -401,16 +326,17 @@ public final class ProjectDaoImpl
     }
 
     public Set<Artifact> storeProjectAndResolveDependencies( Project project, File localRepository,
-                                                             List<ArtifactRepository> artifactRepositories )
+                                                             List<ArtifactRepository> artifactRepositories,
+                                                             File outputDir )
             throws IOException, IllegalArgumentException, ProjectDaoException
     {
         return storeProjectAndResolveDependencies( project, localRepository, artifactRepositories,
-                                                   new HashMap<String, Set<Artifact>>() );
+                                                   new HashMap<String, Set<Artifact>>(), outputDir );
     }
 
     public Set<Artifact> storeProjectAndResolveDependencies( Project project, File localRepository,
                                                              List<ArtifactRepository> artifactRepositories,
-                                                             Map<String, Set<Artifact>> cache )
+                                                             Map<String, Set<Artifact>> cache, File outputDir )
             throws IOException, IllegalArgumentException, ProjectDaoException {
         String key = getKey( project );
         if ( cache.containsKey( key ) )
@@ -479,12 +405,12 @@ public final class ProjectDaoImpl
                         + parentProject.getVersion() + ":" + project.getArtifactType() );
                 repositoryConnection.add( id, parent, pid );
                 artifactDependencies.addAll( storeProjectAndResolveDependencies( parentProject, null,
-                                                                                 artifactRepositories, cache ) );
+                                                                                 artifactRepositories, cache, outputDir ) );
             }
 
             for ( ProjectDependency projectDependency : project.getProjectDependencies() )
             {
-                Artifact assembly = createArtifactFrom( projectDependency, artifactFactory );
+                Artifact assembly = createArtifactFrom( projectDependency, artifactFactory, localRepository, outputDir );
 
                 snapshotVersion = null;
                 
@@ -525,7 +451,7 @@ public final class ProjectDaoImpl
                         projectDependency.setSystemPath( generateDependencySystemPath( projectDependency ) );
                     }
                     
-                    File dependencyFile = PathUtil.getDotNetArtifact( assembly , localRepository );
+                    File dependencyFile = PathUtil.getDotNetArtifact( assembly , localRepository, outputDir );
                     
                     if ( !dependencyFile.exists() )
                     {
@@ -641,7 +567,7 @@ public final class ProjectDaoImpl
                                     this.getProjectFor( projectDependency.getGroupId(), projectDependency.getArtifactId(),
                                                         projectDependency.getVersion(),
                                                         projectDependency.getArtifactType(),
-                                                        projectDependency.getPublicKeyTokenId() );
+                                                        projectDependency.getPublicKeyTokenId(), localRepository, outputDir );
                                 if ( dep.isResolved() )
                                 {
                                     projectDependency = (ProjectDependency) dep;
@@ -649,7 +575,7 @@ public final class ProjectDaoImpl
                                     Set<Artifact> deps = this.storeProjectAndResolveDependencies( projectDependency,
                                                                                                   localRepository,
                                                                                                   artifactRepositories,
-                                                                                                  cache );
+                                                                                                  cache, outputDir );
                                     artifactDependencies.addAll( deps );
                                 }
                             }
@@ -771,7 +697,7 @@ public final class ProjectDaoImpl
                         assembly.setVersion( snapshotVersion );
                     }
 
-                    File dotnetFile = PathUtil.getDotNetArtifact( assembly , localRepository );
+                    File dotnetFile = PathUtil.getDotNetArtifact( assembly , localRepository, outputDir );
                     
                     logger.warning( "NPANDAY-180-018: Not found in local repository, now retrieving artifact from wagon:"
                             + assembly.getId()
@@ -858,7 +784,7 @@ public final class ProjectDaoImpl
             // System.out.println( "Storing dependency: Artifact Id = " + model.getArtifactId() );
             Project projectModel = ProjectFactory.createProjectFrom( model, null );
             artifactDependencies.addAll( storeProjectAndResolveDependencies( projectModel, localRepository,
-                                                                             artifactRepositories, cache ) );
+                                                                             artifactRepositories, cache, outputDir ) );
         }
         logger.finest( "NPANDAY-180-022: ProjectDao.storeProjectAndResolveDependencies - Artifact Id = "
             + project.getArtifactId() + ", Time = " + ( System.currentTimeMillis() - startTime ) + ", Count = "
@@ -872,14 +798,6 @@ public final class ProjectDaoImpl
     private String getKey( Project project )
     {
         return project.getGroupId() + ":" + project.getArtifactId() + ":" + project.getVersion();
-    }
-
-    public Set<Artifact> storeModelAndResolveDependencies( Model model, File pomFileDirectory,
-                                                           File localArtifactRepository,
-                                                           List<ArtifactRepository> artifactRepositories )
-            throws IOException, ProjectDaoException {
-        return storeProjectAndResolveDependencies( ProjectFactory.createProjectFrom( model, pomFileDirectory ),
-                                                   localArtifactRepository, artifactRepositories );
     }
 
     public String getClassName()
@@ -1279,11 +1197,16 @@ public final class ProjectDaoImpl
     /**
      * Creates an artifact using information from the specified project dependency.
      *
+     *
+     *
      * @param projectDependency a project dependency to use as the source of the returned artifact
      * @param artifactFactory   artifact factory used to create the artifact
+     * @param localRepository
+     * @param outputDir
      * @return an artifact using information from the specified project dependency
      */
-    private static Artifact createArtifactFrom( ProjectDependency projectDependency, ArtifactFactory artifactFactory )
+    private static Artifact createArtifactFrom( ProjectDependency projectDependency, ArtifactFactory artifactFactory,
+                                                File localRepository, File outputDir )
     {
         String groupId = projectDependency.getGroupId();
         String artifactId = projectDependency.getArtifactId();
@@ -1331,8 +1254,8 @@ public final class ProjectDaoImpl
         }
         else
         {
-            artifactFile = PathUtil.getUserAssemblyCacheFileFor( assembly, new File( System.getProperty( "user.home" ),
-                                                                                      File.separator + ".m2" + File.separator + "repository") );
+            // looks in the local repository, and copies to the target directory
+            artifactFile = PathUtil.getPrivateApplicationBaseFileFor( assembly, localRepository, outputDir );
         }
 
         assembly.setFile( artifactFile );

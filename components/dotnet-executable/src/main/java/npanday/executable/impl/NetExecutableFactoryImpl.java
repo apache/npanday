@@ -90,6 +90,7 @@ public class NetExecutableFactoryImpl
                                                         File assemblyPath )
         throws PlatformUnsupportedException
     {
+        File targetDir = PathUtil.getPrivateApplicationBaseDirectory( project );
 
         VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
         vendorInfo.setVendorVersion( compilerRequirement.getVendorVersion() );
@@ -141,8 +142,9 @@ public class NetExecutableFactoryImpl
                 Artifact artifact = artifactContext.getArtifactByID( netDependencyId );
                 if ( artifact != null )
                 {
-                    File artifactPath =
-                        PathUtil.getPrivateApplicationBaseFileFor( artifact, compilerConfig.getLocalRepository() );
+                    File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact,
+                                                                                   compilerConfig.getLocalRepository(),
+                                                                                   targetDir );
                     executionPaths.add( artifactPath.getParentFile().getAbsolutePath() );
                 }
             }
@@ -161,19 +163,21 @@ public class NetExecutableFactoryImpl
     }
 
     /**
-     * @see NetExecutableFactory#getPluginLoaderFor(String,String,npanday.vendor.VendorInfo,String,java.io.File,String)
+     * @see NetExecutableFactory#getPluginLoaderFor(String, String, npanday.vendor.VendorInfo, String, java.io.File, String, java.io.File)
      */
     public NetExecutable getPluginLoaderFor( String groupId, String artifactId, VendorInfo vendorInfo,
-                                             String localRepository, File parameterFile, String mojoName )
+                                             String localRepository, File parameterFile, String mojoName,
+                                             File targetDir )
         throws PlatformUnsupportedException
     {
         Artifact artifact = getArtifactFor(groupId, artifactId);
-        return getPluginLoaderFor(artifact, vendorInfo, localRepository, parameterFile, mojoName);
+        return getPluginLoaderFor(artifact, vendorInfo, localRepository, parameterFile, mojoName, targetDir );
     }
 
-    public NetExecutable getPluginLoaderFor(Artifact artifact, VendorInfo vendorInfo, String localRepository, File parameterFile, String mojoName) throws PlatformUnsupportedException {
+    public NetExecutable getPluginLoaderFor( Artifact artifact, VendorInfo vendorInfo, String localRepository, File parameterFile, String mojoName,
+                                             File targetDir ) throws PlatformUnsupportedException {
         //AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-        File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, new File( localRepository ) );
+        File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, new File( localRepository ), targetDir );
 
         List<String> commands = new ArrayList<String>();
         commands.add( "parameterFile=" + parameterFile.getAbsolutePath() );
@@ -182,11 +186,11 @@ public class NetExecutableFactoryImpl
 
         Artifact pluginLoaderArtifact =
             artifactContext.getArtifactsFor( "org.apache.npanday.plugins", "NPanday.Plugin.Loader", null, null ).get( 0 );
-        artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ) );
+        artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ), targetDir );
         commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
 
         return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner", vendorInfo,
-                                               new File( localRepository ), commands, false );
+                                               new File( localRepository ), commands, false, targetDir );
     }
 
     public Artifact getArtifactFor(String groupId, String artifactId) throws PlatformUnsupportedException {
@@ -209,7 +213,7 @@ public class NetExecutableFactoryImpl
 
     public NetExecutable getNetExecutableFromRepository( String groupId, String artifactId, VendorInfo vendorInfo,
                                                          File localRepository, List<String> commands,
-                                                         boolean isIsolatedAppDomain )
+                                                         boolean isIsolatedAppDomain, File targetDir )
         throws PlatformUnsupportedException
     {
         if ( isIsolatedAppDomain )
@@ -229,16 +233,16 @@ public class NetExecutableFactoryImpl
                     groupId + ", ArtifactId = " + artifactId );
             }
 
-            File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository );
+            File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository, targetDir );
             commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
             //TODO: Replace
             String pluginArtifactPath = PathUtil.getPrivateApplicationBaseFileFor(
                 artifactContext.getArtifactsFor( "org.apache.npanday.plugins", "NPanday.Plugin", null, null ).get( 0 ),
-                localRepository ).getAbsolutePath();
+                localRepository, targetDir ).getAbsolutePath();
 
             commands.add( "pluginArtifactPath=" + pluginArtifactPath );
-            return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner", vendorInfo, localRepository,
-                                                   commands, false );
+            return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner", vendorInfo,
+                                                   localRepository, commands, false, targetDir );
         }
 
         if ( commands == null )
@@ -270,7 +274,7 @@ public class NetExecutableFactoryImpl
 
         logger.debug( "NPANDAY-066-003: Found Vendor: " + vendorInfo );
 
-        File artifactPath =  PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository );
+        File artifactPath =  PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository, targetDir );
         List<String> modifiedCommands = new ArrayList<String>();
         String exe = null;
         if ( vendorInfo.getVendor().equals( Vendor.MONO ) )

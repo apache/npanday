@@ -65,6 +65,7 @@ public interface NetExecutableFactory
     /**
      * Returns an executable that resides within a maven repository. These are typically user-implemented executables.
      *
+     *
      * @param groupId             the group ID of the executable artifact (as specified within the maven repo)
      * @param artifactId          the artifact ID of the executable artifact (as specified within the maven repo)
      * @param vendorInfo          the additional vendor information used to decide how to execute the net executable
@@ -73,12 +74,13 @@ public interface NetExecutableFactory
      *                            be set to true if the application needs to load up assemblies into another app domain
      *                            and to remotly invoke methods on classes in the other app domain, otherwise it should be
      *                            set to false.
+     * @param targetDir
      * @return the executable that resides within a maven repository.
      * @throws PlatformUnsupportedException if no executable is found
      */
     NetExecutable getNetExecutableFromRepository( String groupId, String artifactId, VendorInfo vendorInfo,
                                                   File localRepository, List<String> commands,
-                                                  boolean isIsolatedAppDomain )
+                                                  boolean isIsolatedAppDomain, File targetDir )
         throws PlatformUnsupportedException;
 
     /**
@@ -110,20 +112,23 @@ public interface NetExecutableFactory
     /**
      * Returns a plugin loader for loading and executing a .NET plugin.
      *
+     *
      * @param groupId         the group ID of the executable artifact (as specified within the maven repo)
      * @param artifactId      the artifact ID of the executable artifact (as specified within the maven repo)
      * @param vendorInfo      the additional vendor information used to decide how to execute the net executable
      * @param localRepository the local maven repository where the executable resides.
      * @param parameterFile   the file containing parameter information to inject into the .NET plugin
      * @param mojoName        the name of the .NET Mojo implementation
+     * @param targetDir
      * @return the plugin loader for executing a .NET plugin
      * @throws PlatformUnsupportedException if no executable is found
      */
     NetExecutable getPluginLoaderFor( String groupId, String artifactId, VendorInfo vendorInfo, String localRepository,
-                                      File parameterFile, String mojoName )
+                                      File parameterFile, String mojoName, File targetDir )
         throws PlatformUnsupportedException;
 
-    NetExecutable getPluginLoaderFor(Artifact artifact, VendorInfo vendorInfo, String localRepository, File parameterFile, String mojoName) throws PlatformUnsupportedException;
+    NetExecutable getPluginLoaderFor( Artifact artifact, VendorInfo vendorInfo, String localRepository, File parameterFile, String mojoName,
+                                      File targetDir ) throws PlatformUnsupportedException;
 
     Artifact getArtifactFor(String groupId, String artifactId) throws PlatformUnsupportedException;
 }
