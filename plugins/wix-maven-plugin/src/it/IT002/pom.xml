@@ -34,7 +34,7 @@ under the License.
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>wix-maven-plugin</artifactId>
-        <version>1.2-SNAPSHOT</version>
+        <version>@project.version@</version>
         <configuration>
           <objectFiles>
 	    <objectFile>Sample.wixobj</objectFile>
