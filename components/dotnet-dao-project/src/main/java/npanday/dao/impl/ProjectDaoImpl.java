@@ -699,12 +699,12 @@ public final class ProjectDaoImpl
 
                     File dotnetFile = PathUtil.getDotNetArtifact( assembly , localRepository, outputDir );
                     
-                    logger.warning( "NPANDAY-180-018: Not found in local repository, now retrieving artifact from wagon:"
-                            + assembly.getId()
-                            + ", Failed Path Check = " + dotnetFile.getAbsolutePath());
-
                     if ( !ArtifactTypeHelper.isDotnetExecutableConfig( type ) || !dotnetFile.exists() )// TODO: Generalize to any attached artifact
                     {
+                        logger.warning( "NPANDAY-180-018: Not found in local repository, now retrieving artifact from wagon:"
+                                + assembly.getId()
+                                + ", Failed Path Check = " + dotnetFile.getAbsolutePath());
+
                         try
                         {
                             artifactResolver.resolve( assembly, artifactRepositories,
