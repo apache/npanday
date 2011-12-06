@@ -32,6 +32,9 @@ namespace NPanday.ProjectImporter.ImporterTests
             {
                 Assert.Ignore("Test only runs on .NET 4.0, but is: " + this.GetType().Assembly.ImageRuntimeVersion);
             }
+
+            // Test uses System.Web.MVC
+            CheckWebMVC();
         }
 
         public override string SolutionFileRelativePath
