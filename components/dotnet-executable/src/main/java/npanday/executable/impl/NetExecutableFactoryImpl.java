@@ -185,6 +185,10 @@ public class NetExecutableFactoryImpl
         commands.add( "mojoName=" + mojoName );//ArtifactId = namespace
 
         // make sure plugin artifact is present to run with in the application base
+        // TODO: can we do this transitively from the loader or the plugin artifact? Hardcoding the transitive deps here
+        Artifact modelArtifact = artifactContext.getArtifactsFor( "org.apache.npanday", "NPanday.Model.Pom", null,
+                                                                   null ).get( 0 );
+        PathUtil.getPrivateApplicationBaseFileFor( modelArtifact, new File( localRepository ), targetDir );
         Artifact pluginArtifact = artifactContext.getArtifactsFor( "org.apache.npanday.plugins", "NPanday.Plugin", null,
                                                                    null ).get( 0 );
         PathUtil.getPrivateApplicationBaseFileFor( pluginArtifact, new File( localRepository ), targetDir );
