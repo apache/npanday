@@ -29,6 +29,11 @@ namespace NPanday.ProjectImporter.ImporterTests
     [TestFixture]
     public class MultipleFolderLevelTest : AbstractProjectImportTest
     {
+        public override void CheckFrameworkVersion()
+        {
+            CheckWebMVC();
+        }
+
         public override string SolutionFileRelativePath
         {
             get { return @"MultipleFolderLevelTest\MultipleFolderLevelExample.sln"; }

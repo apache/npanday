@@ -32,6 +32,10 @@ namespace NPanday.ProjectImporter.ImporterTests
     [TestFixture]
     public class WebSiteWithCSharpProjectFile : AbstractProjectImportTest
     {
+        public override void CheckFrameworkVersion()
+        {
+            CheckWebMVC();
+        }
 
         public override string SolutionFileRelativePath
         {

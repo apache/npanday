@@ -137,6 +137,17 @@ namespace NPanday.ProjectImporter.ImporterTests
             ProjectImporterAssertions.AssertHasNoOverlappingPomFiles(GeneratedPomFiles);
         }
 		
+        public override void CheckWebMVC()
+        {
+            // check MVC 2 installed
+            string name = "System.Web.MVC, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL";
+            Assembly a = Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(name).FullName);
+            if (a == null)
+            {
+                Assert.Ignore("Test only runs with MVC 2 installed");
+            }
+        }
+
 		[Test]
         public void CheckPomFileElementValues()
         {
