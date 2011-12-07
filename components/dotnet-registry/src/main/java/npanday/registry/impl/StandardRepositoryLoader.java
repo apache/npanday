@@ -34,23 +34,21 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
+import java.util.Set;
 
 /**
  * The default repository loader. This class can be extended
  *
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
- *
- * @plexus.component
- *   role="npanday.registry.RepositoryLoader"
+ * @plexus.component role="npanday.registry.RepositoryLoader"
  */
 public class StandardRepositoryLoader
     extends AbstractLogEnabled
     implements RepositoryLoader, Contextualizable
 {
-
     /**
      * Can't be provided as a component, because that would result in a circular reference.
      */
@@ -99,7 +97,7 @@ public class StandardRepositoryLoader
                     + props.toString() );
         }
 
-        final List<URL> sources = findSources( location, initParams );
+        final Set<URL> sources = findSources( location, initParams );
 
         Repository repository = initializeRepository( repositoryClass, props );
         loadFoundSources( location, repositoryClass, props, sources, repository );
@@ -107,10 +105,10 @@ public class StandardRepositoryLoader
         return repository;
     }
 
-    private List<URL> findSources( String location, Hashtable initParams )
+    private Set<URL> findSources( String location, Hashtable initParams )
         throws IOException
     {
-        final List<URL> sources = new ArrayList<URL>();
+        final Set<URL> sources = new HashSet<URL>();
 
         final File locationAsFile = new File( location );
         if ( locationAsFile.exists() )
@@ -122,21 +120,15 @@ public class StandardRepositoryLoader
         }
         else
         {
-            ClassLoader cloader = Thread.currentThread().getContextClassLoader();
-            final ArrayList<URL> threadClassPath = Collections.list( cloader.getResources( location ) );
-            sources.addAll( threadClassPath );
+            // The Class Loader used in Maven 3 doesn't find anything if we have a leading slash
+            String classPathLocation = ( location.startsWith( "/" ) ) ? location.substring( 1 ) : location;
 
-            getLogger().debug(
-                String.format( "NPANDAY-084-008: Searched thread classpath with '%s', found: [%s]", location,
-                               sources ) );
-
-            cloader = getClass().getClassLoader();
-            final ArrayList<URL> currentClassPath = Collections.list( cloader.getResources( location ) );
+            ClassLoader cloader = getClass().getClassLoader();
+            final ArrayList<URL> currentClassPath = Collections.list( cloader.getResources( classPathLocation ) );
             sources.addAll( currentClassPath );
 
-            getLogger().debug(
-                String.format( "NPANDAY-084-012: Searched dotnet-core classpath with '%s', found: [%s]", location,
-                               sources ) );
+            getLogger().debug( String.format( "NPANDAY-084-012: Searched dotnet-core classpath with '%s', found: [%s]",
+                                              classPathLocation, sources ) );
         }
 
         boolean optional = "true".equalsIgnoreCase( (String) initParams.get( "optional" ) );
@@ -159,7 +151,7 @@ public class StandardRepositoryLoader
             /*Class c = Class.forName( repositoryClass );
             repository = (Repository) c.newInstance(); */
 
-            repository = (Repository)container.lookup( repositoryClass );
+            repository = (Repository) container.lookup( repositoryClass );
 
             repository.setProperties( props );
         }
@@ -176,7 +168,7 @@ public class StandardRepositoryLoader
         return repository;
     }
 
-    private void loadFoundSources( String location, String repositoryClass, Hashtable props, List<URL> sources,
+    private void loadFoundSources( String location, String repositoryClass, Hashtable props, Set<URL> sources,
                                    Repository repository )
         throws NPandayRepositoryException
     {
@@ -215,7 +207,7 @@ public class StandardRepositoryLoader
     public void contextualize( Context context )
         throws ContextException
     {
-        this.container = (PlexusContainer)context.get ( PlexusConstants.PLEXUS_KEY);
+        this.container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
 }
 
