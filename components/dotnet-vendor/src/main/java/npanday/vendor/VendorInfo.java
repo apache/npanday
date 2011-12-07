@@ -18,6 +18,8 @@
  */
 package npanday.vendor;
 
+import npanday.vendor.impl.MutableVendorInfo;
+
 import java.io.File;
 import java.util.List;
 
@@ -28,60 +30,35 @@ import java.util.List;
  */
 public interface VendorInfo
 {
-
     /**
-     * Returns vendor
-     *
-     * @return vendor
+     * Returns the vendor, for example {@link Vendor#MONO} or {@link Vendor#MICROSOFT}
      */
     Vendor getVendor();
 
     /**
-     * @param vendor
-     */
-    void setVendor( Vendor vendor );
-
-    /**
-     * Returns vendor version.
+     * Returns vendor version, in order to define or determine which tools to use
+     * exactly. This is corresponding to 'tools version' in MSBuild or the CSharp compiler.
      *
-     * @return vendor version
+     * Note that you could use a newer vendor to target an older framework version.
      */
     String getVendorVersion();
 
     /**
-     * Sets vendor version
-     *
-     * @param vendorVersion the vendor version
-     */
-    void setVendorVersion( String vendorVersion );
-
-    /**
-     * Returns framework version of the executable
+     * Returns the framework version, which actually is the version of the .NET framework
+     * to compile against. This will also be the default CLR version, the compiled results
+     * would run on by default.
      *
      * @return the framework version of the executable
      */
     String getFrameworkVersion();
 
     /**
-     * Sets the framework version of the executable
-     *
-     * @param frameworkVersion
-     */
-    void setFrameworkVersion( String frameworkVersion );
-
-    /**
-     * Returns the path where the executable lives.
+     * Returns all paths where executable for the specified vendor and version are located. Given a particular
+     * exectuable, NPanday will scan the paths and find the first matching one.
      *
      * @return the path where the executable lives
      */
     List<File> getExecutablePaths();
-
-    /**
-     * Sets the path where the executable lives.
-     *
-     * @param executablePaths the path where the executable lives
-     */
-    void setExecutablePaths( List<File> executablePaths );
 
     /**
      * If the vendor information is the default (or preferred) value for a given vendor, returns true,
@@ -93,12 +70,9 @@ public interface VendorInfo
      */
     boolean isDefault();
 
-    /**
-     * Set to true if the vendor information is the default, otherwise set to false.
-     *
-     * @param isDefault
-     */
-    void setDefault( boolean isDefault );
+    File getSdkInstallRoot();
+
+    File getInstallRoot();
 
     /**
      * Provides factory services for creating a default instance of vendor info.
@@ -106,89 +80,14 @@ public interface VendorInfo
     public static class Factory
     {
         /**
-         * Default constructor
-         */
-        private Factory()
-        {
-        }
-
-        /**
-         * Creates a default implementation of vendor info.
+         * Creates a mutable implementation of vendor info.
          *
          * @return a default implementation of vendor info
          */
-        public static VendorInfo createDefaultVendorInfo()
+        public static MutableVendorInfo createDefaultVendorInfo()
         {
-            return new VendorInfo()
-            {
-                private Vendor vendor;
-
-                private String vendorVersion;
-
-                private String frameworkVersion;
-
-                private List<File> executablePaths;
-
-                private boolean isDefault;
-
-                public boolean isDefault()
-                {
-                    return isDefault;
-                }
-
-                public void setDefault( boolean aDefault )
-                {
-                    isDefault = aDefault;
-                }
-
-                public List<File> getExecutablePaths()
-                {
-                    return executablePaths;
-                }
-
-                public void setExecutablePaths( List<File> executablePaths )
-                {
-                    this.executablePaths = executablePaths;
-                }
-
-                public Vendor getVendor()
-                {
-                    return vendor;
-                }
-
-                public void setVendor( Vendor vendor )
-                {
-                    this.vendor = vendor;
-                }
-
-                public String getVendorVersion()
-                {
-                    return vendorVersion;
-                }
-
-                public void setVendorVersion( String vendorVersion )
-                {
-                    this.vendorVersion = vendorVersion;
-                }
-
-                public String getFrameworkVersion()
-                {
-                    return frameworkVersion;
-                }
-
-                public void setFrameworkVersion( String frameworkVersion )
-                {
-                    this.frameworkVersion = frameworkVersion;
-                }
-
-                public String toString()
-                {
-                    return "Vendor = " + vendor + ", Vendor Version = " + vendorVersion + ", Framework Version = " +
-                        frameworkVersion + ", Executable Paths = " +
-                        ( ( executablePaths != null ) ? executablePaths : "" );
-                }
-            };
+            return new MutableVendorInfo();
         }
     }
-
 }
+

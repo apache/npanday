@@ -18,54 +18,52 @@
  */
 package npanday.vendor;
 
-import npanday.PlatformUnsupportedException;
-
 /**
- * Exception thrown when the vendor is not recognized or is not valid for a specific platform or language.
+ * Exception thrown when the vendor is not recognized.
  * 
  * @author Shane Isbell
  */
-public class VendorUnsupportedException
-    extends PlatformUnsupportedException
+public class VendorUnknownException
+    extends RuntimeException
 {
 
     static final long serialVersionUID = -72946723034227L;
 
     /**
-     * Constructs an <code>VendorUnsupportedException</code>  with no exception message.
+     * Constructs an <code>VendorUnknownException</code>  with no exception message.
      */
-    public VendorUnsupportedException()
+    public VendorUnknownException()
     {
         super();
     }
 
     /**
-     * Constructs an <code>VendorUnsupportedException</code> with the specified exception message.
+     * Constructs an <code>VendorUnknownException</code> with the specified exception message.
      *
      * @param message the exception message
      */
-    public VendorUnsupportedException( String message )
+    public VendorUnknownException( String message )
     {
         super( message );
     }
 
     /**
-     * Constructs an <code>VendorUnsupportedException</code> with the specified exception message and cause of the exception.
+     * Constructs an <code>VendorUnknownException</code> with the specified exception message and cause of the exception.
      *
      * @param message the exception message
      * @param cause   the cause of the exception
      */
-    public VendorUnsupportedException( String message, Throwable cause )
+    public VendorUnknownException( String message, Throwable cause )
     {
         super( message, cause );
     }
 
     /**
-     * Constructs an <code>VendorUnsupportedException</code> with the cause of the exception.
+     * Constructs an <code>VendorUnknownException</code> with the cause of the exception.
      *
      * @param cause the cause of the exception
      */
-    public VendorUnsupportedException( Throwable cause )
+    public VendorUnknownException( Throwable cause )
     {
         super( cause );
     }

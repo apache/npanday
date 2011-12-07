@@ -19,7 +19,7 @@
 package npanday.vendor;
 
 /**
- * Provides a service for filling in (or processing) vendor information and transitioning its state. The
+ * Provides a service for filling in (or processing) vendor information requirements and transitioning its state. The
  * <code>StateMachineProcessor</code> is responsible for processing each transition rule within the framework.
  *
  * @author Shane Isbell
@@ -31,8 +31,8 @@ public interface VendorInfoTransitionRule
     /**
      * Fills in some or all of the specified vendor info object and returns the new state.
      *
-     * @param vendorInfo the vendor info to fill in
+     * @param vendorRequirement the vendor info to fill in
      * @return the new state of the vendor info parameter
      */
-    VendorInfoState process( VendorInfo vendorInfo );
+    VendorRequirementState process( VendorRequirement vendorRequirement );
 }

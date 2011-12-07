@@ -38,9 +38,9 @@ import npanday.registry.RepositoryRegistry;
 import npanday.vendor.IllegalStateException;
 import npanday.vendor.StateMachineProcessor;
 import npanday.vendor.Vendor;
-import npanday.vendor.VendorFactory;
 import npanday.vendor.VendorInfo;
 import npanday.vendor.VendorInfoRepository;
+import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -55,8 +55,7 @@ import java.util.List;
  *
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
- * @plexus.component
- *   role="npanday.executable.NetExecutableFactory"
+ * @plexus.component role="npanday.executable.NetExecutableFactory"
  */
 public class NetExecutableFactoryImpl
     extends AbstractLogEnabled
@@ -115,14 +114,9 @@ public class NetExecutableFactoryImpl
     {
 
         VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-        vendorInfo.setVendorVersion( compilerRequirement.getVendorVersion() );
-        vendorInfo.setFrameworkVersion( compilerRequirement.getFrameworkVersion() );
-        vendorInfo.setVendor( compilerRequirement.getVendor() );
         try
         {
-            getLogger().debug(
-                "NPANDAY-066-025 - Try to find executable for vendor:" + vendorInfo + ":processor:" + processor );
-            processor.process( vendorInfo );
+            vendorInfo = processor.process( compilerRequirement.toVendorRequirement() );
         }
         catch ( IllegalStateException e )
         {
@@ -135,6 +129,7 @@ public class NetExecutableFactoryImpl
         }
 
         getLogger().info( "NPANDAY-066-013: Found Vendor = " + vendorInfo );
+
         compilerRequirement.setVendor( vendorInfo.getVendor() );
         compilerRequirement.setVendorVersion( vendorInfo.getVendorVersion() );
         compilerRequirement.setFrameworkVersion( vendorInfo.getFrameworkVersion() );
@@ -187,17 +182,17 @@ public class NetExecutableFactoryImpl
     }
 
     /**
-     * @see NetExecutableFactory#getPluginLoaderFor(String, String, npanday.vendor.VendorInfo, String, java.io.File, String)
+     * @see NetExecutableFactory#getPluginLoaderFor(String, String, npanday.vendor.VendorRequirement, String, java.io.File, String)
      */
-    public NetExecutable getPluginLoaderFor( String groupId, String artifactId, VendorInfo vendorInfo,
+    public NetExecutable getPluginLoaderFor( String groupId, String artifactId, VendorRequirement vendorRequirement,
                                              String localRepository, File parameterFile, String mojoName )
         throws PlatformUnsupportedException
     {
         Artifact artifact = getArtifactFor( groupId, artifactId );
-        return getPluginLoaderFor( artifact, vendorInfo, localRepository, parameterFile, mojoName );
+        return getPluginLoaderFor( artifact, vendorRequirement, localRepository, parameterFile, mojoName );
     }
 
-    public NetExecutable getPluginLoaderFor( Artifact artifact, VendorInfo vendorInfo, String localRepository,
+    public NetExecutable getPluginLoaderFor( Artifact artifact, VendorRequirement vendorRequirement, String localRepository,
                                              File parameterFile, String mojoName )
         throws PlatformUnsupportedException
     {
@@ -215,7 +210,7 @@ public class NetExecutableFactoryImpl
         artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ) );
         commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
 
-        return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner", vendorInfo,
+        return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner", vendorRequirement,
                                                new File( localRepository ), commands, false );
     }
 
@@ -239,9 +234,9 @@ public class NetExecutableFactoryImpl
         return artifact;
     }
 
-    public NetExecutable getNetExecutableFromRepository( String groupId, String artifactId, VendorInfo vendorInfo,
-                                                         File localRepository, List<String> commands,
-                                                         boolean isIsolatedAppDomain )
+    public NetExecutable getNetExecutableFromRepository( String groupId, String artifactId,
+                                                         VendorRequirement vendorRequirement, File localRepository,
+                                                         List<String> commands, boolean isIsolatedAppDomain )
         throws PlatformUnsupportedException
     {
         if ( isIsolatedAppDomain )
@@ -270,8 +265,8 @@ public class NetExecutableFactoryImpl
                 localRepository ).getAbsolutePath();
 
             commands.add( "pluginArtifactPath=" + pluginArtifactPath );
-            return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner", vendorInfo,
-                                                   localRepository, commands, false );
+            return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner",
+                                                   vendorRequirement, localRepository, commands, false );
         }
 
         if ( commands == null )
@@ -279,13 +274,15 @@ public class NetExecutableFactoryImpl
             commands = new ArrayList<String>();
         }
 
+        VendorInfo vendorInfo;
         try
         {
-            processor.process( vendorInfo );
+            vendorInfo = processor.process( vendorRequirement );
         }
         catch ( IllegalStateException e )
         {
-            throw new PlatformUnsupportedException( "NPANDAY-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
+            throw new PlatformUnsupportedException(
+                "NPANDAY-066-010: Illegal State: Vendor Info = " + vendorRequirement, e );
         }
 
         if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null )
@@ -366,7 +363,7 @@ public class NetExecutableFactoryImpl
         }
     }
 
-    public NetExecutable getJavaExecutableFromRepository( VendorInfo vendorInfo, List<String> commands )
+    public NetExecutable getJavaExecutableFromRepository( VendorRequirement vendorRequirement, List<String> commands )
         throws PlatformUnsupportedException
     {
 
@@ -375,19 +372,15 @@ public class NetExecutableFactoryImpl
             commands = new ArrayList<String>();
         }
 
+        VendorInfo vendorInfo;
         try
         {
-            processor.process( vendorInfo );
+            vendorInfo = processor.process( vendorRequirement );
         }
         catch ( IllegalStateException e )
         {
-            throw new PlatformUnsupportedException( "NPANDAY-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
-        }
-
-        if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null
-            || vendorInfo.getVendorVersion() == null )
-        {
-            throw new PlatformUnsupportedException( "NPANDAY-066-018: Missing Vendor Information: " + vendorInfo );
+            throw new PlatformUnsupportedException(
+                "NPANDAY-066-010: Illegal State: Vendor Info = " + vendorRequirement, e );
         }
 
         ExecutableRequirement executableRequirement =
@@ -420,27 +413,17 @@ public class NetExecutableFactoryImpl
                                               List<String> commands, File netHome )
         throws PlatformUnsupportedException
     {
+        //TODO: why is the vendorVersion not of interest here?
+        final VendorRequirement vendorRequirement = new VendorRequirement( vendor, null, frameworkVersion );
 
-        VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-        vendorInfo.setVendorVersion( "" );
-        vendorInfo.setFrameworkVersion( frameworkVersion );
-        if ( vendor != null )
-        {
-            vendorInfo.setVendor( VendorFactory.createVendorFromName( vendor ) );
-        }
-
+        VendorInfo vendorInfo;
         try
         {
-            processor.process( vendorInfo );
+            vendorInfo = processor.process( vendorRequirement );
         }
         catch ( IllegalStateException e )
         {
-            throw new PlatformUnsupportedException( "NPANDAY-066-010: Illegal State: Vendor Info = " + vendorInfo, e );
-        }
-
-        if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null )
-        {
-            throw new PlatformUnsupportedException( "NPANDAY-066-019: Missing Vendor Information: " + vendorInfo );
+            throw new PlatformUnsupportedException( "NPANDAY-066-010: Illegal State: Vendor Info = " + vendorRequirement, e );
         }
 
         getLogger().debug( "NPANDAY-066-003: Found Vendor: " + vendorInfo );

@@ -19,19 +19,24 @@
 package npanday.vendor.impl;
 
 import junit.framework.TestCase;
-
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.File;
-
+import npanday.PlatformUnsupportedException;
 import npanday.model.settings.DefaultSetup;
 import npanday.model.settings.Framework;
 import npanday.model.settings.Vendor;
+import npanday.registry.NPandayRepositoryException;
+import npanday.vendor.SettingsRepository;
+import npanday.vendor.VendorRequirement;
 import npanday.vendor.VendorTestFactory;
-import npanday.PlatformUnsupportedException;
 
-public class SettingsRepositoryTest
+import javax.naming.OperationNotSupportedException;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+
+public class VendorInfoRepositoryTest
     extends TestCase
 {
     public void testGetInstallRoot()
@@ -55,7 +60,13 @@ public class SettingsRepositoryTest
         SettingsRepository settingsRepository = Factory.createSettingsRepository( vendors, defaultSetup );
         try
         {
-            File installRoot = settingsRepository.getInstallRootFor(  "MICROSOFT", "2.0.50727", "2.0.50727");
+            VendorInfoRepositoryImpl repo = new VendorInfoRepositoryImpl();
+            RepositoryRegistryTestStub registry = new RepositoryRegistryTestStub();
+            registry.setSettingRepository( settingsRepository );
+            repo.setRepositoryRegistry( registry );
+
+            File installRoot = repo.getSingleVendorInfoByRequirement(
+                new VendorRequirement( npanday.vendor.Vendor.MICROSOFT, "2.0.50727",  "2.0.50727")).getInstallRoot();
             assertEquals( new File(System.getenv("SystemRoot") + "\\Microsoft.NET\\Framework\\v2.0.50727"), installRoot );
         }
         catch ( PlatformUnsupportedException e )
@@ -66,28 +77,53 @@ public class SettingsRepositoryTest
 
     private static class Factory
     {
-        static SettingsRepository createSettingsRepository( List<Vendor> vendors, DefaultSetup defaultSetup )
+        static SettingsRepository createSettingsRepository( final List<Vendor> vendors, final DefaultSetup defaultSetup )
         {
-            SettingsRepository settingsRepository = new SettingsRepository();
-            try
-            {
-                Field defaultSetupField = settingsRepository.getClass().getDeclaredField( "defaultSetup" );
-                defaultSetupField.setAccessible( true );
-                defaultSetupField.set( settingsRepository, defaultSetup );
+            return new SettingsRepository(){
 
-                Field vendorsField = settingsRepository.getClass().getDeclaredField( "vendors" );
-                vendorsField.setAccessible( true );
-                vendorsField.set( settingsRepository, vendors );
-            }
-            catch ( NoSuchFieldException e )
-            {
-                e.printStackTrace();
-            }
-            catch ( IllegalAccessException e )
-            {
-                e.printStackTrace();
-            }
-            return settingsRepository;
+                public List<Vendor> getVendors()
+                {
+                    return vendors;
+                }
+
+                public DefaultSetup getDefaultSetup()
+                {
+                    return defaultSetup;
+                }
+
+                public boolean isEmpty()
+                {
+                    return false;
+                }
+
+                public int getContentVersion()
+                {
+                    return 0;
+                }
+
+                public void load( URL source )
+                    throws NPandayRepositoryException
+                {
+
+                }
+
+                public void clearAll()
+                    throws OperationNotSupportedException
+                {
+
+                }
+
+                public void reloadAll()
+                    throws IOException, NPandayRepositoryException, OperationNotSupportedException
+                {
+
+                }
+
+                public void setProperties( Hashtable props )
+                {
+
+                }
+            };
         }
     }
 }

@@ -19,14 +19,14 @@
 package npanday.plugin.compile;
 
 import npanday.ArtifactTypeHelper;
+import npanday.PlatformUnsupportedException;
 import npanday.assembler.AssemblerContext;
 import npanday.assembler.AssemblyInfo;
 import npanday.assembler.AssemblyInfoException;
 import npanday.assembler.AssemblyInfoMarshaller;
 import npanday.vendor.Vendor;
-import npanday.vendor.VendorFactory;
 import npanday.vendor.VendorInfo;
-import npanday.vendor.VendorUnsupportedException;
+import npanday.vendor.VendorRequirement;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -165,32 +165,24 @@ public class AssemblyInfoGeneratorMojo
         //TODO: Investigate the affect of not setting isDefault and profile. In the case of executables, this is
         //managed by the framework. I intended to keep vendor info and state machine processor out of the
         // Mojos. Unable to do so for this case. Look at new API.
-        VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-        try
-        {
-            vendorInfo.setFrameworkVersion( frameworkVersion );
-            if ( vendor != null )
-            {
-                vendorInfo.setVendor( VendorFactory.createVendorFromName( vendor ) );
-            }
-            vendorInfo.setVendorVersion( vendorVersion );
-        }
-        catch ( VendorUnsupportedException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-902-007: Vendor not supported: Vendor = " + vendor, e);
-        }
-
+        VendorRequirement vendorRequirement = new VendorRequirement(vendor, vendorVersion,  frameworkVersion);
         AssemblyInfo assemblyInfo = assemblerContext.getAssemblyInfo();
         assemblyInfo.setCustomStringAttributes(this.assemblyInfo);
 
+        VendorInfo vendorInfo;
         try
         {
-            stateMachineProcessor.process( vendorInfo );
+            vendorInfo = stateMachineProcessor.process( vendorRequirement );
         }
         catch ( npanday.vendor.IllegalStateException e )
         {
             throw new MojoExecutionException(
                 "NPANDAY-902-008: Illegal state of vendor info: Message =  " + e.getMessage(), e);
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+           throw new MojoExecutionException(
+                "NPANDAY-902-009: Platform is unsupported: Message =  " + e.getMessage(), e);
         }
 
         if ( vendorInfo.getVendor().equals( Vendor.MICROSOFT ) && vendorInfo.getVendorVersion().equals( "1.1.4322" ) )

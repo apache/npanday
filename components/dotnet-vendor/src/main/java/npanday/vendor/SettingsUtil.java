@@ -22,7 +22,7 @@ package npanday.vendor;
 import npanday.PathUtil;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
-import npanday.vendor.impl.SettingsRepository;
+import npanday.vendor.SettingsRepository;
 import org.codehaus.plexus.util.StringUtils;
 
 import javax.naming.OperationNotSupportedException;

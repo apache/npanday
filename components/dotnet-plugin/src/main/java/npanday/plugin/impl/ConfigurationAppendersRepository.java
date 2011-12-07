@@ -36,6 +36,7 @@ import java.util.Set;
 /**
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ *
  * @plexus.component
  *   role="npanday.plugin.impl.ConfigurationAppendersRepository"
  */
@@ -68,7 +69,7 @@ public class ConfigurationAppendersRepository
             }
             catch ( ClassNotFoundException e )
             {
-                throw new NPandayRepositoryException("NPANDAY-xxx-000: Could not load class appender: Name = " + appender.getName(), e );
+                throw new NPandayRepositoryException("NPANDAY-115-000: Could not load class appender: Name = " + appender.getName(), e );
             }
         }
     }

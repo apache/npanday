@@ -18,17 +18,16 @@
  */
 package npanday.executable;
 
-import org.apache.maven.project.MavenProject;
-
-import java.util.List;
-import java.io.File;
-
-import npanday.vendor.VendorInfo;
-import npanday.executable.compiler.CompilerRequirement;
+import npanday.PlatformUnsupportedException;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
-import npanday.PlatformUnsupportedException;
+import npanday.executable.compiler.CompilerRequirement;
+import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.project.MavenProject;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * Provides services to obtain executables. This interface is intended to be used by <code>AbstractMojo</code>
@@ -65,30 +64,31 @@ public interface NetExecutableFactory
     /**
      * Returns an executable that resides within a maven repository. These are typically user-implemented executables.
      *
+     *
      * @param groupId             the group ID of the executable artifact (as specified within the maven repo)
      * @param artifactId          the artifact ID of the executable artifact (as specified within the maven repo)
-     * @param vendorInfo          the additional vendor information used to decide how to execute the net executable
-     * @param localRepository     the local maven repository where the executable resides.
+     * @param vendorRequirement
+     *@param localRepository     the local maven repository where the executable resides.
      * @param isIsolatedAppDomain the executable can load up assemblies into an isolated application domain. This should
-     *                            be set to true if the application needs to load up assemblies into another app domain
-     *                            and to remotly invoke methods on classes in the other app domain, otherwise it should be
-     *                            set to false.
-     * @return the executable that resides within a maven repository.
+ *                            be set to true if the application needs to load up assemblies into another app domain
+ *                            and to remotly invoke methods on classes in the other app domain, otherwise it should be
+ *                            set to false.   @return the executable that resides within a maven repository.
      * @throws PlatformUnsupportedException if no executable is found
      */
-    NetExecutable getNetExecutableFromRepository( String groupId, String artifactId, VendorInfo vendorInfo,
+    NetExecutable getNetExecutableFromRepository( String groupId, String artifactId, VendorRequirement vendorRequirement,
                                                   File localRepository, List<String> commands,
                                                   boolean isIsolatedAppDomain )
         throws PlatformUnsupportedException;
 
     /**
      * 
+     *
      * @param vendorInfo
      * @param commands
      * @return
      * @throws PlatformUnsupportedException
      */
-    NetExecutable getJavaExecutableFromRepository( VendorInfo vendorInfo, List<String> commands )
+    NetExecutable getJavaExecutableFromRepository( VendorRequirement vendorInfo, List<String> commands )
         throws PlatformUnsupportedException;
 
     /**
@@ -110,20 +110,20 @@ public interface NetExecutableFactory
     /**
      * Returns a plugin loader for loading and executing a .NET plugin.
      *
+     *
      * @param groupId         the group ID of the executable artifact (as specified within the maven repo)
      * @param artifactId      the artifact ID of the executable artifact (as specified within the maven repo)
-     * @param vendorInfo      the additional vendor information used to decide how to execute the net executable
-     * @param localRepository the local maven repository where the executable resides.
+     * @param vendorRequirement
+     *@param localRepository the local maven repository where the executable resides.
      * @param parameterFile   the file containing parameter information to inject into the .NET plugin
-     * @param mojoName        the name of the .NET Mojo implementation
-     * @return the plugin loader for executing a .NET plugin
+     * @param mojoName        the name of the .NET Mojo implementation    @return the plugin loader for executing a .NET plugin
      * @throws PlatformUnsupportedException if no executable is found
      */
-    NetExecutable getPluginLoaderFor( String groupId, String artifactId, VendorInfo vendorInfo, String localRepository,
+    NetExecutable getPluginLoaderFor( String groupId, String artifactId, VendorRequirement vendorRequirement, String localRepository,
                                       File parameterFile, String mojoName )
         throws PlatformUnsupportedException;
 
-    NetExecutable getPluginLoaderFor(Artifact artifact, VendorInfo vendorInfo, String localRepository, File parameterFile, String mojoName) throws PlatformUnsupportedException;
+    NetExecutable getPluginLoaderFor(Artifact artifact, VendorRequirement vendorRequirement, String localRepository, File parameterFile, String mojoName) throws PlatformUnsupportedException;
 
     Artifact getArtifactFor(String groupId, String artifactId) throws PlatformUnsupportedException;
 }

@@ -25,7 +25,7 @@ import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.SettingsException;
 import npanday.vendor.SettingsUtil;
-import npanday.vendor.impl.SettingsRepository;
+import npanday.vendor.SettingsRepository;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -35,6 +35,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.naming.OperationNotSupportedException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -271,8 +272,10 @@ public class SettingsGeneratorMojo
     public void postExecute()
         throws MojoExecutionException, MojoFailureException
     {
+        // TODO: proper error handling
         try
         {
+            // TODO: let the registry be injected as @component
             RepositoryRegistry repositoryRegistry = (RepositoryRegistry) container.lookup( RepositoryRegistry.ROLE );
             SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
             if ( settingsRepository != null )
@@ -289,6 +292,10 @@ public class SettingsGeneratorMojo
             e.printStackTrace();
         }
         catch( NPandayRepositoryException e )
+        {
+            e.printStackTrace();
+        }
+        catch ( OperationNotSupportedException e )
         {
             e.printStackTrace();
         }

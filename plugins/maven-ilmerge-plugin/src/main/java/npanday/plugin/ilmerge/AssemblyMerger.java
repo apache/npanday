@@ -467,21 +467,8 @@ public class AssemblyMerger extends AbstractMojo
         compilerRequirement.setFrameworkVersion( frameworkVersion );
         compilerRequirement.setProfile( profile );
         compilerRequirement.setVendorVersion( vendorVersion );
-        try
-        {
-            if ( vendor != null )
-            {
-                compilerRequirement.setVendor( VendorFactory.createVendorFromName( vendor ) );
-            }
-        }
-        catch ( PlatformUnsupportedException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-900-001: Unknown Vendor: Vendor = " + vendor, e );
-        }
-
+        compilerRequirement.setVendor( vendor );
         return compilerRequirement;
-
-
     }
 
     protected CompilerConfig getCompilerConfig()  throws MojoExecutionException

@@ -60,15 +60,6 @@ public class RepositoryRegistryImpl
 
     public RepositoryRegistryImpl(){
         instance = instanceCounter++;
-
-        try{
-            throw new RuntimeException("Stacktrace");
-        }
-        catch(RuntimeException ex)
-        {
-            System.out.println("NPANDAY-082-010: Instantiating RepositoryRegistry #" + instance);
-            ex.printStackTrace();
-        }
     }
 
     /**
@@ -77,14 +68,7 @@ public class RepositoryRegistryImpl
     public void initialize()
         throws InitializationException
     {
-
-        try{
-            throw new RuntimeException("Stacktrace");
-        }
-        catch(RuntimeException ex)
-        {
-            getLogger().debug( "NPANDAY-082-011: Initializing RepositoryRegistry #" + instance, ex );
-        }
+        getLogger().debug( "NPANDAY-082-011: Initializing RepositoryRegistry #" + instance );
 
         try
         {

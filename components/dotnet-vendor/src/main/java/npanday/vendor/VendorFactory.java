@@ -55,11 +55,11 @@ public final class VendorFactory
      *
      * @param vendorName the name of a vendor
      * @return a vendor instance for the given vendor name: MICROSOFT, DotGNU, MONO
-     * @throws VendorUnsupportedException if the vendor is not known
+     * @throws VendorUnknownException if the vendor is not known
      * @throws NullPointerException if the vendor name parameter is null
      */
     public static synchronized Vendor createVendorFromName( String vendorName )
-        throws VendorUnsupportedException
+        throws VendorUnknownException
     {
         if ( vendorName.toLowerCase().trim().equals( "microsoft" ) )
         {
@@ -75,7 +75,7 @@ public final class VendorFactory
         }
         else
         {
-            throw new VendorUnsupportedException( "NPANDAY-100-000: Unknown vendor: Name = " + vendorName );
+            throw new VendorUnknownException( "NPANDAY-100-000: Unknown vendor: Name = " + vendorName );
         }
     }
 }

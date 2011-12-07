@@ -24,12 +24,12 @@ import npanday.PlatformUnsupportedException;
 import npanday.model.settings.Framework;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.InvalidVersionFormatException;
+import npanday.vendor.SettingsRepository;
 import npanday.vendor.Vendor;
-import npanday.vendor.VendorFactory;
 import npanday.vendor.VendorInfo;
 import npanday.vendor.VendorInfoMatchPolicy;
 import npanday.vendor.VendorInfoRepository;
-import npanday.vendor.VendorUnsupportedException;
+import npanday.vendor.VendorRequirement;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 
@@ -85,14 +85,6 @@ public class VendorInfoRepositoryImpl
         this.logger = logger;
     }
 
-    /**
-     * @see npanday.vendor.VendorInfoRepository#exists()
-     */
-    public boolean exists()
-    {
-        return ( repositoryRegistry.find( "npanday-settings" ) != null );
-    }
-
     public void clearCache()
     {
         if ( cachedVendorInfos != null )
@@ -102,34 +94,17 @@ public class VendorInfoRepositoryImpl
         }
     }
 
-    private File getInstallRootFor( VendorInfo vendorInfo )
+    public VendorInfo getSingleVendorInfoByRequirement( VendorRequirement vendorRequirement )
         throws PlatformUnsupportedException
     {
-        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-        return settingsRepository.getInstallRootFor( vendorInfo.getVendor().getVendorName(),
-                                                     vendorInfo.getVendorVersion(), vendorInfo.getFrameworkVersion() );
-    }
-
-    private File getSdkInstallRootFor( VendorInfo vendorInfo )
-        throws PlatformUnsupportedException
-    {
-        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-        return settingsRepository.getSdkInstallRootFor( vendorInfo.getVendor().getVendorName(),
-                                                        vendorInfo.getVendorVersion(),
-                                                        vendorInfo.getFrameworkVersion() );
-    }
-
-    public VendorInfo getConfiguredVendorInfoByExample(VendorInfo vendorInfoExample)
-        throws PlatformUnsupportedException
-    {
-        List<VendorInfo> infos = getVendorInfosFor(vendorInfoExample, false);
+        List<VendorInfo> infos = getVendorInfosFor( vendorRequirement, false);
         if (infos.size() == 0) {
-           throw new PlatformUnsupportedException( "NPANDAY-113-001: Could not find configuration for " + vendorInfoExample );
+           throw new PlatformUnsupportedException( "NPANDAY-113-001: Could not find configuration for " + vendorRequirement );
         }
 
         if (infos.size() > 2) {
             // reloadAll default
-            infos = getVendorInfosFor(vendorInfoExample, true);
+            infos = getVendorInfosFor( vendorRequirement, true);
         }
 
         assert infos.size() == 1;
@@ -170,39 +145,7 @@ public class VendorInfoRepositoryImpl
             List<Framework> frameworks = v.getFrameworks();
             for ( Framework framework : frameworks )
             {
-                VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-                vendorInfo.setVendorVersion( v.getVendorVersion() );
-                List<File> executablePaths = new ArrayList<File>();
-
-                // add .NET install root as path
-                executablePaths.add(new File( framework.getInstallRoot() ));
-
-                // add .NET-SDK install root as path
-                if(framework.getSdkInstallRoot() != null)
-                {
-                    executablePaths.add( new File(framework.getSdkInstallRoot()));
-                }
-
-                // copy configured additional execution paths
-                if (framework.getExecutablePaths() != null) {
-                    for(Object path: framework.getExecutablePaths()) {
-                        executablePaths.add( new File((String)path) );
-                    }
-                }
-                vendorInfo.setExecutablePaths( executablePaths );
-                vendorInfo.setFrameworkVersion( framework.getFrameworkVersion() );
-                try
-                {
-                    vendorInfo.setVendor( VendorFactory.createVendorFromName( v.getVendorName() ) );
-                }
-                catch ( VendorUnsupportedException e )
-                {
-                    continue;
-                }
-                vendorInfo.setDefault(
-                    v.getIsDefault() != null && v.getIsDefault().toLowerCase().trim().equals( "true" ) );
-
-                cachedVendorInfos.add( vendorInfo );
+                cachedVendorInfos.add( new SettingsBasedVendorInfo( v, framework ) );
             }
         }
     }
@@ -254,16 +197,16 @@ public class VendorInfoRepositoryImpl
     }
 
     /**
-     * @see VendorInfoRepository#getVendorInfosFor(npanday.vendor.VendorInfo, boolean)
+     * @see VendorInfoRepository#getVendorInfosFor(npanday.vendor.VendorRequirement, boolean)
      */
-    public List<VendorInfo> getVendorInfosFor( VendorInfo vendorInfo, boolean defaultOnly )
+    public List<VendorInfo> getVendorInfosFor( VendorRequirement vendorRequirement, boolean defaultOnly )
     {
-        if ( vendorInfo == null )
+        if ( vendorRequirement == null )
         {
             return getVendorInfos();
         }
-        return getVendorInfosFor( ( vendorInfo.getVendor() != null ? vendorInfo.getVendor().getVendorName() : null ),
-                                  vendorInfo.getVendorVersion(), vendorInfo.getFrameworkVersion(), defaultOnly );
+        return getVendorInfosFor( ( vendorRequirement.getVendor() != null ? vendorRequirement.getVendor().getVendorName() : null ),
+                                  vendorRequirement.getVendorVersion(), vendorRequirement.getFrameworkVersion(), defaultOnly );
     }
 
     /**
@@ -304,7 +247,7 @@ public class VendorInfoRepositoryImpl
                 // http://discuss.joelonsoftware.com/default.asp?dotnet.12.383883.5
                 return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
             }
-            else if ( vendor.equals( Vendor.MONO ) && exists() )
+            else if ( vendor.equals( Vendor.MONO ) && !isEmpty() )
             {
                 List<VendorInfo> vendorInfos =
                     getVendorInfosFor( vendor.getVendorName(), null, frameworkVersion, true );
@@ -327,7 +270,7 @@ public class VendorInfoRepositoryImpl
                 {
                     if ( vendorInfo.getVendorVersion().equals( maxVersion ) )
                     {
-                        File sdkInstallRoot = getSdkInstallRootFor( vendorInfo );
+                        File sdkInstallRoot = vendorInfo.getSdkInstallRoot();
                         File gacRoot = new File( sdkInstallRoot.getParentFile().getAbsolutePath() + "/lib/mono/gac" );
                         if ( !gacRoot.exists() )
                         {
@@ -372,4 +315,15 @@ public class VendorInfoRepositoryImpl
         }
         throw new PlatformUnsupportedException("NPANDAY-113-006: Could not locate a valid GAC");
     }
+
+    public boolean isEmpty()
+    {
+        return getVendorInfos().size() == 0;
+    }
+
+    public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
+    {
+        this.repositoryRegistry = repositoryRegistry;
+    }
 }
+

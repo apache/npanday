@@ -20,6 +20,10 @@ package npanday.executable.compiler;
 
 import npanday.vendor.Vendor;
 import npanday.executable.ExecutableRequirement;
+import npanday.vendor.VendorFactory;
+import npanday.vendor.VendorRequirement;
+
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
  * Requirements that the compiler plugin must satisfy to be used in the build.
@@ -71,6 +75,14 @@ public interface CompilerRequirement
                     return vendorVersion;
                 }
 
+                /**
+                 * Copies the relevant properties to a new VendorRequirement
+                 */
+                public VendorRequirement toVendorRequirement()
+                {
+                    return new VendorRequirement( vendor, vendorVersion, frameworkVersion );
+                }
+
                 public void setVendorVersion( String vendorVersion )
                 {
                     this.vendorVersion = vendorVersion;
@@ -106,6 +118,14 @@ public interface CompilerRequirement
                     this.vendor = vendor;
                 }
 
+                public void setVendor( String vendorName )
+                {
+                    if ( !isNullOrEmpty( vendorName ) )
+                    {
+                        setVendor( VendorFactory.createVendorFromName( vendorName ) );
+                    }
+                }
+
                 public String getProfile()
                 {
                     return profile;
@@ -115,6 +135,8 @@ public interface CompilerRequirement
                 {
                     this.profile = profile;
                 }
+
+
             };
 
         }

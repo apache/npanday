@@ -19,6 +19,8 @@
 package npanday.executable;
 
 import npanday.vendor.Vendor;
+import npanday.vendor.VendorFactory;
+import npanday.vendor.VendorRequirement;
 
 /**
  * Requirements that the executable plugin must satisfy to be used in the build.
@@ -71,9 +73,19 @@ public interface ExecutableRequirement
      */
     void setVendor( Vendor vendor );
 
+    /**
+     * Sets the vendor through its name.
+     */
+    void setVendor( String vendorName );
+
     void setVendorVersion( String vendorVersion );
 
     String getVendorVersion();
+
+    /**
+     * Copies the relevant properties to a new VendorRequirement
+     */
+    VendorRequirement toVendorRequirement();
 
     /**
      * Provides factory services for creating a default instance of the executable requirement.
@@ -110,6 +122,12 @@ public interface ExecutableRequirement
                     return vendorVersion;
                 }
 
+                public VendorRequirement toVendorRequirement()
+                {
+                    return new VendorRequirement(vendor, vendorVersion, frameworkVersion);
+
+                }
+
                 public void setVendorVersion( String vendorVersion )
                 {
                     this.vendorVersion = vendorVersion;
@@ -133,6 +151,11 @@ public interface ExecutableRequirement
                 public void setVendor( Vendor vendor )
                 {
                     this.vendor = vendor;
+                }
+
+                public void setVendor( String vendorName )
+                {
+                    setVendor( VendorFactory.createVendorFromName( vendorName ) );
                 }
 
                 public String getProfile()

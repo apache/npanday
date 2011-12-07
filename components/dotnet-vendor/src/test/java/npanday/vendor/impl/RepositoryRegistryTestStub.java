@@ -18,8 +18,10 @@
  */
 package npanday.vendor.impl;
 
-import npanday.registry.*;
-
+import npanday.registry.NPandayRepositoryException;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,14 +35,6 @@ final class RepositoryRegistryTestStub
     public boolean isEmpty()
     {
         return false;
-    }
-
-    public synchronized void setRepositoryLoader( RepositoryLoader loader )
-    {
-    }
-
-    public synchronized void setRegistryLoader( RegistryLoader loader )
-    {
     }
 
     public synchronized void loadFromInputStream( InputStream inputStream )

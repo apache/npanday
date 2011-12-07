@@ -19,18 +19,15 @@
 
 package npanday.plugin.compile;
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.FileUtils;
-import npanday.PlatformUnsupportedException;
 import npanday.ArtifactType;
-import npanday.executable.ExecutionException;
+import npanday.executable.compiler.CompilerConfig;
+import npanday.executable.compiler.CompilerRequirement;
+import npanday.executable.compiler.KeyInfo;
 import npanday.vendor.VendorFactory;
-import npanday.executable.compiler.*;
+import org.apache.maven.plugin.MojoExecutionException;
 
-import java.util.ArrayList;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Compiles test classes.
@@ -100,18 +97,10 @@ public final class TestCompilerMojo
         compilerRequirement.setFrameworkVersion( testFrameworkVersion );
         compilerRequirement.setProfile( "FULL" );
         compilerRequirement.setVendorVersion( testVendorVersion );
-        try
+        if ( vendor != null )
         {
-            if ( vendor != null )
-            {
-                compilerRequirement.setVendor( VendorFactory.createVendorFromName( vendor ) );
-            }
+            compilerRequirement.setVendor( VendorFactory.createVendorFromName( vendor ) );
         }
-        catch ( PlatformUnsupportedException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-900-000: Unknown Vendor: Vendor = " + vendor, e );
-        }
-
 
         return compilerRequirement;
 

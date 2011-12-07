@@ -83,7 +83,7 @@ public class MatchPolicyFactoryTest
     public void testCreateIsDefaultPolicy_False()
     {
         VendorInfoMatchPolicy matchPolicy = matchPolicyFactory.createVendorIsDefaultPolicy();
-        VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
+        MutableVendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
         vendorInfo.setDefault( false );
         assertFalse( matchPolicy.match( vendorInfo ) );
     }
@@ -91,7 +91,7 @@ public class MatchPolicyFactoryTest
     public void testCreateIsDefaultPolicy_True()
     {
         VendorInfoMatchPolicy matchPolicy = matchPolicyFactory.createVendorIsDefaultPolicy();
-        VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
+        MutableVendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
         vendorInfo.setDefault( true );
         assertTrue( matchPolicy.match( vendorInfo ) );
     }

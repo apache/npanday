@@ -23,7 +23,7 @@ package npanday.vendor;
  *
  * @author Shane Isbell
  */
-public enum VendorInfoState
+public enum VendorRequirementState
 {
     /**
      * State of VendorInfo object: Vendor is Microsoft, vendor version exists, framework version exists
@@ -118,41 +118,26 @@ public enum VendorInfoState
     /**
      * Null state of VendorInfo object
      */
-    NULL,
-
-    /**
-     * Post processing state
-     */
-    POST_PROCESS;
+    NULL;
 
     /**
      * Returns the completion state of the specified vendor info
      *
-     * @param vendorInfo the vendor info to determine the state of completion
+     * @param vendorRequirement the vendor info to determine the state of completion
      * @return the state of the specified vendor info
      */
-    public VendorInfoState getState( VendorInfo vendorInfo )
+    public VendorRequirementState getState( VendorRequirement vendorRequirement )
     {
-        if ( vendorInfo == null )
+        if ( vendorRequirement == null )
         {
             return NULL;
         }
 
-        if ( vendorInfo.getVendorVersion() != null && vendorInfo.getVendorVersion().trim().equals( "" ) )
+        if ( vendorRequirement.getVendor() == null )
         {
-            vendorInfo.setVendorVersion( null );
-        }
-
-        if ( vendorInfo.getFrameworkVersion() != null && vendorInfo.getFrameworkVersion().trim().equals( "" ) )
-        {
-            vendorInfo.setFrameworkVersion( null );
-        }
-
-        if ( vendorInfo.getVendor() == null )
-        {
-            if ( vendorInfo.getVendorVersion() == null )
+            if ( vendorRequirement.getVendorVersion() == null )
             {
-                if ( vendorInfo.getFrameworkVersion() == null )
+                if ( vendorRequirement.getFrameworkVersion() == null )
                 {
                     return FFF;
                 }
@@ -163,7 +148,7 @@ public enum VendorInfoState
             }
             else
             {
-                if ( vendorInfo.getFrameworkVersion() == null )
+                if ( vendorRequirement.getFrameworkVersion() == null )
                 {
                     return FTF;
                 }
@@ -173,11 +158,11 @@ public enum VendorInfoState
                 }
             }
         }
-        else if ( vendorInfo.getVendor().equals( Vendor.MICROSOFT ) )
+        else if ( vendorRequirement.getVendor().equals( Vendor.MICROSOFT ) )
         {
-            if ( vendorInfo.getVendorVersion() == null )
+            if ( vendorRequirement.getVendorVersion() == null )
             {
-                if ( vendorInfo.getFrameworkVersion() == null )
+                if ( vendorRequirement.getFrameworkVersion() == null )
                 {
                     return MFF;
                 }
@@ -188,7 +173,7 @@ public enum VendorInfoState
             }
             else
             {
-                if ( vendorInfo.getFrameworkVersion() == null )
+                if ( vendorRequirement.getFrameworkVersion() == null )
                 {
                     return MTF;
                 }
@@ -198,11 +183,11 @@ public enum VendorInfoState
                 }
             }
         }
-        else if ( vendorInfo.getVendor().equals( Vendor.MONO ) )
+        else if ( vendorRequirement.getVendor().equals( Vendor.MONO ) )
         {
-            if ( vendorInfo.getVendorVersion() == null )
+            if ( vendorRequirement.getVendorVersion() == null )
             {
-                if ( vendorInfo.getFrameworkVersion() == null )
+                if ( vendorRequirement.getFrameworkVersion() == null )
                 {
                     return NFF;
                 }
@@ -213,7 +198,7 @@ public enum VendorInfoState
             }
             else
             {
-                if ( vendorInfo.getFrameworkVersion() == null )
+                if ( vendorRequirement.getFrameworkVersion() == null )
                 {
                     return NTF;
                 }
@@ -223,11 +208,11 @@ public enum VendorInfoState
                 }
             }
         }
-        else if ( vendorInfo.getVendor().equals( Vendor.DOTGNU ) )
+        else if ( vendorRequirement.getVendor().equals( Vendor.DOTGNU ) )
         {
-            if ( vendorInfo.getVendorVersion() == null )
+            if ( vendorRequirement.getVendorVersion() == null )
             {
-                if ( vendorInfo.getFrameworkVersion() == null )
+                if ( vendorRequirement.getFrameworkVersion() == null )
                 {
                     return GFF;
                 }
@@ -238,7 +223,7 @@ public enum VendorInfoState
             }
             else
             {
-                if ( vendorInfo.getFrameworkVersion() == null )
+                if ( vendorRequirement.getFrameworkVersion() == null )
                 {
                     return GTF;
                 }

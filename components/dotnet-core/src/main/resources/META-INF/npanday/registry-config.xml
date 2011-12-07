@@ -21,7 +21,7 @@ under the License.
   <repositories>
     <repository>
       <repository-name>npanday-settings</repository-name>
-      <repository-class>npanday.vendor.impl.SettingsRepository</repository-class>
+      <repository-class>npanday.vendor.SettingsRepository</repository-class>
       <!--dummy variable - not needed since it will be populated in the code during generation of npanday-settings.xml-->
       <repository-config>*</repository-config>
       <init-param>
