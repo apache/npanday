@@ -51,7 +51,7 @@ public class AspxCompilerMojo
 {
     private static final String DEFAULT_INCLUDES = "**"; //any extension can be made for request handler in ASPX
 
-    private static final String DEFAULT_EXCLUDES = ".svn/**,.references/**,obj/**, target/**, **/*.pdb, **/*.csproj, **/*.vbproj, **/*.suo, **/*.user,pom.xml, **/*.sln,build.log,PrecompiledApp.config,csproj.user,Properties/**,**.releaseBackup,^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:\\.\\d+)?$/**";
+    private static final String DEFAULT_EXCLUDES = ".svn/**,.references/**,obj/**, target/**, **/*.pdb, **/*.csproj, **/*.vbproj, **/*.suo, **/*.user,pom.xml, **/*.sln,build.log,PrecompiledApp.config,csproj.user,Properties/**,**.releaseBackup,^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:\\.\\d+)?$/**,**/*.cs,**/*.vb";
 
     /**
      * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
@@ -154,6 +154,11 @@ public class AspxCompilerMojo
      */
     private String[] excludes;
 
+    /**
+     * @parameter default-value="true" expression="${npanday.aspx.precompile}"
+     */
+    private boolean precompile;
+
     /** 
      * @component
      */
@@ -205,38 +210,46 @@ public class AspxCompilerMojo
         {
             throw new MojoExecutionException( "Unable to copy directory " + webSourceDirectory.getAbsolutePath() + " to " +
                 tmpSourceDir.getAbsolutePath(), e );
-        }        
-
-        File tmpDestDir = new File( tmpDir, "dest" );
-        tmpDestDir.mkdirs();
-
-        CompilerRequirement compilerRequirement = createCompilerRequirement();
-
-        CompilerConfig compilerConfig = createCompilerConfig( tmpSourceDir.getAbsolutePath(), tmpDestDir.getAbsolutePath() );
-
-        try
-        {
-            CompilerExecutable compilerExecutable =
-                netExecutableFactory.getCompilerExecutableFor( compilerRequirement, compilerConfig, project,
-                                                               profileAssemblyPath );
-
-            long startTimeCompile = System.currentTimeMillis();
-            compilerExecutable.execute();
-            long endTimeCompile = System.currentTimeMillis();
-
-            getLog().info( "NPANDAY-000-000: Compile Time = " + ( endTimeCompile - startTimeCompile ) + " ms" );
-            project.getArtifact().setFile( compilerExecutable.getCompiledArtifact() );
         }
-        catch ( PlatformUnsupportedException e )
+
+        File tmpDestDir;
+        if ( precompile )
         {
-            throw new MojoExecutionException( "NPANDAY-900-005: Unsupported Platform: Language = " + language +
-                ", Vendor = " + vendor + ", ArtifactType = " + project.getArtifact().getType(), e );
+            tmpDestDir = new File( tmpDir, "dest" );
+            tmpDestDir.mkdirs();
+
+            CompilerRequirement compilerRequirement = createCompilerRequirement();
+
+            CompilerConfig compilerConfig = createCompilerConfig( tmpSourceDir.getAbsolutePath(), tmpDestDir.getAbsolutePath() );
+
+            try
+            {
+                CompilerExecutable compilerExecutable =
+                    netExecutableFactory.getCompilerExecutableFor( compilerRequirement, compilerConfig, project,
+                                                                   profileAssemblyPath );
+
+                long startTimeCompile = System.currentTimeMillis();
+                compilerExecutable.execute();
+                long endTimeCompile = System.currentTimeMillis();
+
+                getLog().info( "NPANDAY-000-000: Compile Time = " + ( endTimeCompile - startTimeCompile ) + " ms" );
+                project.getArtifact().setFile( compilerExecutable.getCompiledArtifact() );
+            }
+            catch ( PlatformUnsupportedException e )
+            {
+                throw new MojoExecutionException( "NPANDAY-900-005: Unsupported Platform: Language = " + language +
+                    ", Vendor = " + vendor + ", ArtifactType = " + project.getArtifact().getType(), e );
+            }
+            catch ( ExecutionException e )
+            {
+                throw new MojoExecutionException( "NPANDAY-900-006: Unable to Compile: Language = " + language +
+                    ", Vendor = " + vendor + ", ArtifactType = " + project.getArtifact().getType() + ", Source Directory = " +
+                    project.getBuild().getSourceDirectory(), e );
+            }
         }
-        catch ( ExecutionException e )
+        else
         {
-            throw new MojoExecutionException( "NPANDAY-900-006: Unable to Compile: Language = " + language +
-                ", Vendor = " + vendor + ", ArtifactType = " + project.getArtifact().getType() + ", Source Directory = " +
-                project.getBuild().getSourceDirectory(), e );
+            tmpDestDir = tmpSourceDir;
         }
 
         File webappDir = new File( outputDirectory, project.getArtifactId() );
@@ -244,10 +257,6 @@ public class AspxCompilerMojo
 
         try
         {
-            /* delete the target folder copied by aspnet compiler */
-            /* TODO should be removed since target is deleted */
-            //FileUtils.deleteDirectory( new File( tmpDir, outputDirectory.getName() ) );
-
             // NPANDAY-474
             String combinedExcludes = "";
             if( excludes != null )
