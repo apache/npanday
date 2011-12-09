@@ -188,7 +188,7 @@ public class StandardRepositoryLoader
             {
                 throw new NPandayRepositoryException(
                     String.format( "NPANDAY-084-010: Error on loading '%s' into the repository %s", location,
-                                   repositoryClass ) );
+                                   repositoryClass ) , e);
 
             }
         }

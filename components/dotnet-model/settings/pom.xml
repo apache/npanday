@@ -33,7 +33,9 @@ under the License.
         <groupId>org.codehaus.modello</groupId>  
         <artifactId>modello-maven-plugin</artifactId>  
         <configuration> 
-          <model>settings.mdo</model>  
+          <models>
+            <model>settings.mdo</model>
+          </models>
           <version>1.0.0</version> 
         </configuration> 
       </plugin> 

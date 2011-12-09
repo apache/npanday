@@ -18,29 +18,28 @@
  */
 package npanday.plugin.fxcop;
 
+import npanday.ArtifactType;
+import npanday.PlatformUnsupportedException;
+import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NPandayArtifactResolutionException;
-import npanday.registry.NPandayRepositoryException;
+import npanday.executable.ExecutionException;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import npanday.artifact.AssemblyResolver;
-import npanday.ArtifactType;
-import npanday.executable.ExecutionException;
-import npanday.PlatformUnsupportedException;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.model.Model;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.FileReader;
-import java.util.Set;
-import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Runs the FxCop Code Analysis Tool for the specified project's assembly and all of its dependencies.

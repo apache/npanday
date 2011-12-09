@@ -16,7 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<model>
+<model xmlns="http://modello.codehaus.org/MODELLO/1.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.4.0 http://modello.codehaus.org/xsd/modello-1.4.0.xsd">
   <id>executable-plugin</id>
   <name>ExecutablePlugin</name>
   <description>A configuration file for compilers.</description>
@@ -27,13 +28,13 @@ under the License.
     </default>
   </defaults>
   <classes>
-    <class rootElement="true">
+    <class rootElement="true" xml.tagName="executablePlugins">
       <name>ExecutablePluginsModel</name>
       <fields>
         <field>
           <name>executablePlugins</name>
           <description>Plugin configurations.</description>
-          <association>
+          <association xml.itemsStyle="flat">
             <type>ExecutablePlugin</type>
             <multiplicity>*</multiplicity>
           </association>
@@ -41,18 +42,18 @@ under the License.
       </fields>
     </class>
 
-    <class xml.tagName="executablePlugin">
+    <class>
       <name>ExecutablePlugin</name>
       <fields>
         <field>
           <name>identifier</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>An id for the compiler. It should be (but is not required to be) unique.</description>
         </field>
         <field>
           <name>pluginClass</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>
             Class name of the compiler. NPanday will pass an instance of this class to the
@@ -61,25 +62,33 @@ under the License.
         </field>
         <field>
           <name>vendor</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>Vendor of the compiler: MICROSOFT, MONO, DotGNU</description>
         </field>
         <field>
+          <name>vendorVersion</name>
+          <!-- since NPanday 1.5.0 -->
+          <version>1.5.0+</version>
+          <type>String</type>
+          <description>The vendor version the executable is available for or supports.</description>
+        </field>
+        <field>
           <name>profile</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>Profile for the plugin.</description>
         </field>
         <field>
           <name>executable</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
-          <description>Executable, as run from the command line.</description>
+          <description>Executable name without extension, as run from the command line.</description>
         </field>
         <field>
           <name>frameworkVersions</name>
-          <description>Supported framework version(s) of the compiler: 1.1.4322, 2.0.50727, 3.0</description>
+          <description>Supported framework version(s): 1.1.4322, 2.0.50727, 3.0, ..</description>
+          <version>1.0.0+</version>
           <association>
             <type>String</type>
             <multiplicity>*</multiplicity>
@@ -87,7 +96,7 @@ under the License.
         </field>
         <field>
           <name>platforms</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description>Platform configuration capabilities.</description>
           <association>
             <type>Platform</type>
@@ -96,7 +105,7 @@ under the License.
         </field>
         <field>
           <name>commandFilter</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description>A filter for including/excluding user-passed commands options.</description>
           <association>
             <type>CommandFilter</type>
@@ -110,10 +119,9 @@ under the License.
       <fields>
         <field>
           <name>excludes</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description>
-            The command options to exclude from the user specified pass-through parameters (Currently
-            unused)
+            The command options to exclude from the user specified pass-through parameters.
           </description>
           <association>
             <type>String</type>
@@ -122,7 +130,7 @@ under the License.
         </field>
         <field>
           <name>includes</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description>
             The command options to allow from the user specified pass-through parameters.
           </description>
@@ -139,16 +147,15 @@ under the License.
       <fields>
         <field>
           <name>operatingSystem</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>The operating system that the compiler is capable of running on.</description>
         </field>
         <field>
           <name>architecture</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
-          <description>The architecture that the compiler is capable of running on (Currently
-            unused).</description>
+          <description>The architecture that the compiler is capable of running on.</description>
         </field>
       </fields>
     </class>

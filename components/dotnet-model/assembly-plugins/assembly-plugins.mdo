@@ -16,7 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<model>
+<model xmlns="http://modello.codehaus.org/MODELLO/1.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.4.0 http://modello.codehaus.org/xsd/modello-1.4.0.xsd">
   <id>assembly-plugin</id>
   <name>AssemblyPlugin</name>
   <description>Assembly Info Plugin</description>
@@ -27,19 +28,19 @@ under the License.
     </default>
   </defaults>
   <classes>
-    <class rootElement="true" xml.tagName="assemblyPluginsXml">
+    <class rootElement="true" xml.tagName="assemblyPlugins">
       <name>AssemblyPluginsModel</name>
       <fields>
         <field>
           <name>assemblyPlugins</name>
-          <association>
+          <association xml.itemsStyle="flat">
             <type>AssemblyPlugin</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
       </fields>
     </class>
-    <class xml.tagName="assemblyPlugins">
+    <class>
       <name>AssemblyPlugin</name>
       <fields>
         <field>

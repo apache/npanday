@@ -16,7 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<model>
+<model xmlns="http://modello.codehaus.org/MODELLO/1.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.4.0 http://modello.codehaus.org/xsd/modello-1.4.0.xsd">
   <id>entries</id>
   <name>Entries</name>
   <description></description>
@@ -32,14 +33,14 @@ under the License.
       <fields>
         <field>
           <name>entry</name>
-          <association>
+          <association xml.itemsStyle="flat">
             <type>Entry</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
       </fields>
     </class>
-    <class xml.tagName="entry">
+    <class>
       <name>Entry</name>
       <fields>
         <field>
