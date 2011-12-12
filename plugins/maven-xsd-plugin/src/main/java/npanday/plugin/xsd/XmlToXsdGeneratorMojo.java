@@ -19,6 +19,7 @@
 package npanday.plugin.xsd;
 
 import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.registry.RepositoryRegistry;
 import org.apache.maven.plugin.AbstractMojo;
@@ -107,8 +108,7 @@ public class XmlToXsdGeneratorMojo
         FileUtils.mkdir( outputDirectory );
         try
         {
-            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, getCommands(),
-                                                      netHome ).execute();
+            netExecutableFactory.getNetExecutableFor( new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), netHome ).execute();
         }
         catch ( ExecutionException e )
         {

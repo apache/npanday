@@ -18,14 +18,15 @@
  */
 package npanday.executable;
 
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 
 public class CommandExecutorTest
@@ -50,6 +51,7 @@ public class CommandExecutorTest
         }
 
         cmdExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+        cmdExecutor.setLogger( new ConsoleLogger( Logger.LEVEL_DEBUG, "Command Executor") );
     }
 
     @Test

@@ -18,23 +18,24 @@
  */
 package npanday.plugin.fxcop;
 
+import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
+import npanday.PlatformUnsupportedException;
+import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NPandayArtifactResolutionException;
+import npanday.executable.ExecutableRequirement;
+import npanday.executable.ExecutionException;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import npanday.executable.ExecutionException;
-import npanday.PlatformUnsupportedException;
-import npanday.ArtifactType;
-import npanday.artifact.AssemblyResolver;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.FileUtils;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Runs the FxCop Code Analysis Tool for the specified project's assembly.
@@ -151,8 +152,7 @@ public class FxCopMojo
 
         try
         {
-            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, getCommands(),
-                                                      null ).execute();
+            netExecutableFactory.getNetExecutableFor( new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), null ).execute();
         }
         catch ( ExecutionException e )
         {

@@ -78,7 +78,7 @@ public interface NetExecutable
     File getExecutionPath();
 
     /**
-     * Initialize this compiler.
+     * Initialize this executable.
      *
      * @param npandayContext
      */

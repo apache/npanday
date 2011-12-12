@@ -18,19 +18,24 @@
  */
 package npanday.executable.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import npanday.executable.CommandCapability;
 import npanday.executable.ExecutableCapability;
-import npanday.model.compiler.plugins.CommandFilter;
-import npanday.model.compiler.plugins.ExecutablePlugin;
-import npanday.model.compiler.plugins.ExecutablePluginsModel;
-import npanday.model.compiler.plugins.Platform;
-import npanday.model.compiler.plugins.io.xpp3.ExecutablePluginXpp3Reader;
+import npanday.executable.MutableExecutableCapability;
+import npanday.model.executable.plugins.Platform;
+import npanday.model.executable.plugins.CommandFilter;
+import npanday.model.executable.plugins.ExecutablePlugin;
+import npanday.model.executable.plugins.ExecutablePluginsModel;
+import npanday.model.executable.plugins.io.xpp3.ExecutablePluginXpp3Reader;
+import npanday.registry.ModelInterpolator;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.impl.AbstractMultisourceRepository;
-import npanday.vendor.Vendor;
+import npanday.vendor.VendorInfo;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -43,8 +48,7 @@ import java.util.List;
  *
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
- * @plexus.component
- *   role="npanday.executable.impl.ExecutablePluginsRepository"
+ * @plexus.component role="npanday.executable.impl.ExecutablePluginsRepository"
  */
 public final class ExecutablePluginsRepository
     extends AbstractMultisourceRepository<ExecutablePluginsModel>
@@ -54,21 +58,21 @@ public final class ExecutablePluginsRepository
     /**
      * A list of executable capabilities as specified within the executable-plugins.xml file
      */
-    private List<ExecutablePlugin> executablePlugins = new ArrayList<ExecutablePlugin>( );
+    private List<ExecutablePlugin> executablePlugins = new ArrayList<ExecutablePlugin>();
 
     @Override
-    protected ExecutablePluginsModel loadFromReader( Reader reader, Hashtable properties )
-        throws IOException, XmlPullParserException
+    protected ExecutablePluginsModel loadFromReader( Reader reader, Hashtable properties ) throws
+        IOException,
+        XmlPullParserException
     {
         ExecutablePluginXpp3Reader xpp3Reader = new ExecutablePluginXpp3Reader();
-           return xpp3Reader.read( reader );
+        return xpp3Reader.read( reader );
     }
 
     @Override
-    protected void mergeLoadedModel( ExecutablePluginsModel model )
-        throws NPandayRepositoryException
+    protected void mergeLoadedModel( ExecutablePluginsModel model ) throws NPandayRepositoryException
     {
-       executablePlugins.addAll( model.getExecutablePlugins() );
+        executablePlugins.addAll( model.getExecutablePlugins() );
     }
 
     /**
@@ -83,31 +87,66 @@ public final class ExecutablePluginsRepository
     /**
      * Returns a list of executable capabilities as specified within the executable-plugins.xml file.
      *
+     * @param vendorInfo
      * @return a list of executable capabilities as specified within the executable-plugins.xml file
      */
-    List<ExecutableCapability> getCapabilities()
+    List<ExecutableCapability> getCapabilities( final VendorInfo vendorInfo )
     {
         List<ExecutableCapability> platformCapabilities = new ArrayList<ExecutableCapability>();
         for ( ExecutablePlugin plugin : executablePlugins )
         {
             String pluginClassName = plugin.getPluginClass();
             String executable = plugin.getExecutable();
-            String compilerVendor = plugin.getVendor();
+            String vendor = plugin.getVendor();
+            String vendorVersion = plugin.getVendorVersion();
             String identifier = plugin.getIdentifier();
             String profile = plugin.getProfile();
             List<String> frameworkVersions = plugin.getFrameworkVersions();
 
+            if ( vendor != null && !vendorInfo.getVendor().getVendorName().toLowerCase().equals( vendor.toLowerCase() ) )
+            {
+                continue;
+            }
+
+            // TODO: check with version range!
+            if ( vendorVersion != null && !vendorInfo.getVendorVersion().equals( vendorVersion ) )
+            {
+                continue;
+            }
+
+            if ( frameworkVersions != null && frameworkVersions.size() > 0 )
+            {
+                if ( !Iterables.any(
+                    frameworkVersions, new Predicate<String>()
+                {
+                    public boolean apply( @Nullable String frameworkVersion )
+                    {
+                        return vendorInfo.getFrameworkVersion().equals( frameworkVersion );
+                    }
+                }
+                ) )
+                {
+                    continue;
+                }
+            }
+
+            // TODO: since the platform is fix here, we could already strip it down to those actually available
             List platforms = plugin.getPlatforms();
             for ( Iterator j = platforms.iterator(); j.hasNext(); )
             {
-                ExecutableCapability platformCapability =
-                    ExecutableCapability.Factory.createDefaultExecutableCapability();
+                MutableExecutableCapability platformCapability = new MutableExecutableCapability();
+
+                platformCapability.setVendorInfo( vendorInfo );
+
+                // TODO: strip empty ones
+                platformCapability.setProbingPaths( plugin.getProbingPaths() );
+
                 Platform platform = (Platform) j.next();
                 String os = platform.getOperatingSystem();
 
                 platformCapability.setOperatingSystem( os );
                 platformCapability.setPluginClassName( pluginClassName );
-                platformCapability.setExecutable( executable );
+                platformCapability.setExecutableName( executable );
                 platformCapability.setIdentifier( identifier );
                 platformCapability.setFrameworkVersions( frameworkVersions );
                 platformCapability.setProfile( profile );
@@ -117,31 +156,31 @@ public final class ExecutablePluginsRepository
                 List<String> includes = ( filter != null ) ? filter.getIncludes() : new ArrayList<String>();
                 List<String> excludes = ( filter != null ) ? filter.getExcludes() : new ArrayList<String>();
                 platformCapability.setCommandCapability(
-                    CommandCapability.Factory.createDefaultCommandCapability( includes, excludes ) );
+                    CommandCapability.Factory.createDefaultCommandCapability( includes, excludes )
+                );
+
                 if ( arch != null )
                 {
                     platformCapability.setArchitecture( arch );
                 }
-                if ( compilerVendor.trim().equalsIgnoreCase( "microsoft" ) )
-                {
-                    platformCapability.setVendor( Vendor.MICROSOFT );
-                }
-                else if ( compilerVendor.trim().equalsIgnoreCase( "mono" ) )
-                {
-                    platformCapability.setVendor( Vendor.MONO );
-                }
-                else if ( compilerVendor.trim().equalsIgnoreCase( "dotgnu" ) )
-                {
-                    platformCapability.setVendor( Vendor.DOTGNU );
-                }
-                else
-                {
-                    System.out.println( "NPANDAY-067-001: Unknown Vendor, skipping: Name = " + compilerVendor );
-                    continue;
-                }
+
                 platformCapabilities.add( platformCapability );
             }
         }
         return platformCapabilities;
     }
+
+    // ### COMPONENTS REQUIRED BY THE BASE CLASS
+
+    /**
+     * @plexus.requirement
+     */
+    private ModelInterpolator interpolator;
+
+    @Override
+    protected ModelInterpolator getInterpolator()
+    {
+        return interpolator;
+    }
 }
+

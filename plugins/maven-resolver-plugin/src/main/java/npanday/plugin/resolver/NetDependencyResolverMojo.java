@@ -23,6 +23,7 @@ import npanday.artifact.ArtifactContext;
 import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.artifact.NetDependenciesRepository;
 import npanday.artifact.NetDependencyMatchPolicy;
+import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.model.netdependency.NetDependency;
@@ -106,7 +107,9 @@ public class NetDependencyResolverMojo
      */
     private ArtifactContext artifactContext;
 
-    /** @parameter default-value="false" */
+    /**
+     * @parameter default-value="false"
+     */
     private boolean skip;
 
     public void execute()
@@ -152,11 +155,11 @@ public class NetDependencyResolverMojo
             }
             catch ( NPandayArtifactResolutionException e )
             {
-               throw new MojoExecutionException( e.getMessage(), e );
+                throw new MojoExecutionException( e.getMessage(), e );
             }
             catch ( IOException e )
             {
-               throw new MojoExecutionException( e.getMessage(), e );
+                throw new MojoExecutionException( e.getMessage(), e );
             }
 
             new File( localRepository, "npanday.artifacts.resolved" ).mkdir();
@@ -175,31 +178,30 @@ public class NetDependencyResolverMojo
             List<Dependency> gacInstallDependencies = repository.getDependenciesFor( gacInstallPolicies );
             for ( Dependency dependency : gacInstallDependencies )
             {
-                List<Artifact> artifacts = artifactContext.getArtifactsFor( dependency.getGroupId(),
-                                                                            dependency.getArtifactId(),
-                                                                            dependency.getVersion(),
-                                                                            dependency.getType() );
+                List<Artifact> artifacts =
+                    artifactContext.getArtifactsFor( dependency.getGroupId(), dependency.getArtifactId(),
+                                                     dependency.getVersion(), dependency.getType() );
                 try
                 {
-                    NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion,
-                                                                                            "GACUTIL",
-                                                                                            getGacInstallCommandsFor(
-                                                                                                artifacts.get( 0 ) ),
-                                                                                            null );
+                    NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor(
+                        new ExecutableRequirement( vendor, null, frameworkVersion, "GACUTIL" ),
+                        getGacInstallCommandsFor( artifacts.get( 0 ) ), null );
                     netExecutable.execute();
-                    getLog().info( "NPANDAY-1600-004: Installed Assembly into GAC: Assembly = " +
-                        artifacts.get( 0 ).getFile().getAbsolutePath() + ",  Vendor = " +
-                        netExecutable.getVendor().getVendorName() );
+                    getLog().info( "NPANDAY-1600-004: Installed Assembly into GAC: Assembly = "
+                                       + artifacts.get( 0 ).getFile().getAbsolutePath() + ",  Vendor = "
+                                       + netExecutable.getVendor().getVendorName() );
                 }
                 catch ( ExecutionException e )
                 {
-                    throw new MojoExecutionException( "NPANDAY-1600-005: Unable to execute gacutil: Vendor " + vendor +
-                        ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+                    throw new MojoExecutionException(
+                        "NPANDAY-1600-005: Unable to execute gacutil: Vendor " + vendor + ", frameworkVersion = "
+                            + frameworkVersion + ", Profile = " + profile, e );
                 }
                 catch ( PlatformUnsupportedException e )
                 {
-                    throw new MojoExecutionException( "NPANDAY-1600-006: Platform Unsupported: Vendor " + vendor +
-                        ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
+                    throw new MojoExecutionException(
+                        "NPANDAY-1600-006: Platform Unsupported: Vendor " + vendor + ", frameworkVersion = "
+                            + frameworkVersion + ", Profile = " + profile, e );
                 }
             }
         }

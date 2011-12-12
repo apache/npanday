@@ -18,18 +18,7 @@
  */
 package npanday.executable.impl;
 
-import npanday.PathUtil;
-import npanday.executable.NetExecutable;
-import npanday.executable.ExecutableContext;
 import npanday.executable.ExecutionException;
-import npanday.executable.CommandFilter;
-import npanday.executable.CommandExecutor;
-import npanday.NPandayContext;
-import npanday.vendor.Vendor;
-import org.codehaus.plexus.logging.Logger;
-
-import java.util.List;
-import java.io.File;
 
 /**
  * Provides a service for executing a command within a separate thread. This will be used for executing long-running
@@ -38,97 +27,25 @@ import java.io.File;
  * @author Shane Isbell
  */
 public class ThreadedNetExecutable
-    implements NetExecutable, Runnable
+    extends DefaultNetExecutable
+    implements Runnable
 {
-    private ExecutableContext executableContext;
-
-    /**
-     * A logger for writing log messages
-     */
-    private Logger logger;
-
     public void run()
     {
-        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         try
         {
-            commandExecutor.setLogger( logger );
-            commandExecutor.executeCommand( getExecutable(), getCommands(), getExecutionPath(), true );
+            innerExecute();
         }
         catch ( ExecutionException e )
         {
-            //  throw new ExecutionException( "NPANDAY-063-000: Command = " + commands, e );
+            logger.error( "NPANDAY-116-000: Error occurred in long running executable", e );
         }
-        if ( commandExecutor.getStandardOut().contains( "error" ) )
-        {
-            //   t/w new ExecutionException( "NPANDAY-063-001: Command = " + commands );
-        }
-    }
-
-    public List<String> getCommands()
-        throws ExecutionException
-    {
-        CommandFilter filter = executableContext.getCommandFilter();
-        return filter.filter( executableContext.getExecutableConfig().getCommands() );
-    }
-
-    public void resetCommands( List<String> commands )
-    {
-
-    }
-
-
-    public File getExecutionPath()
-    {
-        String executable;
-        try
-        {
-            executable = getExecutable();
-        }
-        catch ( ExecutionException e )
-        {
-            return null;
-        }
-        List<String> executablePaths = executableContext.getExecutableConfig().getExecutionPaths();
-        if ( executablePaths != null )
-        {
-            for ( String executablePath : executablePaths )
-            {
-                if ( PathUtil.containsExecutable(executablePath, executable) )
-                {
-                    logger.info("NPANDAY-063-005: Found executable path for " + executable + ": " + executablePath);
-                    return new File( executablePath );
-                }
-            }
-        }
-        logger.warn("NPANDAY-063-006: Did not find path for " + executable + " in " + executablePaths);
-        return null;
     }
 
     public void execute()
         throws ExecutionException
     {
-    }
-
-
-    public String getExecutable()
-        throws ExecutionException
-    {
-        if ( executableContext == null )
-        {
-            throw new ExecutionException( "NPANDAY-063-002: Executable has not been initialized with a context" );
-        }
-        return executableContext.getExecutableCapability().getExecutable();
-    }
-
-    public Vendor getVendor()
-    {
-        return executableContext.getExecutableCapability().getVendor();
-    }
-    
-    public void init( NPandayContext npandayContext )
-    {
-        this.executableContext = (ExecutableContext) npandayContext;
-        this.logger = executableContext.getLogger();
+        throw new ExecutionException( "NPANDAY-116-001: Create a thread, then use RUN - or refactor ThreadedNetExecutable");
+        // new Thread(this).start();
     }
 }

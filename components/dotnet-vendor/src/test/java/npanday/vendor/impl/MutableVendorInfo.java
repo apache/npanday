@@ -1,5 +1,6 @@
 package npanday.vendor.impl;
 
+import npanday.PlatformUnsupportedException;
 import npanday.vendor.Vendor;
 import npanday.vendor.VendorInfo;
 
@@ -99,6 +100,12 @@ public class MutableVendorInfo
     public File getInstallRoot()
     {
         return installRoot;
+    }
+
+    public File getGlobalAssemblyCacheDirectoryFor( String artifactType )
+        throws PlatformUnsupportedException
+    {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void setInstallRoot( File installRoot )

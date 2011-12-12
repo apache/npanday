@@ -24,6 +24,7 @@ import npanday.artifact.ArtifactContext;
 import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.artifact.NetDependenciesRepository;
 import npanday.artifact.NetDependencyMatchPolicy;
+import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.model.netdependency.NetDependency;
@@ -171,8 +172,8 @@ public class VsInstallerMojo
             try
             {
                 NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor(
-                    Vendor.MICROSOFT.getVendorName(), "2.0.50727", "GACUTIL", getGacInstallCommandsFor( artifacts.get(
-                        0 ) ), null );
+                    new ExecutableRequirement( Vendor.MICROSOFT.getVendorName(), null, "2.0.50727", "GACUTIL"),
+                    getGacInstallCommandsFor( artifacts.get( 0 ) ), null );
                 netExecutable.execute();
                 getLog().info( "NPANDAY-1600-004: Installed Assembly into GAC: Assembly = " + artifacts.get(
                     0 ).getFile().getAbsolutePath() + ",  Vendor = " + netExecutable.getVendor().getVendorName() );

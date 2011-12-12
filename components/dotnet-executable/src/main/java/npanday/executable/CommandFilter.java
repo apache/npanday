@@ -20,11 +20,10 @@ package npanday.executable;
 
 import org.codehaus.plexus.logging.Logger;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
-
-import npanday.executable.CommandCapability;
 
 /**
  * Provides services for filtering command options. A <code>NetExecutable</code> or
@@ -40,11 +39,12 @@ public interface CommandFilter
     /**
      * Filters the commands.
      *
+     *
      * @param commands the commands to filter. This parameter should not be null and will throw a
      * <code>NullPointerException</code> if it is.
      * @return a list of filtered commands.
      */
-    List<String> filter( List<String> commands );
+    List<String> filter( Collection<String> commands );
 
     /**
      * Provides factory methods for creating command filters.
@@ -73,7 +73,7 @@ public interface CommandFilter
         {
             return new CommandFilter()
             {
-                public List<String> filter( List<String> commands )
+                public List<String> filter( Collection<String> commands )
                 {
 
                     List<String> includes = ( capability != null && capability.getIncludes() != null )

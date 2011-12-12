@@ -23,7 +23,6 @@ import npanday.ArtifactType;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.executable.compiler.KeyInfo;
-import npanday.vendor.VendorFactory;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
@@ -91,26 +90,15 @@ public final class TestCompilerMojo
 
     protected CompilerRequirement getCompilerRequirement() throws MojoExecutionException
     {
-        //Requirement
-        CompilerRequirement compilerRequirement = CompilerRequirement.Factory.createDefaultCompilerRequirement();
-        compilerRequirement.setLanguage( testLanguage );
-        compilerRequirement.setFrameworkVersion( testFrameworkVersion );
-        compilerRequirement.setProfile( "FULL" );
-        compilerRequirement.setVendorVersion( testVendorVersion );
-        if ( vendor != null )
-        {
-            compilerRequirement.setVendor( VendorFactory.createVendorFromName( vendor ) );
-        }
-
-        return compilerRequirement;
-
+        return new CompilerRequirement(
+            testVendor, testVendorVersion, testFrameworkVersion, "FULL",  testLanguage);
     }
 
     protected CompilerConfig getCompilerConfig()  throws MojoExecutionException
     {
 
         //Config
-        CompilerConfig compilerConfig = (CompilerConfig) CompilerConfig.Factory.createDefaultExecutableConfig();
+        CompilerConfig compilerConfig = new CompilerConfig();
 
         compilerConfig.setCommands( getParameters() );
 
@@ -146,6 +134,9 @@ public final class TestCompilerMojo
         }
 
 
+        if (profileAssemblyPath != null){
+            compilerConfig.setAssemblyPath( profileAssemblyPath );
+        }
 
 
         return compilerConfig;

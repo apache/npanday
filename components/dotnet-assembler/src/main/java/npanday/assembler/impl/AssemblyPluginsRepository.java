@@ -22,9 +22,11 @@ import npanday.assembler.AssemblyInfoException;
 import npanday.model.assembly.plugins.AssemblyPlugin;
 import npanday.model.assembly.plugins.AssemblyPluginsModel;
 import npanday.model.assembly.plugins.io.xpp3.AssemblyPluginXpp3Reader;
+import npanday.registry.ModelInterpolator;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.impl.AbstractMultisourceRepository;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.IOException;
@@ -137,5 +139,18 @@ public final class AssemblyPluginsRepository
             set.add( assemblyPlugin.getLanguage().trim() );
         }
         return set;
+    }
+
+    // ### COMPONENTS REQUIRED BY THE BASE CLASS
+
+    /**
+     * @plexus.requirement
+     */
+    private ModelInterpolator interpolator;
+
+    @Override
+    protected ModelInterpolator getInterpolator()
+    {
+        return interpolator;
     }
 }

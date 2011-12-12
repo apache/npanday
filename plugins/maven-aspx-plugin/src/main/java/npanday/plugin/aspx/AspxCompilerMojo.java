@@ -28,7 +28,6 @@ import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.SettingsException;
 import npanday.vendor.SettingsUtil;
-import npanday.vendor.VendorFactory;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -217,8 +216,7 @@ public class AspxCompilerMojo
         try
         {
             CompilerExecutable compilerExecutable =
-                netExecutableFactory.getCompilerExecutableFor( compilerRequirement, compilerConfig, project,
-                                                               profileAssemblyPath );
+                netExecutableFactory.getCompilerExecutableFor( compilerRequirement, compilerConfig, project  );
 
             long startTimeCompile = System.currentTimeMillis();
             compilerExecutable.execute();
@@ -352,7 +350,7 @@ public class AspxCompilerMojo
     
     private CompilerConfig createCompilerConfig(String source, String destination) throws MojoExecutionException
     {
-        CompilerConfig compilerConfig = (CompilerConfig) CompilerConfig.Factory.createDefaultExecutableConfig();
+        CompilerConfig compilerConfig = new CompilerConfig();
         compilerConfig.setLocalRepository( localRepository );
         compilerConfig.setCommands( getCommands( source, destination ) );
 
@@ -365,22 +363,17 @@ public class AspxCompilerMojo
         }
         compilerConfig.setArtifactType( artifactType );
 
+        if (profileAssemblyPath != null){
+            compilerConfig.setAssemblyPath( profileAssemblyPath );
+        }
+
         return compilerConfig;
     }
     
     private CompilerRequirement createCompilerRequirement() throws MojoExecutionException
     {
-        CompilerRequirement compilerRequirement = CompilerRequirement.Factory.createDefaultCompilerRequirement();
-        compilerRequirement.setLanguage( language );
-        compilerRequirement.setFrameworkVersion( frameworkVersion );
-        compilerRequirement.setProfile( profile );
-        compilerRequirement.setVendorVersion( vendorVersion );
-        if ( vendor != null )
-        {
-            compilerRequirement.setVendor( VendorFactory.createVendorFromName( vendor ) );
-        }
-
-        return compilerRequirement;
+        return new CompilerRequirement(
+            vendor, vendorVersion, frameworkVersion, profile,  language);
     }
     
     private List<String> getCommands( String sourceDir, String outputDir )

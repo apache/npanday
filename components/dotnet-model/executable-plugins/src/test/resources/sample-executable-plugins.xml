@@ -28,6 +28,12 @@ under the License.
       <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
+
+    <probingPaths>
+      <probingPath>one</probingPath>
+      <probingPath>two</probingPath>
+    </probingPaths>
+
     <platforms>
       <platform>
         <operatingSystem>Windows</operatingSystem>

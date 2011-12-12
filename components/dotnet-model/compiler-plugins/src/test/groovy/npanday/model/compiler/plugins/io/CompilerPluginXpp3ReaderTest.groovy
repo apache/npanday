@@ -19,7 +19,7 @@ package npanday.model.compiler.plugins.io;
 
 import npanday.model.compiler.plugins.io.xpp3.CompilerPluginXpp3Reader
 
-class Xpp3ReaderTest
+class CompilerPluginXpp3ReaderTest
 {
   @org.junit.Test
   void passes()
@@ -33,5 +33,6 @@ class Xpp3ReaderTest
     assert model != null
     assert model.compilerPlugins != null
     assert model.compilerPlugins.size() == 1
+    assert model.compilerPlugins[0].vendorVersion == "1"
   }
 }

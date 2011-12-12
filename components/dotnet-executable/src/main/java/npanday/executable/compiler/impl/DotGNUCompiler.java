@@ -19,14 +19,12 @@
 package npanday.executable.compiler.impl;
 
 import npanday.executable.ExecutionException;
-import npanday.executable.compiler.CompilerConfig;
+import org.apache.maven.artifact.Artifact;
 
-import java.util.List;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.io.File;
-
-import org.apache.maven.artifact.Artifact;
+import java.util.List;
 
 /**
  * Compiler for DotGNU.
@@ -48,13 +46,12 @@ public final class DotGNUCompiler
         {
             throw new ExecutionException( "NPANDAY-069-000: Compiler has not been initialized with a context" );
         }
-        CompilerConfig config = compilerContext.getNetCompilerConfig();
         List<Artifact> resources = compilerContext.getLibraryDependencies();
         List<Artifact> modules = compilerContext.getDirectModuleDependencies();
 
         String sourceDirectory = compilerContext.getSourceDirectoryName();
         String artifactFilePath = compilerContext.getArtifact().getAbsolutePath();
-        String targetArtifactType = config.getArtifactType().getTargetCompileType();
+        String targetArtifactType = compilerContext.getTargetArtifactType().getTargetCompileType();
 
         List<String> commands = new ArrayList<String>();
         commands.add( "/out:" + artifactFilePath );
@@ -87,9 +84,9 @@ public final class DotGNUCompiler
         {
             commands.add( "/resource:" + file.getAbsolutePath() );
         }
-        if ( config.getCommands() != null )
+        if ( compilerContext.getCommands() != null )
         {
-            commands.addAll( config.getCommands() );
+            commands.addAll( compilerContext.getCommands() );
         }
         //TODO: Apply command filter
         return commands;

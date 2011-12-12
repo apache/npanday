@@ -18,15 +18,16 @@
  */
 package npanday.executable.compiler;
 
+import npanday.ArtifactType;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.CommandFilter;
+import npanday.executable.ExecutableContext;
+import npanday.executable.ExecutionException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
 
-import java.util.List;
 import java.io.File;
-
-import npanday.executable.*;
-import npanday.NPandayContext;
-import npanday.PlatformUnsupportedException;
+import java.util.List;
 
 /**
  * Interface defining compiler services.
@@ -34,7 +35,7 @@ import npanday.PlatformUnsupportedException;
  * @author Shane Isbell
  */
 public interface CompilerContext
-    extends NPandayContext
+    extends ExecutableContext
 {
 
     /**
@@ -53,13 +54,6 @@ public interface CompilerContext
      */
     File getArtifact()
         throws InvalidArtifactException;
-
-    /**
-     * Return the <code>CompilerCapability</code> associated with this context.
-     *
-     * @return the <code>CompilerCapability</code> associated with this context.
-     */
-    CompilerCapability getCompilerCapability();
 
 
     /**
@@ -103,21 +97,6 @@ public interface CompilerContext
     List<Artifact> getModuleDependencies();
 
     /**
-     * Returns the user provided configuration associated to this context. This is a live copy, so any changes to the
-     * config will be reflected during compilation.
-     *
-     * @return the user provided configuration associated to this context
-     */
-    CompilerConfig getNetCompilerConfig();
-
-    /**
-     * Requirements used to match the compiler plugin associated with this context.
-     *
-     * @return Requirements used to match the compiler plugin associated with this context.
-     */
-    CompilerRequirement getCompilerRequirement();
-
-    /**
      * Returns the source directory (or test source directory) path of the class files. These are defined in the pom.xml
      * by the properties ${build.sourceDirectory} or ${build.testSourceDirectory}.
      *
@@ -156,8 +135,11 @@ public interface CompilerContext
      * or it may be a generated .resource file.
      *
      * @return a list of resources that the compiler should embed in the compiled assembly.
+     *
      */
     List<File> getEmbeddedResources();
+
+    List<String> getEmbeddedResourceArgs();
 
     /**
      * Returns the icon that the assembly should display when viewed. Should not be used in conjunction with win32res.
@@ -174,17 +156,54 @@ public interface CompilerContext
     List<File> getWin32Resources();
 
     /**
+     * Gets the framework version of the current vendor used.
+     */
+    String getFrameworkVersion();
+
+    /**
+     * Returns the path to the core assemblies.
+     */
+    File getAssemblyPath();
+
+    /**
+     * Returns the framework to compile for.
+     */
+    String getTargetFramework();
+
+    /**
+     * Gets the profile the compiler runs with.
+     */
+    String getTargetProfile();
+
+    /**
+     * Gets the resulting artifacts type
+     */
+    ArtifactType getTargetArtifactType();
+
+    /**
+     * Gets, if the current compile is a test compile.
+     */
+    boolean isTestCompile();
+
+    /**
+     * The list of sources to be included in the compilation.
+     */
+    List<String> getIncludeSources();
+
+    /**
+     * The directory to store the compile output too.
+     */
+    File getOutputDirectory();
+
+    /**
      * Initializes the context
      *
-     * @param compilerRequirement
+     *
+     * @param capability
      * @param config
      * @param project
-     * @param capabilityMatcher
      * @throws PlatformUnsupportedException
      */
-    void init( CompilerRequirement compilerRequirement, CompilerConfig config, MavenProject project,
-               CapabilityMatcher capabilityMatcher )
+    void init( CompilerCapability capability, CompilerConfig config, MavenProject project )
         throws PlatformUnsupportedException;
-
-    List<String> getEmbeddedResourceArgs();
 }

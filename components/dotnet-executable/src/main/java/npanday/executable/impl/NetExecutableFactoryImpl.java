@@ -23,6 +23,7 @@ import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
 import npanday.artifact.ArtifactContext;
 import npanday.executable.CapabilityMatcher;
+import npanday.executable.ExecutableCapability;
 import npanday.executable.ExecutableConfig;
 import npanday.executable.ExecutableContext;
 import npanday.executable.ExecutableRequirement;
@@ -30,6 +31,7 @@ import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.executable.NetExecutableFactory;
 import npanday.executable.RepositoryExecutableContext;
+import npanday.executable.compiler.CompilerCapability;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerContext;
 import npanday.executable.compiler.CompilerExecutable;
@@ -104,58 +106,65 @@ public class NetExecutableFactoryImpl
 
 
     /**
+     * @see NetExecutableFactory
+     */
+    public NetExecutable getNetExecutableFor( ExecutableRequirement executableRequirement, List<String> commands, File netHome )
+        throws PlatformUnsupportedException
+    {
+        // TODO: construct ExcecutableConfig from the outside
+        ExecutableConfig executableConfig = new ExecutableConfig();
+        executableConfig.setCommands( commands );
+
+        List<String> executablePaths = ( executableConfig.getExecutionPaths() == null )
+            ? new ArrayList<String>()
+            : executableConfig.getExecutionPaths();
+
+        if ( netHome != null )
+        {
+            getLogger().info( "NPANDAY-066-014: Found executable path in pom: Path = " + netHome.getAbsolutePath() );
+            executableConfig.getExecutionPaths().add( netHome.getAbsolutePath() );
+        }
+
+
+        executableConfig.setExecutionPaths( executablePaths );
+
+        final ExecutableCapability executableCapability =
+                    capabilityMatcher.matchExecutableCapabilityFor( executableRequirement );
+
+        executableContext.init( executableCapability, executableConfig );
+
+        try
+        {
+            return executableContext.getNetExecutable();
+        }
+        catch ( ExecutionException e )
+        {
+            throw new PlatformUnsupportedException( "NPANDAY-066-001: Unable to find net executable", e );
+        }
+    }
+
+    /**
      * @see NetExecutableFactory#getCompilerExecutableFor(npanday.executable.compiler.CompilerRequirement,
-     *      npanday.executable.compiler.CompilerConfig, org.apache.maven.project.MavenProject, java.io.File)
+     *      npanday.executable.compiler.CompilerConfig, org.apache.maven.project.MavenProject)
      */
     public CompilerExecutable getCompilerExecutableFor( CompilerRequirement compilerRequirement,
-                                                        CompilerConfig compilerConfig, MavenProject project,
-                                                        File assemblyPath )
+                                                        CompilerConfig compilerConfig, MavenProject project)
         throws PlatformUnsupportedException
     {
 
-        VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-        try
-        {
-            vendorInfo = processor.process( compilerRequirement.toVendorRequirement() );
-        }
-        catch ( IllegalStateException e )
-        {
-            throw new PlatformUnsupportedException( "NPANDAY-066-011: Illegal State: Vendor Info = " + vendorInfo, e );
-        }
-
-        if ( vendorInfo.getVendor() == null || vendorInfo.getFrameworkVersion() == null )
-        {
-            throw new PlatformUnsupportedException( "NPANDAY-066-012: Missing Vendor Information: " + vendorInfo );
-        }
-
-        getLogger().info( "NPANDAY-066-013: Found Vendor = " + vendorInfo );
-
-        compilerRequirement.setVendor( vendorInfo.getVendor() );
-        compilerRequirement.setVendorVersion( vendorInfo.getVendorVersion() );
-        compilerRequirement.setFrameworkVersion( vendorInfo.getFrameworkVersion() );
+        final CompilerCapability compilerCapability =
+            capabilityMatcher.matchCompilerCapabilityFor( compilerRequirement );
 
         // init does not need the executable paths to be set
-        compilerContext.init( compilerRequirement, compilerConfig, project, capabilityMatcher );
-
-        if ( assemblyPath != null )
-        {
-            compilerContext.getCompilerCapability().setAssemblyPath( assemblyPath.getAbsolutePath() );
-        }
+        compilerContext.init( compilerCapability, compilerConfig, project );
 
         List<String> executionPaths = ( compilerConfig.getExecutionPaths() == null )
             ? new ArrayList<String>()
             : compilerConfig.getExecutionPaths();
+
         if ( executionPaths == null || executionPaths.size() == 0 )
         {
-            if ( vendorInfo.getExecutablePaths() != null )
-            {
-                for ( File path : vendorInfo.getExecutablePaths() )
-                {
-                    executionPaths.add( path.getAbsolutePath() );
-                }
-            }
-
-            String netDependencyId = compilerContext.getCompilerCapability().getNetDependencyId();
+            String netDependencyId = compilerCapability.getNetDependencyId();
 
             if ( netDependencyId != null )
             {
@@ -190,48 +199,6 @@ public class NetExecutableFactoryImpl
     {
         Artifact artifact = getArtifactFor( groupId, artifactId );
         return getPluginLoaderFor( artifact, vendorRequirement, localRepository, parameterFile, mojoName );
-    }
-
-    public NetExecutable getPluginLoaderFor( Artifact artifact, VendorRequirement vendorRequirement, String localRepository,
-                                             File parameterFile, String mojoName )
-        throws PlatformUnsupportedException
-    {
-        //AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-        File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, new File( localRepository ) );
-
-        List<String> commands = new ArrayList<String>();
-        commands.add( "parameterFile=" + parameterFile.getAbsolutePath() );
-        commands.add( "assemblyFile=" + artifactPath.getAbsolutePath() );
-        commands.add( "mojoName=" + mojoName );//ArtifactId = namespace
-
-        Artifact pluginLoaderArtifact =
-            artifactContext.getArtifactsFor( "org.apache.npanday.plugins", "NPanday.Plugin.Loader", null, null ).get(
-                0 );
-        artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ) );
-        commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
-
-        return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner", vendorRequirement,
-                                               new File( localRepository ), commands, false );
-    }
-
-    public Artifact getArtifactFor( String groupId, String artifactId )
-        throws PlatformUnsupportedException
-    {
-        List<Artifact> artifacts = artifactContext.getArtifactsFor( groupId, artifactId, null, null );
-        if ( artifacts.size() == 0 )
-        {
-            throw new PlatformUnsupportedException(
-                "NPANDAY-066-023: Could not locate the plugin - missing entry in the net-dependencies.xml file: GroupId = "
-                    + groupId + ", ArtifactId = " + artifactId );
-        }
-
-        Artifact artifact = artifacts.get( 0 );
-        if ( artifact == null )
-        {
-            throw new PlatformUnsupportedException(
-                "NPANDAY-066-021: Could not locate the plugin: GroupId = " + groupId + ", ArtifactId = " + artifactId );
-        }
-        return artifact;
     }
 
     public NetExecutable getNetExecutableFromRepository( String groupId, String artifactId,
@@ -303,6 +270,8 @@ public class NetExecutableFactoryImpl
         File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository );
         List<String> modifiedCommands = new ArrayList<String>();
         String exe = null;
+
+        // TODO: this should be a separate implementation of NetExecutable, configured only for MONO!!!
         if ( vendorInfo.getVendor().equals( Vendor.MONO ) )
         {
             List<File> executablePaths = vendorInfo.getExecutablePaths();
@@ -339,7 +308,7 @@ public class NetExecutableFactoryImpl
             modifiedCommands = commands;
         }
         //TODO: DotGNU on Linux?
-        ExecutableConfig executableConfig = ExecutableConfig.Factory.createDefaultExecutableConfig();
+        ExecutableConfig executableConfig = new ExecutableConfig();
         executableConfig.setExecutionPaths( Arrays.asList( exe ) );
         executableConfig.setCommands( modifiedCommands );
 
@@ -363,113 +332,45 @@ public class NetExecutableFactoryImpl
         }
     }
 
-    public NetExecutable getJavaExecutableFromRepository( VendorRequirement vendorRequirement, List<String> commands )
+    public NetExecutable getPluginLoaderFor( Artifact artifact, VendorRequirement vendorRequirement, String localRepository,
+                                             File parameterFile, String mojoName )
         throws PlatformUnsupportedException
     {
+        //AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
+        File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, new File( localRepository ) );
 
-        if ( commands == null )
-        {
-            commands = new ArrayList<String>();
-        }
+        List<String> commands = new ArrayList<String>();
+        commands.add( "parameterFile=" + parameterFile.getAbsolutePath() );
+        commands.add( "assemblyFile=" + artifactPath.getAbsolutePath() );
+        commands.add( "mojoName=" + mojoName );//ArtifactId = namespace
 
-        VendorInfo vendorInfo;
-        try
-        {
-            vendorInfo = processor.process( vendorRequirement );
-        }
-        catch ( IllegalStateException e )
-        {
-            throw new PlatformUnsupportedException(
-                "NPANDAY-066-010: Illegal State: Vendor Info = " + vendorRequirement, e );
-        }
+        Artifact pluginLoaderArtifact =
+            artifactContext.getArtifactsFor( "org.apache.npanday.plugins", "NPanday.Plugin.Loader", null, null ).get(
+                0 );
+        artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ) );
+        commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
 
-        ExecutableRequirement executableRequirement =
-            ExecutableRequirement.Factory.createDefaultExecutableRequirement();
-        executableRequirement.setVendor( vendorInfo.getVendor() );
-        executableRequirement.setFrameworkVersion( vendorInfo.getFrameworkVersion() );
-        executableRequirement.setVendorVersion( vendorInfo.getVendorVersion() );
-        executableRequirement.setProfile( "dotnet-jetty:start" );//TODO: Remove hard-coded value
-
-        ExecutableConfig executableConfig = ExecutableConfig.Factory.createDefaultExecutableConfig();
-        executableConfig.setCommands( commands );
-
-        executableConfig.setExecutionPaths( new ArrayList<String>() );
-        executableContext.init( executableRequirement, executableConfig, capabilityMatcher );
-
-        try
-        {
-            return executableContext.getNetExecutable();
-        }
-        catch ( ExecutionException e )
-        {
-            throw new PlatformUnsupportedException( "NPANDAY-066-001: Unable to find net executable", e );
-        }
+        return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner", vendorRequirement,
+                                               new File( localRepository ), commands, false );
     }
 
-    /**
-     * @see NetExecutableFactory
-     */
-    public NetExecutable getNetExecutableFor( String vendor, String frameworkVersion, String profile,
-                                              List<String> commands, File netHome )
+    public Artifact getArtifactFor( String groupId, String artifactId )
         throws PlatformUnsupportedException
     {
-        //TODO: why is the vendorVersion not of interest here?
-        final VendorRequirement vendorRequirement = new VendorRequirement( vendor, null, frameworkVersion );
-
-        VendorInfo vendorInfo;
-        try
+        List<Artifact> artifacts = artifactContext.getArtifactsFor( groupId, artifactId, null, null );
+        if ( artifacts.size() == 0 )
         {
-            vendorInfo = processor.process( vendorRequirement );
-        }
-        catch ( IllegalStateException e )
-        {
-            throw new PlatformUnsupportedException( "NPANDAY-066-010: Illegal State: Vendor Info = " + vendorRequirement, e );
+            throw new PlatformUnsupportedException(
+                "NPANDAY-066-023: Could not locate the plugin - missing entry in the net-dependencies.xml file: GroupId = "
+                    + groupId + ", ArtifactId = " + artifactId );
         }
 
-        getLogger().debug( "NPANDAY-066-003: Found Vendor: " + vendorInfo );
-        ExecutableRequirement executableRequirement =
-            ExecutableRequirement.Factory.createDefaultExecutableRequirement();
-        executableRequirement.setVendor( vendorInfo.getVendor() );
-        executableRequirement.setFrameworkVersion( vendorInfo.getFrameworkVersion() );
-        executableRequirement.setVendorVersion( vendorInfo.getVendorVersion() );
-        executableRequirement.setProfile( profile );
-
-        ExecutableConfig executableConfig = ExecutableConfig.Factory.createDefaultExecutableConfig();
-        executableConfig.setCommands( commands );
-
-        List<String> executablePaths = ( executableConfig.getExecutionPaths() == null )
-            ? new ArrayList<String>()
-            : executableConfig.getExecutionPaths();
-        if ( netHome != null )
+        Artifact artifact = artifacts.get( 0 );
+        if ( artifact == null )
         {
-            getLogger().info( "NPANDAY-066-014: Found executable path in pom: Path = " + netHome.getAbsolutePath() );
-            executablePaths.add( netHome.getAbsolutePath() );
+            throw new PlatformUnsupportedException(
+                "NPANDAY-066-021: Could not locate the plugin: GroupId = " + groupId + ", ArtifactId = " + artifactId );
         }
-
-        // should not fallback, if there are explicit configures
-        if ( executablePaths.isEmpty() && vendorInfo.getExecutablePaths() != null )
-        {
-            for ( File path : vendorInfo.getExecutablePaths() )
-            {
-                executablePaths.add( path.getAbsolutePath() );
-            }
-        }
-
-        if ( executablePaths.isEmpty() )
-        {
-            getLogger().info( "NPANDAY-066-016: Did not find executable path, will try system path" );
-        }
-        executableConfig.setExecutionPaths( executablePaths );
-
-        executableContext.init( executableRequirement, executableConfig, capabilityMatcher );
-
-        try
-        {
-            return executableContext.getNetExecutable();
-        }
-        catch ( ExecutionException e )
-        {
-            throw new PlatformUnsupportedException( "NPANDAY-066-001: Unable to find net executable", e );
-        }
+        return artifact;
     }
 }

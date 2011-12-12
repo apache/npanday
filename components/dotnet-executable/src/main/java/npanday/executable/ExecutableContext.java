@@ -20,6 +20,9 @@ package npanday.executable;
 
 import npanday.NPandayContext;
 import npanday.PlatformUnsupportedException;
+import npanday.vendor.Vendor;
+
+import java.util.Collection;
 
 /**
  * Provides services for executables.
@@ -40,6 +43,30 @@ public interface ExecutableContext
         throws ExecutionException;
 
     /**
+     * The vendor the executable runs for.
+     */
+    Vendor getVendor();
+
+    /**
+     * Returns the exectuable name to be run.
+     *
+     * @return
+     */
+    String getExecutableName();
+
+    /**
+     * The commands that instruct the executable to be run.
+     * @return
+     */
+    Collection<String> getCommands();
+
+    /**
+     * The paths the executable is most likely to be found on. First matching path wins.
+     * @return
+     */
+    Collection<String> getProbingPaths();
+
+    /**
      * Creates a command filter. If the includes parameter is null, then the filter will return all commands that are
      * not in the exlude filters. If the excludes parameter is null, then the filter will only return what is in the
      * includes list. If both parameters are null...
@@ -48,38 +75,15 @@ public interface ExecutableContext
      */
     CommandFilter getCommandFilter();
 
-    /**
-     * Returns the capabilities of the executable associated with this context.
-     *
-     * @return the capabilities of the executable associated with this context
-     */
-    ExecutableCapability getExecutableCapability();
-
-    /**
-     * Returns the user-defined requirements associated with this context.
-     *
-     * @return the user-defined requirements associated with this context
-     */
-    ExecutableRequirement getExecutableRequirement();
-
-    /**
-     * Returns user-defined configuration used to initialize this context.
-     *
-     * @return user-defined configuration used to initialize this context
-     */
-    ExecutableConfig getExecutableConfig();
 
     /**
      * Initializes the context
      *
-     * @param executableRequirement
-     * @param executableConfig
-     * @param capabilityMatcher
+     * @param capability
+     * @param config
      * @throws npanday.PlatformUnsupportedException
      *
      */
-    void init( ExecutableRequirement executableRequirement, ExecutableConfig executableConfig,
-               CapabilityMatcher capabilityMatcher )
+    void init( ExecutableCapability capability, ExecutableConfig config )
         throws PlatformUnsupportedException;
-
 }

@@ -22,6 +22,7 @@ import npanday.ArtifactType;
 import npanday.PlatformUnsupportedException;
 import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NPandayArtifactResolutionException;
+import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -155,8 +156,7 @@ public class FxCopAggregateMojo
 
         try
         {
-            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, getCommands(),
-                                                      null ).execute();
+            netExecutableFactory.getNetExecutableFor( new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), null ).execute();
         }
         catch ( ExecutionException e )
         {

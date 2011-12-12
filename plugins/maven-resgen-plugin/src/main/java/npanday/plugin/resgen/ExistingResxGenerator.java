@@ -18,11 +18,8 @@
  */
 package npanday.plugin.resgen;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -30,6 +27,10 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -114,8 +115,9 @@ public class ExistingResxGenerator extends AbstractMojo
             	File file = new File(project.getBuild().getSourceDirectory() + File.separator + embeddedResource.getSourceFile());
             	if(!file.exists()) continue;
                 commands = getCommands(file.getAbsoluteFile(), resourceDirectory, embeddedResource.getName());
-                netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, "RESGEN",commands ,
-                                                      netHome ).execute();
+                netExecutableFactory.getNetExecutableFor(
+                    new ExecutableRequirement( vendor, null, frameworkVersion, "RESGEN" ), commands, netHome )
+                    .execute();
             }
           
             if(embeddedResources == null)
@@ -131,8 +133,10 @@ public class ExistingResxGenerator extends AbstractMojo
             	  name = project.getArtifactId() + "." + name.substring(0, name.lastIndexOf('.'));
 
             	  commands = getCommands(file.getAbsoluteFile(), resourceDirectory, name);
-            	  netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, "RESGEN",commands ,
-                         netHome ).execute();
+                   netExecutableFactory.getNetExecutableFor(
+                       new ExecutableRequirement( vendor, null, frameworkVersion, "RESGEN" ), commands,
+                                                             netHome )
+                       .execute();
               }
             }
         }

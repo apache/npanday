@@ -23,12 +23,14 @@ import npanday.artifact.NetDependencyMatchPolicy;
 import npanday.model.netdependency.NetDependency;
 import npanday.model.netdependency.NetDependencyModel;
 import npanday.model.netdependency.io.xpp3.NetDependencyXpp3Reader;
+import npanday.registry.ModelInterpolator;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.impl.AbstractMultisourceRepository;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Dependency;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.IOException;
@@ -42,8 +44,7 @@ import java.util.List;
  *
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
- * @plexus.component
- *   role="npanday.artifact.impl.NetDependenciesRepositoryImpl"
+ * @plexus.component role="npanday.artifact.impl.NetDependenciesRepositoryImpl"
  */
 public class NetDependenciesRepositoryImpl
     extends AbstractMultisourceRepository<NetDependencyModel>
@@ -51,10 +52,11 @@ public class NetDependenciesRepositoryImpl
 {
 
     /**
-     * List of net dependencies. These dependencies are intended to be executed directly from the local Maven repository,
+     * List of net dependencies. These dependencies are intended to be executed directly from the local Maven
+     * repository,
      * not to be compiled against.
      */
-    private List<NetDependency> netDependencies = new ArrayList<NetDependency>( );
+    private List<NetDependency> netDependencies = new ArrayList<NetDependency>();
 
     /**
      * The artifact factory, used for creating artifacts.
@@ -71,16 +73,16 @@ public class NetDependenciesRepositoryImpl
     }
 
     @Override
-    protected NetDependencyModel loadFromReader( Reader reader, Hashtable properties )
-        throws IOException, XmlPullParserException
+    protected NetDependencyModel loadFromReader( Reader reader, Hashtable properties ) throws
+        IOException,
+        XmlPullParserException
     {
         NetDependencyXpp3Reader xpp3Reader = new NetDependencyXpp3Reader();
         return xpp3Reader.read( reader );
     }
 
     @Override
-    protected void mergeLoadedModel( NetDependencyModel model )
-        throws NPandayRepositoryException
+    protected void mergeLoadedModel( NetDependencyModel model ) throws NPandayRepositoryException
     {
         final List<NetDependency> tmpList = model.getNetDependencies();
 
@@ -88,7 +90,8 @@ public class NetDependenciesRepositoryImpl
         for ( NetDependency dependency : tmpList )
         {
             if ( dependency.getVersion() == null && dependency.getGroupId().toLowerCase().startsWith(
-                "org.apache.npanday" ) )
+                "org.apache.npanday"
+            ) )
             {
                 dependency.setVersion( npandayVersion );
             }
@@ -158,11 +161,13 @@ public class NetDependenciesRepositoryImpl
 
 
     /**
-     * Return true is the specified net dependency matches ALL of the specified match policies, otherwise returns false.
+     * Return true is the specified net dependency matches ALL of the specified match policies,
+     * otherwise returns false.
      *
      * @param netDependency the net dependency to match
      * @param matchPolicies the match policies to use in matching the net dependency
-     * @return true is the specified net dependency matches ALL of the specified match policies, otherwise returns false
+     * @return true is the specified net dependency matches ALL of the specified match policies,
+     *         otherwise returns false
      */
     private boolean isMatch( NetDependency netDependency, List<NetDependencyMatchPolicy> matchPolicies )
     {
@@ -192,8 +197,9 @@ public class NetDependenciesRepositoryImpl
         for ( NetDependency netDependency : netDependencies )
         {
             if ( netDependency.getGroupId().equals( groupId ) && netDependency.getArtifactId().equals( artifactId )
-                && ( version == null || netDependency.getVersion().equals( version ) ) && ( type == null
-                || netDependency.getType().equals( type ) ) )
+                && ( version == null || netDependency.getVersion().equals( version ) ) && (
+                type == null || netDependency.getType().equals( type )
+            ) )
             {
                 artifacts.add( netDependencyToArtifact( netDependency ) );
             }
@@ -251,9 +257,23 @@ public class NetDependenciesRepositoryImpl
      */
     private Artifact netDependencyToArtifact( NetDependency dependency )
     {
-        return artifactFactory.createDependencyArtifact( dependency.getGroupId(), dependency.getArtifactId(),
-                                                         VersionRange.createFromVersion( dependency.getVersion() ),
-                                                         dependency.getType(), dependency.getPublicKeyToken(),
-                                                         Artifact.SCOPE_RUNTIME, null );
+        return artifactFactory.createDependencyArtifact(
+            dependency.getGroupId(), dependency.getArtifactId(),
+            VersionRange.createFromVersion( dependency.getVersion() ), dependency.getType(),
+            dependency.getPublicKeyToken(), Artifact.SCOPE_RUNTIME, null
+        );
+    }
+
+    // ### COMPONENTS REQUIRED BY THE BASE CLASS
+
+    /**
+     * @plexus.requirement
+     */
+    private ModelInterpolator interpolator;
+
+    @Override
+    protected ModelInterpolator getInterpolator()
+    {
+        return interpolator;
     }
 }

@@ -85,23 +85,6 @@ under the License.
       </platform>
     </platforms>
   </executablePlugin>
-  <executablePlugin>
-    <identifier>dotnet-jetty</identifier>
-    <pluginClass>npanday.executable.impl.ThreadedNetExecutable</pluginClass>
-    <vendor>MICROSOFT</vendor>
-    <executable>java</executable>
-    <profile>dotnet-jetty:start</profile>
-    <frameworkVersions>
-      <frameworkVersion>4.0</frameworkVersion>
-      <frameworkVersion>3.5</frameworkVersion>
-      <frameworkVersion>2.0.50727</frameworkVersion>
-    </frameworkVersions>
-    <platforms>
-      <platform>
-        <operatingSystem>Windows</operatingSystem>
-      </platform>
-    </platforms>
-  </executablePlugin>
 
   <!-- GACUTIL is used in maven-install-plugin, but it might be moved 'closer' to the core in the future,
   so we leave it here -->

@@ -18,7 +18,7 @@ package npanday.model.compiler.plugins.io
  */
 
 
-import npanday.model.compiler.plugins.io.xpp3.ExecutablePluginXpp3Reader
+import npanday.model.executable.plugins.io.xpp3.ExecutablePluginXpp3Reader
 
 class ExecutablePluginXpp3ReaderTest
 {
@@ -34,5 +34,8 @@ class ExecutablePluginXpp3ReaderTest
     assert model != null
     assert model.executablePlugins != null
     assert model.executablePlugins.size() == 1
+    assert model.executablePlugins[0].probingPaths != null
+    assert model.executablePlugins[0].probingPaths.size() == 2
+    assert model.executablePlugins[0].probingPaths[0] == "one"
   }
 }

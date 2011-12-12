@@ -24,7 +24,7 @@ under the License.
   <defaults>
     <default>
       <key>package</key>
-      <value>npanday.model.compiler.plugins</value>
+      <value>npanday.model.executable.plugins</value>
     </default>
   </defaults>
   <classes>
@@ -66,6 +66,13 @@ under the License.
           <description>Vendor of the compiler: MICROSOFT, MONO, DotGNU</description>
         </field>
         <field>
+          <name>vendorVersion</name>
+          <!-- since NPanday 1.5.0 -->
+          <version>1.5.0+</version>
+          <type>String</type>
+          <description>The vendor version the executable is provided by or compatible with.</description>
+        </field>
+        <field>
           <name>language</name>
           <version>1.0.0+</version>
           <type>String</type>
@@ -82,6 +89,20 @@ under the License.
           <version>1.0.0+</version>
           <type>String</type>
           <description>Executable, as run from the command line.</description>
+        </field>
+        <field>
+          <name>probingPaths</name>
+          <version>1.5.0+</version>
+          <description>
+            The paths this executable is likely to be found on. You can use expressions
+            referring to the pom or registry here. $(project.build.directory) would expect the executable
+            in the target directory, and $(HKLM/MyComp/MySoftware@InstallDir) would look up a path in the
+            windows registry.
+          </description>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
         </field>
         <field>
           <name>netDependencyId</name>

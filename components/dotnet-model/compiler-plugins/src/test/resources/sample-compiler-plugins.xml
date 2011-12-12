@@ -21,6 +21,7 @@ under the License.
     <identifier>Ruby</identifier>
     <pluginClass>npanday.executable.compiler.impl.RubyCompiler</pluginClass>
     <vendor>MICROSOFT</vendor>
+    <vendorVersion>1</vendorVersion>
     <executable>RubyCompiler.exe</executable>
     <netDependencyId>RubyCompiler</netDependencyId>
     <language>RUBY</language>

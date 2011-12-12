@@ -19,10 +19,7 @@ public class VendorRequirement
 
     public VendorRequirement( String vendorName, String vendorVersion, String frameworkVersion )
     {
-        if (!isNullOrEmpty(vendorName))
-        {
-            setVendor( VendorFactory.createVendorFromName( vendorName ) );
-        }
+        setVendor( vendorName );
         setVendorVersion( vendorVersion );
         setFrameworkVersion( frameworkVersion );
     }
@@ -48,6 +45,17 @@ public class VendorRequirement
     public void setVendor( Vendor vendor )
     {
         this.vendor = vendor;
+    }
+
+    /**
+     * @see npanday.vendor.VendorInfo#getVendor()
+     */
+    public void setVendor( String vendorName )
+    {
+        if (!isNullOrEmpty(vendorName))
+        {
+            setVendor( VendorFactory.createVendorFromName( vendorName ) );
+        }
     }
 
     /**
@@ -105,7 +113,7 @@ public class VendorRequirement
 
     public String toString()
     {
-        return "[Vendor Requirement for vendor " + visibleNullString( vendor ) + " version "
+        return "[" + getClass().getSimpleName() + " for vendor " + visibleNullString( vendor ) + " version "
             + visibleNullString(getVendorVersion()) + ", Framework Version = "
             + visibleNullString(getFrameworkVersion()) + "]";
     }

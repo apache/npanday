@@ -18,18 +18,18 @@
  */
 package npanday.executable.compiler.impl;
 
-import npanday.PathUtil;
-import npanday.executable.compiler.CompilerContext;
-import npanday.executable.compiler.InvalidArtifactException;
-import npanday.executable.compiler.CompilerExecutable;
-import npanday.executable.ExecutionException;
-import npanday.executable.CommandExecutor;
 import npanday.NPandayContext;
+import npanday.PathUtil;
+import npanday.executable.CommandExecutor;
+import npanday.executable.ExecutionException;
+import npanday.executable.compiler.CompilerContext;
+import npanday.executable.compiler.CompilerExecutable;
+import npanday.executable.compiler.InvalidArtifactException;
 import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
 import java.io.File;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Provides an implementation of the compiler executable.
@@ -63,15 +63,15 @@ abstract class BaseCompiler implements CompilerExecutable
      */
     public String getTargetFramework()
     {
-        return compilerContext.getCompilerCapability().getTargetFramework();
+        return compilerContext.getTargetFramework();
     }
 
     /**
      * @see npanday.executable.compiler.CompilerExecutable#getCompiledArtifact()
      */
-    public String getAssemblyPath()
+    public File getAssemblyPath()
     {
-        return compilerContext.getCompilerCapability().getAssemblyPath();
+        return compilerContext.getAssemblyPath();
     }
 
     /**
@@ -93,7 +93,7 @@ abstract class BaseCompiler implements CompilerExecutable
         {
             throw new ExecutionException( "NPANDAY-068-001: Compiler has not been initialized with a context" );
         }
-        return compilerContext.getCompilerCapability().getExecutable();
+        return compilerContext.getExecutableName();
     }
 
     /**
@@ -110,7 +110,7 @@ abstract class BaseCompiler implements CompilerExecutable
         {
             return null;
         }
-        List<String> executablePaths = compilerContext.getNetCompilerConfig().getExecutionPaths();
+        Collection<String> executablePaths = compilerContext.getProbingPaths();
 		if ( executablePaths != null )
         {
             for ( String executablePath : executablePaths )
@@ -132,14 +132,14 @@ abstract class BaseCompiler implements CompilerExecutable
     public void execute()
         throws ExecutionException
     {
-        if (compilerContext.getNetCompilerConfig().getIncludeSources() ==null && !( new File( compilerContext.getSourceDirectoryName() ).exists() ) )
+        if (compilerContext.getIncludeSources() ==null && !( new File( compilerContext.getSourceDirectoryName() ).exists() ) )
         {
             logger.info( "NPANDAY-068-002: No source files to compile." );
             return;
         }
         logger.info( "NPANDAY-068-003: Compiling Artifact: Vendor = " +
-            compilerContext.getCompilerRequirement().getVendor() + ", Language = " +
-            compilerContext.getCompilerRequirement().getVendor() + ", Assembly Name = " +
+            compilerContext.getVendor() + ", Language = " +
+            compilerContext.getVendor() + ", Assembly Name = " +
             compilerContext.getArtifact().getAbsolutePath() );
 
 	// commands are executed relative to working directory in Windows, but not all platforms
@@ -153,6 +153,6 @@ abstract class BaseCompiler implements CompilerExecutable
 
     public Vendor getVendor()
     {
-        return compilerContext.getCompilerCapability().getVendor();
+        return compilerContext.getVendor();
     }
 }

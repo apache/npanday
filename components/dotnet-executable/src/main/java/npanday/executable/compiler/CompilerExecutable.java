@@ -37,7 +37,7 @@ public interface CompilerExecutable
      *
      * @return the assembly path for this executable
      */
-    String getAssemblyPath();
+    File getAssemblyPath();
 
     /**
      * Returns the target framework for this compiler executable.

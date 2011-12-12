@@ -18,7 +18,7 @@
  */
 package npanday.vendor;
 
-import npanday.vendor.impl.MutableVendorInfo;
+import npanday.PlatformUnsupportedException;
 
 import java.io.File;
 import java.util.List;
@@ -74,20 +74,14 @@ public interface VendorInfo
 
     File getInstallRoot();
 
+    File getGlobalAssemblyCacheDirectoryFor( String artifactType )
+        throws PlatformUnsupportedException;
+
     /**
      * Provides factory services for creating a default instance of vendor info.
      */
     public static class Factory
     {
-        /**
-         * Creates a mutable implementation of vendor info.
-         *
-         * @return a default implementation of vendor info
-         */
-        public static MutableVendorInfo createDefaultVendorInfo()
-        {
-            return new MutableVendorInfo();
-        }
     }
 }
 

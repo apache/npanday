@@ -55,39 +55,20 @@ under the License.
           </configuration>
           <executions>
             <execution>
-              <id>generate-modello-sources</id>
+              <id>mdo</id>
               <phase>generate-sources</phase>
               <goals>
-                <goal>java</goal>
                 <goal>xpp3-reader</goal>
                 <goal>xpp3-writer</goal>
+                <goal>java</goal>
               </goals>
             </execution>
-            <!--execution>
-              <id>generate-modello-xsd</id>
-              <phase>generate-resources</phase>
-              <goals>
-                <goal>xsd</goal>
-              </goals>
-              <configuration>
-                <outputDirectory>${project.build.directory}/xsd</outputDirectory>
-              </configuration>
-            </execution-->
             <execution>
-              <id>generate-modello-xsd-for-site</id>
-              <phase>pre-site</phase>
-              <goals>
-                <goal>xsd</goal>
-              </goals>
-              <configuration>
-                <outputDirectory>${project.build.directory}/generated-site/resources/xsd</outputDirectory>
-              </configuration>
-            </execution>
-            <execution>
-              <id>generate-modello-docs</id>
+              <id>mdo-site</id>
               <phase>pre-site</phase>
               <goals>
                 <goal>xdoc</goal>
+                <goal>xsd</goal>
               </goals>
             </execution>
           </executions>

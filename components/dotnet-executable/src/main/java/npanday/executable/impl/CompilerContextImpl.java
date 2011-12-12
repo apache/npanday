@@ -18,21 +18,19 @@
  */
 package npanday.executable.impl;
 
+import com.google.common.base.Objects;
 import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
 import npanday.PlatformUnsupportedException;
 import npanday.RepositoryNotFoundException;
 import npanday.artifact.ArtifactContext;
 import npanday.artifact.ArtifactException;
-import npanday.executable.CapabilityMatcher;
 import npanday.executable.CommandExecutor;
-import npanday.executable.CommandFilter;
 import npanday.executable.ExecutionException;
 import npanday.executable.compiler.CompilerCapability;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerContext;
 import npanday.executable.compiler.CompilerExecutable;
-import npanday.executable.compiler.CompilerRequirement;
 import npanday.executable.compiler.InvalidArtifactException;
 import npanday.executable.compiler.KeyInfo;
 import npanday.registry.Repository;
@@ -58,10 +56,10 @@ import java.util.Set;
  * Provides an implementation of the Compiler Context.
  *
  * @author Shane Isbell
- * @plexus.component
- *   role="npanday.executable.compiler.CompilerContext"
+ * @plexus.component role="npanday.executable.compiler.CompilerContext"
  */
 public final class CompilerContextImpl
+    extends ExecutableContextImpl
     implements CompilerContext, LogEnabled
 {
     /**
@@ -71,28 +69,23 @@ public final class CompilerContextImpl
 
     private CompilerConfig config;
 
+    private CompilerCapability compilerCapability;
+
+
     private List<Artifact> libraries;
-    
+
     private List<Artifact> directLibraries;
 
     private List<Artifact> modules;
 
-    private CompilerExecutable netCompiler;
-
-    private CompilerCapability compilerCapability;
-
-    private CompilerRequirement compilerRequirement;
-
-    private CommandFilter commandFilter;
-
     /**
- * @plexus.requirement
- */
+     * @plexus.requirement
+     */
     private ArtifactContext artifactContext;
 
     /**
- * @plexus.requirement
- */
+     * @plexus.requirement
+     */
     private RepositoryRegistry repositoryRegistry;
 
     /**
@@ -102,7 +95,9 @@ public final class CompilerContextImpl
 
     private List<File> linkedResources;
 
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     private List<File> embeddedResources;
 
     private List<String> embeddedResourceArgs;
@@ -136,14 +131,40 @@ public final class CompilerContextImpl
         return win32resources;
     }
 
+    public File getAssemblyPath()
+    {
+        return Objects.firstNonNull( config.getAssemblyPath(), compilerCapability.getAssemblyPath() );
+    }
+
+    public String getTargetFramework()
+    {
+        // TODO: Target framework could be overridden through the config here...
+        return compilerCapability.getTargetFramework();
+    }
+
+    public String getTargetProfile()
+    {
+        return compilerCapability.getProfile();
+    }
+
+    public ArtifactType getTargetArtifactType()
+    {
+        return config.getArtifactType();
+    }
+
+    public String getFrameworkVersion()
+    {
+        return compilerCapability.getVendorInfo().getFrameworkVersion();
+    }
+
+    public boolean isTestCompile()
+    {
+        return config.isTestCompile();
+    }
+
     public void enableLogging( Logger logger )
     {
         this.logger = logger;
-    }
-
-    public CompilerRequirement getCompilerRequirement()
-    {
-        return compilerRequirement;
     }
 
     public List<String> getCoreAssemblyNames()
@@ -174,9 +195,8 @@ public final class CompilerContextImpl
             artifacts.add( project.getArtifact() );
         }
 
-        if ( config.isTestCompile() &&
-            ArtifactTypeHelper.isDotnetModule( project.getArtifact().getType() ) &&
-            project.getArtifact().getFile() != null && project.getArtifact().getFile().exists() )
+        if ( config.isTestCompile() && ArtifactTypeHelper.isDotnetModule( project.getArtifact().getType() )
+            && project.getArtifact().getFile() != null && project.getArtifact().getFile().exists() )
         {
             artifacts.add( project.getArtifact() );
         }
@@ -185,8 +205,9 @@ public final class CompilerContextImpl
 
     public KeyInfo getKeyInfo()
     {
-        if ( ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) &&
-            compilerRequirement.getFrameworkVersion().equals( "1.1.4322" ) ) || config.getKeyInfo() == null )
+        if ( ( compilerCapability.getVendorInfo().getVendor().equals( Vendor.MICROSOFT )
+            && compilerCapability.getVendorInfo().getFrameworkVersion().equals( "1.1.4322" ) )
+            || config.getKeyInfo() == null )
         {
             return KeyInfo.Factory.createDefaultKeyInfo();
         }
@@ -205,55 +226,55 @@ public final class CompilerContextImpl
 
     private void addProjectArtifactForTestCompile( List<Artifact> libraries )
     {
-        if ( config.isTestCompile()
-            && ( ArtifactTypeHelper.isDotnetLibrary( config.getArtifactType() )
-                 || ArtifactTypeHelper.isDotnetMavenPlugin( config.getArtifactType() ))
+        if ( config.isTestCompile() && ( ArtifactTypeHelper.isDotnetLibrary( config.getArtifactType() )
+            || ArtifactTypeHelper.isDotnetMavenPlugin( config.getArtifactType() ) )
             && project.getArtifact().getFile() != null && project.getArtifact().getFile().exists()
-            && !libraries.contains( project.getArtifact() ) && !ArtifactTypeHelper.isDotnetModule( project.getArtifact().getType() )
-           )
+            && !libraries.contains( project.getArtifact() ) && !ArtifactTypeHelper.isDotnetModule(
+            project.getArtifact().getType() ) )
         {
             libraries.add( project.getArtifact() );
         }
     }
 
     public List<Artifact> getDirectLibraryDependencies()
-    {   
-                
+    {
+
         for ( Iterator i = project.getDependencyArtifacts().iterator(); i.hasNext(); )
         {
-                Artifact artifact = (Artifact) i.next();
-                
-                if ( !hasArtifact(artifact) )
-                {
-                    directLibraries.add( artifact );
-                }
-                
-                boolean found = false;
-                for ( Iterator j = project.getDependencies().iterator(); j.hasNext() && !found; )
-                {
-                    Dependency dependency  = (Dependency) j.next();
-                    if ( dependency.getGroupId().equals( artifact.getGroupId() ) && dependency.getArtifactId().equals(
-                        artifact.getArtifactId() ) && dependency.getVersion().equals( artifact.getBaseVersion() ) )
-                    {
-                        found = true;
-                    }
-                }
+            Artifact artifact = (Artifact) i.next();
 
-                if ( !found )
+            if ( !hasArtifact( artifact ) )
+            {
+                directLibraries.add( artifact );
+            }
+
+            boolean found = false;
+            for ( Iterator j = project.getDependencies().iterator(); j.hasNext() && !found; )
+            {
+                Dependency dependency = (Dependency) j.next();
+                if ( dependency.getGroupId().equals( artifact.getGroupId() )
+                    && dependency.getArtifactId().equals( artifact.getArtifactId() ) && dependency.getVersion().equals(
+                    artifact.getBaseVersion() ) )
                 {
-                    directLibraries.remove(artifact);
+                    found = true;
                 }
-            
-                
+            }
+
+            if ( !found )
+            {
+                directLibraries.remove( artifact );
+            }
+
+
         }
 
         addProjectArtifactForTestCompile( directLibraries );
-            
+
         return directLibraries;
-  
+
     }
-    
-    private boolean hasArtifact(Artifact artifact)
+
+    private boolean hasArtifact( Artifact artifact )
     {
         for ( Artifact art : directLibraries )
         {
@@ -282,7 +303,8 @@ public final class CompilerContextImpl
 
     public String getSourceDirectoryName()
     {
-        return ( config.isTestCompile() ) ? project.getBuild().getDirectory() + File.separator + "build-test-sources"
+        return ( config.isTestCompile() )
+            ? project.getBuild().getDirectory() + File.separator + "build-test-sources"
             : project.getBuild().getDirectory() + File.separator + "build-sources";
     }
 
@@ -308,23 +330,18 @@ public final class CompilerContextImpl
         }
 
         //TODO: The test-plugin has a dependency on this fileName/dir. If we change it here, it will break the plugin. Fix this encapsulation issue.
-        String fileName = ( config.isTestCompile() ) ? project.getBuild().getDirectory() + File.separator +
-            project.getArtifactId() + "-test.dll" : project.getBuild().getDirectory() + File.separator +
-            project.getArtifactId() + "." + artifactType.getExtension();
+        String fileName = ( config.isTestCompile() )
+            ? project.getBuild().getDirectory() + File.separator + project.getArtifactId() + "-test.dll"
+            : project.getBuild().getDirectory() + File.separator + project.getArtifactId() + "."
+                + artifactType.getExtension();
         return new File( fileName );
     }
 
     public CompilerExecutable getCompilerExecutable()
         throws ExecutionException
     {
-        return netCompiler;
+        return (CompilerExecutable)getNetExecutable();
     }
-
-    public CommandFilter getCommandFilter()
-    {
-        return commandFilter;
-    }
-
 
     public Repository find( String repositoryName )
         throws RepositoryNotFoundException
@@ -338,59 +355,12 @@ public final class CompilerContextImpl
         return repository;
     }
 
-    private String getGacRootForMono()
-        throws PlatformUnsupportedException
-    {
-        String path = System.getenv( "PATH" );
-        if ( path != null )
-        {
-            String[] tokens = path.split( System.getProperty( "path.separator" ) );
-            for ( String token : tokens )
-            {
-                File gacRoot = new File( new File( token ).getParentFile(), "lib/mono/gac/" );
-                if ( gacRoot.exists() )
-                {
-                    return gacRoot.getAbsolutePath();
-                }
-            }
-        }
-        //check settings file
-
-        String monoRoot = System.getenv( "MONO_ROOT" );
-        if ( monoRoot != null && !new File( monoRoot ).exists() )
-        {
-            logger.warn( "MONO_ROOT has been incorrectly set. Trying /usr : MONO_ROOT = " + monoRoot );
-        }
-        else if ( monoRoot != null )
-        {
-            return ( !monoRoot.endsWith( File.separator ) ) ? monoRoot + File.separator : monoRoot;
-        }
-
-        if ( new File( "/usr/lib/mono/gac/" ).exists() )
-        {
-            // Linux default location
-            return new File( "/usr/lib/mono/gac/" ).getAbsolutePath();
-        }
-        else if ( new File( "/Library/Frameworks/Mono.framework/Home/lib/mono/gac/" ).exists() )
-        {
-            // Mac OS X default location
-            return new File( "/Library/Frameworks/Mono.framework/Home/lib/mono/gac/" ).getAbsolutePath();
-        }
-        else
-        {
-            throw new PlatformUnsupportedException(
-                "NPANDAY-061-008: Could not locate Global Assembly Cache for Mono. Try setting the MONO_ROOT environmental variable." );
-        }
-    }
-
-    public void init( CompilerRequirement compilerRequirement, CompilerConfig config, MavenProject project,
-                      CapabilityMatcher capabilityMatcher )
+    public void init( CompilerCapability capability, CompilerConfig config, MavenProject project )
         throws PlatformUnsupportedException
     {
 
         this.project = project;
         this.config = config;
-        this.compilerRequirement = compilerRequirement;
         libraries = new ArrayList<Artifact>();
         directLibraries = new ArrayList<Artifact>();
         modules = new ArrayList<Artifact>();
@@ -402,91 +372,26 @@ public final class CompilerContextImpl
             for ( Artifact artifact : artifacts )
             {
                 String type = artifact.getType();
-                logger.debug( "NPANDAY-061-006: Artifact Type:" + type);
-                logger.debug( "NPANDAY-061-007: Artifact Type:" + ArtifactTypeHelper.isDotnetGenericGac( type ));
+                logger.debug( "NPANDAY-061-006: Artifact Type:" + type );
+                logger.debug( "NPANDAY-061-007: Artifact Type:" + ArtifactTypeHelper.isDotnetGenericGac( type ) );
                 ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( type );
-                if ( ArtifactTypeHelper.isDotnetModule( type ))
+                if ( ArtifactTypeHelper.isDotnetModule( type ) )
                 {
                     modules.add( artifact );
                 }
-                else if ( (artifactType != ArtifactType.NULL && (
-                            StringUtils.equals( artifactType.getTargetCompileType(), "library" )
-                            || artifactType.getExtension().equals( "dll" )
-                            || artifactType.getExtension().equals( "exe" ))
-                          )
-                          || type.equals( "jar" ) )
+                else if ( ( artifactType != ArtifactType.NULL && (
+                    StringUtils.equals( artifactType.getTargetCompileType(), "library" )
+                        || artifactType.getExtension().equals( "dll" ) || artifactType.getExtension().equals(
+                        "exe" ) ) ) || type.equals( "jar" ) )
                 {
                     libraries.add( artifact );
                 }
-                //Resolving here since the GAC path is vendor and framework aware
-                if ( ArtifactTypeHelper.isDotnetGenericGac( type ) )                
+
+                File gacRoot = capability.getVendorInfo().getGlobalAssemblyCacheDirectoryFor( type );
+
+                if ( gacRoot != null )
                 {
-                    // TODO: Duplicate code with VendorInfoRepositoryImpl.getGlobalAssemblyCacheDirectoryFor
-                    String gacRoot = null;
-                    if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) &&
-                        compilerRequirement.getFrameworkVersion().equals( "1.1.4322" ) )
-                    {
-                        gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC\\";
-                    }
-                    else if ( compilerRequirement.getVendor().equals( Vendor.MICROSOFT ) )
-                    {
-                        // Layout changed since 2.0
-                        // http://discuss.joelonsoftware.com/default.asp?dotnet.12.383883.5
-                        gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
-                    }
-                    else if ( compilerRequirement.getVendor().equals( Vendor.MONO ) )
-                    {
-                        gacRoot = getGacRootForMono();
-                    }
-                    if ( gacRoot != null )
-                    {
-                        setArtifactGacFile( gacRoot, artifact );
-                        libraries.add( artifact );
-                    }
-                }                
-                else if (type.equals(ArtifactType.GAC_MSIL4.getPackagingType())) {
-                    String gacRoot = System.getenv( "SystemRoot" ) + "\\Microsoft.NET\\assembly\\GAC_MSIL\\";
-                    setArtifactGacFile( gacRoot, artifact );
-                    libraries.add( artifact );
-                }
-                else if ( type.equals( ArtifactType.GAC.getPackagingType() ) )
-                {
-                    String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
-                        : System.getenv( "SystemRoot" ) + "\\assembly\\GAC\\";
-                    setArtifactGacFile( gacRoot, artifact );
-                    libraries.add( artifact );
-                }
-                else if ( type.equals( ArtifactType.GAC_32.getPackagingType() ) )
-                {
-                    String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
-                        : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_32\\";
-                    setArtifactGacFile( gacRoot, artifact );
-                    libraries.add( artifact );
-                }
-                else if ( type.equals( ArtifactType.GAC_32_4.getPackagingType() ) )
-                {
-                    String gacRoot = System.getenv( "SystemRoot" ) + "\\Microsoft.NET\\assembly\\GAC_32\\";
-                    setArtifactGacFile( gacRoot, artifact );
-                    libraries.add( artifact );
-                }
-                else if ( type.equals( ArtifactType.GAC_64.getPackagingType() ) )
-                {
-                    String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
-                        : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_64\\";
-                    setArtifactGacFile( gacRoot, artifact );
-                    libraries.add( artifact );
-                }
-                else if ( type.equals( ArtifactType.GAC_64_4.getPackagingType() ) )
-                {
-                    String gacRoot = System.getenv( "SystemRoot" ) + "\\Microsoft.NET\\assembly\\GAC_64\\";
-                    setArtifactGacFile( gacRoot, artifact );
-                    libraries.add( artifact );
-                }
-                else if ( type.equals( ArtifactType.GAC_MSIL.getPackagingType() ) )
-                {
-                    String gacRoot = ( compilerRequirement.getVendor().equals( Vendor.MONO ) ) ? getGacRootForMono()
-                        : System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
-                    setArtifactGacFile( gacRoot, artifact );
+                    setArtifactGacFile( gacRoot.getAbsolutePath(), artifact );
                     libraries.add( artifact );
                 }
                 else if ( type.equals( ArtifactType.COM_REFERENCE.getPackagingType() ) )
@@ -494,52 +399,28 @@ public final class CompilerContextImpl
                     moveInteropDllToBuildDirectory( artifact );
                     libraries.add( artifact );
                 }
-                else if ( (artifactType != null && (
-                            "library".equals(artifactType.getTargetCompileType()  )
-                            || "dll".equals(artifactType.getExtension()  )
-                            || "exe".equals(artifactType.getExtension()  ))
-                          )
-                          || "jar".equals(type  ) )
+                else if ( ( artifactType != null && ( "library".equals( artifactType.getTargetCompileType() )
+                    || "dll".equals( artifactType.getExtension() ) || "exe".equals( artifactType.getExtension() ) ) )
+                    || "jar".equals( type ) )
                 {
-                   libraries.add( artifact );
+                    libraries.add( artifact );
                 }
-                
+
             }
         }
 
-        compilerCapability = capabilityMatcher.matchCompilerCapabilityFor( compilerRequirement );
-        String className = compilerCapability.getPluginClassName();
+        // TODO: matching the capability for the compiler requirement should be done on the outside
+        compilerCapability = capability;
 
-        try
-        {
-            Class cc = Class.forName( className );
-            netCompiler = (CompilerExecutable) cc.newInstance();
-            netCompiler.init( this );//TODO: Add ArtifactInfo?
-        }
-        catch ( ClassNotFoundException e )
-        {
-            throw new PlatformUnsupportedException(
-                "NPANDAY-061-004: Unable to create NetCompiler: Class Name = " + className, e );
-        }
-        catch ( InstantiationException e )
-        {
-            throw new PlatformUnsupportedException(
-                "NPANDAY-061-005: Unable to create NetCompiler: Class Name = " + className, e );
-        }
-        catch ( IllegalAccessException e )
-        {
-            throw new PlatformUnsupportedException(
-                "NPANDAY-061-006: Unable to create NetCompiler: Class Name = " + className, e );
-        }
-        commandFilter =
-            CommandFilter.Factory.createDefaultCommandFilter( compilerCapability.getCommandCapability(), logger );
+        super.init( compilerCapability, config );
 
         String basedir = project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator;
         linkedResources = new File( basedir, "linkresource" ).exists() ? Arrays.asList(
             new File( basedir, "linkresource" ).listFiles() ) : new ArrayList<File>();
         getEmbeddedResources( new File( basedir, "resource" ) );
-        win32resources = new File( basedir, "win32res" ).exists() ? Arrays.asList(
-            new File( basedir, "win32res" ).listFiles() ) : new ArrayList<File>();
+        win32resources = new File( basedir, "win32res" ).exists()
+            ? Arrays.asList( new File( basedir, "win32res" ).listFiles() )
+            : new ArrayList<File>();
         File win32IconDir = new File( basedir, "win32icon" );
         if ( win32IconDir.exists() )
         {
@@ -547,14 +428,25 @@ public final class CompilerContextImpl
             if ( icons.length > 1 )
             {
                 throw new PlatformUnsupportedException(
-                    "NPANDAY-061-007: There is more than one win32icon in resource directory: Number = " + icons
-                        .length );
+                    "NPANDAY-061-007: There is more than one win32icon in resource directory: Number = "
+                        + icons.length );
             }
             if ( icons.length == 1 )
             {
                 win32icon = icons[0];
             }
         }
+    }
+
+    public List<String> getIncludeSources()
+    {
+        // TODO: directory scanner should run already here!
+        return config.getIncludeSources();
+    }
+
+    public File getOutputDirectory()
+    {
+        return config.getOutputDirectory();
     }
 
     private void getEmbeddedResources( File basedir )
@@ -569,13 +461,16 @@ public final class CompilerContextImpl
 
             for ( String file : scanner.getIncludedFiles() )
             {
-                File f = new File(basedir, file);
-                embeddedResources.add(f);
-                if (f.getName().endsWith(".resources")) {
-                    embeddedResourceArgs.add(f.getAbsolutePath());
-                } else {
-                    String resourceName = project.getArtifactId() + "." + file.replace(File.separatorChar, '.');
-                    embeddedResourceArgs.add(f.getAbsolutePath() + "," + resourceName);
+                File f = new File( basedir, file );
+                embeddedResources.add( f );
+                if ( f.getName().endsWith( ".resources" ) )
+                {
+                    embeddedResourceArgs.add( f.getAbsolutePath() );
+                }
+                else
+                {
+                    String resourceName = project.getArtifactId() + "." + file.replace( File.separatorChar, '.' );
+                    embeddedResourceArgs.add( f.getAbsolutePath() + "," + resourceName );
                 }
             }
         }
@@ -583,7 +478,8 @@ public final class CompilerContextImpl
         this.embeddedResourceArgs = embeddedResourceArgs;
     }
 
-    private void moveInteropDllToBuildDirectory(Artifact artifact) throws PlatformUnsupportedException
+    private void moveInteropDllToBuildDirectory( Artifact artifact )
+        throws PlatformUnsupportedException
     {
         try
         {
@@ -591,80 +487,84 @@ public final class CompilerContextImpl
             String oldPath = file.getAbsolutePath();
             String target = project.getBuild().getDirectory();
             String newPath = target + File.separator + "Interop." + artifact.getArtifactId() + ".dll";
-            
+
             if ( oldPath.contains( target ) ) //already copied to target
-                return ; 
-            
-            logger.info( "NPANDAY-000-000:[COM Reference] copying file ["+ oldPath+"] to [" + target +"]" );
+            {
+                return;
+            }
+
+            logger.info( "NPANDAY-000-000:[COM Reference] copying file [" + oldPath + "] to [" + target + "]" );
             FileUtils.copyFileToDirectory( file, new File( target ) );
-            
-            logger.info( "NPANDAY-000-000:[COM Reference] deleting directory ["+ file.getParentFile() +"]" );
+
+            logger.info( "NPANDAY-000-000:[COM Reference] deleting directory [" + file.getParentFile() + "]" );
             FileUtils.deleteDirectory( file.getParentFile() );
-            
-            logger.info( "NPANDAY-000-000:[COM Reference] updating artifact path to ["+ newPath +"]" );
-            
+
+            logger.info( "NPANDAY-000-000:[COM Reference] updating artifact path to [" + newPath + "]" );
+
             artifact.setFile( new File( newPath ) );
-        }catch(Exception e)
-        {
-            throw new PlatformUnsupportedException (e);
         }
-        
+        catch ( Exception e )
+        {
+            throw new PlatformUnsupportedException( e );
+        }
+
     }
-    
+
     /*
-     * Installs the artifact to the gac so that it can be used in aspnet
-     */
-    private void installArtifactGacFile(Artifact artifact)
+    * Installs the artifact to the gac so that it can be used in aspnet
+    */
+    private void installArtifactGacFile( Artifact artifact )
     {
         try
         {
             CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-            
+
             String executable = "gacutil";
             List<String> commands = new ArrayList<String>();
-            
+
             //searching for the .dll to be installed.
-            String sourceDir =  config.getIncludeSources().get( 0 );
+            String sourceDir = config.getIncludeSources().get( 0 );
             String[] sourceDirTokens = sourceDir.split( "\\\\" );
             String sDir = "";
-            
+
             //constructing the directory for the.dll 
-            for(int i=0;i<sourceDirTokens.length-3;i++)
+            for ( int i = 0; i < sourceDirTokens.length - 3; i++ )
             {
-                if(sDir.equalsIgnoreCase( "" ))
+                if ( sDir.equalsIgnoreCase( "" ) )
                 {
                     sDir = sourceDirTokens[i];
                 }
                 else
                 {
-                    sDir = sDir +"\\"+sourceDirTokens[i];
+                    sDir = sDir + "\\" + sourceDirTokens[i];
                 }
-                
+
             }
-            
-            String dll = artifact.getArtifactId()+".dll";
-            String dllSysPath ="";
-            List<File> potentialDlls= FileUtils.getFiles( new File(sDir), "**" , null );
-            
-            for(File cFile: potentialDlls)
+
+            String dll = artifact.getArtifactId() + ".dll";
+            String dllSysPath = "";
+            List<File> potentialDlls = FileUtils.getFiles( new File( sDir ), "**", null );
+
+            for ( File cFile : potentialDlls )
             {
-                String pSysPath = cFile.getAbsolutePath(); 
+                String pSysPath = cFile.getAbsolutePath();
                 String[] pathTokens = pSysPath.split( "\\\\" );
-                if(pathTokens[pathTokens.length-1].equalsIgnoreCase( dll ) ) 
+                if ( pathTokens[pathTokens.length - 1].equalsIgnoreCase( dll ) )
                 {
                     dllSysPath = cFile.getAbsolutePath();
                     //break;
                 }
             }
-            
-            commands.add( "/i "+dllSysPath );
-            commandExecutor.executeCommand( executable, commands);
+
+            commands.add( "/i " + dllSysPath );
+            commandExecutor.executeCommand( executable, commands );
         }
-        catch(Exception e)
+        catch ( Exception e )
         {
-            System.out.println("NPANDAY-000-000: Could not install artifact to GAC artifact:" +artifact.getArtifactId());
+            System.out.println(
+                "NPANDAY-000-000: Could not install artifact to GAC artifact:" + artifact.getArtifactId() );
         }
-         
+
     }
 
     private void setArtifactGacFile( String gacRoot, Artifact artifact )
@@ -673,41 +573,45 @@ public final class CompilerContextImpl
         // TODO: Refactor to PathUtil.getGlobalAssemblyCacheFileFor
 
         String type = artifact.getType();
-        logger.debug( "NPANDAY-061-001: Gac Root:" + gacRoot);
-        logger.debug( "NPANDAY-061-003: Artifact Type:" + type);
+        logger.debug( "NPANDAY-061-001: Gac Root:" + gacRoot );
+        logger.debug( "NPANDAY-061-003: Artifact Type:" + type );
         File gacFile;
-        if ("gac_msil4".equalsIgnoreCase(type) || "gac_32_4".equalsIgnoreCase(type) || "gac_64_4".equalsIgnoreCase(type)) {
-            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + "v" + compilerRequirement.getFrameworkVersion() + "_" + artifact.getVersion() + "__" +
-                artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+        if ( "gac_msil4".equalsIgnoreCase( type ) || "gac_32_4".equalsIgnoreCase( type ) || "gac_64_4".equalsIgnoreCase(
+            type ) )
+        {
+            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + "v"
+                + compilerCapability.getVendorInfo().getFrameworkVersion() + "_" + artifact.getVersion() + "__"
+                + artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
         }
-        else {
-            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
-                artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+        else
+        {
+            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__"
+                + artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
         }
 
         logger.debug( "NPANDAY-061-001: gacFile to:" + gacFile.getAbsolutePath() );
         // first check if the artifact is not yet installed
         if ( !gacFile.exists() )
         {
-            installArtifactGacFile(artifact);
+            installArtifactGacFile( artifact );
         }
         // after installing the gac check if it is installed in the system.
         if ( !gacFile.exists() )
         {
             // TODO: this will only work on Windows
             //check for gac_msil
-            
+
             gacRoot = System.getenv( "SystemRoot" ) + "\\assembly\\GAC_MSIL\\";
-            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__" +
-                                artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
+            gacFile = new File( gacRoot, artifact.getArtifactId() + File.separator + artifact.getVersion() + "__"
+                + artifact.getClassifier() + File.separator + artifact.getArtifactId() + ".dll" );
             if ( !gacFile.exists() )
             {
-                
+
                 throw new PlatformUnsupportedException(
-                                                       "NPANDAY-000-000: Could not find GAC dependency: File = " + gacFile.getAbsolutePath() );
+                    "NPANDAY-000-000: Could not find GAC dependency: File = " + gacFile.getAbsolutePath() );
             }
-            
-            
+
+
         }
         artifact.setFile( gacFile );
     }

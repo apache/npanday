@@ -20,6 +20,7 @@ package npanday.executable.compiler;
 
 import npanday.executable.ExecutableCapability;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -42,7 +43,7 @@ public interface CompilerCapability
      *
      * @return assemblyPath
      */
-    String getAssemblyPath();
+    File getAssemblyPath();
 
     /**
      * Returns a list of core assemblies names. These assemblies do not contain the artifact extension (.dll), but may contain
@@ -78,7 +79,7 @@ public interface CompilerCapability
      *
      * @param assemblyPath
      */
-    void setAssemblyPath( String assemblyPath );
+    void setAssemblyPath( File assemblyPath );
 
     /**
      * Sets the core assemblies. You may specify a path with the core assembly name, but do not give the extension (.dll),

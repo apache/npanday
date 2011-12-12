@@ -18,8 +18,6 @@
  */
 package npanday.vendor.impl;
 
-import npanday.ArtifactType;
-import npanday.ArtifactTypeHelper;
 import npanday.PlatformUnsupportedException;
 import npanday.model.settings.Framework;
 import npanday.registry.RepositoryRegistry;
@@ -36,7 +34,6 @@ import org.codehaus.plexus.logging.Logger;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -233,87 +230,8 @@ public class VendorInfoRepositoryImpl
     public File getGlobalAssemblyCacheDirectoryFor( Vendor vendor, String frameworkVersion, String artifactType )
         throws PlatformUnsupportedException
     {
-        // TODO: Duplicate code with CompilerContextImpl.init
-
-        if (ArtifactTypeHelper.isDotnetGenericGac( artifactType ))
-        {
-            if ( vendor.equals( Vendor.MICROSOFT ) && frameworkVersion.equals( "1.1.4322" ) )
-            {
-                return new File( System.getenv("SystemRoot"), "\\assembly\\GAC\\" );
-            }
-            else if ( vendor.equals( Vendor.MICROSOFT ) )
-            {
-                // Layout changed since 2.0
-                // http://discuss.joelonsoftware.com/default.asp?dotnet.12.383883.5
-                return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
-            }
-            else if ( vendor.equals( Vendor.MONO ) && !isEmpty() )
-            {
-                List<VendorInfo> vendorInfos =
-                    getVendorInfosFor( vendor.getVendorName(), null, frameworkVersion, true );
-                Set<String> vendorVersions = new HashSet<String>();
-                for ( VendorInfo vendorInfo : vendorInfos )
-                {
-                    vendorVersions.add( vendorInfo.getVendorVersion() );
-                }
-                String maxVersion;
-                try
-                {
-                    maxVersion = getMaxVersion( vendorVersions );
-                }
-                catch ( InvalidVersionFormatException e )
-                {
-                    throw new PlatformUnsupportedException( "NPANDAY-113-004: Invalid version format", e );
-                }
-
-                for ( VendorInfo vendorInfo : vendorInfos )
-                {
-                    if ( vendorInfo.getVendorVersion().equals( maxVersion ) )
-                    {
-                        File sdkInstallRoot = vendorInfo.getSdkInstallRoot();
-                        File gacRoot = new File( sdkInstallRoot.getParentFile().getAbsolutePath() + "/lib/mono/gac" );
-                        if ( !gacRoot.exists() )
-                        {
-                            throw new PlatformUnsupportedException(
-                                "NPANDAY-113-005: The Mono GAC path does not exist: Path = " +
-                                    gacRoot.getAbsolutePath() );
-                        }
-                        return gacRoot;
-                    }
-                }
-                
-                //TODO: MONO Support for Linux (Separate file containg installs)
-            }
-        }
-        else if ( artifactType.equals( ArtifactType.GAC.getPackagingType() ) )
-        {
-            return new File( System.getenv("SystemRoot"), "\\assembly\\GAC\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_32.getPackagingType() ) )
-        {
-            return new File(System.getenv("SystemRoot"), "\\assembly\\GAC_32\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_32_4.getPackagingType() ) )
-        {
-            return new File(System.getenv("SystemRoot"), "\\Microsoft.NET\\assembly\\GAC_32\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_64.getPackagingType() ) )
-        {
-            return new File(System.getenv("SystemRoot"), "\\assembly\\GAC_64\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_64_4.getPackagingType() ) )
-        {
-            return new File(System.getenv("SystemRoot"), "\\Microsoft.NET\\assembly\\GAC_64\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_MSIL.getPackagingType() ) )
-        {
-            return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_MSIL4.getPackagingType() ) )
-        {
-            return new File( System.getenv("SystemRoot"), "\\Microsoft.NET\\assembly\\GAC_MSIL\\" );
-        }
-        throw new PlatformUnsupportedException("NPANDAY-113-006: Could not locate a valid GAC");
+        return getSingleVendorInfoByRequirement( new VendorRequirement( vendor, null, frameworkVersion ) )
+            .getGlobalAssemblyCacheDirectoryFor(artifactType);
     }
 
     public boolean isEmpty()

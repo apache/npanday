@@ -26,6 +26,8 @@ import npanday.executable.ExecutableRequirement;
 import npanday.executable.compiler.CompilerCapability;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
+import npanday.vendor.StateMachineProcessor;
+import npanday.vendor.VendorInfo;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.ArrayList;
@@ -43,9 +45,16 @@ public class CapabilityMatcherImpl
     implements CapabilityMatcher
 {
     /**
- * @plexus.requirement
- */
+     * @plexus.requirement
+     */
     private RepositoryRegistry repositoryRegistry;
+
+    /**
+     * @plexus.requirement
+     */
+    private StateMachineProcessor processor;
+
+
 
     public CompilerCapability matchCompilerCapabilityFor( CompilerRequirement compilerRequirement,
                                                           List<ExecutableMatchPolicy> matchPolicies )
@@ -55,17 +64,23 @@ public class CapabilityMatcherImpl
         {
             throw new PlatformUnsupportedException( "NPANDAY-065-006: The compiler requirement should not be null." );
         }
+
         if ( matchPolicies == null )
         {
             matchPolicies = new ArrayList<ExecutableMatchPolicy>();
         }
+
+        VendorInfo vendorInfo = matchVendorInfo(compilerRequirement);
+        if ( matchPolicies == null )
+        {
+            matchPolicies = new ArrayList<ExecutableMatchPolicy>();
+        }
+
         matchPolicies.add( MatchPolicyFactory.createOperatingSystemPolicy( System.getProperty( "os.name" ) ) );
-        matchPolicies.add( MatchPolicyFactory.createVendorPolicy( compilerRequirement.getVendor() ) );
         matchPolicies.add( MatchPolicyFactory.createLanguagePolicy( compilerRequirement.getLanguage() ) );
-        matchPolicies.add(
-            MatchPolicyFactory.createFrameworkVersionPolicy( compilerRequirement.getFrameworkVersion() ) );
         matchPolicies.add( MatchPolicyFactory.createProfilePolicy( compilerRequirement.getProfile() ) );
-        return (CompilerCapability) matchFromExecutableCapabilities( getCompilerCapabilities(), matchPolicies );
+
+        return (CompilerCapability) matchFromExecutableCapabilities( getCompilerCapabilities(vendorInfo), matchPolicies );
     }
 
     public CompilerCapability matchCompilerCapabilityFor( CompilerRequirement compilerRequirement )
@@ -104,16 +119,16 @@ public class CapabilityMatcherImpl
                                                               List<ExecutableMatchPolicy> matchPolicies )
         throws PlatformUnsupportedException
     {
+        VendorInfo vendorInfo = matchVendorInfo(executableRequirement);
         if ( matchPolicies == null )
         {
             matchPolicies = new ArrayList<ExecutableMatchPolicy>();
         }
+
         matchPolicies.add( MatchPolicyFactory.createOperatingSystemPolicy( System.getProperty( "os.name" ) ) );
-        matchPolicies.add( MatchPolicyFactory.createVendorPolicy( executableRequirement.getVendor() ) );
-        matchPolicies.add(
-            MatchPolicyFactory.createFrameworkVersionPolicy( executableRequirement.getFrameworkVersion() ) );
         matchPolicies.add( MatchPolicyFactory.createProfilePolicy( executableRequirement.getProfile() ) );
-        return matchFromExecutableCapabilities( getExecutableCapabilities(), matchPolicies );
+
+        return matchFromExecutableCapabilities( getExecutableCapabilities(vendorInfo), matchPolicies );
     }
 
 
@@ -136,6 +151,22 @@ public class CapabilityMatcherImpl
                 + matchPolicies.size() );
     }
 
+    private VendorInfo matchVendorInfo(ExecutableRequirement executableRequirement)
+        throws PlatformUnsupportedException
+    {
+       VendorInfo vendorInfo;
+        try
+        {
+            vendorInfo = processor.process( executableRequirement );
+            getLogger().debug(
+                String.format( "NPANDAY-065-008: Found vendor %s for requirement %s", vendorInfo, executableRequirement ) );
+            return vendorInfo;
+        }
+        catch ( npanday.vendor.IllegalStateException e )
+        {
+            throw new PlatformUnsupportedException( "NPANDAY-065-007: Error when searching vendor with " + executableRequirement, e );
+        }
+    }
 
     private boolean matchExecutableCapability( ExecutableCapability executableCapability,
                                                List<ExecutableMatchPolicy> matchPolicies )
@@ -157,23 +188,18 @@ public class CapabilityMatcherImpl
      * capabilities for the invoking platform.
      *
      * @return all platform capabilities (as defined in the compiler-plugins.xml file).
+     * @param vendorInfo
      */
-    private List<ExecutableCapability> getCompilerCapabilities()
+    private List<ExecutableCapability> getCompilerCapabilities( VendorInfo vendorInfo )
         throws PlatformUnsupportedException
     {
         CompilerPluginsRepository pluginsRepository =
             (CompilerPluginsRepository) repositoryRegistry.find( "compiler-plugins" );
-        CompilerPluginsRepository pluginsRepositoryExt =
-            (CompilerPluginsRepository) repositoryRegistry.find( "compiler-plugins-ext" );
+
         List<ExecutableCapability> primary = new ArrayList<ExecutableCapability>();
         if ( pluginsRepository != null )
         {
-            primary = pluginsRepository.getCompilerCapabilities();
-        }
-
-        if ( pluginsRepositoryExt != null )
-        {
-            primary.addAll( pluginsRepositoryExt.getCompilerCapabilities() );
+            primary = pluginsRepository.getCompilerCapabilities(vendorInfo);
         }
         if ( primary.isEmpty() )
         {
@@ -188,24 +214,16 @@ public class CapabilityMatcherImpl
      * capabilities for the invoking platform.
      *
      * @return all platform capabilities (as defined in the compiler-plugins.xml file).
+     * @param vendorInfo
      */
-    private List<ExecutableCapability> getExecutableCapabilities()
+    private List<ExecutableCapability> getExecutableCapabilities( VendorInfo vendorInfo )
         throws PlatformUnsupportedException
     {
         ExecutablePluginsRepository pluginsRepository =
             (ExecutablePluginsRepository) repositoryRegistry.find( "executable-plugins" );
-        ExecutablePluginsRepository pluginsRepositoryExt =
-            (ExecutablePluginsRepository) repositoryRegistry.find( "executable-plugins-ext" );
-        List<ExecutableCapability> primary = new ArrayList<ExecutableCapability>();
-        if ( pluginsRepository != null )
-        {
-            primary = pluginsRepository.getCapabilities();
-        }
 
-        if ( pluginsRepositoryExt != null )
-        {
-            primary.addAll( pluginsRepositoryExt.getCapabilities() );
-        }
+        List<ExecutableCapability> primary =  pluginsRepository.getCapabilities(vendorInfo);
+
         if ( primary.isEmpty() )
         {
             throw new PlatformUnsupportedException( "NPANDAY-065-004: No executable capabilities configured" );

@@ -18,6 +18,7 @@
  */
 package npanday.plugin.xsp;
 
+import npanday.executable.ExecutableRequirement;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import npanday.PlatformUnsupportedException;
@@ -54,15 +55,18 @@ public class XspStarterMojo
      */
     private npanday.executable.NetExecutableFactory netExecutableFactory;
 
-    public void execute()
-        throws MojoExecutionException
+    public void execute() throws MojoExecutionException
     {
         try
         {
-            Runnable executable = (Runnable) netExecutableFactory.getNetExecutableFor( Vendor.MONO.getVendorName(),
-                                                                                       frameworkVersion, "XSP:START",
-                                                                                       new ArrayList<String>(),
-                                                                                       netHome );
+            final ExecutableRequirement executableRequirement = new ExecutableRequirement(
+                Vendor.MONO.getVendorName(), null, frameworkVersion, "XSP:START"
+            );
+
+            Runnable executable = (Runnable) netExecutableFactory.getNetExecutableFor(
+                executableRequirement, new ArrayList<String>(), netHome
+            );
+
             Thread thread = new Thread( executable );
             getPluginContext().put( "xspThread", thread );
             thread.start();

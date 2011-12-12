@@ -1,7 +1,9 @@
 package npanday.registry.impl;
 
+import npanday.registry.ModelInterpolator;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
+import org.codehaus.plexus.interpolation.InterpolationException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import javax.naming.OperationNotSupportedException;
@@ -25,7 +27,6 @@ public abstract class AbstractMultisourceRepository<T>
     extends AbstractLogEnabled
     implements Repository
 {
-
     private Hashtable properties;
 
     /**
@@ -70,9 +71,31 @@ public abstract class AbstractMultisourceRepository<T>
                 "NPANDAY-111-001: Could not read " + sourceUrl + " into " + getClass().getSimpleName(), e );
         }
 
+        try
+        {
+            interpolateModel( model );
+        }
+        catch ( InterpolationException e )
+        {
+            throw new NPandayRepositoryException(
+                "NPANDAY-111-001: Error on interpolating model from " + sourceUrl, e );
+        }
+
         mergeLoadedModel( model );
         incrementContentVersion();
     }
+
+    private void interpolateModel( T model )
+        throws InterpolationException
+    {
+       // TODO: somehow we have to get the MavenProject here in order to filter it in
+       getInterpolator().interpolate( model, null );
+    }
+
+    /**
+     * @return The (probably injected) interpolator.
+     */
+    protected abstract ModelInterpolator getInterpolator();
 
     protected abstract T loadFromReader( Reader reader, Hashtable properties )
         throws IOException, org.codehaus.plexus.util.xml.pull.XmlPullParserException;

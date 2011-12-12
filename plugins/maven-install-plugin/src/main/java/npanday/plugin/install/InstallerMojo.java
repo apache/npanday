@@ -18,30 +18,31 @@
  */
 package npanday.plugin.install;
 
+import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
+import npanday.PlatformUnsupportedException;
+import npanday.artifact.ApplicationConfig;
+import npanday.artifact.ArtifactContext;
+import npanday.dao.Project;
+import npanday.dao.ProjectDao;
 import npanday.dao.ProjectDaoException;
+import npanday.dao.ProjectDependency;
+import npanday.executable.ExecutableRequirement;
+import npanday.executable.ExecutionException;
+import npanday.executable.NetExecutable;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.installer.ArtifactInstallationException;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
-import npanday.artifact.ArtifactContext;
-import npanday.ArtifactType;
-import npanday.artifact.ApplicationConfig;
-import npanday.executable.NetExecutable;
-import npanday.executable.ExecutionException;
-import npanday.PlatformUnsupportedException;
-import npanday.dao.Project;
-import npanday.dao.ProjectDependency;
-import npanday.dao.ProjectDao;
-import org.apache.maven.model.Dependency;
 
 import java.io.File;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Installs assembly into the local repository
@@ -152,9 +153,8 @@ public class InstallerMojo
             {
                 try
                 {
-                    NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion,
-                                                                                            profile, getCommands(),
-                                                                                            null );
+                    NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor(
+                        new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), null );
                     netExecutable.execute();
                     getLog().info( "NPANDAY-xxx-003: Installed Assembly into GAC: Assembly = " +
                         project.getArtifact().getFile() + ",  Vendor = " + netExecutable.getVendor().getVendorName() );

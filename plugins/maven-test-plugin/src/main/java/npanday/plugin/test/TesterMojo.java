@@ -24,6 +24,7 @@ import npanday.PlatformUnsupportedException;
 import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.executable.CommandExecutor;
+import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.executable.NetExecutableFactory;
@@ -424,7 +425,9 @@ extends AbstractMojo
                 Vendor vendor = vendorInfo.getVendor();
                 String vendorName = vendor.getVendorName();
 
-                NetExecutable executable = netExecutableFactory.getNetExecutableFor( vendorName, executionFrameworkVersion, executableName, commands, executableHome );
+                NetExecutable executable = netExecutableFactory.getNetExecutableFor(
+                    new ExecutableRequirement( vendorName, null, executionFrameworkVersion, executableName), commands, executableHome );
+
                 executable.execute();
             }
             catch (PlatformUnsupportedException pue)

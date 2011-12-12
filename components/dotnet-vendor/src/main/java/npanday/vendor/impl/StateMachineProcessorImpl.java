@@ -19,6 +19,8 @@
 package npanday.vendor.impl;
 
 import npanday.PlatformUnsupportedException;
+import npanday.model.settings.Framework;
+import npanday.model.settings.Vendor;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.IllegalStateException;
 import npanday.vendor.SettingsException;
@@ -157,8 +159,14 @@ public final class StateMachineProcessorImpl
             // TODO: Remove this blcok, as soon as vendor discovery is moved to java code
             if ( vendorInfoRepository.isEmpty() )
             {
-                final MutableVendorInfo vendorInfo =
-                    new MutableVendorInfo( VendorFactory.getDefaultVendorForOS(), "2.0", "2.0.50727" );
+                Vendor configuredVendor = new Vendor();
+                configuredVendor.setVendorName( VendorFactory.getDefaultVendorForOS().getVendorName() );
+                configuredVendor.setVendorVersion( "2.0" );
+
+                Framework configuredFramework = new Framework();
+                configuredFramework.setFrameworkVersion(  "2.0.50727" );
+
+                VendorInfo vendorInfo = new SettingsBasedVendorInfo( configuredVendor, configuredFramework );
 
                 logger.warn( "NPANDAY-102-006: Chose sensible default, because there are no settings available yet:"
                                  + vendorInfo );

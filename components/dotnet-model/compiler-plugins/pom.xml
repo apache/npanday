@@ -36,7 +36,7 @@ under the License.
           <models>
             <model>compiler-plugins.mdo</model>
           </models>
-          <version>1.0.0</version> 
+          <version>1.5.0</version>
         </configuration> 
       </plugin> 
     </plugins> 

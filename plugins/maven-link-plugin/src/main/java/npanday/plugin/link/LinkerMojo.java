@@ -19,15 +19,16 @@
 
 package npanday.plugin.link;
 
+import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutableRequirement;
+import npanday.executable.ExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import npanday.executable.ExecutionException;
-import npanday.PlatformUnsupportedException;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Link modules into assemblies. 
@@ -97,8 +98,9 @@ public class LinkerMojo
 
         try
         {
-            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, getCommands(),
-                                                      null ).execute();
+            netExecutableFactory.getNetExecutableFor(
+                new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), null )
+                .execute();
         }
         catch ( ExecutionException e )
         {

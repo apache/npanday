@@ -24,9 +24,11 @@ import npanday.model.settings.Framework;
 import npanday.model.settings.NPandaySettings;
 import npanday.model.settings.Vendor;
 import npanday.model.settings.io.xpp3.NPandaySettingsXpp3Reader;
+import npanday.registry.ModelInterpolator;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.impl.AbstractMultisourceRepository;
 import npanday.vendor.SettingsRepository;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
@@ -204,6 +206,19 @@ public final class FileBasedSettingsRepository
         throws InitializationException
     {
 
+    }
+
+    // ### COMPONENTS REQUIRED BY THE BASE CLASS
+
+    /**
+     * @plexus.requirement
+     */
+    private ModelInterpolator interpolator;
+
+    @Override
+    protected ModelInterpolator getInterpolator()
+    {
+        return interpolator;
     }
 }
 

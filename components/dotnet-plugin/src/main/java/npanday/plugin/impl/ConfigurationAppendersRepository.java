@@ -21,9 +21,11 @@ package npanday.plugin.impl;
 import npanday.model.configurationappenders.ConfigurationAppender;
 import npanday.model.configurationappenders.ConfigurationAppenderModel;
 import npanday.model.configurationappenders.io.xpp3.ConfigurationAppendersXpp3Reader;
+import npanday.registry.ModelInterpolator;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.impl.AbstractMultisourceRepository;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.IOException;
@@ -86,5 +88,18 @@ public class ConfigurationAppendersRepository
     protected void clear()
     {
         appenderClasses.clear();
+    }
+
+    // ### COMPONENTS REQUIRED BY THE BASE CLASS
+
+    /**
+     * @plexus.requirement
+     */
+    private ModelInterpolator interpolator;
+
+    @Override
+    protected ModelInterpolator getInterpolator()
+    {
+        return interpolator;
     }
 }

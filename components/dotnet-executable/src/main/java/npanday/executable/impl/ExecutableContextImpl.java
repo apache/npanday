@@ -19,7 +19,6 @@
 package npanday.executable.impl;
 
 import npanday.PlatformUnsupportedException;
-import npanday.RepositoryNotFoundException;
 import npanday.executable.CapabilityMatcher;
 import npanday.executable.CommandFilter;
 import npanday.executable.ExecutableCapability;
@@ -28,10 +27,13 @@ import npanday.executable.ExecutableContext;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
-import npanday.registry.Repository;
-import npanday.registry.RepositoryRegistry;
+import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Provides an implementation of the executable context.
@@ -43,21 +45,14 @@ import org.codehaus.plexus.logging.Logger;
 public class ExecutableContextImpl
     implements ExecutableContext, LogEnabled
 {
-
-    private ExecutableRequirement executableRequirement;
-
-    /**
- * @plexus.requirement
- */
-    private RepositoryRegistry repositoryRegistry;
-
     private ExecutableCapability executableCapability;
+
+    private ExecutableConfig executableConfig;
+
 
     private NetExecutable netExecutable;
 
     private CommandFilter commandFilter;
-
-    private ExecutableConfig executableConfig;
 
     /**
      * A logger for writing log messages
@@ -74,25 +69,15 @@ public class ExecutableContextImpl
         return logger;
     }
 
-    public ExecutableConfig getExecutableConfig()
-    {
-        return executableConfig;
-    }
-
-    public ExecutableCapability getExecutableCapability()
-    {
-        return executableCapability;
-    }
-
-    public ExecutableRequirement getExecutableRequirement()
-    {
-        return executableRequirement;
-    }
-
     public NetExecutable getNetExecutable()
         throws ExecutionException
     {
         return netExecutable;
+    }
+
+    public Vendor getVendor()
+    {
+        return executableCapability.getVendorInfo().getVendor();
     }
 
     public CommandFilter getCommandFilter()
@@ -100,33 +85,26 @@ public class ExecutableContextImpl
         return commandFilter;
     }
 
-    public Repository find( String repositoryName )
-        throws RepositoryNotFoundException
-    {
-        Repository repository = repositoryRegistry.find( repositoryName );
-        if ( repository == null )
-        {
-            throw new RepositoryNotFoundException(
-                "NPANDAY-064-000: Could not find repository: Name = " + repositoryName );
-        }
-        return repository;
-    }
-
     public void init( ExecutableRequirement executableRequirement, ExecutableConfig executableConfig,
                       CapabilityMatcher capabilityMatcher )
         throws PlatformUnsupportedException
     {
-        this.executableRequirement = executableRequirement;
-        this.executableConfig = executableConfig;
+        // TODO: getting a executable capability from the requirement should rather happen outside
+        ExecutableCapability capability = capabilityMatcher.matchExecutableCapabilityFor( executableRequirement );
 
-        executableCapability = capabilityMatcher.matchExecutableCapabilityFor( executableRequirement );
+        init( capability, executableConfig );
+    }
+
+    protected <T> T createPluginInstance()
+        throws PlatformUnsupportedException
+    {
         String className = executableCapability.getPluginClassName();
 
         try
         {
+            // TODO: create Executable through plexus
             Class cc = Class.forName( className );
-            netExecutable = (NetExecutable) cc.newInstance();
-            netExecutable.init( this );
+            return (T) cc.newInstance();
         }
         catch ( ClassNotFoundException e )
         {
@@ -143,7 +121,35 @@ public class ExecutableContextImpl
             throw new PlatformUnsupportedException(
                 "NPANDAY-064-003: Unable to create NetCompiler: Class Name = " + className, e );
         }
-        commandFilter =
-            CommandFilter.Factory.createDefaultCommandFilter( executableCapability.getCommandCapability(), logger );
+    }
+
+    public String getExecutableName()
+    {
+        return executableCapability.getExecutableName();
+    }
+
+    public Collection<String> getCommands()
+    {
+        return executableConfig.getCommands();
+    }
+
+    public Collection<String> getProbingPaths()
+    {
+        List<String> executionPaths = executableConfig.getExecutionPaths();
+        if (executionPaths == null || executionPaths.size() == 0)
+            executionPaths = executableCapability.getProbingPaths();
+
+        return Collections.unmodifiableCollection( executionPaths );
+    }
+
+    public void init( ExecutableCapability capability, ExecutableConfig config )
+        throws PlatformUnsupportedException
+    {
+        executableCapability = capability;
+        executableConfig = config;
+
+        commandFilter = CommandFilter.Factory.createDefaultCommandFilter( executableCapability.getCommandCapability(), logger );
+        netExecutable = createPluginInstance();
+        netExecutable.init( this );
     }
 }

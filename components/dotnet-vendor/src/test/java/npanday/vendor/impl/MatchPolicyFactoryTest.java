@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.codehaus.plexus.logging.Logger;
 import npanday.vendor.VendorInfoMatchPolicy;
-import npanday.vendor.VendorInfo;
 import npanday.vendor.VendorTestFactory;
 import npanday.vendor.Vendor;
 
@@ -83,7 +82,7 @@ public class MatchPolicyFactoryTest
     public void testCreateIsDefaultPolicy_False()
     {
         VendorInfoMatchPolicy matchPolicy = matchPolicyFactory.createVendorIsDefaultPolicy();
-        MutableVendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
+        MutableVendorInfo vendorInfo = new MutableVendorInfo();
         vendorInfo.setDefault( false );
         assertFalse( matchPolicy.match( vendorInfo ) );
     }
@@ -91,7 +90,7 @@ public class MatchPolicyFactoryTest
     public void testCreateIsDefaultPolicy_True()
     {
         VendorInfoMatchPolicy matchPolicy = matchPolicyFactory.createVendorIsDefaultPolicy();
-        MutableVendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
+        MutableVendorInfo vendorInfo = new MutableVendorInfo();
         vendorInfo.setDefault( true );
         assertTrue( matchPolicy.match( vendorInfo ) );
     }
