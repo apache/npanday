@@ -22,7 +22,7 @@ under the License.
   <parent>
     <artifactId>maven-dotnet-plugins</artifactId>
     <groupId>org.apache.npanday.plugins</groupId>
-    <version>1.4.1-incubating-SNAPSHOT</version>
+    <version>1.5.0-incubating-SNAPSHOT</version>
   </parent>
   <groupId>org.apache.npanday.plugins</groupId>
   <artifactId>custom-lifecycle-maven-plugin</artifactId>
@@ -86,7 +86,7 @@ under the License.
     <dependency>
       <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-core</artifactId>
-      <version>1.4.1-incubating-SNAPSHOT</version>
+      <version>1.5.0-incubating-SNAPSHOT</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
