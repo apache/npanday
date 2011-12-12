@@ -113,9 +113,9 @@ under the License.
     </mailingList>  
   </mailingLists>
   <scm> 
-    <connection>scm:svn:http://svn.apache.org/repos/asf/incubator/npanday/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/trunk/</developerConnection>
-    <url>http://svn.apache.org/viewvc/incubator/npanday/trunk</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/branches/npanday-1.4.x</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/branches/npanday-1.4.x</developerConnection>
+    <url>https://svn.apache.org/repos/asf/incubator/npanday/branches/npanday-1.4.x</url>
   </scm>  
   <issueManagement> 
     <system>jira</system>  
