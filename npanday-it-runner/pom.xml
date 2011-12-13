@@ -71,7 +71,7 @@ under the License.
               <overWriteSnapshots>true</overWriteSnapshots>
               <overWriteReleases>true</overWriteReleases>
               <outputDirectory>${project.basedir}/target/test-classes</outputDirectory>
-              <excludeTransitive>true<excludeTransitive>
+              <excludeTransitive>true</excludeTransitive>
             </configuration>
           </execution>
         </executions>
