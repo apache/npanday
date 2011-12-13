@@ -65,21 +65,13 @@ under the License.
             <id>unpack-IT-projects</id>
             <phase>generate-resources</phase>
             <goals>
-              <goal>unpack</goal>
+              <goal>unpack-dependencies</goal>
             </goals>
             <configuration>
               <overWriteSnapshots>true</overWriteSnapshots>
               <overWriteReleases>true</overWriteReleases>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.apache.npanday.its</groupId>
-                  <artifactId>npanday-its</artifactId>
-                  <version>${project.version}</version>
-                  <classifier>tests</classifier>                  
-                  <type>jar</type>
-                  <outputDirectory>${project.basedir}/target/test-classes</outputDirectory>
-                </artifactItem>
-              </artifactItems>
+              <outputDirectory>${project.basedir}/target/test-classes</outputDirectory>
+              <excludeTransitive>true<excludeTransitive>
             </configuration>
           </execution>
         </executions>
