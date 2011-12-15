@@ -18,20 +18,14 @@
  */
 package npanday.plugin.resgen;
 
+import npanday.artifact.ArtifactContext;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.FileUtils;
-import npanday.executable.ExecutionException;
-import npanday.PlatformUnsupportedException;
-import npanday.vendor.VendorInfo;
-import npanday.vendor.VendorFactory;
-import npanday.artifact.ArtifactContext;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Generates resources
@@ -91,11 +85,6 @@ public class ResourceGeneratorMojo
      * @component
      */
     private npanday.executable.NetExecutableFactory netExecutableFactory;
-
-    /**
-     * @component
-     */
-    private npanday.NPandayRepositoryRegistry npandayRegistry;
 
     public void execute()
         throws MojoExecutionException

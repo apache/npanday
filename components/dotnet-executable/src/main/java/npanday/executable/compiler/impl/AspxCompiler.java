@@ -42,16 +42,15 @@ public class AspxCompiler
         {
             throw new ExecutionException( "NPANDAY-068-000: Compiler has not been initialized with a context" );
         }
-        CompilerConfig config = compilerContext.getNetCompilerConfig();
-        
-        compilerContext.getCompilerRequirement().getFrameworkVersion();
+
+        compilerContext.getFrameworkVersion();
 
         List<String> commands = new ArrayList<String>();
 
         
-        if ( config.getCommands() != null )
+        if ( compilerContext.getCommands() != null )
         {
-            commands.addAll( config.getCommands() );
+            commands.addAll( compilerContext.getCommands() );
         }
         
         CommandFilter filter = compilerContext.getCommandFilter();
@@ -65,8 +64,7 @@ public class AspxCompiler
         throws ExecutionException
     {
         logger.info( "NPANDAY-068-003: Compiling Artifact: Vendor = "
-            + compilerContext.getCompilerRequirement().getVendor() + ", Language = "
-            + compilerContext.getCompilerRequirement().getLanguage() + ", Assembly Name = "
+            + compilerContext.getVendor() + ", Language = "
             + compilerContext.getArtifact().getAbsolutePath() );
 
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();

@@ -24,6 +24,7 @@ import npanday.PlatformUnsupportedException;
 import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.executable.CommandExecutor;
+import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.executable.NetExecutableFactory;
@@ -31,6 +32,7 @@ import npanday.vendor.IllegalStateException;
 import npanday.vendor.StateMachineProcessor;
 import npanday.vendor.Vendor;
 import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -155,7 +157,7 @@ extends AbstractMojo
     protected boolean integrationTest;
 
     /**
-     * @component role="npanday.vendor.StateMachineProcessor"
+     * @component
      */
     private StateMachineProcessor processor;
 
@@ -385,20 +387,20 @@ extends AbstractMojo
 
         FileUtils.mkdir( reportsDirectory );
 
-        VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-        getLog().debug( "NPANDAY-1100-014.1: Vendor info:" + vendorInfo );        
-        vendorInfo.setVendorVersion( "" );
-        vendorInfo.setFrameworkVersion( executionFrameworkVersion );
-        getLog().debug( "NPANDAY-1100-014.2: Vendor info:" + vendorInfo );        
-
+        VendorRequirement vendorRequirement = new VendorRequirement( (Vendor)null, null, executionFrameworkVersion );
+        getLog().debug( "NPANDAY-1100-014.2: Vendor info:" + vendorRequirement );
+        VendorInfo vendorInfo;
         try
         {
-            getLog().debug( "NPANDAY-1100-015: Processor type:" + processor );        
-            processor.process( vendorInfo );
+            vendorInfo = processor.process( vendorRequirement );
         }
         catch ( IllegalStateException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( "NPANDAY-1100-016: Error on determining the vendor info", e );
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NPANDAY-1100-017: Error on determining the vendor info", e );
         }
         //List<String> commands = getCommandsFor( vendorInfo.getVendor() );
         getLog().debug( "NPANDAY-1100-014.3: Vendor info:" + vendorInfo );
@@ -418,7 +420,9 @@ extends AbstractMojo
                 Vendor vendor = vendorInfo.getVendor();
                 String vendorName = vendor.getVendorName();
 
-                NetExecutable executable = netExecutableFactory.getNetExecutableFor( vendorName, executionFrameworkVersion, executableName, commands, executableHome );
+                NetExecutable executable = netExecutableFactory.getNetExecutableFor(
+                    new ExecutableRequirement( vendorName, null, executionFrameworkVersion, executableName), commands, executableHome );
+
                 executable.execute();
             }
             catch (PlatformUnsupportedException pue)

@@ -42,7 +42,9 @@ under the License.
           </execution> 
         </executions>  
         <configuration> 
-          <model>entries.mdo</model>  
+          <models>
+            <model>entries.mdo</model>
+          </models>
           <version>1.0.0</version> 
         </configuration> 
       </plugin> 

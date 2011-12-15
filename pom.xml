@@ -19,12 +19,12 @@ specific language governing permissions and limitations
 under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>  
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache</groupId>
     <artifactId>apache</artifactId>
     <version>8</version>
-  </parent>  
+  </parent>
   <groupId>org.apache.npanday</groupId>
   <artifactId>npanday-project</artifactId>  
   <packaging>pom</packaging>  
@@ -35,10 +35,10 @@ under the License.
 
   <!-- this is what get edited most, so lets put it on the top -->
   <properties>
-    <mavenVersion>2.0.9</mavenVersion>
-    <plexus.utils.version>1.5.1</plexus.utils.version>
+    <mavenVersion>2.2.1</mavenVersion>
+    <plexus.utils.version>1.5.11</plexus.utils.version>
     <!-- if you want to build NPanday with a specific version, replace this -->
-    <bootstrap.npanday.version>1.4.0-incubating</bootstrap.npanday.version>
+    <bootstrap.npanday.version>${project.version}</bootstrap.npanday.version>
   </properties>
 
   <repositories>
@@ -80,61 +80,61 @@ under the License.
     </pluginRepository>
   </pluginRepositories>
 
-  <mailingLists> 
-    <mailingList> 
-      <name>NPanday Developers List</name>  
+  <mailingLists>
+    <mailingList>
+      <name>NPanday Developers List</name>
       <post>npanday-dev@incubator.apache.org</post>
       <subscribe>npanday-dev-subscribe@incubator.apache.org</subscribe>
       <unsubscribe>npanday-dev-unsubscribe@incubator.apache.org</unsubscribe>
       <archive>http://mail-archives.apache.org/mod_mbox/incubator-npanday-dev/</archive>
-      <otherArchives> 
+      <otherArchives>
         <otherArchive>http://incubator.markmail.org/search/?q=list:org.apache.incubator.npanday-dev</otherArchive>
-      </otherArchives> 
-    </mailingList>  
-    <mailingList> 
-      <name>NPanday Commits List</name>  
+      </otherArchives>
+    </mailingList>
+    <mailingList>
+      <name>NPanday Commits List</name>
       <post>npanday-commits@incubator.apache.org</post>
       <subscribe>npanday-commits-subscribe@incubator.apache.org</subscribe>
       <unsubscribe>npanday-commits-unsubscribe@incubator.apache.org</unsubscribe>
       <archive>http://mail-archives.apache.org/mod_mbox/incubator-npanday-commits/</archive>
-      <otherArchives> 
+      <otherArchives>
         <otherArchive>http://incubator.markmail.org/search/?q=list:org.apache.incubator.npanday-commits</otherArchive>
-      </otherArchives> 
-    </mailingList>  
-    <mailingList> 
-      <name>NPanday Users List</name>  
+      </otherArchives>
+    </mailingList>
+    <mailingList>
+      <name>NPanday Users List</name>
       <post>npanday-users@incubator.apache.org</post>
       <subscribe>npanday-users-subscribe@incubator.apache.org</subscribe>
       <unsubscribe>npanday-users-unsubscribe@incubator.apache.org</unsubscribe>
       <archive>http://mail-archives.apache.org/mod_mbox/incubator-npanday-users/</archive>
-      <otherArchives> 
+      <otherArchives>
         <otherArchive>http://incubator.markmail.org/search/?q=list:org.apache.incubator.npanday-users</otherArchive>
-      </otherArchives> 
-    </mailingList>  
+      </otherArchives>
+    </mailingList>
   </mailingLists>
-  <scm> 
+  <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/incubator/npanday/trunk/</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/trunk/</developerConnection>
     <url>http://svn.apache.org/viewvc/incubator/npanday/trunk</url>
-  </scm>  
-  <issueManagement> 
-    <system>jira</system>  
+  </scm>
+  <issueManagement>
+    <system>jira</system>
     <url>http://issues.apache.org/jira/browse/NPANDAY</url>
   </issueManagement>
   <ciManagement>
     <system>jenkins</system>
     <url>https://builds.apache.org/pview/?match=NPanday.*</url>
   </ciManagement>
-  <developers> 
-    <developer> 
-      <name>Craig Bachelor</name>  
-      <id>craig</id>  
-    </developer>  
-    <developer> 
-      <name>Marecor Baclay</name>  
-      <id>mbaclay</id>  
-      <email>mbaclay@exist.com</email>  
-    </developer>  
+  <developers>
+    <developer>
+      <name>Craig Bachelor</name>
+      <id>craig</id>
+    </developer>
+    <developer>
+      <name>Marecor Baclay</name>
+      <id>mbaclay</id>
+      <email>mbaclay@exist.com</email>
+    </developer>
     <developer>
       <name>Maria Odea Ching</name>
       <id>oching</id>
@@ -150,7 +150,7 @@ under the License.
     <developer>
       <name>John Fallows</name>
       <id>jfallows</id>
-    </developer> 
+    </developer>
     <developer>
       <name>Dennis Lundberg</name>
       <id>dennisl</id>
@@ -158,26 +158,26 @@ under the License.
         <role>Mentor</role>
       </roles>
     </developer>
-    <developer> 
-      <name>Joe Ocaba</name>  
-      <id>jocaba</id>  
-      <email>jocaba@maestrodev.com</email>  
-    </developer>     
-    <developer> 
-      <name>Adelita Padilla</name>  
-      <id>apadilla</id>  
+    <developer>
+      <name>Joe Ocaba</name>
+      <id>jocaba</id>
+      <email>jocaba@maestrodev.com</email>
+    </developer>
+    <developer>
+      <name>Adelita Padilla</name>
+      <id>apadilla</id>
       <email>apadilla@maestrodev.com</email>
-    </developer>     
-    <developer> 
-      <name>Brett Porter</name>  
-      <id>brett</id>  
+    </developer>
+    <developer>
+      <name>Brett Porter</name>
+      <id>brett</id>
       <email>brett@apache.org</email>
-    </developer>  
+    </developer>
     <developer>
       <name>Wendy Smoak</name>
       <id>wsmoak</id>
       <email>wsmoak@gmail.com</email>
-    </developer> 
+    </developer>
     <developer>
       <name>Matthias Wessendorf</name>
       <id>matzew</id>
@@ -186,42 +186,42 @@ under the License.
       </roles>
     </developer>
     <!--Emeritus Committers-->
-    <developer> 
-      <name>C�dric</name>  
-      <id>mimil</id>  
-    </developer>  
-    <developer> 
-      <name>Leopoldo Agdeppa</name>  
-      <id>lagdeppa</id>  
-      <email>lagdeppa@exist.com</email>  
-      <roles> 
-        <role>Emeritus</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Jan Ancajas</name>  
-      <id>jancajas</id>  
-      <email>jancajas@exist.com</email>  
-      <roles> 
-        <role>Emeritus</role>  
-      </roles> 
+    <developer>
+      <name>C�dric</name>
+      <id>mimil</id>
     </developer>
-    <developer> 
-      <name>Shein Ernacio</name>  
-      <id>sernacio</id>  
-      <email>sernacio@exist.com</email>  
-      <roles> 
-        <role>Emeritus</role>  
-      </roles> 
-    </developer>  
-    <developer> 
-      <name>Shane Isbell</name>  
-      <id>sisbell</id>  
-      <email>sisbell@apache.org</email>  
-      <roles> 
-        <role>Emeritus</role>  
-      </roles> 
-    </developer>      
+    <developer>
+      <name>Leopoldo Agdeppa</name>
+      <id>lagdeppa</id>
+      <email>lagdeppa@exist.com</email>
+      <roles>
+        <role>Emeritus</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jan Ancajas</name>
+      <id>jancajas</id>
+      <email>jancajas@exist.com</email>
+      <roles>
+        <role>Emeritus</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Shein Ernacio</name>
+      <id>sernacio</id>
+      <email>sernacio@exist.com</email>
+      <roles>
+        <role>Emeritus</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Shane Isbell</name>
+      <id>sisbell</id>
+      <email>sisbell@apache.org</email>
+      <roles>
+        <role>Emeritus</role>
+      </roles>
+    </developer>
     <developer>
       <name>Gavin McDonald</name>
       <id>gmcdonald</id>
@@ -229,22 +229,22 @@ under the License.
         <role>Former Mentor</role>
       </roles>
     </developer>
-    <developer> 
-      <name>Melvin Sembrano</name>  
-      <id>melvinsembrano</id>  
-      <email>melvinsembrano@gmail.com</email>  
-      <roles> 
-        <role>Emeritus</role>  
-      </roles> 
+    <developer>
+      <name>Melvin Sembrano</name>
+      <id>melvinsembrano</id>
+      <email>melvinsembrano@gmail.com</email>
+      <roles>
+        <role>Emeritus</role>
+      </roles>
     </developer>
-    <developer> 
-      <name>Evan Worley</name>  
-      <id>eworley</id>  
-      <email>eworley@apache.org</email>  
-      <roles> 
-        <role>Emeritus</role>  
-      </roles> 
-    </developer>        
+    <developer>
+      <name>Evan Worley</name>
+      <id>eworley</id>
+      <email>eworley@apache.org</email>
+      <roles>
+        <role>Emeritus</role>
+      </roles>
+    </developer>
   </developers>
   <contributors>
     <contributor>
@@ -275,45 +275,48 @@ under the License.
       <name>Stoyan Damov</name>
     </contributor>
   </contributors>
-  <modules> 
-    <module>components</module>  
-    <module>archetypes</module>  
-    <module>plugins</module>  
-  </modules>  
-  <build> 
-    <plugins>    
-       <plugin> 
-        <groupId>org.apache.maven.plugins</groupId>      
-        <artifactId>maven-release-plugin</artifactId>  
-        <version>2.2.1</version>  
-        <configuration>  
-          <tagBase>https://svn.apache.org/repos/asf/incubator/npanday/tags</tagBase>  
-          <branchBase>https://svn.apache.org/repos/asf/incubator/npanday/branches</branchBase>  
+  <modules>
+    <module>components</module>
+    <module>archetypes</module>
+    <module>plugins</module>
+  </modules>
+  <build>
+    <plugins>
+       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.2.1</version>
+        <configuration>
+          <tagBase>https://svn.apache.org/repos/asf/incubator/npanday/tags</tagBase>
+          <branchBase>https://svn.apache.org/repos/asf/incubator/npanday/branches</branchBase>
           <useReleaseProfile>false</useReleaseProfile>
-          <goals>deploy</goals>  
+          <goals>deploy</goals>
           <arguments>-Pnpanday-release,dist</arguments>
-          <preparationGoals>clean install</preparationGoals>  
+          <preparationGoals>clean install</preparationGoals>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <mavenExecutorId>forked-path</mavenExecutorId>
-        </configuration>  
+          <suppressCommitBeforeTag>true</suppressCommitBeforeTag>
+          <suppressCommitBeforeBranch>true</suppressCommitBeforeBranch>
+          <remoteTagging>false</remoteTagging>
+        </configuration>
       </plugin>
-      <plugin> 
-        <artifactId>maven-javadoc-plugin</artifactId>  
-        <configuration> 
-          <aggregate>true</aggregate> 
-        </configuration> 
-      </plugin>  
-      <plugin> 
-        <groupId>org.apache.maven.plugins</groupId>  
-        <artifactId>maven-compiler-plugin</artifactId>  
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <source>1.5</source>  
-          <target>1.5</target> 
-        </configuration> 
-      </plugin> 
-    </plugins>  
-    <pluginManagement> 
-      <plugins> 
+          <aggregate>true</aggregate>
+        </configuration>
+      </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-plugin</artifactId>
@@ -324,48 +327,74 @@ under the License.
               <artifactId>qdox</artifactId>
               <version>1.9.2</version>
             </dependency>
-          </dependencies>    
+          </dependencies>
         </plugin>
-        <plugin> 
-          <groupId>org.codehaus.modello</groupId>  
-          <artifactId>modello-maven-plugin</artifactId>  
-          <version>1.0-alpha-13</version>  
-          <executions> 
-            <execution> 
-              <goals> 
-                <goal>xpp3-reader</goal>  
-                <goal>java</goal> 
-              </goals> 
-            </execution>  
-            <execution> 
-              <id>site</id>  
-              <phase>pre-site</phase>  
-              <goals> 
-                <goal>xdoc</goal> 
-              </goals> 
-            </execution> 
-          </executions> 
-        </plugin> 
-      </plugins> 
-    </pluginManagement> 
-  </build>  
-  <dependencies> 
-    <dependency> 
-      <groupId>org.easymock</groupId>  
-      <artifactId>easymock</artifactId>  
-      <version>2.0</version>  
-      <scope>test</scope> 
-    </dependency>  
-    <dependency> 
-      <groupId>junit</groupId>  
-      <artifactId>junit</artifactId>  
-      <version>3.8.1</version>  
-      <scope>test</scope> 
-    </dependency> 
+        <plugin>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-maven-plugin</artifactId>
+          <version>1.3.8</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.thoughtworks.qdox</groupId>
+              <artifactId>qdox</artifactId>
+              <version>1.12</version>
+            </dependency>
   </dependencies>
-  <dependencyManagement> 
-    <dependencies> 
-      <dependency> 
+          <executions>
+            <execution>
+              <phase>process-classes</phase>
+              <goals>
+                <goal>descriptor</goal>
+                <goal>merge-descriptors</goal>
+              </goals>
+              <configuration>
+                <!-- descriptor config -->
+                <outputDirectory>${project.build.directory}</outputDirectory>
+                <fileName>plexus/auto-components.xml</fileName>
+
+                <!-- merge config -->
+                <descriptors>
+                  <descriptor>${project.build.directory}/plexus/auto-components.xml</descriptor>
+                  <descriptor>${basedir}/src/main/resources/META-INF/plexus/components.xml</descriptor>
+                </descriptors>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.codehaus.gmaven</groupId>
+            <artifactId>gmaven-plugin</artifactId>
+            <version>1.2</version>
+            <executions>
+              <execution>
+                <id>groovy-tests</id>
+                <goals>
+                  <goal>generateTestStubs</goal>
+                  <goal>testCompile</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <version>2.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-assembler</artifactId>  
         <version>1.5.0-incubating-SNAPSHOT</version> 
@@ -436,60 +465,60 @@ under the License.
         <version>1.5.0-incubating-SNAPSHOT</version> 
       </dependency> 
 
-      <dependency> 
-        <groupId>org.apache.maven</groupId>  
-        <artifactId>maven-core</artifactId>  
-        <version>${mavenVersion}</version> 
-      </dependency>  
-      <dependency> 
-        <groupId>org.apache.maven</groupId>  
-        <artifactId>maven-artifact</artifactId>  
-        <version>${mavenVersion}</version> 
-      </dependency>  
-      <dependency> 
-        <groupId>org.apache.maven</groupId>  
-        <artifactId>maven-project</artifactId>  
-        <version>${mavenVersion}</version> 
-      </dependency>  
-      <dependency> 
-        <groupId>org.apache.maven</groupId>  
-        <artifactId>maven-plugin-api</artifactId>  
-        <version>${mavenVersion}</version> 
-      </dependency>  
-      <dependency> 
-        <groupId>net.sf.kxml</groupId>  
-        <artifactId>kxml2</artifactId>  
-        <version>2.1.8</version> 
-      </dependency>  
-      <dependency> 
-        <groupId>xmlpull</groupId>  
-        <artifactId>xmlpull</artifactId>  
-        <version>1.1.3.4a</version> 
-      </dependency>  
-      <dependency> 
-        <groupId>org.codehaus.plexus</groupId>  
-        <artifactId>plexus-archiver</artifactId>  
-        <version>1.0-alpha-9</version> 
-      </dependency>  
-      <dependency> 
-        <groupId>org.codehaus.plexus</groupId>  
-        <artifactId>plexus-utils</artifactId>  
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-core</artifactId>
+        <version>${mavenVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-artifact</artifactId>
+        <version>${mavenVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-project</artifactId>
+        <version>${mavenVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-plugin-api</artifactId>
+        <version>${mavenVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.kxml</groupId>
+        <artifactId>kxml2</artifactId>
+        <version>2.1.8</version>
+      </dependency>
+      <dependency>
+        <groupId>xmlpull</groupId>
+        <artifactId>xmlpull</artifactId>
+        <version>1.1.3.4a</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-archiver</artifactId>
+        <version>1.0-alpha-9</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-utils</artifactId>
         <version>${plexus.utils.version}</version>
-      </dependency>  
-      <dependency> 
-        <groupId>org.codehaus.plexus</groupId>  
-        <artifactId>plexus-container-default</artifactId>  
-        <version>1.0-alpha-32</version> 
-      </dependency>  
-      <dependency> 
-        <groupId>org.codehaus.plexus</groupId>  
-        <artifactId>plexus-component-api</artifactId>  
-        <version>1.0-alpha-32</version> 
-      </dependency>  
-      <dependency> 
-        <groupId>org.codehaus.plexus</groupId>  
-        <artifactId>plexus-classworlds</artifactId>  
-        <version>1.2-alpha-10</version> 
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-container-default</artifactId>
+        <version>1.0-alpha-9-stable-1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-component-api</artifactId>
+        <version>1.0-alpha-32</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-classworlds</artifactId>
+        <version>1.2-alpha-10</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -501,8 +530,13 @@ under the License.
         <artifactId>slf4j-api</artifactId>
         <version>1.5.11</version>
       </dependency>
-    </dependencies> 
-  </dependencyManagement>  
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>10.0.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <profiles>
     <profile>
       <id>dotnet-modules</id>
@@ -604,23 +638,23 @@ under the License.
               </execution>
             </executions>
           </plugin>
-          <plugin> 
-            <artifactId>maven-assembly-plugin</artifactId>  
-            <inherited>false</inherited>  
-            <configuration> 
-              <descriptor>src/assembly/src.xml</descriptor>  
-              <outputDirectory>target</outputDirectory> 
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <inherited>false</inherited>
+            <configuration>
+              <descriptor>src/assembly/src.xml</descriptor>
+              <outputDirectory>target</outputDirectory>
               <finalName>npanday-${project.version}</finalName>
-            </configuration> 
-            <executions> 
-              <execution> 
-                <id>make-assembly</id>  
-                <phase>package</phase>  
-                <goals> 
-                  <goal>single</goal> 
-                </goals> 
-              </execution> 
-            </executions> 
+            </configuration>
+            <executions>
+              <execution>
+                <id>make-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -649,7 +683,28 @@ under the License.
               </execution>
             </executions>
           </plugin>
-        </plugins> 
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>branch</id>
+      <activation>
+        <property>
+          <name>branchName</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>2.2.1</version>
+            <configuration>
+              <updateBranchVersions>true</updateBranchVersions>
+              <updateWorkingCopyVersions>false</updateWorkingCopyVersions>
+            </configuration>
+          </plugin>
+        </plugins>
       </build>
     </profile>
   </profiles>

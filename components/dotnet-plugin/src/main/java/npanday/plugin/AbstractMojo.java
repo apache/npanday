@@ -25,8 +25,7 @@ import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutableFactory;
-import npanday.vendor.VendorFactory;
-import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -42,13 +41,6 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -58,6 +50,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The base class for plugins that execute a .NET plugin. Classes that extend this class are only expected to provide
@@ -97,7 +96,7 @@ public abstract class AbstractMojo
         }
         catch ( ParserConfigurationException e )
         {
-            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-115-000", e );
         }
         Document document = builder.newDocument();
 
@@ -110,7 +109,7 @@ public abstract class AbstractMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-115-001", e );
         }
 
         StreamResult result = new StreamResult();
@@ -122,12 +121,12 @@ public abstract class AbstractMojo
         }
         catch ( TransformerConfigurationException e )
         {
-            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-115-002", e );
 
         }
         catch ( TransformerException e )
         {
-            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-115-003", e );
         }
         finally
         {
@@ -137,7 +136,7 @@ public abstract class AbstractMojo
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "NPANDAY-xxx-000: Unable to write file", e );
+                throw new MojoExecutionException( "NPANDAY-115-004: Unable to write file", e );
             }
         }
 
@@ -148,13 +147,7 @@ public abstract class AbstractMojo
         ArtifactContext artifactContext = null;
         try
         {
-            VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-            if ( getVendor() != null )
-            {
-                vendorInfo.setVendor( VendorFactory.createVendorFromName( getVendor() ) );
-            }
-            vendorInfo.setFrameworkVersion( getFrameworkVersion() );
-            vendorInfo.setVendorVersion( getVendorVersion() );
+            VendorRequirement vendorRequirement = new VendorRequirement( getVendor(), getVendorVersion(), getFrameworkVersion());
 
             String localRepository = getLocalRepository();
 
@@ -162,17 +155,18 @@ public abstract class AbstractMojo
             artifactContext.init( project, project.getRemoteArtifactRepositories(), new File( localRepository ) );
 
             Artifact artifact = getNetExecutableFactory().getArtifactFor(getMojoGroupId(), getMojoArtifactId());
-            resolveArtifact(artifact, targetDir );
-            getNetExecutableFactory().getPluginLoaderFor( artifact, vendorInfo, localRepository, paramFile,
+            resolveArtifact(artifact, targetDir);
+            getNetExecutableFactory().getPluginLoaderFor( artifact, vendorRequirement,
+                                                          getLocalRepository(), paramFile,
                                                           getClassName(), targetDir ).execute();
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-115-005", e );
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-115-006", e );
         } catch (ComponentLookupException e) {
             throw new MojoExecutionException( "NPANDAY-xxx-000", e );
         }

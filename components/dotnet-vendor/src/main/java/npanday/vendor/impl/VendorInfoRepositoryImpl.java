@@ -18,22 +18,24 @@
  */
 package npanday.vendor.impl;
 
-import npanday.ArtifactType;
-import npanday.ArtifactTypeHelper;
-import npanday.model.settings.Framework;
-import npanday.vendor.*;
-import npanday.registry.RepositoryRegistry;
 import npanday.PlatformUnsupportedException;
-
-import java.util.List;
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
-import java.io.File;
-
+import npanday.model.settings.Framework;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.InvalidVersionFormatException;
+import npanday.vendor.SettingsRepository;
+import npanday.vendor.Vendor;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorInfoMatchPolicy;
+import npanday.vendor.VendorInfoRepository;
+import npanday.vendor.VendorRequirement;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Provides an implementation of <code>VendorInfoRepository</code>.
@@ -61,6 +63,11 @@ public class VendorInfoRepositoryImpl
     private List<VendorInfo> cachedVendorInfos;
 
     /**
+     * The version the repository was at, when the cache was built up.
+     */
+    private int cachedVendorInfosContentVersion;
+
+    /**
      * Constructor. This method is intended to be invoked by the plexus-container, not by the application developer.
      */
     public VendorInfoRepositoryImpl()
@@ -75,14 +82,6 @@ public class VendorInfoRepositoryImpl
         this.logger = logger;
     }
 
-    /**
-     * @see npanday.vendor.VendorInfoRepository#exists()
-     */
-    public boolean exists()
-    {
-        return ( repositoryRegistry.find( "npanday-settings" ) != null );
-    }
-
     public void clearCache()
     {
         if ( cachedVendorInfos != null )
@@ -92,34 +91,17 @@ public class VendorInfoRepositoryImpl
         }
     }
 
-    private File getInstallRootFor( VendorInfo vendorInfo )
+    public VendorInfo getSingleVendorInfoByRequirement( VendorRequirement vendorRequirement )
         throws PlatformUnsupportedException
     {
-        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-        return settingsRepository.getInstallRootFor( vendorInfo.getVendor().getVendorName(),
-                                                     vendorInfo.getVendorVersion(), vendorInfo.getFrameworkVersion() );
-    }
-
-    private File getSdkInstallRootFor( VendorInfo vendorInfo )
-        throws PlatformUnsupportedException
-    {
-        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-        return settingsRepository.getSdkInstallRootFor( vendorInfo.getVendor().getVendorName(),
-                                                        vendorInfo.getVendorVersion(),
-                                                        vendorInfo.getFrameworkVersion() );
-    }
-
-    public VendorInfo getConfiguredVendorInfoByExample(VendorInfo vendorInfoExample)
-        throws PlatformUnsupportedException
-    {
-        List<VendorInfo> infos = getVendorInfosFor(vendorInfoExample, false);
+        List<VendorInfo> infos = getVendorInfosFor( vendorRequirement, false);
         if (infos.size() == 0) {
-           throw new PlatformUnsupportedException( "NPANDAY-200-001: Could not find configuration for " + vendorInfoExample );
+           throw new PlatformUnsupportedException( "NPANDAY-113-001: Could not find configuration for " + vendorRequirement );
         }
 
         if (infos.size() > 2) {
-            // reload default
-            infos = getVendorInfosFor(vendorInfoExample, true);
+            // reloadAll default
+            infos = getVendorInfosFor( vendorRequirement, true);
         }
 
         assert infos.size() == 1;
@@ -129,28 +111,30 @@ public class VendorInfoRepositoryImpl
 
     private List<VendorInfo> getVendorInfos()
     {
+        ensureCache();
+
+        return Collections.unmodifiableList( cachedVendorInfos );
+    }
+
+    private void ensureCache()
+    {
         SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
 
-        if ( settingsRepository.isReloaded() )
+        if (settingsRepository.isEmpty()) {
+            logger.warn( "NPANDAY-113-000: The settings repository does not contain any vendor information" );
+        }
+
+        if ( settingsRepository.getContentVersion() > cachedVendorInfosContentVersion )
         {
             clearCache();
-            settingsRepository.setReloaded(false);
         }
 
-        try
+        if ( cachedVendorInfos != null && cachedVendorInfos.size() > 0 )
         {
-            settingsRepository.reload();
-        }
-        catch(Exception e)
-        {
-            //e.printStackTrace();
-        }
- 
-        if ( cachedVendorInfos != null && cachedVendorInfos.size() > 0 &&  !settingsRepository.isReloaded() )
-        {
-            return Collections.unmodifiableList( cachedVendorInfos );
+            return;
         }
 
+        cachedVendorInfosContentVersion = settingsRepository.getContentVersion();
         cachedVendorInfos = new ArrayList<VendorInfo>();
 
         for ( npanday.model.settings.Vendor v : settingsRepository.getVendors() )
@@ -158,42 +142,9 @@ public class VendorInfoRepositoryImpl
             List<Framework> frameworks = v.getFrameworks();
             for ( Framework framework : frameworks )
             {
-                VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-                vendorInfo.setVendorVersion( v.getVendorVersion() );
-                List<File> executablePaths = new ArrayList<File>();
-
-                // add .NET install root as path
-                executablePaths.add(new File( framework.getInstallRoot() ));
-
-                // add .NET-SDK install root as path
-                if(framework.getSdkInstallRoot() != null)
-                {
-                    executablePaths.add( new File(framework.getSdkInstallRoot()));
-                }
-
-                // copy configured additional execution paths
-                if (framework.getExecutablePaths() != null) {
-                    for(Object path: framework.getExecutablePaths()) {
-                        executablePaths.add( new File((String)path) );
-                    }
-                }
-                vendorInfo.setExecutablePaths( executablePaths );
-                vendorInfo.setFrameworkVersion( framework.getFrameworkVersion() );
-                try
-                {
-                    vendorInfo.setVendor( VendorFactory.createVendorFromName(v.getVendorName()) );
-                }
-                catch ( VendorUnsupportedException e )
-                {
-                    continue;
-                }
-                vendorInfo.setDefault(
-                    v.getIsDefault() != null && v.getIsDefault().toLowerCase().trim().equals( "true" ) );
-                cachedVendorInfos.add( vendorInfo );
+                cachedVendorInfos.add( new SettingsBasedVendorInfo( v, framework ) );
             }
         }
-        settingsRepository.setReloaded( false );
-        return Collections.unmodifiableList( cachedVendorInfos );
     }
 
     /**
@@ -243,16 +194,16 @@ public class VendorInfoRepositoryImpl
     }
 
     /**
-     * @see VendorInfoRepository#getVendorInfosFor(npanday.vendor.VendorInfo, boolean)
+     * @see VendorInfoRepository#getVendorInfosFor(npanday.vendor.VendorRequirement, boolean)
      */
-    public List<VendorInfo> getVendorInfosFor( VendorInfo vendorInfo, boolean defaultOnly )
+    public List<VendorInfo> getVendorInfosFor( VendorRequirement vendorRequirement, boolean defaultOnly )
     {
-        if ( vendorInfo == null )
+        if ( vendorRequirement == null )
         {
             return getVendorInfos();
         }
-        return getVendorInfosFor( ( vendorInfo.getVendor() != null ? vendorInfo.getVendor().getVendorName() : null ),
-                                  vendorInfo.getVendorVersion(), vendorInfo.getFrameworkVersion(), defaultOnly );
+        return getVendorInfosFor( ( vendorRequirement.getVendor() != null ? vendorRequirement.getVendor().getVendorName() : null ),
+                                  vendorRequirement.getVendorVersion(), vendorRequirement.getFrameworkVersion(), defaultOnly );
     }
 
     /**
@@ -279,86 +230,18 @@ public class VendorInfoRepositoryImpl
     public File getGlobalAssemblyCacheDirectoryFor( Vendor vendor, String frameworkVersion, String artifactType )
         throws PlatformUnsupportedException
     {
-        // TODO: Duplicate code with CompilerContextImpl.init
+        return getSingleVendorInfoByRequirement( new VendorRequirement( vendor, null, frameworkVersion ) )
+            .getGlobalAssemblyCacheDirectoryFor(artifactType);
+    }
 
-        if (ArtifactTypeHelper.isDotnetGenericGac( artifactType ))
-        {
-            if ( vendor.equals( Vendor.MICROSOFT ) && frameworkVersion.equals( "1.1.4322" ) )
-            {
-                return new File( System.getenv("SystemRoot"), "\\assembly\\GAC\\" );
-            }
-            else if ( vendor.equals( Vendor.MICROSOFT ) )
-            {
-                // Layout changed since 2.0
-                // http://discuss.joelonsoftware.com/default.asp?dotnet.12.383883.5
-                return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
-            }
-            else if ( vendor.equals( Vendor.MONO ) && exists() )
-            {
-                List<VendorInfo> vendorInfos =
-                    getVendorInfosFor( vendor.getVendorName(), null, frameworkVersion, true );
-                Set<String> vendorVersions = new HashSet<String>();
-                for ( VendorInfo vendorInfo : vendorInfos )
-                {
-                    vendorVersions.add( vendorInfo.getVendorVersion() );
-                }
-                String maxVersion;
-                try
-                {
-                    maxVersion = getMaxVersion( vendorVersions );
-                }
-                catch ( InvalidVersionFormatException e )
-                {
-                    throw new PlatformUnsupportedException( "NPANDAY-xxx-000: Invalid version format", e );
-                }
+    public boolean isEmpty()
+    {
+        return getVendorInfos().size() == 0;
+    }
 
-                for ( VendorInfo vendorInfo : vendorInfos )
-                {
-                    if ( vendorInfo.getVendorVersion().equals( maxVersion ) )
-                    {
-                        File sdkInstallRoot = getSdkInstallRootFor( vendorInfo );
-                        File gacRoot = new File( sdkInstallRoot.getParentFile().getAbsolutePath() + "/lib/mono/gac" );
-                        if ( !gacRoot.exists() )
-                        {
-                            throw new PlatformUnsupportedException(
-                                "NPANDAY-xxx-000: The Mono GAC path does not exist: Path = " +
-                                    gacRoot.getAbsolutePath() );
-                        }
-                        return gacRoot;
-                    }
-                }
-                
-                //TODO: MONO Support for Linux (Separate file containg installs)
-            }
-        }
-        else if ( artifactType.equals( ArtifactType.GAC.getPackagingType() ) )
-        {
-            return new File( System.getenv("SystemRoot"), "\\assembly\\GAC\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_32.getPackagingType() ) )
-        {
-            return new File(System.getenv("SystemRoot"), "\\assembly\\GAC_32\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_32_4.getPackagingType() ) )
-        {
-            return new File(System.getenv("SystemRoot"), "\\Microsoft.NET\\assembly\\GAC_32\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_64.getPackagingType() ) )
-        {
-            return new File(System.getenv("SystemRoot"), "\\assembly\\GAC_64\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_64_4.getPackagingType() ) )
-        {
-            return new File(System.getenv("SystemRoot"), "\\Microsoft.NET\\assembly\\GAC_64\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_MSIL.getPackagingType() ) )
-        {
-            return new File( System.getenv("SystemRoot"), "\\assembly\\GAC_MSIL\\" );
-        }
-        else if ( artifactType.equals( ArtifactType.GAC_MSIL4.getPackagingType() ) )
-        {
-            return new File( System.getenv("SystemRoot"), "\\Microsoft.NET\\assembly\\GAC_MSIL\\" );
-        }
-        throw new PlatformUnsupportedException("NPANDAY-200-002: Could not locate a valid GAC");
+    public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
+    {
+        this.repositoryRegistry = repositoryRegistry;
     }
 }
+

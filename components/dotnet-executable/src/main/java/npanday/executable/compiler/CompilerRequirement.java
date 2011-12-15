@@ -18,8 +18,8 @@
  */
 package npanday.executable.compiler;
 
-import npanday.vendor.Vendor;
 import npanday.executable.ExecutableRequirement;
+import npanday.vendor.Vendor;
 
 /**
  * Requirements that the compiler plugin must satisfy to be used in the build.
@@ -27,96 +27,38 @@ import npanday.executable.ExecutableRequirement;
  * @author Shane Isbell
  * @see CompilerCapability
  */
-public interface CompilerRequirement
+public class CompilerRequirement
     extends ExecutableRequirement
 {
+    String language;
+
+    public CompilerRequirement( Vendor vendor, String vendorVersion, String frameworkVersion, String profile, String language )
+    {
+        super( vendor, vendorVersion, frameworkVersion, profile );
+        this.language = language;
+    }
+
+    public CompilerRequirement( String vendorName, String vendorVersion, String frameworkVersion, String profile, String language )
+    {
+        super( vendorName, vendorVersion, frameworkVersion, profile );
+        this.language = language;
+    }
 
     /**
      * Returns the required language for the compiler
      *
      * @return the required language for the compiler
      */
-    String getLanguage();
+    public String getLanguage(){
+        return language;
+    }
 
     /**
      * Sets required language for the compiler
      *
      * @param language the required language for the compiler
      */
-    void setLanguage( String language );
-
-    public static class Factory
-    {
-
-        private Factory()
-        {
-        }
-
-        public static CompilerRequirement createDefaultCompilerRequirement()
-        {
-            return new CompilerRequirement()
-            {
-                private String language;
-
-                private String frameworkVersion;
-
-                private Vendor vendor;
-
-                private String profile;
-
-                private String vendorVersion;
-
-                public String getVendorVersion()
-                {
-                    return vendorVersion;
-                }
-
-                public void setVendorVersion( String vendorVersion )
-                {
-                    this.vendorVersion = vendorVersion;
-                }
-
-                public String getLanguage()
-                {
-                    return language;
-                }
-
-                public void setLanguage( String language )
-                {
-                    this.language = language;
-                }
-
-                public String getFrameworkVersion()
-                {
-                    return frameworkVersion;
-                }
-
-                public void setFrameworkVersion( String frameworkVersion )
-                {
-                    this.frameworkVersion = frameworkVersion;
-                }
-
-                public Vendor getVendor()
-                {
-                    return vendor;
-                }
-
-                public void setVendor( Vendor vendor )
-                {
-                    this.vendor = vendor;
-                }
-
-                public String getProfile()
-                {
-                    return profile;
-                }
-
-                public void setProfile( String profile )
-                {
-                    this.profile = profile;
-                }
-            };
-
-        }
+    public void setLanguage( String language ){
+        this.language = language;
     }
 }

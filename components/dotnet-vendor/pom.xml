@@ -36,5 +36,13 @@ under the License.
       <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-model-settings</artifactId>  
     </dependency> 
-  </dependencies> 
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

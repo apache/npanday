@@ -54,5 +54,13 @@ under the License.
       <version>4.8.1</version>  
       <scope>test</scope> 
     </dependency> 
-  </dependencies> 
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

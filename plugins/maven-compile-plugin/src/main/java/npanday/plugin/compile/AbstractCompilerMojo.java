@@ -22,30 +22,35 @@ package npanday.plugin.compile;
 import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
 import npanday.PathUtil;
-import npanday.vendor.SettingsException;
-import npanday.vendor.SettingsUtil;
-import org.apache.maven.artifact.Artifact;
 import npanday.PlatformUnsupportedException;
 import npanday.assembler.AssemblerContext;
-import npanday.assembler.AssemblyInfoMarshaller;
-import npanday.assembler.AssemblyInfoException;
 import npanday.assembler.AssemblyInfo;
 import npanday.assembler.AssemblyInfo.TargetFramework;
+import npanday.assembler.AssemblyInfoException;
+import npanday.assembler.AssemblyInfoMarshaller;
 import npanday.executable.ExecutionException;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsException;
+import npanday.vendor.SettingsUtil;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.util.FileUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -53,18 +58,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.Arrays;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import java.util.List;
-
-import java.util.regex.Pattern;
+import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Abstract Class for compile mojos for both test-compile and compile.
@@ -1111,6 +1109,7 @@ public abstract class AbstractCompilerMojo
 		
 		}
 
+
         try
         {
             SettingsUtil.populateSettingsRepository( repositoryRegistry, settingsPath );
@@ -1126,8 +1125,7 @@ public abstract class AbstractCompilerMojo
         {
             CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutableFor(getCompilerRequirement(),
                     getCompilerConfig(),
-                    project,
-                    profileAssemblyPath);
+                    project);
 
             File compiledArtifact = compilerExecutable.getCompiledArtifact();
 

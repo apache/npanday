@@ -16,7 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<model>
+<model xmlns="http://modello.codehaus.org/MODELLO/1.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.4.0 http://modello.codehaus.org/xsd/modello-1.4.0.xsd">
   <id>npanday-settings</id>
   <name>NPandaySettings</name>
   <description></description>
@@ -50,7 +51,7 @@ under the License.
         </field>
       </fields>
     </class>
-    <class xml.tagName="defaultSetup">
+    <class>
       <name>DefaultSetup</name>
       <fields>
         <field>
@@ -67,7 +68,7 @@ under the License.
         </field>
       </fields>
     </class>
-    <class xml.tagName="vendor">
+    <class>
       <name>Vendor</name>
       <fields>
         <field>

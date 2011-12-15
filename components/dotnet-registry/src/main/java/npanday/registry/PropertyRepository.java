@@ -18,10 +18,11 @@
  */
 package npanday.registry;
 
-import java.util.Properties;
-import java.util.Hashtable;
-import java.io.InputStream;
+import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Hashtable;
+import java.util.Properties;
 
 /**
  * This class is a simple facade for <code>java.util.properties</code>. Repositories that use an underlying properties
@@ -36,8 +37,10 @@ import java.io.IOException;
  * </pre>
  *
  * @author Shane Isbell
+ * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ * @plexus.component
+ *   role="npanday.registry.PropertyRepository"
  */
-
 public class PropertyRepository
     implements Repository
 {
@@ -46,11 +49,6 @@ public class PropertyRepository
      * Internal reference for properties
      */
     protected Properties properties = new Properties();
-
-    /**
-     * Internal reference for repositoryRegistry
-     */
-    protected RepositoryRegistry repositoryRegistry;
 
     /**
      * Accessor for properties
@@ -63,45 +61,42 @@ public class PropertyRepository
         return properties.getProperty( name );
     }
 
-    /**
-     * @see npanday.registry.Repository#load(InputStream inputStream, Hashtable prop)
-     */
-    public void load( InputStream inputStream, Hashtable prop )
+    public void load( URL source )
         throws NPandayRepositoryException
     {
         try
         {
-            properties.load( inputStream );
+            properties.load( source.openStream() );
         }
         catch( IOException e )
         {
-            throw new NPandayRepositoryException( "NPANDAY-088-000: Unable to load properties file.", e);
+            throw new NPandayRepositoryException( "NPANDAY-088-000: Unable to load properties file from " + source, e);
         }
     }
 
-    /**
-     * Mutator for <code>RepositoryRegistry</code>
-     *
-     * @param repositoryRegistry
+     /**
+     * @see Repository#clearAll()
      */
-    public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
+    public void clearAll()
+        throws OperationNotSupportedException
     {
-        this.repositoryRegistry = repositoryRegistry;
+        throw new OperationNotSupportedException(  );
     }
 
     /**
-     * @see Repository#setSourceUri(String)
+     * @see Repository#reloadAll()
      */
-    public void setSourceUri( String fileUri )
+    public void reloadAll()
+        throws IOException, OperationNotSupportedException
     {
-        // not supported
+        throw new OperationNotSupportedException(  );
     }
 
     /**
-     * @see Repository#reload()
+     * The properties configured in the registry.
      */
-    public void reload() throws IOException
+    public void setProperties( Hashtable props )
     {
-        // not supported
+        // we don't need any props
     }
 }

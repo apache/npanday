@@ -16,7 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<model>
+<model xmlns="http://modello.codehaus.org/MODELLO/1.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.4.0 http://modello.codehaus.org/xsd/modello-1.4.0.xsd">
   <id>netdependency</id>
   <name>NetDependency</name>
   <description></description>
@@ -27,68 +28,68 @@ under the License.
     </default>
   </defaults>
   <classes>
-    <class rootElement="true">
+    <class rootElement="true" xml.tagName="netDependencies">
       <name>NetDependencyModel</name>
       <fields>
-        <field>
+        <field xml.tagName="netDependency">
           <name>netDependencies</name>
           <description></description>
-          <association>
+          <association xml.itemsStyle="flat">
             <type>NetDependency</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
       </fields>
     </class>
-    <class xml.tagName="netDependency">
+    <class>
       <name>NetDependency</name>
       <fields>
         <field>
           <name>id</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description></description>
         </field>
         <field>
           <name>groupId</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description></description>
         </field>
         <field>
           <name>version</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>
           </description>
         </field>
         <field>
           <name>artifactId</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description></description>
         </field>
         <field>
           <name>type</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description></description>
         </field>
         <field>
           <name>profile</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description></description>
         </field>
         <field>
           <name>publicKeyToken</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>The public key of the assembly.</description>
         </field>
         <field>
           <name>isGacInstall</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>boolean</type>
           <description>True if the framework should install the net dependency in the GAC, otherwise false.</description>
         </field>

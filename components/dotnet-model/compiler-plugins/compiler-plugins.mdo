@@ -16,7 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<model>
+<model xmlns="http://modello.codehaus.org/MODELLO/1.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.4.0 http://modello.codehaus.org/xsd/modello-1.4.0.xsd">
   <id>compiler-plugin</id>
   <name>CompilerPlugin</name>
   <description>A configuration file for compilers.</description>
@@ -27,31 +28,31 @@ under the License.
     </default>
   </defaults>
   <classes>
-    <class rootElement="true">
+    <class rootElement="true" xml.tagName="compilerPlugins">
       <name>CompilerPluginsModel</name>
       <fields>
         <field>
           <name>compilerPlugins</name>
           <description>Plugin configurations.</description>
-          <association>
+          <association xml.itemsStyle="flat">
             <type>CompilerPlugin</type>
             <multiplicity>*</multiplicity>
           </association>
         </field>
       </fields>
     </class>
-    <class xml.tagName="compilerPlugin">
+    <class>
       <name>CompilerPlugin</name>
       <fields>
         <field>
           <name>identifier</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>An id for the compiler. It should be (but is not required to be) unique.</description>
         </field>
         <field>
           <name>pluginClass</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>
             Class name of the compiler. NPanday will pass an instance of this class to the
@@ -60,31 +61,52 @@ under the License.
         </field>
         <field>
           <name>vendor</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>Vendor of the compiler: MICROSOFT, MONO, DotGNU</description>
         </field>
         <field>
+          <name>vendorVersion</name>
+          <!-- since NPanday 1.5.0 -->
+          <version>1.5.0+</version>
+          <type>String</type>
+          <description>The vendor version the executable is provided by or compatible with.</description>
+        </field>
+        <field>
           <name>language</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>The .NET language to use for compilation.</description>
         </field>
         <field>
           <name>profile</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>Profile for the plugin.</description>
         </field>
         <field>
           <name>executable</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>Executable, as run from the command line.</description>
         </field>
         <field>
+          <name>probingPaths</name>
+          <version>1.5.0+</version>
+          <description>
+            The paths this executable is likely to be found on. You can use expressions
+            referring to the pom or registry here. $(project.build.directory) would expect the executable
+            in the target directory, and $(HKLM/MyComp/MySoftware@InstallDir) would look up a path in the
+            windows registry.
+          </description>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
           <name>netDependencyId</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
         </field>
         <field>
@@ -124,7 +146,7 @@ under the License.
         </field>
         <field>
           <name>platforms</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description>Platform configuration capabilities.</description>
           <association>
             <type>Platform</type>
@@ -133,7 +155,7 @@ under the License.
         </field>
         <field>
           <name>commandFilter</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description>A filter for including/excluding user-passed commands options.</description>
           <association>
             <type>CommandFilter</type>
@@ -146,7 +168,7 @@ under the License.
       <fields>
         <field>
           <name>excludes</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description>
             The command options to exclude from the user specified pass-through parameters (Currently unused)
           </description>
@@ -157,7 +179,7 @@ under the License.
         </field>
         <field>
           <name>includes</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <description>
             The command options to allow from the user specified pass-through parameters.
           </description>
@@ -173,16 +195,15 @@ under the License.
       <fields>
         <field>
           <name>operatingSystem</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
           <description>The operating system that the compiler is capable of running on.</description>
         </field>
         <field>
           <name>architecture</name>
-          <version>1.0.0</version>
+          <version>1.0.0+</version>
           <type>String</type>
-          <description>The architecture that the compiler is capable of running on (Currently
-            unused).</description>
+          <description>The architecture that the compiler is capable of running on.</description>
         </field>
       </fields>
     </class>

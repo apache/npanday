@@ -32,10 +32,7 @@ public enum Vendor
     MONO( "MONO" ),
 
     /**DotGNU Vendor*/
-    DOTGNU( "DotGNU" ),
-
-    /**NULL Vendor*/
-    NULL("NULL");
+    DOTGNU( "DotGNU" );
 
     /**
      * The vendor name

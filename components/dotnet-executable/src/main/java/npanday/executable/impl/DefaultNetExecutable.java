@@ -18,17 +18,21 @@
  */
 package npanday.executable.impl;
 
-import npanday.PathUtil;
-import npanday.executable.ExecutionException;
-import npanday.executable.*;
 import npanday.NPandayContext;
+import npanday.PathUtil;
+import npanday.executable.CommandExecutor;
+import npanday.executable.CommandFilter;
+import npanday.executable.ExecutableContext;
+import npanday.executable.ExecutionException;
+import npanday.executable.NetExecutable;
 import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
-import java.util.List;
-import java.util.Collections;
-import java.util.ArrayList;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Provides the default implementation of the net executable.
@@ -44,9 +48,9 @@ public class DefaultNetExecutable
     /**
      * A logger for writing log messages
      */
-    private Logger logger;
+    protected Logger logger;
 
-    private List<String> commands;
+    private Collection<String> commands;
 
     public List<String> getCommands()
         throws ExecutionException
@@ -72,8 +76,9 @@ public class DefaultNetExecutable
         {
             return null;
         }
-        List<String> executablePaths = executableContext.getExecutableConfig().getExecutionPaths();
-        if ( executablePaths != null )
+
+        Collection<String> executablePaths = executableContext.getProbingPaths();
+        if ( executablePaths != null && executablePaths.size() > 0 )
         {
             for ( String executablePath : executablePaths )
             {
@@ -91,13 +96,19 @@ public class DefaultNetExecutable
     public void execute()
         throws ExecutionException
     {
+        innerExecute();
+    }
+
+    protected void innerExecute()
+        throws ExecutionException
+    {
         List<String> commands = getCommands();
 
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         try
         {
             commandExecutor.setLogger( logger );
-            commandExecutor.executeCommand( getExecutable(), getCommands(), getExecutionPath(), true );
+            commandExecutor.executeCommand( getExecutable(), commands, getExecutionPath(), true );
         }
         catch ( ExecutionException e )
         {
@@ -105,7 +116,7 @@ public class DefaultNetExecutable
                 ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Command = " +
                 commands, e );
         }
-        
+
         // This check is too broad, as seen in Issue #9903
         // I have not been able to identify an error it is trying to catch that is not already reported by the exit code above
         //
@@ -122,18 +133,18 @@ public class DefaultNetExecutable
         {
             throw new ExecutionException( "NPANDAY-070-002: Executable has not been initialized with a context" );
         }
-        return executableContext.getExecutableCapability().getExecutable();
+        return executableContext.getExecutableName();
     }
 
     public Vendor getVendor()
     {
-        return executableContext.getExecutableCapability().getVendor();
+        return executableContext.getVendor();
     }
 
     public void init( NPandayContext npandayContext )
     {
         this.executableContext = (ExecutableContext) npandayContext;
         this.logger = executableContext.getLogger();
-        commands = executableContext.getExecutableConfig().getCommands();
+        commands = executableContext.getCommands();
     }
 }

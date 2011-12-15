@@ -18,29 +18,35 @@
  */
 package npanday.vendor.impl;
 
-import npanday.vendor.*;
 import npanday.InitializationException;
 import npanday.PlatformUnsupportedException;
 import npanday.registry.RepositoryRegistry;
+import npanday.vendor.InvalidVersionFormatException;
+import npanday.vendor.SettingsException;
+import npanday.vendor.SettingsRepository;
+import npanday.vendor.SettingsUtil;
+import npanday.vendor.Vendor;
+import npanday.vendor.VendorFactory;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorInfoRepository;
+import npanday.vendor.VendorInfoTransitionRule;
+import npanday.vendor.VendorRequirement;
+import npanday.vendor.VendorRequirementState;
+import org.codehaus.plexus.logging.Logger;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.io.File;
-
-import org.codehaus.plexus.logging.Logger;
 
 /**
  * Provides factory methods for creating vendor info transition rules. These rules usually can determine the
  * exact vendor info; but at times, it is a best guess.
  *
  * @author Shane Isbell
- * @see VendorInfoState
+ * @see npanday.vendor.VendorRequirementState
  */
 final class VendorInfoTransitionRuleFactory
 {
-
     private VendorInfoRepository vendorInfoRepository;
 
     /**
@@ -96,6 +102,7 @@ final class VendorInfoTransitionRuleFactory
         }
         logger.debug( "NPANDAY-103-036.0: Respository registry: " + repositoryRegistry);
 
+        // TODO: I think we should make sure settingsrepo is filled prio to this
         SettingsRepository settingsRepository = null;
         try
         {
@@ -106,54 +113,9 @@ final class VendorInfoTransitionRuleFactory
             throw new InitializationException( "NPANDAY-103-067: Could not get settings." , e);
         }
 
-        if (settingsRepository != null)
-        {
-            try
-            {
-                defaultVendor = VendorFactory.createVendorFromName( settingsRepository.getDefaultSetup().getVendorName() );
-                logger.debug( "NPANDAY-103-036: Default Vendor Initialized: Name = " + defaultVendor );
-            }
-            catch ( VendorUnsupportedException e )
-            {
-                throw new InitializationException( "NPANDAY-103-002: Unknown Default Vendor: Name = " + defaultVendor, e );
-            }
-            defaultVendorVersion = settingsRepository.getDefaultSetup().getVendorVersion().trim();
-            defaultFrameworkVersion = settingsRepository.getDefaultSetup().getFrameworkVersion().trim();
-        }
-    }
-
-    VendorInfoTransitionRule createPostProcessRule()
-    {
-        return new VendorInfoTransitionRule()
-        {
-            public VendorInfoState process( VendorInfo vendorInfo )
-            {
-                logger.debug( "NPANDAY-103-034: Entering State = Post Process, applying executable paths" );
-                if ( ( vendorInfo.getExecutablePaths() == null || vendorInfo.getExecutablePaths().size() == 0 ) &&
-                    vendorInfoRepository.exists() )
-                {
-                    try
-                    {
-                        List<File> existingPaths = new ArrayList<File>();
-                        List<File> configuredExecutablePaths = vendorInfoRepository.getConfiguredVendorInfoByExample(vendorInfo).getExecutablePaths();
-                        for(File path : configuredExecutablePaths){
-                            if (!path.exists()) {
-                                logger.debug( "NPANDAY-103-61: Configured path does not exist and is therefore omitted: " + path );
-                            }
-                            else {
-                                existingPaths.add(path);
-                            }
-                        }
-                        vendorInfo.setExecutablePaths( existingPaths );
-                    }
-                    catch ( PlatformUnsupportedException e )
-                    {
-                        logger.debug( "NPANDAY-103-36: Failed to resolve configured executable paths." );
-                    }
-                }
-                return VendorInfoState.EXIT;
-            }
-        };
+        defaultVendor = VendorFactory.createVendorFromName( settingsRepository.getDefaultSetup().getVendorName() );
+        defaultVendorVersion = settingsRepository.getDefaultSetup().getVendorVersion().trim();
+        defaultFrameworkVersion = settingsRepository.getDefaultSetup().getFrameworkVersion().trim();
     }
 
     /**
@@ -165,10 +127,10 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-003: Entering State = NTT" );
-                return VendorInfoState.POST_PROCESS;
+                return VendorRequirementState.EXIT;
             }
         };
     }
@@ -177,7 +139,7 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-004: Entering State = NFF" );
                 logger.debug( "NPANDAY-103-041: Vendor:" + vendorInfo.getVendor() + ":default vendor:" + defaultVendor );
@@ -186,7 +148,7 @@ final class VendorInfoTransitionRuleFactory
                     vendorInfo.setVendorVersion( defaultVendorVersion );
                     logger.debug( "NPANDAY-103-042: Set default framework:" + defaultFrameworkVersion );
                     vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
-                    return VendorInfoState.POST_PROCESS;
+                    return VendorRequirementState.EXIT;
                 }
                 else
                 {
@@ -199,9 +161,10 @@ final class VendorInfoTransitionRuleFactory
                             if ( vi.getVendor().equals( vendorInfo.getVendor() ) )
                             {
                                 vendorInfo.setVendorVersion( vi.getVendorVersion() );
-                                logger.debug( "NPANDAY-103-044: Hard code the frameworkd (default framework:" + defaultFrameworkVersion + ")" );
+                                logger.warn( "NPANDAY-103-044: Hard code the frameworkd (default framework:"
+                                                 + defaultFrameworkVersion + ")" );
                                 vendorInfo.setFrameworkVersion( "2.0.50727" );
-                                return VendorInfoState.POST_PROCESS;
+                                return VendorRequirementState.EXIT;
                             }
                         }
                     }
@@ -214,41 +177,16 @@ final class VendorInfoTransitionRuleFactory
                             if ( vi.getVendor().equals( vendorInfo.getVendor() ) )
                             {
                                 vendorInfo.setVendorVersion( vi.getVendorVersion() );
-                                logger.debug( "NPANDAY-103-045: Hard code the frameworkd (default framework:" + defaultFrameworkVersion + ")" );
+                                logger.warn( "NPANDAY-103-045: Hard code the frameworkd (default framework:"
+                                                 + defaultFrameworkVersion + ")" );
                                 vendorInfo.setFrameworkVersion(
                                     "2.0.50727" );  //TODO: this should be according to max version
-                                return VendorInfoState.POST_PROCESS;
+                                return VendorRequirementState.EXIT;
                             }
                         }
                     }
                 }
-                return createVendorInfoSetterForNFF_NoSettings().process( vendorInfo );
-            }
-        };
-    }
-
-    VendorInfoTransitionRule createVendorInfoSetterForNFF_NoSettings()
-    {
-        return new VendorInfoTransitionRule()
-        {
-            public VendorInfoState process( VendorInfo vendorInfo )
-            {
-                logger.debug( "NPANDAY-103-005: Entering State = NFF" );
-                logger.debug( "NPANDAY-103-047: Hard code the frameworkd (default framework:" + defaultFrameworkVersion + ")" );
-                vendorInfo.setFrameworkVersion( "2.0.50727" );
-                return VendorInfoState.NFT;
-            }
-        };
-    }
-
-    VendorInfoTransitionRule createVendorInfoSetterForNFT_NoSettings()
-    {
-        return new VendorInfoTransitionRule()
-        {
-            public VendorInfoState process( VendorInfo vendorInfo )
-            {
-                logger.debug( "NPANDAY-103-006: Entering State = NFT" );
-                return VendorInfoState.POST_PROCESS; //NO WAY TO KNOW
+                return VendorRequirementState.EXIT;
             }
         };
     }
@@ -257,14 +195,14 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-007: Entering State = NFT" );
                 if ( vendorInfo.getFrameworkVersion().equals( defaultFrameworkVersion ) &&
                     vendorInfo.getVendor().equals( defaultVendor ) )
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
-                    return VendorInfoState.NTT;
+                    return VendorRequirementState.NTT;
                 }
                 else
                 {
@@ -288,14 +226,14 @@ final class VendorInfoTransitionRuleFactory
                             }
                             catch ( InvalidVersionFormatException e )
                             {
-                                logger.warn( "NPANDAY-103-039: Bad npanday-settings.xml file", e );
-                                return createVendorInfoSetterForNFT_NoSettings().process( vendorInfo );
+                                logger.error( "NPANDAY-103-039: Bad npanday-settings.xml file", e );
+                                return VendorRequirementState.EXIT;
                             }
-                            return VendorInfoState.NTT;
+                            return VendorRequirementState.NTT;
                         }
                         else
                         {
-                            return createVendorInfoSetterForNFT_NoSettings().process( vendorInfo );
+                            return VendorRequirementState.EXIT;
                         }
                     }
                     else
@@ -318,27 +256,14 @@ final class VendorInfoTransitionRuleFactory
                             }
                             catch ( InvalidVersionFormatException e )
                             {
-                                logger.warn( "NPANDAY-103-040: Bad npanday-settings.xml file", e );
-                                return createVendorInfoSetterForNFT_NoSettings().process( vendorInfo );
+                                logger.error( "NPANDAY-103-040: Bad npanday-settings.xml file", e );
+                                return VendorRequirementState.EXIT;
                             }
-                            return VendorInfoState.NTT;
+                            return VendorRequirementState.NTT;
                         }
-                        return createVendorInfoSetterForNFT_NoSettings().process( vendorInfo );
+                        return VendorRequirementState.EXIT;
                     }
                 }
-            }
-        };
-    }
-
-    VendorInfoTransitionRule createVendorInfoSetterForNTF_NoSettings()
-    {
-        return new VendorInfoTransitionRule()
-        {
-            public VendorInfoState process( VendorInfo vendorInfo )
-            {
-                logger.debug( "NPANDAY-103-008: Entering State = NTF" );
-                vendorInfo.setFrameworkVersion( "2.0.50727" );
-                return VendorInfoState.NTT;
             }
         };
     }
@@ -347,7 +272,7 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-009: Entering State = NTF" );
                 logger.debug( "NPANDAY-103-049: Compare vendor version :" + defaultVendorVersion + ":width:" + vendorInfo.getVendorVersion());
@@ -357,7 +282,7 @@ final class VendorInfoTransitionRuleFactory
                     logger.debug( "NPANDAY-103-049: Set to default framework:" + defaultFrameworkVersion + ")" );
                     vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
                     vendorInfo.setVendor( defaultVendor );
-                    return VendorInfoState.NTT;
+                    return VendorRequirementState.NTT;
                 }
                 else
                 {
@@ -382,14 +307,14 @@ final class VendorInfoTransitionRuleFactory
                             }
                             catch ( InvalidVersionFormatException e )
                             {
-                                logger.warn( "NPANDAY-103-037: Bad npanday-settings.xml file", e );
-                                return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
+                                logger.error( "NPANDAY-103-037: Bad npanday-settings.xml file", e );
+                                return VendorRequirementState.EXIT;
                             }
-                            return VendorInfoState.NTT;
+                            return VendorRequirementState.NTT;
                         }
                         else
                         {
-                            return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
+                            return VendorRequirementState.EXIT;
                         }
                     }
                     else
@@ -413,38 +338,16 @@ final class VendorInfoTransitionRuleFactory
                             }
                             catch ( InvalidVersionFormatException e )
                             {
-                                logger.warn( "NPANDAY-103-038: Bad npanday-settings.xml file", e );
-                                return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
+                                logger.error( "NPANDAY-103-038: Bad npanday-settings.xml file", e );
+                                return VendorRequirementState.EXIT;
                             }
-                            return VendorInfoState.NTT;
+                            return VendorRequirementState.NTT;
                         }
                         else
                         {
-                            return createVendorInfoSetterForNTF_NoSettings().process( vendorInfo );
+                            return VendorRequirementState.EXIT;
                         }
                     }
-                }
-            }
-        };
-    }
-
-    VendorInfoTransitionRule createVendorInfoSetterForFTF_NoSettings()
-    {
-        return new VendorInfoTransitionRule()
-        {
-            public VendorInfoState process( VendorInfo vendorInfo )
-            {
-                logger.debug( "NPANDAY-103-010: Entering State = FTF" );
-                String vendorVersion = vendorInfo.getVendorVersion();
-                if ( vendorVersion.equals( "2.0.50727" ) || vendorVersion.equals( "1.1.4322" ) )
-                {
-                    vendorInfo.setVendor( Vendor.MICROSOFT );
-                    return VendorInfoState.MTF;
-                }
-                else
-                {
-                    vendorInfo.setVendor( Vendor.MONO );//This could be dotGNU: this is best guess
-                    return VendorInfoState.NTF;
                 }
             }
         };
@@ -454,7 +357,7 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-011: Entering State = FTF" );
                 logger.debug( "NPANDAY-103-067: Compare vendor version :" + defaultVendorVersion + ":width:" + vendorInfo.getVendorVersion());
@@ -467,15 +370,15 @@ final class VendorInfoTransitionRuleFactory
                     vendorInfo.setVendor( defaultVendor );
                     if ( defaultVendor.equals( Vendor.MICROSOFT ) )
                     {
-                        return VendorInfoState.MTT;
+                        return VendorRequirementState.MTT;
                     }
                     else if ( defaultVendor.equals( Vendor.MONO ) )
                     {
-                        return VendorInfoState.NTT;
+                        return VendorRequirementState.NTT;
                     }
                     else
                     {
-                        return VendorInfoState.GTT;
+                        return VendorRequirementState.GTT;
                     }
                 }
                 else
@@ -495,19 +398,19 @@ final class VendorInfoTransitionRuleFactory
                                 vendorInfo.setVendor( vi.getVendor() );
                                 if ( vi.getVendor().equals( Vendor.MICROSOFT ) )
                                 {
-                                    return VendorInfoState.MTT;
+                                    return VendorRequirementState.MTT;
                                 }
                                 else if ( vi.getVendor().equals( Vendor.MONO ) )
                                 {
-                                    return VendorInfoState.NTT;
+                                    return VendorRequirementState.NTT;
                                 }
                                 else
                                 {
-                                    return VendorInfoState.GTT;
+                                    return VendorRequirementState.GTT;
                                 }
                             }
                         }
-                        return createVendorInfoSetterForFTF_NoSettings().process( vendorInfo );
+                        return VendorRequirementState.EXIT;
                     }
                     else
                     {
@@ -524,19 +427,19 @@ final class VendorInfoTransitionRuleFactory
                                 vendorInfo.setVendor( vi.getVendor() );
                                 if ( vi.getVendor().equals( Vendor.MICROSOFT ) )
                                 {
-                                    return VendorInfoState.MTT;
+                                    return VendorRequirementState.MTT;
                                 }
                                 else if ( vi.getVendor().equals( Vendor.MONO ) )
                                 {
-                                    return VendorInfoState.NTT;
+                                    return VendorRequirementState.NTT;
                                 }
                                 else
                                 {
-                                    return VendorInfoState.GTT;
+                                    return VendorRequirementState.GTT;
                                 }
                             }
                         }
-                        return createVendorInfoSetterForFTF_NoSettings().process( vendorInfo );
+                        return VendorRequirementState.EXIT;
                     }
                 }
             }
@@ -547,7 +450,7 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-012: Entering State = FFT" );
                 if ( vendorInfo.getFrameworkVersion().equals( defaultFrameworkVersion ) )
@@ -556,15 +459,15 @@ final class VendorInfoTransitionRuleFactory
                     vendorInfo.setVendor( defaultVendor );
                     if ( defaultVendor.equals( Vendor.MICROSOFT ) )
                     {
-                        return VendorInfoState.MTT;
+                        return VendorRequirementState.MTT;
                     }
                     else if ( defaultVendor.equals( Vendor.MONO ) )
                     {
-                        return VendorInfoState.NTT;
+                        return VendorRequirementState.NTT;
                     }
                     else
                     {
-                        return VendorInfoState.GTT;
+                        return VendorRequirementState.GTT;
                     }
                 }
                 else
@@ -575,7 +478,7 @@ final class VendorInfoTransitionRuleFactory
                     }
                     catch ( PlatformUnsupportedException e )
                     {
-                        return VendorInfoState.POST_PROCESS;
+                        return VendorRequirementState.EXIT;
                     }
                     List<VendorInfo> v = vendorInfoRepository.getVendorInfosFor( vendorInfo, true );
                     if ( !v.isEmpty() )
@@ -587,15 +490,15 @@ final class VendorInfoTransitionRuleFactory
                                 vendorInfo.setVendorVersion( vi.getVendorVersion() );
                                 if ( vi.getVendor().equals( Vendor.MICROSOFT ) )
                                 {
-                                    return VendorInfoState.MTT;
+                                    return VendorRequirementState.MTT;
                                 }
                                 else if ( vi.getVendor().equals( Vendor.MONO ) )
                                 {
-                                    return VendorInfoState.NTT;
+                                    return VendorRequirementState.NTT;
                                 }
                                 else
                                 {
-                                    return VendorInfoState.GTT;
+                                    return VendorRequirementState.GTT;
                                 }
                             }
                         }
@@ -608,72 +511,19 @@ final class VendorInfoTransitionRuleFactory
                             vendorInfo.setVendorVersion( vi.getVendorVersion() );
                             if ( vi.getVendor().equals( Vendor.MICROSOFT ) )
                             {
-                                return VendorInfoState.MTT;
+                                return VendorRequirementState.MTT;
                             }
                             else if ( vi.getVendor().equals( Vendor.MONO ) )
                             {
-                                return VendorInfoState.NTT;
+                                return VendorRequirementState.NTT;
                             }
                             else
                             {
-                                return VendorInfoState.GTT;
+                                return VendorRequirementState.GTT;
                             }
                         }
                     }
-                    return createVendorInfoSetterForFFT_NoSettings().process( vendorInfo );
-                }
-            }
-        };
-    }
-
-    VendorInfoTransitionRule createVendorInfoSetterForFFT_NoSettings()
-    {
-        return new VendorInfoTransitionRule()
-        {
-            public VendorInfoState process( VendorInfo vendorInfo )
-            {
-                logger.debug( "NPANDAY-103-013: Entering State = FFT" );
-                try
-                {
-                    vendorInfo.setVendor( VendorFactory.getDefaultVendorForOS() );
-                }
-                catch ( PlatformUnsupportedException e )
-                {
-                    return VendorInfoState.POST_PROCESS;
-                }
-                return ( vendorInfo.getVendor().equals( Vendor.MICROSOFT ) ) ? VendorInfoState.MFT
-                    : VendorInfoState.NFT;
-            }
-        };
-    }
-
-    VendorInfoTransitionRule createVendorInfoSetterForFTT_NoSettings()
-    {
-        return new VendorInfoTransitionRule()
-        {
-            public VendorInfoState process( VendorInfo vendorInfo )
-            {
-                logger.debug( "NPANDAY-103-014: Entering State = FTT" );
-                String vendorVersion = vendorInfo.getVendorVersion();
-                Vendor defaultVendor;
-                try
-                {
-                    defaultVendor = VendorFactory.getDefaultVendorForOS();
-                }
-                catch ( PlatformUnsupportedException e )
-                {
-                    return VendorInfoState.POST_PROCESS;
-                }
-                if ( ( vendorVersion.equals( "2.0.50727" ) || vendorVersion.equals( "1.1.4322" ) ) &&
-                    defaultVendor.equals( Vendor.MICROSOFT ) )
-                {
-                    vendorInfo.setVendor( Vendor.MICROSOFT );
-                    return VendorInfoState.MTT;
-                }
-                else
-                {
-                    vendorInfo.setVendor( Vendor.MONO );//This could be dotGNU: this is best guess
-                    return VendorInfoState.NTT;
+                    return VendorRequirementState.EXIT;
                 }
             }
         };
@@ -683,49 +533,28 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-015: Entering State = FTT" );
                 List<VendorInfo> vendorInfos = vendorInfoRepository.getVendorInfosFor( vendorInfo, false );
                 if ( vendorInfos.isEmpty() )
                 {
-                    return createVendorInfoSetterForFTT_NoSettings().process( vendorInfo );
+                    return VendorRequirementState.EXIT;
                 }
                 Vendor vendor = vendorInfos.get( 0 ).getVendor();//TODO: Do default branch
                 vendorInfo.setVendor( vendor );
                 if ( vendor.equals( Vendor.MICROSOFT ) )
                 {
-                    return VendorInfoState.MTT;
+                    return VendorRequirementState.MTT;
                 }
                 else if ( vendor.equals( Vendor.MONO ) )
                 {
-                    return VendorInfoState.NTT;
+                    return VendorRequirementState.NTT;
                 }
                 else
                 {
-                    return VendorInfoState.GTT;
+                    return VendorRequirementState.GTT;
                 }
-            }
-        };
-    }
-
-    VendorInfoTransitionRule createVendorInfoSetterForFFF_NoSettings()
-    {
-        return new VendorInfoTransitionRule()
-        {
-            public VendorInfoState process( VendorInfo vendorInfo )
-            {
-                logger.debug( "NPANDAY-103-016: Entering State = FFF" );
-                try
-                {
-                    vendorInfo.setVendor( VendorFactory.getDefaultVendorForOS() );
-                }
-                catch ( PlatformUnsupportedException e )
-                {
-                    return VendorInfoState.POST_PROCESS;
-                }
-                return ( vendorInfo.getVendor().equals( Vendor.MICROSOFT ) ) ? VendorInfoState.MFF
-                    : VendorInfoState.NFF;
             }
         };
     }
@@ -734,14 +563,14 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-017: Entering State = FFF" );
                 vendorInfo.setVendor( defaultVendor );
                 vendorInfo.setVendorVersion( defaultVendorVersion );
                 logger.debug( "NPANDAY-103-052: Set to default framework version:" + defaultFrameworkVersion);
                 vendorInfo.setFrameworkVersion( defaultFrameworkVersion );
-                return VendorInfoState.POST_PROCESS;
+                return VendorRequirementState.EXIT;
             }
         };
     }
@@ -751,10 +580,10 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-018: Entering State = MTT" );
-                return VendorInfoState.POST_PROCESS;
+                return VendorRequirementState.EXIT;
             }
         };
     }
@@ -763,12 +592,12 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-019: Entering State = MTF" );
                 logger.debug( "NPANDAY-103-053: Set to framework version:" + vendorInfo.getVendorVersion());
                 vendorInfo.setFrameworkVersion( vendorInfo.getVendorVersion() );
-                return VendorInfoState.MTT;
+                return VendorRequirementState.MTT;
             }
         };
     }
@@ -777,58 +606,11 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-020: Entering State = MTF" );
                 vendorInfo.setVendorVersion( vendorInfo.getFrameworkVersion() );
-                return VendorInfoState.MTT;
-            }
-        };
-    }
-
-    VendorInfoTransitionRule createVendorInfoSetterForMFF_NoSettings()
-    {
-        return new VendorInfoTransitionRule()
-        {
-            public VendorInfoState process( VendorInfo vendorInfo )
-            {
-                logger.debug( "NPANDAY-103-021: Entering State = MFF" );
-                String systemRoot = System.getenv("SystemRoot");
-                String systemDrive = System.getenv("SystemDrive");
-                File v1 = new File( systemRoot, "\\Microsoft.NET\\Framework\\v1.1.4322" );
-                File v2 = new File( systemRoot, "\\Microsoft.NET\\Framework\\v2.0.50727" );
-                File v3 = new File( systemDrive, "\\Program Files\\Microsoft.NET\\SDK\\v1.1" );
-                File v4 = new File( systemDrive, "\\Program Files\\Microsoft.NET\\SDK\\v2.0" );
-                List<File> executablePaths = new ArrayList<File>();
-
-                if ( v2.exists() )
-                {
-                    logger.debug( "NPANDAY-103-055: Hardcode framework version (default:" + defaultFrameworkVersion + ")");
-                    vendorInfo.setFrameworkVersion( "2.0.50727" );
-                    executablePaths.add( v2 );
-                    if ( v4.exists() )
-                    {
-                        executablePaths.add( v4 );
-                    }
-                }
-                else if ( v1.exists() )
-                {
-                    logger.debug( "NPANDAY-103-056: Hardcode framework version (default:" + defaultFrameworkVersion + ")");
-                    vendorInfo.setFrameworkVersion( "1.1.4322" );
-                    executablePaths.add( v1 );
-                    if ( v3.exists() )
-                    {
-                        executablePaths.add( v3 );
-                    }
-                }
-                else
-                {
-                    logger.debug( "NPANDAY-103-057: Hardcode framework version:");
-                    vendorInfo.setFrameworkVersion( "2.0.50727" );
-                }
-
-                vendorInfo.setExecutablePaths( executablePaths );
-                return VendorInfoState.MFT;
+                return VendorRequirementState.MTT;
             }
         };
     }
@@ -837,13 +619,13 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-022: Entering State = MFF" );
                 if ( vendorInfo.getVendor().equals( defaultVendor ) )
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
-                    return VendorInfoState.MTF;
+                    return VendorRequirementState.MTF;
                 }
                 else
                 {
@@ -866,29 +648,14 @@ final class VendorInfoTransitionRuleFactory
                     {
                         String maxVersion = vendorInfoRepository.getMaxVersion( versions );
                         vendorInfo.setVendorVersion( maxVersion );
-                        return VendorInfoState.MTF;
+                        return VendorRequirementState.MTF;
                     }
                     catch ( InvalidVersionFormatException e )
                     {
-                        logger.info( "NPANDAY-103-030: Invalid version. Unable to determine best vendor version", e );
-                        return createVendorInfoSetterForMFF_NoSettings().process( vendorInfo );
+                        logger.error( "NPANDAY-103-030: Invalid version. Unable to determine best vendor version", e );
+                        return VendorRequirementState.EXIT;
                     }
                 }
-            }
-        };
-    }
-
-    VendorInfoTransitionRule createVendorInfoSetterForGFF_NoSettings()
-    {
-        return new VendorInfoTransitionRule()
-        {
-            public VendorInfoState process( VendorInfo vendorInfo )
-            {
-                logger.debug( "NPANDAY-103-023: Entering State = GFF" );
-                logger.debug( "NPANDAY-103-058: Hardcode framework version:");
-                vendorInfo.setFrameworkVersion( "2.0.50727" );
-                vendorInfo.setVendorVersion( "2.0.50727" );
-                return VendorInfoState.POST_PROCESS;
             }
         };
     }
@@ -897,15 +664,16 @@ final class VendorInfoTransitionRuleFactory
     {
         return new VendorInfoTransitionRule()
         {
-            public VendorInfoState process( VendorInfo vendorInfo )
+            public VendorRequirementState process( VendorRequirement vendorInfo )
             {
                 logger.debug( "NPANDAY-103-035: Entering State = GFF" );
                 if ( vendorInfo.getVendor().equals( defaultVendor ) )
                 {
                     vendorInfo.setVendorVersion( defaultVendorVersion );
-                    logger.debug( "NPANDAY-103-059: Hardcode framework version (default:" + defaultFrameworkVersion + ")" );
+                    logger.warn(
+                        "NPANDAY-103-059: Hardcode framework version (default:" + defaultFrameworkVersion + ")" );
                     vendorInfo.setFrameworkVersion( "2.0.50727" );
-                    return VendorInfoState.POST_PROCESS;
+                    return VendorRequirementState.EXIT;
                 }
                 else
                 {
@@ -925,16 +693,15 @@ final class VendorInfoTransitionRuleFactory
                         vendorInfo.setVendorVersion( maxVersion );
                         logger.debug( "NPANDAY-103-060: Hardcode framework version (default:" + defaultFrameworkVersion + ")" );
                         vendorInfo.setFrameworkVersion( "2.0.50727" );
-                        return VendorInfoState.POST_PROCESS;
+                        return VendorRequirementState.EXIT;
                     }
                     catch ( InvalidVersionFormatException e )
                     {
-                        logger.info( "NPANDAY-103-031: Invalid version. Unable to determine best vendor version", e );
-                        return createVendorInfoSetterForGFF_NoSettings().process( vendorInfo );
+                        logger.error( "NPANDAY-103-031: Invalid version. Unable to determine best vendor version", e );
+                        return VendorRequirementState.EXIT;
                     }
                 }
             }
         };
     }
-    //TODO: add additional DotGNU states
 }

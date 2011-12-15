@@ -19,18 +19,14 @@
 
 package npanday.plugin.compile;
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.FileUtils;
-import npanday.PlatformUnsupportedException;
 import npanday.ArtifactType;
-import npanday.executable.ExecutionException;
-import npanday.vendor.VendorFactory;
-import npanday.executable.compiler.*;
+import npanday.executable.compiler.CompilerConfig;
+import npanday.executable.compiler.CompilerRequirement;
+import npanday.executable.compiler.KeyInfo;
+import org.apache.maven.plugin.MojoExecutionException;
 
-import java.util.ArrayList;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Compiles test classes.
@@ -94,34 +90,15 @@ public final class TestCompilerMojo
 
     protected CompilerRequirement getCompilerRequirement() throws MojoExecutionException
     {
-        //Requirement
-        CompilerRequirement compilerRequirement = CompilerRequirement.Factory.createDefaultCompilerRequirement();
-        compilerRequirement.setLanguage( testLanguage );
-        compilerRequirement.setFrameworkVersion( testFrameworkVersion );
-        compilerRequirement.setProfile( "FULL" );
-        compilerRequirement.setVendorVersion( testVendorVersion );
-        try
-        {
-            if ( vendor != null )
-            {
-                compilerRequirement.setVendor( VendorFactory.createVendorFromName( vendor ) );
-            }
-        }
-        catch ( PlatformUnsupportedException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-900-000: Unknown Vendor: Vendor = " + vendor, e );
-        }
-
-
-        return compilerRequirement;
-
+        return new CompilerRequirement(
+            testVendor, testVendorVersion, testFrameworkVersion, "FULL",  testLanguage);
     }
 
     protected CompilerConfig getCompilerConfig()  throws MojoExecutionException
     {
 
         //Config
-        CompilerConfig compilerConfig = (CompilerConfig) CompilerConfig.Factory.createDefaultExecutableConfig();
+        CompilerConfig compilerConfig = new CompilerConfig();
 
         compilerConfig.setCommands( getParameters() );
 
@@ -157,6 +134,9 @@ public final class TestCompilerMojo
         }
 
 
+        if (profileAssemblyPath != null){
+            compilerConfig.setAssemblyPath( profileAssemblyPath );
+        }
 
 
         return compilerConfig;

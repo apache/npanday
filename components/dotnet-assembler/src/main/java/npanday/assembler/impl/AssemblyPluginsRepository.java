@@ -18,35 +18,42 @@
  */
 package npanday.assembler.impl;
 
-import npanday.registry.NPandayRepositoryException;
-import npanday.registry.Repository;
-import npanday.registry.RepositoryRegistry;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.InputStreamReader;
-import java.util.*;
-
 import npanday.assembler.AssemblyInfoException;
 import npanday.model.assembly.plugins.AssemblyPlugin;
 import npanday.model.assembly.plugins.AssemblyPluginsModel;
 import npanday.model.assembly.plugins.io.xpp3.AssemblyPluginXpp3Reader;
+import npanday.registry.ModelInterpolator;
+import npanday.registry.NPandayRepositoryException;
+import npanday.registry.Repository;
+import npanday.registry.impl.AbstractMultisourceRepository;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Provides a way for loading the assembly-plugins.xml file and accessing its content.
  *
  * @author Shane Isbell
+ * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ * @plexus.component
+ *   role="npanday.assembler.impl.AssemblyPluginsRepository"
  */
 public final class AssemblyPluginsRepository
+    extends AbstractMultisourceRepository<AssemblyPluginsModel>
     implements Repository
 {
 
     /**
      * List of all assembly plugins within the repository
      */
-    private List<AssemblyPlugin> assemblyPlugins;
+    private List<AssemblyPlugin> assemblyPlugins = new ArrayList<AssemblyPlugin>( );
 
     /**
      * Constructor. This method is intended to by invoked by the <code>RepositoryRegistry<code>, not by the
@@ -56,62 +63,35 @@ public final class AssemblyPluginsRepository
     {
     }
 
-    /**
-     * Loads the repository.
-     *
-     * @param inputStream a stream of the repository file (typically from *.xml)
-     * @param properties  additional user-supplied parameters used to customize the behavior of the repository
-     * @throws NPandayRepositoryException if there is a problem loading the repository
-     */
-    public void load( InputStream inputStream, Hashtable properties )
-        throws NPandayRepositoryException
+    @Override
+    protected AssemblyPluginsModel loadFromReader( Reader reader, Hashtable properties )
+        throws IOException, XmlPullParserException
     {
         AssemblyPluginXpp3Reader xpp3Reader = new AssemblyPluginXpp3Reader();
-        Reader reader = new InputStreamReader( inputStream );
-        AssemblyPluginsModel plugins = null;
-        try
-        {
-            plugins = xpp3Reader.read( reader );
-        }
-        catch( IOException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-021-000: An error occurred while reading executable-plugins.xml", e );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-021-001: Could not read plugins-compiler.xml", e );
-        }
-        assemblyPlugins = plugins.getAssemblyPlugins();
+        return xpp3Reader.read( reader );
+    }
+
+    @Override
+    protected void mergeLoadedModel( AssemblyPluginsModel model )
+        throws NPandayRepositoryException
+    {
+        assemblyPlugins.addAll( model.getAssemblyPlugins());
         Set languages = getAssemblyPluginLanguages();
         if ( languages.size() < assemblyPlugins.size() )
         {
             throw new NPandayRepositoryException(
-                "NPANDAY-021-002: Duplicate language entries in the assembly-plugins.xml: Total Language Count = " +
-                    languages.size() + ", Total Plugins = " + assemblyPlugins.size() );
+                "NPANDAY-021-002: Duplicate language entries in the assembly-plugins.xml: Total Language Count = "
+                    + languages.size() + ", Total Plugins = " + assemblyPlugins.size() );
         }
     }
 
     /**
-     * @see Repository#setRepositoryRegistry(npanday.registry.RepositoryRegistry)
+     * Remove all stored values in preparation for a reload.
      */
-    public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
+    @Override
+    protected void clear()
     {
-    }
-
-    /**
-     * @see Repository#setSourceUri(String)
-     */
-    public void setSourceUri( String fileUri )
-    {
-        // not supported
-    }
-
-    /**
-     * @see Repository#reload()
-     */
-    public void reload() throws IOException
-    {
-        // not supported
+        assemblyPlugins.clear();
     }
 
     /**
@@ -159,5 +139,18 @@ public final class AssemblyPluginsRepository
             set.add( assemblyPlugin.getLanguage().trim() );
         }
         return set;
+    }
+
+    // ### COMPONENTS REQUIRED BY THE BASE CLASS
+
+    /**
+     * @plexus.requirement
+     */
+    private ModelInterpolator interpolator;
+
+    @Override
+    protected ModelInterpolator getInterpolator()
+    {
+        return interpolator;
     }
 }

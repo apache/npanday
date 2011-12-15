@@ -18,12 +18,7 @@
  */
 package npanday.executable;
 
-import npanday.executable.compiler.CompilerConfig;
-import npanday.ArtifactType;
-import npanday.executable.compiler.KeyInfo;
-
 import java.util.List;
-import java.io.File;
 
 /**
  * User-defined configuration information for an executable or compiler.
@@ -31,22 +26,31 @@ import java.io.File;
  * @author Shane Isbell
  * @see RepositoryExecutableContext
  */
-public interface ExecutableConfig
+public class ExecutableConfig
 {
+    private List<String> commands;
+
+    private List<String> executionPaths;
 
     /**
      * The commands to pass to the executable plugin.
      *
      * @return the commands to pass to the executable plugin
      */
-    List<String> getCommands();
+    public List<String> getCommands()
+    {
+        return commands;
+    }
 
     /**
      * Sets commands to pass to the executable plugin.
      *
      * @param commands the user-defined commands to pass to the executable plugin
      */
-    void setCommands( List<String> commands );
+    public void setCommands( List<String> commands )
+    {
+        this.commands = commands;
+    }
 
     /**
      * The execution path of the executable. This can be an absolute path to the executable or just the name of the
@@ -54,132 +58,18 @@ public interface ExecutableConfig
      *
      * @return the execution path of the executable
      */
-    List<String> getExecutionPaths();
+    public List<String> getExecutionPaths()
+    {
+        return executionPaths;
+    }
 
     /**
      * Sets the executation path of the executable.
      *
      * @param executionPaths the execution paths
      */
-    void setExecutionPaths( List<String> executionPaths );
-
-    public static class Factory
+    public void setExecutionPaths( List<String> executionPaths )
     {
-        /**
-         * Constructor
-         */
-        private Factory()
-        {
-        }
-
-        /**
-         * Returns a default instance of the executable config.
-         *
-         * @return a default instance of the executable config
-         */
-        public static ExecutableConfig createDefaultExecutableConfig()
-        {
-            return new CompilerConfig()
-            {
-                private KeyInfo keyInfo;
-
-                private List<String> commands;
-
-                private List<String> executionPaths;
-
-                private ArtifactType artifactType;
-
-                private boolean isTestCompile = false;
-
-                private File localRepository;
-                
-                private List<String> includeSources;
-
-
-                private File outputDirectory;
-
-
-                public File getOutputDirectory()
-                {
-                    return outputDirectory;
-                }
-
-                public void setOutputDirectory(File outputDirectory)
-                {
-                    this.outputDirectory = outputDirectory;
-                }
-    
-    
-                public void setIncludeSources(List<String> includeSources)
-                {
-                    this.includeSources = includeSources;
-                }
-                
-                public List<String> getIncludeSources()
-                {
-                    return this.includeSources;
-                }
-
-                public List<String> getCommands()
-                {
-                    return commands;
-                }
-
-                public void setCommands( List<String> commands )
-                {
-                    this.commands = commands;
-                }
-
-                public List<String> getExecutionPaths()
-                {
-                    return executionPaths;
-                }
-
-                public void setExecutionPaths( List<String> executionPaths )
-                {
-                    this.executionPaths = executionPaths;
-                }
-
-                public ArtifactType getArtifactType()
-                {
-                    return artifactType;
-                }
-
-                public void setArtifactType( ArtifactType artifactType )
-                {
-                    this.artifactType = artifactType;
-                }
-
-                public boolean isTestCompile()
-                {
-                    return isTestCompile;
-                }
-
-                public void setTestCompile( boolean testCompile )
-                {
-                    isTestCompile = testCompile;
-                }
-
-                public File getLocalRepository()
-                {
-                    return localRepository;
-                }
-
-                public void setLocalRepository( File localRepository )
-                {
-                    this.localRepository = localRepository;
-                }
-
-                public KeyInfo getKeyInfo()
-                {
-                    return keyInfo;
-                }
-
-                public void setKeyInfo(KeyInfo keyInfo) {
-                    this.keyInfo = keyInfo;
-                }
-            };
-        }
+        this.executionPaths = executionPaths;
     }
-
 }

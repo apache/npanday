@@ -1,0 +1,45 @@
+<component xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2 http://maven.apache.org/xsd/component-1.1.2.xsd">
+  <fileSets>
+    <fileSet>
+      <useDefaultExcludes>true</useDefaultExcludes>
+      <directory>${project.basedir}</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <!-- .NET specifics -->
+        <include>**/*.aspx</include>
+        <include>**/*.ascx</include>
+        <include>**/*.asax</include>
+
+        <!-- web developers-->
+        <include>**/*.css</include>
+        <include>**/*.js</include>
+        <include>**/*.htm</include>
+        <include>**/*.html</include>
+        <include>**/*.asax</include>
+        <include>robots.txt</include>
+
+        <!-- graphics -->
+        <include>**/*.jpg</include>
+        <include>**/*.jpeg</include>
+        <include>**/*.png</include>
+        <include>**/*.gif</include>
+        <include>**/*.bmp</include>
+        <include>**/*.ico</include>
+
+        <!-- silverlight? -->
+
+        <!-- flash -->
+        <include>**/*.swf</include>
+        <include>**/*.flv</include>
+        <include>crossdomain.xml</include>
+      </includes>
+      <excludes>
+        <exclude>bin/**/*.*</exclude>
+        <exclude>obj/**/*.*</exclude>
+        <exclude>target/**/*.*</exclude>
+      </excludes>
+    </fileSet>
+  </fileSets>
+</component>

@@ -22,24 +22,24 @@ import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RegistryLoader;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryLoader;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Hashtable;
-import java.io.InputStream;
-import java.io.IOException;
-
 import org.kxml2.io.KXmlParser;
-import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * The default loader for the registry-config.xml file.
  *
  * @author Shane Isbell
+ * @plexus.component
+ *   role="npanday.registry.RegistryLoader"
  */
-
 public class StandardRegistryLoader
     implements RegistryLoader
 {
@@ -51,11 +51,6 @@ public class StandardRegistryLoader
     private Hashtable repoMap = new Hashtable();
 
     private RepositoryLoader repositoryLoader;
-
-    public void setRepositoryLoader( RepositoryLoader repositoryLoader )
-    {
-        this.repositoryLoader = repositoryLoader;
-    }
 
     /**
      * Loads the registry-config file
@@ -246,6 +241,11 @@ public class StandardRegistryLoader
         }
 
         return repositoryObject;
+    }
+
+    public void setRepositoryLoader( RepositoryLoader repositoryLoader )
+    {
+        this.repositoryLoader = repositoryLoader;
     }
 
     /**

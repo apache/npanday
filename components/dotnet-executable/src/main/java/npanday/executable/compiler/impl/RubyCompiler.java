@@ -19,12 +19,11 @@
 package npanday.executable.compiler.impl;
 
 import npanday.executable.ExecutionException;
-import npanday.executable.compiler.CompilerConfig;
 import npanday.vendor.Vendor;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Compiles ruby classes.
@@ -38,7 +37,7 @@ public final class RubyCompiler
     public boolean failOnErrorOutput()
     {
         //MONO writes warnings to standard error: this turns off failing builds on warnings for MONO
-        return !compilerContext.getCompilerRequirement().getVendor().equals( Vendor.MONO );
+        return !compilerContext.getVendor().equals( Vendor.MONO );
     }
 
     public List<String> getCommands()
@@ -50,11 +49,10 @@ public final class RubyCompiler
         }
         List<String> commands = new ArrayList<String>();
 
-        CompilerConfig config = compilerContext.getNetCompilerConfig();
         String sourceDirectory = compilerContext.getSourceDirectoryName();
         File srcDir = new File( sourceDirectory );
-        commands.add( "--" + config.getArtifactType().getExtension() );
-        for ( String command : config.getCommands() )
+        commands.add( "--" + compilerContext.getTargetArtifactType().getExtension() );
+        for ( String command : compilerContext.getCommands() )
         {
             if ( command.startsWith( "main:" ) )
             {   String className = command.split( "[:]" )[1];

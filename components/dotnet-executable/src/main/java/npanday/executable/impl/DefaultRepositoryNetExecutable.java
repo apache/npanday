@@ -148,7 +148,7 @@ public class DefaultRepositoryNetExecutable
         }
         catch ( ExecutionException e )
         {
-            return Vendor.NULL;
+            return null;
         }
     }
 

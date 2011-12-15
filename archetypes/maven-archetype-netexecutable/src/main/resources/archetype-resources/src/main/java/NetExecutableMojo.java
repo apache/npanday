@@ -54,6 +54,7 @@ import java.util.ArrayList;
  * 3) Add any special commands to the getCommands method.
  * 4) Recompile the dotnet-core component.
  * 5) Rename this class and install this Mojo component.
+ * 6) Rename
  */
 public class NetExecutableMojo
     extends AbstractMojo
@@ -95,8 +96,7 @@ public class NetExecutableMojo
     {
         try
         {
-            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, getCommands(),
-                                                      null ).execute();
+            netExecutableFactory.getNetExecutableFor( new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), null ).execute();
         }
         catch ( ExecutionException e )
         {

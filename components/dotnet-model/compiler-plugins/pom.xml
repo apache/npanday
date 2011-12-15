@@ -32,9 +32,11 @@ under the License.
       <plugin> 
         <groupId>org.codehaus.modello</groupId>  
         <artifactId>modello-maven-plugin</artifactId>  
-        <configuration> 
-          <model>compiler-plugins.mdo</model>  
-          <version>1.0.0</version> 
+        <configuration>
+          <models>
+            <model>compiler-plugins.mdo</model>
+          </models>
+          <version>1.5.0</version>
         </configuration> 
       </plugin> 
     </plugins> 

@@ -18,22 +18,14 @@
  */
 package npanday.plugin.compile;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.AbstractMojo;
-
-import org.apache.maven.project.MavenProject;
-import npanday.PlatformUnsupportedException;
 import npanday.ArtifactType;
-import npanday.executable.ExecutionException;
-import npanday.vendor.VendorFactory;
-import npanday.executable.compiler.*;
-import org.apache.maven.artifact.Artifact;
-import org.codehaus.plexus.util.FileUtils;
+import npanday.executable.compiler.CompilerConfig;
+import npanday.executable.compiler.CompilerRequirement;
+import npanday.executable.compiler.KeyInfo;
+import org.apache.maven.plugin.MojoExecutionException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Maven Mojo for compiling Class files to the .NET Intermediate Language.
@@ -66,43 +58,17 @@ public final class CompilerMojo
 
     }
 
-
-
-
-
-
-
-
     protected CompilerRequirement getCompilerRequirement() throws MojoExecutionException
     {
-         //Requirement
-        CompilerRequirement compilerRequirement = CompilerRequirement.Factory.createDefaultCompilerRequirement();
-        compilerRequirement.setLanguage( language );
-        compilerRequirement.setFrameworkVersion( frameworkVersion );
-        compilerRequirement.setProfile( profile );
-        compilerRequirement.setVendorVersion( vendorVersion );
-        try
-        {
-            if ( vendor != null )
-            {
-                compilerRequirement.setVendor( VendorFactory.createVendorFromName( vendor ) );
-            }
-        }
-        catch ( PlatformUnsupportedException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-900-001: Unknown Vendor: Vendor = " + vendor, e );
-        }
-
-        return compilerRequirement;
-
-
+        return new CompilerRequirement(
+            vendor, vendorVersion, frameworkVersion, profile,  language);
     }
 
     protected CompilerConfig getCompilerConfig()  throws MojoExecutionException
     {
 
           //Config
-        CompilerConfig compilerConfig = (CompilerConfig) CompilerConfig.Factory.createDefaultExecutableConfig();
+        CompilerConfig compilerConfig = new CompilerConfig();
         compilerConfig.setLocalRepository( localRepository );
 
 
@@ -149,6 +115,9 @@ public final class CompilerMojo
         }
         compilerConfig.setArtifactType( artifactType );
 
+        if (profileAssemblyPath != null){
+            compilerConfig.setAssemblyPath( profileAssemblyPath );
+        }
 
         return compilerConfig;
 

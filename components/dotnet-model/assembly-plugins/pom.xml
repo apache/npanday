@@ -29,17 +29,14 @@ under the License.
   <name>NPanday :: Model :: Assembly Plugins</name>  
   <description>Assembly model used for reading in information about assembly info marshallers.</description>  
   <build> 
-    <resources> 
-      <resource> 
-        <directory>${basedir}/src/site</directory> 
-      </resource> 
-    </resources>  
-    <plugins> 
+    <plugins>
       <plugin> 
         <groupId>org.codehaus.modello</groupId>  
         <artifactId>modello-maven-plugin</artifactId>  
-        <configuration> 
-          <model>assembly-plugins.mdo</model>  
+        <configuration>
+          <models>
+            <model>assembly-plugins.mdo</model>
+          </models>
           <version>1.0.0</version> 
         </configuration> 
       </plugin> 

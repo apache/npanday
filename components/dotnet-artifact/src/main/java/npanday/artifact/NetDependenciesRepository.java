@@ -20,12 +20,9 @@ package npanday.artifact;
 
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
-import npanday.registry.RepositoryRegistry;
 import org.apache.maven.model.Dependency;
 
-import java.io.InputStream;
-import java.io.IOException;
-import java.util.Hashtable;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -37,15 +34,10 @@ public interface NetDependenciesRepository
     extends Repository
 {
     /**
-     * @see npanday.registry.Repository#load(java.io.InputStream, java.util.Hashtable)
+     * Loads a list of .NET dependencies from a config file or resource.
      */
-    void load( InputStream inputStream, Hashtable properties )
+    void load( URL source )
         throws NPandayRepositoryException;
-
-    /**
-     * @see npanday.registry.Repository#setRepositoryRegistry(npanday.registry.RepositoryRegistry)
-     */
-    void setRepositoryRegistry( RepositoryRegistry repositoryRegistry );
 
     /**
      * Returns a list of .NET dependencies as given within the net dependencies config file. This dependency list

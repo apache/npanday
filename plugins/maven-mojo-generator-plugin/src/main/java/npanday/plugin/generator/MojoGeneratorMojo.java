@@ -20,18 +20,16 @@ package npanday.plugin.generator;
 
 import npanday.PathUtil;
 import npanday.artifact.ArtifactContext;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutionException;
+import npanday.vendor.VendorRequirement;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.util.List;
 import java.util.ArrayList;
-
-import npanday.PlatformUnsupportedException;
-import npanday.executable.ExecutionException;
-import npanday.vendor.VendorFactory;
-import npanday.vendor.VendorInfo;
+import java.util.List;
 
 /**
  * Generates Java Bindings for .NET Mojos.
@@ -113,13 +111,8 @@ public class MojoGeneratorMojo
         try
         {    
             List<String> commands = new ArrayList<String>();
-            VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-            if ( vendor != null )
-            {
-                vendorInfo.setVendor( VendorFactory.createVendorFromName( vendor ) );
-            }
-            vendorInfo.setFrameworkVersion( frameworkVersion );
-            vendorInfo.setVendorVersion( vendorVersion );
+            VendorRequirement vendorRequirement = new VendorRequirement( vendor, vendorVersion, frameworkVersion );
+
             File targetDir = PathUtil.getPrivateApplicationBaseDirectory( project );
             File targetAssemblyFile =
                 new File( targetDir, project.getArtifactId() + ".dll" );
@@ -129,7 +122,7 @@ public class MojoGeneratorMojo
             commands.add( "artifactId=" + project.getArtifactId() );
             commands.add( "artifactVersion=" + project.getVersion());
             netExecutableFactory.getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.MojoGenerator",
-                                                                 vendorInfo, localRepository, commands,
+                                                                 vendorRequirement, localRepository, commands,
                                                                  true, targetDir ).execute();
         }
         catch ( PlatformUnsupportedException e )

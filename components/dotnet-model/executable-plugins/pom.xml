@@ -32,10 +32,25 @@ under the License.
       <plugin> 
         <groupId>org.codehaus.modello</groupId>  
         <artifactId>modello-maven-plugin</artifactId>  
-        <configuration> 
-          <model>executable-plugins.mdo</model>  
-          <version>1.0.0</version> 
-        </configuration> 
+        <configuration>
+          <models>
+            <model>executable-plugins.mdo</model>
+          </models>
+          <version>1.5.0</version>
+        </configuration>
+        <!-- add xsd generation -->
+        <executions>
+          <execution>
+            <id>mdo-xsd</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>xsd</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}/xsd</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
       </plugin> 
     </plugins> 
   </build>  

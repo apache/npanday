@@ -29,92 +29,155 @@ import java.util.List;
  *
  * @author Shane Isbell
  */
-public interface CompilerConfig
+public class CompilerConfig
     extends ExecutableConfig
 {
+
+    private KeyInfo keyInfo;
+
+    private ArtifactType artifactType;
+
+    private boolean isTestCompile = false;
+
+    private File localRepository;
+
+    private List<String> includeSources;
+
+    private File outputDirectory;
+
+    private File assemblyPath;
+
 
     /**
      * The target artifact for the compile: library, module, exe, winexe or nar.
      *
      * @return target artifact for the compile
      */
-    ArtifactType getArtifactType();
+    public ArtifactType getArtifactType()
+    {
+        return artifactType;
+    }
 
     /**
      * Returns true if the compiler plugin should compile the test classes, otherwise returns false.
      *
      * @return true if the compiler plugin should compile the test classes, otherwise returns false.
      */
-    boolean isTestCompile();
+    public boolean isTestCompile()
+    {
+        return isTestCompile;
+    }
 
     /**
      * Returns key info used for signing assemblies.
      *
      * @return key info used for signing assemblies
      */
-    KeyInfo getKeyInfo();
+    public KeyInfo getKeyInfo()
+    {
+        return keyInfo;
+    }
 
     /**
      * Returns local repository
      *
      * @return local repository
      */
-    File getLocalRepository();
+    public File getLocalRepository()
+    {
+        return localRepository;
+    }
 
     /**
      * Sets the artifact type for the compiler plugin: library, module, exe, winexe or nar
      *
      * @param artifactType
      */
-    void setArtifactType( ArtifactType artifactType );
+    public void setArtifactType( ArtifactType artifactType )
+    {
+        this.artifactType = artifactType;
+    }
 
     /**
      * If true, tells the compiler to compile the test classes, otherwise tells the compiler to compile the main classes.
      *
      * @param testCompile
      */
-    void setTestCompile( boolean testCompile );
+    public void setTestCompile( boolean testCompile )
+    {
+        this.isTestCompile = testCompile;
+    }
 
     /**
      * Sets local repository
      *
      * @param localRepository
      */
-    void setLocalRepository( File localRepository );
+    public void setLocalRepository( File localRepository )
+    {
+        this.localRepository = localRepository;
+    }
 
     /**
      * Sets key info used for signing assemblies.
      *
      * @param keyInfo key info used for signing assemblies
      */
-    void setKeyInfo(KeyInfo keyInfo);
-    
-    
+    public void setKeyInfo( KeyInfo keyInfo )
+    {
+        this.keyInfo = keyInfo;
+    }
+
+
     /**
      * Sets Include Sources
      *
-     * @param inlcude sources file List
+     * @param includeSources sources file List
      */
-    void setIncludeSources(List<String> includeSources);
-    
-    
+    public void setIncludeSources( List<String> includeSources )
+    {
+        this.includeSources = includeSources;
+    }
+
     /**
      * Gets Include Sources
      */
-    List<String> getIncludeSources();
-
-
+    public List<String> getIncludeSources()
+    {
+        return includeSources;
+    }
 
     /**
      * Gets Output Directory
      */
-    File getOutputDirectory();
+    public File getOutputDirectory()
+    {
+        return outputDirectory;
+    }
 
     /**
      * Sets OutputDirectory
      *
-     * @param output directory
+     * @param outputDirectory output directory
      */
-    void setOutputDirectory(File outputDirectory);
+    public void setOutputDirectory( File outputDirectory )
+    {
+        this.outputDirectory = outputDirectory;
+    }
 
+    /**
+     * Sets the path to find the default reference assemblies on.
+     */
+    public void setAssemblyPath( File assemblyPath )
+    {
+        this.assemblyPath = assemblyPath;
+    }
+
+    /**
+     * The path to find the default reference assemblies on.
+     */
+    public File getAssemblyPath()
+    {
+        return assemblyPath;
+    }
 }

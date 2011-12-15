@@ -18,31 +18,30 @@
  */
 package npanday.registry;
 
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.sail.memory.MemoryStore;
 
-import org.apache.maven.artifact.factory.ArtifactFactory;
-
-import java.io.InputStream;
-import java.io.IOException;
+import javax.naming.OperationNotSupportedException;
 import java.io.File;
+import java.net.URL;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
 import java.util.logging.Logger;
 
 /**
  * Repository for obtaining sets of DAOs.
+ * @plexus.component
+ *   role="npanday.registry.ConnectionsRepository"
  */
 public class ConnectionsRepository
     implements Repository
 {
 
     private static Logger logger = Logger.getAnonymousLogger();
-
-    private RepositoryRegistry registry;
 
     private Set<DataAccessObject> daos = new HashSet<DataAccessObject>();
 
@@ -96,7 +95,6 @@ public class ConnectionsRepository
                     DataAccessObject dao = (DataAccessObject) o;
                     
                     dao.init( rdfRepository, keyName, daoClassName );
-                    dao.setRepositoryRegistry( registry );
                     daos.add( dao );
                     logger.finest( "NPANDAY-080-001: Adding data access object: Class Name = " + daoClassName );
                 }
@@ -115,38 +113,34 @@ public class ConnectionsRepository
         logger.finest( "NPANDAY-080-004: Connection Start Up: Time = " + ( System.currentTimeMillis() - start ) );
     }
 
-    /**
-     * @see Repository#load(java.io.InputStream, java.util.Hashtable)
-     */
-    public void load( InputStream inputStream, Hashtable properties )
+    public void load( URL source )
         throws NPandayRepositoryException
     {
-        this.properties = properties;
+
+    }
+
+    public void clearAll()
+        throws OperationNotSupportedException
+    {
+        throw new OperationNotSupportedException(  );
     }
 
     /**
-     * @see Repository#setRepositoryRegistry(RepositoryRegistry)
+     * @see Repository#reloadAll()
      */
-    public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
+    public void reloadAll()
+        throws OperationNotSupportedException
     {
-        this.registry = repositoryRegistry;
+        throw new OperationNotSupportedException(  );
     }
 
     /**
-     * @see Repository#setSourceUri(String)
+     * The properties configured in the registry.
      */
-    public void setSourceUri( String fileUri )
+    public void setProperties( Hashtable props )
     {
-        // not supported
+        properties = props;
     }
-
-    /**
-     * @see Repository#reload()
-     */
-    public void reload()
-    {
-        // not supported
-    }    
 
     /**
      * Returns unmodifiable set of all data access objects.

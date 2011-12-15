@@ -25,12 +25,16 @@ import npanday.artifact.ArtifactInstaller;
 import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.artifact.NetDependenciesRepository;
 import npanday.artifact.NetDependencyMatchPolicy;
+import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.model.netdependency.NetDependency;
-import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.Vendor;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FileFileFilter;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
@@ -40,10 +44,9 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
-import org.apache.commons.io.filefilter.*;
-import org.apache.commons.io.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -52,7 +55,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  * Installs Visual Studio 2005 addin.
@@ -98,7 +100,7 @@ public class VsInstallerMojo
      *
      * @component
      */
-    private npanday.NPandayRepositoryRegistry npandayRegistry;
+    private RepositoryRegistry repositoryRegistry;
 
     /**
      * Provides services to obtain executables.
@@ -128,22 +130,6 @@ public class VsInstallerMojo
         if ( !logs.exists() )
         {
             logs.mkdir();
-        }
-
-        RepositoryRegistry repositoryRegistry;
-        try
-        {
-            repositoryRegistry = npandayRegistry.createRepositoryRegistry();
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-1600-000: Failed to create the repository registry for this plugin", e );
-        }
-        catch( NPandayRepositoryException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-1600-007: Failed to create the repository registry for this plugin", e );
         }
 
         NetDependenciesRepository netRepository = (NetDependenciesRepository) repositoryRegistry.find(
@@ -188,8 +174,8 @@ public class VsInstallerMojo
             try
             {
                 NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor(
-                    Vendor.MICROSOFT.getVendorName(), "2.0.50727", "GACUTIL", getGacInstallCommandsFor( artifacts.get(
-                        0 ) ), null );
+                    new ExecutableRequirement( Vendor.MICROSOFT.getVendorName(), null, "2.0.50727", "GACUTIL"),
+                    getGacInstallCommandsFor( artifacts.get( 0 ) ), null );
                 netExecutable.execute();
                 getLog().info( "NPANDAY-1600-004: Installed Assembly into GAC: Assembly = " + artifacts.get(
                     0 ).getFile().getAbsolutePath() + ",  Vendor = " + netExecutable.getVendor().getVendorName() );

@@ -18,9 +18,8 @@
  */
 package npanday.executable.impl;
 
-import npanday.executable.ExecutableMatchPolicy;
-import npanday.vendor.Vendor;
 import npanday.executable.ExecutableCapability;
+import npanday.executable.ExecutableMatchPolicy;
 import npanday.executable.compiler.CompilerCapability;
 
 /**
@@ -80,58 +79,6 @@ final class MatchPolicyFactory
             public String toString()
             {
                 return "ExecutableMatchPolicy[operatingSystem: '" + operatingSystem + "']";
-            }
-        };
-    }
-
-    /**
-     * Creates a policy to match the framework version
-     *
-     * @param frameworkVersion
-     * @return a policy to match the framework version
-     */
-    static ExecutableMatchPolicy createFrameworkVersionPolicy( final String frameworkVersion )
-    {
-        return new ExecutableMatchPolicy()
-        {
-            public boolean match( ExecutableCapability executableCapability )
-            {
-                for ( String fv : executableCapability.getFrameworkVersions() )
-                {
-                    if ( frameworkVersion.toLowerCase().trim().equals( fv.trim() ) )
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            public String toString()
-            {
-                return "ExecutableMatchPolicy[frameworkVersion: '" + frameworkVersion + "']";
-            }
-        };
-    }
-
-    /**
-     * Creates a match policy to match the vendor
-     *
-     * @param vendor
-     * @return a match policy to match the vendor
-     */
-    static ExecutableMatchPolicy createVendorPolicy( final Vendor vendor )
-    {
-        return new ExecutableMatchPolicy()
-        {
-            public boolean match( ExecutableCapability executableCapability )
-            {
-                return vendor.getVendorName().toLowerCase().trim()
-                    .contains( executableCapability.getVendor().getVendorName().toLowerCase().trim() );
-            }
-
-            public String toString()
-            {
-                return "ExecutableMatchPolicy[vendor: '" + vendor + "']";
             }
         };
     }

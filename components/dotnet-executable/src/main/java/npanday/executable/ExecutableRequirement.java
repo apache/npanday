@@ -19,133 +19,42 @@
 package npanday.executable;
 
 import npanday.vendor.Vendor;
+import npanday.vendor.VendorRequirement;
 
 /**
  * Requirements that the executable plugin must satisfy to be used in the build.
  *
  * @author Shane Isbell
+ * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ *
  * @see ExecutableCapability
  * @see CapabilityMatcher
  */
-public interface ExecutableRequirement
+public class ExecutableRequirement
+    extends VendorRequirement
 {
-    /**
-     * Returns required framework version under which the executable runs.
-     *
-     * @return required framework version under which the executable runs
-     */
-    String getFrameworkVersion();
 
-    /**
-     * Sets required framework version.
-     *
-     * @param frameworkVersion
-     */
-    void setFrameworkVersion( String frameworkVersion );
+    private String profile;
 
-    /**
-     * Returns required profile of the executable.
-     *
-     * @return required profile of the executable
-     */
-    String getProfile();
-
-    /**
-     * Sets required profile of the executable
-     *
-     * @param profile
-     */
-    void setProfile( String profile );
-
-    /**
-     * Returns required vendor of executable
-     *
-     * @return required vendor of executable
-     */
-    Vendor getVendor();
-
-    /**
-     * Sets required vendor of executable
-     *
-     * @param vendor
-     */
-    void setVendor( Vendor vendor );
-
-    void setVendorVersion( String vendorVersion );
-
-    String getVendorVersion();
-
-    /**
-     * Provides factory services for creating a default instance of the executable requirement.
-     */
-    public static class Factory
+    public ExecutableRequirement( String vendorName, String vendorVersion, String frameworkVersion, String profile )
     {
+        super( vendorName, vendorVersion, frameworkVersion );
+        this.profile = profile;
+    }
 
-        /**
-         * Default constructor
-         */
-        private Factory()
-        {
-        }
+    public ExecutableRequirement( Vendor vendor, String vendorVersion, String frameworkVersion, String profile )
+    {
+        super( vendor, vendorVersion, frameworkVersion );
+        this.profile = profile;
+    }
 
-        /**
-         * Creates a default implementation of an executable requirements.
-         *
-         * @return a default implementation of an executable requirements
-         */
-        public static ExecutableRequirement createDefaultExecutableRequirement()
-        {
-            return new ExecutableRequirement()
-            {
-                private String frameworkVersion;
+    public String getProfile()
+    {
+        return profile;
+    }
 
-                private Vendor vendor;
-
-                private String profile;
-
-                private String vendorVersion;
-
-                public String getVendorVersion()
-                {
-                    return vendorVersion;
-                }
-
-                public void setVendorVersion( String vendorVersion )
-                {
-                    this.vendorVersion = vendorVersion;
-                }
-
-                public String getFrameworkVersion()
-                {
-                    return frameworkVersion;
-                }
-
-                public void setFrameworkVersion( String frameworkVersion )
-                {
-                    this.frameworkVersion = frameworkVersion;
-                }
-
-                public Vendor getVendor()
-                {
-                    return vendor;
-                }
-
-                public void setVendor( Vendor vendor )
-                {
-                    this.vendor = vendor;
-                }
-
-                public String getProfile()
-                {
-                    return profile;
-                }
-
-                public void setProfile( String profile )
-                {
-                    this.profile = profile;
-                }
-            };
-
-        }
+    public void setProfile( String profile )
+    {
+        this.profile = profile;
     }
 }

@@ -253,4 +253,10 @@ public final class PathUtil
         // Maven already basedir aligns this
         return new File( project.getBuild().getDirectory() );
     }
+    
+    public static File getPreparedPackageFolder( MavenProject project )
+    {
+        String folderName = project.getArtifactId();
+        return new File(new File(project.getBuild().getDirectory(), "packages"), folderName);
+    }
 }

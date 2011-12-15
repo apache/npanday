@@ -18,6 +18,8 @@
  */
 package npanday.vendor;
 
+import npanday.PlatformUnsupportedException;
+
 /**
  * Provides services for filling in missing vendor info according to its state of completion. An implementation of this
  * class can use various <code>VendorInfoTransitionRule</code> instances to transition states during processing.
@@ -36,10 +38,10 @@ public interface StateMachineProcessor
     /**
      * Processes the specified vendor info by filling in missing information.
      *
-     * @param vendorInfo the vendor info to fill in
-     * @throws IllegalStateException if the state of the specified vendor info is illegal or cannot be determined
+     *
+     * @param vendorRequirement@throws IllegalStateException if the state of the specified vendor info is illegal or cannot be determined
      */
-    void process( VendorInfo vendorInfo )
-        throws IllegalStateException;
+    VendorInfo process( VendorRequirement vendorRequirement )
+        throws IllegalStateException, PlatformUnsupportedException;
 
 }

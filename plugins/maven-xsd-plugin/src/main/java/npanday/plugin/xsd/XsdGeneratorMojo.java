@@ -18,21 +18,20 @@
  */
 package npanday.plugin.xsd;
 
-import npanday.executable.NetExecutable;
-import npanday.registry.NPandayRepositoryException;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutableRequirement;
+import npanday.executable.ExecutionException;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsException;
+import npanday.vendor.SettingsUtil;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.io.File;
-import java.io.IOException;
-
-import npanday.executable.ExecutionException;
-import npanday.PlatformUnsupportedException;
-import org.codehaus.plexus.util.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Generates XSD class.
@@ -46,6 +45,11 @@ import org.codehaus.plexus.util.StringUtils;
 public class XsdGeneratorMojo
     extends AbstractMojo
 {
+    /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
     /**
      * The directory to place the generated binding classes.
      *
@@ -164,46 +168,37 @@ public class XsdGeneratorMojo
     /**
      * @component
      */
-    private npanday.NPandayRepositoryRegistry npandayRegistry;
+    private RepositoryRegistry repositoryRegistry;
 
     public void execute()
         throws MojoExecutionException
     {
+
         try
         {
-            npandayRegistry.createRepositoryRegistry();
+            SettingsUtil.getOrPopulateSettingsRepository( repositoryRegistry, settingsPath );
         }
-        catch ( IOException e )
+        catch ( SettingsException e )
         {
             throw new MojoExecutionException(
-                "NPANDAY-1400-0032 Failed to create the repository registry for this plugin", e );
-        }
-        catch( NPandayRepositoryException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-1400-0033 Failed to create the repository registry for this plugin", e );
+                "NPANDAY-114-0035 Failed to create the repository registry for this plugin", e );
         }
 
         FileUtils.mkdir( outputDirectory );
         try
         {
-            NetExecutable exe = netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile,
-                                                                          getCommands(), netHome );
-            if ( getLog().isDebugEnabled() )
-            {
-                getLog().debug( "Running: " + exe.getExecutable() + " " + StringUtils.join(
-                    exe.getCommands().iterator(), " " ) );
-            }
-            exe.execute();
+            netExecutableFactory.getNetExecutableFor(
+                new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), netHome
+            ).execute();
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NPANDAY-1400-000: Unable to execute xsd: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-114-000: Unable to execute xsd: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NPANDAY-1400-001: Platform Unsupported: Vendor " + vendor +
+            throw new MojoExecutionException( "NPANDAY-114-001: Platform Unsupported: Vendor " + vendor +
                 ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
         }
     }

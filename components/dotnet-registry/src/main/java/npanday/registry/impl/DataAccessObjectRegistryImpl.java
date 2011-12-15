@@ -18,19 +18,28 @@
  */
 package npanday.registry.impl;
 
-import npanday.registry.*;
+import npanday.registry.ConnectionsRepository;
+import npanday.registry.DataAccessObject;
+import npanday.registry.DataAccessObjectRegistry;
+import npanday.registry.NPandayRepositoryException;
+import npanday.registry.Repository;
+import npanday.registry.RepositoryRegistry;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Collections;
-import java.util.logging.Level;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
-import java.io.IOException;
 
+/**
+ * @plexus.component
+ *   role="npanday.registry.DataAccessObjectRegistry"
+ */
 public class DataAccessObjectRegistryImpl
     implements DataAccessObjectRegistry
 {
-
+   /**
+     * @plexus.requirement
+     */
     private RepositoryRegistry repositoryRegistry;
 
     private static Logger logger = Logger.getAnonymousLogger();

@@ -18,94 +18,83 @@
  */
 package npanday.executable.impl;
 
-import npanday.registry.NPandayRepositoryException;
-import npanday.registry.Repository;
-import npanday.registry.RepositoryRegistry;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-
-import java.io.*;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
-
-import npanday.vendor.Vendor;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import npanday.executable.CommandCapability;
 import npanday.executable.ExecutableCapability;
-import npanday.executable.compiler.CompilerCapability;
-import npanday.model.compiler.plugins.io.xpp3.CompilerPluginXpp3Reader;
-import npanday.model.compiler.plugins.CompilerPluginsModel;
-import npanday.model.compiler.plugins.CompilerPlugin;
-import npanday.model.compiler.plugins.Platform;
+import npanday.executable.compiler.MutableCompilerCapability;
 import npanday.model.compiler.plugins.CommandFilter;
+import npanday.model.compiler.plugins.CompilerPlugin;
+import npanday.model.compiler.plugins.CompilerPluginsModel;
+import npanday.model.compiler.plugins.Platform;
+import npanday.model.compiler.plugins.io.xpp3.CompilerPluginXpp3Reader;
+import npanday.registry.ModelInterpolator;
+import npanday.registry.NPandayRepositoryException;
+import npanday.registry.Repository;
+import npanday.registry.impl.AbstractMultisourceRepository;
+import npanday.vendor.VendorInfo;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+
+import javax.annotation.Nullable;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
  * Repository for reading and providing access to the compiler-plugins.xml config file.
  *
  * @author Shane Isbell
+ * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ * @plexus.component
+ *   role="npanday.executable.impl.CompilerPluginsRepository"
  */
 public final class CompilerPluginsRepository
+    extends AbstractMultisourceRepository<CompilerPluginsModel>
     implements Repository
 {
     /**
-     * List<npanday.model.compiler.plugins.CompilerPlugin> of compiler plugins pulled from the 
-     * compiler-plugins.xml file.
+     * List<npanday.model.compiler.plugins.CompilerPlugin> of compiler plugins pulled from the
+     * various compiler-plugins.xml files.
      */
-    private List compilerPlugins;
+    private List compilerPlugins = new ArrayList();
 
-    /**
-     * @see Repository#load(java.io.InputStream, java.util.Hashtable)
-     */
-    public void load( InputStream inputStream, Hashtable properties )
-        throws NPandayRepositoryException
+    @Override
+    protected CompilerPluginsModel loadFromReader( Reader reader, Hashtable properties )
+        throws IOException, XmlPullParserException
     {
         CompilerPluginXpp3Reader xpp3Reader = new CompilerPluginXpp3Reader();
-        Reader reader = new InputStreamReader( inputStream );
-        CompilerPluginsModel plugins;
-        try
-        {
-            plugins = xpp3Reader.read( reader );
-        }
-        catch( IOException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-062-000: An error occurred while reading plugins-compiler.xml", e );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-062-001: Could not read plugins-compiler.xml", e );
-        }
-        compilerPlugins = plugins.getCompilerPlugins();
+        return xpp3Reader.read( reader );
+    }
+
+    @Override
+    protected void mergeLoadedModel( CompilerPluginsModel model )
+        throws NPandayRepositoryException
+    {
+        compilerPlugins.addAll( model.getCompilerPlugins() );
     }
 
     /**
-     * @see Repository#setRepositoryRegistry(npanday.registry.RepositoryRegistry)
+     * Remove all stored values in preparation for a reload.
      */
-    public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
+    @Override
+    protected void clear()
     {
-    }
-
-    /**
-     * @see Repository#setSourceUri(String)
-     */
-    public void setSourceUri( String fileUri )
-    {
-        // not supported
-    }
-
-    /**
-     * @see Repository#reload()
-     */
-    public void reload() throws IOException
-    {
-        // not supported
+        compilerPlugins.clear();
     }
 
     /**
      * Returns config information as list of platform capabilities.
      *
      * @return config information as list of platform capabilities.
+     * @param vendorInfo
      */
-    List<ExecutableCapability> getCompilerCapabilities()
+    List<ExecutableCapability> getCompilerCapabilities( final VendorInfo vendorInfo )
     {
         List<ExecutableCapability> platformCapabilities = new ArrayList<ExecutableCapability>();
         for ( Iterator i = compilerPlugins.iterator(); i.hasNext(); )
@@ -114,7 +103,8 @@ public final class CompilerPluginsRepository
             String language = plugin.getLanguage();
             String pluginClassName = plugin.getPluginClass();
             String executable = plugin.getExecutable();
-            String compilerVendor = plugin.getVendor();
+            String vendor = plugin.getVendor();
+            String vendorVersion = plugin.getVendorVersion();
             String identifier = plugin.getIdentifier();
             String profile = plugin.getProfile();
             List<String> frameworkVersions = plugin.getFrameworkVersions();
@@ -122,28 +112,59 @@ public final class CompilerPluginsRepository
             String defaultAssemblyPath = plugin.getDefaultAssemblyPath();
             String targetFramework = plugin.getTargetFramework();
 
+            if (vendor != null && !vendorInfo.getVendor().getVendorName().toLowerCase().equals( vendor.toLowerCase() ))
+                continue;
+
+            // TODO: check with version range!
+            if (vendorVersion != null && !vendorInfo.getVendorVersion().equals( vendorVersion ))
+            {
+                continue;
+            }
+
+            if (frameworkVersions != null && frameworkVersions.size() > 0)
+            {
+                if (!Iterables.any( frameworkVersions, new Predicate<String>()
+                {
+                    public boolean apply( @Nullable String frameworkVersion )
+                    {
+                        return vendorInfo.getFrameworkVersion().equals( frameworkVersion );
+                    }
+                } ))
+                {
+                    continue;
+                }
+            }
+
             List platforms = plugin.getPlatforms();
             for ( Iterator j = platforms.iterator(); j.hasNext(); )
             {
-                CompilerCapability platformCapability =
-                    (CompilerCapability) CompilerCapability.Factory.createDefaultExecutableCapability();
+                MutableCompilerCapability platformCapability = new MutableCompilerCapability();
+
+                platformCapability.setVendorInfo( vendorInfo );
+                // TODO: Allow probing paths for compilers
+                platformCapability.setProbingPaths(plugin.getProbingPaths());
+
+
                 Platform platform = (Platform) j.next();
                 String os = platform.getOperatingSystem();
 
                 platformCapability.setLanguage( language );
                 platformCapability.setOperatingSystem( os );
                 platformCapability.setPluginClassName( pluginClassName );
-                platformCapability.setExecutable( executable );
+                platformCapability.setExecutableName( executable );
                 platformCapability.setIdentifier( identifier );
                 platformCapability.setFrameworkVersions( frameworkVersions );
                 platformCapability.setProfile( profile );
-                platformCapability.setAssemblyPath( defaultAssemblyPath );
+                if (!isNullOrEmpty(defaultAssemblyPath))
+                {
+                    platformCapability.setAssemblyPath( new File(defaultAssemblyPath) );
+                }
                 platformCapability.setTargetFramework( targetFramework );
                 String arch = platform.getArchitecture();
                 CommandFilter filter = plugin.getCommandFilter();
                 platformCapability.setCoreAssemblies( coreAssemblies );
 
-                platformCapability.setNetDependencyId( plugin.getNetDependencyId());
+                platformCapability.setNetDependencyId( plugin.getNetDependencyId() );
 
                 List<String> includes = ( filter != null ) ? filter.getIncludes() : new ArrayList<String>();
                 List<String> excludes = ( filter != null ) ? filter.getExcludes() : new ArrayList<String>();
@@ -153,26 +174,22 @@ public final class CompilerPluginsRepository
                 {
                     platformCapability.setArchitecture( arch );
                 }
-                if ( compilerVendor.trim().equalsIgnoreCase( "microsoft" ) )
-                {
-                    platformCapability.setVendor( Vendor.MICROSOFT );
-                }
-                else if ( compilerVendor.trim().equalsIgnoreCase( "mono" ) )
-                {
-                    platformCapability.setVendor( Vendor.MONO );
-                }
-                else if ( compilerVendor.trim().equalsIgnoreCase( "dotgnu" ) )
-                {
-                    platformCapability.setVendor( Vendor.DOTGNU );
-                }
-                else
-                {
-                    System.out.println( "NPANDAY-062-001: Unknown Vendor, skipping: Name = " + compilerVendor );
-                    continue;
-                }
                 platformCapabilities.add( platformCapability );
             }
         }
         return platformCapabilities;
+    }
+
+    // ### COMPONENTS REQUIRED BY THE BASE CLASS
+
+    /**
+     * @plexus.requirement
+     */
+    private ModelInterpolator interpolator;
+
+    @Override
+    protected ModelInterpolator getInterpolator()
+    {
+        return interpolator;
     }
 }

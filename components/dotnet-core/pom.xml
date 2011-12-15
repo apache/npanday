@@ -69,18 +69,22 @@ under the License.
       <plugin>
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
-        <version>1.2</version>
         <executions>
           <execution>
+            <id>groovy-main</id>
             <goals>
               <goal>generateStubs</goal>
               <goal>compile</goal>
-              <goal>generateTestStubs</goal>
-              <goal>testCompile</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
+      <!-- enable, if you have @plexus.component in your source
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+      </plugin>
+      -->
     </plugins>
     <resources> 
       <resource> 

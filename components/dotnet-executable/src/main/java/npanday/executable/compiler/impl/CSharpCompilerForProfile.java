@@ -57,18 +57,17 @@ public final class CSharpCompilerForProfile
     public List<String> getCommands()
         throws ExecutionException
     {
-        String assemblyPath = compilerContext.getCompilerCapability().getAssemblyPath();
+        File assemblyPath = compilerContext.getAssemblyPath();
         if ( assemblyPath == null )
         {
             throw new ExecutionException(
                 "NPANDAY-067-003: The assembly path is not specified" );
         }
 
-        File path = new File( assemblyPath );
-        if ( !path.exists() )
+        if ( !assemblyPath.exists() )
         {
             throw new ExecutionException(
-                "NPANDAY-067-002: The assembly path does not exist: Path = " + path.getAbsolutePath() );
+                "NPANDAY-067-002: The assembly path does not exist: Path = " + assemblyPath.getAbsolutePath() );
         }
 
         List<String> commands = netCompiler.getCommands();
@@ -76,7 +75,7 @@ public final class CSharpCompilerForProfile
         commands.add( "/noconfig" );
         for ( String coreAssembly : compilerContext.getCoreAssemblyNames() )
         {
-            commands.add( "/reference:" + path.getAbsolutePath() + File.separator + coreAssembly + ".dll" );
+            commands.add( "/reference:" + assemblyPath.getAbsolutePath() + File.separator + coreAssembly + ".dll" );
         }
         return commands;
     }

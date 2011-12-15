@@ -19,34 +19,22 @@
 package npanday.executable;
 
 import npanday.PathUtil;
-
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.cli.*;
+import org.codehaus.plexus.util.cli.CommandLineException;
+import org.codehaus.plexus.util.cli.CommandLineUtils;
+import org.codehaus.plexus.util.cli.Commandline;
+import org.codehaus.plexus.util.cli.DefaultConsumer;
+import org.codehaus.plexus.util.cli.StreamConsumer;
 
-import org.codehaus.plexus.util.Os;
-import org.codehaus.plexus.util.StringUtils;
-//import org.codehaus.plexus.util.cli.shell.BourneShell;
-//import org.codehaus.plexus.util.cli.shell.CmdShell;
-//import org.codehaus.plexus.util.cli.shell.CommandShell;
-import org.codehaus.plexus.util.cli.shell.Shell;
-import java.io.IOException;
-
-
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.io.File;
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Vector;
-
-
-import java.lang.reflect.*;
 
 
 /**
@@ -197,109 +185,112 @@ public interface CommandExecutor
 
                     Commandline commandline = new Commandline()
                     {
-                         protected Map envVars = Collections.synchronizedMap( new LinkedHashMap() );
+                        protected Map envVars = Collections.synchronizedMap( new LinkedHashMap() );
 
 
-                         public Process execute()
-                             throws CommandLineException
-                         {
-                             // TODO: Provided only for backward compat. with <= 1.4
-                             //verifyShellState();
-
-                             Process process;
-
-                             //addEnvironment( "MAVEN_TEST_ENVAR", "MAVEN_TEST_ENVAR_VALUE" );
-
-                             String[] environment = getEnvironmentVariables();
-
-                             File workingDir = getWorkingDirectory();
-
-                             try
-                             {
-                                 String[] cmd = getEscapedShellCommandline();
-
-                                 if ( workingDir == null )
-                                 {
-                                     process = Runtime.getRuntime().exec( cmd, environment );
-                                 }
-                                 else
-                                 {
-                                     if ( !workingDir.exists() )
-                                     {
-                                         throw new CommandLineException( "Working directory \"" + workingDir.getPath()
-                                             + "\" does not exist!" );
-                                     }
-                                     else if ( !workingDir.isDirectory() )
-                                     {
-                                         throw new CommandLineException( "Path \"" + workingDir.getPath()
-                                             + "\" does not specify a directory." );
-                                     }
-
-                                     process = Runtime.getRuntime().exec( cmd, environment, workingDir );
-                                 }
-                             }
-                             catch ( IOException ex )
-                             {
-                                 throw new CommandLineException( "Error while executing process.", ex );
-                             }
-
-                             return process;
-                         }
-
-                         public String[] getEnvironmentVariables()
-                             throws CommandLineException
-                         {
-                             try
-                             {
-                                 addSystemEnvironment();
-                             }
-                             catch ( Exception e )
-                             {
-                                 throw new CommandLineException( "Error setting up environmental variables", e );
-                             }
-                             String[] environmentVars = new String[envVars.size()];
-                             int i = 0;
-                             for ( Iterator iterator = envVars.keySet().iterator(); iterator.hasNext(); )
-                             {
-                                 String name = (String) iterator.next();
-                                 String value = (String) envVars.get( name );
-                                 environmentVars[i] = name + "=" + value;
-                                 i++;
-                             }
-                             return environmentVars;
-                         }
-
-                         public void addEnvironment( String name, String value )
-                         {
-                             //envVars.add( name + "=" + value );
-                             envVars.put( name, value );
-                         }
-
-                         /**
-                                                              * Add system environment variables
-                                                             */
-                         public void addSystemEnvironment()
-                             throws Exception
+                        public Process execute()
+                            throws CommandLineException
                         {
-                             Properties systemEnvVars = CommandLineUtils.getSystemEnvVars();
+                            // TODO: Provided only for backward compat. with <= 1.4
+                            //verifyShellState();
 
-                             for ( Iterator i = systemEnvVars.keySet().iterator(); i.hasNext(); )
-                             {
-                                 String key = (String) i.next();
-                                 if ( !envVars.containsKey( key ) )
-                                 {
-                                     addEnvironment( key, systemEnvVars.getProperty( key ) );
-                                 }
-                             }
+                            Process process;
+
+                            //addEnvironment( "MAVEN_TEST_ENVAR", "MAVEN_TEST_ENVAR_VALUE" );
+
+                            String[] environment = getEnvironmentVariables();
+
+                            File workingDir = getWorkingDirectory();
+
+                            try
+                            {
+                                String[] cmd = getEscapedShellCommandline();
+
+                                if ( workingDir == null )
+                                {
+                                    process = Runtime.getRuntime().exec( cmd, environment );
+                                }
+                                else
+                                {
+                                    if ( !workingDir.exists() )
+                                    {
+                                        throw new CommandLineException(
+                                            "NPANDAY-040-010: Working directory \"" + workingDir.getPath()
+                                                + "\" does not exist!" );
+                                    }
+                                    else if ( !workingDir.isDirectory() )
+                                    {
+                                        throw new CommandLineException(
+                                            "NPANDAY-040-009: Path \"" + workingDir.getPath()
+                                                + "\" does not specify a directory." );
+                                    }
+
+                                    process = Runtime.getRuntime().exec( cmd, environment, workingDir );
+                                }
+                            }
+                            catch ( IOException ex )
+                            {
+                                throw new CommandLineException( "NPANDAY-040-008: Error while executing process.", ex );
+                            }
+
+                            return process;
+                        }
+
+                        public String[] getEnvironmentVariables()
+                            throws CommandLineException
+                        {
+                            try
+                            {
+                                addSystemEnvironment();
+                            }
+                            catch ( Exception e )
+                            {
+                                throw new CommandLineException(
+                                    "NPANDAY-040-007: Error setting up environmental variables", e );
+                            }
+                            String[] environmentVars = new String[envVars.size()];
+                            int i = 0;
+                            for ( Iterator iterator = envVars.keySet().iterator(); iterator.hasNext(); )
+                            {
+                                String name = (String) iterator.next();
+                                String value = (String) envVars.get( name );
+                                environmentVars[i] = name + "=" + value;
+                                i++;
+                            }
+                            return environmentVars;
+                        }
+
+                        public void addEnvironment( String name, String value )
+                        {
+                            //envVars.add( name + "=" + value );
+                            envVars.put( name, value );
+                        }
+
+                        /**
+                         * Add system environment variables
+                         */
+                        public void addSystemEnvironment()
+                            throws Exception
+                        {
+                            Properties systemEnvVars = CommandLineUtils.getSystemEnvVars();
+
+                            for ( Iterator i = systemEnvVars.keySet().iterator(); i.hasNext(); )
+                            {
+                                String key = (String) i.next();
+                                if ( !envVars.containsKey( key ) )
+                                {
+                                    addEnvironment( key, systemEnvVars.getProperty( key ) );
+                                }
+                            }
                         }
 
                         public String toString()
                         {
-                            StringBuffer strBuff = new StringBuffer("");
-                            for(String command : getEscapedShellCommandline())
+                            StringBuffer strBuff = new StringBuffer( "" );
+                            for ( String command : getEscapedShellCommandline() )
                             {
-                                strBuff.append(" ");
-                                strBuff.append(command);
+                                strBuff.append( " " );
+                                strBuff.append( command );
                             }
                             return strBuff.toString();
                         }
@@ -307,7 +298,8 @@ public interface CommandExecutor
                         public String[] getEscapedShellCommandline()
                         {
                             String[] scl = getShellCommandline();
-                            for ( int i = 0; i < scl.length; i++ ) {
+                            for ( int i = 0; i < scl.length; i++ )
+                            {
                                 scl[i] = escapeCmdParams( scl[i] );
                             }
                             return scl;
@@ -315,26 +307,28 @@ public interface CommandExecutor
 
                         // escaped to make use of dotnet style of command escapes .
                         // Eg. /define:"CONFIG=\"Debug\",DEBUG=-1,TRACE=-1,_MyType=\"Windows\",PLATFORM=\"AnyCPU\""
-                        private String escapeCmdParams(String param)
+                        private String escapeCmdParams( String param )
                         {
-                            if(param == null)
+                            if ( param == null )
+                            {
                                 return null;
+                            }
 
                             String str = param;
-                            if(param.startsWith("/") && param.indexOf(":") > 0)
+                            if ( param.startsWith( "/" ) && param.indexOf( ":" ) > 0 )
                             {
-                                int delem = param.indexOf(":") + 1;
-                                String command = param.substring(0, delem);
-                                String value = param.substring(delem);
+                                int delem = param.indexOf( ":" ) + 1;
+                                String command = param.substring( 0, delem );
+                                String value = param.substring( delem );
 
-                                if(value.indexOf(" ") > 0 || value.indexOf("\"") > 0)
+                                if ( value.indexOf( " " ) > 0 || value.indexOf( "\"" ) > 0 )
                                 {
-                                    value = "\"" + value.replaceAll("\"", "\\\\\"")  + "\"";
+                                    value = "\"" + value.replaceAll( "\"", "\\\\\"" ) + "\"";
                                 }
 
                                 str = command + value;
                             }
-                            else if(param.startsWith("@"))
+                            else if ( param.startsWith( "@" ) )
                             {
                                 str = param;
                             }
@@ -347,41 +341,50 @@ public interface CommandExecutor
                     // On non-Windows platforms, such as Linux, "gmcs" not resolved 
                     // to gmcs.exe in working directory due to /usr/bin/gmcs
                     // but "./gmcs.exe" resolved as desired in working directory
-                    String osName = System.getProperty("os.name");
-                    if (!osName.toLowerCase().contains("win"))
+                    String osName = System.getProperty( "os.name" );
+                    if ( !osName.toLowerCase().contains( "win" ) )
                     {
-                        File executableFile = PathUtil.getExecutable(workingDirectory, executable);
+                        File executableFile = PathUtil.getExecutable( workingDirectory, executable );
                         // do not prefix for internal commands, such as mkdir
-                        if (executableFile != null && workingDirectory.equals(executableFile.getParentFile()))
+                        if ( executableFile != null && workingDirectory.equals( executableFile.getParentFile() ) )
                         {
-                            executable = new File("./", executableFile.getName()).toString();
+                            executable = new File( "./", executableFile.getName() ).toString();
                         }
                     }
 
                     commandline.setExecutable( executable );
-                    commandline.addArguments( commands.toArray( new String[commands.size()]));
+                    commandline.addArguments( commands.toArray( new String[commands.size()] ) );
 
                     if ( workingDirectory != null && workingDirectory.exists() )
                     {
+                        // TODO: Wrong use of working directory! $(basedir) should be the working dir, and the executable paths should be absolute
                         commandline.setWorkingDirectory( workingDirectory.getAbsolutePath() );
                     }
+                    else
+                    {
+                        logger.info( "NPANDAY-040-006: Did not find executable path, will try system path" );
+                    }
+
                     try
                     {
                         result = CommandLineUtils.executeCommandLine( commandline, stdOut, stdErr );
                         if ( logger != null )
                         {
-                            logger.debug( "NPANDAY-040-000: Executed command: Commandline = " + commandline +
-                                ", Result = " + result );
+                            logger.debug(
+                                "NPANDAY-040-005: Executed command: Commandline = " + commandline + ", Result = "
+                                    + result );
                         }
                         else
                         {
-                            System.out.println( "NPANDAY-040-000: Executed command: Commandline = " + commandline +
-                                ", Result = " + result );
+                            System.out.println(
+                                "NPANDAY-040-004: Executed command: Commandline = " + commandline + ", Result = "
+                                    + result );
                         }
                         if ( ( failsOnErrorOutput && stdErr.hasError() ) || result != 0 )
                         {
-                            throw new ExecutionException( "NPANDAY-040-001: Could not execute: Command = " +
-                                commandline.toString() + ", Result = " + result );
+                            throw new ExecutionException(
+                                "NPANDAY-040-001: Could not execute: Command = " + commandline.toString()
+                                    + ", Result = " + result );
                         }
                     }
                     catch ( CommandLineException e )

@@ -18,116 +18,135 @@
  */
 package npanday.executable.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import npanday.executable.CommandCapability;
+import npanday.executable.ExecutableCapability;
+import npanday.executable.MutableExecutableCapability;
+import npanday.model.executable.plugins.Platform;
+import npanday.model.executable.plugins.CommandFilter;
+import npanday.model.executable.plugins.ExecutablePlugin;
+import npanday.model.executable.plugins.ExecutablePluginsModel;
+import npanday.model.executable.plugins.io.xpp3.ExecutablePluginXpp3Reader;
+import npanday.registry.ModelInterpolator;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
-import npanday.registry.RepositoryRegistry;
+import npanday.registry.impl.AbstractMultisourceRepository;
+import npanday.vendor.VendorInfo;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-import java.io.InputStream;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.InputStreamReader;
-import java.util.Hashtable;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
-
-import npanday.model.compiler.plugins.io.xpp3.ExecutablePluginXpp3Reader;
-import npanday.model.compiler.plugins.*;
-import npanday.executable.ExecutableCapability;
-import npanday.executable.CommandCapability;
-import npanday.vendor.Vendor;
+import java.util.List;
 
 /**
  * Provides services for accessing the executable information within the executable-plugins.xml file.
  *
  * @author Shane Isbell
+ * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ * @plexus.component role="npanday.executable.impl.ExecutablePluginsRepository"
  */
 public final class ExecutablePluginsRepository
+    extends AbstractMultisourceRepository<ExecutablePluginsModel>
     implements Repository
 {
 
     /**
      * A list of executable capabilities as specified within the executable-plugins.xml file
      */
-    private List<ExecutablePlugin> executablePlugins;
+    private List<ExecutablePlugin> executablePlugins = new ArrayList<ExecutablePlugin>();
 
-    /**
-     * Loads the repository
-     *
-     * @param inputStream a stream of the repository file (typically from *.xml)
-     * @param properties  additional user-supplied parameters used to customize the behavior of the repository
-     * @throws npanday.registry.NPandayRepositoryException if there is a problem loading the repository
-     */
-    public void load( InputStream inputStream, Hashtable properties )
-            throws NPandayRepositoryException
+    @Override
+    protected ExecutablePluginsModel loadFromReader( Reader reader, Hashtable properties ) throws
+        IOException,
+        XmlPullParserException
     {
         ExecutablePluginXpp3Reader xpp3Reader = new ExecutablePluginXpp3Reader();
-        Reader reader = new InputStreamReader( inputStream );
-        ExecutablePluginsModel plugins = null;
-        try
-        {
-            plugins = xpp3Reader.read( reader );
-        }
-        catch( IOException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-067-000: An error occurred while reading executable-plugins.xml", e );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new NPandayRepositoryException( "NPANDAY-067-001: Could not read executable-plugins.xml", e );
-        }
-        executablePlugins = plugins.getExecutablePlugins();
+        return xpp3Reader.read( reader );
     }
 
-    public void setRepositoryRegistry( RepositoryRegistry repositoryRegistry )
+    @Override
+    protected void mergeLoadedModel( ExecutablePluginsModel model ) throws NPandayRepositoryException
     {
+        executablePlugins.addAll( model.getExecutablePlugins() );
     }
 
     /**
-     * @see Repository#setSourceUri(String)
+     * Remove all stored values in preparation for a reload.
      */
-    public void setSourceUri( String fileUri )
+    @Override
+    protected void clear()
     {
-        // not supported
-    }
-
-    /**
-     * @see Repository#reload()
-     */
-    public void reload() throws IOException
-    {
-        // not supported
+        executablePlugins.clear();
     }
 
     /**
      * Returns a list of executable capabilities as specified within the executable-plugins.xml file.
      *
+     * @param vendorInfo
      * @return a list of executable capabilities as specified within the executable-plugins.xml file
      */
-    List<ExecutableCapability> getCapabilities()
+    List<ExecutableCapability> getCapabilities( final VendorInfo vendorInfo )
     {
         List<ExecutableCapability> platformCapabilities = new ArrayList<ExecutableCapability>();
         for ( ExecutablePlugin plugin : executablePlugins )
         {
             String pluginClassName = plugin.getPluginClass();
             String executable = plugin.getExecutable();
-            String compilerVendor = plugin.getVendor();
+            String vendor = plugin.getVendor();
+            String vendorVersion = plugin.getVendorVersion();
             String identifier = plugin.getIdentifier();
             String profile = plugin.getProfile();
             List<String> frameworkVersions = plugin.getFrameworkVersions();
 
+            if ( vendor != null && !vendorInfo.getVendor().getVendorName().toLowerCase().equals( vendor.toLowerCase() ) )
+            {
+                continue;
+            }
+
+            // TODO: check with version range!
+            if ( vendorVersion != null && !vendorInfo.getVendorVersion().equals( vendorVersion ) )
+            {
+                continue;
+            }
+
+            if ( frameworkVersions != null && frameworkVersions.size() > 0 )
+            {
+                if ( !Iterables.any(
+                    frameworkVersions, new Predicate<String>()
+                {
+                    public boolean apply( @Nullable String frameworkVersion )
+                    {
+                        return vendorInfo.getFrameworkVersion().equals( frameworkVersion );
+                    }
+                }
+                ) )
+                {
+                    continue;
+                }
+            }
+
+            // TODO: since the platform is fix here, we could already strip it down to those actually available
             List platforms = plugin.getPlatforms();
             for ( Iterator j = platforms.iterator(); j.hasNext(); )
             {
-                ExecutableCapability platformCapability =
-                    ExecutableCapability.Factory.createDefaultExecutableCapability();
+                MutableExecutableCapability platformCapability = new MutableExecutableCapability();
+
+                platformCapability.setVendorInfo( vendorInfo );
+
+                // TODO: strip empty ones
+                platformCapability.setProbingPaths( plugin.getProbingPaths() );
+
                 Platform platform = (Platform) j.next();
                 String os = platform.getOperatingSystem();
 
                 platformCapability.setOperatingSystem( os );
                 platformCapability.setPluginClassName( pluginClassName );
-                platformCapability.setExecutable( executable );
+                platformCapability.setExecutableName( executable );
                 platformCapability.setIdentifier( identifier );
                 platformCapability.setFrameworkVersions( frameworkVersions );
                 platformCapability.setProfile( profile );
@@ -137,31 +156,31 @@ public final class ExecutablePluginsRepository
                 List<String> includes = ( filter != null ) ? filter.getIncludes() : new ArrayList<String>();
                 List<String> excludes = ( filter != null ) ? filter.getExcludes() : new ArrayList<String>();
                 platformCapability.setCommandCapability(
-                    CommandCapability.Factory.createDefaultCommandCapability( includes, excludes ) );
+                    CommandCapability.Factory.createDefaultCommandCapability( includes, excludes )
+                );
+
                 if ( arch != null )
                 {
                     platformCapability.setArchitecture( arch );
                 }
-                if ( compilerVendor.trim().equalsIgnoreCase( "microsoft" ) )
-                {
-                    platformCapability.setVendor( Vendor.MICROSOFT );
-                }
-                else if ( compilerVendor.trim().equalsIgnoreCase( "mono" ) )
-                {
-                    platformCapability.setVendor( Vendor.MONO );
-                }
-                else if ( compilerVendor.trim().equalsIgnoreCase( "dotgnu" ) )
-                {
-                    platformCapability.setVendor( Vendor.DOTGNU );
-                }
-                else
-                {
-                    System.out.println( "NPANDAY-067-001: Unknown Vendor, skipping: Name = " + compilerVendor );
-                    continue;
-                }
+
                 platformCapabilities.add( platformCapability );
             }
         }
         return platformCapabilities;
     }
+
+    // ### COMPONENTS REQUIRED BY THE BASE CLASS
+
+    /**
+     * @plexus.requirement
+     */
+    private ModelInterpolator interpolator;
+
+    @Override
+    protected ModelInterpolator getInterpolator()
+    {
+        return interpolator;
+    }
 }
+

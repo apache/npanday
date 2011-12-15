@@ -56,6 +56,12 @@ under the License.
         <directory>src/test/resources/uac</directory>  
         <targetPath>../test-repo/uac</targetPath> 
       </testResource> 
-    </testResources> 
+    </testResources>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build> 
 </project>

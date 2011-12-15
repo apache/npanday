@@ -24,6 +24,7 @@ import npanday.vendor.InvalidVersionFormatException;
 import npanday.vendor.Vendor;
 
 import npanday.PlatformUnsupportedException;
+import npanday.vendor.VendorRequirement;
 
 import java.io.File;
 import java.util.List;
@@ -47,6 +48,15 @@ public class VendorInfoRepositoryTestStub
         return null;  
     }
 
+    /**
+     * Determines, if the repository is empty. This happens, if the configuration couldn't be read, because no file was
+     * available, or when the underlying SettingsRepository wasn't initialized properly.
+     */
+    public boolean isEmpty()
+    {
+        return vendorInfos != null && vendorInfos.size() > 0;
+    }
+
     public File getInstallRootFor( VendorInfo vendorInfo )
         throws PlatformUnsupportedException
     {
@@ -59,7 +69,7 @@ public class VendorInfoRepositoryTestStub
         return null;
     }
 
-    public VendorInfo getConfiguredVendorInfoByExample(VendorInfo vendorInfoExample) throws PlatformUnsupportedException {
+    public VendorInfo getSingleVendorInfoByRequirement( VendorRequirement vendorRequirement ) throws PlatformUnsupportedException {
         return null;
     }
 
@@ -75,7 +85,7 @@ public class VendorInfoRepositoryTestStub
         return new ArrayList<VendorInfo>();
     }
 
-    public List<VendorInfo> getVendorInfosFor( VendorInfo vendorInfo, boolean isDefault )
+    public List<VendorInfo> getVendorInfosFor( VendorRequirement vendorRequirement, boolean isDefault )
     {
         return vendorInfos;
     }

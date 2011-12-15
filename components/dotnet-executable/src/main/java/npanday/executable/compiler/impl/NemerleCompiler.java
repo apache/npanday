@@ -19,12 +19,11 @@
 package npanday.executable.compiler.impl;
 
 import npanday.executable.ExecutionException;
-import npanday.executable.compiler.CompilerConfig;
 import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.FileUtils;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -45,13 +44,12 @@ public final class NemerleCompiler
     public List<String> getCommands()
         throws ExecutionException
     {
-        CompilerConfig config = compilerContext.getNetCompilerConfig();
         List<Artifact> resources = compilerContext.getLibraryDependencies();
         List<Artifact> modules = compilerContext.getDirectModuleDependencies();
 
         String sourceDirectory = compilerContext.getSourceDirectoryName();
         String artifactFilePath = compilerContext.getArtifact().getAbsolutePath();
-        String targetArtifactType = config.getArtifactType().getTargetCompileType();
+        String targetArtifactType = compilerContext.getTargetArtifactType().getTargetCompileType();
 
         List<String> commands = new ArrayList<String>();
         commands.add( "/out:" + artifactFilePath );
@@ -80,7 +78,7 @@ public final class NemerleCompiler
         {
             commands.add( file );
         }
-        commands.addAll( config.getCommands() );
+        commands.addAll( compilerContext.getCommands() );
         return commands;
     }
 

@@ -18,35 +18,62 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>npanday-project</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>dotnet-components</artifactId>  
-  <packaging>pom</packaging>  
-  <name>NPanday :: Java Components</name>  
-  <modules> 
-    <module>dotnet-artifact</module>  
-    <module>dotnet-assembler</module>  
-    <module>dotnet-core</module>  
-    <module>dotnet-dao-project</module>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>npanday-project</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>dotnet-components</artifactId>
+  <packaging>pom</packaging>
+  <name>NPanday :: Java Components</name>
+  <modules>
+    <module>dotnet-artifact</module>
+    <module>dotnet-assembler</module>
+    <module>dotnet-core</module>
+    <module>dotnet-dao-project</module>
     <module>dotnet-executable</module>
-    <module>dotnet-model</module>  
-    <module>dotnet-plugin</module>  
-    <module>dotnet-registry</module>  
-    <module>dotnet-vendor</module> 
+    <module>dotnet-model</module>
+    <module>dotnet-plugin</module>
+    <module>dotnet-registry</module>
+    <module>dotnet-vendor</module>
   </modules>
-<reporting> 
+  <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <!-- version is defined in parent pom -->
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.gmock</groupId>
+      <artifactId>gmock</artifactId>
+      <version>0.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>1.7.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <reporting>
     <excludeDefaults>true</excludeDefaults>
-     <plugins>  
-      <plugin>      
+    <plugins>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>emma-maven-plugin</artifactId>
         <version>1.0-alpha-2</version>
       </plugin>
     </plugins>
-</reporting>    
+  </reporting>
 </project>

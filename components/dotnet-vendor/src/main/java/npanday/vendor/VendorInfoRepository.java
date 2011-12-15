@@ -57,12 +57,12 @@ public interface VendorInfoRepository
      * <code>getVendorInfosFor(String, String, String, boolean)</code>. This method allows the use
      * of a vendor info parameter directly.
      *
-     * @param vendorInfo the vendor info to match. This value may be incomplete, in which case, this method will return
-     *                   all possible vendor infos that could match.
+     *
+     * @param vendorRequirement
      * @param isDefault  if true, this method will filter out vendor info entries that do not have a default field
      * @return a list of vendor infos for the specified vendorInfo
      */
-    List<VendorInfo> getVendorInfosFor( VendorInfo vendorInfo, boolean isDefault );
+    List<VendorInfo> getVendorInfosFor( VendorRequirement vendorRequirement, boolean isDefault );
 
     /**
      * Returns the maximum version of the given set of versions.
@@ -78,19 +78,12 @@ public interface VendorInfoRepository
      * Finds a configured matching vendor info. This will then include details about
      * if it is the default, and on which paths executables are found.
      *
-     * @param vendorInfoExample Source for the search criteria.
-     * @return VendorInfo as it is configured.
+     *
+     * @param vendorRequirement@return VendorInfo as it is configured.
      * @throws PlatformUnsupportedException
      */
-    VendorInfo getConfiguredVendorInfoByExample(VendorInfo vendorInfoExample)
+    VendorInfo getSingleVendorInfoByRequirement( VendorRequirement vendorRequirement )
         throws PlatformUnsupportedException;
-
-    /**
-     * Returns true if this repository exists (and can be used), otherwise returns false.
-     *
-     * @return true if this repository exists (and can be used), otherwise returns false
-     */
-    boolean exists();
 
     /**
      *
@@ -104,4 +97,9 @@ public interface VendorInfoRepository
     File getGlobalAssemblyCacheDirectoryFor( Vendor vendor, String frameworkVersion, String artifactType )
         throws PlatformUnsupportedException;
 
+    /**
+     * Determines, if the repository is empty. This happens, if the configuration couldn't be read, because no file was
+     * available, or when the underlying SettingsRepository wasn't initialized properly.
+     */
+    boolean isEmpty();
 }

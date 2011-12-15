@@ -30,25 +30,10 @@ import java.util.Set;
 
 public interface RepositoryRegistry
 {
-
     /**
      * Role used to register component implementations with the container.
      */
     String ROLE = RepositoryRegistry.class.getName();
-
-    /**
-     * Mutator for setting the <code>RepositoryLoader</code>
-     *
-     * @param repositoryLoader
-     */
-    void setRepositoryLoader( RepositoryLoader repositoryLoader );
-
-    /**
-     * Mutator for setting the <code>RegistryLoader</code>
-     *
-     * @param registryLoader
-     */
-    void setRegistryLoader( RegistryLoader registryLoader );
 
     /**
      * Loads the registry from inputStream. Multiple config files may be loaded into the registry.

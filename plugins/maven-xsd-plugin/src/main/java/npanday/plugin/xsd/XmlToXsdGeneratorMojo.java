@@ -18,19 +18,18 @@
  */
 package npanday.plugin.xsd;
 
-import npanday.registry.NPandayRepositoryException;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutableRequirement;
+import npanday.executable.ExecutionException;
+import npanday.registry.RepositoryRegistry;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.io.File;
-import java.io.IOException;
-
-import npanday.executable.ExecutionException;
-import npanday.PlatformUnsupportedException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Generates XSD from XML instance
@@ -101,31 +100,15 @@ public class XmlToXsdGeneratorMojo
     /**
      * @component
      */
-    private npanday.NPandayRepositoryRegistry npandayRegistry;
+    private RepositoryRegistry repositoryRegistry;
 
     public void execute()
         throws MojoExecutionException
     {
-        try
-        {
-            npandayRegistry.createRepositoryRegistry();
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-1401-003: Failed to create the repository registry for this plugin", e );
-        }
-        catch( NPandayRepositoryException e )
-        {
-             throw new MojoExecutionException(
-                "NPANDAY-1401-004: Failed to create the repository registry for this plugin", e );
-        }
-
         FileUtils.mkdir( outputDirectory );
         try
         {
-            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, profile, getCommands(),
-                                                      netHome ).execute();
+            netExecutableFactory.getNetExecutableFor( new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), netHome ).execute();
         }
         catch ( ExecutionException e )
         {

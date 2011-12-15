@@ -18,37 +18,33 @@
  */
 package npanday.plugin.ilmerge;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import npanday.ArtifactType;
-import npanday.ArtifactTypeHelper;
 import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
-import npanday.executable.compiler.KeyInfo;
-import npanday.executable.compiler.CompilerCapability;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
+import npanday.executable.compiler.KeyInfo;
 import npanday.vendor.Vendor;
-import npanday.vendor.VendorFactory;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -232,10 +228,9 @@ public class AssemblyMerger extends AbstractMojo
             // determine how to set /lib:[assemblyPath]
             CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutableFor(getCompilerRequirement(),
                     getCompilerConfig(),
-                    project,
-                    profileAssemblyPath);
+                    project);
 
-            String assemblyPath = compilerExecutable.getAssemblyPath();
+            File assemblyPath = compilerExecutable.getAssemblyPath();
             if ( assemblyPath == null )
             {
                  throw new MojoExecutionException( "NPANDAY-1501-007: Unable to determine assembly path, perhaps missing profileAssemblyPath?" );
@@ -341,7 +336,7 @@ public class AssemblyMerger extends AbstractMojo
             }
 
             List commands = new ArrayList();
-            commands.add("/lib:" + assemblyPath);
+            commands.add("/lib:" + assemblyPath.toString());
 
             for ( String searchDirectoryPath : searchDirectoryPaths )
             {
@@ -386,8 +381,7 @@ public class AssemblyMerger extends AbstractMojo
             }
 
             outputDirectory.mkdirs();
-            netExecutableFactory.getNetExecutableFor( vendor, frameworkVersion, executable, commands,
-                                                      netHome ).execute();
+            netExecutableFactory.getNetExecutableFor( new ExecutableRequirement( vendor, null, frameworkVersion, executable ), commands, netHome ).execute();
 
             if ( mergedArtifactTempDirectory != null )
             {
@@ -461,34 +455,14 @@ public class AssemblyMerger extends AbstractMojo
 
     protected CompilerRequirement getCompilerRequirement() throws MojoExecutionException
     {
-         //Requirement
-        CompilerRequirement compilerRequirement = CompilerRequirement.Factory.createDefaultCompilerRequirement();
-        compilerRequirement.setLanguage( language );
-        compilerRequirement.setFrameworkVersion( frameworkVersion );
-        compilerRequirement.setProfile( profile );
-        compilerRequirement.setVendorVersion( vendorVersion );
-        try
-        {
-            if ( vendor != null )
-            {
-                compilerRequirement.setVendor( VendorFactory.createVendorFromName( vendor ) );
-            }
-        }
-        catch ( PlatformUnsupportedException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-900-001: Unknown Vendor: Vendor = " + vendor, e );
-        }
-
-        return compilerRequirement;
-
-
+        return new CompilerRequirement(vendor, vendorVersion, frameworkVersion, profile, language);
     }
 
     protected CompilerConfig getCompilerConfig()  throws MojoExecutionException
     {
 
           //Config
-        CompilerConfig compilerConfig = (CompilerConfig) CompilerConfig.Factory.createDefaultExecutableConfig();
+        CompilerConfig compilerConfig = new CompilerConfig();
         compilerConfig.setLocalRepository( localRepository );
 
 
@@ -517,6 +491,9 @@ public class AssemblyMerger extends AbstractMojo
         }
         compilerConfig.setArtifactType( artifactType );
 
+        if (profileAssemblyPath != null){
+            compilerConfig.setAssemblyPath( profileAssemblyPath );
+        }
 
         return compilerConfig;
     }

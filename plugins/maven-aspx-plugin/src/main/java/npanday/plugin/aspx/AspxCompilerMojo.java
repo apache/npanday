@@ -19,11 +19,6 @@ package npanday.plugin.aspx;
  * under the License.
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import npanday.ArtifactType;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutionException;
@@ -33,11 +28,15 @@ import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.SettingsException;
 import npanday.vendor.SettingsUtil;
-import npanday.vendor.VendorFactory;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Maven Mojo for precompiling ASPx files
@@ -141,11 +140,6 @@ public class AspxCompilerMojo
      * @component
      */
     private npanday.executable.NetExecutableFactory netExecutableFactory;
-
-    /**
-     * @component
-     */
-    private npanday.NPandayRepositoryRegistry npandayRegistry;
     
     private File webSourceDirectory;
 
@@ -225,8 +219,7 @@ public class AspxCompilerMojo
             try
             {
                 CompilerExecutable compilerExecutable =
-                    netExecutableFactory.getCompilerExecutableFor( compilerRequirement, compilerConfig, project,
-                                                                   profileAssemblyPath );
+                netExecutableFactory.getCompilerExecutableFor( compilerRequirement, compilerConfig, project  );
 
                 long startTimeCompile = System.currentTimeMillis();
                 compilerExecutable.execute();
@@ -361,7 +354,7 @@ public class AspxCompilerMojo
     
     private CompilerConfig createCompilerConfig(String source, String destination) throws MojoExecutionException
     {
-        CompilerConfig compilerConfig = (CompilerConfig) CompilerConfig.Factory.createDefaultExecutableConfig();
+        CompilerConfig compilerConfig = new CompilerConfig();
         compilerConfig.setLocalRepository( localRepository );
         compilerConfig.setCommands( getCommands( source, destination ) );
 
@@ -374,30 +367,18 @@ public class AspxCompilerMojo
         }
         compilerConfig.setArtifactType( artifactType );
 
+        if (profileAssemblyPath != null){
+            compilerConfig.setAssemblyPath( profileAssemblyPath );
+        }
+
         return compilerConfig;
     }
     
     private CompilerRequirement createCompilerRequirement() throws MojoExecutionException
     {
-        CompilerRequirement compilerRequirement = CompilerRequirement.Factory.createDefaultCompilerRequirement();
-        compilerRequirement.setLanguage( language );
-        compilerRequirement.setFrameworkVersion( frameworkVersion );
-        compilerRequirement.setProfile( profile );
-        compilerRequirement.setVendorVersion( vendorVersion );
-        try
-        {
-            if ( vendor != null )
-            {
-                compilerRequirement.setVendor( VendorFactory.createVendorFromName( vendor ) );
+        return new CompilerRequirement(
+            vendor, vendorVersion, frameworkVersion, profile,  language);
             }
-        }
-        catch ( PlatformUnsupportedException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-900-001: Unknown Vendor: Vendor = " + vendor, e );
-        }
-
-        return compilerRequirement;
-    }
     
     private List<String> getCommands( String sourceDir, String outputDir )
         throws MojoExecutionException

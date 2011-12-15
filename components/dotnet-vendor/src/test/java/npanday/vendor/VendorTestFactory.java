@@ -19,28 +19,18 @@
 package npanday.vendor;
 
 import npanday.model.settings.DefaultSetup;
-
-import java.io.File;
-import java.util.List;
+import npanday.vendor.impl.MutableVendorInfo;
 
 public class VendorTestFactory
 {
-    public static VendorInfo getVendorInfo( Vendor vendor, String vendorVersion, String frameworkVersion )
+    public static VendorRequirement getVendorRequirement( Vendor vendor, String vendorVersion, String frameworkVersion )
     {
-        VendorInfo vendorInfo = VendorInfo.Factory.createDefaultVendorInfo();
-        vendorInfo.setVendor( vendor );
-        vendorInfo.setFrameworkVersion( frameworkVersion );
-        vendorInfo.setVendorVersion( vendorVersion );
-        return vendorInfo;
+        return new VendorRequirement(vendor, vendorVersion, frameworkVersion);
     }
 
-    public static VendorInfo getVendorInfo( Vendor vendor, String vendorVersion, String frameworkVersion,
-                                            List<File> executablePaths )
+    public static VendorInfo getVendorInfo( Vendor vendor, String vendorVersion, String frameworkVersion )
     {
-        VendorInfo vendorInfo = getVendorInfo(vendor, vendorVersion, frameworkVersion);
-        vendorInfo.setExecutablePaths( executablePaths );
-
-        return vendorInfo;
+        return new MutableVendorInfo( vendor, vendorVersion, frameworkVersion);
     }
 
     public static DefaultSetup getDefaultSetup( String vendorName, String vendorVersion, String frameworkVersion )

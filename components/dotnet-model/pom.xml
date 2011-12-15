@@ -43,7 +43,38 @@ under the License.
       <artifactId>plexus-utils</artifactId> 
     </dependency> 
   </dependencies>  
-  <build> 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.modello</groupId>
+          <artifactId>modello-maven-plugin</artifactId>
+          <version>1.5</version>
+          <configuration>
+            <useJava5>false</useJava5>
+          </configuration>
+          <executions>
+            <execution>
+              <id>mdo</id>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>xpp3-reader</goal>
+                <goal>xpp3-writer</goal>
+                <goal>java</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>mdo-site</id>
+              <phase>pre-site</phase>
+              <goals>
+                <goal>xdoc</goal>
+                <goal>xsd</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins> 
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>  
@@ -52,14 +83,12 @@ under the License.
           <workingDirectory>${project.build.directory}/site</workingDirectory>  
           <siteDirectory>${project.build.directory}/generated-site</siteDirectory> 
         </configuration> 
-      </plugin>  
-      <plugin> 
-        <groupId>org.apache.maven.plugins</groupId>  
-        <artifactId>maven-resources-plugin</artifactId>  
-        <configuration> 
-          <outputDirectory>${project.build.directory}/generated-site</outputDirectory> 
-        </configuration> 
-      </plugin> 
+      </plugin>
+      <plugin>
+        <!-- enable groovy testing -->
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+      </plugin>
     </plugins> 
   </build> 
 </project>
