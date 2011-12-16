@@ -110,7 +110,8 @@ public interface ExecutableCapability
     String getNetDependencyId();
 
     /**
-     * Retrieves the paths, the executable is most likely to be found on.
+     * Retrieves the paths, the executable is most likely to be found on. Can contain
+     * both existing and not existing paths.
      */
     List<String> getProbingPaths();
 }

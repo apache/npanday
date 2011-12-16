@@ -55,6 +55,7 @@ public class DefaultNetExecutable
     public List<String> getCommands()
         throws ExecutionException
     {
+        // TODO: should it fail on unsupported commands?
         CommandFilter filter = executableContext.getCommandFilter();
         return Collections.unmodifiableList(filter.filter( commands ));
     }

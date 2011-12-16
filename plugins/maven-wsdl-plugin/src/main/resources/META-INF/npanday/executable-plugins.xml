@@ -1,0 +1,74 @@
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<executablePlugins xmlns="http://npanday.apache.org/executables/1.5.0">
+  <executablePlugin>
+    <identifier>WSDL</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>wsdl</executable>
+    <profile>WSDL</profile>
+    <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>WSDL</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MONO</vendor>
+    <executable>wsdl2</executable>
+    <profile>WSDL</profile>
+    <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Mac OS X</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Linux</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Solaris</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>FreeBSD</operatingSystem>
+      </platform>
+    </platforms>
+    <commandFilter>
+      <excludes>
+        <exclude>enableDataBinding</exclude>
+        <exclude>sharetypes</exclude>
+        <exclude>verbose</exclude>
+        <exclude>order</exclude>
+      </excludes>
+    </commandFilter>
+  </executablePlugin>
+</executablePlugins>

@@ -1,8 +1,15 @@
 package npanday.executable;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import npanday.vendor.VendorInfo;
 
+import javax.annotation.Nullable;
+import java.io.File;
+import java.util.Collections;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Holds the configured executable capability.
@@ -137,7 +144,29 @@ public class MutableExecutableCapability
 
     public List<String> getProbingPaths()
     {
-        return probingPaths;
+        // if probing paths are defined fot the capability, these are to be
+        // used when searching executables.
+        if ( probingPaths != null && !probingPaths.isEmpty() )
+        {
+            return probingPaths;
+        }
+
+        // if not, we expect the executable is provided by the vendor
+        final List<File> vendorPaths = checkNotNull(
+            getVendorInfo(), "Vendor info is unavailable"
+        ).getExecutablePaths();
+
+        List<String> vendorPathsAsString = Lists.transform(
+            vendorPaths, new Function<File, String>()
+            {
+                public String apply( @Nullable File file )
+                {
+                    return checkNotNull( file, "file was null").toString();
+                }
+            }
+        );
+
+        return Collections.unmodifiableList( vendorPathsAsString );
     }
 
     public void setProbingPaths( List<String> probingPaths )

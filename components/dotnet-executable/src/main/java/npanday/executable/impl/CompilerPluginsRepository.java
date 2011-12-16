@@ -144,7 +144,6 @@ public final class CompilerPluginsRepository
                 // TODO: Allow probing paths for compilers
                 platformCapability.setProbingPaths(plugin.getProbingPaths());
 
-
                 Platform platform = (Platform) j.next();
                 String os = platform.getOperatingSystem();
 

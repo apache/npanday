@@ -20,13 +20,10 @@
  */
 package npanday.plugin.compile;
 
-import org.apache.maven.lifecycle.Lifecycle;
-import npanday.lifecycle.LifecycleMapping;
-import npanday.lifecycle.LifecyclePhase;
-import npanday.lifecycle.LifecycleMap;
-import npanday.ArtifactType;
 
-import npanday.lifecycle.LifecycleMappingBuilder;
+import npanday.ArtifactType
+import npanday.lifecycle.LifecycleMap
+import npanday.lifecycle.LifecycleMappingBuilder
 
 /**
  * The lifecycles defined by the maven-compile-plugin..

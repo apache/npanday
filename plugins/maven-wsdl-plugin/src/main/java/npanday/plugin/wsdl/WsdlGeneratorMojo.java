@@ -18,23 +18,26 @@
  */
 package npanday.plugin.wsdl;
 
+import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutableRequirement;
+import npanday.executable.ExecutionException;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsException;
+import npanday.vendor.SettingsUtil;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.settings.Server;
-import org.apache.maven.settings.Proxy;
-import npanday.vendor.Vendor;
-import npanday.executable.CommandExecutor;
-import npanday.executable.ExecutionException;
-import npanday.PlatformUnsupportedException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.settings.Proxy;
+import org.apache.maven.settings.Server;
+import org.codehaus.plexus.util.FileUtils;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.io.File;
-import java.net.URL;
-import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Generates WSDL class
@@ -56,6 +59,40 @@ public class WsdlGeneratorMojo
     private MavenProject project;
 
     /**
+     * The Vendor for the executable. Supports MONO and MICROSOFT.
+     *
+     * @parameter expression="${vendor}"
+     */
+    private String vendor;
+
+    /**
+     * @parameter expression = "${frameworkVersion}"  default-value = "2.0.50727"
+     */
+    private String frameworkVersion;
+
+    /**
+     * The profile that the executable should use.
+     *
+     * @parameter expression = "${profile}" default-value = "WSDL"
+     */
+    private String profile;
+
+    /**
+     * @component
+     */
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
+
+    /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
+
+    /**
      * Webreferences
      * 
      * @parameter
@@ -65,7 +102,7 @@ public class WsdlGeneratorMojo
     /**
      * The directory to place the generated binding classes.
      * 
-     * @parameter
+     * @parameter  expression="${project.build.sourceDirectory}"
      */
     private String outputDirectory;
 
@@ -165,7 +202,7 @@ public class WsdlGeneratorMojo
     /**
      * @parameter expression="${netHome}"
      */
-    private String netHome;
+    private File netHome;
 
     /**
      * Generates server implementation
@@ -184,117 +221,106 @@ public class WsdlGeneratorMojo
     public void execute()
         throws MojoExecutionException
     {
+
+
+        try
+        {
+            SettingsUtil.getOrPopulateSettingsRepository( repositoryRegistry, settingsPath );
+        }
+        catch ( SettingsException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-1300-006 Failed to create the repository registry for this plugin", e );
+        }
+
+        FileUtils.mkdir( outputDirectory );
+
         for ( WebReference webreference : webreferences )
         {
-            Vendor vendor = getCompilerVendor();
-            List<String> commands = getCommandsFor( vendor, webreference );
-
-            getLog().debug( "NPANDAY-1300-000: Commands = " + commands.toString() );
-            CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+            List<String> commands = getCommandsFor( webreference );
             try
             {
-                commandExecutor.executeCommand( getExecutableFor( vendor, netHome ), commands );
-                getLog().info(
-                               "NPANDAY-1300-008: Generated WSDL: File = "
-                                   + project.getBuild().getSourceDirectory()
-                                   + File.separator
-                                   + project.getBuild().getSourceDirectory()
-                                   + File.separator
-                                   + webreference.getOutput()
-                                   + File.separator
-                                   + getFileNameFor( project.getBuild().getSourceDirectory() + File.separator
-                                       + webreference.getPath() ) );
-
+                netExecutableFactory.getNetExecutableFor(
+                    new ExecutableRequirement( vendor, null, frameworkVersion, profile ), commands, netHome
+                ).execute();
             }
             catch ( ExecutionException e )
             {
-                // TODO: This is a hack to get around the fact that MONO returns a result=1 on warnings and MS returns a
-                // result=1 on errors.
-                // I don't want to fail on MONO warning here.
-                if ( ( vendor.equals( Vendor.MONO ) && commandExecutor.getResult() > 1 )
-                    || vendor.equals( Vendor.MICROSOFT ) )
-                {
-                    throw new MojoExecutionException( "NPANDAY-1300-001: Result = " + commandExecutor.getResult(), e );
-                }
+                throw new MojoExecutionException(
+                    "NPANDAY-1300-007: Unable to execute wsdl: Vendor " + vendor + ", frameworkVersion = "
+                        + frameworkVersion + ", Profile = " + profile, e
+                );
             }
+            catch ( PlatformUnsupportedException e )
+            {
+                throw new MojoExecutionException(
+                    "NPANDAY-1300-009: Platform Unsupported: Vendor " + vendor + ", frameworkVersion = "
+                        + frameworkVersion + ", Profile = " + profile, e
+                );
+            }
+
+            getLog().info(
+                "NPANDAY-1300-008: Generated WSDL: File = " + buildOutputFilePath( webreference )
+            );
         }
-
     }
 
-    public String getExecutableFor( Vendor vendor, String home )
-    {
-        String executable = ( vendor.equals( Vendor.MICROSOFT ) ) ? "wsdl" : "wsdl2";
-        return ( !isEmpty( home ) ) ? home + File.separator + "bin" + File.separator + executable : executable;
-    }
-
-    public List<String> getCommandsFor( Vendor vendor, WebReference webreference )
+    public List<String> getCommandsFor( WebReference webreference )
         throws MojoExecutionException
     {
-        String commandFlag = vendor.equals( Vendor.MICROSOFT ) ? "/" : "-";
 
         List<String> commands = new ArrayList<String>();
-        populateServerCommands( commands, commandFlag );
-        populateProxyCommands( commands, commandFlag );
-        commands.add( commandFlag + "language:" + language );
-        commands.add( commandFlag + "namespace:" + webreference.getNamespace() );
-        commands.add( commandFlag + "fields:" + fields );
+        populateServerCommands( commands );
+        populateProxyCommands( commands, "/" );
+        commands.add( "/language:" + language );
+        commands.add( "/namespace:" + webreference.getNamespace() );
+        commands.add( "/fields:" + fields );
         if ( !isEmpty( protocol ) )
         {
-            commands.add( commandFlag + "protocol:" + protocol );
+            commands.add( "/protocol:" + protocol );
         }
 
-        commands.add( commandFlag + "out:" + project.getBuild().getSourceDirectory() + File.separator
-            + webreference.getOutput()
-            + getFileNameFor( project.getBuild().getSourceDirectory() + File.separator + webreference.getPath() ) );
+        commands.add(
+            "/out:" + buildOutputFilePath( webreference )
+        );
 
+        commands.add( buildInputFilePath( webreference ) );
+
+        if ( serverInterface )
         {
-            commands.add( new File( project.getBuild().getSourceDirectory() + File.separator + webreference.getPath() ).getAbsolutePath() );
+            commands.add( "/server" );
+        }
+        if ( enableDataBinding )
+        {
+            commands.add( "/enableDataBinding" );
+        }
+        if ( sharetypes )
+        {
+            commands.add( "/sharetypes" );
+        }
+        if ( verbose )
+        {
+            commands.add( "/verbose" );
+        }
+        if ( order )
+        {
+            commands.add( "/order" );
         }
 
-        if ( vendor.equals( Vendor.MONO ) )
-        {
-            if ( serverInterface )
-            {
-                commands.add( "-server" );
-            }
-            if ( ( fields || enableDataBinding || order || sharetypes || verbose ) )
-            {
-                if ( !ignoreUnusedOptions )
-                {
-                    throw new MojoExecutionException( "NPANDAY-1300-005: Illegal Option(s) for Mono" );
-                }
-                else
-                {
-                    getLog().warn(
-                                   "NPANDAY-1300-002: Your pom.xml contains an option that is not supported by MONO: Your application"
-                                       + " artifact will differ dependening on compiler/platform and may have different behavior." );
-                }
-            }
-        }
-        else
-        {
-            if ( serverInterface )
-            {
-                commands.add( "/server" );
-            }
-            if ( enableDataBinding )
-            {
-                commands.add( "/enableDataBinding" );
-            }
-            if ( sharetypes )
-            {
-                commands.add( "/sharetypes" );
-            }
-            if ( verbose )
-            {
-                commands.add( "/verbose" );
-            }
-            if ( order )
-            {
-                commands.add( "/order" );
-            }
-        }
         return commands;
+    }
+
+    private String buildInputFilePath( WebReference webreference )
+    {
+        return new File( outputDirectory, webreference.getPath() ).getAbsolutePath();
+    }
+
+    private String buildOutputFilePath( WebReference webreference )
+    {
+        return new File(
+            new File( outputDirectory, webreference.getOutput() ),
+            getFileNameFor( buildInputFilePath( webreference ) )
+        ).getAbsolutePath();
     }
 
     private boolean isURL( String path )
@@ -398,7 +424,7 @@ public class WsdlGeneratorMojo
         }
     }
 
-    private void populateServerCommands( List<String> commands, String commandFlag )
+    private void populateServerCommands( List<String> commands )
         throws MojoExecutionException
     {
         if ( server != null )
@@ -429,55 +455,14 @@ public class WsdlGeneratorMojo
                 }
                 if ( !isEmpty( username ) )
                 {
-                    commands.add( commandFlag + "username:" + username );
+                    commands.add( "/username:" + username );
                 }
                 if ( !isEmpty( password ) )
                 {
-                    commands.add( commandFlag + "password:" + password );
+                    commands.add( "/password:" + password );
                 }
             }
         }
-    }
-
-    private Vendor getCompilerVendor()
-        throws MojoExecutionException
-    {
-        Vendor vendor;
-        PlatformDetector platformDetector = PlatformDetector.Factory.createDefaultPlatformDetector();
-        if ( isEmpty( netHome ) )
-        {
-            try
-            {
-                vendor = platformDetector.getVendorFor( "wsdl", null );
-            }
-            catch ( PlatformUnsupportedException e )
-            {
-                throw new MojoExecutionException( "NPANDAY-1300-009", e );
-            }
-        }
-        else
-        {
-            File file = new File( netHome );
-            if ( !file.exists() )
-            {
-                throw new MojoExecutionException(
-                                                  "NPANDAY-1300-006: Unable to locate netHome - make sure that it exists:"
-                                                      + " Home = " + netHome );
-            }
-            try
-            {
-                vendor =
-                    platformDetector.getVendorFor( null, new File( file.getAbsolutePath() + File.separator + "bin"
-                        + File.separator + "wsdl" ) );
-            }
-            catch ( PlatformUnsupportedException e )
-            {
-                throw new MojoExecutionException( "NPANDAY-1300-010", e );
-            }
-
-        }
-        getLog().info( "NPANDAY-1300-007: WSDL Vendor found: " + vendor.getVendorName() );
-        return vendor;
     }
 
     private Proxy getProxyFor( String id )

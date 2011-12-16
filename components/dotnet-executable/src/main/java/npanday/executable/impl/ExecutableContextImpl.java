@@ -31,7 +31,6 @@ import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -128,18 +127,23 @@ public class ExecutableContextImpl
         return executableCapability.getExecutableName();
     }
 
-    public Collection<String> getCommands()
+    public List<String> getCommands()
     {
         return executableConfig.getCommands();
     }
 
-    public Collection<String> getProbingPaths()
+    public List<String> getProbingPaths()
     {
         List<String> executionPaths = executableConfig.getExecutionPaths();
-        if (executionPaths == null || executionPaths.size() == 0)
-            executionPaths = executableCapability.getProbingPaths();
 
-        return Collections.unmodifiableCollection( executionPaths );
+        if (executionPaths == null || executionPaths.size() == 0)
+        {
+            // if the user-passed configuration contains probing paths, these
+            // are at highest priority and OVERRIDE built-in probing paths configuration
+            executionPaths = executableCapability.getProbingPaths();
+        }
+
+        return Collections.unmodifiableList( executionPaths );
     }
 
     public void init( ExecutableCapability capability, ExecutableConfig config )

@@ -22,7 +22,7 @@ import npanday.NPandayContext;
 import npanday.PlatformUnsupportedException;
 import npanday.vendor.Vendor;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Provides services for executables.
@@ -58,13 +58,13 @@ public interface ExecutableContext
      * The commands that instruct the executable to be run.
      * @return
      */
-    Collection<String> getCommands();
+    List<String> getCommands();
 
     /**
      * The paths the executable is most likely to be found on. First matching path wins.
      * @return
      */
-    Collection<String> getProbingPaths();
+    List<String> getProbingPaths();
 
     /**
      * Creates a command filter. If the includes parameter is null, then the filter will return all commands that are

@@ -18,6 +18,7 @@
  */
 package npanday.executable;
 
+import npanday.PlatformUnsupportedException;
 import org.codehaus.plexus.logging.Logger;
 
 import java.util.Collection;
@@ -44,7 +45,7 @@ public interface CommandFilter
      * <code>NullPointerException</code> if it is.
      * @return a list of filtered commands.
      */
-    List<String> filter( Collection<String> commands );
+    List<String> filter( Collection<String> commands ) throws PlatformUnsupportedException;
 
     /**
      * Provides factory methods for creating command filters.
@@ -74,6 +75,7 @@ public interface CommandFilter
             return new CommandFilter()
             {
                 public List<String> filter( Collection<String> commands )
+                    throws PlatformUnsupportedException
                 {
 
                     List<String> includes = ( capability != null && capability.getIncludes() != null )
@@ -82,11 +84,23 @@ public interface CommandFilter
                         ? capability.getExcludes() : new ArrayList<String>();
 
                     List<String> newCommands = new ArrayList<String>();
-                    if ( includes.isEmpty() && !excludes.isEmpty() )
+
+                    // Excluded commands should fail
+                    if ( !excludes.isEmpty() )
                     {
-                        //unsupported
+                        for( String command : commands){
+                            if ( doesInclude( excludes, command )){
+                                // TODO: is the exception type right here? maybe it should be a specific exception
+                                throw new PlatformUnsupportedException(
+                                    "NPANDAY-060-001: The command '" + command + "' is unsupported for the targeted "
+                                        + "platform or executable."
+                                );
+                            }
+                        }
                     }
-                    else if ( !includes.isEmpty() && excludes.isEmpty() )
+
+                    // Included commands are weak exclusions of all others
+                    if ( !includes.isEmpty() )
                     {
                         for ( String command : commands )
                         {
@@ -100,16 +114,13 @@ public interface CommandFilter
                             }
                         }
                     }
-                    else if ( includes.isEmpty() && excludes.isEmpty() )
+                    else
                     {
                         List<String> list = new ArrayList<String>();
                         list.addAll( commands );
                         return list;
                     }
-                    else if ( !includes.isEmpty() && !excludes.isEmpty() )
-                    {
-                        //unsupported
-                    }
+
                     return newCommands;
                 }
 
