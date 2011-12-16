@@ -352,7 +352,7 @@ public class NetExecutableFactoryImpl
         Artifact pluginLoaderArtifact =
             artifactContext.getArtifactsFor( "org.apache.npanday.plugins", "NPanday.Plugin.Loader", null, null ).get(
                 0 );
-        artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ), artifactPath );
+        artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ), targetDir );
         commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
 
         return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner", vendorRequirement,

@@ -52,6 +52,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Provides an implementation of the Compiler Context.
  *
@@ -365,6 +367,10 @@ public final class CompilerContextImpl
         directLibraries = new ArrayList<Artifact>();
         modules = new ArrayList<Artifact>();
         artifactContext.init( project, project.getRemoteArtifactRepositories(), config.getLocalRepository() );
+        compilerCapability = capability;
+
+        // initialize base class
+        super.init( compilerCapability, config );
 
         Set<Artifact> artifacts = project.getDependencyArtifacts();//Can add WFC deps prior
         if ( artifacts != null )
@@ -408,11 +414,6 @@ public final class CompilerContextImpl
 
             }
         }
-
-        // TODO: matching the capability for the compiler requirement should be done on the outside
-        compilerCapability = capability;
-
-        super.init( compilerCapability, config );
 
         String basedir = project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator;
         linkedResources = new File( basedir, "linkresource" ).exists() ? Arrays.asList(
@@ -570,8 +571,10 @@ public final class CompilerContextImpl
     private void setArtifactGacFile( String gacRoot, Artifact artifact )
         throws PlatformUnsupportedException
     {
-        // TODO: Refactor to PathUtil.getGlobalAssemblyCacheFileFor
+        checkArgument( gacRoot != null, "gacRoot must not be null!" );
+        checkArgument( artifact != null, "artifact must not be null!" );
 
+        // TODO: Refactor to PathUtil.getGlobalAssemblyCacheFileFor
         String type = artifact.getType();
         logger.debug( "NPANDAY-061-001: Gac Root:" + gacRoot );
         logger.debug( "NPANDAY-061-003: Artifact Type:" + type );
