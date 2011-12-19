@@ -45,7 +45,7 @@ public interface CommandFilter
      * <code>NullPointerException</code> if it is.
      * @return a list of filtered commands.
      */
-    List<String> filter( Collection<String> commands ) throws PlatformUnsupportedException;
+    List<String> filter( Collection<String> commands ) throws ExecutionException;
 
     /**
      * Provides factory methods for creating command filters.
@@ -75,7 +75,7 @@ public interface CommandFilter
             return new CommandFilter()
             {
                 public List<String> filter( Collection<String> commands )
-                    throws PlatformUnsupportedException
+                    throws ExecutionException
                 {
 
                     List<String> includes = ( capability != null && capability.getIncludes() != null )
@@ -91,7 +91,7 @@ public interface CommandFilter
                         for( String command : commands){
                             if ( doesInclude( excludes, command )){
                                 // TODO: is the exception type right here? maybe it should be a specific exception
-                                throw new PlatformUnsupportedException(
+                                throw new ExecutionException(
                                     "NPANDAY-060-001: The command '" + command + "' is unsupported for the targeted "
                                         + "platform or executable."
                                 );

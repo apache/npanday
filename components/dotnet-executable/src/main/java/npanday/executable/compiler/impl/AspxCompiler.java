@@ -21,7 +21,6 @@ package npanday.executable.compiler.impl;
 import npanday.executable.CommandExecutor;
 import npanday.executable.CommandFilter;
 import npanday.executable.ExecutionException;
-import npanday.executable.compiler.CompilerConfig;
 
 import java.util.ArrayList;
 import java.util.List;
