@@ -50,13 +50,14 @@ public class AspxCompilerMojo
 {
     private static final String DEFAULT_INCLUDES = "**"; //any extension can be made for request handler in ASPX
 
-    private static final String DEFAULT_EXCLUDES = ".svn/**,.references/**,obj/**, target/**, **/*.pdb, **/*.csproj, **/*.vbproj, **/*.suo, **/*.user,pom.xml, **/*.sln,build.log,PrecompiledApp.config,csproj.user,Properties/**,**.releaseBackup,^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:\\.\\d+)?$/**,**/*.cs,**/*.vb";
+    private static final String DEFAULT_EXCLUDES =
+        ".svn/**,.references/**,obj/**, target/**, **/*.pdb, **/*.csproj, **/*.vbproj, **/*.suo, **/*.user,pom.xml, **/*.sln,build.log,PrecompiledApp.config,csproj.user,Properties/**,**.releaseBackup,^-?(?:\\d+|\\d{1,3}(?:,\\d{3})+)(?:\\.\\d+)?$/**,**/*.cs,**/*.vb";
 
     /**
      * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
      */
     private String settingsPath;
-    
+
     /**
      * The maven project.
      *
@@ -65,10 +66,10 @@ public class AspxCompilerMojo
      */
     private MavenProject project;
 
-   /**
+    /**
      * The directory for the compiled web application
      *
-     * @parameter  expression = "${outputDirectory}" default-value = "${project.build.directory}"
+     * @parameter expression = "${outputDirectory}" default-value = "${project.build.directory}"
      * @required
      */
     private File outputDirectory;
@@ -140,7 +141,7 @@ public class AspxCompilerMojo
      * @component
      */
     private npanday.executable.NetExecutableFactory netExecutableFactory;
-    
+
     private File webSourceDirectory;
 
     /**
@@ -153,7 +154,7 @@ public class AspxCompilerMojo
      */
     private boolean precompile;
 
-    /** 
+    /**
      * @component
      */
     private RepositoryRegistry repositoryRegistry;
@@ -177,7 +178,7 @@ public class AspxCompilerMojo
         if ( profileAssemblyPath != null && !profileAssemblyPath.exists() )
         {
             throw new MojoExecutionException( "NPANDAY-900-000: Profile Assembly Path does not exist: Path = " +
-                profileAssemblyPath.getAbsolutePath() );
+                                                  profileAssemblyPath.getAbsolutePath() );
         }
 
         File tmpDir;
@@ -196,14 +197,15 @@ public class AspxCompilerMojo
         try
         {
             FileUtils.copyDirectoryStructure( webSourceDirectory, tmpSourceDir );
-            
+
             // delete target from temp web source
             FileUtils.deleteDirectory( new File( tmpSourceDir, outputDirectory.getName() ) );
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "Unable to copy directory " + webSourceDirectory.getAbsolutePath() + " to " +
-                tmpSourceDir.getAbsolutePath(), e );
+            throw new MojoExecutionException(
+                "Unable to copy directory " + webSourceDirectory.getAbsolutePath() + " to " +
+                    tmpSourceDir.getAbsolutePath(), e );
         }
 
         File tmpDestDir;
@@ -214,12 +216,13 @@ public class AspxCompilerMojo
 
             CompilerRequirement compilerRequirement = createCompilerRequirement();
 
-            CompilerConfig compilerConfig = createCompilerConfig( tmpSourceDir.getAbsolutePath(), tmpDestDir.getAbsolutePath() );
+            CompilerConfig compilerConfig = createCompilerConfig( tmpSourceDir.getAbsolutePath(),
+                                                                  tmpDestDir.getAbsolutePath() );
 
             try
             {
-                CompilerExecutable compilerExecutable =
-                netExecutableFactory.getCompilerExecutableFor( compilerRequirement, compilerConfig, project  );
+                CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutableFor(
+                    compilerRequirement, compilerConfig, project );
 
                 long startTimeCompile = System.currentTimeMillis();
                 compilerExecutable.execute();
@@ -230,14 +233,16 @@ public class AspxCompilerMojo
             }
             catch ( PlatformUnsupportedException e )
             {
-                throw new MojoExecutionException( "NPANDAY-900-005: Unsupported Platform: Language = " + language +
-                    ", Vendor = " + vendor + ", ArtifactType = " + project.getArtifact().getType(), e );
+                throw new MojoExecutionException(
+                    "NPANDAY-900-005: Unsupported Platform: Language = " + language + ", Vendor = " + vendor +
+                        ", ArtifactType = " + project.getArtifact().getType(), e );
             }
             catch ( ExecutionException e )
             {
-                throw new MojoExecutionException( "NPANDAY-900-006: Unable to Compile: Language = " + language +
-                    ", Vendor = " + vendor + ", ArtifactType = " + project.getArtifact().getType() + ", Source Directory = " +
-                    project.getBuild().getSourceDirectory(), e );
+                throw new MojoExecutionException(
+                    "NPANDAY-900-006: Unable to Compile: Language = " + language + ", Vendor = " + vendor +
+                        ", ArtifactType = " + project.getArtifact().getType() + ", Source Directory = " +
+                        project.getBuild().getSourceDirectory(), e );
             }
         }
         else
@@ -252,9 +257,9 @@ public class AspxCompilerMojo
         {
             // NPANDAY-474
             String combinedExcludes = "";
-            if( excludes != null )
+            if ( excludes != null )
             {
-                for( int i = 0; i < excludes.length; i++ )
+                for ( int i = 0; i < excludes.length; i++ )
                 {
                     combinedExcludes = combinedExcludes + excludes[i] + ",";
                 }
@@ -267,7 +272,8 @@ public class AspxCompilerMojo
 
             for ( File file : allFiles )
             {
-                if ( !filesToKeep.contains( file ) || "App_global.asax.dll".equals(file.getName()) || "App_global.asax.compiled".equals(file.getName()))
+                if ( !filesToKeep.contains( file ) || "App_global.asax.dll".equals( file.getName() ) ||
+                    "App_global.asax.compiled".equals( file.getName() ) )
                 {
                     file.delete();
                     deleteDirectoryIfEmpty( file.getParentFile() );
@@ -276,8 +282,8 @@ public class AspxCompilerMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "Unable to delete unneccessary files in temporary directory " +
-                tmpDestDir.getAbsolutePath(), e );
+            throw new MojoExecutionException(
+                "Unable to delete unneccessary files in temporary directory " + tmpDestDir.getAbsolutePath(), e );
         }
 
         try
@@ -286,30 +292,32 @@ public class AspxCompilerMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "Unable to copy directory " + tmpDestDir.getAbsolutePath() + " to " +
-                webappDir.getAbsolutePath(), e );
+            throw new MojoExecutionException(
+                "Unable to copy directory " + tmpDestDir.getAbsolutePath() + " to " + webappDir.getAbsolutePath(), e );
         }
 
         try
         {
             String sourceDirectory = webSourceDirectory.getAbsolutePath();
-            List<File> fileList = FileUtils.getFiles(new File(sourceDirectory), "**/*.asax", null);
-            getLog().debug("copy .asax to target file (temp source folder: " + sourceDirectory +  ")...");
-            getLog().debug("copy .asax to target file (temp dest folder: " + tmpDestDir +  ")...");
-            getLog().debug("copy .asax to target file (file count: " + fileList.size() +  ")...");
+            List<File> fileList = FileUtils.getFiles( new File( sourceDirectory ), "**/*.asax", null );
+            getLog().debug( "copy .asax to target file (temp source folder: " + sourceDirectory + ")..." );
+            getLog().debug( "copy .asax to target file (temp dest folder: " + tmpDestDir + ")..." );
+            getLog().debug( "copy .asax to target file (file count: " + fileList.size() + ")..." );
 
             for ( File file : fileList )
             {
                 try
                 {
                     String fileName = file.getAbsolutePath().substring( (int) sourceDirectory.length() );
-                    FileUtils.copyFile( new File( file.getAbsolutePath() ), new File( webappDir.getAbsolutePath() + fileName ) );
-                    getLog().info("Copying " + fileName.substring(1) + " to " + webappDir.getAbsolutePath() );
+                    FileUtils.copyFile( new File( file.getAbsolutePath() ), new File(
+                        webappDir.getAbsolutePath() + fileName ) );
+                    getLog().info( "Copying " + fileName.substring( 1 ) + " to " + webappDir.getAbsolutePath() );
                 }
                 catch ( IOException e )
                 {
-                    throw new MojoExecutionException( "Unable to copy asax file " + file.getAbsolutePath() + " to " +
-                            webappDir.getAbsolutePath(), e );
+                    throw new MojoExecutionException(
+                        "Unable to copy asax file " + file.getAbsolutePath() + " to " + webappDir.getAbsolutePath(),
+                        e );
                 }
             }
         }
@@ -340,19 +348,20 @@ public class AspxCompilerMojo
         project.getArtifact().setFile( new File( targetFile ) );
 
         //Delete Bin Folder
-        String binDir = project.getBuild().getSourceDirectory()+File.separator + "Bin";
+        String binDir = project.getBuild().getSourceDirectory() + File.separator + "Bin";
         try
         {
-            FileUtils.deleteDirectory(binDir);
-            getLog().info("Bin folder deleted: " + binDir);
+            FileUtils.deleteDirectory( binDir );
+            getLog().info( "Bin folder deleted: " + binDir );
         }
-        catch(IOException e)
+        catch ( IOException e )
         {
-            getLog().info("Failed to delete Bin folder: " + binDir + " : " + e.getMessage());
+            getLog().info( "Failed to delete Bin folder: " + binDir + " : " + e.getMessage() );
         }
     }
-    
-    private CompilerConfig createCompilerConfig(String source, String destination) throws MojoExecutionException
+
+    private CompilerConfig createCompilerConfig( String source, String destination )
+        throws MojoExecutionException
     {
         CompilerConfig compilerConfig = new CompilerConfig();
         compilerConfig.setLocalRepository( localRepository );
@@ -362,24 +371,26 @@ public class AspxCompilerMojo
         ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifactTypeName );
         if ( artifactType.equals( ArtifactType.NULL ) )
         {
-            throw new MojoExecutionException( "NPANDAY-900-002: Unrecognized artifact type: Language = " + language +
-                ", Vendor = " + vendor + ", ArtifactType = " + artifactTypeName );
+            throw new MojoExecutionException(
+                "NPANDAY-900-002: Unrecognized artifact type: Language = " + language + ", Vendor = " + vendor +
+                    ", ArtifactType = " + artifactTypeName );
         }
         compilerConfig.setArtifactType( artifactType );
 
-        if (profileAssemblyPath != null){
+        if ( profileAssemblyPath != null )
+        {
             compilerConfig.setAssemblyPath( profileAssemblyPath );
         }
 
         return compilerConfig;
     }
-    
-    private CompilerRequirement createCompilerRequirement() throws MojoExecutionException
+
+    private CompilerRequirement createCompilerRequirement()
+        throws MojoExecutionException
     {
-        return new CompilerRequirement(
-            vendor, vendorVersion, frameworkVersion, profile,  language);
-            }
-    
+        return new CompilerRequirement( vendor, vendorVersion, frameworkVersion, profile, language );
+    }
+
     private List<String> getCommands( String sourceDir, String outputDir )
         throws MojoExecutionException
     {
