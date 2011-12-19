@@ -617,6 +617,8 @@ under the License.
         <plugins>
           <!-- Fail fast: the release build must run on Windows for the Add-in -->
           <!-- TODO: consider splitting it into a separate release -->
+<!-- Disabled because it causes the dotnet-repository-builder to fail (it makes
+     "clean" resolve dependencies)
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
@@ -638,6 +640,7 @@ under the License.
               </execution>
             </executions>
           </plugin>
+-->
           <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <inherited>false</inherited>
