@@ -35,8 +35,4 @@ public class JavaCompiler extends BaseCompiler
         return null;  
     }
 
-    public void resetCommands( List<String> commands )
-    {
-
-    }
 }

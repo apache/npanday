@@ -80,8 +80,4 @@ public final class CSharpCompilerForProfile
         return commands;
     }
 
-    public void resetCommands( List<String> commands )
-    {
-        
-    }
 }

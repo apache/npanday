@@ -67,8 +67,4 @@ public final class RubyCompiler
         return commands;
     }
 
-    public void resetCommands( List<String> commands )
-    {
-        
-    }
 }

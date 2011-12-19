@@ -20,13 +20,14 @@ package npanday.executable.impl;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import npanday.executable.CommandCapability;
 import npanday.executable.ExecutableCapability;
 import npanday.executable.MutableExecutableCapability;
-import npanday.model.executable.plugins.Platform;
 import npanday.model.executable.plugins.CommandFilter;
 import npanday.model.executable.plugins.ExecutablePlugin;
 import npanday.model.executable.plugins.ExecutablePluginsModel;
+import npanday.model.executable.plugins.Platform;
 import npanday.model.executable.plugins.io.xpp3.ExecutablePluginXpp3Reader;
 import npanday.registry.ModelInterpolator;
 import npanday.registry.NPandayRepositoryException;
@@ -73,6 +74,32 @@ public final class ExecutablePluginsRepository
     protected void mergeLoadedModel( ExecutablePluginsModel model ) throws NPandayRepositoryException
     {
         executablePlugins.addAll( model.getExecutablePlugins() );
+    }
+
+    @Override
+    protected void normalizeInterpolatedModelNodes( ExecutablePluginsModel model )
+    {
+        for(ExecutablePlugin plugin : model.getExecutablePlugins()){
+            plugin.setProbingPaths(
+                removeNullOrEmptyOrWhitespaceItems( plugin.getProbingPaths() )
+            );
+        }
+    }
+
+    private List<String> removeNullOrEmptyOrWhitespaceItems( List<String> items )
+    {
+        if (items != null && items.size() > 0){
+            ArrayList<String> itemsCopy = Lists.newArrayList( );
+            for(String item : items)
+            {
+                if ( item != null && !item.trim().equals( "" ) )
+                {
+                    itemsCopy.add( item );
+                }
+            }
+            return itemsCopy;
+        }
+        return items;
     }
 
     /**

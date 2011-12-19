@@ -19,8 +19,8 @@ public interface WindowsRegistryAccessProvider
 
     public static enum RegistryHKey
     {
-        HKLM( "HKEY_LOCAL_MACHINE", 0x80000001 ),
-        HKCU( "HKEY_CURRENT_USER",0x80000002 );
+        HKLM( "HKEY_LOCAL_MACHINE", 0x80000002 ),
+        HKCU( "HKEY_CURRENT_USER",  0x80000001 );
 
         private String longName;
         private int hkey;

@@ -83,8 +83,6 @@ public final class StateMachineProcessorImpl
     public void initialize()
         throws InitializationException
     {
-        SettingsUtil.warnIfSettingsAreEmpty( logger, repositoryRegistry );
-
         VendorInfoTransitionRuleFactory factory = new VendorInfoTransitionRuleFactory();
 
         try
@@ -120,6 +118,8 @@ public final class StateMachineProcessorImpl
     public VendorInfo process( VendorRequirement vendorRequirement )
         throws IllegalStateException, PlatformUnsupportedException
     {
+        SettingsUtil.warnIfSettingsAreEmpty( logger, repositoryRegistry );
+
         if ( !vendorRequirement.isComplete() )
         {
             VendorRequirementState startState = VendorRequirementState.START.getState( vendorRequirement );

@@ -27,7 +27,6 @@ import org.codehaus.plexus.logging.Logger;
 
 import java.util.List;
 import java.util.Collections;
-import java.util.ArrayList;
 import java.io.File;
 
 /**
@@ -50,13 +49,6 @@ public class DefaultRepositoryNetExecutable
         throws ExecutionException
     {
         return commands;
-    }
-
-    public void resetCommands( List<String> commands )
-    {
-        List<String> tmp = new ArrayList<String>();
-        tmp.addAll(commands);
-        this.commands = Collections.unmodifiableList( tmp );
     }
 
     public File getExecutionPath()

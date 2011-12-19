@@ -245,7 +245,8 @@ public final class DefaultCompiler
         
         Date date = new Date();
         String Now =""+date.getDate()+date.getHours()+date.getMinutes()+date.getSeconds();
-               
+
+        // TODO: Why can't the tmp dir just be a static one?
         TempDir = targetDir+File.separator+Now;
         
         try
@@ -330,10 +331,6 @@ public final class DefaultCompiler
         return filteredCommands;
     }
 
-    public void resetCommands( List<String> commands )
-    {
-
-    }
     // escaped to make use of dotnet style of command escapes .
     // Eg. /define:"CONFIG=\"Debug\",DEBUG=-1,TRACE=-1,_MyType=\"Windows\",PLATFORM=\"AnyCPU\""
     private String escapeCmdParams(String param)

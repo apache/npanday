@@ -29,6 +29,8 @@ import java.io.File;
  * Provides services for executing programs.
  *
  * @author Shane Isbell
+ * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ *
  * @see npanday.executable.compiler.CompilerExecutable
  */
 public interface NetExecutable
@@ -42,14 +44,6 @@ public interface NetExecutable
      * @throws PlatformUnsupportedException if one or more commands are not supported by the current platform.
      */
     List<String> getCommands() throws ExecutionException, PlatformUnsupportedException;
-
-    /**
-     * Resets the commands to be used by the executable. This should only be used if the executable is being reused with
-     * different commands from the one that it was initialized with.
-     *
-     * @param commands
-     */
-    void resetCommands(List<String> commands);
 
     /**
      * Compiles class files.

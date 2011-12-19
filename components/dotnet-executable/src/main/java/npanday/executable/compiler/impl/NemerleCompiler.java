@@ -82,8 +82,4 @@ public final class NemerleCompiler
         return commands;
     }
 
-    public void resetCommands( List<String> commands )
-    {
-        
-    }
 }

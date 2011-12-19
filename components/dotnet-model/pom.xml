@@ -51,7 +51,7 @@ under the License.
           <artifactId>modello-maven-plugin</artifactId>
           <version>1.5</version>
           <configuration>
-            <useJava5>false</useJava5>
+            <useJava5>true</useJava5>
           </configuration>
           <executions>
             <execution>

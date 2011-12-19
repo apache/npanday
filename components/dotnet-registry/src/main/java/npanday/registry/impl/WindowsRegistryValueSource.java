@@ -51,12 +51,12 @@ public class WindowsRegistryValueSource
         {
             final String value = registry.getValue( registryHKey, key, valueName );
             addFeedback( "NPANDAY-118-001: Retrieved the registry value for " + expression + ": " + value);
-            return value;
+            return value == null ? "" : value;
         }
         catch ( WindowsRegistryAccessException e )
         {
             addFeedback( "NPANDAY-118-000: Could not retrieve the registry value for " + expression, e );
-            return null;
+            return "";
         }
     }
 }

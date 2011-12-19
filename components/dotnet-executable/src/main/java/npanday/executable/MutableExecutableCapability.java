@@ -173,4 +173,11 @@ public class MutableExecutableCapability
     {
         this.probingPaths = probingPaths;
     }
+
+    @Override
+    public String toString()
+    {
+        return "ExecutableCapability [" + "vendorInfo=" + vendorInfo + ", operatingSystem='" + operatingSystem
+            + '\'' + ", profile='" + profile + '\'' + ']';
+    }
 }

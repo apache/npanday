@@ -75,10 +75,10 @@ public class MutableCompilerCapability
         this.hasJustInTime = hasJustInTime;
     }
 
-
+    @Override
     public String toString()
     {
-        return "ID = " + identifier + ", Plugin Class: " + pluginClassName + ", OS = " + operatingSystem
-            + ", Language = " + language + ", Vendor = " + vendorInfo;
+        return "CompilerCapability [" + "vendorInfo=" + vendorInfo + ", operatingSystem='" + operatingSystem
+            + '\'' + ", language='" + language + '\'' + ']';
     }
 }

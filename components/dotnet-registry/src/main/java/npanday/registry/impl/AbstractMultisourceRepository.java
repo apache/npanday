@@ -81,10 +81,23 @@ public abstract class AbstractMultisourceRepository<T>
                 "NPANDAY-111-001: Error on interpolating model from " + sourceUrl, e );
         }
 
+        normalizeInterpolatedModelNodes( model );
+
         mergeLoadedModel( model );
         incrementContentVersion();
     }
 
+    protected void normalizeInterpolatedModelNodes( T model ){
+
+    }
+
+    /**
+     * Filters in properties from windows registry, environment variables, and (hopefully soon)
+     * the running mojos Maven project.
+     *
+     * @param model
+     * @throws InterpolationException
+     */
     private void interpolateModel( T model )
         throws InterpolationException
     {

@@ -138,17 +138,19 @@ public class CapabilityMatcherImpl
     {
         for ( ExecutableCapability executableCapability : executableCapabilities )
         {
-            getLogger().debug( "NPANDAY-065-005: Attempting to match capability: " + executableCapability );
             if ( matchExecutableCapability( executableCapability, matchPolicies ) )
             {
-                getLogger().debug( "NPANDAY-065-001: Made a Platform Capability Match: " + executableCapability );
+                getLogger().debug( "NPANDAY-065-001: Found matching capability: " + executableCapability );
                 return executableCapability;
+            }
+            else
+            {
+                getLogger().debug( "NPANDAY-065-005: Capability doesn't match: " + executableCapability );
             }
         }
         throw new PlatformUnsupportedException(
-            "NPANDAY-065-002: Could not match platform: OS = " + System.getProperty( "os.name" )
-                + ", Number of Capabilities = " + executableCapabilities.size() + ", Number of Policies = "
-                + matchPolicies.size() );
+            "NPANDAY-065-002: Could not match any of the " + executableCapabilities.size() + " capabilities with "
+                + matchPolicies );
     }
 
     private VendorInfo matchVendorInfo(ExecutableRequirement executableRequirement)
@@ -176,7 +178,7 @@ public class CapabilityMatcherImpl
             boolean match = executableMatchPolicy.match( executableCapability );
             if ( !match )
             {
-                getLogger().debug( "Failed to match policy: " + executableMatchPolicy );
+                getLogger().debug( "NPANDAY-065-009: Failed to match policy: " + executableMatchPolicy );
                 return false;
             }
         }

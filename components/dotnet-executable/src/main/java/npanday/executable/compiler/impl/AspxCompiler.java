@@ -70,9 +70,4 @@ public class AspxCompiler
         commandExecutor.executeCommand( getExecutable(), getCommands(), getExecutionPath(), failOnErrorOutput() );
     }
 
-    public void resetCommands( List<String> commands )
-    {
-        // TODO Auto-generated method stub
-    }
-
 }

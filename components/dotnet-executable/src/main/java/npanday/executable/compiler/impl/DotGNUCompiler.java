@@ -92,8 +92,4 @@ public final class DotGNUCompiler
         return commands;
     }
 
-    public void resetCommands( List<String> commands )
-    {
-        
-    }
 }

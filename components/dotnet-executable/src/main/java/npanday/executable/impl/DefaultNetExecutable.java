@@ -30,7 +30,6 @@ import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -60,12 +59,6 @@ public class DefaultNetExecutable
         return Collections.unmodifiableList(filter.filter( commands ));
     }
 
-    public void resetCommands(List<String> commands)
-    {
-        this.commands = new ArrayList<String>();
-        this.commands.addAll(commands);//TODO: should be unmodifiable here: fail on filter?
-    }
-
     public File getExecutionPath()
     {
         String executable;
@@ -85,7 +78,7 @@ public class DefaultNetExecutable
             {
                 if ( PathUtil.containsExecutable(executablePath, executable) )
                 {
-                    logger.info("NPANDAY-070-003: Found executable path for " + executable + ": " + executablePath);
+                    logger.info("NPANDAY-070-003: Found executable path for " + executable + ": \"" + executablePath + "\"");
                     return new File( executablePath );
                 }
             }

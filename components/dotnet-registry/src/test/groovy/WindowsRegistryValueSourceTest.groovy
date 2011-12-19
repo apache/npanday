@@ -35,7 +35,25 @@ class WindowsRegistryValueSourceTest extends GMockTestCase
     play{
       def source = new WindowsRegistryValueSource(provider)
 
-      assert source.getValue("HKLM\\Key@ValueName") == null
+      assert source.getValue("HKLM\\Key@ValueName") == ""
+    }
+  }
+
+  @Test
+  void testWrongKeysAreNull()
+  {
+    def provider = mock(WindowsRegistryAccessProvider);
+
+    provider.getValue(RegistryHKey.HKLM, "Key", "ValueName")
+      .raises(new WindowsRegistryAccessException("Trouble here!!"))
+      .stub()
+
+    play {
+      def source = new WindowsRegistryValueSource(provider)
+
+      assert source.getValue("ABC\\Key@ValueName") == null
+      assert source.getValue("HKLM\\Key?ValueName") == null
+      assert source.getValue("HKLM") == null
     }
   }
 
@@ -50,6 +68,40 @@ class WindowsRegistryValueSourceTest extends GMockTestCase
       def source = new WindowsRegistryValueSource(provider)
 
       assert source.getValue("HKLM\\Key@ValueName") == "value"
+    }
+  }
+
+  @Test
+  void testHKLMLongAndShortNames()
+  {
+    def provider = mock(WindowsRegistryAccessProvider);
+
+    provider.getValue(RegistryHKey.HKLM, "Key", "ValueName")
+      .returns("value")
+      .times(2)
+
+    play{
+      def source = new WindowsRegistryValueSource(provider)
+
+      assert source.getValue("HKLM\\Key@ValueName") == "value"
+      assert source.getValue("HKEY_LOCAL_MACHINE\\Key@ValueName") == "value"
+    }
+  }
+
+  @Test
+  void testHKCULongAndShortNames()
+  {
+    def provider = mock(WindowsRegistryAccessProvider);
+
+    provider.getValue(RegistryHKey.HKCU, "Key", "ValueName")
+      .returns("value")
+      .times(2)
+
+    play{
+      def source = new WindowsRegistryValueSource(provider)
+
+      assert source.getValue("HKCU\\Key@ValueName") == "value"
+      assert source.getValue("HKEY_CURRENT_USER\\Key@ValueName") == "value"
     }
   }
 }
