@@ -28,7 +28,7 @@ echo ###################################################################
 echo  Bootstrapping the NPanday Compile Plugin
 echo ###################################################################
 
-mvn install -Dbootstrap --projects org.apache.npanday.plugins:maven-compile-plugin --also-make
+mvn clean install -Dbootstrap --projects org.apache.npanday.plugins:maven-compile-plugin --also-make
 
 echo ###################################################################
 echo  SUCCESS! Now you should be able to build using 'mvn install'
