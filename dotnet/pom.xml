@@ -74,6 +74,7 @@ under the License.
           <artifactId>maven-resolver-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
           <configuration>
+            <!-- TODO: Can we remove it, then? -->
             <skip>true</skip>
           </configuration>
         </plugin>
@@ -105,6 +106,7 @@ under the License.
           <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>
           <version>${bootstrap.npanday.version}</version>
           <configuration>
+            <!-- TODO: why was that skipped??? -->
             <skip>true</skip>
           </configuration>
         </plugin>

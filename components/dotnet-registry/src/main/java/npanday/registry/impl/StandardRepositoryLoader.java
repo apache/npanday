@@ -18,6 +18,7 @@
  */
 package npanday.registry.impl;
 
+import com.google.common.base.Preconditions;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryLoader;
@@ -73,16 +74,8 @@ public class StandardRepositoryLoader
     public Repository loadRepository( String location, String repositoryClass, Hashtable initParams )
         throws IOException, NPandayRepositoryException
     {
-        if ( repositoryRegistry == null )
-        {
-            throw new IOException( "NPANDAY-084-000: The repository registry has not been set." );
-        }
-
-        if ( container == null )
-        {
-            throw new IOException(
-                "NPANDAY-084-012: The context has not been set; make sure this instance is loaded as a component." );
-        }
+        Preconditions.checkNotNull( repositoryRegistry, "NPANDAY-084-000: The repository registry has not been set." );
+        Preconditions.checkNotNull( container, "NPANDAY-084-012: The context has not been set; make sure this instance is loaded as a component." );
 
         Hashtable props = ( initParams != null ) ? initParams : new Hashtable();
 
@@ -97,15 +90,26 @@ public class StandardRepositoryLoader
                     + props.toString() );
         }
 
-        final Set<URL> sources = findSources( location, initParams );
+        final Set<URL> sources = findSources( location );
+
+        boolean optional = "true".equalsIgnoreCase( (String) initParams.get( "optional" ) );
 
         Repository repository = initializeRepository( repositoryClass, props );
-        loadFoundSources( location, repositoryClass, props, sources, repository );
+
+        if ( sources.size() == 0 && !optional )
+        {
+            throw new IOException(
+                String.format( "NPANDAY-084-003: Unable to find any repository source files or resources named: %s",
+                               location ) );
+        }
+        else{
+            loadFoundSources( location, repositoryClass, props, sources, repository );
+        }
 
         return repository;
     }
 
-    private Set<URL> findSources( String location, Hashtable initParams )
+    private Set<URL> findSources( String location )
         throws IOException
     {
         final Set<URL> sources = new HashSet<URL>();
@@ -131,14 +135,6 @@ public class StandardRepositoryLoader
                                               classPathLocation, sources ) );
         }
 
-        boolean optional = "true".equalsIgnoreCase( (String) initParams.get( "optional" ) );
-
-        if ( sources.size() == 0 && !optional )
-        {
-            throw new IOException(
-                String.format( "NPANDAY-084-003: Unable to find any repository source files or resources named: %s",
-                               location ) );
-        }
         return sources;
     }
 
@@ -148,11 +144,7 @@ public class StandardRepositoryLoader
         Repository repository;
         try
         {
-            /*Class c = Class.forName( repositoryClass );
-            repository = (Repository) c.newInstance(); */
-
             repository = (Repository) container.lookup( repositoryClass );
-
             repository.setProperties( props );
         }
         catch ( Exception e )

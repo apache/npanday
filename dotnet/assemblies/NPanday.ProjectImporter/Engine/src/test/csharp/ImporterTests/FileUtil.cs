@@ -30,7 +30,7 @@ namespace NPanday.ProjectImporter.ImporterTests
 {
     public class FileUtil
     {
-		const string MSG_ERROR_EXPECTEDFILE_NOTFOUND = "The Expected File is not in its location. {0}";
+        const string MSG_ERROR_EXPECTEDFILE_NOTFOUND = "The Expected File is not in its location. {0}";
         const string MSG_ERROR_ACTUALFILE_NOTFOUND = "The Pom File is not in its location. {0}";
         const string MSG_ERROR_NOXPATH = "No XPath to cross reference pom file created.";
         const string MSG_EXPECTEDXMLELEMENT_NOTFOUND = "Epected Pom and Actual Pom don't have the same elements.";
@@ -45,39 +45,51 @@ namespace NPanday.ProjectImporter.ImporterTests
 
         public static void DeleteDirectory(string dir)
         {
-            DeleteDirectory(new DirectoryInfo(dir));
-        }
-
-
-        public static void DeleteDirectory(DirectoryInfo dir)
-        {
             try
             {
-                if (dir.Exists)
+                if (Directory.Exists(dir))
                 {
-                    dir.Delete(true);
+                    DeleteDirectoryRecurse(dir);
                 }
             }
             catch (Exception e)
             {
 
-                throw new Exception(string.Format("Error In Deleting Directory: {0}", dir.FullName), e);
+                throw new Exception(string.Format("Error In Deleting Directory: {0}", dir), e);
             }
 
         }
 
+        public static void DeleteDirectoryRecurse(string dir)
+        {
+            string[] files = Directory.GetFiles(dir);
+            string[] dirs = Directory.GetDirectories(dir);
+
+            foreach (string file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+
+            foreach (string subdir in dirs)
+            {
+                DeleteDirectoryRecurse(subdir);
+            }
+
+            Directory.Delete(dir, false);
+        }
 
         public static void CopyDirectory(String source, String destination)
         {
             CpDir(source, destination);
-            
+
         }
 
 
         public static void CopyDirectory(DirectoryInfo source, DirectoryInfo destination)
         {
             CpDir(source, destination);
-            
+
         }
 
 
@@ -103,8 +115,8 @@ namespace NPanday.ProjectImporter.ImporterTests
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo filePath in files)
             {
-				if (filePath.Name != null && !filePath.Name.EndsWith(".test"))
-					filePath.CopyTo(Path.Combine(destination, filePath.Name));
+                if (filePath.Name != null && !filePath.Name.EndsWith(".test"))
+                    filePath.CopyTo(Path.Combine(destination, filePath.Name));
             }
 
 
@@ -123,14 +135,14 @@ namespace NPanday.ProjectImporter.ImporterTests
         {
             CpDir(source.FullName, destination.FullName);
         }
-		
-		
-		public static string[] GetTestPomFiles(string rootPath, string[] actualPomFileLocations)
+
+
+        public static string[] GetTestPomFiles(string rootPath, string[] actualPomFileLocations)
         {
-            
+
             List<string> outPut = new List<string>();
             //File.Delete(filename);
-            
+
             if (actualPomFileLocations.Length < 1) return outPut.ToArray();
 
             string basePath = parseBasePath(rootPath, actualPomFileLocations[0]);

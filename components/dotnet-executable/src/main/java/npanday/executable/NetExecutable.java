@@ -19,6 +19,7 @@
 package npanday.executable;
 
 import npanday.NPandayContext;
+import npanday.PlatformUnsupportedException;
 import npanday.vendor.Vendor;
 
 import java.util.List;
@@ -38,9 +39,9 @@ public interface NetExecutable
      *
      * @return the commands that this compiler will use to compile the application
      * @throws ExecutionException
+     * @throws PlatformUnsupportedException if one or more commands are not supported by the current platform.
      */
-    List<String> getCommands()
-        throws ExecutionException;
+    List<String> getCommands() throws ExecutionException, PlatformUnsupportedException;
 
     /**
      * Resets the commands to be used by the executable. This should only be used if the executable is being reused with
@@ -57,8 +58,7 @@ public interface NetExecutable
      *          if the compiler writes to the standard error stream.
      *          artifact (module, library, exe, winexe) or the target artifact is not valid for the compiler
      */
-    void execute()
-        throws ExecutionException;
+    void execute() throws ExecutionException, PlatformUnsupportedException;
 
     /**
      * Returns the executable file name that this compiler will use to compile the application.

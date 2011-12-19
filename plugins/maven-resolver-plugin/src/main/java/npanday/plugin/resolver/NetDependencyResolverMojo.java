@@ -29,6 +29,7 @@ import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.model.netdependency.NetDependency;
 import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
@@ -49,6 +50,16 @@ import java.util.List;
 public class NetDependencyResolverMojo
     extends AbstractMojo
 {
+    /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
+
     /**
      * The maven project.
      *
@@ -96,11 +107,6 @@ public class NetDependencyResolverMojo
     /**
      * @component
      */
-    private RepositoryRegistry repositoryRegistry;
-
-    /**
-     * @component
-     */
     private npanday.executable.NetExecutableFactory netExecutableFactory;
 
     /**
@@ -122,6 +128,8 @@ public class NetDependencyResolverMojo
         {
             return;
         }
+
+        SettingsUtil.applyCustomSettingsIfAvailable( getLog(), repositoryRegistry, settingsPath );
 
         String profile = System.getProperty( "dependencyProfile" );
 

@@ -23,8 +23,6 @@ import npanday.model.settings.Framework;
 import npanday.model.settings.Vendor;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.IllegalStateException;
-import npanday.vendor.SettingsException;
-import npanday.vendor.SettingsRepository;
 import npanday.vendor.SettingsUtil;
 import npanday.vendor.StateMachineProcessor;
 import npanday.vendor.VendorFactory;
@@ -85,15 +83,7 @@ public final class StateMachineProcessorImpl
     public void initialize()
         throws InitializationException
     {
-        SettingsRepository settingsRepository;
-        try
-        {
-            settingsRepository = SettingsUtil.getOrPopulateSettingsRepository( repositoryRegistry );
-        }
-        catch ( SettingsException e )
-        {
-            throw new InitializationException( "NPANDAY-102-007: Could not get settings.", e );
-        }
+        SettingsUtil.warnIfSettingsAreEmpty( logger, repositoryRegistry );
 
         VendorInfoTransitionRuleFactory factory = new VendorInfoTransitionRuleFactory();
 
@@ -156,7 +146,7 @@ public final class StateMachineProcessorImpl
 
         if ( !vendorRequirement.isComplete() )
         {
-            // TODO: Remove this blcok, as soon as vendor discovery is moved to java code
+            // TODO: Remove this block, as soon as vendor discovery is moved to java code
             if ( vendorInfoRepository.isEmpty() )
             {
                 Vendor configuredVendor = new Vendor();
@@ -165,6 +155,7 @@ public final class StateMachineProcessorImpl
 
                 Framework configuredFramework = new Framework();
                 configuredFramework.setFrameworkVersion(  "2.0.50727" );
+                configuredFramework.setInstallRoot( null );
 
                 VendorInfo vendorInfo = new SettingsBasedVendorInfo( configuredVendor, configuredFramework );
 
@@ -174,7 +165,7 @@ public final class StateMachineProcessorImpl
                 return vendorInfo;
             }
 
-            throw new IllegalStateException( "NPANDAY-102-005: Vendor info requirement could not be completed!" );
+            throw new IllegalStateException( "NPANDAY-102-007: Vendor info requirement could not be completed: " + vendorRequirement );
         }
 
         return vendorInfoRepository.getSingleVendorInfoByRequirement( vendorRequirement );

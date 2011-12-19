@@ -18,6 +18,7 @@
  */
 package npanday.executable.compiler.impl;
 
+import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandExecutor;
 import npanday.executable.CommandFilter;
 import npanday.executable.ExecutionException;
@@ -34,8 +35,7 @@ public class AspxCompiler
         return true;
     }
 
-    public List<String> getCommands()
-        throws ExecutionException
+    public List<String> getCommands() throws ExecutionException, PlatformUnsupportedException
     {
         if ( compilerContext == null )
         {
@@ -59,8 +59,7 @@ public class AspxCompiler
     
 
     @Override
-    public void execute()
-        throws ExecutionException
+    public void execute() throws ExecutionException, PlatformUnsupportedException
     {
         logger.info( "NPANDAY-068-003: Compiling Artifact: Vendor = "
             + compilerContext.getVendor() + ", Language = "

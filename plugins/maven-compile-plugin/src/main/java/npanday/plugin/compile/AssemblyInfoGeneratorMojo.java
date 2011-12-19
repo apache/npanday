@@ -24,6 +24,8 @@ import npanday.assembler.AssemblerContext;
 import npanday.assembler.AssemblyInfo;
 import npanday.assembler.AssemblyInfoException;
 import npanday.assembler.AssemblyInfoMarshaller;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsUtil;
 import npanday.vendor.Vendor;
 import npanday.vendor.VendorInfo;
 import npanday.vendor.VendorRequirement;
@@ -49,6 +51,15 @@ import java.util.Map;
 public class AssemblyInfoGeneratorMojo
     extends AbstractMojo
 {
+    /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
 
     /**
      * The maven project.
@@ -135,12 +146,12 @@ public class AssemblyInfoGeneratorMojo
     {
         long startTime = System.currentTimeMillis();
 
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
+
         if ( ArtifactTypeHelper.isDotnetModule( project.getArtifact().getType() ))
         {
             return;
         }
-
-
 
         File srcFile = new File( sourceDirectory );
         if ( srcFile.exists() )

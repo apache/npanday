@@ -28,11 +28,9 @@ import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.executable.NetExecutableFactory;
-import npanday.vendor.IllegalStateException;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsUtil;
 import npanday.vendor.StateMachineProcessor;
-import npanday.vendor.Vendor;
-import npanday.vendor.VendorInfo;
-import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -48,6 +46,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 /**
  * Runs NUnit tests
  *
@@ -56,9 +56,17 @@ import java.util.Set;
  * @phase test
  * @description Runs NUnit tests
  */
-public class TesterMojo
-extends AbstractMojo
+public class TesterMojo extends AbstractMojo
 {
+    /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
 
     /**
      * The maven project.
@@ -162,9 +170,22 @@ extends AbstractMojo
     private StateMachineProcessor processor;
 
     /**
+     * The Vendor for the Compiler. Not case or white-space sensitive.
+     *
+     * @parameter expression="${vendor}"
+     */
+    private String vendor;
+
+    /**
+     * @parameter expression = "${vendorVersion}"
+     */
+    private String vendorVersion;
+
+    /**
      * Specify the name of the NUnit command to be run, from within the <i>nunitHome</i>/bin directory.
      *  
      * @parameter
+     * @deprecated since 1.5.0-incubating
      */
     private String nunitCommand;
 
@@ -185,44 +206,13 @@ extends AbstractMojo
         return (nunitHome != null) ? new File(nunitHome, "bin") : null;
     }
 
-    private String getExecutableNameFor( VendorInfo vendorInfo ) 
+
+    private List<String> getCommandsFor( )
     {
-        String executableName = nunitCommand;
-
-        // default the executable name if not explicitly specified
-        if ( executableName == null )
-        {
-            // nunit-console-x86 is included since 2.4.2 (August 2007, http://www.nunit.org/index.php?p=releaseNotes&r=2.4.3)
-            executableName = "nunit-console" + (forceX86 ? "-x86" : "");
-
-            if ( vendorInfo != null )
-            {
-                Vendor vendor = vendorInfo.getVendor();
-                String frameworkVersion = vendorInfo.getFrameworkVersion();
-                if ( "MONO".equals( vendor.getVendorName() ) )
-                {
-                    // Note: Mono 2.10 adds support for .NET framework 4.0 and packages nunit-console.exe, 
-                    //       with shell scripts for both nunit-console and nunit-console2 so no need to
-                    //       use nunit-console2 in that case
-                    if ( frameworkVersion == null || (!frameworkVersion.startsWith( "1.1" ) && !frameworkVersion.startsWith( "4.0" ) ) )
-                    {
-                        executableName = "nunit-console2";
-                    }
-                }
-            }
-
-        }
-         
-        return executableName;
-    }
-
-    private List<String> getCommandsFor( VendorInfo vendorInfo )    
-    {
-        Vendor vendor = vendorInfo.getVendor();
         String finalName = project.getBuild().getFinalName();
         List<String> commands = new ArrayList<String>();
-        if ( testAssemblyPath.startsWith( "/" ) )// nunit-console thinks *nix file format /home/user/ is an option
-                                                    // due to / and fails.
+        if ( testAssemblyPath.startsWith( "/" ) ) // nunit-console thinks *nix file format /home/user/ is an option
+                                                  // due to / and fails.
         {
             testAssemblyPath = "/" + testAssemblyPath;
         }
@@ -241,12 +231,6 @@ extends AbstractMojo
         }
 
         String switchChar = "/";
-
-        String vendorName = vendor.getVendorName();
-        if ( vendor != null && "MONO".equals( vendorName ) )        
-        {
-            switchChar = "-";
-        }
         commands.add( switchChar + "xml:" + nUnitXmlFilePath.getAbsolutePath() );
 
         commands.add( switchChar + "output:" + nUnitResultOutputPath.getAbsolutePath() );
@@ -259,7 +243,7 @@ extends AbstractMojo
             commands.add( switchChar + "xmlConsole" );
         }
         
-                // Not supported on NUnit < 2.5 - see NPANDAY-332
+        // Not supported on NUnit < 2.5 - see NPANDAY-332
         // String frameworkVersion = vendorInfo.getFrameworkVersion();
         // getLog().debug( "NPANDAY-1100-012: Framework version:" + frameworkVersion );
         // if (!"MONO".equals( vendorName ) && (frameworkVersion != null && frameworkVersion.length() > 0 )) {
@@ -278,6 +262,8 @@ extends AbstractMojo
             getLog().warn( "NPANDAY-1100-000: Unit tests have been disabled." );
             return;
         }
+
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
         
         String testFileName = "";
 
@@ -387,46 +373,32 @@ extends AbstractMojo
 
         FileUtils.mkdir( reportsDirectory );
 
-        VendorRequirement vendorRequirement = new VendorRequirement( (Vendor)null, null, executionFrameworkVersion );
-        getLog().debug( "NPANDAY-1100-014.2: Vendor info:" + vendorRequirement );
-        VendorInfo vendorInfo;
-        try
-        {
-            vendorInfo = processor.process( vendorRequirement );
-        }
-        catch ( IllegalStateException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-1100-016: Error on determining the vendor info", e );
-        }
-        catch ( PlatformUnsupportedException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-1100-017: Error on determining the vendor info", e );
-        }
-        //List<String> commands = getCommandsFor( vendorInfo.getVendor() );
-        getLog().debug( "NPANDAY-1100-014.3: Vendor info:" + vendorInfo );
-        List<String> commands = getCommandsFor( vendorInfo );        
-        getLog().debug( "NPANDAY-1100-008: " + commands.toString() );
+
+        List<String> commands = getCommandsFor( );
 
         // pretty print nunit logs
         getLog().info( System.getProperty( "line.separator" ) );
 
-        String executableName = getExecutableNameFor( vendorInfo );
+        String profile = "NUNIT" + (forceX86 ? "-x86" : "");
         File executableHome = getExecutableHome();
 
         try
         {
             try
             {
-                Vendor vendor = vendorInfo.getVendor();
-                String vendorName = vendor.getVendorName();
-
                 NetExecutable executable = netExecutableFactory.getNetExecutableFor(
-                    new ExecutableRequirement( vendorName, null, executionFrameworkVersion, executableName), commands, executableHome );
+                    new ExecutableRequirement( vendor, vendorVersion, executionFrameworkVersion, profile), commands, executableHome );
 
                 executable.execute();
             }
             catch (PlatformUnsupportedException pue)
             {
+                if (isNullOrEmpty(nunitCommand))
+                {
+                    throw new MojoExecutionException( "NPANDAY-1100-008: Unsupported Platform.", pue );
+                }
+
+                // TODO: This should rather be done through a configurable local executable-plugins.xml; then remove nunitcommand
                 getLog().debug( "NPANDAY-1100-008: Platform unsupported, is your npanday-settings.xml configured correctly?", pue );        
                 CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
                 commandExecutor.setLogger( new org.codehaus.plexus.logging.AbstractLogger( 0, "nunit-logger" )
@@ -464,7 +436,7 @@ extends AbstractMojo
                     }
                 } );
 
-                String executablePath = (executableHome != null) ? new File(executableHome, executableName).toString() : executableName;
+                String executablePath = (executableHome != null) ? new File(executableHome, nunitCommand).toString() : nunitCommand;
                 commandExecutor.executeCommand( executablePath, commands );
             }
         }

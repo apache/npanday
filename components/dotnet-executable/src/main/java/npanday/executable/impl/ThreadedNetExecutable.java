@@ -18,6 +18,7 @@
  */
 package npanday.executable.impl;
 
+import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutionException;
 
 /**
@@ -39,6 +40,10 @@ public class ThreadedNetExecutable
         catch ( ExecutionException e )
         {
             logger.error( "NPANDAY-116-000: Error occurred in long running executable", e );
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            logger.error( "NPANDAY-116-002: Error occurred in long running executable", e );
         }
     }
 

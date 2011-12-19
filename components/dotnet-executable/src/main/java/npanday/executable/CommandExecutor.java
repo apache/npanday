@@ -360,9 +360,9 @@ public interface CommandExecutor
                         // TODO: Wrong use of working directory! $(basedir) should be the working dir, and the executable paths should be absolute
                         commandline.setWorkingDirectory( workingDirectory.getAbsolutePath() );
                     }
-                    else
+                    else if (workingDirectory != null && !workingDirectory.exists())
                     {
-                        logger.info( "NPANDAY-040-006: Did not find executable path, will try system path" );
+                        logger.info( "NPANDAY-040-006: Did not find executable path for " + executable + ", will try system path" );
                     }
 
                     try

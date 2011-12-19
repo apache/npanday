@@ -20,6 +20,7 @@ package npanday.executable.impl;
 
 import npanday.NPandayContext;
 import npanday.PathUtil;
+import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandExecutor;
 import npanday.executable.CommandFilter;
 import npanday.executable.ExecutableContext;
@@ -52,8 +53,7 @@ public class DefaultNetExecutable
 
     private Collection<String> commands;
 
-    public List<String> getCommands()
-        throws ExecutionException
+    public List<String> getCommands() throws ExecutionException, PlatformUnsupportedException
     {
         // TODO: should it fail on unsupported commands?
         CommandFilter filter = executableContext.getCommandFilter();
@@ -95,13 +95,12 @@ public class DefaultNetExecutable
     }
 
     public void execute()
-        throws ExecutionException
+        throws ExecutionException, PlatformUnsupportedException
     {
         innerExecute();
     }
 
-    protected void innerExecute()
-        throws ExecutionException
+    protected void innerExecute() throws ExecutionException, PlatformUnsupportedException
     {
         List<String> commands = getCommands();
 

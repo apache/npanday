@@ -1,6 +1,7 @@
 package npanday.vendor.impl;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import npanday.ArtifactType;
@@ -54,10 +55,13 @@ public class SettingsBasedVendorInfo
         List<File> configuredPaths = new ArrayList<File>();
 
         // add .NET install root as path
-        configuredPaths.add( getInstallRoot() );
+        if (getInstallRoot() != null)
+        {
+            configuredPaths.add( getInstallRoot() );
+        }
 
         // add .NET-SDK install root as path
-        if ( configuredFramework.getSdkInstallRoot() != null )
+        if ( getSdkInstallRoot() != null )
         {
             configuredPaths.add( getSdkInstallRoot() );
         }
@@ -81,12 +85,18 @@ public class SettingsBasedVendorInfo
 
     public File getSdkInstallRoot()
     {
-        return new File(configuredFramework.getSdkInstallRoot());
+        final String sdkInstallRoot = configuredFramework.getSdkInstallRoot();
+        if ( Strings.isNullOrEmpty( sdkInstallRoot ))
+            return null;
+        return new File( sdkInstallRoot );
     }
 
     public File getInstallRoot()
     {
-        return new File(configuredFramework.getInstallRoot());
+        final String installRoot = configuredFramework.getInstallRoot();
+        if ( Strings.isNullOrEmpty( installRoot ))
+            return null;
+        return new File( installRoot );
     }
 
     // TODO: Move this to a composed type: GacFinderStrategy

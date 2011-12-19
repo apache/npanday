@@ -18,10 +18,12 @@
  */
 package npanday.registry.impl;
 
+import com.google.common.base.Preconditions;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RegistryLoader;
 import npanday.registry.Repository;
 import npanday.registry.RepositoryLoader;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -41,6 +43,7 @@ import java.util.List;
  *   role="npanday.registry.RegistryLoader"
  */
 public class StandardRegistryLoader
+    extends AbstractLogEnabled
     implements RegistryLoader
 {
     /**
@@ -160,16 +163,19 @@ public class StandardRegistryLoader
     private void loadIntoRegistry()
         throws IOException, NPandayRepositoryException
     {
-        if ( repositoryLoader == null )
-        {
-            throw new IOException( "NPANDAY-083-001:: Repository Loader does not exist" );
-        }
+        Preconditions.checkNotNull( repositoryLoader, "NPANDAY-083-001: Repository Loader does not exist" );
+
         for ( Iterator i = repositories.iterator(); i.hasNext(); )
         {
             RepositoryObject repositoryObject = (RepositoryObject) i.next();
             String repositoryName = repositoryObject.getRepositoryName();
             String className = repositoryObject.getRepositoryClass();
             String fileName = repositoryObject.getRepositoryConfig();
+
+            if (getLogger().isDebugEnabled()){
+                getLogger().debug( "NPANDAY-083-002: Loading repository '" + repositoryName + "'");
+            }
+
             //instantiate class based on info in the registry-config file
             Repository repository =
                 repositoryLoader.loadRepository( toPath( fileName ), className, repositoryObject.getInitParams() );
@@ -177,6 +183,13 @@ public class StandardRegistryLoader
             if ( repository != null )
             {
                 repoMap.put( repositoryName, repository );
+
+                if (getLogger().isDebugEnabled()){
+                    getLogger().debug( "NPANDAY-083-003: Loaded repository '" + repositoryName + "': " + repository);
+                }
+            }
+            else{
+                getLogger().warn( "NPANDAY-083-003: Loader for repository '" + repositoryName + "' returned <null>");
             }
         }
     }

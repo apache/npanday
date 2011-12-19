@@ -339,7 +339,7 @@ under the License.
               <artifactId>qdox</artifactId>
               <version>1.12</version>
             </dependency>
-  </dependencies>
+          </dependencies>
           <executions>
             <execution>
               <phase>process-classes</phase>

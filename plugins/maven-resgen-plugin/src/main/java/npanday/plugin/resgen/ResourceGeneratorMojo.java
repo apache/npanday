@@ -34,6 +34,7 @@ import java.util.List;
  * @goal generate
  * @phase process-resources
  */
+@Deprecated
 public class ResourceGeneratorMojo
     extends AbstractMojo
 {
@@ -89,7 +90,7 @@ public class ResourceGeneratorMojo
     public void execute()
         throws MojoExecutionException
     {
-
+          // TODO: this plugin can be removed; it is a no-op!
     }
 
     public List<String> getCommands()

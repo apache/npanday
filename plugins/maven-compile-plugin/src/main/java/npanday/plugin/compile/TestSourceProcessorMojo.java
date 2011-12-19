@@ -94,6 +94,8 @@ public class TestSourceProcessorMojo
         DirectoryScanner directoryScanner = new DirectoryScanner();
         directoryScanner.setBasedir( sourceDirectory.getAbsolutePath() );
 
+        // TODO: this should use test source includes/excludes
+
         List<String> excludeList = new ArrayList<String>();
         excludeList.add( "*.suo" );
         excludeList.add( "*.csproj" );

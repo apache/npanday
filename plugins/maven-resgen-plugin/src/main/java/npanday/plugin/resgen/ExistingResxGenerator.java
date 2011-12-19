@@ -21,6 +21,8 @@ package npanday.plugin.resgen;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsUtil;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -42,6 +44,16 @@ import java.util.List;
  */
 public class ExistingResxGenerator extends AbstractMojo
 {
+    /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
+
     /**
      * The maven project.
      *
@@ -91,7 +103,8 @@ public class ExistingResxGenerator extends AbstractMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
+
         if ( vendor != null && vendor.equals( "DotGNU" ) )
         {
             getLog().info( "NPANDAY-1501-005: Unsupported Plugin" );

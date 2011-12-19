@@ -33,7 +33,6 @@ import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
-import npanday.vendor.SettingsException;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
@@ -748,6 +747,8 @@ public abstract class AbstractCompilerMojo
 
     public void execute() throws MojoExecutionException
     {
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
+
         execute(false);
     }
 
@@ -1099,7 +1100,7 @@ public abstract class AbstractCompilerMojo
     {
         long startTime = System.currentTimeMillis();
 
-		//Modifies the AssemblyInfo.cs files to match the version of the pom
+        //Modifies the AssemblyInfo.cs files to match the version of the pom
 		try
 		{
 			updateAssemblyInfoVersion();
@@ -1108,16 +1109,6 @@ public abstract class AbstractCompilerMojo
 		{
 		
 		}
-
-
-        try
-        {
-            SettingsUtil.populateSettingsRepository( repositoryRegistry, settingsPath );
-        }
-        catch ( SettingsException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-900-012: Error reading settings from " + settingsPath, e );
-        }
 
         initializeDefaults();
   

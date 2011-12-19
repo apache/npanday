@@ -18,6 +18,7 @@
  */
 package npanday.executable.compiler.impl;
 
+import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandFilter;
 import npanday.executable.ExecutionException;
 import npanday.vendor.Vendor;
@@ -46,8 +47,7 @@ public final class DefaultCompiler
         return !compilerContext.getVendor().equals( Vendor.MONO );
     }
 
-    public List<String> getCommands()
-        throws ExecutionException
+    public List<String> getCommands() throws ExecutionException, PlatformUnsupportedException
     {
         if ( compilerContext == null )
         {

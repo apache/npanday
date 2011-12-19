@@ -19,10 +19,7 @@
 package npanday.plugin.install;
 
 import npanday.PathUtil;
-import npanday.ArtifactType;
-import npanday.ArtifactTypeHelper;
 import npanday.PlatformUnsupportedException;
-import npanday.artifact.ApplicationConfig;
 import npanday.artifact.ArtifactContext;
 import npanday.dao.Project;
 import npanday.dao.ProjectDao;
@@ -31,6 +28,8 @@ import npanday.dao.ProjectDependency;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -54,6 +53,15 @@ import java.util.List;
 public class InstallerMojo
     extends AbstractMojo
 {
+    /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
 
     /**
      * The maven project.
@@ -132,6 +140,8 @@ public class InstallerMojo
         throws MojoExecutionException
     {
         long startTime = System.currentTimeMillis();
+
+       SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
         ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
         dao.init( artifactFactory, artifactResolver );

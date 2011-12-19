@@ -19,6 +19,8 @@
 package npanday.plugin.xsp;
 
 import npanday.executable.ExecutableRequirement;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsUtil;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import npanday.PlatformUnsupportedException;
@@ -39,6 +41,16 @@ public class XspStarterMojo
     extends AbstractMojo
 {
     /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
+
+    /**
      * The home directory of your .NET SDK.
      *
      * @parameter expression="${netHome}"
@@ -57,6 +69,9 @@ public class XspStarterMojo
 
     public void execute() throws MojoExecutionException
     {
+
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
+
         try
         {
             final ExecutableRequirement executableRequirement = new ExecutableRequirement(

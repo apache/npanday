@@ -28,6 +28,7 @@ import org.apache.maven.plugin.AbstractMojo;
 
 import java.io.IOException;
 
+// TODO: should be refactored to use executable plugin !!!!
 public abstract class AbstractPartCoverMojo
     extends AbstractMojo
 {

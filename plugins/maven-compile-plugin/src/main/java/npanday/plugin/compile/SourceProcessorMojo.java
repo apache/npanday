@@ -96,6 +96,9 @@ public class SourceProcessorMojo
         directoryScanner.setBasedir( sourceDirectory.getAbsolutePath() );
 
         List<String> excludeList = new ArrayList<String>();
+
+        // TODO: this should use source includes/excludes
+
         //target files
         excludeList.add( "obj/**" );
         excludeList.add( "bin/**" );

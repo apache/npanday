@@ -24,6 +24,8 @@ import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.model.Dependency;
@@ -53,6 +55,16 @@ import java.util.Set;
 public class FxCopAggregateMojo
     extends AbstractMojo
 {
+    /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
+
     /**
      * @component
      */
@@ -112,6 +124,8 @@ public class FxCopAggregateMojo
     public void execute()
         throws MojoExecutionException
     {
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
+
         Model model = project.getModel();
         List<Dependency> aggregateDependencies = new ArrayList<Dependency>();
         aggregateDependencies.addAll( model.getDependencies() );

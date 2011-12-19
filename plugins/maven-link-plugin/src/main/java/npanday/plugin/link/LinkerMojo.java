@@ -22,6 +22,8 @@ package npanday.plugin.link;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsUtil;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -41,6 +43,16 @@ import java.util.List;
 public class LinkerMojo
     extends AbstractMojo
 {
+    /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
+
     /**
      * The maven project.
      *
@@ -95,6 +107,8 @@ public class LinkerMojo
             return;
         }
         getLog().info( "NPANDAY-000-000: Linking modules to assembly: Output File = " + outputFile.getAbsolutePath() );
+
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
         try
         {

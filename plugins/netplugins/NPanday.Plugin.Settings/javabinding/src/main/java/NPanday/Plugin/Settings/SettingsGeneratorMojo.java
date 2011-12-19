@@ -21,21 +21,16 @@
 
 import npanday.PathUtil;
 import npanday.plugin.FieldAnnotation;
-import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
-import npanday.vendor.SettingsException;
 import npanday.vendor.SettingsUtil;
-import npanday.vendor.SettingsRepository;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.naming.OperationNotSupportedException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -167,6 +162,7 @@ public class SettingsGeneratorMojo
 
         if ( skip )
         {
+            getLog().info( "NPANDAY-119-000: Excecution of generate-settings has been skipped." );
             return false;
         }
 
@@ -199,15 +195,6 @@ public class SettingsGeneratorMojo
         if ( !file.exists() )
         {
             return false;
-        }
-
-        try
-        {
-            SettingsUtil.populateSettingsRepository( repositoryRegistry, settingsPath );
-        }
-        catch ( SettingsException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-112: Could not populate settings", e );
         }
 
         try
@@ -272,32 +259,6 @@ public class SettingsGeneratorMojo
     public void postExecute()
         throws MojoExecutionException, MojoFailureException
     {
-        // TODO: proper error handling
-        try
-        {
-            // TODO: let the registry be injected as @component
-            RepositoryRegistry repositoryRegistry = (RepositoryRegistry) container.lookup( RepositoryRegistry.ROLE );
-            SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-            if ( settingsRepository != null )
-            {
-                settingsRepository.reloadAll();
-            }
-        }
-        catch ( ComponentLookupException e )
-        {
-            e.printStackTrace();
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace();
-        }
-        catch( NPandayRepositoryException e )
-        {
-            e.printStackTrace();
-        }
-        catch ( OperationNotSupportedException e )
-        {
-            e.printStackTrace();
-        }
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
     }
 }

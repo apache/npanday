@@ -46,7 +46,7 @@ namespace NPanday.ProjectImporter.ImporterTests
         [SetUp]
         public void PrepareProjects()
         {
-            
+
             string baseProjectPath = Path.GetFullPath(Directory.GetCurrentDirectory() + @"\..\..");
             ProjectImporterTestFixture.SampleProjectsPath = Path.Combine(baseProjectPath, @"target\test_sample_projects");
 
@@ -59,10 +59,10 @@ namespace NPanday.ProjectImporter.ImporterTests
 
 
         [TearDown]
-	    public void FinalizationProcess()
-	    {
-	      // just incase we need to finilize after running some tests
-	    }
+        public void FinalizationProcess()
+        {
+            // just incase we need to finilize after running some tests
+        }
 
     }
 }

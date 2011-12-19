@@ -17,16 +17,19 @@ specific language governing permissions and limitations
 under the License.
 -->
 <executablePlugins>
+
+  <!-- native nunit runners -->
   <executablePlugin>
-    <identifier>nunit-console</identifier>
+    <identifier>NUNIT</identifier>
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>nunit-console</executable>
-    <profile>nunit-console</profile>
+    <profile>NUNIT</profile>
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
@@ -35,11 +38,11 @@ under the License.
     </platforms>
   </executablePlugin>
   <executablePlugin>
-    <identifier>nunit-console-x86</identifier>
+    <identifier>NUNIT-x86</identifier>
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>nunit-console-x86</executable>
-    <profile>nunit-console-x86</profile>
+    <profile>NUNIT-x86</profile>
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
@@ -51,14 +54,45 @@ under the License.
       </platform>
     </platforms>
   </executablePlugin>
+
+
+  <!-- Mono-packaged NUNIT-runners -->
   <executablePlugin>
-    <identifier>nunit-console</identifier>
+    <identifier>NUNIT</identifier>
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MONO</vendor>
     <executable>nunit-console</executable>
-    <profile>nunit-console</profile>
+    <profile>NUNIT</profile>
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Mac OS X</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Linux</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>Solaris</operatingSystem>
+      </platform>
+      <platform>
+        <operatingSystem>FreeBSD</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>NUNIT</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MONO</vendor>
+    <!-- until MONO < 2.10, nunit for CLR 2.0 dll's are run though nunit-console2 -->
+    <executable>nunit-console2</executable>
+    <profile>NUNIT</profile>
+    <frameworkVersions>
       <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
@@ -80,12 +114,15 @@ under the License.
       </platform>
     </platforms>
   </executablePlugin>
+
+
   <executablePlugin>
-    <identifier>nunit-console2</identifier>
+    <identifier>NUNIT-x86</identifier>
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MONO</vendor>
-    <executable>nunit-console2</executable>
-    <profile>nunit-console2</profile>
+    <!-- this does not work with the packaged MONO nunit runners! -->
+    <executable>nunit-console-x86</executable>
+    <profile>NUNIT-x86</profile>
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
@@ -95,7 +132,7 @@ under the License.
       <platform>
         <operatingSystem>Windows</operatingSystem>
       </platform>
-      <platform>      
+      <platform>
         <operatingSystem>Mac OS X</operatingSystem>
       </platform>
       <platform>

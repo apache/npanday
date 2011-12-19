@@ -20,6 +20,7 @@ package npanday.executable.compiler.impl;
 
 import npanday.NPandayContext;
 import npanday.PathUtil;
+import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutionException;
 import npanday.executable.compiler.CompilerContext;
@@ -129,8 +130,7 @@ abstract class BaseCompiler implements CompilerExecutable
     /**
      * @see npanday.executable.compiler.CompilerExecutable#execute()
      */
-    public void execute()
-        throws ExecutionException
+    public void execute() throws ExecutionException, PlatformUnsupportedException
     {
         if (compilerContext.getIncludeSources() ==null && !( new File( compilerContext.getSourceDirectoryName() ).exists() ) )
         {

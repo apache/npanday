@@ -26,7 +26,6 @@ import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
-import npanday.vendor.SettingsException;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -164,14 +163,7 @@ public class AspxCompilerMojo
     {
         long startTime = System.currentTimeMillis();
 
-        try
-        {
-            SettingsUtil.populateSettingsRepository( repositoryRegistry, settingsPath );
-        }
-        catch ( SettingsException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-109-001: Error reading settings from " + settingsPath, e );
-        }
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
         webSourceDirectory = new File( project.getBuild().getSourceDirectory() );
 

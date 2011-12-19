@@ -22,8 +22,9 @@ package npanday.vendor;
 import npanday.PathUtil;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
-import npanday.vendor.SettingsRepository;
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
+import org.codehaus.plexus.logging.Logger;
 
 import javax.naming.OperationNotSupportedException;
 import java.io.File;
@@ -35,88 +36,113 @@ import java.io.IOException;
  */
 public class SettingsUtil
 {
-    /**
-     * Return the registered settings, or create from configured (-Dnpanday-settings=...) or default settings file location (.m2/npanday-settings.xml)
-     * @param repositoryRegistry The registry.
-     * @return The current, or just created SettingsRepository
-     * @throws SettingsException If anything goes wrong reading or registering the settings
-     */
-    public static SettingsRepository getOrPopulateSettingsRepository( RepositoryRegistry repositoryRegistry)
-        throws SettingsException
-    {
-        String settingsFolder = PathUtil.getHomeM2Folder();
-        String customFolder = System.getProperty( "npanday.settings" );
-        if ( !StringUtils.isEmpty( customFolder ) )
-        {
-            settingsFolder = customFolder;
-        }
-        return getOrPopulateSettingsRepository(repositoryRegistry, settingsFolder );
-    }
 
     /**
-     * Return the registered settings, or creates them from the given path or file.
-     * @param repositoryRegistry The registry.
-     * @param settingsPathOrFile If a path, 'npanday-settings.xml' is added.
-     * @return The current, or just created SettingsRepository
-     * @throws SettingsException If anything goes wrong reading or registering the settings
-     */
-    public static SettingsRepository getOrPopulateSettingsRepository( RepositoryRegistry repositoryRegistry, String settingsPathOrFile )
-        throws SettingsException
-    {
-        SettingsRepository settingsRepository = (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-        if (settingsRepository.isEmpty()){
-            populateSettingsRepository( repositoryRegistry, settingsPathOrFile);
-        }
-        return settingsRepository;
-    }
-
-    /**
-     * Creates and registers the settings from the given path or file.
-     * @param repositoryRegistry The registry.
-     * @param settingsPathOrFile If a path, 'npanday-settings.xml' is added.
+     * Replaces npanday settings from the given path or file.
+     *
+     * @param failIfFileNotFound
+     *  If <code>true</code>, fails, if the file can't be found. Else,
+     *  just leaves the settings untouched.
      * @return The new Settings Repository.
-     * @throws SettingsException If anything goes wrong reading or registering the settings
+     * @throws MojoExecutionException If anything goes wrong reading or initializing the settings
      */
-    public static void populateSettingsRepository( RepositoryRegistry repositoryRegistry, String settingsPathOrFile )
-        throws SettingsException
+    private static boolean overrideDefaultSettings(
+        Log log,
+        RepositoryRegistry repositoryRegistry, String settingsPathOrFile, boolean failIfFileNotFound )
+        throws MojoExecutionException
     {
-        SettingsRepository settingsRepository;
-        try
-        {
-            settingsRepository = ( SettingsRepository) repositoryRegistry.find( "npanday-settings" );
-        }
-        catch ( Exception ex )
-        {
-            throw new SettingsException( "NPANDAY-108-001: Error finding npanday-settings in registry", ex );
-        }
-
         File settingsFile = PathUtil.buildSettingsFilePath( settingsPathOrFile );
 
-        if (!settingsFile.exists())
+        if ( !settingsFile.exists() )
         {
-            throw new SettingsException( "NPANDAY-108-005: Settings file does not exist: " + settingsFile );
+            if ( failIfFileNotFound )
+            {
+                throw new MojoExecutionException(
+                    "NPANDAY-108-005: Configured settings file does not exist: " + settingsFile
+                );
+            }
+            else
+            {
+                log.warn(
+                    "NPANDAY-108-006: Settings file does not exist: " + settingsFile
+                        + "; current Mojo will adhere to configured defaults."
+                );
+                return false;
+            }
         }
 
+        SettingsRepository settingsRepository = findSettingsFromRegistry( repositoryRegistry );
         try
         {
             settingsRepository.clearAll();
         }
         catch ( OperationNotSupportedException e )
         {
-            throw new SettingsException( "NPANDAY-108-006: Error clearing settings repository.", e );
+            throw new MojoExecutionException( "NPANDAY-108-006: Error clearing settings repository.", e );
         }
 
         try
         {
             settingsRepository.load( settingsFile.toURI().toURL() );
+            log.debug(
+                "NPANDAY-108-007: Replaced default npanday-settings with contents from '" + settingsFile + "'."
+            );
+            return true;
         }
         catch ( IOException e )
         {
-            throw new SettingsException( "NPANDAY-108-003: Error loading " + settingsFile.getAbsolutePath(), e );
+            throw new MojoExecutionException( "NPANDAY-108-003: Error loading " + settingsFile.getAbsolutePath(), e );
         }
         catch( NPandayRepositoryException e )
         {
-            throw new SettingsException( "NPANDAY-108-004: Error loading settings repository.", e );
+            throw new MojoExecutionException( "NPANDAY-108-004: Error loading settings repository.", e );
+        }
+    }
+
+    public static SettingsRepository findSettingsFromRegistry( RepositoryRegistry repositoryRegistry )
+    {
+        return (SettingsRepository) repositoryRegistry.find( "npanday-settings" );
+    }
+
+    /**
+     * Applies the custom settings provided in settingsPathOrFile.
+     *
+     * @param settingsPathOrFile If a path, 'npanday-settings.xml' is added.
+     * @throws MojoExecutionException If anything goes wrong reading or initializing the settings
+     */
+    public static void applyCustomSettings(
+        Log log, RepositoryRegistry repositoryRegistry, String settingsPathOrFile )
+        throws  MojoExecutionException
+    {
+        overrideDefaultSettings(
+            log,
+            repositoryRegistry,
+            settingsPathOrFile,
+            /*throw error, if file doesn exist*/ true );
+    }
+
+    /**
+     * Applies the custom settings provided in settingsPathOrFile, if the file does exist.
+     *
+     * @param settingsPathOrFile If a path, 'npanday-settings.xml' is added.
+     * @throws MojoExecutionException If anything goes wrong reading or initializing the settings
+     */
+    public static boolean applyCustomSettingsIfAvailable( Log log, RepositoryRegistry repositoryRegistry,
+                                                   String settingsPathOrFile)
+        throws  MojoExecutionException
+    {
+        return overrideDefaultSettings(
+            log,
+            repositoryRegistry,
+            settingsPathOrFile,
+            /*throw error, if file doesn exist*/ false );
+    }
+
+
+    public static void warnIfSettingsAreEmpty( Logger logger, RepositoryRegistry repositoryRegistry )
+    {
+        if (findSettingsFromRegistry( repositoryRegistry ).isEmpty()){
+          logger.warn( "NPANDAY-108-008: The registered settings repository is empty; defaults will be applied." );
         }
     }
 }

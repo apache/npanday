@@ -18,6 +18,7 @@
  */
 package npanday.executable.compiler.impl;
 
+import npanday.PlatformUnsupportedException;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.ExecutionException;
 import npanday.NPandayContext;
@@ -54,8 +55,7 @@ public final class CSharpCompilerForProfile
         return netCompiler.failOnErrorOutput();
     }
 
-    public List<String> getCommands()
-        throws ExecutionException
+    public List<String> getCommands() throws ExecutionException, PlatformUnsupportedException
     {
         File assemblyPath = compilerContext.getAssemblyPath();
         if ( assemblyPath == null )

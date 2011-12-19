@@ -26,6 +26,8 @@ import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.executable.compiler.KeyInfo;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsUtil;
 import npanday.vendor.Vendor;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
@@ -56,6 +58,16 @@ import java.util.Set;
  */
 public class AssemblyMerger extends AbstractMojo
 {
+    /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
+
     /**
      * The maven project.
      *
@@ -222,13 +234,15 @@ public class AssemblyMerger extends AbstractMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
+
         try
         {
             // ilmerge.exe
             // determine how to set /lib:[assemblyPath]
-            CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutableFor(getCompilerRequirement(),
-                    getCompilerConfig(),
-                    project);
+            CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutableFor(
+                getCompilerRequirement(), getCompilerConfig(), project
+            );
 
             File assemblyPath = compilerExecutable.getAssemblyPath();
             if ( assemblyPath == null )

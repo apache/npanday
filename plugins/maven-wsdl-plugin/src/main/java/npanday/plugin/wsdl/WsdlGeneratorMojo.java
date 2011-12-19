@@ -22,7 +22,6 @@ import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.registry.RepositoryRegistry;
-import npanday.vendor.SettingsException;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -221,17 +220,7 @@ public class WsdlGeneratorMojo
     public void execute()
         throws MojoExecutionException
     {
-
-
-        try
-        {
-            SettingsUtil.getOrPopulateSettingsRepository( repositoryRegistry, settingsPath );
-        }
-        catch ( SettingsException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-1300-006 Failed to create the repository registry for this plugin", e );
-        }
+        SettingsUtil.applyCustomSettings(getLog(), repositoryRegistry, settingsPath );
 
         FileUtils.mkdir( outputDirectory );
 

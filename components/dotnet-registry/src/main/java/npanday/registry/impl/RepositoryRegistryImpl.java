@@ -90,16 +90,6 @@ public class RepositoryRegistryImpl
         return repositories.isEmpty();
     }
 
-    public synchronized void setRepositoryLoader( RepositoryLoader loader )
-    {
-        repositoryLoader = loader;
-    }
-
-    public synchronized void setRegistryLoader( RegistryLoader loader )
-    {
-        registryLoader = loader;
-    }
-
     public synchronized void loadFromInputStream( InputStream inputStream )
         throws IOException, NPandayRepositoryException
     {

@@ -22,6 +22,8 @@ import npanday.PathUtil;
 import npanday.artifact.ArtifactContext;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutionException;
+import npanday.registry.RepositoryRegistry;
+import npanday.vendor.SettingsUtil;
 import npanday.vendor.VendorRequirement;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -42,6 +44,16 @@ import java.util.List;
 public class MojoGeneratorMojo
     extends AbstractMojo
 {
+    /**
+     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
+     */
+    private String settingsPath;
+
+    /**
+     * @component
+     */
+    private RepositoryRegistry repositoryRegistry;
+
     /**
      * The base directory of the project.
      *
@@ -106,6 +118,8 @@ public class MojoGeneratorMojo
         {
             return;
         }
+
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
         artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
         try
