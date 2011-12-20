@@ -124,6 +124,7 @@ public final class ExecutablePluginsRepository
         {
             String pluginClassName = plugin.getPluginClass();
             String executable = plugin.getExecutable();
+            String executableVersion = plugin.getExecutableVersion();
             String vendor = plugin.getVendor();
             String vendorVersion = plugin.getVendorVersion();
             String identifier = plugin.getIdentifier();
@@ -174,9 +175,12 @@ public final class ExecutablePluginsRepository
                 platformCapability.setOperatingSystem( os );
                 platformCapability.setPluginClassName( pluginClassName );
                 platformCapability.setExecutableName( executable );
+                platformCapability.setExectuableVersion(executableVersion);
                 platformCapability.setIdentifier( identifier );
                 platformCapability.setFrameworkVersions( frameworkVersions );
                 platformCapability.setProfile( profile );
+
+
                 String arch = platform.getArchitecture();
                 CommandFilter filter = plugin.getCommandFilter();
 

@@ -30,6 +30,8 @@ public class MutableExecutableCapability
 
     private String executable;
 
+    private String executableVersion;
+
     protected String identifier;
 
     private CommandCapability commandCapability;
@@ -80,6 +82,16 @@ public class MutableExecutableCapability
     public void setExecutableName( String executableName )
     {
         this.executable = executableName;
+    }
+
+    public String getExecutableVersion()
+    {
+        return executableVersion;
+    }
+
+    public void setExectuableVersion( String executableVersion )
+    {
+        this.executableVersion = executableVersion;
     }
 
     public VendorInfo getVendorInfo()
