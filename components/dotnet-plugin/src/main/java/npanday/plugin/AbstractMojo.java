@@ -155,7 +155,7 @@ public abstract class AbstractMojo
             artifactContext.init( project, project.getRemoteArtifactRepositories(), new File( localRepository ) );
 
             Artifact artifact = getNetExecutableFactory().getArtifactFor(getMojoGroupId(), getMojoArtifactId());
-            resolveArtifact(artifact, targetDir);
+            resolveArtifact(project, artifact, targetDir);
             getNetExecutableFactory().getPluginLoaderFor( artifact, vendorRequirement,
                                                           getLocalRepository(), paramFile,
                                                           getClassName(), targetDir ).execute();
@@ -178,7 +178,9 @@ public abstract class AbstractMojo
         postExecute();
     }
 
-    private void resolveArtifact( Artifact artifact, File targetDir ) throws ComponentLookupException, MojoExecutionException {
+    private void resolveArtifact( MavenProject project, Artifact artifact, File targetDir )
+        throws ComponentLookupException, MojoExecutionException
+    {
         File localRepository = new File(getLocalRepository());
         
         if (PathUtil.getPrivateApplicationBaseFileFor(artifact, localRepository, targetDir ).exists())
@@ -199,8 +201,9 @@ public abstract class AbstractMojo
 
             try
             {
-                assemblyResolver.resolveTransitivelyFor(new MavenProject(), Collections.singletonList(dependency), getMavenProject().getRemoteArtifactRepositories(),
-                    localRepository, false);
+                assemblyResolver.resolveTransitivelyFor( project, Collections.singletonList( dependency ),
+                                                         project.getRemoteArtifactRepositories(), localRepository,
+                                                         false );
             }
             catch( NPandayArtifactResolutionException e )
             {
