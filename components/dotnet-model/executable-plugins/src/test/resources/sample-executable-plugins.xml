@@ -22,6 +22,7 @@ under the License.
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>NCover.Console</executable>
+    <executableVersion>5.0</executableVersion>
     <profile>NCover:NCover.Console</profile>
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>

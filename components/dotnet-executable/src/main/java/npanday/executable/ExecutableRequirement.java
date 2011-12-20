@@ -26,7 +26,6 @@ import npanday.vendor.VendorRequirement;
  *
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
- *
  * @see ExecutableCapability
  * @see CapabilityMatcher
  */
@@ -36,16 +35,32 @@ public class ExecutableRequirement
 
     private String profile;
 
+    private String executableVersion;
+
     public ExecutableRequirement( String vendorName, String vendorVersion, String frameworkVersion, String profile )
+    {
+        this( vendorName, vendorVersion, frameworkVersion, profile, null );
+    }
+
+    public ExecutableRequirement(
+        String vendorName, String vendorVersion, String frameworkVersion, String profile, String executableVersion )
     {
         super( vendorName, vendorVersion, frameworkVersion );
         this.profile = profile;
+        this.executableVersion = executableVersion;
     }
 
     public ExecutableRequirement( Vendor vendor, String vendorVersion, String frameworkVersion, String profile )
     {
+        this( vendor, vendorVersion, frameworkVersion, profile, null );
+    }
+
+    public ExecutableRequirement(
+        Vendor vendor, String vendorVersion, String frameworkVersion, String profile, String executableVersion )
+    {
         super( vendor, vendorVersion, frameworkVersion );
         this.profile = profile;
+        this.executableVersion = executableVersion;
     }
 
     public String getProfile()
@@ -53,8 +68,8 @@ public class ExecutableRequirement
         return profile;
     }
 
-    public void setProfile( String profile )
+    public String getExecutableVersion()
     {
-        this.profile = profile;
+        return executableVersion;
     }
 }

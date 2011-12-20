@@ -22,6 +22,8 @@ import npanday.executable.ExecutableCapability;
 import npanday.executable.ExecutableMatchPolicy;
 import npanday.executable.compiler.CompilerCapability;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 /**
  * Creates executable match policies.
  *
@@ -106,6 +108,33 @@ final class MatchPolicyFactory
             public String toString()
             {
                 return "ExecutableMatchPolicy[language: '" + language + "']";
+            }
+        };
+    }
+
+    public static ExecutableMatchPolicy createExecutableVersionPolicy( final String requiredExecutableVersion )
+    {
+        return new ExecutableMatchPolicy()
+        {
+            public boolean match( ExecutableCapability executableCapability )
+            {
+                // if not specified, all versions are valid
+                if (isNullOrEmpty(requiredExecutableVersion))
+                    return true;
+
+                final String offeredExecutableVersion = executableCapability.getExecutableVersion();
+
+                // if not specified, it is valid for all versions!
+                if (isNullOrEmpty( offeredExecutableVersion ))
+                    return true;
+
+                // TODO: NPANDAY-499 this should support version range expressions
+                return requiredExecutableVersion.toLowerCase().trim().equals( offeredExecutableVersion.toLowerCase().trim() );
+            }
+
+            public String toString()
+            {
+                return "ExecutableMatchPolicy[executableVersion: '" + requiredExecutableVersion + "']";
             }
         };
     }

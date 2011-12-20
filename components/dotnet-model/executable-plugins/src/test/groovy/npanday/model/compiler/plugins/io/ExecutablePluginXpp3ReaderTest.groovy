@@ -37,5 +37,6 @@ class ExecutablePluginXpp3ReaderTest
     assert model.executablePlugins[0].probingPaths != null
     assert model.executablePlugins[0].probingPaths.size() == 2
     assert model.executablePlugins[0].probingPaths[0] == "one"
+    assert model.executablePlugins[0].executableVersion == "5.0"
   }
 }

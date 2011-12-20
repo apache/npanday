@@ -55,7 +55,10 @@ under the License.
           <name>identifier</name>
           <version>1.0.0+</version>
           <type>String</type>
-          <description>An id for the executable. It should be (but is not required to be) unique.</description>
+          <description>
+            The platform-independent identifier for the executable as it will be
+            requested through the npanday.executable.ExecutableRequirement.
+          </description>
         </field>
         <field>
           <name>pluginClass</name>
@@ -69,7 +72,7 @@ under the License.
           <name>vendor</name>
           <version>1.0.0+</version>
           <type>String</type>
-          <description>Vendor this executable is provided by or compatible with: MICROSOFT, MONO, DotGNU</description>
+          <description>Vendor this executable is provided by or compatible with. For example MICROSOFT, MONO, DotGNU</description>
         </field>
         <field>
           <name>vendorVersion</name>
@@ -82,6 +85,7 @@ under the License.
           <name>profile</name>
           <version>1.0.0+</version>
           <type>String</type>
+          <required>true</required>
           <description>Profile for the plugin.</description>
         </field>
         <field>
@@ -90,6 +94,16 @@ under the License.
           <type>String</type>
           <required>true</required>
           <description>Executable name without extension, as run from the command line.</description>
+        </field>
+        <field>
+          <name>executableVersion</name>
+          <version>1.5.0+</version>
+          <type>String</type>
+          <description>
+            The version of the executable, since multiple could be found on different paths (specified in 'probingPaths').
+            Applicable, if executable is NOT provided by the .NET vendor (as specified in 'vendor').
+          </description>
+          <required>false</required>
         </field>
         <field>
           <name>probingPaths</name>

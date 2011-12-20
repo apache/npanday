@@ -96,6 +96,11 @@ public interface ExecutableCapability
     String getExecutableName();
 
     /**
+     * Returns the version of the executable that is offered as capability.
+     */
+    String getExecutableVersion();
+
+    /**
      * Returns the class name of the executable plugin that knows how to handle the execution request.
      *
      * @return the class name of the executable plugin that knows how to handle the execution request

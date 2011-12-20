@@ -18,6 +18,7 @@
  */
 package npanday.executable.impl;
 
+import com.google.common.collect.Lists;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.CapabilityMatcher;
 import npanday.executable.ExecutableCapability;
@@ -127,6 +128,9 @@ public class CapabilityMatcherImpl
 
         matchPolicies.add( MatchPolicyFactory.createOperatingSystemPolicy( System.getProperty( "os.name" ) ) );
         matchPolicies.add( MatchPolicyFactory.createProfilePolicy( executableRequirement.getProfile() ) );
+        matchPolicies.add( MatchPolicyFactory.createExecutableVersionPolicy(
+            executableRequirement.getExecutableVersion()
+        ) );
 
         return matchFromExecutableCapabilities( getExecutableCapabilities(vendorInfo), matchPolicies );
     }
@@ -136,21 +140,35 @@ public class CapabilityMatcherImpl
                                                                   List<ExecutableMatchPolicy> matchPolicies )
         throws PlatformUnsupportedException
     {
+        List<ExecutableCapability> matchingCapabilities = Lists.newArrayList();
         for ( ExecutableCapability executableCapability : executableCapabilities )
         {
             if ( matchExecutableCapability( executableCapability, matchPolicies ) )
             {
                 getLogger().debug( "NPANDAY-065-001: Found matching capability: " + executableCapability );
-                return executableCapability;
+                matchingCapabilities.add( executableCapability );
             }
             else
             {
                 getLogger().debug( "NPANDAY-065-005: Capability doesn't match: " + executableCapability );
             }
         }
-        throw new PlatformUnsupportedException(
-            "NPANDAY-065-002: Could not match any of the " + executableCapabilities.size() + " capabilities with "
-                + matchPolicies );
+
+        if (matchingCapabilities.size() == 0){
+            throw new PlatformUnsupportedException(
+                "NPANDAY-065-002: Could not match any of the " + executableCapabilities.size() + " capabilities with "
+                    + matchPolicies );
+        }
+
+        if ( matchingCapabilities.size() > 1 )
+        {
+            getLogger().warn(
+                "NPANDAY-065-010: Found multiple matching capabilities; will choose the first one: "
+                    + matchingCapabilities
+            );
+        }
+
+        return  matchingCapabilities.get( 0 );
     }
 
     private VendorInfo matchVendorInfo(ExecutableRequirement executableRequirement)
