@@ -22,16 +22,13 @@ package npanday.plugin.vsinstaller;
 import npanday.artifact.ArtifactContext;
 import npanday.artifact.ArtifactInstaller;
 import npanday.artifact.NPandayArtifactResolutionException;
-import npanday.artifact.NetDependenciesRepository;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.settings.Settings;
 import org.apache.commons.io.filefilter.*;
 import org.apache.commons.io.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
@@ -115,6 +112,13 @@ public class VsInstallerMojo
             }
         }
         artifactHandlerManager.addHandlers( map );
+
+        // in case Maven doesn't populate the base directory
+        if ( mavenProject.getBasedir() == null || "${project.basedir}".equals( mavenProject.getBasedir().getName() ) )
+        {
+            mavenProject.setBasedir( new File( System.getProperty( "user.dir" ) ) );
+            mavenProject.getBuild().setDirectory( new File( mavenProject.getBasedir(), "target" ).getAbsolutePath() );
+        }
 
         try
         {
@@ -232,14 +236,11 @@ public class VsInstallerMojo
     {
         try
         {
-            String src = System.getProperty( "user.dir" ) + File.separator + "target";
-
-            File srcFolder = new File( src );
-
             IOFileFilter dllSuffixFilter = FileFilterUtils.suffixFileFilter( ".dll" );
             IOFileFilter dllFiles = FileFilterUtils.andFileFilter( FileFileFilter.FILE, dllSuffixFilter );
 
-            FileUtils.copyDirectory(srcFolder, installationLocation, dllFiles, true);
+            FileUtils.copyDirectory( new File( mavenProject.getBuild().getDirectory() ), installationLocation, dllFiles,
+                                     true );
         }
 
         catch ( IOException e )
@@ -254,12 +255,22 @@ public class VsInstallerMojo
         {
             String programFilesPath = System.getenv( "PROGRAMFILES" );
 
-            if ( programFilesPath == null || programFilesPath.length() == 0 )
+            if ( programFilesPath != null && programFilesPath.length() != 0 )
             {
-                programFilesPath = System.getProperty( "user.dir" );
-            }
+                installationLocation = new File ( programFilesPath, "NPanday/bin" );
 
-            installationLocation = new File ( programFilesPath, "NPanday/bin" );
+                if ( !installationLocation.exists() )
+                {
+                    if ( !installationLocation.mkdirs() )
+                    {
+                        installationLocation = new File( System.getProperty( "user.home" ), "NPanday/bin" );
+                    }
+                }
+            }
+            else
+            {
+                installationLocation = new File( System.getProperty( "user.home" ), "NPanday/bin" );
+            }
         }
         else
         {
