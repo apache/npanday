@@ -157,6 +157,7 @@ public class SettingsGeneratorMojo
     {
         if ( !System.getProperty( "os.name" ).contains( "Windows" ) )
         {
+            getLog().info( "NPANDAY-119-001: Skipping settings generation, only valid on Windows operating systems" );
             return false;
         }
 
@@ -175,11 +176,13 @@ public class SettingsGeneratorMojo
             {
                 if ( isFrameworkVersionExisting( frameworkVersion ) )
                 {
+                    getLog().info( "NPANDAY-119-002: Skipping settings generation, requested framework " + frameworkVersion + " is already configured" );
                     return false;
                 }
             }
             catch ( IOException e )
             {
+                getLog().info( "NPANDAY-119-003: Skipping settings generation, error reading existing file: " + e.getLocalizedMessage() );
                 return false;
             }
         }
