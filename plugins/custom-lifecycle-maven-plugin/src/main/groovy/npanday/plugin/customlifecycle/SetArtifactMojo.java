@@ -16,10 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package npanday.plugin.customLifecycle;
+package npanday.plugin.customlifecycle;
 
 import npanday.ArtifactType;
-import npanday.ArtifactTypeHelper;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
