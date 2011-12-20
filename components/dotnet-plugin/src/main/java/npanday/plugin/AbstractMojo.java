@@ -96,7 +96,7 @@ public abstract class AbstractMojo
         }
         catch ( ParserConfigurationException e )
         {
-            throw new MojoExecutionException( "NPANDAY-115-000", e );
+            throw new MojoExecutionException( "NPANDAY-115-000: Unable to create document builder", e );
         }
         Document document = builder.newDocument();
 
@@ -109,7 +109,9 @@ public abstract class AbstractMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "NPANDAY-115-001", e );
+            throw new MojoExecutionException(
+                "NPANDAY-115-001: IO error on creating or accessing Plugin.xml temp file", e
+            );
         }
 
         StreamResult result = new StreamResult();
@@ -136,7 +138,8 @@ public abstract class AbstractMojo
             }
             catch ( IOException e )
             {
-                throw new MojoExecutionException( "NPANDAY-115-004: Unable to write file", e );
+                throw new MojoExecutionException( "NPANDAY-115-004: Unable to write file "
+                                                      + paramFile.getAbsolutePath(), e );
             }
         }
 
@@ -145,10 +148,11 @@ public abstract class AbstractMojo
         File targetDir = PathUtil.getPrivateApplicationBaseDirectory( project );
 
         ArtifactContext artifactContext = null;
+
+        VendorRequirement vendorRequirement = new VendorRequirement( getVendor(), getVendorVersion(), getFrameworkVersion());
+
         try
         {
-            VendorRequirement vendorRequirement = new VendorRequirement( getVendor(), getVendorVersion(), getFrameworkVersion());
-
             String localRepository = getLocalRepository();
 
             artifactContext = (ArtifactContext) container.lookup(ArtifactContext.ROLE);
@@ -162,13 +166,16 @@ public abstract class AbstractMojo
         }
         catch ( PlatformUnsupportedException e )
         {
-            throw new MojoExecutionException( "NPANDAY-115-005", e );
+            throw new MojoExecutionException( "NPANDAY-115-005: Vendor configuration seems to be unsupported: "
+                                                  + vendorRequirement, e );
         }
         catch ( ExecutionException e )
         {
-            throw new MojoExecutionException( "NPANDAY-115-006", e );
-        } catch (ComponentLookupException e) {
-            throw new MojoExecutionException( "NPANDAY-xxx-000", e );
+            throw new MojoExecutionException( "NPANDAY-115-006: Error occurred while running the .NET plugin", e );
+        }
+        catch ( ComponentLookupException e )
+        {
+            throw new MojoFailureException( "NPANDAY-115-007: Internal component composition error", e );
         }
         finally
         {
@@ -207,11 +214,12 @@ public abstract class AbstractMojo
             }
             catch( NPandayArtifactResolutionException e )
             {
-                throw new MojoExecutionException( e.getMessage(), e );
+                throw new MojoExecutionException( "NPANDAY-115-008: Error on resolving " + dependency, e );
             }
-        }
-        catch (IOException e) {
-            throw new MojoExecutionException(e.getMessage(), e);
+            catch (IOException e)
+            {
+               throw new MojoExecutionException( "NPANDAY-115-008: IO error on resolving " + dependency, e );
+            }
         }
         finally {
             release(assemblyResolver);

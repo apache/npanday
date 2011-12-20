@@ -34,6 +34,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
@@ -119,8 +120,7 @@ public class NetDependencyResolverMojo
      */
     private boolean skip;
 
-    public void execute()
-        throws MojoExecutionException
+    public void execute() throws MojoExecutionException, MojoFailureException
     {
         long startTime = System.currentTimeMillis();
 
@@ -159,11 +159,15 @@ public class NetDependencyResolverMojo
             }
             catch ( NPandayArtifactResolutionException e )
             {
-               throw new MojoExecutionException( e.getMessage(), e );
+                throw new MojoExecutionException(
+                    "NPANDAY-1600-007: Error on resolving configured .NET dependencies (param netDependencies)", e
+                );
             }
             catch ( IOException e )
             {
-               throw new MojoExecutionException( e.getMessage(), e );
+                throw new MojoFailureException(
+                    "NPANDAY-1600-008: IO-error on resolving configured .NET dependencies (param netDependencies)", e
+                );
             }
 
             new File( localRepository, "npanday.artifacts.resolved" ).mkdir();

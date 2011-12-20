@@ -34,6 +34,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.IOUtil;
 
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,7 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  * Installs Visual Studio 2005 addin.
@@ -128,11 +128,15 @@ public class VsInstallerMojo
         }
         catch ( NPandayArtifactResolutionException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException(
+                "NPANDAY-121-002: Error resolving dependencies for 'VisualStudio2005'", e
+            );
         }
-        catch( IOException e )
+        catch ( IOException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException(
+                "NPANDAY-121-003: IO error on resolving dependencies for 'VisualStudio2005'", e
+            );
         }
 
         collectDefaultVSAddinDirectories();
@@ -223,7 +227,7 @@ public class VsInstallerMojo
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "Unable to write to Visual Studio AddIns directory: " + e.getMessage() );
+            throw new MojoExecutionException( "NPANDAY-121-001: Unable to write to Visual Studio AddIns directory: " + e.getMessage() );
         }
         finally
         {
@@ -246,7 +250,7 @@ public class VsInstallerMojo
 
         catch ( IOException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( "NPANDAY-121-004: Error on copying dll-dependencies to bin", e );
         }
     }
 

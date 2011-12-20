@@ -18,22 +18,15 @@
  */
 package npanday.plugin.compile;
 
+import npanday.InitializationException;
+import npanday.artifact.AssemblyResolver;
 import npanday.artifact.NPandayArtifactResolutionException;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.model.Dependency;
+import npanday.assembler.AssemblerContext;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
-import npanday.InitializationException;
-import npanday.assembler.AssemblerContext;
-import npanday.artifact.AssemblyResolver;
-
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -84,11 +77,11 @@ public class ComponentInitializerMojo
         }
         catch ( java.io.IOException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( "NPANDAY-901-003: IO error on resolving project dependencies", e );
         }
         catch( NPandayArtifactResolutionException e )
         {
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( "NPANDAY-901-004: error on resolving project dependencies", e );
         }
 
         try

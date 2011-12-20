@@ -106,7 +106,7 @@ public class LinkerMojo
         {
             return;
         }
-        getLog().info( "NPANDAY-000-000: Linking modules to assembly: Output File = " + outputFile.getAbsolutePath() );
+        getLog().info( "NPANDAY-1400-002: Linking modules to assembly: Output File = " + outputFile.getAbsolutePath() );
 
         SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
