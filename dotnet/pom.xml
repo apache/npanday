@@ -105,6 +105,11 @@ under the License.
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>
           <version>${bootstrap.npanday.version}</version>
+          <configuration>
+            <!-- Required until this can be done in Java, as otherwise there is
+                 a bootstrapping problem trying to run the goal -->
+            <skip>true</skip>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
