@@ -29,11 +29,4 @@ under the License.
   <packaging>maven-plugin</packaging>  
   <name>NPanday :: ILMerge Maven Plugin</name>  
   <description>Maven Plugin for .NET: Merges assemblies</description>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>${plexus.utils.version}</version>
-    </dependency>
-  </dependencies>
 </project>
