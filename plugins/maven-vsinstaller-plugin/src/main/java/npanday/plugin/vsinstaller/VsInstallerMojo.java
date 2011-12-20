@@ -22,19 +22,16 @@ package npanday.plugin.vsinstaller;
 import npanday.artifact.ArtifactContext;
 import npanday.artifact.ArtifactInstaller;
 import npanday.artifact.NPandayArtifactResolutionException;
-import npanday.artifact.NetDependenciesRepository;
 import npanday.registry.RepositoryRegistry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFileFilter;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
@@ -116,6 +113,13 @@ public class VsInstallerMojo
             }
         }
         artifactHandlerManager.addHandlers( map );
+
+        // in case Maven doesn't populate the base directory
+        if ( mavenProject.getBasedir() == null || "${project.basedir}".equals( mavenProject.getBasedir().getName() ) )
+        {
+            mavenProject.setBasedir( new File( System.getProperty( "user.dir" ) ) );
+            mavenProject.getBuild().setDirectory( new File( mavenProject.getBasedir(), "target" ).getAbsolutePath() );
+        }
 
         try
         {
@@ -233,14 +237,11 @@ public class VsInstallerMojo
     {
         try
         {
-            String src = System.getProperty( "user.dir" ) + File.separator + "target";
-
-            File srcFolder = new File( src );
-
             IOFileFilter dllSuffixFilter = FileFilterUtils.suffixFileFilter( ".dll" );
             IOFileFilter dllFiles = FileFilterUtils.andFileFilter( FileFileFilter.FILE, dllSuffixFilter );
 
-            FileUtils.copyDirectory(srcFolder, installationLocation, dllFiles, true);
+            FileUtils.copyDirectory( new File( mavenProject.getBuild().getDirectory() ), installationLocation, dllFiles,
+                                     true );
         }
 
         catch ( IOException e )
