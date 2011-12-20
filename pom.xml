@@ -35,7 +35,7 @@ under the License.
 
   <!-- this is what get edited most, so lets put it on the top -->
   <properties>
-    <mavenVersion>2.0.9</mavenVersion>
+    <mavenVersion>2.2.1</mavenVersion>
     <plexus.utils.version>1.5.1</plexus.utils.version>
     <!-- if you want to build NPanday with a specific version, replace this -->
     <bootstrap.npanday.version>1.4.0-incubating</bootstrap.npanday.version>
