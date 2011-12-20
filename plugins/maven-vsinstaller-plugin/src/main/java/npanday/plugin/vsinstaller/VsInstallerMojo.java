@@ -256,12 +256,22 @@ public class VsInstallerMojo
         {
             String programFilesPath = System.getenv( "PROGRAMFILES" );
 
-            if ( programFilesPath == null || programFilesPath.length() == 0 )
+            if ( programFilesPath != null && programFilesPath.length() != 0 )
             {
-                programFilesPath = System.getProperty( "user.dir" );
-            }
+                installationLocation = new File ( programFilesPath, "NPanday/bin" );
 
-            installationLocation = new File ( programFilesPath, "NPanday/bin" );
+                if ( !installationLocation.exists() )
+                {
+                    if ( !installationLocation.mkdirs() )
+                    {
+                        installationLocation = new File( System.getProperty( "user.home" ), "NPanday/bin" );
+                    }
+                }
+            }
+            else
+            {
+                installationLocation = new File( System.getProperty( "user.home" ), "NPanday/bin" );
+            }
         }
         else
         {
