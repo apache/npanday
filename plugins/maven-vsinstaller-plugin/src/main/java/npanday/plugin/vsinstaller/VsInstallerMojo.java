@@ -19,26 +19,18 @@
 
 package npanday.plugin.vsinstaller;
 
-import npanday.PlatformUnsupportedException;
 import npanday.artifact.ArtifactContext;
 import npanday.artifact.ArtifactInstaller;
 import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.artifact.NetDependenciesRepository;
-import npanday.artifact.NetDependencyMatchPolicy;
-import npanday.executable.ExecutionException;
-import npanday.executable.NetExecutable;
-import npanday.model.netdependency.NetDependency;
 import npanday.registry.NPandayRepositoryException;
 import npanday.registry.RepositoryRegistry;
-import npanday.vendor.Vendor;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
-import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
 import org.apache.commons.io.filefilter.*;
 import org.apache.commons.io.FileUtils;
@@ -100,55 +92,17 @@ public class VsInstallerMojo
      */
     private npanday.NPandayRepositoryRegistry npandayRegistry;
 
-    /**
-     * Provides services to obtain executables.
-     *
-     * @component
-     */
-    private npanday.executable.NetExecutableFactory netExecutableFactory;
-
     /** @component role="org.apache.maven.artifact.handler.ArtifactHandler" */
     private List<ArtifactHandler> artifactHandlers;
 
     /** @component */
     private ArtifactHandlerManager artifactHandlerManager;
 
-    /**
-     * @parameter expression="${settings}"
-     */
-    private Settings settings;
-
     private FileSystemView filesystemView = FileSystemView.getFileSystemView();
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-
-        File logs = new File( localRepository, "embedder-logs" );
-        if ( !logs.exists() )
-        {
-            logs.mkdir();
-        }
-
-        RepositoryRegistry repositoryRegistry;
-        try
-        {
-            repositoryRegistry = npandayRegistry.createRepositoryRegistry();
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-1600-000: Failed to create the repository registry for this plugin", e );
-        }
-        catch( NPandayRepositoryException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-1600-007: Failed to create the repository registry for this plugin", e );
-        }
-
-        NetDependenciesRepository netRepository = (NetDependenciesRepository) repositoryRegistry.find(
-            "net-dependencies" );
-
         artifactContext.init( null, mavenProject.getRemoteArtifactRepositories(), new File( localRepository ) );
         Map<String, ArtifactHandler> map = new HashMap<String, ArtifactHandler>();
 
@@ -174,34 +128,6 @@ public class VsInstallerMojo
         catch( IOException e )
         {
             throw new MojoExecutionException( e.getMessage(), e );
-        }
-
-        // GAC Installs
-        List<NetDependencyMatchPolicy> gacInstallPolicies = new ArrayList<NetDependencyMatchPolicy>();
-        gacInstallPolicies.add( new GacMatchPolicy( true ) );
-        List<Dependency> gacInstallDependencies = netRepository.getDependenciesFor( gacInstallPolicies );
-        for ( Dependency dependency : gacInstallDependencies )
-        {
-            List<Artifact> artifacts = artifactContext.getArtifactsFor( dependency.getGroupId(),
-                                                                        dependency.getArtifactId(),
-                                                                        dependency.getVersion(), dependency.getType() );
-            try
-            {
-                NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor(
-                    Vendor.MICROSOFT.getVendorName(), "2.0.50727", "GACUTIL", getGacInstallCommandsFor( artifacts.get(
-                        0 ) ), null );
-                netExecutable.execute();
-                getLog().info( "NPANDAY-1600-004: Installed Assembly into GAC: Assembly = " + artifacts.get(
-                    0 ).getFile().getAbsolutePath() + ",  Vendor = " + netExecutable.getVendor().getVendorName() );
-            }
-            catch ( ExecutionException e )
-            {
-                throw new MojoExecutionException( "NPANDAY-1600-005: Unable to execute gacutil:", e );
-            }
-            catch ( PlatformUnsupportedException e )
-            {
-                throw new MojoExecutionException( "NPANDAY-1600-006: Platform Unsupported:", e );
-            }
         }
 
         collectDefaultVSAddinDirectories();
@@ -299,32 +225,6 @@ public class VsInstallerMojo
             IOUtil.close( writer );
         }
 
-    }
-
-    private List<String> getGacInstallCommandsFor( Artifact artifact )
-    {
-        List<String> commands = new ArrayList<String>();
-        commands.add( "/nologo" );
-        commands.add( "/i" );
-        commands.add( artifact.getFile().getAbsolutePath() );
-        return commands;
-    }
-
-    private class GacMatchPolicy
-        implements NetDependencyMatchPolicy
-    {
-
-        private boolean isGacInstall;
-
-        public GacMatchPolicy( boolean isGacInstall )
-        {
-            this.isGacInstall = isGacInstall;
-        }
-
-        public boolean match( NetDependency netDependency )
-        {
-            return netDependency.isIsGacInstall() == isGacInstall;
-        }
     }
 
     private void copyDependenciesToBin()
