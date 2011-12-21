@@ -16,8 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package npanday.executable;
+package npanday.executable.execution;
 
+import npanday.executable.CommandExecutor;
+import npanday.executable.ExecutionException;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.Test;
