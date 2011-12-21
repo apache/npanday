@@ -20,10 +20,12 @@ under the License.
 
   <executablePlugin>
     <profile>MSDEPLOY</profile>
-    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <pluginClass>npanday.executable.impl.CommonsExecNetExecutable</pluginClass>
 
     <vendor>MICROSOFT</vendor>
     <executable>msdeploy</executable>
+    <executableVersion>2</executableVersion>
+
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>

@@ -26,6 +26,7 @@ import npanday.registry.RepositoryRegistry;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 
@@ -35,7 +36,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  */
-public abstract class AbstractMsDeployMojo
+public abstract class AbstractMsDeployMojo<T>
     extends AbstractMojo
 {
     /**
@@ -65,12 +66,25 @@ public abstract class AbstractMsDeployMojo
      */
     private String frameworkVersion;
 
-    /**
-     * The configured profile, from executable-plugins.xml, to be used.
-     *
-     * @parameter expression = "${profile}" default-value = "MSDEPLOY"
+        /**
+     * The executable identifier used to locate the right configurations from executable-plugins.xml. Can't be changed.
      */
-    private String profile;
+    private String executableIdentifier = "MSDEPLOY";
+
+    /**
+     * The configured executable version, from executable-plugins.xml, to be used. Should align to a installed
+     * Azure SDK Version.
+     *
+     * @parameter expression="${msdeploy.version}" default-value="2"
+     */
+    private String executableVersion;
+
+    /**
+     * The configured executable profile, from executable-plugins.xml, to be used.
+     *
+     * @parameter expression="${msdeploy.profile}"
+     */
+    private String executableProfile;
 
     /**
      * @component
@@ -97,41 +111,51 @@ public abstract class AbstractMsDeployMojo
      */
     protected MavenProjectHelper projectHelper;
 
-    public void execute() throws MojoExecutionException
+    public void execute() throws MojoExecutionException, MojoFailureException
     {
         SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
-        beforeCommandExecution();
+        final List<T> iterationItems = prepareIterationItems();
 
-        try
-        {
-            final NetExecutable executable = netExecutableFactory.getNetExecutableFor(
-                new ExecutableRequirement( vendor, vendorVersion, frameworkVersion, profile ), getCommands(), null
-            );
-            executable.execute();
-        }
-        catch ( ExecutionException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-120-000: Unable to execute profile '" + profile + "' for vendor " + vendor + " v"
-                    + vendorVersion + " and frameworkVersion = " + frameworkVersion, e
-            );
-        }
-        catch ( PlatformUnsupportedException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-120-001: Unsupported platform configuration. Could not find profile '" + profile
-                    + "' for vendor " + vendor + " v" + vendorVersion + " and frameworkVersion = " +
-                    frameworkVersion, e
-            );
-        }
+        getLog().info( "NPANDAY-120-003: Configured exection items " + iterationItems );
 
-        afterCommandExecution();
+        for(T iterationItem : iterationItems ){
+            getLog().info( "NPANDAY-120-004: Exectuting iteration item " + iterationItem );
+
+            beforeCommandExecution(iterationItem);
+
+            try
+            {
+                final NetExecutable executable = netExecutableFactory.getNetExecutableFor(
+                    new ExecutableRequirement( vendor, vendorVersion, frameworkVersion, executableIdentifier ), getCommands(iterationItem), null
+                );
+                executable.execute();
+            }
+            catch ( ExecutionException e )
+            {
+                throw new MojoExecutionException(
+                    "NPANDAY-120-000: Unable to execute '" + executableIdentifier + "' for vendor " + vendor + " v"
+                        + vendorVersion + " and frameworkVersion = " + frameworkVersion, e
+                );
+            }
+            catch ( PlatformUnsupportedException e )
+            {
+                throw new MojoExecutionException(
+                    "NPANDAY-120-001: Unsupported platform configuration. Could not find '" + executableIdentifier
+                        + "' for vendor " + vendor + " v" + vendorVersion + " and frameworkVersion = " +
+                        frameworkVersion, e
+                );
+            }
+
+            afterCommandExecution(iterationItem);
+        }
     }
 
-    protected abstract void afterCommandExecution() throws MojoExecutionException;
+    protected abstract void afterCommandExecution( T iterationItem ) throws MojoExecutionException;
 
-    protected abstract void beforeCommandExecution();
+    protected abstract void beforeCommandExecution( T iterationItem );
 
-    abstract List<String> getCommands() throws MojoExecutionException;
+    protected abstract List<T> prepareIterationItems() throws MojoFailureException;
+
+    protected abstract List<String> getCommands(T item) throws MojoExecutionException;
 }

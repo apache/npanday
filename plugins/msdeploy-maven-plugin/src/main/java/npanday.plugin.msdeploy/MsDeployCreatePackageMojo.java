@@ -8,47 +8,51 @@ import org.apache.maven.plugin.MojoExecutionException;
 import java.io.File;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 /**
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  * @goal create-package
  */
 public class MsDeployCreatePackageMojo
-    extends AbstractMsDeployMojo
+    extends AbstractMsDeployMojo<CreatePackageIterationItem>
 {
-    private File packageFile;
-
     @Override
-    protected void afterCommandExecution() throws MojoExecutionException
+    protected void afterCommandExecution( CreatePackageIterationItem iterationItem ) throws MojoExecutionException
     {
-        if ( !packageFile.exists() )
+        if ( !iterationItem.getPackageFile().exists() )
         {
             throw new MojoExecutionException(
-                "NPANDAY-121-001: MSDeploy seemed to fail on creating the package " + packageFile.getAbsolutePath()
+                "NPANDAY-121-001: MSDeploy seemed to fail on creating the package " + iterationItem.getPackageFile().getAbsolutePath()
             );
         }
 
-        projectHelper.attachArtifact( project, ArtifactType.MSDEPLOY_PACKAGE.getPackagingType(), packageFile );
+        projectHelper.attachArtifact( project, ArtifactType.MSDEPLOY_PACKAGE.getPackagingType(), iterationItem.getPackageFile() );
     }
 
     @Override
-    protected void beforeCommandExecution()
+    protected void beforeCommandExecution( CreatePackageIterationItem iterationItem )
     {
-        packageFile = new File(
-            project.getBuild().getDirectory(),
-            project.getArtifactId() + "." + ArtifactType.MSDEPLOY_PACKAGE.getExtension()
+
+    }
+
+    @Override
+    protected List<CreatePackageIterationItem> prepareIterationItems()
+    {
+        // TODO: NPANDAY-497 Support multiple packages with different classifiers
+        return newArrayList(
+            new CreatePackageIterationItem(project)
         );
     }
 
     @Override
-    List<String> getCommands() throws MojoExecutionException
+    protected List<String> getCommands(CreatePackageIterationItem item) throws MojoExecutionException
     {
         List<String> commands = Lists.newArrayList();
 
-        File packageSource = PathUtil.getPreparedPackageFolder( project );
-
         commands.add( "-verb:sync" );
-        commands.add( "-source:contentPath=" + packageSource.getAbsolutePath() );
-        commands.add( "-dest:package=" + packageFile.getAbsolutePath() );
+        commands.add( "-source:contentPath=" + item.getPackageSource().getAbsolutePath() );
+        commands.add( "-dest:package=" + item.getPackageFile().getAbsolutePath() );
 
         return commands;
     }
