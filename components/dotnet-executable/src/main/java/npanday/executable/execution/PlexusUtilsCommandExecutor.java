@@ -1,9 +1,7 @@
 package npanday.executable.execution;
 
 import npanday.PathUtil;
-import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutionException;
-import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
 import org.codehaus.plexus.util.cli.Commandline;
@@ -17,13 +15,9 @@ import java.util.List;
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  */
-public class DefaultCommandExecutor
-    implements CommandExecutor
+public class PlexusUtilsCommandExecutor
+    extends CommandExecutorSkeleton
 {
-    /**
-     * Instance of a plugin logger.
-     */
-    private Logger logger;
 
     /**
      * Standard Out
@@ -40,22 +34,7 @@ public class DefaultCommandExecutor
      */
     private int result;
 
-    public void setLogger( Logger logger )
-    {
-        this.logger = logger;
-    }
-
-    public void executeCommand( String executable, List<String> commands ) throws ExecutionException
-    {
-        executeCommand( executable, commands, null, true );
-    }
-
-    public void executeCommand( String executable, List<String> commands, boolean failsOnErrorOutput ) throws
-        ExecutionException
-    {
-        executeCommand( executable, commands, null, failsOnErrorOutput );
-    }
-
+    @Override
     public void executeCommand(
         String executable, List<String> commands, File workingDirectory, boolean failsOnErrorOutput ) throws
         ExecutionException
@@ -64,8 +43,8 @@ public class DefaultCommandExecutor
         {
             commands = new ArrayList<String>();
         }
-        stdOut = new StandardStreamConsumer( logger );
-        stdErr = new ErrorStreamConsumer( logger );
+        stdOut = new StandardStreamConsumer( getLogger() );
+        stdErr = new ErrorStreamConsumer( getLogger() );
 
         Commandline commandline = new CustomCommandline();
 
@@ -95,7 +74,7 @@ public class DefaultCommandExecutor
         }
         else if ( workingDirectory != null && !workingDirectory.exists() )
         {
-            logger.info(
+            getLogger().info(
                 "NPANDAY-040-006: Did not find executable path for " + executable + ", " + "will try system path"
             );
         }
@@ -103,18 +82,10 @@ public class DefaultCommandExecutor
         try
         {
             result = CommandLineUtils.executeCommandLine( commandline, stdOut, stdErr );
-            if ( logger != null )
-            {
-                logger.debug(
-                    "NPANDAY-040-005: Executed command: Commandline = " + commandline + ", Result = " + result
-                );
-            }
-            else
-            {
-                System.out.println(
-                    "NPANDAY-040-004: Executed command: Commandline = " + commandline + ", Result = " + result
-                );
-            }
+            getLogger().debug(
+                "NPANDAY-040-005: Executed command: Commandline = " + commandline + ", Result = " + result
+            );
+
             if ( ( failsOnErrorOutput && stdErr.hasError() ) || result != 0 )
             {
                 throw new ExecutionException(

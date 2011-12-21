@@ -18,7 +18,7 @@
  */
 package npanday.executable;
 
-import npanday.executable.execution.DefaultCommandExecutor;
+import npanday.executable.execution.PlexusUtilsCommandExecutor;
 import org.codehaus.plexus.logging.Logger;
 
 import java.io.File;
@@ -120,7 +120,8 @@ public interface CommandExecutor
          */
         public static CommandExecutor createDefaultCommmandExecutor()
         {
-            return new DefaultCommandExecutor();
+            // TODO: at some point we should switch this one to CommonsExecCommandExecutor
+            return new PlexusUtilsCommandExecutor();
         }
 
     }

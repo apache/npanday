@@ -23,7 +23,6 @@ import npanday.PlatformUnsupportedException;
 import npanday.vendor.Vendor;
 
 import java.util.List;
-import java.io.File;
 
 /**
  * Provides services for executing programs.
@@ -53,23 +52,6 @@ public interface NetExecutable
      *          artifact (module, library, exe, winexe) or the target artifact is not valid for the compiler
      */
     void execute() throws ExecutionException, PlatformUnsupportedException;
-
-    /**
-     * Returns the executable file name that this compiler will use to compile the application.
-     *
-     * @return the executable file name that this compiler will use to compile the application
-     * @throws npanday.executable.ExecutionException
-     *
-     */
-    String getExecutable()
-        throws ExecutionException;
-
-    /**
-     * Returns the parent directory of the executable.
-     *
-     * @return the parent directory of the executable
-     */
-    File getExecutionPath();
 
     /**
      * Initialize this executable.
