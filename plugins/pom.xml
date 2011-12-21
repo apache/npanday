@@ -57,6 +57,7 @@ under the License.
     <module>wix-maven-plugin</module>
     <module>partcover-maven-plugin</module>
     <module>msdeploy-maven-plugin</module>
+    <module>azure-maven-plugin</module>
   </modules>
   <dependencies>
     <dependency>

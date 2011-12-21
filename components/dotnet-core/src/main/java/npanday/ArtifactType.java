@@ -166,6 +166,7 @@ public enum ArtifactType
 
     /* Azure support */
     AZURE_CLOUD_SERVICE ("azure-cloud-service", null, "cspkg"),
+    AZURE_CLOUD_SERVICE_CONFIGURATION ("azure-cloud-service-configuration", null, "cscfg"),
 
     /* MSDeploy support */
     MSDEPLOY_PACKAGE ("msdeploy-package", null, "msdeploy.zip");
