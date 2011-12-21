@@ -82,9 +82,10 @@ public class DefaultRepositoryNetExecutable
         List<String> commands = getCommands();
 
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+        commandExecutor.setLogger( logger );
+
         try
         {
-            commandExecutor.setLogger( logger );
             commandExecutor.executeCommand( getExecutable(), getCommands(), getExecutionPath(), true );
         }
         catch ( ExecutionException e )

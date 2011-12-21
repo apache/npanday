@@ -98,9 +98,10 @@ public class DefaultNetExecutable
         List<String> commands = getCommands();
 
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+        commandExecutor.setLogger( logger );
+
         try
         {
-            commandExecutor.setLogger( logger );
             commandExecutor.executeCommand( getExecutable(), commands, getExecutionPath(), true );
         }
         catch ( ExecutionException e )
