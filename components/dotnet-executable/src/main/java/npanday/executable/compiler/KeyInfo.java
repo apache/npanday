@@ -1,3 +1,5 @@
+package npanday.executable.compiler;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package npanday.executable.compiler;
 
 /**
  * Provides services for obtaining information about the key file.

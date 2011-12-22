@@ -1,3 +1,5 @@
+package npanday.executable.impl;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package npanday.executable.impl;
 
 import npanday.InitializationException;
 import npanday.PathUtil;
@@ -281,8 +282,8 @@ public class NetExecutableFactoryImpl
             if ( exe == null )
             {
                 getLogger().info(
-                    "NPANDAY-066-005: Executable path for mono does not exist. Will attempt to execute MONO using"
-                        + " the main PATH variable." );
+                    "NPANDAY-066-005: Executable path for mono does not exist. Will attempt to execute MONO using" +
+                        " the main PATH variable." );
                 exe = "mono";
                 commands.add( "vendor=MONO" );//if forked process, it needs to know.
             }

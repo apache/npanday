@@ -1,3 +1,5 @@
+package npanday.executable.impl;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package npanday.executable.impl;
 
 import com.google.common.collect.Lists;
 import npanday.PlatformUnsupportedException;
@@ -129,10 +130,9 @@ public class CapabilityMatcherImpl
         matchPolicies.add( MatchPolicyFactory.createOperatingSystemPolicy( System.getProperty( "os.name" ) ) );
         matchPolicies.add( MatchPolicyFactory.createProfilePolicy( executableRequirement.getProfile() ) );
         matchPolicies.add( MatchPolicyFactory.createExecutableVersionPolicy(
-            executableRequirement.getExecutableVersion()
-        ) );
+            executableRequirement.getExecutableVersion() ) );
 
-        return matchFromExecutableCapabilities( getExecutableCapabilities(vendorInfo), matchPolicies );
+        return matchFromExecutableCapabilities( getExecutableCapabilities( vendorInfo ), matchPolicies );
     }
 
 
