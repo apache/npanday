@@ -558,26 +558,34 @@ under the License.
     <profile>
       <id>pre-release</id>
       <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.rat</groupId>
+              <artifactId>apache-rat-plugin</artifactId>
+              <version>0.8</version>
+              <configuration>
+                <excludes>
+                  <exclude>site/target/**</exclude>
+                  <exclude>.git*</exclude>
+     
+                  <!-- ui artifacts, usually not checked in -->
+                  <exclude>atlassian-ide-plugin.xml</exclude>
+                  <exclude>**/*.user</exclude>
+                  <exclude>**/*.iml</exclude>
+  
+                  <!-- often excluded from the modules build -->
+                  <exclude>npanday-it-runner/target/**</exclude>
+                  <exclude>dist/**/target/**</exclude>
+                </excludes>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
         <plugins>
           <plugin>
             <groupId>org.apache.rat</groupId>
             <artifactId>apache-rat-plugin</artifactId>
-            <version>0.8</version>
-            <configuration>
-              <excludes>
-                <exclude>site/target/**</exclude>
-                <exclude>.git*</exclude>
-   
-                <!-- ui artifacts, usually not checked in -->
-                <exclude>atlassian-ide-plugin.xml</exclude>
-                <exclude>**/*.user</exclude>
-                <exclude>**/*.iml</exclude>
-
-                <!-- often excluded from the modules build -->
-                <exclude>npanday-it-runner/target/**</exclude>
-                <exclude>dist/**/target/**</exclude>
-              </excludes>
-            </configuration>
             <executions>
               <execution>
                 <phase>verify</phase>
