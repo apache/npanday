@@ -113,8 +113,12 @@
           <configuration>
             <excludes>
               <exclude>netplugins/**/target/**</exclude>
-              <exclude>netplugins/*/pom-java.xml</exclude>
               <exclude>**/*.iml</exclude>
+              <exclude>**/*.sln</exclude>
+
+              <!-- TODO: generate these to target instead -->
+              <exclude>netplugins/*/src/main/java/**</exclude>
+              <exclude>netplugins/*/pom-java.xml</exclude>
             </excludes>
           </configuration>
         </plugin>
