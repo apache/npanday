@@ -40,6 +40,22 @@
         </configuration> 
       </plugin> 
     </plugins> 
+    <pluginManagement>
+      <plugins> 
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <excludes>
+              <exclude>**/*.iml</exclude>
+              <exclude>**/*.sln</exclude>
+              <exclude>src/test/resource/**</exclude>
+              <exclude>src/test/csharp/obj/**</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+      </plugins> 
+    </pluginManagement>
   </build>  
   <dependencies> 
     <dependency> 

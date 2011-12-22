@@ -54,4 +54,24 @@
       <type>library</type>
     </dependency>
   </dependencies> 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <excludes>
+              <exclude>javabinding/target/**</exclude>
+              <exclude>**/*.iml</exclude>
+
+              <!-- TODO: generate these to target instead -->
+              <exclude>src/main/java/**</exclude>
+              <exclude>pom-java.xml</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>
