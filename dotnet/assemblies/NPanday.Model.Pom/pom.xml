@@ -84,6 +84,16 @@ under the License.
           <artifactId>maven-install-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <excludes>
+              <exclude>**/*.iml</exclude>
+              <exclude>**/*.snk</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build> 

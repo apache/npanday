@@ -1,3 +1,5 @@
+package npanday.vendor;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package npanday.vendor;
 
 /**
  * Provides services for filling in missing vendor info according to its state of completion. An implementation of this

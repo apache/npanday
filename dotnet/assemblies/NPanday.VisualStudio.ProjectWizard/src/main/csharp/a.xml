@@ -1,21 +1,22 @@
 <!--
-Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements.  See the NOTICE file
-distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
-to you under the Apache License, Version 2.0 (the
-"License"); you may not use this file except in compliance
-with the License.  You may obtain a copy of the License at
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements.  See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership.  The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
 
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on an
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied.  See the License for the
-specific language governing permissions and limitations
-under the License.
--->
 <UserSettings><ApplicationIdentity version="8.0"/><ToolsOptions><ToolsOptionsCategory name="Environment" RegisteredName="Environment"><ToolsOptionsSubCategory name="Documents" RegisteredName="Documents" PackageName="Visual Studio Environment Package"><PropertyValue name="ShowMiscFilesProject">false</PropertyValue><PropertyValue name="AutoloadExternalChanges">false</PropertyValue><PropertyValue name="CheckForConsistentLineEndings">true</PropertyValue><PropertyValue name="SaveDocsAsUnicodeWhenDataLoss">false</PropertyValue><PropertyValue name="InitializeOpenFileFromCurrentDocument">true</PropertyValue><PropertyValue name="ReuseSavedActiveDocWindow">false</PropertyValue><PropertyValue name="DetectFileChangesOutsideIDE">true</PropertyValue><PropertyValue name="DontShowGlobalUndoChangeLossDialog">true</PropertyValue><PropertyValue name="AllowEditingReadOnlyFiles">true</PropertyValue><PropertyValue name="MiscFilesProjectSavesLastNItems">0</PropertyValue></ToolsOptionsSubCategory><ToolsOptionsSubCategory name="FindAndReplace" RegisteredName="FindAndReplace" PackageName="Visual Studio Environment Package"><PropertyValue name="ShowWarningMessages">true</PropertyValue><PropertyValue name="InitializeFromEditor">true</PropertyValue><PropertyValue name="ShowMessageBoxes">true</PropertyValue><PropertyValue name="HideWindowAfterMatchFromQuickFindReplace">false</PropertyValue></ToolsOptionsSubCategory><ToolsOptionsSubCategory name="General" RegisteredName="General" PackageName="Visual Studio Environment Package"><PropertyValue name="AnimationSpeed">7</PropertyValue><PropertyValue name="WindowMenuContainsNItems">10</PropertyValue><PropertyValue name="CloseButtonActiveTabOnly">true</PropertyValue><PropertyValue name="Animations">true</PropertyValue><PropertyValue name="AutohidePinActiveTabOnly">false</PropertyValue><PropertyValue name="ShowStatusBar">true</PropertyValue><PropertyValue name="MRUListContainsNItems">6</PropertyValue></ToolsOptionsSubCategory><ToolsOptionsSubCategory name="Import and Export Settings" RegisteredName="Import and Export Settings" PackageName="Visual Studio Environment Package"><PropertyValue name="TrackTeamSettings">false</PropertyValue><PropertyValue name="TeamSettingsFile"/><PropertyValue name="AutoSaveFile">%vsspv_settings_directory%\CurrentSettings.vssettings</PropertyValue></ToolsOptionsSubCategory><ToolsOptionsSubCategory name="ProjectsAndSolution" RegisteredName="ProjectsAndSolution" PackageName="Visual Studio Environment Package"><PropertyValue name="ProjectsLocation">%vsspv_visualstudio_dir%\Projects</PropertyValue><PropertyValue name="PromptForRenameSymbol">true</PropertyValue><PropertyValue name="TrackFileSelectionInExplorer">false</PropertyValue><PropertyValue name="ShowOutputWindowBeforeBuild">false</PropertyValue><PropertyValue name="OnRunWhenErrors">4</PropertyValue><PropertyValue name="OnRunWhenOutOfDate">4</PropertyValue><PropertyValue name="AlwaysShowSolutionNode">true</PropertyValue><PropertyValue name="ProjectItemTemplatesLocation">%vsspv_visualstudio_dir%\Templates\ItemTemplates</PropertyValue><PropertyValue name="OnlySaveStartupProjectsAndDependencies">false</PropertyValue><PropertyValue name="ShowAdvancedBuildConfigurations">true</PropertyValue><PropertyValue name="DefaultBehaviorForStartupProjects">1</PropertyValue><PropertyValue name="OnRunOrPreview">0</PropertyValue><PropertyValue name="MSBuildOutputVerbosity">1</PropertyValue><PropertyValue name="ProjectTemplatesLocation">%vsspv_visualstudio_dir%\Templates\ProjectTemplates</PropertyValue><PropertyValue name="ShowTaskListAfterBuild">true</PropertyValue><PropertyValue name="ConcurrentBuilds">1</PropertyValue><PropertyValue name="SaveNewProjects">true</PropertyValue></ToolsOptionsSubCategory><ToolsOptionsSubCategory name="Startup" RegisteredName="Startup" PackageName="Visual Studio Environment Package"><PropertyValue name="OnStartUp">5</PropertyValue><PropertyValue name="StartPageRefreshDownloadedContent">true</PropertyValue><PropertyValue name="StartPageRSSUrl">http://go.microsoft.com/fwlink/?linkid=45192&amp;clcid=%VSSPV_LCID_HEX%</PropertyValue><PropertyValue name="StartPageRefreshInterval">60</PropertyValue></ToolsOptionsSubCategory><ToolsOptionsSubCategory name="TaskList" RegisteredName="TaskList" PackageName="Visual Studio Task List Package"><PropertyValue name="ConfirmTaskDeletion">true</PropertyValue><PropertyValue name="CommentTokens" ArrayType="VT_VARIANT" ArrayElementCount="4"><PropertyValue name="0">TODO:2</PropertyValue><PropertyValue name="1">HACK:2</PropertyValue><PropertyValue name="2">UNDONE:2</PropertyValue><PropertyValue name="3">UnresolvedMergeConflict:3</PropertyValue></PropertyValue><PropertyValue name="WarnOnAddingHiddenItem">false</PropertyValue><PropertyValue name="DontShowFilePaths">true</PropertyValue></ToolsOptionsSubCategory><ToolsOptionsSubCategory name="WebBrowser" RegisteredName="WebBrowser" PackageName="Visual Studio Web Browser Package">
 				<PropertyValue name="HomePage">http://go.microsoft.com/fwlink/?LinkId=36568&amp;clcid=%VSSPV_LCID_HEX%</PropertyValue>
 				<PropertyValue name="SearchPage">http://go.microsoft.com/fwlink/?LinkId=32722&amp;clcid=%VSSPV_LCID_HEX%</PropertyValue>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -524,6 +524,7 @@ under the License.
     <profile>
       <id>pre-release</id>
       <build>
+        <pluginManagement>
         <plugins>
           <plugin>
             <groupId>org.apache.rat</groupId>
@@ -531,34 +532,27 @@ under the License.
             <version>0.7</version>
             <configuration>
               <excludes>
-                <exclude>**/**.properties</exclude>
-                <exclude>**/**.resx</exclude>
-                <exclude>**/**.txt</exclude>
-                <exclude>**/**.css</exclude>
-                <exclude>**/**.snk</exclude>
-                <exclude>**/**.sln</exclude>
-                <exclude>**/*.patch</exclude>
-                <exclude>**/*.diff</exclude>
-                <exclude>**/.gitignore</exclude>
-                <exclude>netplugins/**/target/**/*</exclude>
-                <exclude>javabinding/target/**/*</exclude>
-                <exclude>npanday-it-runner/target/**/*</exclude>
-                <exclude>site/target/**/*</exclude>
-                <exclude>**/pom-java.xml</exclude>
-                <exclude>**/src/main/java/NPanday/Plugin/Addin/AutomationExtensibilityMojo.java</exclude>
-                <exclude>**/src/main/java/NPanday/Plugin/Devenv/DevenvMojo.java</exclude>
-                <exclude>**/src/main/java/NPanday/Plugin/Settings/SettingsGeneratorMojo.java</exclude>
-                <exclude>**/src/main/java/NPanday/Plugin/SysRef/SysRefMojo.java</exclude>
-                <exclude>**/src/main/java/NPanday/Plugin/Msbuild/MsbuildMojo.java</exclude>
-                <exclude>**/MavenTestProjectWithNUnitCopy/MavenTestProjectWithNUnit/pom.xml</exclude>
-                <exclude>**/MavenTestProjectWithNUnitCopy/pom.xml</exclude>
+                  <exclude>site/target/**</exclude>
+                  <exclude>.git*</exclude>
 
                 <!-- ui artifacts, usually not checked in -->
                 <exclude>atlassian-ide-plugin.xml</exclude>
                 <exclude>**/*.user</exclude>
                 <exclude>**/*.iml</exclude>
+                  <exclude>**/*.sln</exclude>
+  
+                  <!-- often excluded from the modules build -->
+                  <exclude>npanday-it-runner/target/**</exclude>
+                  <exclude>dist/**/target/**</exclude>
               </excludes>
             </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.rat</groupId>
+            <artifactId>apache-rat-plugin</artifactId>
             <executions>
               <execution>
                 <phase>verify</phase>
