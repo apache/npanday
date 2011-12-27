@@ -1247,7 +1247,6 @@ namespace NPanday.VisualStudio.Addin
                 System.Type.Missing, System.Type.Missing, 1, true);
             buildButton.Caption = Messages.MSG_C_BUILD;
             buildButton.Visible = true;
-            //buildButton.FaceId = 645;
             buildButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuild_Click);
 
 
@@ -1418,7 +1417,6 @@ namespace NPanday.VisualStudio.Addin
                 System.Type.Missing, System.Type.Missing, 1, true);
             buildAllButton.Caption = Messages.MSG_C_BUILD;
             buildAllButton.Visible = true;
-            //buildAllButton.FaceId = 645;
             buildAllButton.Click += new _CommandBarButtonEvents_ClickEventHandler(cbBuildAll_Click);
 
             buildControls.Add(buildAllButton);

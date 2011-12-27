@@ -189,7 +189,6 @@ public final class CompilerMojo
 			{
 				params.add( "/resource:" + arg );
 			}
-            //params.add("/resource:" + resource);
         }
         
         if (linkResource != null)
