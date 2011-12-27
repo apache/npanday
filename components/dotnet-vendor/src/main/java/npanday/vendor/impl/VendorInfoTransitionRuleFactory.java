@@ -181,7 +181,7 @@ final class VendorInfoTransitionRuleFactory
                             if ( vi.getVendor().equals( vendorInfo.getVendor() ) )
                             {
                                 vendorInfo.setVendorVersion( vi.getVendorVersion() );
-                                logger.warn( "NPANDAY-103-044: Hard code the frameworkd (default framework:"
+                                logger.warn( "NPANDAY-103-044: Hard code the framework (default framework:"
                                                  + getDefaultFrameworkVersion() + ")" );
                                 vendorInfo.setFrameworkVersion( "2.0.50727" );
                                 return VendorRequirementState.EXIT;
@@ -197,7 +197,7 @@ final class VendorInfoTransitionRuleFactory
                             if ( vi.getVendor().equals( vendorInfo.getVendor() ) )
                             {
                                 vendorInfo.setVendorVersion( vi.getVendorVersion() );
-                                logger.warn( "NPANDAY-103-045: Hard code the frameworkd (default framework:"
+                                logger.warn( "NPANDAY-103-045: Hard code the framework (default framework:"
                                                  + getDefaultFrameworkVersion() + ")" );
                                 vendorInfo.setFrameworkVersion(
                                     "2.0.50727" );  //TODO: this should be according to max version
