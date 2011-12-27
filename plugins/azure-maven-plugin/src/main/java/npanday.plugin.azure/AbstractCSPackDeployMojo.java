@@ -1,5 +1,3 @@
-package npanday.plugin.azure;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,16 +17,14 @@ package npanday.plugin.azure;
  * under the License.
  */
 
+package npanday.plugin.azure;
+
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
-import npanday.registry.RepositoryRegistry;
-import npanday.vendor.SettingsUtil;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.plugin.MojoFailureException;
 
 import java.util.List;
 
@@ -39,33 +35,8 @@ import java.util.List;
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  */
 public abstract class AbstractCSPackDeployMojo
-    extends AbstractMojo
+    extends AbstractNPandaySettingsAwareMojo
 {
-    /**
-     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
-     */
-    private String settingsPath;
-
-    /**
-     * The vendor of the framework, the executable is provided by or compatible with.
-     *
-     * @parameter expression="${vendor}"
-     */
-    private String vendor;
-
-    /**
-     * The version of the framework vendor, the executable is provided by or compatible with.
-     *
-     * @parameter expression="${vendor}"
-     */
-    private String vendorVersion;
-
-    /**
-     * The framework version, the executable is compatible with.
-     *
-     * @parameter expression = "${frameworkVersion}"
-     */
-    private String frameworkVersion;
 
     /**
      * The executable identifier used to locate the right configurations from executable-plugins.xml. Can't be changed.
@@ -87,35 +58,8 @@ public abstract class AbstractCSPackDeployMojo
      */
     private String executableProfile;
 
-    /**
-     * @component
-     */
-    private RepositoryRegistry repositoryRegistry;
-
-    /**
-     * @component
-     */
-    private npanday.executable.NetExecutableFactory netExecutableFactory;
-
-    /**
-     * The maven project.
-     *
-     * @parameter expression="${project}"
-     * @required
-     */
-    protected MavenProject project;
-
-    /**
-     * The maven project helper.
-     *
-     * @component
-     */
-    protected MavenProjectHelper projectHelper;
-
-    public void execute() throws MojoExecutionException
+    public void innerExecute() throws MojoExecutionException, MojoFailureException
     {
-        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
-
         beforeCommandExecution();
 
         try

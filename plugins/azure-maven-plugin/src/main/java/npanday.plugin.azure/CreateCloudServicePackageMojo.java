@@ -22,7 +22,6 @@ package npanday.plugin.azure;
 import com.google.common.collect.Lists;
 import npanday.ArtifactType;
 import npanday.PathUtil;
-import npanday.plugin.azure.AbstractCSPackDeployMojo;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 
@@ -38,18 +37,22 @@ import java.util.Set;
  * @goal create-cloud-service-package
  * @requiresDependencyResolution runtime
  */
-public class PackageAzureCloudServiceMojo
+public class CreateCloudServicePackageMojo
     extends AbstractCSPackDeployMojo
 {
     private File packageFile, templateConfigurationFile;
 
     /**
-     * @parameter expression="${cspack.serviceDefinition}" default-value="${basedir}/ServiceDefinition.csdef"
+     * The service definition file that get passed along to cspack.
+     *
+     * @parameter expression="${azure.serviceDefinition}" default-value="${basedir}/ServiceDefinition.csdef"
      */
     private File serviceDefinitionFile;
 
     /**
-     * @parameter expression="${cspack.generateConfigurationFile}" default-value="true"
+     * If a vanilla cloud service configuration file should be generated and attached along with the package.
+     *
+     * @parameter expression="${azure.generateConfigurationFile}" default-value="true"
      */
     private boolean generateConfigurationFile;
 
@@ -88,7 +91,7 @@ public class PackageAzureCloudServiceMojo
         }
 
         projectHelper.attachArtifact(
-            project, ArtifactType.AZURE_CLOUD_SERVICE_CONFIGURATION.getPackagingType(), "configtemplate",
+            project, ArtifactType.AZURE_CLOUD_SERVICE_CONFIGURATION.getPackagingType(), "generated",
             templateConfigurationFile
         );
     }
