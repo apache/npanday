@@ -19,50 +19,48 @@
 
 package npanday.plugin.azure;
 
-import npanday.ArtifactType;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-
-import java.io.File;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 
 /**
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
- * @goal process-cloud-service-configuration
  */
-public class ProcessCloudServiceConfigurationMojo
-    extends AbstractNPandaySettingsAwareMojo
+public abstract class AbstractNPandayMojo
+    extends AbstractMojo
 {
     /**
-     * The cloud service configuration file to attach.
+     * If the execution of this goal is to be skipped.
      *
      * @parameter
-     *  expression="${azure.serviceConfigurationFile}"
-     *  default-value="${basedir}/ServiceConfiguration.Package.cscfg"
      */
-    private File serviceConfigurationFile;
+    protected boolean skip;
 
-     /**
-     * @parameter expression="${azure.serviceConfigurationClassifier}"
-     * default-value="package"
+    /**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
+     * @required
      */
-    private String serviceConfigurationClassifier;
+    protected MavenProject project;
 
-    @Override
+    /**
+     * The maven project helper.
+     *
+     * @component
+     */
+    protected MavenProjectHelper projectHelper;
+
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        super.execute();
-
-        if ( !serviceConfigurationFile.exists() )
+        if ( skip  )
         {
-            throw new MojoExecutionException(
-                "NPANDAY-125-001: Couldn't find the cloud configuration file to attach along with the package "
-                    + serviceConfigurationFile.getAbsolutePath()
+            getLog().info(
+                "NPANDAY-126-000: Execution of '" + getClass().getSimpleName() + "' was skipped by configuration."
             );
+            return;
         }
-
-        projectHelper.attachArtifact(
-            project, ArtifactType.AZURE_CLOUD_SERVICE_CONFIGURATION.getPackagingType(), serviceConfigurationClassifier,
-            serviceConfigurationFile
-        );
     }
 }

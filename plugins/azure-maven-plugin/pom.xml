@@ -32,4 +32,52 @@
 
   <name>NPanday :: Azure Maven Plugin</name>
   <description>Maven Plugin for packaging of Azure Cloud Services</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <executions>
+          <!-- tests are yet included by super pom -->
+          <execution>
+            <id>grovy-main</id>
+            <goals>
+              <goal>generateStubs</goal>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>generate-plexus-config</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>file:///${pom.basedir}/src/main/script/plexus_component_xml.groovy</source>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.gmaven</groupId>
+      <artifactId>gmaven-mojo</artifactId>
+      <version>1.2</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>groovy-all-minimal</artifactId>
+          <groupId>org.codehaus.groovy</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>${plexus.utils.version}</version>
+    </dependency>
+  </dependencies>
 </project>

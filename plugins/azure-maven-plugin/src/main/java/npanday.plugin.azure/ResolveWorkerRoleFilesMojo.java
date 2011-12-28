@@ -19,59 +19,24 @@
 
 package npanday.plugin.azure;
 
-import npanday.registry.RepositoryRegistry;
-import npanday.vendor.SettingsUtil;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
+ *
+ *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ * @goal resolve-worker-roles
+ *
+ * @requiresDependencyResolution runtime
  */
-public abstract class AbstractNPandaySettingsAwareMojo
+public class ResolveWorkerRoleFilesMojo
     extends AbstractNPandayMojo
 {
-
-    /**
-     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
-     */
-    protected String settingsPath;
-
-    /**
-     * The vendor of the framework, the executable is provided by or compatible with.
-     *
-     * @parameter expression="${vendor}"
-     */
-    protected String vendor;
-
-    /**
-     * The version of the framework vendor, the executable is provided by or compatible with.
-     *
-     * @parameter expression="${vendor}"
-     */
-    protected String vendorVersion;
-
-    /**
-     * The framework version, the executable is compatible with.
-     *
-     * @parameter expression = "${frameworkVersion}"
-     */
-    protected String frameworkVersion;
-
-    /**
-     * @component
-     */
-    protected RepositoryRegistry repositoryRegistry;
-
-    /**
-     * @component
-     */
-    protected npanday.executable.NetExecutableFactory netExecutableFactory;
-
-    @Override
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         super.execute();
 
-        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
+
     }
 }

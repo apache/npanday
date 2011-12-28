@@ -58,8 +58,11 @@ public abstract class AbstractCSPackDeployMojo
      */
     private String executableProfile;
 
-    public void innerExecute() throws MojoExecutionException, MojoFailureException
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException
     {
+        super.execute();
+
         beforeCommandExecution();
 
         try
