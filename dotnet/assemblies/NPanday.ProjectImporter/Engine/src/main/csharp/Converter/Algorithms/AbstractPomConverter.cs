@@ -767,7 +767,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 
                 refDependency.version = reference.Version ?? "1.0.0.0";
                 
-				if (reference.PublicKeyToken != null)
+                if (reference.PublicKeyToken != null)
                 {
                     refDependency.classifier = reference.PublicKeyToken;
                 }
