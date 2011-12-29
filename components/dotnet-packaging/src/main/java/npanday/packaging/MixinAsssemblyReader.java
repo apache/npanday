@@ -1,5 +1,3 @@
-package npanday.plugin.aspnet;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,18 +17,19 @@ package npanday.plugin.aspnet;
  * under the License.
  */
 
+package npanday.packaging;
+
 import org.apache.maven.plugin.assembly.AssemblerConfigurationSource;
-import org.apache.maven.plugin.assembly.InvalidAssemblerConfigurationException;
-import org.apache.maven.plugin.assembly.interpolation.AssemblyInterpolator;
 import org.apache.maven.plugin.assembly.io.AssemblyReadException;
 import org.apache.maven.plugin.assembly.io.DefaultAssemblyReader;
 import org.apache.maven.plugin.assembly.model.Assembly;
 
 import java.io.File;
-import java.io.Reader;
 
 /**
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ *
+ * @plexus.component role="npanday.packaging.MixinAsssemblyReader"
  */
 public class MixinAsssemblyReader extends DefaultAssemblyReader
 {

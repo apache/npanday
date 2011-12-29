@@ -30,6 +30,7 @@
   <artifactId>dotnet-components</artifactId>
   <packaging>pom</packaging>
   <name>NPanday :: Java Components</name>
+
   <modules>
     <module>dotnet-artifact</module>
     <module>dotnet-assembler</module>
@@ -40,6 +41,7 @@
     <module>dotnet-plugin</module>
     <module>dotnet-registry</module>
     <module>dotnet-vendor</module>
+    <module>dotnet-packaging</module>
   </modules>
   <dependencies>
     <dependency>

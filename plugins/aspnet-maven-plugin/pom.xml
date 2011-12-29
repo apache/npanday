@@ -51,6 +51,10 @@
       <artifactId>maven-assembly-plugin</artifactId>
       <version>2.2.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>dotnet-packaging</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

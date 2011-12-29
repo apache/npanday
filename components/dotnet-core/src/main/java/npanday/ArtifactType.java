@@ -88,6 +88,12 @@ public enum ArtifactType
      */
     DOTNET_ARCHIVE("dotnet-archive", null, "zip"),
 
+    /**
+     * A zip containing everything an application (or library) needs
+     * to be run, including transitive dependencies and so on.
+     */
+    DOTNET_APPLICATION("dotnet-application", null, "app.zip"),
+
     // We should reconsider those..
     
     // DOTNET_ASPX("dotnet-aspx", "library", "dll"),
