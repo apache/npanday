@@ -46,8 +46,8 @@ namespace NPanday.Utils
         public PomHelperUtility(FileInfo solutionFile, FileInfo projectFile)
         {
             FileInfo pomFile = PomHelperUtility.FindPomFileUntil(
-                solutionFile.Directory,
-                projectFile.Directory);
+                projectFile.Directory,
+                solutionFile.Directory);
 
             this.pom = pomFile;
         }
