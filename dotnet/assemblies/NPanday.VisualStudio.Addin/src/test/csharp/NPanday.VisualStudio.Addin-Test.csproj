@@ -51,10 +51,10 @@
     <Reference Include="Extensibility, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="NPanday.Model.Pom, Version=1.4.1.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+    <Reference Include="NPanday.Model.Pom, Version=1.5.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\NPanday.Model.Pom\target\NPanday.Model.Pom.dll</HintPath>
     </Reference>
-    <Reference Include="NPanday.Model.Settings, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NPanday.Model.Settings, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\NPanday.Model.Settings\target\NPanday.Model.Settings.dll</HintPath>
     </Reference>
     <Reference Include="NUnit.Framework, Version=2.2.8.0, Culture=neutral, processorArchitecture=MSIL">

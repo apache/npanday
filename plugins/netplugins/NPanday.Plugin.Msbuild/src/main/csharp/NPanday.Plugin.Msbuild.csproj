@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Licensed to the Apache Software Foundation (ASF) under one
   ~ or more contributor license agreements.  See the NOTICE file
@@ -35,7 +34,8 @@
     <OutputPath>..\..\..\target\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NPanday.Model.Pom, Version=1.4.1.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+    <Reference Include="NPanday.Model.Pom, Version=1.5.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\dotnet\assemblies\NPanday.Model.Pom\target\NPanday.Model.Pom.dll</HintPath>
     </Reference>
     <Reference Include="System" />

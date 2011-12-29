@@ -57,7 +57,6 @@ under the License.
     <Compile Include="Injector\Impl\FieldInjectorRepository.cs" />
     <Compile Include="Injector\Impl\MavenProjectInjector.cs" />
     <Compile Include="Injector\Impl\StringInjector.cs" />
-    <Compile Include="PluginDomainManager.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />

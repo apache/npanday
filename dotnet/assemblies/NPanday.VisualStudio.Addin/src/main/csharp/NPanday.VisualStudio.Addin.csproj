@@ -45,7 +45,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\NPanday.Model.Pom\target\NPanday.Model.Pom.dll</HintPath>
     </Reference>
-    <Reference Include="NPanday.Model.Settings, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NPanday.Model.Settings, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\NPanday.Model.Settings\target\NPanday.Model.Settings.dll</HintPath>
     </Reference>
