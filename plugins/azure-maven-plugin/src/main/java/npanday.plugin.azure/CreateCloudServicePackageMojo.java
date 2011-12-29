@@ -24,6 +24,8 @@ import npanday.ArtifactType;
 import npanday.PathUtil;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.util.List;
@@ -111,7 +113,7 @@ public class CreateCloudServicePackageMojo
     }
 
     @Override
-    protected List<String> getCommands() throws MojoExecutionException
+    protected List<String> getCommands() throws MojoExecutionException, MojoFailureException
     {
         List<String> commands = Lists.newArrayList();
 
@@ -178,7 +180,7 @@ public class CreateCloudServicePackageMojo
                 );
                 // TODO: 'Web/' is hardcoded here; where to get it from?
                 commands.add(
-                    "/sitePhysicalDirectories:" + artifact.getArtifactId() + ";Web/;" + roleRoot.getAbsolutePath()
+                    "/sitePhysicalDirectories:" + artifact.getArtifactId() + ";Web;" + roleRoot.getAbsolutePath()
                 );
             }
             else if ( isWorkerRole )
@@ -197,6 +199,18 @@ public class CreateCloudServicePackageMojo
                     "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath() + ";"
                         + entryPoint.getAbsolutePath()
                 );
+            }
+
+            // TODO: save roleprops file somewhere else?
+            File rolePropertiesFile = new File(project.getBuild().getDirectory(), artifact.getArtifactId() + ".roleproperties");
+            try
+            {
+                FileUtils.fileWrite( rolePropertiesFile.getAbsolutePath(), "TargetFrameWorkVersion=v4.0" );
+                commands.add(
+                    "/rolePropertiesFile:" + artifact.getArtifactId() + ";" + rolePropertiesFile.getAbsolutePath()
+                );
+            } catch (java.io.IOException e) {
+                throw new MojoFailureException( "NPANDAY-123-008: Error while creating role properties file for " + artifact.getArtifactId(), e );
             }
         }
 

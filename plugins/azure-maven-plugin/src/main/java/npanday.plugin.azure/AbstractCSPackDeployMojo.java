@@ -99,5 +99,5 @@ public abstract class AbstractCSPackDeployMojo
 
     protected abstract void beforeCommandExecution();
 
-    protected abstract List<String> getCommands() throws MojoExecutionException;
+    protected abstract List<String> getCommands() throws MojoExecutionException, MojoFailureException;
 }

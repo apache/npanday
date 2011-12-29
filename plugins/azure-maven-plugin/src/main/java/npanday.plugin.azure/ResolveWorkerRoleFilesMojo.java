@@ -26,6 +26,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
+import org.codehaus.plexus.components.io.fileselectors.FileSelector;
+import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
 
 import java.io.File;
 import java.util.Set;
@@ -88,6 +90,10 @@ public class ResolveWorkerRoleFilesMojo
 
             unarchiver.setSourceFile( packageSource );
             unarchiver.setDestDirectory( targetDirectory );
+            final IncludeExcludeFileSelector selector = new IncludeExcludeFileSelector();
+            // TODO: quick hack for excluding service runtime in worker roles
+            selector.setExcludes( new String[]{"Microsoft.WindowsAzure.ServiceRuntime.dll"} );
+            unarchiver.setFileSelectors( new FileSelector[] {selector });
             unarchiver.extract();
 
             if ( targetDirectory.listFiles().length == 0 )

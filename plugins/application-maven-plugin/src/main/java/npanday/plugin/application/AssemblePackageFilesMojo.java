@@ -47,7 +47,7 @@ public class AssemblePackageFilesMojo
     Splitter COMMANDLINE_LISTS_SPLITTER = Splitter.on( "," ).omitEmptyStrings().trimResults();
 
     /**
-     * @parameter expression="$(skipPackaging)" default-value="true"
+     * @parameter expression="$(skipPackaging)" default-value="false"
      */
     private boolean skip;
 
