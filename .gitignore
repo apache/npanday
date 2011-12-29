@@ -2,3 +2,9 @@ target
 *.iml
 *.ipr
 *.iws
+*.suo
+pom-java.xml
+*.csproj.user
+bin
+obj
+plugins/netplugins/*/src/main/java
