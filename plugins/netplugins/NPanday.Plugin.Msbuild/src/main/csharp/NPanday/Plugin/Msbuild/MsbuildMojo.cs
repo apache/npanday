@@ -32,59 +32,59 @@ using System.Reflection;
 
 namespace NPanday.Plugin.Msbuild
 {
-	/// <summary>
-	/// C# Plugin that will generate the required system reference .dlls
-	/// </summary>
-	[ClassAttribute(Phase = "validate", Goal = "compile")]
-	public sealed class MsbuildMojo : AbstractMojo
-	{
+    /// <summary>
+    /// C# Plugin that will generate the required system reference .dlls
+    /// </summary>
+    [ClassAttribute(Phase = "validate", Goal = "compile")]
+    public sealed class MsbuildMojo : AbstractMojo
+    {
 
         public MsbuildMojo()
-		{
-		}
+        {
+        }
 
-		
-		[FieldAttribute("mavenProject", Expression = "${project}", Type = "org.apache.maven.project.MavenProject")]
-		public NPanday.Model.Pom.Model mavenProject;
+        
+        [FieldAttribute("mavenProject", Expression = "${project}", Type = "org.apache.maven.project.MavenProject")]
+        public NPanday.Model.Pom.Model mavenProject;
 
-		public override Type GetMojoImplementationType()
-		{
-			return this.GetType();
-		}
+        public override Type GetMojoImplementationType()
+        {
+            return this.GetType();
+        }
 
         public override void Execute()
         {
-				if(mavenProject==null)
-				{
-					throw new Exception( "Maven project could not be found by the MSBuild plugin" );
-				}
-				else
-				{
-                Console.WriteLine("[INFO] Executing MsBuild Plugin");
-            Directory.SetCurrentDirectory(mavenProject.build.sourceDirectory);
-            
-            string projectName = mavenProject.artifactId;
-            if (File.Exists(projectName + ".csproj"))
+            if(mavenProject==null)
             {
-                projectName += ".csproj";
+                throw new Exception( "Maven project could not be found by the MSBuild plugin" );
             }
             else
             {
-                projectName += ".vbproj";
+                Console.WriteLine("[INFO] Executing MsBuild Plugin");
+                Directory.SetCurrentDirectory(mavenProject.build.sourceDirectory);
+            
+                string projectName = mavenProject.artifactId;
+                if (File.Exists(projectName + ".csproj"))
+                {
+                    projectName += ".csproj";
+                }
+                else
+                {
+                    projectName += ".vbproj";
+                }
+                // must use /v:q here, as /v:m and above report the csc command, that includes '/errorprompt', which
+                // erroneously triggers the NPANDAY-063-001 error
+                // BuildingInsideVisualStudio is required to avoid building project references on framework 2.0
+                ProcessStartInfo processStartInfo =
+                   new ProcessStartInfo("msbuild", "/v:q /p:BuildProjectReferences=false /p:BuildingInsideVisualStudio=true " + projectName);
+                processStartInfo.UseShellExecute = false;
+                Process p = System.Diagnostics.Process.Start(processStartInfo);
+                p.WaitForExit();
+                if ( p.ExitCode != 0 )
+                {
+                    throw new Exception( "MSBuild exited with code: " + p.ExitCode );
+                }
             }
-            // must use /v:q here, as /v:m and above report the csc command, that includes '/errorprompt', which
-            // erroneously triggers the NPANDAY-063-001 error
-            // BuildingInsideVisualStudio is required to avoid building project references on framework 2.0
-            ProcessStartInfo processStartInfo =
-               new ProcessStartInfo("msbuild", "/v:q /p:BuildProjectReferences=false /p:BuildingInsideVisualStudio=true " + projectName);
-            processStartInfo.UseShellExecute = false;
-            Process p = System.Diagnostics.Process.Start(processStartInfo);
-            p.WaitForExit();
-            if ( p.ExitCode != 0 )
-            {
-                throw new Exception( "MSBuild exited with code: " + p.ExitCode );
-            }
-				}
         }
     }
 }
