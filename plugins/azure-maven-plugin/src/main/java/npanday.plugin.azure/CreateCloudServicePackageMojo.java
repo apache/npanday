@@ -128,26 +128,79 @@ public class CreateCloudServicePackageMojo
         for ( Object artifactAsObject : projectDependencyArtifacts )
         {
             Artifact artifact = (Artifact) artifactAsObject;
-            if ( artifact.getType().equals( ArtifactType.MSDEPLOY_PACKAGE.getPackagingType() )
-                || artifact.getType().equals( ArtifactType.MSDEPLOY_PACKAGE.getExtension() ) )
+            final boolean isWebRole = artifact.getType().equals(
+                ArtifactType.MSDEPLOY_PACKAGE.getPackagingType()
+            ) || artifact.getType().equals(
+                ArtifactType.MSDEPLOY_PACKAGE.getExtension()
+            );
+
+            final boolean isWorkerRole = artifact.getType().equals(
+                ArtifactType.DOTNET_APPLICATION.getPackagingType()
+            ) || artifact.getType().equals(
+                ArtifactType.DOTNET_APPLICATION.getExtension()
+            );
+
+            if ( !isWebRole && !isWorkerRole )
             {
-                final File webRoot = new File(
-                    PathUtil.getPreparedPackageFolder( project ), artifact.getArtifactId()
+                throw new MojoExecutionException(
+                    "NPANDAY-123-005: Artifact type " + artifact.getType() + " of artifact " + artifact.getArtifactId()
+                        + " is not supported for azure cloud services.\n\nPlease use "
+                        + ArtifactType.DOTNET_APPLICATION.getPackagingType() + " for worker roles, and "
+                        + ArtifactType.MSDEPLOY_PACKAGE.getPackagingType() + " for web roles"
                 );
+            }
+
+            final File roleRoot = new File(
+                PathUtil.getPreparedPackageFolder( project ), artifact.getArtifactId()
+            );
+
+            if ( isWebRole )
+            {
+                getLog().debug( "NPANDAY-123-003: Found web role " + artifact.getArtifactId() );
+            }
+            else if ( isWorkerRole )
+            {
+                getLog().debug( "NPANDAY-123-004: Found worker role " + artifact.getArtifactId() );
+            }
+
+            if ( !roleRoot.exists() )
+            {
+                throw new MojoExecutionException(
+                    "NPANDAY-123-006: Could not find worker/web role root for " + artifact.getArtifactId() + ": "
+                        + roleRoot
+                );
+            }
+
+            if ( isWebRole )
+            {
+                commands.add(
+                    "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath()
+                );
+                // TODO: 'Web/' is hardcoded here; where to get it from?
+                commands.add(
+                    "/sitePhysicalDirectories:" + artifact.getArtifactId() + ";Web/;" + roleRoot.getAbsolutePath()
+                );
+            }
+            else if ( isWorkerRole )
+            {
+                File entryPoint = new File( roleRoot, artifact.getArtifactId() + ".dll" );
+
+                if ( !entryPoint.exists() )
+                {
+                    throw new MojoExecutionException(
+                        "NPANDAY-123-007: Could not find entry point dll for " + artifact.getArtifactId() + ": "
+                            + entryPoint
+                    );
+                }
 
                 commands.add(
-                    "/role:" + artifact.getArtifactId() + ";" + webRoot.getAbsolutePath()
-                );
-
-                // TODO: 'Web/' is hardcoded here; where to get it from?1 (310) 728-2143 x2813
-                commands.add(
-                    "/sitePhysicalDirectories:" + artifact.getArtifactId() + ";Web/;" + webRoot.getAbsolutePath()
+                    "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath() + ";"
+                        + entryPoint.getAbsolutePath()
                 );
             }
         }
 
         return commands;
     }
-
 
 }
