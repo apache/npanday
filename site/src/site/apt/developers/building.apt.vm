@@ -117,7 +117,7 @@ mvn clean install
   using the following command:
 
 ----
-mvn clean install -PintegrationTests
+mvn clean install -Prun-its
 ----
 
 * Generating NPanday's documentation locally
