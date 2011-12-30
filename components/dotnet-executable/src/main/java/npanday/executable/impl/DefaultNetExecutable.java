@@ -101,14 +101,15 @@ public class DefaultNetExecutable
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
         commandExecutor.setLogger( logger );
 
+        final File executionPath = getExecutionPath();
         try
         {
-            commandExecutor.executeCommand( getExecutable(), commands, getExecutionPath(), true );
+            commandExecutor.executeCommand( getExecutable(), commands, executionPath, true );
         }
         catch ( ExecutionException e )
         {
-            throw new ExecutionException( "NPANDAY-070-000: Execution Path = " +
-                ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Command = " +
+            throw new ExecutionException( "NPANDAY-070-000: Error executing command: Execution path:" +
+                ( ( executionPath != null ) ? executionPath.getAbsolutePath() : "unknown" ) + ", Command = " +
                 commands, e );
         }
 
