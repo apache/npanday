@@ -258,6 +258,7 @@ public class VsInstallerMojo
     {
         if ( installationLocation == null )
         {
+/* For now, reserve the "program files" default for the MSI - typically admin permissions will cause these to conflict
             String programFilesPath = System.getenv( "PROGRAMFILES" );
 
             if ( programFilesPath != null && programFilesPath.length() != 0 )
@@ -276,6 +277,8 @@ public class VsInstallerMojo
             {
                 installationLocation = new File( System.getProperty( "user.home" ), "NPanday/bin" );
             }
+*/
+            installationLocation = new File( System.getProperty( "user.home" ), "NPanday/bin" );
         }
         else
         {
