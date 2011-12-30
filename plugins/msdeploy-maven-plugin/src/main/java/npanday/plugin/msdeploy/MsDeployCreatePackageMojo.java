@@ -32,6 +32,7 @@ import static com.google.common.collect.Lists.newArrayList;
 /**
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  * @goal create-package
+ * @phase package
  */
 public class MsDeployCreatePackageMojo
     extends AbstractMsDeployMojo<CreatePackageIterationItem>
