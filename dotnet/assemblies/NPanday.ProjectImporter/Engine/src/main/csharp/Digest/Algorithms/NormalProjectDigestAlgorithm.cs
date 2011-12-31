@@ -28,6 +28,7 @@ using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
 using NPanday.ProjectImporter.Digest.Model;
 
 using NPanday.Utils;
+using NPanday.Artifact;
 
 
 
@@ -164,6 +165,98 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             }
         }
 
+        // TODO: belongs in another utility class
+        private static void SetReferenceFromFile(FileInfo dll, Reference reference)
+        {
+            Assembly asm = null;
+            string path = string.Empty;
+
+            //if (dll.Exists)
+            if (dll.Exists)
+            {
+                //asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
+                path = dll.FullName;
+            }
+            else
+            {
+                ArtifactContext artifactContext = new ArtifactContext();
+                Artifact.Artifact a = artifactContext.GetArtifactRepository().GetArtifact(dll);
+
+                if (a != null)
+                {
+                    if (!a.FileInfo.Exists)
+                    {
+                        if (!a.FileInfo.Directory.Exists)
+                            a.FileInfo.Directory.Create();
+
+                        string localRepoPath = artifactContext.GetArtifactRepository().GetLocalRepositoryPath(a, dll.Extension);
+                        if (File.Exists(localRepoPath))
+                        {
+                            File.Copy(localRepoPath, a.FileInfo.FullName);
+                            //asm = Assembly.ReflectionOnlyLoadFrom();
+                            path = a.FileInfo.FullName;
+                        }
+                        else
+                        {
+                            if (Reference.downloadArtifactFromRemoteRepository(a, dll.Extension, null))
+                            {
+                                //asm = Assembly.ReflectionOnlyLoadFrom(a.FileInfo.FullName);
+                                path = a.FileInfo.FullName;
+                            }
+                            else
+                            {
+                                path = reference.getBinReference(dll.Name);
+                                if (!string.IsNullOrEmpty(path))
+                                {
+                                    File.Copy(path, a.FileInfo.FullName);
+                                }
+                            }
+                            //copy assembly to repo if not found.
+                            if (!string.IsNullOrEmpty(path) && !File.Exists(localRepoPath))
+                            {
+                                if (!Directory.Exists(Path.GetDirectoryName(localRepoPath)))
+                                    Directory.CreateDirectory(Path.GetDirectoryName(localRepoPath));
+
+                                File.Copy(path, localRepoPath);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        path = a.FileInfo.FullName;
+                    }
+                }
+                if (a == null || string.IsNullOrEmpty(path))
+                {
+                    Console.WriteLine("Cannot find or download the artifact " + dll.Name + ",  project may not build properly.");
+                    return;
+                }
+            }
+
+            bool asmNotLoaded = true;
+            foreach (Assembly asmm in AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
+            {
+                // compare the assembly name to the filename of the reference to determine if it is a match
+                // as the location might not be set
+                // TODO: why do we need to load the assembly?
+                // added StringComparison.OrdinalIgnoreCase to assembly name compratison in order to avoid errors with 
+                // already loaded assemblies like nunit.framework and NUnit.Framework etc (note this can be reconsidered)
+                if (asmm.GetName().Name.Equals(Path.GetFileNameWithoutExtension(path), StringComparison.OrdinalIgnoreCase))
+                {
+                    asm = asmm;
+                    asmNotLoaded = false;
+                    break;
+                }
+            }
+            if (asmNotLoaded)
+            {
+                asm = Assembly.ReflectionOnlyLoadFrom(path);
+            }
+
+            reference.SetAssemblyInfoValues(asm.ToString());
+            //asm = null;
+        }
+
         private static void DigestBuildItems(Project project, ProjectDigest projectDigest, string projectBasePath, ICollection<ProjectReference> projectReferences, ICollection<Reference> references, ICollection<Compile> compiles, ICollection<None> nones, ICollection<WebReferenceUrl> webReferenceUrls, ICollection<Content> contents, ICollection<Folder> folders, ICollection<WebReferences> webReferencesList, ICollection<EmbeddedResource> embeddedResources, ICollection<BootstrapperPackage> bootstrapperPackages, ICollection<string> globalNamespaceImports, IList<ComReference> comReferenceList)
         {
             string targetFramework = projectDigest.TargetFramework != null ? projectDigest.TargetFramework.Substring(0,3) : "2.0";
@@ -199,6 +292,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                         reference.HintPath = Path.GetFullPath(fullHint);
                                     else
                                         reference.HintPath = fullHint;
+                                    SetReferenceFromFile(new FileInfo(fullHint), reference);
                                 }
                                 if (string.IsNullOrEmpty(reference.HintPath) || !(new FileInfo(reference.HintPath).Exists))
                                 {
