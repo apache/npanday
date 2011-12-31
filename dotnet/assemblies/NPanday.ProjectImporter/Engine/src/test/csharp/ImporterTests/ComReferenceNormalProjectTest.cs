@@ -40,7 +40,7 @@ namespace NPanday.ProjectImporter.ImporterTests
 		
 		public override string TestResourcePath
         {
-            get { return @"\src\test\resource\Shell32Example\"; }
+            get { return @"src\test\resource\Shell32Example\"; }
         }
     }
 }

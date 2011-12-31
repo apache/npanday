@@ -48,7 +48,7 @@ namespace NPanday.ProjectImporter.ImporterTests
 
         public override string TestResourcePath
         {
-            get { return @"\src\test\resource\flat-multi-module\"; }
+            get { return @"src\test\resource\flat-multi-module\"; }
         }
     }
 }

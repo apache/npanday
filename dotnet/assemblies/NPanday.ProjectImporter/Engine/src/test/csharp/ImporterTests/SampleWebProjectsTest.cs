@@ -46,7 +46,7 @@ namespace NPanday.ProjectImporter.ImporterTests
 
 		public override string TestResourcePath
         {
-            get { return @"\src\test\resource\sample_web_project\"; }
+            get { return @"src\test\resource\sample_web_project\"; }
         }
     }
 }

@@ -87,7 +87,7 @@ namespace NPanday.ProjectImporter.ImporterTests
 		
 		public static void AssertPomElementValues(string testPomLocation, string[] pomFiles)
         {
-            string[] testPomFiles = FileUtil.GetTestPomFiles(Path.GetFullPath(Directory.GetCurrentDirectory() + @"\..\..") + testPomLocation, pomFiles);
+            string[] testPomFiles = FileUtil.GetTestPomFiles(Path.Combine(FileUtil.GetBaseDirectory(), testPomLocation), pomFiles);
             Assert.AreEqual(testPomFiles.Length, pomFiles.Length);
             int pomCount = testPomFiles.Length;
             for (int index = 0; index < pomCount; index++)

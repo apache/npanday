@@ -46,8 +46,8 @@ namespace NPanday.ProjectImporter.ImporterTests
         [SetUp]
         public void PrepareProjects()
         {
+            string baseProjectPath = FileUtil.GetBaseDirectory();
 
-            string baseProjectPath = Path.GetFullPath(Directory.GetCurrentDirectory() + @"\..\..");
             ProjectImporterTestFixture.SampleProjectsPath = Path.Combine(baseProjectPath, @"target\test_sample_projects");
 
             // delete the sample projects from target folder

@@ -46,7 +46,7 @@ namespace NPanday.ProjectImporter.ImporterTests
 		
 		public override string TestResourcePath
         {
-            get { return @"\src\test\resource\InterModuleDependency\"; }
+            get { return @"src\test\resource\InterModuleDependency\"; }
         }
     }
 }

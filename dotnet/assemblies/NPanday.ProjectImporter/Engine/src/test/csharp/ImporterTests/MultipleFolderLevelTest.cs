@@ -47,7 +47,7 @@ namespace NPanday.ProjectImporter.ImporterTests
 
         public override string TestResourcePath
         {
-            get { return @"\src\test\resource\MultipleFolderLevelTest\"; }
+            get { return @"src\test\resource\MultipleFolderLevelTest\"; }
         }
     }
 }

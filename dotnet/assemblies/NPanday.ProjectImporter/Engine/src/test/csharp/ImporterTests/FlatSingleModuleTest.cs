@@ -48,7 +48,7 @@ namespace NPanday.ProjectImporter.ImporterTests
         {
             get 
             {
-                return @"\src\test\resource\flat-single-module-cs\"; 
+                return @"src\test\resource\flat-single-module-cs\"; 
             }
         }
     }

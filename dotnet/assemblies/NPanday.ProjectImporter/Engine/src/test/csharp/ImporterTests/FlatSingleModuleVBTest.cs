@@ -46,7 +46,7 @@ namespace NPanday.ProjectImporter.ImporterTests
 		
 		public override string TestResourcePath
         {
-            get { return @"\src\test\resource\flat-single-module-vb\"; }
+            get { return @"src\test\resource\flat-single-module-vb\"; }
         }
     }
 }

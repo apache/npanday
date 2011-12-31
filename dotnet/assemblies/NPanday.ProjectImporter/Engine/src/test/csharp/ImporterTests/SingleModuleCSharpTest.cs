@@ -45,7 +45,7 @@ namespace NPanday.ProjectImporter.ImporterTests
 		
 		public override string TestResourcePath
         {
-            get { return @"\src\test\resource\SingleModuleCSharp\"; }
+            get { return @"src\test\resource\SingleModuleCSharp\"; }
         }
     }
 }

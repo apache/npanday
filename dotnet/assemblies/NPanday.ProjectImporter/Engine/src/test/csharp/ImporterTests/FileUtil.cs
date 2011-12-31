@@ -189,7 +189,9 @@ namespace NPanday.ProjectImporter.ImporterTests
 
         public static string GetBaseDirectory()
         {
-            return new FileInfo(Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().LastIndexOf("target"))).FullName;
+            string current = Path.GetFullPath(Directory.GetCurrentDirectory());
+            string basedir = current.Substring(0, current.LastIndexOf("target"));
+            return basedir;
         }
     }
 }

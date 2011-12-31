@@ -50,7 +50,7 @@ namespace NPanday.ProjectImporter.ImporterTests
 
         public override string TestResourcePath
         {
-            get { return @"\src\test\resource\NPANDAY-445-NET40GAC\"; }
+            get { return @"src\test\resource\NPANDAY-445-NET40GAC\"; }
         }
     }
 }
