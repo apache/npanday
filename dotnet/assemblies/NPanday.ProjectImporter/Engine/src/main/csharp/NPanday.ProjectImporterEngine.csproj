@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converter\Algorithms\ASPNetPomConverter.cs" />
     <Compile Include="Converter\Algorithms\WebWithVbOrCsProjectFilePomConverter.cs" />
     <Compile Include="Digest\Algorithms\BaseProjectDigestAlgorithm.cs" />
     <Compile Include="Digest\Model\ComReference.cs" />

@@ -528,5 +528,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
 
 
+
+        public bool UseMsDeploy { get; set; }
     }
 }

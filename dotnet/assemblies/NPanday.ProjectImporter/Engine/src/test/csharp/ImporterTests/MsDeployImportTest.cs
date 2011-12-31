@@ -37,6 +37,11 @@ namespace NPanday.ProjectImporter.ImporterTests
             ProjectImporterAssertions.AssertPomCount(2, GeneratedPomFiles);
         }
 
+        public override bool UseMsDeploy
+        {
+            get { return true; }
+        }
+
         public override string TestResourcePath
         {
             get { return @"src\test\resource\NPANDAY_488\"; }

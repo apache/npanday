@@ -48,6 +48,11 @@ namespace NPanday.ProjectImporter.ImporterTests
             get;
         }
 
+        public virtual bool UseMsDeploy
+        {
+            get { return false; }
+        }
+
         [Test]
         [TestFixtureSetUp]
         public void ShouldBeAbleImportProject()
@@ -62,7 +67,7 @@ namespace NPanday.ProjectImporter.ImporterTests
             try
             {
                 string warnMsg = string.Empty;
-                generatedPomFiles = NPandayImporter.ImportProject(solutionFile, "test.group", "test-parent", "1.2.3-SNAPSHOT", string.Empty, false, ref warnMsg);
+                generatedPomFiles = NPandayImporter.ImportProject(solutionFile, "test.group", "test-parent", "1.2.3-SNAPSHOT", string.Empty, false, UseMsDeploy, ref warnMsg);
 
             }
             catch (Exception e)

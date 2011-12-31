@@ -119,6 +119,9 @@ namespace NPanday.VisualStudio.Addin
                     }
 
                     txtVersion.Text = version;
+
+                    // TODO: remember this, or have a default
+                    useMsDeployCheckBox.Checked = true;
                 }
                 catch { /*do nothing*/}
 
@@ -183,7 +186,7 @@ namespace NPanday.VisualStudio.Addin
             //Refactored code for easier Unit Testing
             try
             {
-                GeneratePom(txtBrowseDotNetSolutionFile.Text, txtGroupId.Text.Trim(), txtVersion.Text.Trim(), txtSCMTag.Text);
+                GeneratePom(txtBrowseDotNetSolutionFile.Text, txtGroupId.Text.Trim(), txtVersion.Text.Trim(), txtSCMTag.Text, useMsDeployCheckBox.Checked);
             }
             catch (Exception exception)
             {
@@ -191,7 +194,7 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
-        protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag)
+        protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag, bool useMsDeploy)
         {
             string warningMsg = string.Empty;
             String mavenVerRegex = "^[0-9]+(" + Regex.Escape(".") + "?[0-9]+){0,3}$";
@@ -274,7 +277,8 @@ namespace NPanday.VisualStudio.Addin
 
                 validateSolutionStructure();
                 resyncAllArtifacts();
-                string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, ref warningMsg);
+                // TODO: nicer to have some sort of structure / flags for the Msdeploy bit, or this dialog will get out of control over time - perhaps a "project configuration" dialog can replace the test popup
+                string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, useMsDeploy, ref warningMsg);
                 string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
 
                 foreach (string pom in generatedPoms)

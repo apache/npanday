@@ -75,6 +75,23 @@ namespace NPanday.ProjectImporter.Converter
                 typeof(WebWithVbOrCsProjectFilePomConverter)
               );
             __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Web_Site | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.WebDeploy2,
+                typeof(ASPNetPomConverter)
+              );
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Web_Site | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.WebDeploy2,
+                typeof(ASPNetPomConverter)
+              );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.WebDeploy2,
+                typeof(ASPNetPomConverter)
+              );
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.WebDeploy2,
+                typeof(ASPNetPomConverter)
+              );
+            __converterAlgorithms.Add(
                 VisualStudioProjectTypeEnum.Windows_Presentation_Foundation__WPF | VisualStudioProjectTypeEnum.Windows__CSharp,
                 typeof(NormalPomConverter)
               );
@@ -223,6 +240,12 @@ namespace NPanday.ProjectImporter.Converter
             }
             else
            {
+               // fudge the project type - though overall this would be better with "capabilities" or some filters instead
+               if ((projectDigest.ProjectType & VisualStudioProjectTypeEnum.Web_Application) != 0 && projectDigest.UseMsDeploy)
+               {
+                   projectDigest.ProjectType |= VisualStudioProjectTypeEnum.WebDeploy2;
+               }
+
 
                try
                 {

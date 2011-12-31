@@ -59,6 +59,7 @@ namespace NPanday.VisualStudio.Addin
             this.txtSCMTag = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtVersion = new System.Windows.Forms.TextBox();
+            this.useMsDeployCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnBrowse
@@ -93,10 +94,10 @@ namespace NPanday.VisualStudio.Addin
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(451, 107);
+            this.btnCancel.Location = new System.Drawing.Point(265, 172);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(64, 21);
+            this.btnCancel.Size = new System.Drawing.Size(104, 21);
             this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -104,7 +105,7 @@ namespace NPanday.VisualStudio.Addin
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(341, 107);
+            this.btnGenerate.Location = new System.Drawing.Point(157, 172);
             this.btnGenerate.Margin = new System.Windows.Forms.Padding(2);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(104, 21);
@@ -167,12 +168,23 @@ namespace NPanday.VisualStudio.Addin
             this.txtVersion.Size = new System.Drawing.Size(171, 20);
             this.txtVersion.TabIndex = 15;
             // 
+            // useMsDeployCheckBox
+            // 
+            this.useMsDeployCheckBox.AutoSize = true;
+            this.useMsDeployCheckBox.Location = new System.Drawing.Point(118, 141);
+            this.useMsDeployCheckBox.Name = "useMsDeployCheckBox";
+            this.useMsDeployCheckBox.Size = new System.Drawing.Size(264, 17);
+            this.useMsDeployCheckBox.TabIndex = 16;
+            this.useMsDeployCheckBox.Text = "Use Web Deploy 2.0 to package web applications";
+            this.useMsDeployCheckBox.UseVisualStyleBackColor = true;
+            // 
             // NPandayImportProjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 136);
+            this.ClientSize = new System.Drawing.Size(526, 204);
             this.ControlBox = false;
+            this.Controls.Add(this.useMsDeployCheckBox);
             this.Controls.Add(this.txtVersion);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtSCMTag);
@@ -207,5 +219,6 @@ namespace NPanday.VisualStudio.Addin
         private System.Windows.Forms.TextBox txtSCMTag;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtVersion;
+        private System.Windows.Forms.CheckBox useMsDeployCheckBox;
     }
 }

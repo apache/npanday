@@ -100,18 +100,26 @@ namespace NPanday.ProjectImporter
         /// <param name="verifyTests">if true, a dialog box for verifying tests will show up and requires user interaction</param>
         /// <param name="scmTag">generates scm tags if txtboxfield is not empty or null</param>
         /// <returns>An array of generated pom.xml filenames</returns>
-        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag,bool verifyTests, ref string warningMsg)
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, bool verifyTests, ref string warningMsg)
         {
-            if (verifyTests)
-            {
-                return ImportProject(solutionFile, groupId, artifactId, version,  scmTag, VerifyUnitTestsToUser.VerifyTests, ref warningMsg);    
-            }
-            else
-            {
-                return ImportProject(solutionFile, groupId, artifactId, version, scmTag, null, ref warningMsg);    
-            }
-            
+            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, verifyTests, false, ref warningMsg);
+        }
 
+        /// <summary>
+        /// Imports a specified Visual Studio Projects in a Solution to an NPanday Pom,
+        /// This is the Project-Importer Entry Method
+        /// </summary>
+        /// <param name="solutionFile">Path to your Visual Studio Solution File *.sln </param>
+        /// <param name="groupId">Project Group ID, for maven groupId</param>
+        /// <param name="artifactId">Project Parent Pom Artifact ID, used as a maven artifact ID for the parent pom.xml</param>
+        /// <param name="version">Project version, used as a maven version for the entire pom.xmls</param>
+        /// <param name="verifyTests">if true, a dialog box for verifying tests will show up and requires user interaction</param>
+        /// <param name="scmTag">generates scm tags if txtboxfield is not empty or null</param>
+        /// <returns>An array of generated pom.xml filenames</returns>
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, bool verifyTests, bool useMsDeploy, ref string warningMsg)
+        {
+            VerifyProjectToImport method = verifyTests ? VerifyUnitTestsToUser.VerifyTests : (VerifyProjectToImport) null;
+            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, method, useMsDeploy, ref warningMsg);    
         }
 
         /// <summary>
@@ -154,9 +162,25 @@ namespace NPanday.ProjectImporter
         /// <param name="verifyProjectToImport">A delegate That will Accept a method for verifying Projects To Import</param>
         /// <param name="scmTag">adds scm tags to parent pom.xml if not string.empty or null</param>
         /// <returns>An array of generated pom.xml filenames</returns>
-        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag,VerifyProjectToImport verifyProjectToImport, ref string warningMsg)
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, VerifyProjectToImport verifyProjectToImport, ref string warningMsg)
         {
-        
+            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, verifyProjectToImport, false, ref warningMsg);
+        }
+
+        /// <summary>
+        /// Imports a specified Visual Studio Projects in a Solution to an NPanday Pom,
+        /// This is the Project-Importer Entry Method,
+        /// This method accepts a delegate to use as A project Verifier algorithm
+        /// </summary>
+        /// <param name="solutionFile">Path to your Visual Studio Solution File *.sln </param>
+        /// <param name="groupId">Project Group ID, for maven groupId</param>
+        /// <param name="artifactId">Project Parent Pom Artifact ID, used as a maven artifact ID for the parent pom.xml</param>
+        /// <param name="version">Project version, used as a maven version for the entire pom.xmls</param>
+        /// <param name="verifyProjectToImport">A delegate That will Accept a method for verifying Projects To Import</param>
+        /// <param name="scmTag">adds scm tags to parent pom.xml if not string.empty or null</param>
+        /// <returns>An array of generated pom.xml filenames</returns>
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, VerifyProjectToImport verifyProjectToImport, bool useMsDeploy, ref string warningMsg)
+        {
             string[] result = null;
 
             FileInfo solutionFileInfo = new FileInfo(solutionFile);
@@ -181,6 +205,8 @@ namespace NPanday.ProjectImporter
             {
                 if (PomConverter.__converterAlgorithms.ContainsKey(pDigest.ProjectType))
                 {
+                    // set the project flag so that converters can look at it later
+                    pDigest.UseMsDeploy = useMsDeploy;
                     filteredPrjDigests.Add(pDigest);
                 }
                 else

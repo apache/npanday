@@ -11,7 +11,7 @@
   <packaging>dotnet-library</packaging>
   <name>test.group : HelloWorldWebRole</name>
   <build>
-    <sourceDirectory>.</sourceDirectory>
+    <sourceDirectory>./</sourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
