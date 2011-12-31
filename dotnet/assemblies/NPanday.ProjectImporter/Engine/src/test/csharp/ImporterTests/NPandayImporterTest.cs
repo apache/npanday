@@ -31,50 +31,13 @@ namespace NPanday.ProjectImporter.ImporterTests
     [TestFixture]
     public class NPandayImporterTest
     {
-        private String slnFile;
         private String warnMsg = String.Empty;
-        private DirectoryInfo withoutNUnitSource;
-        private DirectoryInfo withoutNUnitTarget;
-        private DirectoryInfo withNUnitSource;
-        private DirectoryInfo withNUnitTarget;
-
-        public NPandayImporterTest()
-        {
-            withoutNUnitSource = new DirectoryInfo(FileUtil.GetBaseDirectory() + "\\src\\test\\resource\\MavenTestProjectWithoutNUnit");
-            withoutNUnitTarget = new DirectoryInfo(FileUtil.GetBaseDirectory() + "\\src\\test\\resource\\MavenTestProjectWithoutNUnitCopy");
-
-            withNUnitSource = new DirectoryInfo(FileUtil.GetBaseDirectory() + "\\src\\test\\resource\\MavenTestProjectWithNUnit");
-            withNUnitTarget = new DirectoryInfo(FileUtil.GetBaseDirectory() + "\\src\\test\\resource\\MavenTestProjectWithNUnitCopy");
-        }
-
-        [TestFixtureSetUp]
-        public void TestSetUp()
-        {
-            //TODO Remove when TestTearDown is fixed
-            //Delete manually
-            if (withNUnitTarget.Exists)
-            {
-                withNUnitTarget.Delete(true);
-            }
-
-            FileUtil.CopyDirectory(withoutNUnitSource, withoutNUnitTarget);
-            FileUtil.CopyDirectory(withNUnitSource, withNUnitTarget); 
-        }
-
-        [TestFixtureTearDown]
-        public void TestTearDown()
-        {
-            Directory.Delete(withoutNUnitTarget.FullName, true);
-
-            //TODO
-            //Doesn't work because some process is holding the .references folder
-            //Directory.Delete(withNUnitTarget.FullName, true);
-        }
 
         [Test]
         public void TestProjectImporterWithNunitAndUncheckedTestProject()
-        { 
-            slnFile = withNUnitTarget.FullName + "\\MavenTestProjectWithNUnit.sln";
+        {
+            Assert.IsNotNull(ProjectImporterTestFixture.SampleProjectsPath, "ProjectImporterTestFixture.SampleProjectsPath must not be null");
+            string slnFile = Path.Combine(ProjectImporterTestFixture.SampleProjectsPath, @"MavenTestProjectWithNUnit\MavenTestProjectWithNUnit.sln");
             string[] generatedPoms = NPandayImporter.ImportProject(slnFile, "test", "test-plugin", "1.0", "", UncheckedProject, ref warnMsg);
 
             Assert.IsNotNull(generatedPoms);
@@ -85,7 +48,8 @@ namespace NPanday.ProjectImporter.ImporterTests
         [Test]
         public void TestProjectImporterWithNunitAndCheckedTestProject()
         {
-            slnFile = withNUnitTarget.FullName + "\\MavenTestProjectWithNUnit.sln"; 
+            Assert.IsNotNull(ProjectImporterTestFixture.SampleProjectsPath, "ProjectImporterTestFixture.SampleProjectsPath must not be null");
+            string slnFile = Path.Combine(ProjectImporterTestFixture.SampleProjectsPath, @"MavenTestProjectWithNUnit\MavenTestProjectWithNUnit.sln");
             string[] generatedPoms = NPandayImporter.ImportProject(slnFile, "test", "test-plugin", "1.0", "", CheckedProject, ref warnMsg);
 
             Assert.IsNotNull(generatedPoms);
@@ -96,7 +60,8 @@ namespace NPanday.ProjectImporter.ImporterTests
         [Test]
         public void TestProjectImporterWithOutNunitAndCheckedTestProject()
         {
-            slnFile = withoutNUnitTarget.FullName + "\\MavenTestProjectWithoutNUnit.sln";
+            Assert.IsNotNull(ProjectImporterTestFixture.SampleProjectsPath, "ProjectImporterTestFixture.SampleProjectsPath must not be null");
+            string slnFile = Path.Combine(ProjectImporterTestFixture.SampleProjectsPath, @"MavenTestProjectWithoutNUnit\MavenTestProjectWithoutNUnit.sln");
             string[] generatedPoms = NPandayImporter.ImportProject(slnFile, "test", "test-plugin", "1.0", "", CheckedProject, ref warnMsg);
 
             Assert.IsNotNull(generatedPoms);
@@ -107,7 +72,8 @@ namespace NPanday.ProjectImporter.ImporterTests
         [Test]
         public void TestProjectImporterWithOutNunitAndUncheckedTestProject()
         {
-            slnFile = withoutNUnitTarget.FullName + "\\MavenTestProjectWithoutNUnit.sln";
+            Assert.IsNotNull(ProjectImporterTestFixture.SampleProjectsPath, "ProjectImporterTestFixture.SampleProjectsPath must not be null");
+            string slnFile = Path.Combine(ProjectImporterTestFixture.SampleProjectsPath, @"MavenTestProjectWithoutNUnit\MavenTestProjectWithoutNUnit.sln");
             string[] generatedPoms = NPandayImporter.ImportProject(slnFile, "test", "test-plugin", "1.0", "", UncheckedProject, ref warnMsg);
 
             Assert.IsNotNull(generatedPoms);
