@@ -81,7 +81,7 @@ namespace NPanday.ProjectImporter.ImporterTests
         {
             if (poms.Length != expected)
             {
-                Assert.Fail(string.Format("Expecting {0} pom files tobe generated, but only {1} are generated!!!", expected, poms.Length));
+                Assert.Fail(string.Format("Expecting {0} POM files to be generated, but {1} were generated!!!", expected, poms.Length));
             }
         }
 		
