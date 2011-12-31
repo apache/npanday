@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Licensed to the Apache Software Foundation (ASF) under one
   ~ or more contributor license agreements.  See the NOTICE file
@@ -67,7 +66,7 @@
     <Compile Include="Converter\Algorithms\IPomConverter.cs" />
     <Compile Include="Converter\Algorithms\NormalPomConverter.cs" />
     <Compile Include="Converter\Algorithms\WebPomConverter.cs" />
-    <Compile Include="Digest\PomConverter.cs" />
+    <Compile Include="Converter\PomConverter.cs" />
     <Compile Include="Digest\Algorithms\IProjectDigestAlgorithm.cs" />
     <Compile Include="Digest\Algorithms\WebProjectDigestAlgorithm.cs" />
     <Compile Include="Digest\Model\BootstrapperPackage.cs" />
