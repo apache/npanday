@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  
+  <UsingTask TaskName="TransformXml"  AssemblyFile="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\Web\Microsoft.Web.Publishing.Tasks.dll"/>
+
+  <!-- SETUP [ -->
+  
+  <PropertyGroup>
+    <RawContentsDirectory Condition="'$(RawContentsDirectory)' == ''">$(WorkDirectory)\01-source-raw</RawContentsDirectory>
+    <TransformationsDirectory Condition="'$(TransformationsDirectory)' == ''">$(WorkDirectory)\01-source-transformations</TransformationsDirectory>
+    <IntermediateTransformationDirectory Condition="'$(IntermediateTransformationDirectory)' == ''">$(WorkDirectory)\02-xdt-intermediate</IntermediateTransformationDirectory>
+    <TargetDirectory Condition="'$(TargetDirectory)' == ''">$(WorkDirectory)\03-transformed</TargetDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <TransformationFileIdentifiers Include="$(TransformationFileIdentifiers)"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SourceFiles Include="$(RawContentsDirectory)\**\*.*"/>
+    <Transformations Include="$(TransformationsDirectory)\**\*.*"/>
+  </ItemGroup>
+
+  <!-- ] SETUP -->
+  
+  <PropertyGroup>
+    <TransformAndCopyDependsOn>
+      ValidateParameters;
+      SetupDefaults;
+      MatchTransformations;
+      PrepareTransformationInstructions;
+      TransformEach;
+      CopyAll;
+      IncrementalCleanup
+    </TransformAndCopyDependsOn>
+  </PropertyGroup>
+
+  <Target Name="TransformAndCopy" DependsOnTargets="$(TransformAndCopyDependsOn)">
+    <Message Text="Copy with transform from '$(RawContentsDirectory)' to '$(TargetDirectory)' has run successfully!" Importance="high"/>
+  </Target>
+
+  <Target Name="ValidateParameters">
+    
+    <Error Condition="!Exists($(WorkDirectory))"
+           Text="WorkDirectory: Could not find the directory $(WorkDirectory)" />
+
+    <Error Condition="!Exists($(RawContentsDirectory))"
+           Text="RawContentsDirectory: Could not find the directory $(RawContentsDirectory)" />
+
+    <Error Condition="!Exists($(TransformationsDirectory))"
+           Text="TransformationsDirectory: Could not find the directory $(TransformationsDirectory)" />
+
+  </Target>
+
+  <Target Name="SetupDefaults">
+    <ItemGroup>
+      <SourceFiles Condition="'%(SourceFiles.Identity)' != ''">
+        <TargetFile>$(TargetDirectory)\%(SourceFiles.RecursiveDir)%(Filename)%(Extension)</TargetFile>
+        <IntermediateTransformedFile>$(IntermediateTransformationDirectory)\%(SourceFiles.RecursiveDir)%(Filename)%(Extension)</IntermediateTransformedFile>
+      </SourceFiles>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="MatchTransformations"
+          Inputs="%(SourceFiles.Identity)"
+          Outputs="DUMMY"
+          >
+    <PropertyGroup>
+      <SourceFile>%(SourceFiles.Identity)</SourceFile>
+      
+      <TransformationFileBefore>$(TransformationsDirectory)\%(SourceFiles.RecursiveDir)%(Filename).</TransformationFileBefore>
+      <TransformationFileAfter>%(SourceFiles.Extension)</TransformationFileAfter>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <!-- clear the temp list -->
+      <_Transformations Remove="@(_Transformations)" />
+      
+      <!-- add an include per %(TransformationFileIdentifiers.Identity) -->
+      <_Transformations Include="$(TransformationFileBefore)%(TransformationFileIdentifiers.Identity)$(TransformationFileAfter)"/>
+      
+      <!-- remove those, where the file doesn't exist -->
+      <_Transformations Remove="%(_Transformations.Identity)" Condition="!Exists(%(FullPath))"/>
+
+      <!-- Add found transformations to metadata -->
+      <SourceFiles Condition="'%(SourceFiles.Identity)' == '$(SourceFile)'">
+        <TransformationFiles>@(_Transformations)</TransformationFiles>
+      </SourceFiles>
+    </ItemGroup>
+
+    <Message Text="Found %(SourceFiles.TransformationFiles) for %(SourceFiles.Identity)" 
+             Condition="%(SourceFiles.TransformationFiles) != ''"/>
+  </Target>
+
+  <Target Name="PrepareTransformationInstructions"
+          Inputs="%(SourceFiles.Identity)"
+          Outputs="DUMMY"
+          >
+    <PropertyGroup>
+      <SourceFile>%(SourceFiles.Identity)</SourceFile>
+      <IntermediateTransformedFile>%(SourceFiles.IntermediateTransformedFile)</IntermediateTransformedFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <TransformationInstructions Include="%(SourceFiles.TransformationFiles)">
+        <TransformationTarget>$(IntermediateTransformedFile)</TransformationTarget>
+      </TransformationInstructions>
+    </ItemGroup>
+
+    <Copy SourceFiles="$(SourceFile)"
+         DestinationFiles="$(IntermediateTransformedFile)"
+         Condition="'%(SourceFiles.TransformationFiles)' != ''"/>
+  </Target>
+  
+  <!-- 
+  Will run per %(SourceFiles.Identity) as specified on parent [TransformEach]. 
+  -->
+  <Target Name="TransformEach"
+          Inputs="%(TransformationInstructions.Identity)"
+          Outputs="DUMMY">
+    <PropertyGroup>
+      <CurrentTransformationFile>%(TransformationInstructions.Identity)</CurrentTransformationFile>
+      <TransformationTarget>%(TransformationInstructions.TransformationTarget)</TransformationTarget>
+    
+      <TempFile1>$([System.IO.Path]::GetTempFileName())</TempFile1>
+      <TempFile2>$([System.IO.Path]::GetTempFileName())</TempFile2>
+    </PropertyGroup>
+
+    <Message Text="# applying $(CurrentTransformationFile)
+  to $(TransformationTarget)"/>
+
+    <!-- 
+    Using TMP-files, since XmlTransform locks the all files
+    -->
+    <Copy SourceFiles="$(TransformationTarget)"
+          DestinationFiles="$(TempFile1)"
+          />
+
+    <TransformXml Source="$(TempFile1)"
+                  Transform="$(CurrentTransformationFile)"
+                  Destination="$(TempFile2)" />
+
+    <Copy SourceFiles="$(TempFile2)"
+          DestinationFiles="$(TransformationTarget)"
+          />
+    
+  </Target>
+
+  <Target Name="CopyAll">
+    <Copy SourceFiles="@(SourceFiles -> '%(IntermediateTransformedFile)')"
+          DestinationFiles="@(SourceFiles -> '%(TargetFile)')"
+          Condition="Exists(%(IntermediateTransformedFile))"/>
+    
+    <Copy SourceFiles="@(SourceFiles)"
+          DestinationFiles="@(SourceFiles -> '%(TargetFile)')"
+          Condition="!Exists(%(IntermediateTransformedFile))"/>
+  </Target>
+
+  <Target Name="IncrementalCleanup">
+    <ItemGroup>
+      <OrphanedTargetFiles Include="$(TargetDirectory)\**\*.*" Exclude="@(SourceFiles -> '%(TargetFile)')"/>
+    </ItemGroup>
+    
+    <Delete Files="@(OrphanedTargetFiles)" />
+  </Target>
+
+</Project>
