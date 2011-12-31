@@ -421,19 +421,6 @@ namespace NPanday.Utils
             {
                 pomFile.Directory.Create();
             }
-            List<NPanday.Model.Pom.Plugin> plugins = new List<NPanday.Model.Pom.Plugin>();
-            if (model.build != null && model.build.plugins != null)
-            {
-                foreach (Plugin item in model.build.plugins)
-                {
-                    plugins.Add(item);
-                    if ((item.artifactId.Equals("maven-compile-plugin")) || (item.artifactId.Equals("maven-aspx-plugin")))
-                    {
-                        item.extensions = true;
-                    }
-                }
-                model.build.plugins = plugins.ToArray();
-            }
             TextWriter writer = null;
             XmlSerializer serializer = null;
             try
