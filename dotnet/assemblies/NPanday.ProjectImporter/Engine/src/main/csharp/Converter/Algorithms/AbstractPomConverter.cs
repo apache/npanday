@@ -524,25 +524,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         }
 
-        protected Plugin FindPlugin(string groupId, string artifactId)
-        {
-            if (model.build.plugins == null)
-            {
-                return null;
-            }
-
-            foreach (Plugin plugin in model.build.plugins)
-            {
-                if (groupId.ToLower().Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase) && artifactId.ToLower().Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return plugin;
-                }
-            }
-
-            return null;
-
-        }
-
         /// <summary>
         /// Adds PluginExecution
         /// </summary>

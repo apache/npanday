@@ -26,6 +26,7 @@ using NPanday.ProjectImporter.Validator;
 using System.IO;
 using NPanday.Model.Pom;
 using System.Xml;
+using NPanday.Utils;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -128,7 +129,7 @@ namespace NPanday.ProjectImporter.Verifiers
 
         static bool IsProjectAnIntegrationTest(NPanday.Model.Pom.Model model)
         {
-            Plugin plugin = FindPlugin(
+            Plugin plugin = PomHelperUtility.FindPlugin(
                      model, 
                      "org.apache.npanday.plugins",
                      "maven-test-plugin"
@@ -157,42 +158,5 @@ namespace NPanday.ProjectImporter.Verifiers
             return false;
 
         }
-
-        #region TODO: make utility together whats in the AbstractConverter
-
-        static Plugin FindPlugin(NPanday.Model.Pom.Model model, string groupId, string artifactId)
-        {
-            return FindPlugin(model, groupId, artifactId, null);
-        }
-
-        static Plugin FindPlugin(NPanday.Model.Pom.Model model, string groupId, string artifactId, string version)
-        {
-            if (model.build.plugins == null)
-            {
-                return null;
-            }
-
-            foreach (Plugin plugin in model.build.plugins)
-            {
-                if (groupId.Equals(plugin.groupId) && artifactId.Equals(plugin.artifactId))
-                {
-                    if (!string.IsNullOrEmpty(version) && version.Equals(plugin.version))
-                    {
-                        return plugin;
-                    }
-                    else if (string.IsNullOrEmpty(version))
-                    {
-                        return plugin;
-                    }
-                }
-            }
-
-            return null;
-
-        }
-
-        #endregion
-
-
     }
 }

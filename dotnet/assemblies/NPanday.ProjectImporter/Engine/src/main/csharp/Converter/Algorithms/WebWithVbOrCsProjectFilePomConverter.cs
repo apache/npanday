@@ -58,7 +58,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             Model.build.sourceDirectory = ".";
 
             // change the outputDirectory of the plugin
-            Plugin compilePlugin = FindPlugin("org.apache.npanday.plugins", "maven-compile-plugin");
+            Plugin compilePlugin = PomHelperUtility.FindPlugin(model, "org.apache.npanday.plugins", "maven-compile-plugin");
             AddPluginConfiguration(compilePlugin, "outputDirectory", "bin");
 
             // Add NPanday compile plugin 

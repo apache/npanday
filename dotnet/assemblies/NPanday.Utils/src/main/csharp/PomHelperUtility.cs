@@ -19,19 +19,11 @@
 //
 #endregion
 using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Text;
-
+using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.XPath;
-
-using NPanday.Logging;
 using NPanday.Model.Pom;
-using NPanday.Model.Settings;
-
-using System.Windows.Forms;
 
 namespace NPanday.Utils
 {
@@ -112,16 +104,26 @@ namespace NPanday.Utils
         public bool HasPlugin(string pluginGroupId, string pluginArtifactId)
         {
             NPanday.Model.Pom.Model model = ReadPomAsModel();
+            return FindPlugin(model, pluginGroupId, pluginArtifactId) != null;
+        }
+
+        public static Plugin FindPlugin(NPanday.Model.Pom.Model model, string groupId, string artifactId)
+        {
+            if (model.build.plugins == null)
+            {
+                return null;
+            }
 
             foreach (Plugin plugin in model.build.plugins)
             {
-                if (pluginGroupId.Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
-                    && pluginArtifactId.Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
+                if (groupId.ToLower().Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase) && artifactId.ToLower().Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return true;
+                    return plugin;
                 }
             }
-            return false;
+
+            return null;
+
         }
 
         public void AddPlugin(string groupId, string artifactId, string version, bool extensions, PluginConfiguration pluginConf)
