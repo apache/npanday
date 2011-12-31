@@ -190,7 +190,8 @@ public class TesterMojo extends AbstractMojo
     private String nunitCommand;
 
     /**
-     * The framework version to run the tests: 1.1, 2.0, 3.5, 4.0
+     * The framework version to run the tests: 1.1, 2.0, 3.5, 4.0. Note that using this setting will require you to use
+     * NUnit >= 2.5.
      *
      * @parameter expression = "${executionFrameworkVersion}"
      */
@@ -244,12 +245,12 @@ public class TesterMojo extends AbstractMojo
         }
         
         // Not supported on NUnit < 2.5 - see NPANDAY-332
-        // String frameworkVersion = vendorInfo.getFrameworkVersion();
-        // getLog().debug( "NPANDAY-1100-012: Framework version:" + frameworkVersion );
-        // if (!"MONO".equals( vendorName ) && (frameworkVersion != null && frameworkVersion.length() > 0 )) {
-            // commands.add( switchChar + "framework:" + "v"+frameworkVersion);
-        // }
-        
+        if ( executionFrameworkVersion != null && executionFrameworkVersion.length() > 0 )
+        {
+            getLog().debug( "NPANDAY-1100-012: Framework version:" + executionFrameworkVersion );
+            commands.add( switchChar + "framework:" + "v" + executionFrameworkVersion );
+        }
+
         return commands;
     }
 
