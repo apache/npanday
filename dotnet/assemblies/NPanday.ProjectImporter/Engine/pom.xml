@@ -138,9 +138,9 @@
         <plugins>
           <plugin> 
             <groupId>org.apache.npanday.plugins</groupId>
-            <artifactId>maven-compile-plugin</artifactId>
+            <artifactId>maven-test-plugin</artifactId>
             <configuration>
-              <testFrameworkVersion>4.0</testFrameworkVersion>
+              <executionFrameworkVersion>4.0</executionFrameworkVersion>
             </configuration>
           </plugin> 
         </plugins> 

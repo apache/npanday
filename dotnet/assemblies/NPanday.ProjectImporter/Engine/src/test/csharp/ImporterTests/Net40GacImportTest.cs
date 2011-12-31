@@ -28,9 +28,9 @@ namespace NPanday.ProjectImporter.ImporterTests
     {
         public override void CheckFrameworkVersion()
         {
-            if (!GetType().Assembly.ImageRuntimeVersion.StartsWith("v4.0"))
+            if (Environment.Version.Major < 4)
             {
-                Assert.Ignore("Test only runs on .NET 4.0, but is: " + this.GetType().Assembly.ImageRuntimeVersion);
+                Assert.Ignore("Test only runs on .NET 4.0, but is: " + Environment.Version.ToString());
             }
 
             // Test uses System.Web.MVC
