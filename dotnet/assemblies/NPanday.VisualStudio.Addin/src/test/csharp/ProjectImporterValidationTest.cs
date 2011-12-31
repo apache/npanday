@@ -37,7 +37,7 @@ namespace ConnectTest.UtilsTest
         {
             public void GeneratePomTest(String solutionFile, String groupId, String version, String scmTag)
             {
-                this.GeneratePom(solutionFile, groupId, version, scmTag);
+                this.GeneratePom(solutionFile, groupId, version, scmTag, false);
             }
         }
 
