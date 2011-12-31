@@ -39,6 +39,16 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 {
     public abstract class AbstractPomConverter : IPomConverter
     {
+        public static Dictionary<string, string> npandayTypeMap = new Dictionary<string, string>();
+        static AbstractPomConverter()
+        {
+            // reverse of ArtifactType in dotnet-core
+            npandayTypeMap.Add("library", "dotnet-library");
+            npandayTypeMap.Add("module", "dotnet-module");
+            npandayTypeMap.Add("exe", "dotnet-executable");
+            npandayTypeMap.Add("winexe", "dotnet-executable");
+        }
+
         protected RspUtility rspUtil;
         protected ArtifactContext artifactContext;
         protected List<Artifact.Artifact> localArtifacts;
@@ -63,7 +73,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         {
             get { return model; }
         }
-
 
         public AbstractPomConverter(ProjectDigest projectDigest, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId)
         {
@@ -302,7 +311,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         }
 
 
-        protected void GenerateHeader(string packaging)
+        protected void GenerateHeader(string defaultPackaging)
         {
             // Add Parent Header
             if (parent != null)
@@ -333,19 +342,16 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 projectName = f.Name.Substring(0, f.Name.Length - f.Extension.Length);
             }
 
-
-            model.artifactId = FilterID(projectName);
-
-
-
-
             model.modelVersion = "4.0.0";
-            model.packaging = packaging;
-
+            model.artifactId = FilterID(projectName);
             model.name = string.Format("{0} : {1}", !string.IsNullOrEmpty(groupId) ? groupId : FilterID(projectDigest.AssemblyName), FilterID(projectDigest.AssemblyName));
+
+            model.packaging = defaultPackaging;
             if (!string.IsNullOrEmpty(projectDigest.OutputType))
             {
-                model.packaging = projectDigest.OutputType.ToLower();
+                string type = projectDigest.OutputType.ToLower();
+                if (npandayTypeMap.ContainsKey(type))
+                    model.packaging = npandayTypeMap[type];
             }
         }
 
@@ -517,11 +523,13 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         /// <param name="phase"></param>
         protected void AddPluginExecution(Plugin plugin, string goal, string phase)
         {
-            if (string.IsNullOrEmpty(goal))
-            {
-                // there is nothing to write
-                return;
-            }
+            AddPluginExecution(plugin, goal, new string[] { goal }, phase);
+        }
+
+        protected void AddPluginExecution(Plugin plugin, string id, string[] goals, string phase)
+        {
+            if (goals.Length == 0)
+                throw new Exception("Plugin execution must contain goals");
 
             List<PluginExecution> list = new List<PluginExecution>();
             if (plugin.executions == null)
@@ -532,7 +540,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             PluginExecution exe = new PluginExecution();
 
-            exe.goals = new string[] { goal };
+            exe.id = id;
+            exe.goals = goals;
+            exe.phase = phase;
 
             list.Add(exe);
 

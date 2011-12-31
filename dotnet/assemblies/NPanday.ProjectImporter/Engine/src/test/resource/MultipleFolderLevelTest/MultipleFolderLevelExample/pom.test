@@ -8,7 +8,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>MultipleFolderLevelExample</artifactId>
-  <packaging>library</packaging>
+  <packaging>dotnet-library</packaging>
   <name>test.group : MultipleFolderLevelExample</name>
   <build>
     <sourceDirectory>./</sourceDirectory>

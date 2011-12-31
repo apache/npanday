@@ -8,7 +8,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>SA110</artifactId>
-  <packaging>exe</packaging>
+  <packaging>dotnet-executable</packaging>
   <name>test.group : SA110</name>
   <build>
     <sourceDirectory>./</sourceDirectory>

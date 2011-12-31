@@ -8,7 +8,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>Project2</artifactId>
-  <packaging>library</packaging>
+  <packaging>dotnet-library</packaging>
   <name>test.group : Project2</name>
   <build>
     <sourceDirectory>./</sourceDirectory>

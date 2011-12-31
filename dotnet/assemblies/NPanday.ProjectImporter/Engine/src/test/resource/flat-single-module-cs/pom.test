@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>test.group</groupId>
   <artifactId>FlatSingleModule</artifactId>
-  <packaging>library</packaging>
+  <packaging>dotnet-library</packaging>
   <name>test.group : FlatSingleModule</name>
   <version>1.0-SNAPSHOT</version>
   <build>

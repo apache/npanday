@@ -8,7 +8,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>Shell32Example</artifactId>
-  <packaging>winexe</packaging>
+  <packaging>dotnet-executable</packaging>
   <name>test.group : Shell32Example</name>
   <build>
     <sourceDirectory>./</sourceDirectory>
