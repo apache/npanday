@@ -329,23 +329,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             string projectName = projectDigest.AssemblyName;
             if (HasSpecialCharacters(projectDigest.AssemblyName))
             {
-                string[] projectFullName = projectDigest.FullFileName.Split("\\".ToCharArray());
-                projectName = projectFullName[projectFullName.Length - 1];
-
-                if (projectName.Equals("."))
-                {
-                    projectName = projectFullName[projectFullName.Length - 2];
-                }
-
-                if (projectName.Contains(".csproj"))
-                {
-                    projectName = projectName.Replace(".csproj", "");
-                }
-                if (projectName.Contains(".vbproj"))
-                {
-                    projectName = projectName.Replace(".vbproj", "");
-                }
-
+                FileInfo f = new FileInfo(ProjectDigest.FullFileName);
+                projectName = f.Name.Substring(0, f.Name.Length - f.Extension.Length);
             }
 
 

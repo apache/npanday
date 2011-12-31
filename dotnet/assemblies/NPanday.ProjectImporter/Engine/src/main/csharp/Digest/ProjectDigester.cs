@@ -27,6 +27,7 @@ using NPanday.ProjectImporter.Digest.Model;
 using NPanday.ProjectImporter.Digest.Algorithms;
 
 using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
+using System;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -212,14 +213,16 @@ namespace NPanday.ProjectImporter.Digest
 
         public static Project GetProject(string projectFile)
         {
-            if (!new FileInfo(projectFile).Exists)
+            FileInfo projectFileInfo = new FileInfo(projectFile);
+
+            if (!projectFileInfo.Exists)
             {
                 return null;
             }
 
-            if (!(projectFile.ToUpper().EndsWith(".CSPROJ") || projectFile.ToUpper().EndsWith(".VBPROJ")))
+            if (!(projectFileInfo.Extension.ToUpper().Equals(".CSPROJ") || projectFileInfo.Extension.ToUpper().Equals(".VBPROJ")))
             {
-                return null;
+                throw new Exception( "Unrecognized project type: " + projectFileInfo.Extension + " for file " + projectFile );
             }
 
             // gets the directory path of mscorlib using the System.String Type Assembly path

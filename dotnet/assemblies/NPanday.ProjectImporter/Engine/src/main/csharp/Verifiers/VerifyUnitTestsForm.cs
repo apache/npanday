@@ -27,6 +27,7 @@ using System.Text;
 using System.Windows.Forms;
 using NPanday.ProjectImporter.Digest;
 using NPanday.ProjectImporter.Digest.Model;
+using System.IO;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -60,24 +61,9 @@ namespace NPanday.ProjectImporter.Verifiers
                     projectDigest.FullFileName = projectDigest.FullFileName.Substring(0, projectDigest.FullFileName.LastIndexOf("\\"));
                 }
 
-                String[] projectNameTokens = projectDigest.FullFileName.Split("\\".ToCharArray());
-                String projectName = projectNameTokens[projectNameTokens.Length - 1];
-
-                if (projectName.Contains(".csproj") || projectName.Contains(".vbproj"))
+                if (chkListTestUnits.CheckedItems.Contains(projectDigest.AssemblyName))
                 {
-                    if (projectName.Contains(".csproj"))
-                    {
-                        projectName = projectName.Substring(0, projectName.LastIndexOf(".csproj"));
-                   }
-                    else
-                    {
-                        projectName = projectName.Substring(0, projectName.LastIndexOf(".vbproj"));
-                    }
-                    
-                    if (chkListTestUnits.CheckedItems.Contains(projectName))
-                    {
-                        projectDigest.UnitTest = true;
-                    }
+                    projectDigest.UnitTest = true;
                 }
             }
             this.Close();
@@ -102,20 +88,7 @@ namespace NPanday.ProjectImporter.Verifiers
                     projectName = projectNameTokens[projectNameTokens.Length - 2];
                 }
 
-                if (projectName.Contains(".csproj") || projectName.Contains(".vbproj"))
-                {
-                    if (projectName.Contains(".csproj"))
-                    {
-                        projectName = projectName.Substring(0, projectName.LastIndexOf(".csproj"));
-                    }
-                    else
-                    {
-                        projectName = projectName.Substring(0, projectName.LastIndexOf(".vbproj"));
-                    }
-                    
-                }
-
-                chkListTestUnits.Items.Add(projectName, projectDigest.UnitTest);
+                chkListTestUnits.Items.Add(projectDigest.AssemblyName, projectDigest.UnitTest);
             }
         }
 
