@@ -528,7 +528,10 @@ namespace NPanday.ProjectImporter.Digest.Model
 
 
 
-
-        public bool UseMsDeploy { get; set; }
+        private bool useMsDeploy;
+        public bool UseMsDeploy {
+            get { return useMsDeploy; }
+            set { useMsDeploy = value; }
+        }
     }
 }
