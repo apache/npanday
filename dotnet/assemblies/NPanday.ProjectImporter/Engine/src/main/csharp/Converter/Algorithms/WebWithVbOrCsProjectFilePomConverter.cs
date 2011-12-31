@@ -55,18 +55,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             base.ConvertProjectToPomModel(false,scmTag);
             Model.packaging = "asp";
 
-            // Write SCMTag
-            if (scmTag != null && scmTag != string.Empty && Model.parent == null)
-            {
-                Scm scmHolder = new Scm();
-                scmHolder.connection = string.Format("scm:svn:{0}", scmTag);
-                scmHolder.developerConnection = string.Format("scm:svn:{0}", scmTag);
-                scmHolder.url = scmTag;
-
-                Model.scm = scmHolder;
-            }
-
-
             Model.build.sourceDirectory = ".";
 
             // change the outputDirectory of the plugin

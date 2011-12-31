@@ -151,16 +151,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     string gFullPath = compile.IncludeFullPath.Replace(compilesFile, gFile);
                     
                     compiles.Add(gFile);
-                        
-                    
-                    //Removed because MsBuild plugin assures that the needed files will be present.
-                    /*else
-                    {
-                        // ensure that the auto-generated file is needed by the app to build
-                        string xamlFilename = Path.GetFileNameWithoutExtension(compilesFile);
-                        if (File.Exists(compile.IncludeFullPath.Replace(Path.GetFileName(compilesFile), xamlFilename)))
-                            throw new Exception("Unable to locate XAML auto-generated code. Please run Build in Visual Studio first.");
-                    }*/
                 }
             }
             AddPluginConfiguration(compilePlugin, "includeSources", "includeSource", compiles.ToArray());
