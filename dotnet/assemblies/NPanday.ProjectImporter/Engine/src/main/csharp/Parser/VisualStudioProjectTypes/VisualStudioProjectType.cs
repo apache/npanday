@@ -225,11 +225,16 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
             {
                 try
                 {
-                    projectType |= __visualStudioProjectTypes[guidItem.ToUpper()];
+                    string upperGuid = guidItem.ToUpper();
+                    projectType |= __visualStudioProjectTypes[upperGuid];
+                    if (!__visualStudioProjectTypeSupported[upperGuid])
+                    {
+                        throw new NotSupportedException("NPanday does not support projects with type GUID: " + guidItem);
+                    }
                 }
                 catch
                 {
-                    throw new NotSupportedException("Unknown Project Type GUID: " + guidItem);
+                    throw new NotSupportedException("Unknown project type GUID: " + guidItem);
                 }
             }
 
@@ -248,38 +253,6 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
             }
 
             return string.Join(";", list.ToArray());
-        }
-
-        public static bool VisualStudioProjectSupported(string guid)
-        {
-            guid = guid.Replace("{", "");
-            guid = guid.Replace("}", "");
-
-            try
-            {
-                return __visualStudioProjectTypeSupported[guid.ToUpper()];
-            }
-            catch
-            {
-                MessageBox.Show("Unknown Project Type GUID: " + guid.ToUpper(), "Project Import Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-         }
-
-        public static bool VisualStudioProjectSupportedGUID(string guid)
-        {
-            guid = guid.Replace("{", "");
-            guid = guid.Replace("}", "");
-
-            try
-            {
-                return __visualStudioProjectTypeSupported[guid.ToUpper()];
-            }
-            catch
-            {
-                //returns true since not all supported c# and vb project GUID are listed
-                return true;
-            }
         }
     }
 }
