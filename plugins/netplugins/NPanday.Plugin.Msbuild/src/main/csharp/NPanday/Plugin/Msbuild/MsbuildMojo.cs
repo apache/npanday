@@ -64,14 +64,17 @@ namespace NPanday.Plugin.Msbuild
                 Directory.SetCurrentDirectory(mavenProject.build.sourceDirectory);
             
                 string projectName = mavenProject.artifactId;
-                if (File.Exists(projectName + ".csproj"))
+
+                string[] exts = new string[] { "csproj", "vbproj", "ccproj" };
+                foreach (string ext in exts)
                 {
-                    projectName += ".csproj";
+                    if (File.Exists(projectName + "." + ext))
+                    {
+                        projectName += "." + ext;
+                        break;
+                    }
                 }
-                else
-                {
-                    projectName += ".vbproj";
-                }
+
                 // must use /v:q here, as /v:m and above report the csc command, that includes '/errorprompt', which
                 // erroneously triggers the NPANDAY-063-001 error
                 // BuildingInsideVisualStudio is required to avoid building project references on framework 2.0
