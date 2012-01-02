@@ -143,17 +143,17 @@ namespace NPanday.ProjectImporter.ImporterTests
             ProjectImporterAssertions.AssertHasNoOverlappingPomFiles(GeneratedPomFiles);
         }
 		
-        public void CheckWebMVC()
+        public void CheckWebMVC(string version)
         {
             // check MVC 2 installed
-//            string name = "System.Web.MVC, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL";
+//            string name = "System.Web.MVC, Version=" + version + ", Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL";
 //            try
 //            {
 //                Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(name).FullName);
 //            }
 //            catch
 //            {
-//                Assert.Ignore("Test only runs with MVC 2 installed");
+//                Assert.Ignore("Test only runs with MVC " + version + " installed");
 //            }
         }
 

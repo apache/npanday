@@ -117,11 +117,45 @@ namespace NPanday.ProjectImporter.Converter
                 VisualStudioProjectTypeEnum.Windows_Communication_Foundation__WCF | VisualStudioProjectTypeEnum.Windows__VbDotNet,
                 typeof(NormalPomConverter)
               );
-			  
-			__converterAlgorithms.Add(
-				VisualStudioProjectTypeEnum.Model_View_Controller_MVC | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.Web_Application,
-				typeof(NormalPomConverter)
-			);
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.Web_Application,
+                typeof(NormalPomConverter)
+            );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC3 | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.Web_Application,
+                typeof(NormalPomConverter)
+            );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.WebDeploy2,
+                typeof(ASPNetPomConverter)
+            );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC3 | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.WebDeploy2,
+                typeof(ASPNetPomConverter)
+            );
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.Web_Application,
+                typeof(NormalPomConverter)
+            );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC3 | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.Web_Application,
+                typeof(NormalPomConverter)
+            );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.WebDeploy2,
+                typeof(ASPNetPomConverter)
+            );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC3 | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.WebDeploy2,
+                typeof(ASPNetPomConverter)
+            );
         }
 
 
@@ -261,25 +295,17 @@ namespace NPanday.ProjectImporter.Converter
                }
 
 
-               try
-                {
-                    IPomConverter converter = (IPomConverter)System.Activator.CreateInstance(
-                                                    __converterAlgorithms[projectDigest.ProjectType],
-                                                    projectDigest,
-                                                    mainPomFile,
-                                                   parent,
-                                                    groupId
-                                                    );
+               IPomConverter converter = (IPomConverter)System.Activator.CreateInstance(
+                   __converterAlgorithms[projectDigest.ProjectType],
+                   projectDigest,
+                   mainPomFile,
+                   parent,
+                   groupId);
 
-                    converter.ConvertProjectToPomModel(scmTag);
+               converter.ConvertProjectToPomModel(scmTag);
 
-                   return converter.Model;
-                }
-                catch
-                {
-                    throw;
-                }
-            }
+               return converter.Model;
+           }
         }
 
 

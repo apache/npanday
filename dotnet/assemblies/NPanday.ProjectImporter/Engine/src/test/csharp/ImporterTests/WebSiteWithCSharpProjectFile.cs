@@ -34,7 +34,7 @@ namespace NPanday.ProjectImporter.ImporterTests
     {
         public override void CheckFrameworkVersion()
         {
-            CheckWebMVC();
+            CheckWebMVC( "2.0.0.0" );
         }
 
         public override string SolutionFileRelativePath

@@ -24,7 +24,7 @@ using NUnit.Framework;
 namespace NPanday.ProjectImporter.ImporterTests
 {
     [TestFixture]
-    public class Net40GacImportTest : AbstractProjectImportTest
+    public class MVC3ProjectTest : AbstractProjectImportTest
     {
         public override void CheckFrameworkVersion()
         {
@@ -34,12 +34,12 @@ namespace NPanday.ProjectImporter.ImporterTests
             }
 
             // Test uses System.Web.MVC
-            CheckWebMVC( "2.0.0.0" );
+            CheckWebMVC("3.0.0.0");
         }
 
         public override string SolutionFileRelativePath
         {
-            get { return @"NPANDAY-445-NET40GAC\NPANDAY-445-NET40GAC.sln"; }
+            get { return @"MvcApplication1\MvcApplication1.sln"; }
         }
 
         [Test]
@@ -48,9 +48,14 @@ namespace NPanday.ProjectImporter.ImporterTests
             ProjectImporterAssertions.AssertPomCount(2, GeneratedPomFiles);
         }
 
+        public override bool UseMsDeploy
+        {
+            get { return true; }
+        }
+
         public override string TestResourcePath
         {
-            get { return @"src\test\resource\NPANDAY-445-NET40GAC\"; }
+            get { return @"src\test\resource\MvcApplication1\"; }
         }
     }
 }

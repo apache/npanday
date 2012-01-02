@@ -199,11 +199,23 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
         /// </summary>
         Model_View_Controller_MVC = 1 << 26,
 
-        WebDeploy2 = 1 << 27,
+        /// <summary>
+        /// Project Type: ASP MVC 3,
+        /// GUID: {E53F8FEA-EAE0-44A6-8774-FFD645390401}
+        /// </summary>
+        Model_View_Controller_MVC3 = 1 << 27,
 
+        /// <summary>
+        /// Project Type: Windows Azure Cloud Service
+        /// GUID: {CC5FD16D-436D-48AD-A40C-5A424C6E3E797}
+        /// </summary>
         WindowsAzure_CloudService = 1 << 28,
 
-        WindowsAzure_Worker = 1 << 29,
+        // Aux types
+
+        WebDeploy2 = 1 << 29,
+
+        WindowsAzure_Worker = 1 << 30,
         // TODO: if we get to 31 we'll run out, refactor so this is an enum of the GUIDs instead
     }
 }
