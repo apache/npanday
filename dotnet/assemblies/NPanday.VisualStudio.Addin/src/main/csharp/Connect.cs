@@ -112,7 +112,9 @@ namespace NPanday.VisualStudio.Addin
         {
             if (_applicationObject != null && projectItem != null)
             {
-                PomHelperUtility pomUtil = createPomUtility();
+                PomHelperUtility pomUtil = createPomUtility(projectItem.ContainingProject);
+                if (pomUtil == null)
+                    return;
 
                 // added configuration when including web or service reference
 
@@ -179,9 +181,29 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
-        private PomHelperUtility createPomUtility()
+        private PomHelperUtility createPomUtility(Project project)
         {
-            return new PomHelperUtility(new FileInfo(_applicationObject.Solution.FullName), new FileInfo(CurrentSelectedProject.FullName));
+            PomHelperUtility util = null;
+            if (_applicationObject != null && _applicationObject.Solution != null)
+            {
+                try
+                {
+                    if (_applicationObject.Solution.FullName != null && _applicationObject.Solution.FullName.Length > 0)
+                    {
+                        util = new PomHelperUtility(new FileInfo(_applicationObject.Solution.FullName), new FileInfo(project.FullName));
+                    }
+                    else
+                    {
+                        logger.Log(Level.DEBUG, "POM utility was requested before solution was created!");
+                        util = new PomHelperUtility(new FileInfo(project.FullName), new FileInfo(project.FullName));
+                    }
+                }
+                catch (Exception e)
+                {
+                    logger.Log(Level.DEBUG, "Not updating POM: " + e.Message + "\n" + e.StackTrace);
+                }
+            }
+            return util;
         }
 
         void ProjectItemEvents_ItemRemoved(ProjectItem projectItem)
@@ -190,7 +212,9 @@ namespace NPanday.VisualStudio.Addin
             {
                 if (_applicationObject != null && projectItem != null)
                 {
-                    PomHelperUtility pomUtil = createPomUtility();
+                    PomHelperUtility pomUtil = createPomUtility(projectItem.ContainingProject);
+                    if (pomUtil == null)
+                        return;
 
                     // remove web reference configuration in pom.xml when using "Exclude in Project"
 
@@ -229,19 +253,21 @@ namespace NPanday.VisualStudio.Addin
         {
             if (_applicationObject != null && projectItem != null)
             {
-                PomHelperUtility pomUtil = createPomUtility();
-
-                if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
+                PomHelperUtility pomUtil = createPomUtility(projectItem.ContainingProject);
+                if (pomUtil != null)
                 {
-                    //change addpluginConfiguration to accept xmlElement instead
-                    pomUtil.RenameMavenCompilePluginConfiguration("org.apache.npanday.plugins", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, oldName), GetRelativePathToProject(projectItem, null));
-                }
+                    if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
+                    {
+                        //change addpluginConfiguration to accept xmlElement instead
+                        pomUtil.RenameMavenCompilePluginConfiguration("org.apache.npanday.plugins", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, oldName), GetRelativePathToProject(projectItem, null));
+                    }
 
-                if (projectItem.Name.Contains(".resx"))
-                {
-                    string resxName = projectItem.ContainingProject.Name + "." + projectItem.Name.Replace(".resx", "");
-                    string oldResxName = projectItem.ContainingProject.Name + "." + oldName.Replace(".resx", "");
-                    pomUtil.RenameMavenResxPluginConfiguration("org.apache.npanday.plugins", "maven-resgen-plugin", "embeddedResources", "embeddedResource", oldName, oldResxName, projectItem.Name, resxName);
+                    if (projectItem.Name.Contains(".resx"))
+                    {
+                        string resxName = projectItem.ContainingProject.Name + "." + projectItem.Name.Replace(".resx", "");
+                        string oldResxName = projectItem.ContainingProject.Name + "." + oldName.Replace(".resx", "");
+                        pomUtil.RenameMavenResxPluginConfiguration("org.apache.npanday.plugins", "maven-resgen-plugin", "embeddedResources", "embeddedResource", oldName, oldResxName, projectItem.Name, resxName);
+                    }
                 }
             }
 
@@ -791,8 +817,8 @@ namespace NPanday.VisualStudio.Addin
                 }
 
                 //check if reference is already in pom
-                PomHelperUtility pomUtil = createPomUtility();
-                if (pomUtil.IsPomDependency(pReference.Name))
+                PomHelperUtility pomUtil = createPomUtility(pReference.ContainingProject);
+                if (pomUtil == null || pomUtil.IsPomDependency(pReference.Name))
                 {
                     return;
                 }
@@ -901,10 +927,11 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception e)
             {
+                logger.Log(Level.DEBUG, e.StackTrace);
                 MessageBox.Show("Error converting reference to artifact, not added to POM: " + e.Message, "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
+        /* Commented out earlier
         void webw_Deleted(object sender, FileSystemEventArgs e)
         {
             try
@@ -921,7 +948,7 @@ namespace NPanday.VisualStudio.Addin
             }
 
         }
-
+        */
         void wsw_Renamed(object sender, WebReferenceEventArgs e)
         {
             try
@@ -931,10 +958,13 @@ namespace NPanday.VisualStudio.Addin
                 wrc.WaitForClasses(e.Namespace);
 
                 e.Init(projectReferenceFolder(CurrentSelectedProject));
-                PomHelperUtility pomUtil = createPomUtility();
+                PomHelperUtility pomUtil = createPomUtility(CurrentSelectedProject);
                 lock (typeof(PomHelperUtility))
                 {
-                    pomUtil.RenameWebReference(e.ReferenceDirectory, e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
+                    if (pomUtil != null)
+                    {
+                        pomUtil.RenameWebReference(e.ReferenceDirectory, e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
+                    }
                 }
             }
             catch (Exception ex)
@@ -948,10 +978,13 @@ namespace NPanday.VisualStudio.Addin
             try
             {
                 e.Init(projectReferenceFolder(CurrentSelectedProject));
-                PomHelperUtility pomUtil = createPomUtility();
+                PomHelperUtility pomUtil = createPomUtility(CurrentSelectedProject);
                 lock (typeof(PomHelperUtility))
                 {
-                    pomUtil.RemoveWebReference(e.ReferenceDirectory, e.Namespace);
+                    if (pomUtil != null)
+                    {
+                        pomUtil.RemoveWebReference(e.ReferenceDirectory, e.Namespace);
+                    }
                 }
             }
             catch (Exception ex)
@@ -972,10 +1005,13 @@ namespace NPanday.VisualStudio.Addin
 
                 e.Init(projectReferenceFolder(CurrentSelectedProject));
 
-                PomHelperUtility pomUtil = createPomUtility();
+                PomHelperUtility pomUtil = createPomUtility(CurrentSelectedProject);
                 lock (typeof(PomHelperUtility))
                 {
-                    pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty, logger);
+                    if (pomUtil != null)
+                    {
+                        pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty, logger);
+                    }
                 }
 
 
@@ -992,8 +1028,9 @@ namespace NPanday.VisualStudio.Addin
             {
                 System.Threading.Thread.Sleep(1500);
                 e.Init(Path.Combine(Path.GetDirectoryName(CurrentSelectedProject.FullName), Messages.MSG_D_SERV_REF));
-                PomHelperUtility pomUtil = createPomUtility();
-                pomUtil.RenameWebReference(e.ReferenceDirectory, e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
+                PomHelperUtility pomUtil = createPomUtility(CurrentSelectedProject);
+                if (pomUtil != null)
+                    pomUtil.RenameWebReference(e.ReferenceDirectory, e.OldNamespace, e.Namespace, e.WsdlFile, string.Empty);
             }
             catch (Exception ex)
             {
@@ -1006,8 +1043,9 @@ namespace NPanday.VisualStudio.Addin
             try
             {
                 e.Init(Path.Combine(Path.GetDirectoryName(CurrentSelectedProject.FullName), Messages.MSG_D_SERV_REF));
-                PomHelperUtility pomUtil = createPomUtility();
-                pomUtil.RemoveWebReference(e.ReferenceDirectory, e.Namespace);
+                PomHelperUtility pomUtil = createPomUtility(CurrentSelectedProject);
+                if (pomUtil != null)
+                    pomUtil.RemoveWebReference(e.ReferenceDirectory, e.Namespace);
             }
             catch (Exception ex)
             {
@@ -1024,9 +1062,9 @@ namespace NPanday.VisualStudio.Addin
 
                 string path = Path.Combine(Path.GetDirectoryName(CurrentSelectedProject.FullName), Messages.MSG_D_SERV_REF);
                 e.Init(path);
-                PomHelperUtility pomUtil = createPomUtility();
-
-                pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty, logger);
+                PomHelperUtility pomUtil = createPomUtility(CurrentSelectedProject);
+                if (pomUtil != null)
+                    pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty, logger);
             }
             catch (Exception ex)
             {
@@ -1508,12 +1546,15 @@ namespace NPanday.VisualStudio.Addin
                 if (!mavenConnected)
                     return;
 
-                PomHelperUtility pomUtil = new PomHelperUtility(new FileInfo(_applicationObject.Solution.FullName), new FileInfo(pReference.ContainingProject.FullName));
-                string refName = pReference.Name;
-                if (pReference.Type == prjReferenceType.prjReferenceTypeActiveX && refName.ToLower().StartsWith("interop.", true, CultureInfo.InvariantCulture))
-                    refName = refName.Substring(8);
+                PomHelperUtility pomUtil = createPomUtility(pReference.ContainingProject);
+                if (pomUtil != null)
+                {
+                    string refName = pReference.Name;
+                    if (pReference.Type == prjReferenceType.prjReferenceTypeActiveX && refName.ToLower().StartsWith("interop.", true, CultureInfo.InvariantCulture))
+                        refName = refName.Substring(8);
 
-                pomUtil.RemovePomDependency(refName);
+                    pomUtil.RemovePomDependency(refName);
+                }
             }
             catch //(Exception e)
             {

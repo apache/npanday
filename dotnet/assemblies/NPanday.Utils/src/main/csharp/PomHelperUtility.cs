@@ -875,7 +875,7 @@ namespace NPanday.Utils
                 return pomFile;
             }
 
-            throw new Exception(string.Format("Pom file not found: pom.xml not fould from folder: {0} down to folder: {1}", start.FullName, until.FullName));
+            throw new Exception(string.Format("Pom file not found: pom.xml not found from folder: {0} down to folder: {1}", start.FullName, until.FullName));
         }
 
         public static string GetRelativePath(DirectoryInfo baseDir, DirectoryInfo dir)
