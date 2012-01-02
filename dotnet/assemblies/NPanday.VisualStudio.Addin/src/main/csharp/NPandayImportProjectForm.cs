@@ -190,6 +190,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception exception)
             {
+                logger.Log(Level.DEBUG, exception.StackTrace.ToString());
                 MessageBox.Show(exception.Message, "NPanday Import Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
