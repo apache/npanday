@@ -176,7 +176,7 @@ public enum ArtifactType
     AZURE_CLOUD_SERVICE_CONFIGURATION ("azure-cloud-service-configuration", null, "cscfg"),
 
     /* MSDeploy support */
-    MSDEPLOY_PACKAGE ("msdeploy-package", null, "msdeploy.zip");
+    MSDEPLOY_PACKAGE ("msdeploy-package", null, "msdeploy.zip", true);
 
     /**
      * The extension used for the artifact(netmodule, dll, exe)
@@ -194,6 +194,12 @@ public enum ArtifactType
     private String targetCompileType;
 
     /**
+     * Whether to flag the artifact type as including its dependencies (do not pass them on transitively), or not (pass
+     * them on transitively)
+     */
+    private boolean includesDependencies = false;
+
+    /**
      * Constructor
      */
     ArtifactType( String packagingType, String targetCompileType, String extension )
@@ -201,6 +207,17 @@ public enum ArtifactType
         this.packagingType = packagingType;
         this.targetCompileType = targetCompileType;
         this.extension = extension;
+    }
+
+    /**
+     * Constructor
+     */
+    ArtifactType( String packagingType, String targetCompileType, String extension, boolean includesDependencies )
+    {
+        this.packagingType = packagingType;
+        this.targetCompileType = targetCompileType;
+        this.extension = extension;
+        this.includesDependencies = includesDependencies;
     }
 
     /**
@@ -231,6 +248,11 @@ public enum ArtifactType
     public String getTargetCompileType()
     {
         return targetCompileType;
+    }
+
+    public boolean isIncludesDependencies()
+    {
+        return includesDependencies;
     }
 
     /**

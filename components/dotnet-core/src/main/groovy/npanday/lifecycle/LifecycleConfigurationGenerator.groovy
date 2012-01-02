@@ -59,6 +59,10 @@ class LifecycleConfigurationGenerator {
 					configuration{
 						extension typeDef.extension
 						type typeDef.packagingType
+                        if (typeDef.includesDependencies)
+                        {
+                          includesDependencies typeDef.includesDependencies
+                        }
 					}
 				}
 			}
