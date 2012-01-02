@@ -69,10 +69,10 @@ namespace NPanday.ProjectImporter.Digest
                     new NormalProjectDigestAlgorithm().DigestProject
                 );
 
-
-
-            
-
+            _digestAlgoritms.Add(
+                    VisualStudioProjectTypeEnum.WindowsAzure_CloudService,
+                    new NormalProjectDigestAlgorithm().DigestProject
+                );
         }
 
         
@@ -87,7 +87,7 @@ namespace NPanday.ProjectImporter.Digest
                 DigestProject digestProject = _digestAlgoritms[(VisualStudioProjectTypeEnum)project["ProjectType"]];
                 ProjectDigest projDigest = digestProject(project);
                 projectDigests.Add(projDigest);
-                projDigestDictionary.Add(projDigest.AssemblyName, projDigest);
+                projDigestDictionary.Add(projDigest.ProjectName, projDigest);
             }
 
             List<ProjectDigest> tobeIncluded = new List<ProjectDigest>();
@@ -123,8 +123,8 @@ namespace NPanday.ProjectImporter.Digest
                             "Project \"{0}\"  Requires \"{1}\" which is not included in the Solution File, "
                             + "\nWould you like to include \"{1}\" Generating NPanday Project Poms?"
                             + "\nNote: Not adding \"{1}\" will result to a missing Artifact Dependency \"{1}\"",
-                            projectDigest.AssemblyName,
-                            prjRefDigest.AssemblyName);
+                            projectDigest.ProjectName,
+                            prjRefDigest.ProjectName);
 
                         DialogResult includeResult = MessageBox.Show(errMsg, "Include Project in Pom Generation:",
                             MessageBoxButtons.YesNo,
@@ -132,7 +132,7 @@ namespace NPanday.ProjectImporter.Digest
 
                         if (includeResult == DialogResult.Yes)
                         {
-                            projDigestDictionary.Add(prjRefDigest.AssemblyName, prjRefDigest);
+                            projDigestDictionary.Add(prjRefDigest.ProjectName, prjRefDigest);
                             tobeIncluded.Add(prjRefDigest);
                         }
                         else
@@ -140,7 +140,7 @@ namespace NPanday.ProjectImporter.Digest
                             warningMsg = string.Format(
                                 "{0}\n    Please Make sure that Artifact[GroupId: {1}, ArtifactId: {1}] exists in your NPanday Repository, " +
                                 "\n        Or an error will occur during NPanday-Build due to Missing Artifact Dependency!",
-                                warningMsg, prjRefDigest.AssemblyName);
+                                warningMsg, prjRefDigest.ProjectName);
                         }
                     }
                 }
@@ -188,7 +188,7 @@ namespace NPanday.ProjectImporter.Digest
 
             foreach (ProjectReference prjRef in y.ProjectReferences)
             {
-                if (x.AssemblyName.Equals(prjRef.Name))
+                if (x.ProjectName.Equals(prjRef.Name))
                 {
                     // Greater than 0, x is greater than y. (x is reffered by y)
                     return -1;
@@ -197,7 +197,7 @@ namespace NPanday.ProjectImporter.Digest
 
             foreach (ProjectReference prjRef in x.ProjectReferences)
             {
-                if (y.AssemblyName.Equals(prjRef.Name))
+                if (y.ProjectName.Equals(prjRef.Name))
                 {
                     // Less than 0, x is less than y. (x is referring to y)
                     return 1;

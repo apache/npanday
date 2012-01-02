@@ -55,10 +55,14 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         public override void ConvertProjectToPomModel(bool writePom, string scmTag)
         {
-
-            
-            GenerateHeader("dotnet-library");
-
+            string packaging = "dotnet-library";
+            if (!string.IsNullOrEmpty(projectDigest.OutputType))
+            {
+                string type = projectDigest.OutputType.ToLower();
+                if (npandayTypeMap.ContainsKey(type))
+                    packaging = npandayTypeMap[type];
+            }
+            GenerateHeader(packaging);
 
             Model.build.sourceDirectory = GetSourceDir();
 

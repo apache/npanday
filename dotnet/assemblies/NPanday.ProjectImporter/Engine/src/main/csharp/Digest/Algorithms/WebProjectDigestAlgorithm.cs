@@ -57,19 +57,19 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             // get Assembly name
             if (projectMap.ContainsKey("Release.AspNetCompiler.VirtualPath"))
             {
-                projectDigest.AssemblyName = projectMap["Release.AspNetCompiler.VirtualPath"].ToString()
+                projectDigest.Name = projectMap["Release.AspNetCompiler.VirtualPath"].ToString()
                     .Replace(@"/", "")
                     .Replace(@"\\", "");
             }
             else if (projectMap.ContainsKey("Debug.AspNetCompiler.VirtualPath"))
             {
-                projectDigest.AssemblyName = projectMap["Debug.AspNetCompiler.VirtualPath"].ToString()
+                projectDigest.Name = projectMap["Debug.AspNetCompiler.VirtualPath"].ToString()
                     .Replace(@"/", "")
                     .Replace(@"\\", "");
             }
             else if(projectMap.ContainsKey("ProjectFullPath"))
             {
-                projectDigest.AssemblyName = new DirectoryInfo(projectMap["ProjectFullPath"].ToString()).Name;
+                projectDigest.Name = new DirectoryInfo(projectMap["ProjectFullPath"].ToString()).Name;
             }
 
 

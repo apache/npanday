@@ -54,6 +54,7 @@ namespace NPanday.ProjectImporter.Converter
             __converterAlgorithms.Add(VisualStudioProjectTypeEnum.Windows__VbDotNet, typeof(NormalPomConverter));
             __converterAlgorithms.Add(VisualStudioProjectTypeEnum.Web_Site, typeof(WebPomConverter));
             __converterAlgorithms.Add(VisualStudioProjectTypeEnum.Web_Application, typeof(WebPomConverter));
+            __converterAlgorithms.Add(VisualStudioProjectTypeEnum.WindowsAzure_CloudService, typeof(AzurePomConverter));
 
 
             // combination of types
@@ -64,6 +65,15 @@ namespace NPanday.ProjectImporter.Converter
             __converterAlgorithms.Add(
                 VisualStudioProjectTypeEnum.Web_Site | VisualStudioProjectTypeEnum.Windows__VbDotNet,
                 typeof(WebWithVbOrCsProjectFilePomConverter)
+              );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.WindowsAzure_Worker | VisualStudioProjectTypeEnum.Windows__CSharp,
+                typeof(AzureWorkerPomConverter)
+              );
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.WindowsAzure_Worker | VisualStudioProjectTypeEnum.Windows__VbDotNet,
+                typeof(AzureWorkerPomConverter)
               );
 
             __converterAlgorithms.Add(
@@ -236,7 +246,7 @@ namespace NPanday.ProjectImporter.Converter
         {
             if (!__converterAlgorithms.ContainsKey(projectDigest.ProjectType))
             {
-                throw new NotSupportedException("Not Supported Project Type: " + projectDigest.ProjectType);
+                throw new NotSupportedException("Unsupported project type: " + projectDigest.ProjectType);
             }
             else
            {
@@ -244,6 +254,10 @@ namespace NPanday.ProjectImporter.Converter
                if ((projectDigest.ProjectType & VisualStudioProjectTypeEnum.Web_Application) != 0 && projectDigest.UseMsDeploy)
                {
                    projectDigest.ProjectType |= VisualStudioProjectTypeEnum.WebDeploy2;
+               }
+               if (projectDigest.RoleType != null && projectDigest.RoleType.Equals("Worker", StringComparison.InvariantCultureIgnoreCase))
+               {
+                   projectDigest.ProjectType |= VisualStudioProjectTypeEnum.WindowsAzure_Worker;
                }
 
 

@@ -49,6 +49,13 @@ namespace NPanday.ProjectImporter.Digest.Model
             set { projectPath = value; }
         }
 
+        private string roleType;
+        public string RoleType
+        {
+            get { return roleType; }
+            set { roleType = value; }
+        }
+
         public string ProjectFullPath
         {
             get

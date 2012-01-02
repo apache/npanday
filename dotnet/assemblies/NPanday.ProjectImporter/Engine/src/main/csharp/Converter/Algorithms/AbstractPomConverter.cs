@@ -311,7 +311,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         }
 
 
-        protected void GenerateHeader(string defaultPackaging)
+        protected void GenerateHeader(string packaging)
         {
             // Add Parent Header
             if (parent != null)
@@ -331,12 +331,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
             else
             {
-                model.groupId = !string.IsNullOrEmpty(groupId) ? FilterID(groupId) : FilterID(projectDigest.AssemblyName);
+                model.groupId = !string.IsNullOrEmpty(groupId) ? FilterID(groupId) : FilterID(projectDigest.ProjectName);
                 model.version = string.IsNullOrEmpty(version) ? "1.0-SNAPSHOT" : version;
             }
 
-            string projectName = projectDigest.AssemblyName;
-            if (HasSpecialCharacters(projectDigest.AssemblyName))
+            string projectName = projectDigest.ProjectName;
+            if (HasSpecialCharacters(projectDigest.ProjectName))
             {
                 FileInfo f = new FileInfo(ProjectDigest.FullFileName);
                 projectName = f.Name.Substring(0, f.Name.Length - f.Extension.Length);
@@ -344,15 +344,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             model.modelVersion = "4.0.0";
             model.artifactId = FilterID(projectName);
-            model.name = string.Format("{0} : {1}", !string.IsNullOrEmpty(groupId) ? groupId : FilterID(projectDigest.AssemblyName), FilterID(projectDigest.AssemblyName));
-
-            model.packaging = defaultPackaging;
-            if (!string.IsNullOrEmpty(projectDigest.OutputType))
-            {
-                string type = projectDigest.OutputType.ToLower();
-                if (npandayTypeMap.ContainsKey(type))
-                    model.packaging = npandayTypeMap[type];
-            }
+            model.name = string.Format("{0} : {1}", !string.IsNullOrEmpty(groupId) ? groupId : FilterID(projectDigest.ProjectName), FilterID(projectDigest.ProjectName));
+            model.packaging = packaging;
         }
 
 

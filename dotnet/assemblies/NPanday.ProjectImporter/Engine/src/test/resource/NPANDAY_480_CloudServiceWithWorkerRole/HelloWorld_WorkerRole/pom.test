@@ -30,9 +30,9 @@
         <artifactId>application-maven-plugin</artifactId>
         <executions>
           <execution>
+            <id>package-application</id>
             <goals>
               <goal>assemble-package-files</goal>
-              <goal>process-app-config</goal>
               <goal>package</goal>
             </goals>
           </execution>
@@ -43,24 +43,21 @@
   <dependencies>
     <dependency>
       <groupId>Microsoft.WindowsAzure</groupId>
-      <artifactId>Microsoft.WindowsAzure.StorageClient</artifactId>
-      <version>1.1.0.0</version>
+      <artifactId>Microsoft.WindowsAzure.Diagnostics</artifactId>
+      <version>1.0.0.0</version>
       <type>dotnet-library</type>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>Microsoft.WindowsAzure</groupId>
       <artifactId>Microsoft.WindowsAzure.ServiceRuntime</artifactId>
       <version>1.0.0.0</version>
       <type>dotnet-library</type>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>Microsoft.WindowsAzure</groupId>
-      <artifactId>Microsoft.WindowsAzure.Diagnostics</artifactId>
-      <version>1.0.0.0</version>
+      <artifactId>Microsoft.WindowsAzure.StorageClient</artifactId>
+      <version>1.1.0.0</version>
       <type>dotnet-library</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
 </project>  

@@ -221,7 +221,7 @@ namespace NPanday.ProjectImporter
                     }
                 }
             }
-
+            
             if (!string.Empty.Equals(UnsupportedProjectsMessage))
             {
                 warningMsg = string.Format("{0}\n    Unsupported Projects: {1}", warningMsg, UnsupportedProjectsMessage);

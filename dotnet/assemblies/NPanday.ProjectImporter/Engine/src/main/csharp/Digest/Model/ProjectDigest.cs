@@ -38,6 +38,21 @@ namespace NPanday.ProjectImporter.Digest.Model
             set { assemblyName = value; }
         }
 
+        private string name;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public string ProjectName
+        {
+            get
+            {
+                return name != null ? name : assemblyName;
+            }
+        }
+
         private VisualStudioProjectTypeEnum projectType;
 
         public VisualStudioProjectTypeEnum ProjectType
@@ -83,6 +98,12 @@ namespace NPanday.ProjectImporter.Digest.Model
             set { outputType = value; }
         }
 
+        private string roleType;
+        public string RoleType
+        {
+            get { return roleType; }
+            set { roleType = value; }
+        }
 
 
         private Reference[] references;

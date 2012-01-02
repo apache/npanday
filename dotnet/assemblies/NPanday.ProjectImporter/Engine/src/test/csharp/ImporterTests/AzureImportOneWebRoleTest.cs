@@ -23,7 +23,6 @@ using NUnit.Framework;
 
 namespace NPanday.ProjectImporter.ImporterTests
 {
-    [Ignore] // not implemented yet
     [TestFixture]
     public class AzureImportOneWebRoleTest : AbstractProjectImportTest
     {

@@ -274,6 +274,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 ProjectReference prjRef = new ProjectReference(projectBasePath);
                                 prjRef.ProjectPath = buildItem.Include;
                                 prjRef.Name = GetProjectAssemblyName(Path.GetFullPath(prjRef.ProjectFullPath));
+                                prjRef.RoleType = buildItem.GetMetadata("RoleType");
                                 projectReferences.Add(prjRef);
                                 break;
                             case "Reference":
@@ -504,6 +505,10 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                         {
                             projectDigest.AssemblyName = buildProperty.Value;
                         }
+                        else if ("Name".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            projectDigest.Name = buildProperty.Value;
+                        }
                         else if ("StartupObject".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
                         {
                             projectDigest.StartupObject = buildProperty.Value;
@@ -511,6 +516,10 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                         else if ("OutputType".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
                         {
                             projectDigest.OutputType = buildProperty.Value;
+                        }
+                        else if ("RoleType".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            projectDigest.RoleType = buildProperty.Value;
                         }
                         else if ("SignAssembly".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
                         {

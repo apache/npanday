@@ -198,11 +198,15 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
             __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Website_MVC, "603C0E0B-DB56-11DC-BE95-000D561079B0");
             __visualStudioProjectTypeSupported.Add("603C0E0B-DB56-11DC-BE95-000D561079B0", true);
 			
-			//Model View Controller (MVC) {{F85E285D-A4E0-4152-9332-AB1D724D3325}}
+			//Model View Controller (MVC) {F85E285D-A4E0-4152-9332-AB1D724D3325}
             __visualStudioProjectTypes.Add("F85E285D-A4E0-4152-9332-AB1D724D3325", VisualStudioProjectTypeEnum.Model_View_Controller_MVC);
             __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Model_View_Controller_MVC, "F85E285D-A4E0-4152-9332-AB1D724D3325");
             __visualStudioProjectTypeSupported.Add("F85E285D-A4E0-4152-9332-AB1D724D3325", true);
 
+            //Windows Azure Project {CC5FD16D-436D-48AD-A40C-5A424C6E3E79}
+            __visualStudioProjectTypes.Add("CC5FD16D-436D-48AD-A40C-5A424C6E3E79", VisualStudioProjectTypeEnum.WindowsAzure_CloudService);
+            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.WindowsAzure_CloudService, "CC5FD16D-436D-48AD-A40C-5A424C6E3E79");
+            __visualStudioProjectTypeSupported.Add("CC5FD16D-436D-48AD-A40C-5A424C6E3E79", true);
         }
 
 

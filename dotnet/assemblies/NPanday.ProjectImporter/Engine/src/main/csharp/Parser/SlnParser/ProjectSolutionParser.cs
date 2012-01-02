@@ -124,10 +124,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                     ParseProjectReferences(dictionary, project, solution);
                 }
                 // this is for normal projects
-                else if (
-                    (VisualStudioProjectTypeEnum)dictionary["ProjectType"] == VisualStudioProjectTypeEnum.Windows__CSharp
-                    || (VisualStudioProjectTypeEnum)dictionary["ProjectType"] == VisualStudioProjectTypeEnum.Windows__VbDotNet
-                    )
+                else
                 {
                     Microsoft.Build.BuildEngine.Project prj = new Microsoft.Build.BuildEngine.Project(BUILD_ENGINE);
 

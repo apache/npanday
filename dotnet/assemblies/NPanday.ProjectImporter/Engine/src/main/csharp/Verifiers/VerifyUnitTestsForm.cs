@@ -61,7 +61,7 @@ namespace NPanday.ProjectImporter.Verifiers
                     projectDigest.FullFileName = projectDigest.FullFileName.Substring(0, projectDigest.FullFileName.LastIndexOf("\\"));
                 }
 
-                if (chkListTestUnits.CheckedItems.Contains(projectDigest.AssemblyName))
+                if (chkListTestUnits.CheckedItems.Contains(projectDigest.ProjectName))
                 {
                     projectDigest.UnitTest = true;
                 }
@@ -88,7 +88,7 @@ namespace NPanday.ProjectImporter.Verifiers
                     projectName = projectNameTokens[projectNameTokens.Length - 2];
                 }
 
-                chkListTestUnits.Items.Add(projectDigest.AssemblyName, projectDigest.UnitTest);
+                chkListTestUnits.Items.Add(projectDigest.ProjectName, projectDigest.UnitTest);
             }
         }
 
