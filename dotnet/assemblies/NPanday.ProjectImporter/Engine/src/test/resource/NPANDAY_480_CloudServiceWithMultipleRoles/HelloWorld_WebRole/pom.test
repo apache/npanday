@@ -11,7 +11,7 @@
   <packaging>dotnet-library</packaging>
   <name>test.group : HelloWorldWebRole</name>
   <build>
-    <sourceDirectory>.</sourceDirectory>
+    <sourceDirectory>./</sourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
@@ -23,7 +23,6 @@
             <includeSource>Default.aspx.cs</includeSource>
             <includeSource>Default.aspx.designer.cs</includeSource>
           </includeSources>
-          <outputDirectory>bin</outputDirectory>
         </configuration>
       </plugin>
       <plugin>
@@ -31,6 +30,7 @@
         <artifactId>aspnet-maven-plugin</artifactId>
         <executions>
           <execution>
+            <id>prepare-package</id>
             <goals>
               <goal>assemble-package-files</goal>
               <goal>process-web-config</goal>
@@ -43,6 +43,7 @@
         <artifactId>msdeploy-maven-plugin</artifactId>
         <executions>
           <execution>
+            <id>create-msdeploy-package</id>
             <goals>
               <goal>create-package</goal>
             </goals>

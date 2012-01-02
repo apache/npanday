@@ -22,6 +22,7 @@ using System.IO;
 using NPanday.Model.Pom;
 using NPanday.ProjectImporter.Digest.Model;
 using NPanday.Utils;
+using System.Collections.Generic;
 
 namespace NPanday.ProjectImporter.Converter.Algorithms
 {
@@ -36,12 +37,22 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         {
             // just call the base, but dont write it we still need some minor adjustments for it
             base.ConvertProjectToPomModel(false,scmTag);
-            
+
+            List<string> goals = new List<string>();
+            goals.Add("assemble-package-files");
+            foreach (Content content in projectDigest.Contents)
+            {
+                if (content.IncludePath.Equals("web.package.config", System.StringComparison.InvariantCultureIgnoreCase))
+                {
+                    goals.Add("process-web-config");
+                }
+            }
+
             Plugin aspnetPlugin = AddPlugin("org.apache.npanday.plugins", "aspnet-maven-plugin", null, false);
-            AddPluginExecution(aspnetPlugin, "prepare-package", new string[] { "assemble-package-files" }, "prepare-package");
+            AddPluginExecution(aspnetPlugin, "prepare-package", goals.ToArray(), null);
 
             Plugin msdeployPlugin = AddPlugin("org.apache.npanday.plugins", "msdeploy-maven-plugin", null, false);
-            AddPluginExecution(msdeployPlugin, "create-msdeploy-package", new string[] { "create-package" }, "package");
+            AddPluginExecution(msdeployPlugin, "create-msdeploy-package", new string[] { "create-package" }, null);
 
             if (writePom)
             {

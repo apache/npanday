@@ -35,6 +35,11 @@ namespace NPanday.ProjectImporter.ImporterTests
             }
         }
 
+        public override bool UseMsDeploy
+        {
+            get { return true; }
+        }
+
         public override string SolutionFileRelativePath
         {
             get { return @"NPANDAY_480_AzureSupportOneWebRole\HelloWorld.sln"; }
@@ -43,7 +48,7 @@ namespace NPanday.ProjectImporter.ImporterTests
         [Test]
         public override void ShouldGenerateTheExpectedNumberOfPoms()
         {
-            ProjectImporterAssertions.AssertPomCount(2, GeneratedPomFiles);
+            ProjectImporterAssertions.AssertPomCount(3, GeneratedPomFiles);
         }
 
         public override string TestResourcePath
