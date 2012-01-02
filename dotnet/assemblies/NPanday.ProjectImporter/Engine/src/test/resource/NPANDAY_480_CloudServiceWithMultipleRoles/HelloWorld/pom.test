@@ -16,6 +16,9 @@
         <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>azure-maven-plugin</artifactId>
         <extensions>true</extensions>
+        <configuration>
+          <frameworkVersion>4.0</frameworkVersion>
+        </configuration>
       </plugin>
     </plugins>
   </build>

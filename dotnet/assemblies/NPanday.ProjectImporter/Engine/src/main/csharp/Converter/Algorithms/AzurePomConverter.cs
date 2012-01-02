@@ -78,7 +78,14 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // override the one from the parent to add new types for Azure
             AddProjectReferenceDependenciesToList();
 
-            AddPlugin("org.apache.npanday.plugins", "azure-maven-plugin");
+            Plugin plugin = AddPlugin("org.apache.npanday.plugins", "azure-maven-plugin");
+            if (!string.IsNullOrEmpty(projectDigest.TargetFramework))
+                AddPluginConfiguration(plugin, "frameworkVersion", projectDigest.TargetFramework);
+            else
+            {
+                // TODO: crude hack until the plugin doesn't require this and picks the right minimum default
+                AddPluginConfiguration(plugin, "frameworkVersion", "4.0");
+            }
 
             if (writePom)
             {
