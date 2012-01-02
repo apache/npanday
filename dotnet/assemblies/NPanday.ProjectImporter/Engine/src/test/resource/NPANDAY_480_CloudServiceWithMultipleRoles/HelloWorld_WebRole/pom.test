@@ -37,6 +37,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <webConfig>Web.config</webConfig>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>

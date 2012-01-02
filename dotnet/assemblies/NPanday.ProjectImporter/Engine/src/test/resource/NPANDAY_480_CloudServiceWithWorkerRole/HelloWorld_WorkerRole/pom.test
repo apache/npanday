@@ -33,10 +33,14 @@
             <id>package-application</id>
             <goals>
               <goal>assemble-package-files</goal>
+              <goal>process-app-config</goal>
               <goal>package</goal>
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <appConfig>app.config</appConfig>
+        </configuration>
       </plugin>
     </plugins>
   </build>

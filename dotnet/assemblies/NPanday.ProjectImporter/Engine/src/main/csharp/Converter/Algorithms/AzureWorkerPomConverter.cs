@@ -40,17 +40,14 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             List<string> goals = new List<string>();
             goals.Add("assemble-package-files");
-            foreach (Content content in projectDigest.Contents)
-            {
-                if (content.IncludePath.Equals("app.package.config", System.StringComparison.InvariantCultureIgnoreCase))
-                {
-                    goals.Add("process-app-config");
-                }
-            }
+            goals.Add("process-app-config");
             goals.Add("package");
 
             Plugin plugin = AddPlugin("org.apache.npanday.plugins", "application-maven-plugin", null, false);
             AddPluginExecution(plugin, "package-application", goals.ToArray(), null);
+
+            // TODO: until XDT works, just use Web.config itself
+            AddPluginConfiguration(plugin, "appConfig", "app.config");
 
             if (writePom)
             {
