@@ -37,6 +37,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         public override void ConvertProjectToPomModel(bool writePom, string scmTag)
         {
+            // relies on this being set everywhere - if it were set per project, this would need to be evaluated on the project references
+            if (!projectDigest.UseMsDeploy)
+            {
+                throw new Exception("You must use Web Deploy 2.0 to package web applications when using Azure projects");
+            }
+
             GenerateHeader("azure-cloud-service");
 
             //Add SCM Tag
