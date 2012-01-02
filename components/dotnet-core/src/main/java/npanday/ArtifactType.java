@@ -92,7 +92,7 @@ public enum ArtifactType
      * A zip containing everything an application (or library) needs
      * to be run, including transitive dependencies and so on.
      */
-    DOTNET_APPLICATION("dotnet-application", null, "app.zip"),
+    DOTNET_APPLICATION("dotnet-application", null, "app.zip", true),
 
     // We should reconsider those..
     
