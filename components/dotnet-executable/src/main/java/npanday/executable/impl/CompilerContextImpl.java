@@ -576,7 +576,7 @@ public final class CompilerContextImpl
         checkArgument( gacRoot != null, "gacRoot must not be null!" );
         checkArgument( artifact != null, "artifact must not be null!" );
 
-        // TODO: Refactor to PathUtil.getGlobalAssemblyCacheFileFor
+        // TODO: Tripplicated code: check PathUtil.getGlobalAssemblyCacheFileFor and VendorInfo#getGlobalAssemblyCacheFileFor
         String type = artifact.getType();
         logger.debug( "NPANDAY-061-001: Gac Root:" + gacRoot );
         logger.debug( "NPANDAY-061-003: Artifact Type:" + type );

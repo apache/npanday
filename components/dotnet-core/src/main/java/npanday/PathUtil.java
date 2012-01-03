@@ -37,6 +37,7 @@ public final class PathUtil
     private static final Logger logger = Logger.getAnonymousLogger();
 
     public static File getGACFile4Artifact(Artifact artifact) {
+        // TODO: Should be harmonized with VendorInfo#getGlobalAssemblyCacheDirectoryFor
 
         File gacFile;
         String type = artifact.getType();
@@ -72,6 +73,8 @@ public final class PathUtil
      */
     public static File getGlobalAssemblyCacheFileFor( Artifact artifact, File gacRepository )
     {
+        // TODO: Should be harmonized with VendorInfo#getGlobalAssemblyCacheDirectoryFor
+
         if ( artifact == null )
         {
             logger.warning( "NPANDAY-040-000: Artifact is null - Cannot get application file." );
@@ -98,7 +101,6 @@ public final class PathUtil
         logger.finest( "NPANDAY-040-003: Read global assembly cache folder for: " + artifact);        
         //TODO: gac_generic
         //String processArchitecture = ( artifact.getType().equals( "gac_generic" ) );
-
         return new File( "C:\\WINDOWS\\assembly\\" + artifact.getType() + File.separator + artifact.getArtifactId() +
                              File.separator + version + "__" + artifact.getClassifier() + File.separator +
                              artifact.getArtifactId() + ".dll" );

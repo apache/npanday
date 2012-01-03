@@ -45,9 +45,6 @@ public class UnpackDependencyIterationItem
            throw new MojoFailureException( "NPANDAY-124-000: The artifact should already have been resolved: " + artifact);
         }
 
-        // TODO: very, very temporary fix for NPANDAY-509
-
-
         packageSource = artifact.getFile();
         assert packageSource != null : "package source should not be null here";
 

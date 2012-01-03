@@ -1124,6 +1124,8 @@ public abstract class AbstractCompilerMojo
             if ( outputDirectory != null )
             {
                 ArtifactType artifactType = getCompilerConfig().getArtifactType();
+
+                // TODO: shouldn't this use build.finalName?
                 compiledArtifact = new File(outputDirectory.getAbsolutePath() + File.separator +
                                             project.getArtifactId() + "." + artifactType.getExtension());
             }

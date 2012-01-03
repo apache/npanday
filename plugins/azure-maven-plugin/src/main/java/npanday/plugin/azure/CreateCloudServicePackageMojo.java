@@ -201,6 +201,7 @@ public class CreateCloudServicePackageMojo
                 );
             }
 
+            // TODO: enable configuration of different framework pr. role; default to frameworkVersion
             // TODO: save roleprops file somewhere else?
             File rolePropertiesFile = new File(project.getBuild().getDirectory(), artifact.getArtifactId() + ".roleproperties");
             try

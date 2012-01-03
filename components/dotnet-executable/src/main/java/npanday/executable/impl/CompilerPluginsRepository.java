@@ -142,7 +142,6 @@ public final class CompilerPluginsRepository
                 MutableCompilerCapability platformCapability = new MutableCompilerCapability();
 
                 platformCapability.setVendorInfo( vendorInfo );
-                // TODO: Allow probing paths for compilers
                 platformCapability.setProbingPaths(plugin.getProbingPaths());
 
                 Platform platform = (Platform) j.next();

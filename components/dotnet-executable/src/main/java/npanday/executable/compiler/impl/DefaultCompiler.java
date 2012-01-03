@@ -142,7 +142,7 @@ public final class DefaultCompiler
             commands.add( "/nologo" );
         }
 
-        // TODO: this should rather be a custom compiler class for this combination of vendor and framework!!
+        // TODO: the "built-in" references should be part of the compiler-config.xml
         if ( compilerContext.getVendor().equals( Vendor.MICROSOFT ) &&
             compilerContext.getFrameworkVersion().equals( "3.0" ) )
         {
@@ -158,7 +158,6 @@ public final class DefaultCompiler
             commands.add( wcfRef + "SMDiagnostics.dll" );
         }
 
-        // TODO: this should rather be a custom compiler class for this combination of vendor and framework!!
         if ( compilerContext.getVendor().equals( Vendor.MICROSOFT ) &&
             compilerContext.getFrameworkVersion().equals( "3.5" ) )
         {
@@ -177,7 +176,6 @@ public final class DefaultCompiler
             commands.add( wcfRef + "Microsoft.VisualC.STLCLR.dll" );
         }
 
-        // TODO: this should rather be a custom compiler class for this combination of vendor and framework!!
         if ( compilerContext.getVendor().equals( Vendor.MICROSOFT ) &&
             compilerContext.getFrameworkVersion().equals( "4.0" ) )
         {
@@ -210,7 +208,7 @@ public final class DefaultCompiler
         commands.add( "/warnaserror-" );
         //commands.add( "/nowarn" );
 
-        // TODO: this should rather be a custom compiler class for FULL profile
+        // TODO: should be done through compiler-config.xml !!
         if ( compilerContext.getVendor().equals( Vendor.MONO ) &&
                  "FULL".equals( compilerContext.getTargetProfile() ) )
         {
