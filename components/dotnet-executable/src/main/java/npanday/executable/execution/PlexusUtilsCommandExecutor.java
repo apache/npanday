@@ -65,7 +65,7 @@ public class PlexusUtilsCommandExecutor
         stdOut = new StandardStreamConsumer( getLogger() );
         stdErr = new ErrorStreamConsumer( getLogger() );
 
-        Commandline commandline = new CustomCommandline();
+        Commandline commandline = new CustomPlexusUtilsCommandline();
 
         // NPANDAY-409
         // On non-Windows platforms, such as Linux, "gmcs" not resolved

@@ -24,7 +24,7 @@ import org.apache.commons.exec.LogOutputStream;
 /**
  * Stream that captures and logs lines to a plexus logger.
  * Designed for anonymous implementation.
- *
+ * <p/>
  * Access the captured output through {@link #toString}.
  *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
@@ -34,14 +34,27 @@ public abstract class CapturingLogOutputStream
 {
     private StringBuffer contents = new StringBuffer();
 
-    private String NEW_LINE = System.getProperty("line.separator");
+    private boolean isFirstLine = true;
+
+    private String NEW_LINE = System.getProperty( "line.separator" );
 
     @Override
-    protected final void processLine(String line, int level) {
-        processLine( line );
-
+    protected final void processLine( String line, int level )
+    {
+        if ( !isFirstLine )
+        {
+            contents.append( NEW_LINE );
+        }
         contents.append( line );
-        contents.append( NEW_LINE );
+        isFirstLine = false;
+
+        handle( line );
+    }
+
+    @Override
+    protected final void processLine( String line )
+    {
+        super.processLine( line );
     }
 
     /**
@@ -49,7 +62,7 @@ public abstract class CapturingLogOutputStream
      *
      * @param line
      */
-    protected abstract void processLine( String line );
+    protected abstract void handle( String line );
 
     /**
      * Returns the captured output.

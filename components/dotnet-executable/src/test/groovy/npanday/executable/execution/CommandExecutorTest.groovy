@@ -25,11 +25,14 @@ import npanday.executable.CommandExecutor
 import npanday.executable.ExecutionException
 import org.codehaus.plexus.logging.Logger
 import org.codehaus.plexus.logging.console.ConsoleLogger
-import org.codehaus.plexus.util.cli.Arg
-import org.codehaus.plexus.util.cli.Commandline
 import org.junit.Test
+import org.junit.internal.AssumptionViolatedException
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import org.junit.runners.Parameterized.Parameters
 import static org.junit.Assert.*
 
+@RunWith(value = Parameterized.class)
 public class CommandExecutorTest
 {
     private static final String MKDIR = "mkdir";
@@ -38,49 +41,171 @@ public class CommandExecutorTest
 
     private List<String> params = new ArrayList<String>();
 
-    private CommandExecutor cmdExecutor;
+    private CommandExecutor cmd;
+    private String cmdHint;
 
-    public CommandExecutorTest()
+    @Parameters
+    public static Collection<Object[]> data()
     {
-        File f = new File( "test" );
-        parentPath = System.getProperty( "user.dir" ) + File.separator + "target" + File.separator + "test-resources";
+        Object[][] data = [
+                ["plexus_cli", new PlexusUtilsCommandExecutor()],
+                ["commons_exec", new CommonsExecCommandExecutor()]
+        ];
+        return Arrays.asList(data);
+    }
 
-        File parentPathFile = new File( parentPath );
+    public CommandExecutorTest(String hint, CommandExecutor cmd)
+    {
+        cmdHint = hint;
+        println "Executing with " + hint
+        File f = new File("test");
+        parentPath = System.getProperty("user.dir") + File.separator + "target" + File.separator +
+                "test-resources";
+
+        File parentPathFile = new File(parentPath);
         if ( !parentPathFile.exists() )
         {
             parentPathFile.mkdir();
         }
 
-        cmdExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
-        cmdExecutor.setLogger( new ConsoleLogger( Logger.LEVEL_DEBUG, "Command Executor") );
+        this.cmd = cmd;
+        cmd.setLogger(new ConsoleLogger(Logger.LEVEL_DEBUG, "Command Executor"));
     }
 
     @Test
-    public void testArgsWithFile()
-        throws ExecutionException
+    public void testSimpleCommandArg()
+    throws ExecutionException
     {
-        Commandline cli = new Commandline();
-        cli.setExecutable( "echo" );
-        final Arg arg = cli.createArg();
-        arg.setValue( "-x:y=" );
-        arg.setFile( new File("c:\te mp") );
-        cli.addArg( arg );
+        testArgExpansion(["x"], "x");
+    }
 
+    @Test
+    public void testCommandArgWithSpaces()
+    throws ExecutionException
+    {
+        testArgExpansion(["a b"], '"a b\"');
+    }
+
+    @Test
+    public void testCommandArgWithEmbeddedSingleQuotes_middle()
+    throws ExecutionException
+    {
+        testArgExpansion(["a ' b"], '"a \' b"');
+    }
+
+    @Test
+    public void testCommandArgWithEmbeddedSingleQuotes_trailing()
+    throws ExecutionException
+    {
+        testArgExpansion(["a '"], [
+                         plexus_cli: '"a \'"'
+                         ]);
+    }
+
+    @Test
+    public void testCommandArgWithEmbeddedSingleQuotes_leading()
+    throws ExecutionException
+    {
+        testArgExpansion(["' a"], [
+                         plexus_cli: '"\' a"'
+                         ]);
+    }
+
+    @Test
+    public void testCommandArgWithEmbeddedSingleQuotes_surrounding()
+    throws ExecutionException
+    {
+        testArgExpansion(["' a '"], [
+                         plexus_cli: '"\' a \'"'
+                         ]);
+    }
+
+    @Test
+    public void testCommandArgWithEmbeddedDoubleQuotes_middle()
+    throws ExecutionException
+    {
+        testArgExpansion(['a " b'], [
+                         plexus_cli: '"a " b"'
+                         ]);
+    }
+
+    @Test
+    public void testCommandArgWithEmbeddedDoubleQuotes_trailing()
+    throws ExecutionException
+    {
+        testArgExpansion(['a "'], [
+                         plexus_cli: '"a ""'
+                         ]);
+    }
+
+    @Test
+    public void testCommandArgWithEmbeddedDoubleQuotes_leading()
+    throws ExecutionException
+    {
+        testArgExpansion(['" a'], [
+                         plexus_cli: '"" a"'
+                         ]);
+    }
+
+    @Test
+    public void testCommandArgWithEmbeddedDoubleQuotes_surrounding()
+    throws ExecutionException
+    {
+        testArgExpansion(['" a "'], [
+                         plexus_cli: '" a "'
+                         ]);
+    }
+
+    private def testArgExpansion(ArrayList<String> args, String expected)
+    {
+        cmd.executeCommand("echo", args)
+        assert cmd.result == 0
+        assert cmd.standardOut == expected
+    }
+
+    private def testArgExpansion(ArrayList<String> args, Map<String, String> expectedPerHint)
+    {
+        if ( !expectedPerHint.containsKey(cmdHint) )
+        {
+            cmd.executeCommand("echo", args)
+            throw new AssumptionViolatedException("Quoting behaviour undefined for '" + cmdHint + "'.\n"
+                                                          + args + " -> " + cmd.standardOut)
+        }
+
+        testArgExpansion(args, expectedPerHint[cmdHint])
+    }
+
+    @Test
+    public void testErrorWithReturnValue()
+    throws ExecutionException
+    {
+        // hopefully an executable named asdfasdf doesnt exist
+        try
+        {
+            cmd.executeCommand("asdfasdf", [])
+            fail("expected command to fail")
+        }
+        catch (ExecutionException)
+        {
+
+        }
+        println "Result is $cmd.result"
+        assert cmd.result != 0
     }
 
     @Test
     public void testParamWithNoSpaces()
-        throws ExecutionException
+    throws ExecutionException
     {
         String path = parentPath + File.separator + "sampledirectory";
 
         params.clear();
-        params.add( path );
+        params.add(path);
 
-        cmdExecutor.executeCommand( MKDIR, params );
-        File dir = new File( path );
+        cmd.executeCommand(MKDIR, params);
+        File dir = new File(path);
 
-        assertTrue( dir.exists() );
+        assertTrue(dir.exists());
 
         if ( dir.exists() )
         {
@@ -90,17 +215,17 @@ public class CommandExecutorTest
 
     @Test
     public void testParamWithSpaces()
-        throws ExecutionException
+    throws ExecutionException
     {
         String path = parentPath + File.separator + "sample directory";
 
         params.clear();
-        params.add( path );
+        params.add(path);
 
-        cmdExecutor.executeCommand( MKDIR, params );
-        File dir = new File( path );
+        cmd.executeCommand(MKDIR, params);
+        File dir = new File(path);
 
-        assertTrue( dir.exists() );
+        assertTrue(dir.exists());
 
         if ( dir.exists() )
         {
@@ -113,29 +238,28 @@ public class CommandExecutorTest
      test is related to NPANDAY-366
      */
     public void testTooLongCommandName()
-        throws ExecutionException
+    throws ExecutionException
     {
-	    // we are only interested in exectuing this test
-	    // on Windows, to catch the "Command line to long" issue for cmd.exe.
-	    if (!isWindows())
-	      return;
+        // we are only interested in exectuing this test
+        // on Windows, to catch the "Command line to long" issue for cmd.exe.
+        if ( !isWindows() ) return;
 
         params.clear();
 
-        cmdExecutor.setLogger( new ConsoleLogger( 0, null ) );
+        cmd.setLogger(new ConsoleLogger(0, null));
 
         try
         {
-            cmdExecutor.executeCommand( repeat( 'x', 260 ), params, null, false );
-            fail( "Expected the command to fail!" );
+            cmd.executeCommand(repeat('x', 260), params, null, false);
+            fail("Expected the command to fail!");
         }
-        catch ( ExecutionException e )
+        catch (ExecutionException e)
         {
-            System.out.println( cmdExecutor.toString() );
+            System.out.println(cmd.toString());
             // the message is language-specific, but better to ensure an error than
             // ignoring the test
             // assertEquals( "The input line is too long.", cmdExecutor.getStandardError() );
-            assertEquals( 1, cmdExecutor.getResult() );
+            assertEquals(1, cmd.getResult());
         }
     }
 
@@ -144,29 +268,28 @@ public class CommandExecutorTest
      test is related to NPANDAY-366
      */
     public void testTooLongCommandName_withSpace()
-        throws ExecutionException
+    throws ExecutionException
     {
-	    // we are only interested in exectuing this test
-	    // on Windows, to catch the "Command line to long" issue for cmd.exe.
-	    if (!isWindows())
-	      return;
+        // we are only interested in exectuing this test
+        // on Windows, to catch the "Command line to long" issue for cmd.exe.
+        if ( !isWindows() ) return;
 
         params.clear();
 
-        cmdExecutor.setLogger( new ConsoleLogger( 0, null ) );
+        cmd.setLogger(new ConsoleLogger(0, null));
 
         try
         {
-            cmdExecutor.executeCommand( "echo " + repeat( 'x', 255 ), params, null, false );
-            fail( "Expected the command to fail!" );
+            cmd.executeCommand("echo " + repeat('x', 255), params, null, false);
+            fail("Expected the command to fail!");
         }
-        catch ( ExecutionException e )
+        catch (ExecutionException e)
         {
-            System.out.println( cmdExecutor.toString() );
+            System.out.println(cmd.toString());
             // the message is language-specific, but better to ensure an error than
             // ignoring the test
             // assertEquals( "The input line is too long.", cmdExecutor.getStandardError() );
-            assertEquals( 1, cmdExecutor.getResult() );
+            assertEquals(1, cmd.getResult());
         }
     }
 
@@ -176,20 +299,20 @@ public class CommandExecutorTest
      test is related to NPANDAY-366
      */
     public void testLongCommand()
-        throws ExecutionException
+    throws ExecutionException
     {
         params.clear();
 
-        cmdExecutor.setLogger( new ConsoleLogger( 0, null ) );
-        params.add( repeat( 'a', 260 ) );
+        cmd.setLogger(new ConsoleLogger(0, null));
+        params.add(repeat('a', 260));
 
-        cmdExecutor.executeCommand( "echo", params, null, false );
-        System.out.println( cmdExecutor.toString() );
+        cmd.executeCommand("echo", params, null, false);
+        System.out.println(cmd.toString());
 
-        assertEquals( repeat( 'a', 260 ), cmdExecutor.getStandardOut() );
+        assertEquals(repeat('a', 260), cmd.getStandardOut());
     }
 
-    private static String repeat( String c, int i )
+    private static String repeat(String c, int i)
     {
         String tst = "";
         for ( int j = 0; j < i; j++ )

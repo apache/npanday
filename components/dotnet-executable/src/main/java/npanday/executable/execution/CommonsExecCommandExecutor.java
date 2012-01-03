@@ -29,7 +29,6 @@ import org.apache.commons.exec.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -44,11 +43,11 @@ public class CommonsExecCommandExecutor
 {
     private static final Joiner JOIN_ON_SPACE = Joiner.on( " " );
 
-    private OutputStream standardOutHandler;
+    private CapturingLogOutputStream standardOutHandler;
 
-    private OutputStream errorOutHandler;
+    private CapturingLogOutputStream errorOutHandler;
 
-    private int result;
+    private int result = -1;
 
     private boolean hasErrorOutput = false;
 
@@ -56,16 +55,15 @@ public class CommonsExecCommandExecutor
 
     private boolean hasLoggedStartInfo;
 
-    public CommonsExecCommandExecutor()
-    {
-        setupOutputHandlers();
-    }
-
     @Override
     public void executeCommand(
         String executable, List<String> commands, File workingDirectory, boolean failsOnErrorOutput ) throws
         ExecutionException
     {
+        setupOutputHandlers();
+        result = -1;
+        hasErrorOutput = false;
+
         // TODO: This is for Windows only; in context of NPANDAY-509
 
         /*
@@ -73,7 +71,7 @@ public class CommonsExecCommandExecutor
          * we can pass arguments like -x="a b" - which, in this case,
          * was required by MSDeploy.
          *
-         * Without cmd, using commons-exc or plexus-utils' cli, -x="a b" will
+         * Without cmd, using commons-exec or plexus-utils' cli, -x="a b" will
          * get quoted once more.
          *
          * Consideration: We could also exchange the  DefaultExecutor.launcher; but it is private :/
@@ -90,10 +88,10 @@ public class CommonsExecCommandExecutor
 
         for ( String arg : commands )
         {
-            // NPANDAY-509: if an argument ends with " or ', we are quite sure,
+            // NPANDAY-509: if an argument contains " , we assume
             // quoting has been taken care of on the outside
-            final boolean endsWithQuote = arg.endsWith( "'" ) || arg.endsWith( "\"" );
-            final boolean handleQuoting = endsWithQuote ? false : true;
+            final boolean containsQuote = arg.contains( "\"" );
+            final boolean handleQuoting = containsQuote ? false : true;
 
             if ( handleQuoting )
             {
@@ -125,6 +123,8 @@ public class CommonsExecCommandExecutor
         }
         catch ( ExecuteException e )
         {
+            result = e.getExitValue();
+
             throw new ExecutionException(
                 "NPANDAY-125-002: Error occurred when executing " + commandLine.toString(), e
             );
@@ -148,17 +148,18 @@ public class CommonsExecCommandExecutor
     {
         standardOutHandler = new CapturingLogOutputStream()
         {
-            protected void processLine( String line )
+            @Override
+            protected void handle( String line )
             {
                 mayLogStartInfo();
-                getLogger().info( "| " + line );
+                getLogger().info( " | " + line );
             }
         };
 
         errorOutHandler = new CapturingLogOutputStream()
         {
             @Override
-            protected void processLine( String line )
+            protected void handle( String line )
             {
                 mayLogStartInfo();
                 getLogger().error( "| " + line );
@@ -171,7 +172,7 @@ public class CommonsExecCommandExecutor
     {
         if (!hasLoggedStartInfo)
         {
-            getLogger().info( "+--[ RUNNING: " + commandLine  + "]");
+            getLogger().info( " +--[ RUNNING: " + commandLine  + "]");
         }
         hasLoggedStartInfo = true;
     }
@@ -180,7 +181,7 @@ public class CommonsExecCommandExecutor
     {
         if (hasLoggedStartInfo)
         {
-           getLogger().info( "+--[ DONE" + (hasErrorOutput ? " WITH ERRORS" : "") + " ]" );
+           getLogger().info( " +--[ DONE" + (hasErrorOutput ? " WITH ERRORS" : "") + " ]" );
         }
     }
 

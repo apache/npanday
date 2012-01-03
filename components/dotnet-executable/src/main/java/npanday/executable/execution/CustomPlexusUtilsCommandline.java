@@ -35,7 +35,7 @@ import java.util.Properties;
  * @author Shane Isbell
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  */
-public class CustomCommandline
+public class CustomPlexusUtilsCommandline
     extends Commandline
 {
     protected Map envVars = Collections.synchronizedMap( new LinkedHashMap() );
