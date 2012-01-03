@@ -56,7 +56,7 @@ public abstract class AbstractMsDeployMojo<T>
     /**
      * The version of the framework vendor, the executable is provided by or compatible with.
      *
-     * @parameter expression="${vendor}"
+     * @parameter expression="${vendorVersion}"
      */
     private String vendorVersion;
 

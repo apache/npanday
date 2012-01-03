@@ -46,7 +46,7 @@ public abstract class AbstractNPandaySettingsAwareMojo
     /**
      * The version of the framework vendor, the executable is provided by or compatible with.
      *
-     * @parameter expression="${vendor}"
+     * @parameter expression="${vendorVersion}"
      */
     protected String vendorVersion;
 
