@@ -29,6 +29,7 @@ import org.codehaus.plexus.logging.Logger;
 import java.util.List;
 import java.util.Collections;
 import java.io.File;
+import java.util.Properties;
 
 /**
  * @author Shane Isbell
@@ -46,13 +47,14 @@ public class DefaultRepositoryNetExecutable
 
     private List<String> commands;
 
-    public List<String> getCommands()
-        throws ExecutionException
+    private Properties configuration;
+
+    public List<String> getCommands() throws ExecutionException
     {
         return commands;
     }
 
-    public File getExecutionPath()
+    public String getExecutable() throws ExecutionException
     {
         if ( executableContext == null )
         {
@@ -67,71 +69,47 @@ public class DefaultRepositoryNetExecutable
                 File exe = new File( executable );
                 if ( exe.exists() )
                 {
-                    logger.info("NPANDAY-068-005: Choose executable path's parent as execution path: "
-                            + new File( executable ).getParentFile().getAbsolutePath());
-                    return new File( executable ).getParentFile();
+                    logger.info( "NPANDAY-068-005: Found executable: " + exe.getAbsolutePath() );
+                    return exe.getAbsolutePath();
                 }
             }
+            if (executables.size() > 0)
+            {
+                logger.info( "NPANDAY-068-007: Assuming " + executables.get( 0 ) + " will be found on the path." );
+                return executables.get( 0 );
+            }
         }
-        logger.warn("NPANDAY-068-006: Did not find any of " + executables);
-        return null;
+        throw new ExecutionException( "NPANDAY-068-006: Couldn't find anything to be executed!" );
     }
 
-    public void execute()
-        throws ExecutionException
+    public void execute() throws ExecutionException
     {
         List<String> commands = getCommands();
 
-        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor(
+            (String)configuration.get( "switchformats" )
+        );
         commandExecutor.setLogger( logger );
 
         try
         {
-            commandExecutor.executeCommand( getExecutable(), getCommands(), getExecutionPath(), true );
+            commandExecutor.executeCommand( getExecutable(), getCommands(), null, true );
         }
         catch ( ExecutionException e )
         {
-            throw new ExecutionException( "NPANDAY-063-000: Execution Path = " +
-                ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Executable = " + getExecutable() + ", Args = " +
-                commands, e );
+            throw new ExecutionException(
+                "NPANDAY-063-000: Executable = " + getExecutable() + ", Args = " + commands, e
+            );
         }
-        if ( commandExecutor.getStandardOut().contains( "error" )
-          && !commandExecutor.getStandardOut().contains( "exit code = 0" ) )        
+
+        if ( commandExecutor.getStandardOut().contains( "error" ) && !commandExecutor.getStandardOut().contains(
+            "exit code = 0"
+        ) )
         {
             throw new ExecutionException(
-                "NPANDAY-063-001: Execution Path = " +
-                ( ( getExecutionPath() != null ) ? getExecutionPath().getAbsolutePath() : "unknown" ) + ", Executable = " + getExecutable() + ", Args = " +
-                commands );
+                "NPANDAY-063-001: Executable = " + getExecutable() + ", Args = " + commands
+            );
         }
-    }
-
-
-    public String getExecutable()
-        throws ExecutionException
-    {
-        if ( executableContext == null )
-        {
-            throw new ExecutionException( "NPANDAY-063-002: Executable has not been initialized with a context" );
-        }
-
-        List<String> executablePaths = executableContext.getExecutableConfig().getExecutionPaths();
-        if ( executablePaths != null )
-        {
-            for ( String executablePath : executablePaths )
-            {
-                File exe = new File( executablePath );
-                logger.debug( "NPANDAY-063-004: Checking executable path = " + exe.getAbsolutePath() );
-                if ( exe.exists() )
-                {
-                    return new File( executablePath ).getName();
-                }
-                else if ( executablePath.equals( "mono" ) )
-                {
-                    return executablePath;
-                }
-            }
-        }
-        throw new ExecutionException( "NPANDAY-063-003: Executable path has not been set or is invalid" );
     }
 
     public Vendor getVendor()
@@ -146,8 +124,9 @@ public class DefaultRepositoryNetExecutable
         }
     }
 
-    public void init( NPandayContext npandayContext )
+    public void init( NPandayContext npandayContext, Properties properties )
     {
+        configuration = properties;
         this.executableContext = (RepositoryExecutableContext) npandayContext;
         this.logger = executableContext.getLogger();
         commands = Collections.unmodifiableList( executableContext.getExecutableConfig().getCommands() );

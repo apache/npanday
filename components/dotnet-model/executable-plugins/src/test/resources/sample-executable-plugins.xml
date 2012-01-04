@@ -20,6 +20,9 @@
   <executablePlugin>
     <identifier>ncover</identifier>
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <pluginConfiguration>
+      <test>12345</test>
+    </pluginConfiguration>
     <vendor>MICROSOFT</vendor>
     <executable>NCover.Console</executable>
     <executableVersion>5.0</executableVersion>

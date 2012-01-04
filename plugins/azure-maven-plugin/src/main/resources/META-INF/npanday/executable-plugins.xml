@@ -20,7 +20,7 @@
 
   <executablePlugin>
     <profile>CSPACK</profile>
-    <pluginClass>npanday.executable.impl.CommonsExecNetExecutable</pluginClass>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
 
     <executable>cspack</executable>
     <executableVersion>1.6</executableVersion>

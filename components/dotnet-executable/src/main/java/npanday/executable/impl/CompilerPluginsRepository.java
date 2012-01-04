@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
@@ -103,6 +104,7 @@ public final class CompilerPluginsRepository
             CompilerPlugin plugin = (CompilerPlugin) i.next();
             String language = plugin.getLanguage();
             String pluginClassName = plugin.getPluginClass();
+            Properties pluginConfiguration = plugin.getPluginConfiguration();
             String executable = plugin.getExecutable();
             String vendor = plugin.getVendor();
             String vendorVersion = plugin.getVendorVersion();
@@ -150,6 +152,8 @@ public final class CompilerPluginsRepository
                 platformCapability.setLanguage( language );
                 platformCapability.setOperatingSystem( os );
                 platformCapability.setPluginClassName( pluginClassName );
+                platformCapability.setPluginConfiguration( pluginConfiguration );
+
                 platformCapability.setExecutableName( executable );
                 platformCapability.setIdentifier( identifier );
                 platformCapability.setFrameworkVersions( frameworkVersions );

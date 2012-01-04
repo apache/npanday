@@ -26,6 +26,7 @@ import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 /**
@@ -198,6 +199,28 @@ public final class PathUtil
         return targetFile;
     }
 
+    public static String getExecutable( String executable, Collection<String> executablePaths,
+                                        org.codehaus.plexus.logging.Logger logger )
+    {
+        if ( executablePaths != null && executablePaths.size() > 0 )
+        {
+            for ( String executablePath : executablePaths )
+            {
+                File executableFile = PathUtil.getExecutable( new File(executablePath), executable );
+                if ( executableFile != null )
+                {
+                    logger.info(
+                        "NPANDAY-126-001: Found executable file for " + executable + ": \"" + executableFile + "\""
+                    );
+
+                    return executableFile.getAbsolutePath();
+                }
+            }
+        }
+        logger.warn( "NPANDAY-126-002: Did not find path for " + executable + " in " + executablePaths );
+
+        return executable;
+    }
 
     public static boolean containsExecutable(String executablePath, String executable) {
         return (getExecutable(new File(executablePath), executable) != null);

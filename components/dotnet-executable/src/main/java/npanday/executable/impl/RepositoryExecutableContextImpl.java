@@ -30,6 +30,8 @@ import npanday.registry.RepositoryRegistry;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 
+import java.util.Properties;
+
 /**
  * Provides an implementation of the repository executable context.
  *
@@ -96,6 +98,6 @@ public class RepositoryExecutableContextImpl
     {
         this.executableConfig = executableConfig;
         netExecutable = new DefaultRepositoryNetExecutable();
-        netExecutable.init( this );
+        netExecutable.init( this, new Properties( ) );
     }
 }

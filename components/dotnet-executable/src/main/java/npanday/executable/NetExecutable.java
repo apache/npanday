@@ -24,6 +24,7 @@ import npanday.PlatformUnsupportedException;
 import npanday.vendor.Vendor;
 
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Provides services for executing programs.
@@ -58,8 +59,9 @@ public interface NetExecutable
      * Initialize this executable.
      *
      * @param npandayContext
+     * @param properties
      */
-    void init( NPandayContext npandayContext );
+    void init( NPandayContext npandayContext, Properties properties );
 
     /**
      * Returns vendor framework used to run executable.

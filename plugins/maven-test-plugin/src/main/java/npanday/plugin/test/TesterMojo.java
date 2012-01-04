@@ -401,7 +401,7 @@ public class TesterMojo extends AbstractMojo
 
                 // TODO: This should rather be done through a configurable local executable-plugins.xml; then remove nunitcommand
                 getLog().debug( "NPANDAY-1100-008: Platform unsupported, is your npanday-settings.xml configured correctly?", pue );        
-                CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+                CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor(null);
                 commandExecutor.setLogger( new org.codehaus.plexus.logging.AbstractLogger( 0, "nunit-logger" )
                 {
                     Log log = getLog();

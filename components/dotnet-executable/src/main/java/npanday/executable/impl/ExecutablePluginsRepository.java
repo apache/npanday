@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Provides services for accessing the executable information within the executable-plugins.xml file.
@@ -124,6 +125,8 @@ public final class ExecutablePluginsRepository
         for ( ExecutablePlugin plugin : executablePlugins )
         {
             String pluginClassName = plugin.getPluginClass();
+            Properties pluginConfiguration = plugin.getPluginConfiguration();
+
             String executable = plugin.getExecutable();
             String executableVersion = plugin.getExecutableVersion();
             String vendor = plugin.getVendor();
@@ -175,6 +178,7 @@ public final class ExecutablePluginsRepository
 
                 platformCapability.setOperatingSystem( os );
                 platformCapability.setPluginClassName( pluginClassName );
+                platformCapability.setPluginConfiguration( pluginConfiguration );
                 platformCapability.setExecutableName( executable );
                 platformCapability.setExectuableVersion(executableVersion);
                 platformCapability.setIdentifier( identifier );

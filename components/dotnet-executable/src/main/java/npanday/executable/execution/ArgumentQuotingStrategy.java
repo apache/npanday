@@ -16,26 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package npanday.model.compiler.plugins.io;
 
-import npanday.model.compiler.plugins.io.xpp3.CompilerPluginXpp3Reader
+package npanday.executable.execution;
 
-class CompilerPluginXpp3ReaderTest
+/**
+ * Interface for the various implementations of commandline argument quoting.
+ * <i>Workaround for https://jira.codehaus.org/browse/PLXUTILS-147</i>
+ *
+ * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ */
+public interface ArgumentQuotingStrategy
 {
-  @org.junit.Test
-  void passes()
-  {
-    def xpp3Reader = new CompilerPluginXpp3Reader();
-    def stream = getClass().getResourceAsStream("/sample-compiler-plugins.xml")
-    assert stream != null : "couldn't find sample xml"
-    def xmlStream = new InputStreamReader(stream)
-    def model = xpp3Reader.read(xmlStream)
-
-    assert model != null
-    assert model.compilerPlugins != null
-    assert model.compilerPlugins.size() == 1
-    assert model.compilerPlugins[0].vendorVersion == "1"
-
-    assert model.compilerPlugins[0].pluginConfiguration.get("test") == "12345"
-  }
+    /**
+     * Possibility to intercept the quoting mechanisms.
+     *
+     * @param source the unescaped/unquoted argument
+     * @return the escaped and quoted argument
+     */
+    String quoteAndEscape(
+        String source, char quoteChar, final char[] escapedChars, final char[] quotingTriggers, char escapeChar,
+        boolean force );
 }

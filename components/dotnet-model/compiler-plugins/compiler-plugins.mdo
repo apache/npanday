@@ -60,6 +60,18 @@
           </description>
         </field>
         <field>
+          <name>pluginConfiguration</name>
+          <description>
+            Configuration properties, that will be passed along to npanday.executable.NetExecutable#init()
+          </description>
+          <version>1.5.0+</version>
+          <type>Properties</type>
+          <association xml.mapStyle="inline">
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
           <name>vendor</name>
           <version>1.0.0+</version>
           <type>String</type>

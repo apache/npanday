@@ -519,7 +519,7 @@ public final class CompilerContextImpl
     {
         try
         {
-            CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+            CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor(null);
             commandExecutor.setLogger( getLogger() );
 
             String executable = "gacutil";

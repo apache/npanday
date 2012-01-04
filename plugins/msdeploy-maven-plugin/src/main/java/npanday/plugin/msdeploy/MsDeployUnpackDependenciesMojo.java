@@ -77,12 +77,12 @@ public class MsDeployUnpackDependenciesMojo
     {
         List<String> commands = Lists.newArrayList();
 
-        // this requires npanday.executable.impl.CommonsExecNetExecutable to be used, as it will respect
+        // this requires npanday.executable.impl.DefaultNetExecutable to be used, as it will respect
         // the "home-made" quoting
 
         commands.add( "-verb:sync" );
-        commands.add( "-source:package=\"" + item.getPackageSource().getAbsolutePath() + "\"");
-        commands.add( "-dest:contentPath=\"" + item.getPackageTarget().getAbsolutePath() + "\"" );
+        commands.add( "-source:package=" + item.getPackageSource().getAbsolutePath());
+        commands.add( "-dest:contentPath=" + item.getPackageTarget().getAbsolutePath() );
 
         return commands;
     }

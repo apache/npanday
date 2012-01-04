@@ -121,7 +121,7 @@ public class CreateCloudServicePackageMojo
 
         if ( generateConfigurationFile )
         {
-            commands.add( "/generateConfigurationFile:\"" + templateConfigurationFile.getAbsolutePath() + "\"" );
+            commands.add( "/generateConfigurationFile:" + templateConfigurationFile.getAbsolutePath() );
         }
 
         commands.add( "/out:" + packageFile.getAbsolutePath() );

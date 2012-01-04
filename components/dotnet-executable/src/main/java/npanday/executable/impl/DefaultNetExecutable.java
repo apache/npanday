@@ -27,13 +27,14 @@ import npanday.executable.CommandFilter;
 import npanday.executable.ExecutableContext;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
+import npanday.executable.execution.CommonsExecCommandExecutor;
 import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Provides the default implementation of the net executable.
@@ -53,83 +54,31 @@ public class DefaultNetExecutable
 
     private Collection<String> commands;
 
+    private Properties configuration;
+
     public List<String> getCommands() throws ExecutionException, PlatformUnsupportedException
     {
         // TODO: should it fail on unsupported commands?
         CommandFilter filter = executableContext.getCommandFilter();
-        return Collections.unmodifiableList(filter.filter( commands ));
+        return Collections.unmodifiableList( filter.filter( commands ) );
     }
 
-    public File getExecutionPath()
-    {
-        String executable;
-        try
-        {
-            executable = getExecutable();
-        }
-        catch ( ExecutionException e )
-        {
-            return null;
-        }
-
-        Collection<String> executablePaths = executableContext.getProbingPaths();
-        if ( executablePaths != null && executablePaths.size() > 0 )
-        {
-            for ( String executablePath : executablePaths )
-            {
-                if ( PathUtil.containsExecutable(executablePath, executable) )
-                {
-                    logger.info("NPANDAY-070-003: Found executable path for " + executable + ": \"" + executablePath + "\"");
-                    return new File( executablePath );
-                }
-            }
-        }
-        logger.warn("NPANDAY-070-004: Did not find path for " + executable + " in " + executablePaths);
-        return null;
-    }
-
-    public void execute()
-        throws ExecutionException, PlatformUnsupportedException
+    public void execute() throws ExecutionException, PlatformUnsupportedException
     {
         innerExecute();
     }
 
-    protected void innerExecute() throws ExecutionException, PlatformUnsupportedException
+    public void innerExecute() throws ExecutionException, PlatformUnsupportedException
     {
         List<String> commands = getCommands();
 
-        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor((String)configuration.get( "switchformats" ));
         commandExecutor.setLogger( logger );
-
-        final File executionPath = getExecutionPath();
-        try
-        {
-            commandExecutor.executeCommand( getExecutable(), commands, executionPath, true );
-        }
-        catch ( ExecutionException e )
-        {
-            throw new ExecutionException( "NPANDAY-070-000: Error executing command: Execution path:" +
-                ( ( executionPath != null ) ? executionPath.getAbsolutePath() : "unknown" ) + ", Command = " +
-                commands, e );
-        }
-
-        // This check is too broad, as seen in Issue #9903
-        // I have not been able to identify an error it is trying to catch that is not already reported by the exit code above
-        //
-        //if ( commandExecutor.getStandardOut().contains( "error" ) )
-        //{
-        //    throw new ExecutionException( "NPANDAY-070-001: Command = " + commands );
-        //}
-    }
-
-    public String getExecutable()
-        throws ExecutionException
-    {
-        if ( executableContext == null )
-        {
-            throw new ExecutionException( "NPANDAY-070-002: Executable has not been initialized with a context" );
-        }
-        return executableContext.getExecutableName();
+        commandExecutor.executeCommand(
+            PathUtil.getExecutable(
+                executableContext.getExecutableName(), executableContext.getProbingPaths(), logger
+            ), commands, null, true
+        );
     }
 
     public Vendor getVendor()
@@ -137,8 +86,9 @@ public class DefaultNetExecutable
         return executableContext.getVendor();
     }
 
-    public void init( NPandayContext npandayContext )
+    public void init( NPandayContext npandayContext, Properties properties )
     {
+        configuration = properties;
         this.executableContext = (ExecutableContext) npandayContext;
         this.logger = executableContext.getLogger();
         commands = executableContext.getCommands();

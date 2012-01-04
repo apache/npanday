@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -46,6 +47,8 @@ public class MutableExecutableCapability
     private String architecture;
 
     protected String pluginClassName;
+
+    protected Properties pluginConfiguration;
 
     private String executable;
 
@@ -151,6 +154,16 @@ public class MutableExecutableCapability
     public void setPluginClassName( String pluginClassName )
     {
         this.pluginClassName = pluginClassName;
+    }
+
+    public Properties getPluginConfiguration()
+    {
+        return pluginConfiguration;
+    }
+
+    public void setPluginConfiguration( Properties pluginConfiguration )
+    {
+        this.pluginConfiguration = pluginConfiguration;
     }
 
     public CommandCapability getCommandCapability()

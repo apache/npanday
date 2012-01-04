@@ -20,6 +20,9 @@
   <compilerPlugin>
     <identifier>Ruby</identifier>
     <pluginClass>npanday.executable.compiler.impl.RubyCompiler</pluginClass>
+    <pluginConfiguration>
+      <test>12345</test>
+    </pluginConfiguration>
     <vendor>MICROSOFT</vendor>
     <vendorVersion>1</vendorVersion>
     <executable>RubyCompiler.exe</executable>

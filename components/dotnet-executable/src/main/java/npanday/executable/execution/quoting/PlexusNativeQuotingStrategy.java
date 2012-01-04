@@ -16,26 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package npanday.model.compiler.plugins.io;
 
-import npanday.model.compiler.plugins.io.xpp3.CompilerPluginXpp3Reader
+package npanday.executable.execution.quoting;
 
-class CompilerPluginXpp3ReaderTest
+import npanday.executable.execution.ArgumentQuotingStrategy;
+import org.codehaus.plexus.util.StringUtils;
+
+/**
+ * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
+ */
+public class PlexusNativeQuotingStrategy
+    implements ArgumentQuotingStrategy
 {
-  @org.junit.Test
-  void passes()
-  {
-    def xpp3Reader = new CompilerPluginXpp3Reader();
-    def stream = getClass().getResourceAsStream("/sample-compiler-plugins.xml")
-    assert stream != null : "couldn't find sample xml"
-    def xmlStream = new InputStreamReader(stream)
-    def model = xpp3Reader.read(xmlStream)
-
-    assert model != null
-    assert model.compilerPlugins != null
-    assert model.compilerPlugins.size() == 1
-    assert model.compilerPlugins[0].vendorVersion == "1"
-
-    assert model.compilerPlugins[0].pluginConfiguration.get("test") == "12345"
-  }
+    public String quoteAndEscape(
+        String source, char quoteChar, char[] escapedChars, char[] quotingTriggers, char escapeChar, boolean force )
+    {
+        return StringUtils.quoteAndEscape( source, quoteChar, escapedChars, quotingTriggers, escapeChar, force );
+    }
 }

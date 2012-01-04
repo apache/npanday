@@ -22,6 +22,7 @@ package npanday.executable.compiler.impl;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandFilter;
 import npanday.executable.ExecutionException;
+import npanday.executable.execution.quoting.CustomSwitchAwareQuotingStrategy;
 import npanday.vendor.Vendor;
 import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.FileUtils;
@@ -41,6 +42,14 @@ import java.util.List;
 public final class DefaultCompiler
     extends BaseCompiler
 {
+    CustomSwitchAwareQuotingStrategy strategy;
+
+    public DefaultCompiler(){
+        // TODO: move this to xml-configuration??
+        strategy = new CustomSwitchAwareQuotingStrategy();
+        strategy.addQuoteNormally("resource");
+    }
+
     public boolean failOnErrorOutput()
     {
         //MONO writes warnings to standard error: this turns off failing builds on warnings for MONO
@@ -78,9 +87,9 @@ public final class DefaultCompiler
         {
         	artifactFilePath = artifactFilePath.substring(0, artifactFilePath.length() - 3) + "dll";
         }
-        
+
         commands.add( "/out:" + artifactFilePath);
-    
+
 
         commands.add( "/target:" + targetArtifactType );
         if(compilerContext.getIncludeSources() == null || compilerContext.getIncludeSources().isEmpty() )
@@ -104,11 +113,11 @@ public final class DefaultCompiler
         }
         if ( !references.isEmpty() )
         {
-         
+
             for ( Artifact artifact : references )
             {
                 String path = artifact.getFile().getAbsolutePath();
-          
+
                 if( !path.contains( ".jar" ) )
                 {
                     commands.add( "/reference:" + path );
@@ -117,11 +126,11 @@ public final class DefaultCompiler
         }
         for ( String arg : compilerContext.getEmbeddedResourceArgs() )
         {
-            if (logger.isDebugEnabled()) 
+            if (logger.isDebugEnabled())
             {
                 logger.debug( "NPANDAY-168-001 add resource: " + arg );
             }
-        
+
             commands.add( "/resource:" + arg );
         }
         for ( File file : compilerContext.getLinkedResources() )
@@ -181,9 +190,9 @@ public final class DefaultCompiler
         {
             String frameworkPath = System.getenv( "SystemRoot" ) + "\\Microsoft.NET\\Framework\\v4.0.30319\\";
             //TODO: This is a hard-coded path: Don't have a registry value either.
-            List<String> libraryNames = Arrays.asList("Microsoft.Build.Tasks.v4.0.dll", 
+            List<String> libraryNames = Arrays.asList("Microsoft.Build.Tasks.v4.0.dll",
                 "Microsoft.Data.Entity.Build.Tasks.dll", "Microsoft.VisualC.STLCLR.dll");
-            for (String libraryName : libraryNames) 
+            for (String libraryName : libraryNames)
             {
                 String libraryFullName = frameworkPath + libraryName;
                 if (new File( libraryFullName ).exists())
@@ -191,7 +200,7 @@ public final class DefaultCompiler
                     commands.add( "/reference:" + libraryFullName );
                 }
             }
-        } 
+        }
         if ( compilerContext.getKeyInfo().getKeyFileUri() != null )
         {
             commands.add( "/keyfile:" + compilerContext.getKeyInfo().getKeyFileUri() );
@@ -228,26 +237,27 @@ public final class DefaultCompiler
         }
         if ( !compilerContext.isTestCompile() )
         {
+            // TODO: choose a better name for comments-xml and attach as artifact
             commands.add(
                 "/doc:" + new File( compilerContext.getTargetDirectory(), "comments.xml" ).getAbsolutePath() );
         }
 
         CommandFilter filter = compilerContext.getCommandFilter();
-        
+
         List<String> filteredCommands = filter.filter( commands );
         //Include Sources code is being copied to temporary folder for the recurse option
-        
+
         String fileExt = "";
         String frameWorkVer = ""+compilerContext.getFrameworkVersion();
         String TempDir = "";
         String targetDir = ""+compilerContext.getTargetDirectory();
-        
+
         Date date = new Date();
         String Now =""+date.getDate()+date.getHours()+date.getMinutes()+date.getSeconds();
 
         // TODO: Why can't the tmp dir just be a static one?
         TempDir = targetDir+File.separator+Now;
-        
+
         try
         {
             FileUtils.deleteDirectory( TempDir );
@@ -256,8 +266,8 @@ public final class DefaultCompiler
         {
             //Does Precautionary delete for tempDir 
         }
-        
-        FileUtils.mkdir(TempDir); 
+
+        FileUtils.mkdir(TempDir);
 
         // TODO: move includeSources expansion to the compiler context (handle excludes there)
         if(compilerContext.getIncludeSources() != null && !compilerContext.getIncludeSources().isEmpty() )
@@ -265,28 +275,28 @@ public final class DefaultCompiler
             int folderCtr=0;
             for(String includeSource : compilerContext.getIncludeSources())
             {
-                
+
                 String[] sourceTokens = includeSource.replace('\\', '/').split("/");
-                
+
                 String lastToken = sourceTokens[sourceTokens.length-1];
-                
+
                 if(fileExt=="")
                 {
-                    
+
                     String[] extToken = lastToken.split( "\\." );
                     fileExt = "."+extToken[extToken.length-1];
                 }
-                
+
                 try
                 {
                     String fileToCheck = TempDir+File.separator+lastToken;
                     if(FileUtils.fileExists( fileToCheck ))
                     {
-                        String subTempDir = TempDir+File.separator+folderCtr+File.separator; 
+                        String subTempDir = TempDir+File.separator+folderCtr+File.separator;
                         FileUtils.mkdir( subTempDir );
                         FileUtils.copyFileToDirectory( includeSource, subTempDir);
                         folderCtr++;
-                        
+
                     }
                     else
                     {
@@ -302,7 +312,7 @@ public final class DefaultCompiler
             }
             String recurseCmd = "/recurse:" + TempDir+File.separator + "*" + fileExt + "";
             filteredCommands.add(recurseCmd);
-            
+
         }
         if ( logger.isDebugEnabled() )
         {
@@ -320,13 +330,9 @@ public final class DefaultCompiler
         }
         filteredCommands.clear();
         responseFilePath = "@" + responseFilePath;
-        if ( responseFilePath.indexOf( " " ) > 0)
-        {
-            responseFilePath = "\"" + responseFilePath + "\"";
-        }
 
         filteredCommands.add( responseFilePath );
-        
+
         return filteredCommands;
     }
 
@@ -334,28 +340,7 @@ public final class DefaultCompiler
     // Eg. /define:"CONFIG=\"Debug\",DEBUG=-1,TRACE=-1,_MyType=\"Windows\",PLATFORM=\"AnyCPU\""
     private String escapeCmdParams(String param)
     {
-        if(param == null)
-            return null;
-        
-        String str = param;
-        if((param.startsWith("/") || param.startsWith("@")) && param.indexOf(":") > 0)
-        {
-            int delem = param.indexOf(":") + 1;
-            String command = param.substring(0, delem);
-            String value = param.substring(delem);
-            
-            if(value.indexOf(" ") > 0 || value.indexOf("\"") > 0)
-            {
-                value = "\"" + value.replaceAll("\"", "\\\\\"")  + "\"";
-            }
-            
-            str = command + value;
-        }
-        else if(param.indexOf(" ") > 0)
-        {
-            str = "\"" + param  + "\"";
-        }
-        
-        return str;
+        // /resource:"path","more" doesn't work
+        return strategy.quoteAndEscape( param, '\"', new char[]{'\"'}, new char[]{' '}, '\\', false);
     }
 }

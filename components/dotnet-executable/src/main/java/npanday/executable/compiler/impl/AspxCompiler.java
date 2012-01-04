@@ -66,9 +66,11 @@ public class AspxCompiler
             + compilerContext.getVendor() + ", Language = "
             + compilerContext.getArtifact().getAbsolutePath() );
 
-        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor();
+        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor(
+            (String)configuration.get( "switchformats" )
+        );
         commandExecutor.setLogger( logger );
-        commandExecutor.executeCommand( getExecutable(), getCommands(), getExecutionPath(), failOnErrorOutput() );
+        commandExecutor.executeCommand( getExecutable(), getCommands(), null, failOnErrorOutput() );
     }
 
 }

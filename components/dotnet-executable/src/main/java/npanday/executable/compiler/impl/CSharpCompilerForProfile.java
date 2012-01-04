@@ -19,14 +19,15 @@ package npanday.executable.compiler.impl;
  * under the License.
  */
 
-import npanday.PlatformUnsupportedException;
-import npanday.executable.compiler.CompilerExecutable;
-import npanday.executable.ExecutionException;
 import npanday.NPandayContext;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutionException;
 import npanday.executable.compiler.CompilerContext;
+import npanday.executable.compiler.CompilerExecutable;
 
-import java.util.List;
 import java.io.File;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * A compiler to be used for compiling with .NET Profiles.
@@ -44,10 +45,10 @@ public final class CSharpCompilerForProfile
         netCompiler = new DefaultCompiler();
     }
 
-    public void init( NPandayContext npandayContext )
+    public void init( NPandayContext npandayContext, Properties properties )
     {
-        super.init( npandayContext);
-        netCompiler.init( npandayContext );
+        super.init( npandayContext, properties );
+        netCompiler.init( npandayContext, properties );
         this.compilerContext = (CompilerContext) npandayContext;
     }
 

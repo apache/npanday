@@ -19,7 +19,7 @@ package npanday.registry.impl;
  * under the License.
  */
 
-import hidden.org.codehaus.plexus.interpolation.AbstractValueSource;
+import org.codehaus.plexus.interpolation.AbstractValueSource;
 import npanday.registry.WindowsRegistryAccessException;
 import npanday.registry.WindowsRegistryAccessProvider;
 import org.codehaus.plexus.interpolation.ValueSource;

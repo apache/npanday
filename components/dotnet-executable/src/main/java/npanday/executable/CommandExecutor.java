@@ -19,11 +19,17 @@ package npanday.executable;
  * under the License.
  */
 
-import npanday.executable.execution.PlexusUtilsCommandExecutor;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+import npanday.executable.execution.UnifiedShellCommandExecutor;
+import npanday.executable.execution.quoting.CustomSwitchAwareQuotingStrategy;
+import npanday.executable.execution.switches.SwitchFormat;
 import org.codehaus.plexus.logging.Logger;
 
 import java.io.File;
 import java.util.List;
+
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 
 /**
@@ -118,13 +124,26 @@ public interface CommandExecutor
          * Returns a default instance of the command executor
          *
          * @return a default instance of the command executor
+         * @param switchformats
          */
-        public static CommandExecutor createDefaultCommmandExecutor()
+        public static CommandExecutor createDefaultCommmandExecutor( String switchformats )
         {
-            // TODO: at some point we should switch this one to CommonsExecCommandExecutor
-            return new PlexusUtilsCommandExecutor();
+            if (isNullOrEmpty(switchformats))
+                return new UnifiedShellCommandExecutor( new CustomSwitchAwareQuotingStrategy() );
+            else
+                return new UnifiedShellCommandExecutor( new CustomSwitchAwareQuotingStrategy( parseSwitchFormats(switchformats)) );
         }
 
+        static Splitter SPLIT_ON_PIPE = Splitter.on('|').trimResults().omitEmptyStrings();
+
+        private static SwitchFormat[] parseSwitchFormats( String switchformats )
+        {
+            List<SwitchFormat> list = Lists.newArrayList();
+            for(String format : SPLIT_ON_PIPE.split( switchformats )){
+                list.add( SwitchFormat.fromStringDefinition( format ) );
+            }
+            return list.toArray(new SwitchFormat[0]);
+        }
     }
 
 }

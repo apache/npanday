@@ -155,6 +155,6 @@ public class ExecutableContextImpl
 
         commandFilter = CommandFilter.Factory.createDefaultCommandFilter( executableCapability.getCommandCapability(), logger );
         netExecutable = createPluginInstance();
-        netExecutable.init( this );
+        netExecutable.init( this, executableCapability.getPluginConfiguration() );
     }
 }

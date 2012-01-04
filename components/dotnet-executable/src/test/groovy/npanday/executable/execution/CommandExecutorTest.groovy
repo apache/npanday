@@ -23,8 +23,11 @@ package npanday.executable.execution;
 
 import npanday.executable.CommandExecutor
 import npanday.executable.ExecutionException
+import npanday.executable.execution.quoting.PlexusNativeQuotingStrategy
+import npanday.executable.execution.quoting.CustomSwitchAwareQuotingStrategy
 import org.codehaus.plexus.logging.Logger
 import org.codehaus.plexus.logging.console.ConsoleLogger
+import org.codehaus.plexus.util.Os
 import org.junit.Test
 import org.junit.internal.AssumptionViolatedException
 import org.junit.runner.RunWith
@@ -47,9 +50,16 @@ public class CommandExecutorTest
     @Parameters
     public static Collection<Object[]> data()
     {
+        def osKey = Os.isFamily(Os.FAMILY_WINDOWS) ? "win_" : "x_";
         Object[][] data = [
-                ["plexus_cli", new PlexusUtilsCommandExecutor()],
-                ["commons_exec", new CommonsExecCommandExecutor()]
+                [osKey + "npanday_old",
+                        new PlexusUtilsCommandExecutor()],
+                [osKey + "unified_simple_quoting",
+                        new UnifiedShellCommandExecutor(new PlexusNativeQuotingStrategy())],
+                [osKey + "unified_custom_quoting",
+                        new UnifiedShellCommandExecutor(new CustomSwitchAwareQuotingStrategy())],
+                [osKey + "commons_exec_experimental",
+                        new CommonsExecCommandExecutor()]
         ];
         return Arrays.asList(data);
     }
@@ -98,7 +108,9 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(["a '"], [
-                         plexus_cli: '"a \'"'
+                         win_npanday_old: '"a \'"',
+                         win_unified_simple_quoting: '"a \'"',
+                         win_unified_custom_quoting: '"a \'"'
                          ]);
     }
 
@@ -107,7 +119,9 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(["' a"], [
-                         plexus_cli: '"\' a"'
+                         win_npanday_old: '"\' a"',
+                         win_unified_simple_quoting: '"\' a"',
+                         win_unified_custom_quoting: '"\' a"'
                          ]);
     }
 
@@ -116,7 +130,9 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(["' a '"], [
-                         plexus_cli: '"\' a \'"'
+                         win_npanday_old: '"\' a \'"',
+                         win_unified_simple_quoting: '"\' a \'"',
+                         win_unified_custom_quoting: '"\' a \'"'
                          ]);
     }
 
@@ -125,7 +141,9 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(['a " b'], [
-                         plexus_cli: '"a " b"'
+                         win_npanday_old: '"a " b"',
+                         win_unified_simple_quoting: '"a \\" b"',
+                         win_unified_custom_quoting: '"a \\" b"'
                          ]);
     }
 
@@ -134,7 +152,9 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(['a "'], [
-                         plexus_cli: '"a ""'
+                         win_npanday_old: '"a ""',
+                         win_unified_simple_quoting: '"a \\""',
+                         win_unified_custom_quoting: '"a \\""'
                          ]);
     }
 
@@ -143,7 +163,9 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(['" a'], [
-                         plexus_cli: '"" a"'
+                         win_npanday_old: '"" a"',
+                         win_unified_simple_quoting: '"\\" a"',
+                         win_unified_custom_quoting: '"\\" a"'
                          ]);
     }
 
@@ -152,8 +174,79 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(['" a "'], [
-                         plexus_cli: '" a "'
+                         win_npanday_old: '" a "',
+                         win_unified_simple_quoting: '" a "', // if it yet is quoted, it wont quote again
+                         win_unified_custom_quoting: '"\\" a \\""' // but we want it escaped and quoted again
                          ]);
+    }
+
+    @Test
+    public void testCommandArgSwitchWithSpaceInValue_slashColon()
+    throws ExecutionException
+    {
+        testArgExpansion(['/test:a b'], [
+                         win_unified_simple_quoting: '"/test:a b"',
+                         win_unified_custom_quoting: '/test:"a b"'
+                         ]);
+    }
+
+    @Test
+    public void testCommandArgSwitchWithSpaceInValue_slashEquals()
+    throws ExecutionException
+    {
+        testArgExpansion(['/test=a b'], [
+                         win_unified_simple_quoting: '"/test=a b"',
+                         win_unified_custom_quoting: '/test="a b"'
+                         ]);
+    }
+
+    @Test
+    public void testCommandArgSwitchWithSpaceInValue_minusColon()
+    throws ExecutionException
+    {
+        testArgExpansion(['-test:a b'], [
+                         win_unified_simple_quoting: '"-test:a b"',
+                         win_unified_custom_quoting: '-test:"a b"'
+                         ]);
+    }
+
+    @Test
+    public void testCommandArgSwitchWithSpaceInValue_minusEquals()
+    throws ExecutionException
+    {
+        testArgExpansion(['-test=a b'], [
+                         win_unified_simple_quoting: '"-test=a b"',
+                         win_unified_custom_quoting: '-test="a b"'
+                         ]);
+    }
+
+    @Test
+    public void testCommandArgSwitchWithSpaceInValue_prequotedDouble()
+    throws ExecutionException
+    {
+        testArgExpansion(['/test:"a b"'], [
+                         win_unified_simple_quoting: '"/test:\\"a b\\""',
+                         win_unified_custom_quoting: '/test:"\\"a b\\""'
+                         ]);
+    }
+
+    @Test
+    public void testCommandArgSwitchWithSpaceInValue_prequotedSingle()
+    throws ExecutionException
+    {
+        testArgExpansion(["/test:'a b'"], [
+                         win_unified_simple_quoting: '"/test:\'a b\'"',
+                         win_unified_custom_quoting: '/test:"\'a b\'"'
+                         ]);
+    }
+
+    @Test
+    public void testCscDefineSwitch()
+    throws ExecutionException
+    {
+        def raw = '/define:"CONFIG="Debug",DEBUG=-1,TRACE=-1,_MyType="Windows",PLATFORM="AnyCPU"'
+        def quoted = '/define:"\\"CONFIG=\\"Debug\\",DEBUG=-1,TRACE=-1,_MyType=\\"Windows\\",PLATFORM=\\"AnyCPU\\""'
+        testArgExpansion([raw], [win_unified_custom_quoting: quoted]);
     }
 
     private def testArgExpansion(ArrayList<String> args, String expected)
@@ -199,11 +292,13 @@ public class CommandExecutorTest
     {
         String path = parentPath + File.separator + "sampledirectory";
 
+        File dir = new File(path)
+        if ( dir.exists() ) dir.deleteDir()
+
         params.clear();
         params.add(path);
 
         cmd.executeCommand(MKDIR, params);
-        File dir = new File(path);
 
         assertTrue(dir.exists());
 

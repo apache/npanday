@@ -20,7 +20,20 @@
 
   <executablePlugin>
     <profile>MSDEPLOY</profile>
-    <pluginClass>npanday.executable.impl.CommonsExecNetExecutable</pluginClass>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <pluginConfiguration>
+      <!--
+      this will allow escaping for switches like this:
+      -x:y=a b ==> -x:y="a b"
+
+      Configuration is in this format: leadChar;switchNamePattern;valueOperatorChar
+
+      Separate multiple with pipe (|)
+       -->
+      <switchformats>
+        -;\w+(\:\w+);=
+      </switchformats>
+    </pluginConfiguration>
 
     <vendor>MICROSOFT</vendor>
     <executable>msdeploy</executable>
