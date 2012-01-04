@@ -304,7 +304,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                 // https://github.com/apache/maven-3/blob/trunk/maven-core/src/main/java/org/apache/maven/repository/RepositorySystem.java
                 if (repos.Count == 0)
                 {
-                    repos.Add("central", "http://repo1.maven.org/maven2");
+                    repos.Add("central", "http://repo.maven.apache.org/maven2");
                 }
 
                 // TODO: sustain correct ordering from settings.xml
