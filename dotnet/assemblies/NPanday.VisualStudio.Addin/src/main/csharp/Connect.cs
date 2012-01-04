@@ -20,44 +20,32 @@
 #endregion
 
 #region Using
-using Extensibility;
-using EnvDTE;
-using EnvDTE80;
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Resources;
 using System.Reflection;
-using System.Globalization;
-using System.Drawing;
-using System.Threading;
+using System.Runtime.CompilerServices;
+using System.Text;
 //using System.Web.Services.Protocols;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Serialization;
-using System.Xml.XPath;
-
+using EnvDTE;
+using EnvDTE80;
+using Extensibility;
 using Microsoft.VisualStudio.CommandBars;
-using VSLangProj;
-
 using NPanday.Artifact;
 using NPanday.Logging;
-using NPanday.VisualStudio.Logging;
-
-using NPanday.Model.Settings;
 using NPanday.Model.Pom;
-
-
+using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
 using NPanday.Utils;
-using System.Runtime.CompilerServices;
-using VSLangProj80;
-using System.Text;
 using NPanday.VisualStudio.Addin.Commands;
 using NPanday.VisualStudio.Addin.Helper;
-
+using NPanday.VisualStudio.Logging;
+using VSLangProj;
+using VSLangProj80;
 
 #endregion
 
@@ -526,32 +514,15 @@ namespace NPanday.VisualStudio.Addin
             //stopButton.Enabled = false;
         }
 
-        private const string WEB_PROJECT_KIND_GUID = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";
-
-        private const string WEB_APPLICATION_KIND_GUID = "{349C5851-65DF-11DA-9384-00065B846F21}";
-
         public static bool IsWebProject(Project project)
         {
-            bool isWebProject = false;
-            // make sure there's a project item
-            if (project == null)
-            {
-                return isWebProject;
-            }
+            return project.Kind.Equals(VisualStudioProjectType.GetVisualStudioProjectTypeGuid(VisualStudioProjectTypeEnum.Web_Site), StringComparison.OrdinalIgnoreCase) ||
+                project.Kind.Equals(VisualStudioProjectType.GetVisualStudioProjectTypeGuid(VisualStudioProjectTypeEnum.Web_Application), StringComparison.OrdinalIgnoreCase);
+        }
 
-            // compare the project kind to the web project guid
-            if (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0)
-            {
-                isWebProject = true;
-            }
-
-            // compare the project kind to the web project guid
-            if (String.Compare(project.Kind, WEB_APPLICATION_KIND_GUID, true) == 0)
-            {
-                isWebProject = true;
-            }
-
-            return (isWebProject);
+        public static bool IsCloudProject(Project project)
+        {
+            return project.Kind.Equals(VisualStudioProjectType.GetVisualStudioProjectTypeGuid(VisualStudioProjectTypeEnum.WindowsAzure_CloudService), StringComparison.OrdinalIgnoreCase);
         }
 
         private const string FOLDER_KIND_GUID = "{66A26720-8FB5-11D2-AA7E-00C04F688DDE}";
@@ -1488,7 +1459,7 @@ namespace NPanday.VisualStudio.Addin
                     Solution2 solution = (Solution2)_applicationObject.Solution;
                     foreach (Project project in solution.Projects)
                     {
-                        if (!IsWebProject(project) && !IsFolder(project) && project.Object != null)
+                        if (!IsWebProject(project) && !IsFolder(project) && !IsCloudProject(project) && project.Object != null)
                         {
                             IReferenceManager mgr = new ReferenceManager();
                             mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
