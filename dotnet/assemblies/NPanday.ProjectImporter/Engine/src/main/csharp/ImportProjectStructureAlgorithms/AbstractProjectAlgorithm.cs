@@ -44,18 +44,18 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
 
         #region IProjectTypeImporter Members
 
-        public abstract string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version,string scmTag, bool writePom);
+        public abstract string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom, List<Reference> missingReferences);
 
         #endregion
 
         #region Helper Methods
 
-        public string[] GenerateChildPoms(ProjectDigest[] prjDigests, string groupId, string parentPomFilename, NPanday.Model.Pom.Model parentPomModel, bool writePom,string scmTag)
+        public string[] GenerateChildPoms(ProjectDigest[] prjDigests, string groupId, string parentPomFilename, NPanday.Model.Pom.Model parentPomModel, bool writePom, string scmTag, List<Reference> missingReferences)
         {
             List<string> generatedPoms = new List<string>();
 
             // make the child pom
-            NPanday.Model.Pom.Model[] models = PomConverter.ConvertProjectsToPomModels(prjDigests, parentPomFilename, parentPomModel, groupId, writePom, scmTag);
+            NPanday.Model.Pom.Model[] models = PomConverter.ConvertProjectsToPomModels(prjDigests, parentPomFilename, parentPomModel, groupId, writePom, scmTag, missingReferences);
 
             if (models != null && models.Length > 0)
             {

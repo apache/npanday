@@ -46,8 +46,8 @@ namespace NPanday.ProjectImporter
     {
         #region Import Project Type Strategy Pattern
         // A strategy pattern with a twists, using c# delegates
-        
-        delegate string[] ImportProjectTypeDelegate(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom);
+
+        delegate string[] ImportProjectTypeDelegate(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom, List<Reference> missingReferences);
         static Dictionary<ProjectStructureType, ImportProjectTypeDelegate> _importProject;
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace NPanday.ProjectImporter
         }
 
 
-        public static string[] ImportProjectType(ProjectStructureType structureType, ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag)
+        public static string[] ImportProjectType(ProjectStructureType structureType, ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, List<Reference> missingReferences)
         {
-            return _importProject[structureType](prjDigests, solutionFile, groupId, artifactId, version, scmTag, true);
+            return _importProject[structureType](prjDigests, solutionFile, groupId, artifactId, version, scmTag, true, missingReferences);
         }
 
         #endregion
@@ -234,7 +234,17 @@ namespace NPanday.ProjectImporter
                verifyProjectToImport(ref prjDigests, structureType, solutionFile, ref groupId, ref artifactId, ref version);
             }
 
-            result =ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag);
+            List<Reference> missingReferences = new List<Reference>();
+            result = ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag, missingReferences);
+            if (missingReferences.Count > 0)
+            {
+                warningMsg += "\nThe following references could not be resolved from Maven or the GAC:";
+                foreach (Reference missingReference in missingReferences)
+                {
+                    warningMsg += "\n\t" + missingReference.Name + " (" + missingReference.Version + ")";
+                }
+                warningMsg += "\nPlease update the defaults in pom.xml and re-sync references, or re-add them using 'Add Maven Artifact'.";
+            }
 
             return result;
 

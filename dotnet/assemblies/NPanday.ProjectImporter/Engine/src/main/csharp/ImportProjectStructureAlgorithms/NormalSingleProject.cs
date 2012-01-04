@@ -44,7 +44,7 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
     /// </summary>
     public class NormalSingleProject : AbstractProjectAlgorithm
     {
-        public override string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom)
+        public override string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom, List<Reference> missingReferences)
         {
             List<string> generatedPoms = new List<string>();
 
@@ -55,7 +55,7 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
 
 
             generatedPoms.AddRange(
-                GenerateChildPoms(prjDigests, groupId, pomFileName, mainModel, writePom, scmTag)
+                GenerateChildPoms(prjDigests, groupId, pomFileName, mainModel, writePom, scmTag, missingReferences)
             );
 
             return generatedPoms.ToArray();

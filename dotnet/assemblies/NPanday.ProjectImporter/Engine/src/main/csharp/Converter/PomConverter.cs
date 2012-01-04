@@ -255,7 +255,7 @@ namespace NPanday.ProjectImporter.Converter
 
 
 
-        public static NPanday.Model.Pom.Model[] ConvertProjectsToPomModels(ProjectDigest[] projectDigests, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePoms, string scmTag)
+        public static NPanday.Model.Pom.Model[] ConvertProjectsToPomModels(ProjectDigest[] projectDigests, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePoms, string scmTag, List<Reference> missingReferences)
         {
             try
             {
@@ -264,7 +264,7 @@ namespace NPanday.ProjectImporter.Converter
                 List<NPanday.Model.Pom.Model> models = new List<NPanday.Model.Pom.Model>();
                 foreach (ProjectDigest projectDigest in projectDigests)
                 {
-                    NPanday.Model.Pom.Model model = ConvertProjectToPomModel(projectDigest, mainPomFile, parent, groupId, writePoms,scmTag);
+                    NPanday.Model.Pom.Model model = ConvertProjectToPomModel(projectDigest, mainPomFile, parent, groupId, writePoms, scmTag, missingReferences);
                     
                     models.Add(model);
                 }
@@ -276,7 +276,7 @@ namespace NPanday.ProjectImporter.Converter
             }
         }
 
-        public static NPanday.Model.Pom.Model ConvertProjectToPomModel(ProjectDigest projectDigest, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePom, string scmTag)
+        public static NPanday.Model.Pom.Model ConvertProjectToPomModel(ProjectDigest projectDigest, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePom, string scmTag, List<Reference> missingReferences)
         {
             if (!__converterAlgorithms.ContainsKey(projectDigest.ProjectType))
             {
@@ -303,6 +303,8 @@ namespace NPanday.ProjectImporter.Converter
                    groupId);
 
                converter.ConvertProjectToPomModel(scmTag);
+
+               missingReferences.AddRange(converter.GetMissingReferences());
 
                return converter.Model;
            }

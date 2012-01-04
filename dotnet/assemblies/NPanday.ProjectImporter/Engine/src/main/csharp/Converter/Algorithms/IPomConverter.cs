@@ -44,5 +44,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             get;
         }
 
+        List<Reference> GetMissingReferences();
     }
 }

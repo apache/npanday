@@ -51,6 +51,6 @@ namespace NPanday.ProjectImporter.ImportProjectStructureAlgorithms
         /// <param name="version"></param>
         /// <param name="writePom"></param>
         /// <returns>returns a list of pom files generated</returns>
-        string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version,string scmTag, bool writePom);
+        string[] ImportProjectType(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom, List<Reference> missingReferences);
     }
 }

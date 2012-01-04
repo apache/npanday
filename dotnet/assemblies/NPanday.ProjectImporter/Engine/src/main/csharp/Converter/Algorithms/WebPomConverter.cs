@@ -175,28 +175,15 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         // override to insert only an NPanday artifact
         protected override void AddProjectReferenceDependency(Reference reference)
         {
-
-            Dependency refDependency = ResolveDependency(reference);
-            if (refDependency == null)
+            Dependency dep = GetProjectReferenceDependency(reference);
+            if (dep != null)
             {
-                return;
-            }
-
-            if (!("library".Equals(refDependency.type, StringComparison.OrdinalIgnoreCase)
-                  || "dotnet-library".Equals(refDependency.type, StringComparison.OrdinalIgnoreCase)))
-            {
-                // ignore gac if already in the RSP 
-                if (rspUtil.IsRspIncluded(refDependency.artifactId, projectDigest.Language))
+                if (!("library".Equals(dep.type, StringComparison.OrdinalIgnoreCase)
+                      || "dotnet-library".Equals(dep.type, StringComparison.OrdinalIgnoreCase)))
                 {
-                    return;
+                    AddDependency(dep);
                 }
-
-                // insert only NPanday Artifact
-                AddDependency(refDependency);
-                return;
             }
-
         }
-
     }
 }

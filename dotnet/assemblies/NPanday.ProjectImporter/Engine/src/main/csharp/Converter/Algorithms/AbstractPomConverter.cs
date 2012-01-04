@@ -67,6 +67,13 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             get { return projectDigest; }
         }
 
+        private List<Reference> missingReferences;
+
+        public List<Reference> GetMissingReferences()
+        {
+            return missingReferences;
+        }
+        
         protected NPanday.Model.Pom.Model model;
 
         public NPanday.Model.Pom.Model Model
@@ -91,6 +98,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // Add build Tag
             this.model.build = new NPanday.Model.Pom.Build();
 
+            this.missingReferences = new List<Reference>();
         }
 
         #region AddEmbeddedResources
@@ -443,14 +451,19 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
         }
 
-        protected virtual void AddProjectReferenceDependency(Reference reference)
+        protected Dependency GetProjectReferenceDependency(Reference reference)
         {
             Dependency refDependency = ResolveDependency(reference);
             if (refDependency == null)
             {
-                return;
-            }
+                missingReferences.Add(reference);
 
+                // TODO: check if reference.Version is always set - ResolveDependency does some filename parsing that we should factor out so it's not done multiple times
+                refDependency = new Dependency();
+                refDependency.groupId = reference.Name;
+                refDependency.artifactId = reference.Name;
+                refDependency.version = reference.Version;
+            }
 
             if (!("library".Equals(refDependency.type, StringComparison.OrdinalIgnoreCase)
                   || "dotnet-library".Equals(refDependency.type, StringComparison.OrdinalIgnoreCase)))
@@ -458,15 +471,21 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 // ignore gac if already in the RSP 
                 if (rspUtil.IsRspIncluded(refDependency.artifactId, projectDigest.Language))
                 {
-                    return;
+                    return null;
                 }
             }
 
-            AddDependency(refDependency);
-
-
+            return refDependency;
         }
 
+        protected virtual void AddProjectReferenceDependency(Reference reference)
+        {
+            Dependency dep = GetProjectReferenceDependency(reference);
+            if (dep != null)
+            {
+                AddDependency(dep);
+            }
+        }
 
         protected void AddProjectReferenceDependenciesToList()
         {
@@ -930,9 +949,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             return string.Join(",", defines.ToArray());
         }
-
-
-
     }
 
 }
