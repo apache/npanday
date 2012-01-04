@@ -88,7 +88,7 @@ Installing Using the Downloaded Binary Repository
   has not been modified in Maven's <<<settings.xml>>>.
 
   For example, you may end up with a structure containing
-  <<<C:\\Documents and Settings\\User\\.m2\\repository\\npanday\\npanday-project\\\\${project.version}\\npanday-project-${project.version}.pom>>>.
+  <<<C:\\Documents and Settings\\User\\.m2\\repository\\npanday\\apache-npanday\\\\${project.version}\\apache-npanday-${project.version}.pom>>>.
 
   To confirm your installation, run the following command, replacing <<<${project.version}>>> with the version you are installing:
 

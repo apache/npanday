@@ -22,7 +22,7 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.npanday</groupId>
-    <artifactId>npanday-project</artifactId>
+    <artifactId>apache-npanday</artifactId>
     <version>1.5.0-incubating-SNAPSHOT</version>
   </parent>
   <artifactId>npanday-site</artifactId>

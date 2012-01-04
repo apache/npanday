@@ -26,7 +26,7 @@ under the License.
     <version>10</version>
   </parent>
   <groupId>org.apache.npanday</groupId>
-  <artifactId>npanday-project</artifactId>  
+  <artifactId>apache-npanday</artifactId>  
   <packaging>pom</packaging>  
   <version>1.5.0-incubating-SNAPSHOT</version>  
   <name>Apache NPanday</name>  

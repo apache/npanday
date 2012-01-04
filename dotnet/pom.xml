@@ -22,7 +22,7 @@
    <parent> 
     <groupId>org.apache.npanday</groupId>
     <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>npanday-project</artifactId>  
+    <artifactId>apache-npanday</artifactId>  
     <relativePath>../pom.xml</relativePath> 
   </parent>
   <modelVersion>4.0.0</modelVersion>  
