@@ -78,16 +78,14 @@ public class CandleMojo
         }
 
         try {
-          String line = getWixPath( "candle" ) + " -nologo -sw "; 
-          String dftns = "";
+          CommandLine commandLine = new CommandLine( getWixPath( "candle" ) );
           
           if(definitions.length>0)
           {
             for (int x = 0; x < definitions.length; x++) 
             {
-                    dftns=dftns+"-d"+definitions[x]+" ";                
+                commandLine.addArgument( "-d" + definitions[x] );
             }
-            line += dftns;
           }
           
           if(outputDirectory != null)
@@ -95,29 +93,27 @@ public class CandleMojo
             if (!outputDirectory.exists()) 
             {
               outputDirectory.mkdir();
-              line = line + "-out " + outputDirectory.getAbsolutePath() + "\\";
             }
-            else
-            {
-              line = line + "-out " + outputDirectory.getAbsolutePath() + "\\";
-            }
+            commandLine.addArgument( "-out" );
+            commandLine.addArgument( outputDirectory.getAbsolutePath() + "\\" );
           }
           if ( arch != null ) {
-            line += " -arch " + arch;
+            commandLine.addArgument( "-arch" );
+            commandLine.addArgument( arch );
           }
           if ( extensions != null ) {
             for ( String ext : extensions ) {
-              line += " -ext " + ext;
+              commandLine.addArgument( "-ext" );
+              commandLine.addArgument( ext );
             }
           }
 
           if ( arguments != null ) {
-            line += " " + arguments;
+            commandLine.addArguments( arguments );
           }
 
-          line += " " + paths;
+          commandLine.addArguments( paths );
           
-          CommandLine commandLine = CommandLine.parse(line);
           DefaultExecutor executor = new DefaultExecutor();
           int exitValue = executor.execute(commandLine);
           
