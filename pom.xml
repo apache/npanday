@@ -26,7 +26,7 @@ under the License.
     <version>8</version>
   </parent>  
   <groupId>org.apache.npanday</groupId>
-  <artifactId>npanday-project</artifactId>  
+  <artifactId>apache-npanday</artifactId>  
   <packaging>pom</packaging>  
   <version>1.4.1-incubating-SNAPSHOT</version>  
   <name>Apache NPanday</name>  
@@ -291,7 +291,7 @@ under the License.
           <branchBase>https://svn.apache.org/repos/asf/incubator/npanday/branches</branchBase>  
           <useReleaseProfile>false</useReleaseProfile>
           <goals>deploy</goals>  
-          <arguments>-Pnpanday-release,dist</arguments>
+          <arguments>-Papache-release,dist</arguments>
           <preparationGoals>clean install</preparationGoals>  
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <mavenExecutorId>forked-path</mavenExecutorId>
@@ -570,81 +570,6 @@ under the License.
       <modules>
         <module>dist</module>
       </modules>
-    </profile>
-    <profile>
-      <id>npanday-release</id>
-      <build>
-        <plugins>
-          <!-- Fail fast: the release build must run on Windows for the Add-in -->
-          <!-- TODO: consider splitting it into a separate release -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <version>1.0-beta-1</version>
-            <executions>
-              <execution>
-                <id>enforce-os</id>
-                <goals>
-                  <goal>enforce</goal>
-                </goals>
-                <configuration>
-                  <rules>
-                    <requireOS>
-                      <family>windows</family>
-                    </requireOS>
-                  </rules>
-                  <fail>true</fail>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin> 
-            <artifactId>maven-assembly-plugin</artifactId>  
-            <inherited>false</inherited>  
-            <configuration> 
-              <descriptor>src/assembly/src.xml</descriptor>  
-              <outputDirectory>target</outputDirectory> 
-              <finalName>npanday-${project.version}</finalName>
-            </configuration> 
-            <executions> 
-              <execution> 
-                <id>make-assembly</id>  
-                <phase>package</phase>  
-                <goals> 
-                  <goal>single</goal> 
-                </goals> 
-              </execution> 
-            </executions> 
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>2.1.2</version>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <configuration>
-              <passphrase>${gpg.passphrase}</passphrase>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins> 
-      </build>
     </profile>
   </profiles>
   <distributionManagement>
