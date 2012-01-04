@@ -58,6 +58,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         }
 
         protected NPanday.Model.Pom.Model model;
+        private static List<Artifact.Artifact> testingArtifacts;
 
         public NPanday.Model.Pom.Model Model
         {
@@ -67,9 +68,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         public AbstractPomConverter(ProjectDigest projectDigest, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId)
         {
-
             artifactContext = new ArtifactContext();
-            this.localArtifacts = artifactContext.GetArtifactRepository().GetArtifacts();
             this.projectDigest = projectDigest;
             this.mainPomFile = mainPomFile;
             this.parent = parent;
@@ -82,6 +81,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // Add build Tag
             this.model.build = new NPanday.Model.Pom.Build();
 
+
+            // TODO: this is a hack because of bad design. The things that talk to the local repository should be pulled out of here, and able to be stubbed/mocked instead
+            if (testingArtifacts != null)
+            {
+                this.localArtifacts = testingArtifacts;
+            }
         }
 
         #region AddEmbeddedResources
@@ -758,15 +763,15 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 refs = GacUtility.GetInstance().GetAssemblyInfo(reference.Name, reference.Version, null);
 
                 System.Reflection.Assembly a = System.Reflection.Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(refs[0]).FullName);
- 
+
                 Dependency refDependency = new Dependency();
                 refDependency.artifactId = reference.Name;
                 refDependency.groupId = reference.Name;
 
                 refDependency.type = GacUtility.GetNPandayGacType(a, reference.PublicKeyToken);
-                
+
                 refDependency.version = reference.Version ?? "1.0.0.0";
-                
+
 				if (reference.PublicKeyToken != null)
                 {
                     refDependency.classifier = reference.PublicKeyToken;
@@ -774,13 +779,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 else
                 {
                     int start = a.FullName.IndexOf("PublicKeyToken=");
-                    int length = (a.FullName.Length)-start;
-                    refDependency.classifier = a.FullName.Substring(start,length);
+                    int length = (a.FullName.Length) - start;
+                    refDependency.classifier = a.FullName.Substring(start, length);
                     refDependency.classifier = refDependency.classifier.Replace("PublicKeyToken=", "");
                 }
 
                 return refDependency;
-
             }
 
             bool isPathReference = false;
@@ -852,6 +856,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         Artifact.Artifact GetArtifactFromRepoUsingEmbeddedAssemblyVersionNumber(Reference reference)
         {
+            if (localArtifacts == null)
+            {
+                // TODO: this is a horribly slow operation on the local repository. We should consider alternatives (e.g. maven repository index, cache + querying remote repos)
+                localArtifacts = artifactContext.GetArtifactRepository().GetArtifacts();
+            }
+
             foreach (Artifact.Artifact artifact in localArtifacts)
             {
                 if (artifact.ArtifactId.Equals(reference.Name, StringComparison.OrdinalIgnoreCase)
@@ -974,8 +984,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return string.Join(",", defines.ToArray());
         }
 
-
-
+        // useful for unit testing rather than grabbing them from the local repository
+        public static void UseTestingArtifacts(List<Artifact.Artifact> artifacts)
+        {
+            testingArtifacts = artifacts;
+        }
     }
-
 }
