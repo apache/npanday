@@ -79,6 +79,8 @@ public class CandleMojo
 
         try {
           CommandLine commandLine = new CommandLine( getWixPath( "candle" ) );
+          commandLine.addArgument( "-nologo" );
+          commandLine.addArgument( "-sw" ); 
           
           if(definitions.length>0)
           {
