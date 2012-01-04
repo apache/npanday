@@ -251,7 +251,7 @@
             <phase>package</phase>
             <configuration>
               <tasks>
-                <copy file="${basedir}/../../LICENSE.txt" todir="${project.build.directory}/repository-bin" />
+                <copy file="${basedir}/../../LICENSE" todir="${project.build.directory}/repository-bin" />
                 <tar destfile="${project.build.directory}/repository-bin.tar">
                   <tarfileset dir="${project.build.directory}/repository-bin" preserveLeadingSlashes="true">
                     <exclude name="**/commons-*/**" />

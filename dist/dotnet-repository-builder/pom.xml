@@ -247,7 +247,7 @@
             <phase>package</phase>
             <configuration>
               <tasks>
-                <copy file="${basedir}/../../LICENSE.txt" todir="${project.build.directory}/npanday-repository" />
+                <copy file="${basedir}/../../LICENSE" todir="${project.build.directory}/npanday-repository" />
                 <tar destfile="${project.build.directory}/dotnet-repository-builder.tar">
                   <tarfileset dir="${project.build.directory}/npanday-repository" preserveLeadingSlashes="true">
                     <exclude name="**/junit/**" />
