@@ -93,26 +93,29 @@ public class LightMojo
         }
         
         try {
-          String line = "light " + paths;
-          
+          CommandLine commandLine = new CommandLine( getWixPath( "light" ) );
+          commandLine.addArguments( paths );
+
           if (outputFile != null) {
-            line = line + " -o " + outputFile.getAbsolutePath();
+            commandLine.addArgument( "-o" );
+            commandLine.addArgument( outputFile.getAbsolutePath() );
           }
           else if (outputDirectory != null) {
-            line = line + " -out " + outputDirectory.getAbsolutePath() + "\\";
+            commandLine.addArgument( "-out" );
+            commandLine.addArgument( outputDirectory.getAbsolutePath() + "\\" );
           }
 
           if ( extensions != null ) {
             for ( String ext : extensions ) {
-              line += " -ext " + ext;
+              commandLine.addArgument( "-ext" );
+              commandLine.addArgument( ext );
             }
           }
 
           if ( arguments != null ) {
-            line += " " + arguments;
+            commandLine.addArguments( arguments );
           }
 
-          CommandLine commandLine = CommandLine.parse(line);
           DefaultExecutor executor = new DefaultExecutor();
           int exitValue = executor.execute(commandLine);
           
