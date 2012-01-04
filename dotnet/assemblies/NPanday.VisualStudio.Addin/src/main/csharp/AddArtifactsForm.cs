@@ -59,8 +59,7 @@ namespace NPanday.VisualStudio.Addin
 
         private string settingsPath;
         private Settings settings;
-        private NPanday.Model.Settings.Profile defaultProfile;
-        private NPanday.Model.Settings.Repository selectedRepo;
+        private string selectedRepoUrl;
         private string prevSelectedRepoUrl = string.Empty;
 
         /// <summary>
@@ -127,27 +126,10 @@ namespace NPanday.VisualStudio.Addin
                 return;
             }
 
-            defaultProfile = getDefaultProfile();
-            selectedRepo = getDefaultRepository();
+            selectedRepoUrl = getDefaultRepositoryUrl();
 
-            if (selectedRepo == null || string.IsNullOrEmpty(selectedRepo.url))
-            {
-                MessageBox.Show("Remote repository not yet set: Please set your Remote Repository.", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                remoteTreeView_Refresh();
-            }
-
-            if (selectedRepo == null)
-            {
-                repoCombo_Refresh(null);
-            }
-            else
-            {
-                repoCombo_Refresh(selectedRepo.url);
-            }
-
+            remoteTreeView_Refresh();
+            repoCombo_Refresh(selectedRepoUrl);
         }
 
         private void localListView_Refresh()
@@ -168,13 +150,13 @@ namespace NPanday.VisualStudio.Addin
             SetUnsafeHttpHeaderParsing();
 
             treeView1.Nodes.Clear();
-            List<TreeNode> treeNodes = getNodesFor(selectedRepo.url);
+            List<TreeNode> treeNodes = getNodesFor(selectedRepoUrl);
             treeView1.Nodes.AddRange(treeNodes.ToArray());
 
-            prevSelectedRepoUrl = selectedRepo.url;
+            prevSelectedRepoUrl = selectedRepoUrl;
         }
 
-        private bool isSelectedRepoModified()
+        private bool isSelectedRepoModified(NPanday.Model.Settings.Repository selectedRepo)
         {
             if (selectedRepo == null)
             {
@@ -188,6 +170,7 @@ namespace NPanday.VisualStudio.Addin
             }
 
             // check if URL is already in NPanday.id profile
+            NPanday.Model.Settings.Profile defaultProfile = getDefaultProfile();
             if (defaultProfile != null)
             {
                 foreach (NPanday.Model.Settings.Repository repo in defaultProfile.repositories)
@@ -507,7 +490,7 @@ namespace NPanday.VisualStudio.Addin
         {
             string uri = node.ArtifactUrl;
             string paths;
-            string repoUrl = selectedRepo.url;
+            string repoUrl = selectedRepoUrl;
             if (node.IsFileSystem)
             {
                 //Uri repoUri = new Uri(repoUrl);
@@ -597,13 +580,9 @@ namespace NPanday.VisualStudio.Addin
                     return;
                 }
 
-                if (defaultProfile == null)
-                {
-                    defaultProfile = getDefaultProfile();
-                }
-
                 // add repository to profile
-                selectedRepo = SettingsUtil.AddRepositoryToProfile(defaultProfile, selectedUrl, checkBoxRelease.Checked, checkBoxSnapshot.Checked);
+                NPanday.Model.Settings.Repository repo = SettingsUtil.AddRepositoryToProfile(getDefaultProfile(), selectedUrl, checkBoxRelease.Checked, checkBoxSnapshot.Checked);
+                selectedRepoUrl = selectedUrl;
 
                 // make NPanday.id profile active
                 SettingsUtil.AddActiveProfile(settings, SettingsUtil.defaultProfileID);
@@ -641,10 +620,10 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
-        private void repoCheckboxes_Refresh()
+        private void repoCheckboxes_Refresh(NPanday.Model.Settings.Repository selectedRepo)
         {
-            checkBoxRelease.Checked = (selectedRepo.releases != null) ? selectedRepo.releases.enabled : false;
-            checkBoxSnapshot.Checked = (selectedRepo.snapshots != null) ? selectedRepo.snapshots.enabled : false;
+            checkBoxRelease.Checked = (selectedRepo != null && selectedRepo.releases != null) ? selectedRepo.releases.enabled : true;
+            checkBoxSnapshot.Checked = (selectedRepo != null && selectedRepo.snapshots != null) ? selectedRepo.snapshots.enabled : false;
         }
 
         #region GUI Events
@@ -767,8 +746,9 @@ namespace NPanday.VisualStudio.Addin
 
         private void RepoCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            selectedRepo = getRepository(RepoCombo.Text);
-            repoCheckboxes_Refresh();
+            NPanday.Model.Settings.Repository selectedRepo = getRepository(RepoCombo.Text);
+            selectedRepoUrl = RepoCombo.Text;
+            repoCheckboxes_Refresh(selectedRepo);
         }
 
         private void artifactTabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -786,33 +766,28 @@ namespace NPanday.VisualStudio.Addin
                     loadSettings();
                 }
 
-                if (settings == null)
+                NPanday.Model.Settings.Repository selectedRepo;
+                if (selectedRepoUrl == null)
                 {
-                    MessageBox.Show("Sorry, but you cannot Access Remote Repository without a Settings.xml file", "Repository Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    artifactTabControl.SelectedIndex = 0;
+                    selectedRepo = getRepositoryFromDefaultProfile();
+                    selectedRepoUrl = selectedRepo.url;
                 }
                 else
                 {
-                    if (selectedRepo == null)
-                    {
-                        selectedRepo = getDefaultRepository();
-                    }
-
-                    if (selectedRepo != null)
-                    {
-                        if (isSelectedRepoModified())
-                        {
-                            executeRepoUpdate();
-                        }
-
-                        if (prevSelectedRepoUrl != selectedRepo.url)
-                        {
-                            remoteTreeView_Refresh();
-                        }
-                        treeView1.Focus();
-                        addArtifact.Show();
-                    }
+                    selectedRepo = getRepository(selectedRepoUrl);
                 }
+
+                if (isSelectedRepoModified(selectedRepo))
+                {
+                    executeRepoUpdate();
+                }
+
+                if (prevSelectedRepoUrl != selectedRepoUrl)
+                {
+                    remoteTreeView_Refresh();
+                }
+                treeView1.Focus();
+                addArtifact.Show();
             }
             else
             {
@@ -915,13 +890,9 @@ namespace NPanday.VisualStudio.Addin
                 return null;
             }
 
-            if (defaultProfile == null)
-            {
-                defaultProfile = getDefaultProfile();
-            }
-
             // extract from NPanday repositories first
             NPanday.Model.Settings.Repository repo;
+            NPanday.Model.Settings.Profile defaultProfile = getDefaultProfile();
             if (defaultProfile != null)
             {
                 repo = SettingsUtil.GetRepositoryFromProfile(defaultProfile, url);
@@ -935,18 +906,22 @@ namespace NPanday.VisualStudio.Addin
             return SettingsUtil.GetRepositoryByUrl(settings, url);
         }
 
-        private NPanday.Model.Settings.Repository getDefaultRepository()
+        private NPanday.Model.Settings.Repository getRepositoryFromDefaultProfile()
         {
-            if (defaultProfile == null)
-            {
-                defaultProfile = getDefaultProfile();
-            }
+            NPanday.Model.Settings.Profile defaultProfile = getDefaultProfile();
 
-            if (defaultProfile != null && defaultProfile.repositories.Length > 0)
+            if (defaultProfile != null && defaultProfile.repositories != null && defaultProfile.repositories.Length > 0)
             {
                 return defaultProfile.repositories[0];
             }
+
             return null;
+        }
+
+        private string getDefaultRepositoryUrl()
+        {
+            NPanday.Model.Settings.Repository repo = getRepositoryFromDefaultProfile();
+            return repo != null ? repo.url : SettingsUtil.GetSettingsRepositories()["central"];
         }
 
         #endregion

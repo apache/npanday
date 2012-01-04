@@ -159,64 +159,10 @@ namespace NPanday.ProjectImporter.Digest.Model
         {
             try
             {
-                Settings settings = SettingsUtil.ReadSettings(SettingsUtil.GetUserSettingsPath());
-
-                List<string> activeProfiles = new List<string>();
-                if (settings.activeProfiles != null)
-                {
-                    activeProfiles.AddRange(settings.activeProfiles);
-                }
-
-                Dictionary<string, string> mirrors = new Dictionary<string, string>();
-
-                if (settings.mirrors != null)
-                {
-                    foreach (Mirror mirror in settings.mirrors)
-                    {
-                        string id = mirror.mirrorOf;
-                        if (id.StartsWith("external:*"))
-                        {
-                            id = "*";
-                        }
-                        // TODO: support '!' syntax
-                        mirrors.Add(id, mirror.url);
-                    }
-                }
-
-                Dictionary<string, string> repos = new Dictionary<string, string>();
-                if (settings.profiles != null)
-                {
-                    foreach (Profile profile in settings.profiles)
-                    {
-                        if (activeProfiles.Contains(profile.id) && profile.repositories != null)
-                        {
-                            foreach (Repository repo in profile.repositories)
-                            {
-                                repos.Add(repo.id, repo.url);
-                            }
-                        }
-                    }
-                }
-
-                // Add maven central, as Maven itself does!
-                // https://github.com/apache/maven-3/blob/trunk/maven-core/src/main/java/org/apache/maven/repository/RepositorySystem.java
-                if (!repos.ContainsKey("central"))
-                {
-                    repos.Add("central", "http://repo.maven.apache.org/maven2");
-                }
-
-                // TODO: sustain correct ordering from settings.xml
+                Dictionary<string, string> repos = SettingsUtil.GetSettingsRepositories();
                 foreach (string id in repos.Keys)
                 {
                     string url = repos[id];
-                    if (mirrors.ContainsKey(id))
-                    {
-                        url = mirrors[id];
-                    }
-                    if (mirrors.ContainsKey("*"))
-                    {
-                        url = mirrors["*"];
-                    }
 
                     ArtifactContext artifactContext = new ArtifactContext();
 
