@@ -57,7 +57,6 @@ public class CandleMojo
      */
     private String arch;
 
-
     /**
      * Output file
      * @parameter expression="${outputDirectory}"
@@ -79,7 +78,7 @@ public class CandleMojo
         }
 
         try {
-          String line = "candle -nologo -sw "; 
+          String line = getWixPath( "candle" ) + " -nologo -sw "; 
           String dftns = "";
           
           if(definitions.length>0)

@@ -93,8 +93,8 @@ public class LightMojo
         }
         
         try {
-          String line = "light " + paths;
-          
+          String line = getWixPath( "light" ) + " " + paths;
+
           if (outputFile != null) {
             line = line + " -o " + outputFile.getAbsolutePath();
           }

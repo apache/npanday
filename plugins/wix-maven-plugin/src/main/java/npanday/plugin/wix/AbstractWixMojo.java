@@ -19,6 +19,8 @@ package npanday.plugin.wix;
  * under the License.
  */
 
+import java.io.File;
+
 import org.apache.maven.plugin.AbstractMojo;
 
 public abstract class AbstractWixMojo
@@ -36,4 +38,19 @@ public abstract class AbstractWixMojo
      */
 
      protected String arguments;
+
+     /**
+      * @parameter expression="${wix.home}" default-value="${env.WIX}"
+      */
+     private File wixHome;
+     
+     public String getWixPath( String name )
+     {
+         if ( wixHome != null )
+         {
+             return new File( new File( wixHome, "bin" ), name ).getAbsolutePath();
+         }
+         return name;
+     }
+
 }

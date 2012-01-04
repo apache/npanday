@@ -284,6 +284,9 @@ under the License.
     <contributor>
       <name>Stoyan Damov</name>
     </contributor>
+    <contributor>
+      <name>Adrián Boimvaser</name>
+    </contributor>
   </contributors>
   <modules>
     <module>components</module>
