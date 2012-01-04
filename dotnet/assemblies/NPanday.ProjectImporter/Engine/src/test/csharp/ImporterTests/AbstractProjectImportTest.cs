@@ -18,13 +18,10 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 using System.IO;
 
 
 using NUnit.Framework;
-using NPanday.ProjectImporter;
 
 namespace NPanday.ProjectImporter.ImporterTests
 {
@@ -57,6 +54,8 @@ namespace NPanday.ProjectImporter.ImporterTests
         [TestFixtureSetUp]
         public void ShouldBeAbleImportProject()
         {
+            NPanday.ProjectImporter.Converter.Algorithms.AbstractPomConverter.UseTestingArtifacts(GetTestArtifacts());
+
             // would be nicer if this could just be a setup check that ran first - if this method weren't a setup itself
             CheckFrameworkVersion();
 
@@ -166,6 +165,26 @@ namespace NPanday.ProjectImporter.ImporterTests
         public virtual void CheckFrameworkVersion()
         {
             // designed to override
+        }
+
+        public virtual List<Artifact.Artifact> GetTestArtifacts()
+        {
+            return new List<Artifact.Artifact>();
+        }
+
+        protected Artifact.Artifact createArtifact(string name, string version)
+        {
+            Artifact.Artifact artifact = new Artifact.Artifact();
+            artifact.GroupId = name;
+            artifact.ArtifactId = name;
+            artifact.Version = version;
+            artifact.Extension = "dll";
+            return artifact;
+        }
+
+        protected Artifact.Artifact createArtifact(string name)
+        {
+            return createArtifact(name, "1.0.0.0");
         }
     }
 }

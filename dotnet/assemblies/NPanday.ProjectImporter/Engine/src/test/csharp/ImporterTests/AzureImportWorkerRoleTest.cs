@@ -24,7 +24,7 @@ using NUnit.Framework;
 namespace NPanday.ProjectImporter.ImporterTests
 {
     [TestFixture]
-    public class AzureImportWorkerRoleTest : AbstractProjectImportTest
+    public class AzureImportWorkerRoleTest : AbstractAzureImportTest
     {
         public override void CheckFrameworkVersion()
         {

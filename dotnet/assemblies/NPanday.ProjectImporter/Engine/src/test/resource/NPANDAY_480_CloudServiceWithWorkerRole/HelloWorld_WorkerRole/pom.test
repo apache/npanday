@@ -46,19 +46,19 @@
   </build>
   <dependencies>
     <dependency>
-      <groupId>Microsoft.WindowsAzure</groupId>
+      <groupId>Microsoft.WindowsAzure.Diagnostics</groupId>
       <artifactId>Microsoft.WindowsAzure.Diagnostics</artifactId>
       <version>1.0.0.0</version>
       <type>dotnet-library</type>
     </dependency>
     <dependency>
-      <groupId>Microsoft.WindowsAzure</groupId>
+      <groupId>Microsoft.WindowsAzure.ServiceRuntime</groupId>
       <artifactId>Microsoft.WindowsAzure.ServiceRuntime</artifactId>
       <version>1.0.0.0</version>
       <type>dotnet-library</type>
     </dependency>
     <dependency>
-      <groupId>Microsoft.WindowsAzure</groupId>
+      <groupId>Microsoft.WindowsAzure.StorageClient</groupId>
       <artifactId>Microsoft.WindowsAzure.StorageClient</artifactId>
       <version>1.1.0.0</version>
       <type>dotnet-library</type>

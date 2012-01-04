@@ -1,4 +1,4 @@
-//
+﻿//
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -19,40 +19,18 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using NUnit.Framework;
 
 namespace NPanday.ProjectImporter.ImporterTests
 {
-    [TestFixture]
-    public class AzureImportOneWebRoleTest : AbstractAzureImportTest
+    public abstract class AbstractAzureImportTest : AbstractProjectImportTest
     {
-        public override void CheckFrameworkVersion()
+        public override List<Artifact.Artifact> GetTestArtifacts()
         {
-            if (Environment.Version.Major < 4)
-            {
-                Assert.Ignore("Test only runs on .NET 4.0, but is: " + Environment.Version.ToString());
-            }
-        }
-
-        public override bool UseMsDeploy
-        {
-            get { return true; }
-        }
-
-        public override string SolutionFileRelativePath
-        {
-            get { return @"NPANDAY_480_AzureSupportOneWebRole\HelloWorld.sln"; }
-        }
-
-        [Test]
-        public override void ShouldGenerateTheExpectedNumberOfPoms()
-        {
-            ProjectImporterAssertions.AssertPomCount(3, GeneratedPomFiles);
-        }
-
-        public override string TestResourcePath
-        {
-            get { return @"src\test\resource\NPANDAY_480_AzureSupportOneWebRole\"; }
+            List<Artifact.Artifact> artifacts = new List<Artifact.Artifact>();
+            artifacts.Add(createArtifact("Microsoft.WindowsAzure.Diagnostics"));
+            artifacts.Add(createArtifact("Microsoft.WindowsAzure.ServiceRuntime"));
+            artifacts.Add(createArtifact("Microsoft.WindowsAzure.StorageClient", "1.1.0.0"));
+            return artifacts;
         }
     }
 }
