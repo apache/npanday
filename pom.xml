@@ -23,7 +23,7 @@ under the License.
   <parent>
     <groupId>org.apache</groupId>
     <artifactId>apache</artifactId>
-    <version>8</version>
+    <version>10</version>
   </parent>
   <groupId>org.apache.npanday</groupId>
   <artifactId>npanday-project</artifactId>  
