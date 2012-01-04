@@ -287,6 +287,11 @@ namespace NPanday.VisualStudio.Addin
 
             byte[] page = null;
 
+            if (!url.EndsWith("/"))
+            {
+                url += "/";
+            }
+
             //prevent VS crash
             try
             {
@@ -332,7 +337,9 @@ namespace NPanday.VisualStudio.Addin
                         node.IsAssembly = false;
                     }
 
-                    node.ArtifactUrl = url + "/" + uri.TrimEnd("/".ToCharArray()); ;
+                    String newUrl = url;
+                    newUrl += uri.TrimEnd("/".ToCharArray()); ;
+                    node.ArtifactUrl = newUrl;
 
                     treeNodes.Add(node);
                 }
