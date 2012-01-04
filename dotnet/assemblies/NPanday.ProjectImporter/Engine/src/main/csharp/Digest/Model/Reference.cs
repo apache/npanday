@@ -200,7 +200,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
                 // Add maven central, as Maven itself does!
                 // https://github.com/apache/maven-3/blob/trunk/maven-core/src/main/java/org/apache/maven/repository/RepositorySystem.java
-                if (repos.Count == 0)
+                if (!repos.ContainsKey("central"))
                 {
                     repos.Add("central", "http://repo.maven.apache.org/maven2");
                 }
