@@ -262,6 +262,6 @@ public class SettingsGeneratorMojo
     public void postExecute()
         throws MojoExecutionException, MojoFailureException
     {
-        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath);
     }
 }

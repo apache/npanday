@@ -27,7 +27,6 @@ import npanday.executable.CommandFilter;
 import npanday.executable.ExecutableContext;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
-import npanday.executable.execution.CommonsExecCommandExecutor;
 import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
 

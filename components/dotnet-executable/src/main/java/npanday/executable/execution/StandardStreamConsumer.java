@@ -32,9 +32,6 @@ import org.codehaus.plexus.util.cli.StreamConsumer;
 class StandardStreamConsumer
     implements StreamConsumer
 {
-
-    private DefaultConsumer consumer;
-
     private StringBuffer sb = new StringBuffer();
 
     private Logger logger;
@@ -45,7 +42,6 @@ class StandardStreamConsumer
         Preconditions.checkArgument( logger != null, "logger must not be null" );
 
         this.logger = logger;
-        consumer = new DefaultConsumer();
     }
 
     public void consumeLine( String line )
@@ -53,7 +49,7 @@ class StandardStreamConsumer
         sb.append( line );
         if ( logger != null )
         {
-            consumer.consumeLine( line );
+            logger.info( " | " + line );
         }
     }
 

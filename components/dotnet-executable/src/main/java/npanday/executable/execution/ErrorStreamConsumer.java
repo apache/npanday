@@ -59,7 +59,7 @@ class ErrorStreamConsumer
         sbe.append( line );
         if ( logger != null )
         {
-            logger.info( line );
+            logger.error( " | " + line );
         }
         error = true;
     }

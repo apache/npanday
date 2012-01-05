@@ -23,8 +23,8 @@ package npanday.executable.execution;
 
 import npanday.executable.CommandExecutor
 import npanday.executable.ExecutionException
-import npanday.executable.execution.quoting.PlexusNativeQuotingStrategy
 import npanday.executable.execution.quoting.CustomSwitchAwareQuotingStrategy
+import npanday.executable.execution.quoting.PlexusNativeQuotingStrategy
 import org.codehaus.plexus.logging.Logger
 import org.codehaus.plexus.logging.console.ConsoleLogger
 import org.codehaus.plexus.util.Os
@@ -50,16 +50,12 @@ public class CommandExecutorTest
     @Parameters
     public static Collection<Object[]> data()
     {
-        def osKey = Os.isFamily(Os.FAMILY_WINDOWS) ? "win_" : "x_";
+        def osKey = isWindows() ? "win_" : "x_";
         Object[][] data = [
-                [osKey + "npanday_old",
-                        new PlexusUtilsCommandExecutor()],
                 [osKey + "unified_simple_quoting",
                         new UnifiedShellCommandExecutor(new PlexusNativeQuotingStrategy())],
                 [osKey + "unified_custom_quoting",
-                        new UnifiedShellCommandExecutor(new CustomSwitchAwareQuotingStrategy())],
-                [osKey + "commons_exec_experimental",
-                        new CommonsExecCommandExecutor()]
+                        new UnifiedShellCommandExecutor(new CustomSwitchAwareQuotingStrategy())]
         ];
         return Arrays.asList(data);
     }
@@ -108,7 +104,6 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(["a '"], [
-                         win_npanday_old: '"a \'"',
                          win_unified_simple_quoting: '"a \'"',
                          win_unified_custom_quoting: '"a \'"'
                          ]);
@@ -119,7 +114,6 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(["' a"], [
-                         win_npanday_old: '"\' a"',
                          win_unified_simple_quoting: '"\' a"',
                          win_unified_custom_quoting: '"\' a"'
                          ]);
@@ -130,7 +124,6 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(["' a '"], [
-                         win_npanday_old: '"\' a \'"',
                          win_unified_simple_quoting: '"\' a \'"',
                          win_unified_custom_quoting: '"\' a \'"'
                          ]);
@@ -141,7 +134,6 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(['a " b'], [
-                         win_npanday_old: '"a " b"',
                          win_unified_simple_quoting: '"a \\" b"',
                          win_unified_custom_quoting: '"a \\" b"'
                          ]);
@@ -152,7 +144,6 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(['a "'], [
-                         win_npanday_old: '"a ""',
                          win_unified_simple_quoting: '"a \\""',
                          win_unified_custom_quoting: '"a \\""'
                          ]);
@@ -163,7 +154,6 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(['" a'], [
-                         win_npanday_old: '"" a"',
                          win_unified_simple_quoting: '"\\" a"',
                          win_unified_custom_quoting: '"\\" a"'
                          ]);
@@ -174,7 +164,6 @@ public class CommandExecutorTest
     throws ExecutionException
     {
         testArgExpansion(['" a "'], [
-                         win_npanday_old: '" a "',
                          win_unified_simple_quoting: '" a "', // if it yet is quoted, it wont quote again
                          win_unified_custom_quoting: '"\\" a \\""' // but we want it escaped and quoted again
                          ]);
@@ -258,6 +247,10 @@ public class CommandExecutorTest
 
     private def testArgExpansion(ArrayList<String> args, Map<String, String> expectedPerHint)
     {
+        if (!isWindows()){
+
+        }
+
         if ( !expectedPerHint.containsKey(cmdHint) )
         {
             cmd.executeCommand("echo", args)
@@ -422,8 +415,6 @@ public class CommandExecutorTest
      */
     private static boolean isWindows()
     {
-        String osName = System.getProperty("os.name");
-        boolean isWin = (osName.toLowerCase().indexOf("win")) >= 0;
-        return isWin;
+       return Os.isFamily(Os.FAMILY_WINDOWS);
     }
 }
