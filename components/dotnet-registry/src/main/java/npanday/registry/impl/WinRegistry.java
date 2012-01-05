@@ -21,6 +21,7 @@ package npanday.registry.impl;
 
 import npanday.registry.WindowsRegistryAccessException;
 import npanday.registry.WindowsRegistryAccessProvider;
+import org.codehaus.plexus.util.Os;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -111,6 +112,9 @@ public class WinRegistry
             }
             );
             regDeleteKey.setAccessible( true );
+        }
+        catch (NoSuchMethodException e){
+           // we are not on windows, then!
         }
         catch ( Exception e )
         {
@@ -507,6 +511,9 @@ public class WinRegistry
     public String getValue(
         RegistryHKey registryHKey, String key, String valueName ) throws WindowsRegistryAccessException
     {
+        if (!Os.isFamily( Os.FAMILY_WINDOWS ))
+            return null;
+
         try
         {
             return WinRegistry.readString(

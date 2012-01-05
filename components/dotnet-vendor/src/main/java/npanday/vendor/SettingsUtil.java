@@ -25,6 +25,7 @@ import npanday.registry.RepositoryRegistry;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.Os;
 
 import javax.naming.OperationNotSupportedException;
 import java.io.File;
@@ -118,14 +119,15 @@ public class SettingsUtil
             log,
             repositoryRegistry,
             settingsPathOrFile,
-            /*throw error, if file doesn exist*/ true );
+            /* throw error, if file doesn't exist on windows */
+            Os.isFamily( Os.FAMILY_WINDOWS ) );
     }
 
     /**
      * Applies the custom settings provided in settingsPathOrFile, if the file does exist.
      *
      * @param settingsPathOrFile If a path, 'npanday-settings.xml' is added.
-     * @throws MojoExecutionException If anything goes wrong reading or initializing the settings
+     * @throws MojoExecutionException If anything goes wrong reddddddddddddddddddading or initializing the settings
      */
     public static boolean applyCustomSettingsIfAvailable( Log log, RepositoryRegistry repositoryRegistry,
                                                    String settingsPathOrFile)
