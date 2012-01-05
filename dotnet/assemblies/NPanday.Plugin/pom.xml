@@ -27,14 +27,14 @@ under the License.
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.npanday.plugins</groupId>
   <artifactId>NPanday.Plugin</artifactId>  
-  <packaging>library</packaging>  
+  <packaging>dotnet-library</packaging>  
   <name>NPanday :: .NET Plugin</name>  
   <dependencies> 
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Pom</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type>  
+      <type>dotnet-library</type>  
     </dependency> 
   </dependencies>  
   <build> 
@@ -55,7 +55,7 @@ under the License.
               <artifacts>
                 <artifact>
                   <file>${project.build.directory}/${project.artifactId}.dll</file>
-                  <type>library</type>
+                  <type>dotnet-library</type>
                   <classifier>4b435f4d76e2f0e6</classifier>
                 </artifact>
               </artifacts>

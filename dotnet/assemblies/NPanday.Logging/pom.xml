@@ -27,6 +27,6 @@ under the License.
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.npanday</groupId>
   <artifactId>NPanday.Logging</artifactId>  
-  <packaging>library</packaging>  
+  <packaging>dotnet-library</packaging>  
   <name>NPanday :: .NET Logging</name> 
 </project>

@@ -27,7 +27,7 @@
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <artifactId>NPanday.ProjectImporterConsole</artifactId>  
-  <packaging>exe</packaging>  
+  <packaging>dotnet-executable</packaging>  
   <name>NPanday :: Project Importer :: Console</name>  
   <build> 
     <plugins> 
@@ -46,13 +46,13 @@
       <groupId>org.apache.npanday.visualstudio</groupId>
       <artifactId>NPanday.ProjectImporterEngine</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>  
-      <type>library</type> 
+      <type>dotnet-library</type> 
     </dependency>  
     <dependency> 
       <groupId>NUnit</groupId>  
       <artifactId>NUnit.Framework</artifactId>  
       <version>2.2.8.0</version>  
-      <type>library</type>  
+      <type>dotnet-library</type>  
 <!-- Temporarily disabled as it may cause issues, however cause has not been diagnosed and may be unrelated
       <scope>test</scope>
 -->

@@ -27,7 +27,7 @@
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <artifactId>NPanday.Plugin.Msbuild</artifactId>  
-  <packaging>netplugin</packaging>  
+  <packaging>dotnet-maven-plugin</packaging>  
   <name>NPanday :: Msbuild Plugin</name>
   <description>Maven Plugin for .NET: Generates needed files for WPF and WCF projects</description>  
   <dependencies> 
@@ -35,25 +35,25 @@
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Artifact</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type> 
+      <type>dotnet-library</type> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type>  
+      <type>dotnet-library</type>  
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type>  
+      <type>dotnet-library</type>  
     </dependency> 
     <dependency>
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Pom</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
   </dependencies> 
   <build>

@@ -33,69 +33,69 @@
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Artifact</artifactId>
       <version>${project.version}</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Logging</artifactId>
       <version>${project.version}</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Pom</artifactId>
       <version>${project.version}</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Pom</artifactId>
       <version>${project.version}</version>
-      <type>library</type>
+      <type>dotnet-library</type>
       <classifier>4b435f4d76e2f0e6</classifier>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.AutomationExtensibility</artifactId>
       <version>${project.version}</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin</artifactId>
       <version>${project.version}</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin</artifactId>
       <version>${project.version}</version>
-      <type>library</type>
+      <type>dotnet-library</type>
       <classifier>4b435f4d76e2f0e6</classifier>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin.Loader</artifactId>
       <version>${project.version}</version>
-      <type>exe</type>
+      <type>dotnet-executable</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin.MojoGenerator</artifactId>
       <version>${project.version}</version>
-      <type>exe</type>
+      <type>dotnet-executable</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin.Runner</artifactId>
       <version>${project.version}</version>
-      <type>exe</type>
+      <type>dotnet-executable</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.visualstudio</groupId>
       <artifactId>NPanday.VisualStudio</artifactId>
       <version>${project.version}</version>
-      <type>library</type>
+      <type>dotnet-library</type>
       <exclusions>
         <exclusion>
           <groupId>EnvDTE</groupId>  
@@ -149,70 +149,44 @@
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin.Msbuild</artifactId>
       <version>${project.version}</version>
-      <type>netplugin</type>
+      <type>dotnet-maven-plugin</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin.SysRef</artifactId>
       <version>${project.version}</version>
-      <type>netplugin</type>
+      <type>dotnet-maven-plugin</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin.Addin</artifactId>
       <version>${project.version}</version>
-      <type>netplugin</type>
+      <type>dotnet-maven-plugin</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin.Devenv</artifactId>
       <version>${project.version}</version>
-      <type>netplugin</type>
+      <type>dotnet-maven-plugin</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin.Resx</artifactId>
       <version>${project.version}</version>
-      <type>exe</type>
+      <type>dotnet-executable</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin.Settings</artifactId>
       <version>${project.version}</version>
-      <type>netplugin</type>
+      <type>dotnet-maven-plugin</type>
     </dependency>
     <dependency>
       <groupId>NUnit</groupId>
       <artifactId>NUnit.Framework</artifactId>
       <version>2.2.8.0</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
-<!--
-    <dependency> 
-      <groupId>Castle</groupId>  
-      <artifactId>Castle.Windsor</artifactId>  
-      <type>library</type>  
-      <version>2.0-rc2</version> 
-    </dependency>  
-    <dependency> 
-      <groupId>Castle</groupId>  
-      <artifactId>Castle.Core</artifactId>  
-      <type>library</type>  
-      <version>2.0-rc2</version> 
-    </dependency>  
-    <dependency> 
-      <groupId>Castle</groupId>  
-      <artifactId>Castle.MicroKernel</artifactId>  
-      <type>library</type>  
-      <version>2.0-rc2</version> 
-    </dependency>  
-    <dependency> 
-      <groupId>Castle</groupId>  
-      <artifactId>Castle.DynamicProxy</artifactId>  
-      <type>library</type>  
-      <version>2.0-rc2</version> 
-    </dependency> 
--->
   </dependencies>
   <build>
     <plugins>

@@ -27,6 +27,6 @@
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.npanday</groupId>
   <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
-  <packaging>library</packaging>  
+  <packaging>dotnet-library</packaging>  
   <name>NPanday :: .NET Model :: AutomationExtensibility</name>  
 </project>

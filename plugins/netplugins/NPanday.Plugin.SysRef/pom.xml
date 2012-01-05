@@ -26,32 +26,32 @@
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <artifactId>NPanday.Plugin.SysRef</artifactId>  
-  <packaging>netplugin</packaging>  
+  <packaging>dotnet-maven-plugin</packaging>  
   <name>NPanday :: SysRef Plugin</name>  
   <dependencies> 
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Artifact</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type> 
+      <type>dotnet-library</type> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type>  
+      <type>dotnet-library</type>  
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type>  
+      <type>dotnet-library</type>  
     </dependency> 
     <dependency>
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Pom</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
   </dependencies> 
   <build>

@@ -21,7 +21,7 @@ under the License.
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.npanday</groupId>
   <artifactId>vsinstaller</artifactId>  
-  <packaging>library</packaging>  
+  <packaging>dotnet-library</packaging>  
   <version>1.1-SNAPSHOT</version>  
   <name>vsinstaller</name> 
 </project>

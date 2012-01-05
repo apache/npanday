@@ -27,7 +27,7 @@
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <artifactId>TestProject</artifactId>  
-  <packaging>library</packaging>  
+  <packaging>dotnet-library</packaging>  
   <name>Microsoft.TestProject : TestProject</name>  
   <build> 
     <sourceDirectory>./</sourceDirectory>  

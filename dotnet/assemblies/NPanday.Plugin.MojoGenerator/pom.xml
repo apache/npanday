@@ -27,20 +27,20 @@ under the License.
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.npanday.plugins</groupId>
   <artifactId>NPanday.Plugin.MojoGenerator</artifactId>  
-  <packaging>exe</packaging>  
+  <packaging>dotnet-executable</packaging>  
   <name>NPanday :: .NET Plugin MojoGenerator</name>  
   <dependencies> 
     <dependency> 
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Pom</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
   </dependencies>
 

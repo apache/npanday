@@ -27,7 +27,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ClassLibrary1</artifactId>
-  <packaging>library</packaging>
+  <packaging>dotnet-library</packaging>
   <name>NPanday.ClassLibrary1 : ClassLibrary1</name>
   <build>
     <sourceDirectory>./</sourceDirectory>

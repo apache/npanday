@@ -35,37 +35,37 @@
       <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type> 
+      <type>dotnet-library</type> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Logging</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type> 
+      <type>dotnet-library</type> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Pom</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type> 
+      <type>dotnet-library</type> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday.visualstudio</groupId>
       <artifactId>NPanday.VisualStudio</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type> 
+      <type>dotnet-library</type> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Artifact</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type> 
+      <type>dotnet-library</type> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Settings</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type>  
+      <type>dotnet-library</type>  
     </dependency>  
     <dependency> 
       <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
@@ -120,13 +120,13 @@
       <groupId>org.apache.npanday.visualstudio</groupId>
       <artifactId>NPanday.ProjectImporterEngine</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type> 
+      <type>dotnet-library</type> 
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Utils</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>library</type>  
+      <type>dotnet-library</type>  
     </dependency> 
   </dependencies>  
   <profiles> 

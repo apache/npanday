@@ -27,7 +27,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>WpfApplicationExample</artifactId>
-  <packaging>winexe</packaging>
+  <packaging>dotnet-executable</packaging>
   <name>G2ix.WpfApplicationExample : WpfApplicationExample</name>
   <build>
     <sourceDirectory>./</sourceDirectory>

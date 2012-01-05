@@ -28,7 +28,7 @@
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.npanday.visualstudio</groupId>
   <artifactId>NPanday.VisualStudio.ProjectWizard</artifactId>  
-  <packaging>library</packaging>  
+  <packaging>dotnet-library</packaging>  
   <name>NPanday :: VisualStudio Project Wizard</name>  
   <dependencies> 
     <dependency> 

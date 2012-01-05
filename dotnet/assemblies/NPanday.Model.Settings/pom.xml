@@ -27,7 +27,7 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.npanday</groupId>
   <artifactId>NPanday.Model.Settings</artifactId>
-  <packaging>library</packaging>
+  <packaging>dotnet-library</packaging>
   <name>NPanday :: .NET Model :: Settings</name>
   <build>
     <plugins>

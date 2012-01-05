@@ -27,7 +27,7 @@ under the License.
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.npanday</groupId>
   <artifactId>NPanday.Model.Pom</artifactId>  
-  <packaging>library</packaging>  
+  <packaging>dotnet-library</packaging>  
   <name>NPanday :: .NET Model :: POM</name>  
   <build> 
     <plugins> 
@@ -60,7 +60,7 @@ under the License.
               <artifacts>
                 <artifact>
                   <file>${project.build.directory}/${project.artifactId}.dll</file>
-                  <type>library</type>
+                  <type>dotnet-library</type>
                   <classifier>4b435f4d76e2f0e6</classifier>
                 </artifact>
               </artifacts>

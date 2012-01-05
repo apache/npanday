@@ -26,7 +26,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>TestApplication</artifactId>
-  <packaging>winexe</packaging>
+  <packaging>dotnet-executable</packaging>
   <name>Npanday.examples : TestApplication</name>
   <build>
     <sourceDirectory>./</sourceDirectory>

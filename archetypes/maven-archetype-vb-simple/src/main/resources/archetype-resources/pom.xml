@@ -22,13 +22,13 @@ under the License.
   <groupId>${groupId}</groupId>  
   <artifactId>${artifactId}</artifactId>  
   <version>${version}</version>  
-  <packaging>exe</packaging>  
+  <packaging>dotnet-executable</packaging>  
   <dependencies> 
     <dependency> 
       <groupId>NUnit</groupId>  
       <artifactId>NUnit.Framework</artifactId>  
       <version>2.2.8.0</version>  
-      <type>library</type> 
+      <type>dotnet-library</type> 
     </dependency> 
   </dependencies>  
   <build> 

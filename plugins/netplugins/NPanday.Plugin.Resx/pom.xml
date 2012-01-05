@@ -26,7 +26,7 @@
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <artifactId>NPanday.Plugin.Resx</artifactId>  
-  <packaging>exe</packaging>  
+  <packaging>dotnet-executable</packaging>  
   <name>NPanday :: ResX Plugin</name>
   <build>
     <pluginManagement>
