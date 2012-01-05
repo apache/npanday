@@ -248,7 +248,7 @@ public class CommandExecutorTest
     private def testArgExpansion(ArrayList<String> args, Map<String, String> expectedPerHint)
     {
         if (!isWindows()){
-
+          return;
         }
 
         if ( !expectedPerHint.containsKey(cmdHint) )
