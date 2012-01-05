@@ -116,9 +116,6 @@ public class UnifiedShellCommandExecutor
             getLogger().info( " +--[ RUNNING: " + commandline.toString()  + "]");
 
             result = CommandLineUtils.executeCommandLine( commandline, stdOut, stdErr );
-            getLogger().debug(
-                "NPANDAY-040-005: Executed command: Commandline = " + commandline + ", Result = " + result
-            );
 
             if ( ( failsOnErrorOutput && stdErr.hasError() ) || result != 0 )
             {
@@ -138,7 +135,7 @@ public class UnifiedShellCommandExecutor
         }
         finally {
             if(!done){
-                getLogger().info( " +--[ FAILED! ]");
+                getLogger().info( " +--[ FAILED, result = " + result + ", error output = " + stdErr.hasError() + "]");
             }
         }
     }
