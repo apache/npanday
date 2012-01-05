@@ -30,13 +30,14 @@
         <include>**/*.aspx</include>
         <include>**/*.ascx</include>
         <include>**/*.asax</include>
+        <include>**/*.master</include>
+        <include>**/*.sitemaster</include>
 
         <!-- web developers-->
         <include>**/*.css</include>
         <include>**/*.js</include>
         <include>**/*.htm</include>
         <include>**/*.html</include>
-        <include>**/*.asax</include>
         <include>robots.txt</include>
 
         <!-- graphics -->
