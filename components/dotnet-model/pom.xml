@@ -35,8 +35,7 @@
     <module>executable-plugins</module>  
     <module>netdependency</module>  
     <module>configuration-appenders</module>  
-    <module>settings</module>  
-    <module>entries</module> 
+    <module>settings</module>
   </modules>  
   <dependencies> 
     <dependency> 
