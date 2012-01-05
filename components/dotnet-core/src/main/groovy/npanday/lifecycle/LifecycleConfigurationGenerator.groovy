@@ -122,5 +122,12 @@ class LifecycleConfigurationGenerator {
 		generator.configureMappings(g.buildMap(npandayVersion))
 		generator.saveTo(componentsXmlFile)
 	}
-	
+
+    static void persistAllTypesAndLifecycles(String npandayVersion, File componentsXmlFile) {
+        def componentsXml = componentsXmlFile.text
+
+        def generator = new LifecycleConfigurationGenerator(componentsXml)
+        generator.configureAllTypes()
+        generator.saveTo(componentsXmlFile)
+    }
 }

@@ -51,6 +51,16 @@ under the License.
               <goal>testCompile</goal>
             </goals>
           </execution>
+          <execution>
+            <id>generate-plexus-config</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>file:///${pom.basedir}/src/main/script/plexus_component_xml.groovy</source>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
