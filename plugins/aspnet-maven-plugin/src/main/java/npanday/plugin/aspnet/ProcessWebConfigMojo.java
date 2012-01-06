@@ -62,7 +62,7 @@ public class ProcessWebConfigMojo
     /**
      * @component
      */
-    protected ConfigFileHandler confiFileHandler;
+    protected ConfigFileHandler configFileHandler;
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
@@ -77,7 +77,7 @@ public class ProcessWebConfigMojo
             PathUtil.getPreparedPackageFolder( project ), "web.config"
         );
 
-        confiFileHandler.handleConfigFile( sourceConfigFile, targetConfigFile );
+        configFileHandler.handleConfigFile( sourceConfigFile, targetConfigFile );
     }
 
 
