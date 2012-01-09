@@ -33,6 +33,9 @@ import java.io.File;
 import java.util.Set;
 
 /**
+ * Resolve and unpacks dependencies of type dotnet-application in order to
+ * let them be repackaged as worker roles through CSPack.
+ *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  * @goal resolve-worker-roles
  * @requiresDependencyResolution runtime

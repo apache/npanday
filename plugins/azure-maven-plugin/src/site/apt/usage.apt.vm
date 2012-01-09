@@ -1,0 +1,110 @@
+~~ Licensed to the Apache Software Foundation (ASF) under one
+~~ or more contributor license agreements.  See the NOTICE file
+~~ distributed with this work for additional information
+~~ regarding copyright ownership.  The ASF licenses this file
+~~ to you under the Apache License, Version 2.0 (the
+~~ "License"); you may not use this file except in compliance
+~~ with the License.  You may obtain a copy of the License at
+~~
+~~   http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing,
+~~ software distributed under the License is distributed on an
+~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~~ KIND, either express or implied.  See the License for the
+~~ specific language governing permissions and limitations
+~~ under the License.
+
+~~ NOTE: For help withuses the syntax of this file, see:
+~~ http://maven.apache.org/doxia/references/apt-format.html
+
+Using the NPanday Azure Maven Plugin
+
+* Prerequisites
+
+    NPanday Azure Cloud Service projects require the Azure SDK 1.6 or the corresponding Visual Studio Azure Tools and
+    Microsoft Web Deploy 2.0 (aka MSDeploy)  to be installed. The installation paths will automatically be detected
+    from the registry.
+
+    * {{{https://www.windowsazure.com/de-de/develop/downloads/}Windows Azure SDK Download}}
+
+    * {{{http://www.iis.net/download/webdeploy}Web Deploy 2.0 Download}}
+
+    * {{{./azure-sdk-versions.html}For newer Azure SDK versions, have a look here.}}
+
+
+* Usage
+
+    In order to activate support for Azure Cloud Service projects using the Azure Maven Plugin,
+    use the following configuration template:
+
++---+
+<project>
+  [...]
+  <packaging>azure-cloud-service</packaging>
+  [...]
+  <dependencies>
+    [... define dependencies to worker or web roles here ...]
+  </dependencies>
+  <build>
+    [...]
+    <plugins>
+      <plugin>
+        <groupId>org.apache.npanday.plugins</groupId>
+        <artifactId>azure-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <!-- this will activate the Azure Cloud Service Lifecycle -->
+        <extensions>true</extensions>
+       </plugin>
+       [...]
+</project>
++---+
+
+* Package Worker and Web Roles
+
+    Worker and Web Roles are to be defined as dependencies. Worker Roles will be of type <<<dotnet-application>>>
+    while Web Roles will use <<<msdeploy-package>>>.
+
+** Packaging Worker Roles
+
+    Worker roles are C#/VB libraries, but extended with the packing for <<<dotnet-application>>>. Read about the
+    {{{../application-maven-plugin/index.html}NPanday Application Maven Plugin}} for instructions on how
+    to add the required packaging to your worker role projects.
+
++---+
+  <dependencies>
+    <dependency>
+      <groupId>...</groupId>
+      <artifactId>...</artifactId>
+      <version>...</version>
+      <type>dotnet-application</type>
+    </dependency>
+  </dependencies>
++---+
+
+** Package Web Roles
+
+    Web roles are normal C#/VB Web Projects extended by MSDeploy packaging. Figure out how this works here:
+    {{{../msdeploy-maven-plugin/index.html}NPanday MSDeploy Maven Plugin}}
+
++---+
+  <dependencies>
+    <dependency>
+      <groupId>...</groupId>
+      <artifactId>...</artifactId>
+      <version>...</version>
+      <type>msdeploy-package</type>
+    </dependency>
+  </dependencies>
++---+
+
+* Lifecycle
+
+    If you want to get an overview over what's exactly happening throughout the Maven lifecycle, have a look at the
+    {{{${project.scm.url}/src/main/groovy/npanday/plugin/azure/AzureLifecycleMap.groovy?view=markup}Lifecycle Mapping}}
+    and the referenced goals.
+
+* Examples
+
+    Also for further guidance, have a look at the integration tests for NPANDAY-480.
+

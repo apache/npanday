@@ -29,8 +29,7 @@ import org.apache.maven.project.MavenProject;
 import java.io.File;
 
 /**
- * Takes care of moving a configuration while optionally filtering
- * and applying XDT transformations.
+ * TODO: document, when config handling is figured out
  *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  *

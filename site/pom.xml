@@ -109,7 +109,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.1.2</version>
+        <version>2.4</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -120,6 +120,7 @@ under the License.
               <report>license</report>
               <report>project-team</report>
               <report>scm</report>
+              <report>modules</report>
             </reports>
           </reportSet>
         </reportSets>
@@ -132,12 +133,6 @@ under the License.
       </plugin>
     </plugins>
   </reporting>
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}</url>
-    </site>
-  </distributionManagement>
   <properties>
     <npandayReleaseVersion>1.4.0-incubating</npandayReleaseVersion>
     <npandayReleaseDate>06 May 2011</npandayReleaseDate>
@@ -160,5 +155,23 @@ under the License.
         </plugins>
       </reporting>
     </profile>
+    <profile>
+      <id>apache-docs</id>
+      <distributionManagement>
+        <site>
+          <id>apache.website</id>
+          <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}</url>
+        </site>
+      </distributionManagement>
+    </profile>
+    <!--profile>
+      <id>local-docs</id>
+      <distributionManagement>
+        <site>
+          <id>local</id>
+          <url>file:///C:/Workbench/NPanday/docs</url>
+        </site>
+      </distributionManagement>
+    </profile-->
   </profiles>
 </project>

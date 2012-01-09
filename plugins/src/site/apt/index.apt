@@ -47,8 +47,6 @@ The following plugins are shipped along with each NPanday release:
 
  * {{{./maven-vsinstaller-plugin/index.html}<<<vsinstaller>>>}}
 
- * {{{./maven-webapp-plugin/index.html}<<<webapp>>>}}
-
  * {{{./wix-maven-plugin/index.html}<<<wix>>>}}
 
  * {{{./maven-wsdl-plugin/index.html}<<<wsdl>>>}}

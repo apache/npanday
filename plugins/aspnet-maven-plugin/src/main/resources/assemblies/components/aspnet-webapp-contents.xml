@@ -33,6 +33,7 @@
         <include>**/*.master</include>
         <include>**/*.sitemaster</include>
         <include>**/*.cshtml</include>
+        <include>**/*.vbhtml</include>
 
         <!-- web developers-->
         <include>**/*.css</include>

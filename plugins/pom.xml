@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.npanday</groupId>
     <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>apache-npanday</artifactId> 
+    <artifactId>apache-npanday</artifactId>
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <groupId>org.apache.npanday.plugins</groupId>
@@ -50,7 +50,6 @@
     <module>maven-resolver-plugin</module>
     <module>maven-test-plugin</module>
     <module>maven-vsinstaller-plugin</module>
-    <module>maven-webapp-plugin</module>
     <module>maven-xsd-plugin</module>
     <module>maven-xsp-plugin</module>
     <module>maven-wsdl-plugin</module>
@@ -149,7 +148,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.1.2</version>
+        <version>2.4</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -161,7 +160,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>2.5.1</version>
+        <version>2.9</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -170,10 +169,31 @@
       </plugin>
     </plugins>
   </reporting>
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}/plugins</url>
-    </site>
-  </distributionManagement>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/incubator/npanday/trunk/plugins</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/trunk/plugins</developerConnection>
+    <url>http://svn.apache.org/viewvc/incubator/npanday/trunk/plugins</url>
+  </scm>
+
+  <profiles>
+    <profile>
+      <id>apache-docs</id>
+      <distributionManagement>
+        <site>
+          <id>apache.website</id>
+          <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}/plugins</url>
+        </site>
+      </distributionManagement>
+    </profile>
+    <!--profile>
+      <id>local-docs</id>
+      <distributionManagement>
+        <site>
+          <id>local</id>
+          <url>file:///C:/Workbench/NPanday/docs/plugins</url>
+        </site>
+      </distributionManagement>
+    </profile-->
+  </profiles>
 </project>

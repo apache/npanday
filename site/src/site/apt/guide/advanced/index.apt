@@ -28,15 +28,17 @@ Advanced Users's Guide
 
 * Contents
 
-  * {{{./generate-project.html} Generating template projects}}
+  * {{{./project-types.html} Available Maven project types}}
 
-  * {{{./dependencies.html} Adding dependencies to the project}}
-
-  * {{{./project-types.html} Available project types}}
+  * {{{./application-packaging.html} Packaging .NET Applications}}
 
   * {{{../../plugins/index.html} Available plugins}}
 
   * {{{./releasing.html} Releasing .NET projects with Maven}}
+
+  * {{{./generate-project.html} Generating template projects}}
+
+  * {{{./dependencies.html} Adding dependencies to the project}}
 
   * {{{./integration-tests.html} Including Integration Tests}}
 

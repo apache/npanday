@@ -21,15 +21,15 @@ package npanday.plugin.msdeploy;
 
 import com.google.common.collect.Lists;
 import npanday.ArtifactType;
-import npanday.PathUtil;
 import org.apache.maven.plugin.MojoExecutionException;
 
-import java.io.File;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
+ * Picks up a prepared package folder and packages it using the MSDeploy command line tool.
+ *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  * @goal create-package
  * @phase package

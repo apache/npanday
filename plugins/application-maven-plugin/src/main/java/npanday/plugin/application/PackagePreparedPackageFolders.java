@@ -33,9 +33,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Package the prepared folders as dotnet-application, and attach the *.app.zip as
+ * a project artifact.
+ *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  * @phase package
  * @goal package
+ *
  * @since 1.5.0-incubating
  */
 public class PackagePreparedPackageFolders

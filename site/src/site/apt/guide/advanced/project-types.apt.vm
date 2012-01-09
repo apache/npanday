@@ -2,7 +2,7 @@
  Project Types
  ----
  ----
- 2010-07-03
+ 2012-01-09
  ----
 ~~Licensed to the Apache Software Foundation (ASF) under one
 ~~or more contributor license agreements.  See the NOTICE file
@@ -21,21 +21,21 @@
 ~~specific language governing permissions and limitations
 ~~under the License.
 
-Available Project Types
+Available Packaging Types
 
-  Currently NPanday has two plugins that register types for .NET. The 
-  <<<maven-compile-plugin>>> and the <<<custom-lifecycle-maven-plugin>>>.
+  NPanday defines a couple of .NET-related packaging types that can
+  both be used in primary or secondary project outputs or dependencies.
 
-  While the Compile plugin introduces the NPanday default lifecycle, the other
-  one just does a default Maven install and deploy, while leaving it to you
-  to fill up the Maven lifecycle with meaningful executions.
-
-  Both plugins can resolve dependencies with the types of the other.
+  Certain plugins bind so called Lifecycle Mappings (goal executions per Maven Lifecycle)
+  to corresponding packaging types; this means, that if your pom has a specific packaging,
+  and one of these special plugins is configured with <<<\<extensions\>true\</extensions\>>>>,
+  Maven will automatically trigger the needed goals to create and attach the wanted
+  artifact(s).
 
 * Maven Compile Plugin
 
-  The following packaging types are supported by the Maven plugins. To make them
-  available, add the Compile plugin with the following definition:
+  To make types and lifecycles for the {{{../../plugins/maven-compile-plugin/index.html}Maven Compile Plugin}} available,
+  add the following declaration to your pom file.
 
 ----
 <plugin>
@@ -46,45 +46,61 @@ Available Project Types
 </plugin>
 ----
 
-  The <<<maven-compile-plugin>>> provides the following packaging types:
+  The <<<maven-compile-plugin>>> provides the following main packaging types:
 
-    * <<<dotnet-library>>> - builds and packages the assembly (Deprecated: <<<library>>>)
+    * <<<dotnet-library>>> - builds and packages a DLL assembly file. (Deprecated naming: <<<library>>>)
 
-    * <<<dotnet-executable>>> - build and package a console application (Deprecated: <<<exe>>>, <<<winexe>>>)
+    * <<<dotnet-executable>>> - builds and packages an EXE assembly file (Deprecated naming: <<<exe>>>, <<<winexe>>>)
 
-    * <<<dotnet-module>>> - builds and packages the assembly then uses the Link plugin in the package phase (Deprecated: <<<netmodule>>>)
+    * <<<dotnet-module>>> - builds a module file, which can be linked into assemblies using the {{{../../plugins/maven-link-plugin}link plugin}} (Deprecated naming: <<<netmodule>>>)
 
-    * <<<dotnet-maven-plugin>>> - build an assembly from the .NET code and generate a Java binding for Maven (Deprecated: <<<netplugin>>>)
+    * <<<dotnet-maven-plugin>>> - creates a .NET-based Maven Plugin and generates the corresponding java binding (Deprecated naming: <<<netplugin>>>)
 
-    * <<<asp>>> - uses the ASPX plugin to build an ASP.NET project
-
-    * <<<dotnet-executable-config>>> - simply installs the configuration into the local repository, as no build is required (Deprecated: <<<exe.config>>>)
-
-    * <<<visual-studio-addin>>> - build and packages the assembly in the same way as for a <<<dotnet-library>>>
-
-    * <<<nar>>> - builds and packages with the Webapp plugin
+    * It will further handle <<<visual-studio-addin>>> and <<<sharp-develop-addin>>>, and  in the same way as it handles <<<dotnet-library>>>.
 
     []
 
-  The following dependency types (in addition to the above) are also declared:
+* Azure Maven Plugin
 
-    * <<<dotnet-module>>> - references to a <<<dotnet-module>>>
+  The {{{../../plugins/azure-maven-plugin/index.html}Azure Maven Plugin}} defines following types:
 
-    * <<<dotnet-executable-config>>> and <<<dotnet-library-config>>> - references to .NET configuration files
+----
+<plugin>
+  <groupId>org.apache.npanday.plugins</groupId>
+  <artifactId>azure-maven-plugin</artifactId>
+  <version>${project.version}</version>
+  <extensions>true</extensions>
+</plugin>
+----
 
-    * <<<dotnet-symbols>>> - PDB debug information for libraries or executables
+  * <<<azure-cloud-service>>> - packages an Azure application as <<<*.cspkg>>>
+  * <<<azure-cloud-service-configuration>>> - dependency type used for attaching configurations to be deployed
+    along with the main Azure package (cspkg).
 
-    * <<<ole-type-library>>> - TLB-files containing type descriptors for .NET COM Interop
+  []
 
-    * <<<dotnet-vsdocs>>> - XML-file containing intellisense information for libraries or executables
+* Web pages and "real" packaging
 
-    * <<<dotnet-gac>>>, <<<gac_32>>> - dependencies in the respective GAC types variants (Deprecated: <<<gac>>>, <<<gac_generic>>>, <<<gac_msil>>>)
+  In addition to the compiled assembly you might also want to publish "runnable" applications. Currently NPanday offers
+  three packaging types for that:
 
-    []
+  * <<<dotnet-application>>> - Package executables or plugin assemblies with all dependencies and other needed runtime
+    files {{{../../plugins/aspnet-maven-plugin/index.html}application-maven-plugin}}
+
+  * <<<msdeploy-package>>> - Package MSDeploy-enabled web-applications using
+    the {{{../../plugins/aspnet-maven-plugin/index.html}aspnet-maven-plugin}}
+
+  * <<<asp>>> - uses the ASPX plugin to assemble and possibly precompile an ASP.NET project
+
+  []
+
+  {{{./application-packaging.html}Read more about packaging applications}}.
 
 * Custom Lifecycle Maven Plugin
 
-    The following definition allows you to install, deploy and resolves files of the listed types.
+   If none of the available default packaging lifecycles match your needs, you may use the
+   {{{../../plugins/custom-lifecycle-maven-plugin/index.html}Custom Lifecycle Maven Plugin}},
+   which allows you to install, deploy and resolve all types known to NPanday.
 
 ----
 <plugin>
@@ -95,28 +111,29 @@ Available Project Types
 </plugin>
 ----
 
-    * <<<dotnet-module>>> - a .NET module with extension <<<netmodule>>>
+   * <<<dotnet-archive>>> - just a zip-file; can be used, if none of the other types fit you. It is recommended to
+     create the zip using the {{{http://maven.apache.org/plugins/maven-assembly-plugin/}Maven Assembly Plugin}}, then.
 
-    * <<<dotnet-library>>> - A DLL-file compiled by any of the .NET compilers
+   * When you resolve a <<<dotnet-archive>>> you might want to use
+     {{{http://maven.apache.org/plugins/maven-dependency-plugin/unpack-dependencies-mojo.html}<<<depencendy:unpack-dependencies>>>}}
+     to unpack it before you compile against your dependencies.
 
-    * <<<dotnet-library-config>>> - Configuration file attachable to a library artifact
+* Further Dependency Types
 
-    * <<<dotnet-executable>>> - A EXE-file compiled by any of the .NET compilers
+  When attaching or resolving various .NET-related artifacts, these dependency types may be helpful:
 
-    * <<<dotnet-executable-config>>> - Configuration file attachable to a executable artifact
+    * <<<dotnet-executable-config>>> and <<<dotnet-library-config>>> - references to .NET configuration files
 
-    * <<<dotnet-symbols>>> - A PDB-file containing debug symbols for either a DLL or executable
+    * <<<dotnet-symbols>>> - PDB debug information for libraries or executables
 
-    * <<<ole-type-library>>> - A TLB-file that contains information about types of a library that are accessible through COM
+    * <<<ole-type-library>>> - TLB-files containing type descriptors for .NET COM Interop
 
-    * <<<dotnet-vsdocs>>> - A XML-file containing the inline code documentation for a library or executable
+    * <<<dotnet-vsdocs>>> - XML-file containing intellisense information for libraries or executables
 
-    * <<<dotnet-archive>>> - A ZIP of libraries and their complementary files as debug symbols,
-      docs or local satellite assemblies.
+    * <<<dotnet-gac>>>, <<<gac_32>>> - dependencies in the respective GAC types variants
+      (Deprecated: <<<gac>>>, <<<gac_generic>>>, <<<gac_msil>>>)
 
     []
 
-    For <<<dotnet-archive>>> it is recommended to create the zip using the Maven Assembly Plugin.
-
-    When you resolve a <<<dotnet-archive>>> you might want to use <<<depencendy:unpack-dependencies>>> to
-    unpack it before you compile against your dependencies.
+  All packaging/dependency types and their corresponding file extensions known to NPandays plugins are also declared here:
+  {{{${project.scm.url}/../components/dotnet-core/src/main/java/npanday/ArtifactType.java?view=markup}ArtifactType.java}}

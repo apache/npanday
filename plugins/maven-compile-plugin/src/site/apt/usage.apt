@@ -85,12 +85,12 @@ Usage
  If you are using any Microsoft specific APIs (or any of the missing APIs in MONO), then you should set the vendor tag to
  MICROSOFT.
 
- * In the case of setting the \<vendor/> tag to MONO, the platform obviously must have Mono installed to be buildable. This
- option should be used if you are using any of the Mono specific APIs that you are not including within the dependency
- path of Maven.
+ * <<Currently untested:>> In the case of setting the \<vendor/> tag to MONO, the platform obviously must have Mono
+ installed to be buildable. This option should be used if you are using any of the Mono specific APIs
+ that you are not including within the dependency path of Maven.
 
- * In the case of setting the \<vendor/> tag to DotGNU, the platform obviously must have DotGnu installed to be buildable.
- The DotGNU compiler is not included
+ * <<Currently untested:>> In the case of setting the \<vendor/> tag to DotGNU, the platform obviously must have DotGnu
+ installed to be buildable. The DotGNU compiler is not included
  as a default for any of the platforms: so to target this environment, you must set the \<vendor/> tag. Also you may run
  into some problems since there is currently no way to set the frameworkVersion/profile. I am giving some thought to this
  problem, so keep an eye on the documentation.

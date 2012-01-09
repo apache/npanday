@@ -26,6 +26,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import java.io.File;
 
 /**
+ * Resolves the cloud service configuration and attaches it as a build artifact.
+ *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  * @goal process-cloud-service-configuration
  */

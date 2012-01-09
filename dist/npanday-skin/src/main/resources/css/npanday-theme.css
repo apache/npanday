@@ -27,6 +27,13 @@ body, h2, h3, #rightcol h2, pre, code, #apphead h2 small, h3, th, td {
 }
 
 /* More fluffy navigation */
+#leftColumn {
+    width: 250px; /* was 170 */
+}
+#bodyColumn {
+    margin-left: 270px; /* was 190 */
+}
+
 #navcolumn h5 {
     margin: 1em 0.5em 0;
     font-size: 1.2em;
@@ -45,9 +52,33 @@ body, h2, h3, #rightcol h2, pre, code, #apphead h2 small, h3, th, td {
 /* "real" titles */
 #bodyColumn h2 {
     background: none;
-    background-color: none;
     color: black;
     font-size: 1.5em;
 }
+
+/* monospaced */
+tt, code,samp,kbd,pre {
+    font-family: Consolas, Monaco, "Courier New";
+    font-size: 1.0em;
+}
+
+/* inline monospace */
+tt {
+    font-weight: bold;
+}
+
+/* fluffier text */
+.section p, .section p, .section dt, .section dt {
+    line-height: 1.4em;
+    margin-left: 7px;
+    margin-right: 7px;
+}
+
+/* li already has enough margin */
+.section li p {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 
 

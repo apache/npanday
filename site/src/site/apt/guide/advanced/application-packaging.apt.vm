@@ -1,0 +1,133 @@
+ ----
+ Project Types
+ ----
+ ----
+ 2012-01-09
+ ----
+~~Licensed to the Apache Software Foundation (ASF) under one
+~~or more contributor license agreements.  See the NOTICE file
+~~distributed with this work for additional information
+~~regarding copyright ownership.  The ASF licenses this file
+~~to you under the Apache License, Version 2.0 (the
+~~"License"); you may not use this file except in compliance
+~~with the License.  You may obtain a copy of the License at
+~~
+~~    http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~Unless required by applicable law or agreed to in writing,
+~~software distributed under the License is distributed on an
+~~"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~~KIND, either express or implied.  See the License for the
+~~specific language governing permissions and limitations
+~~under the License.
+
+Packaging Applications in NPanday
+
+  Ususally an application needs more than a EXE or DLL in order to be executed. This topic is about how to
+  package your application in a way that makes it runnable.
+
+  The packaging itself is done by various Maven plugins, depending on the package format; but all handle packaging in
+  a similar fashion.
+
+  [[1]] <<<pre-package:>>> Collect the needed files (including dependencies) into a directory
+        in <<<target/packages/*>>> and possibly filter/transform configuration settings.
+
+  [[2]] <<<package:>>> Somehow pack up the collected files in the desired format and attach it
+        as project artifact.
+  []
+
+  Collecting files for a package utilizes components from the
+  {{{http://maven.apache.org/plugins/maven-assembly-plugin/}Maven Assembly Plugin}} and hence supports both the
+  {{{http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html}Assembly Descriptor}} and the
+  {{{http://maven.apache.org/plugins/maven-assembly-plugin/component.html}Component Descriptor}}.
+
+  The two main project types that require packaging are web applications and executables (dll/exe). Packaging for
+  these is delivered by each its plugin, the {{{../../plugins/aspnet-maven-plugin/index.html}aspnet-maven-plugin}}
+  and {{{../../plugins/aspnet-maven-plugin/index.html}application-maven-plugin}}.
+
+* Take control over what gets packaged
+
+  NPandays packaging plugins try to find sensible defaults for the required package format, but those can be overridden
+  in three different ways:
+
+  * <<Extend:>> The simplest is to <add> files to the packaging through custom component descriptors. These can be
+    as local files, or through embedded jar resources.
+
+    Usually this is done through the plugin configuration property <<<mixinAssemblyComponentDescriptors>>> like this:
+
++---+
+<configuration>
+  <mixinAssemblyComponentDescriptors>
+    <mixinAssemblyComponentDescriptor>custom-assembly-component.xml</mixinAssemblyComponentDescriptor>
+  </mixinAssemblyComponentDescriptors>
+</configuration>
++---+
+
+    And then by provide the file: <<<\$basedir\custom-assembly-component.xml>>>
+
++---+
+<component xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2 http://maven.apache.org/xsd/component-1.1.2.xsd">
+  <fileSets>
+    <fileSet>
+      <useDefaultExcludes>true</useDefaultExcludes>
+      <directory>${project.basedir}</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>copy-also.txt</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</component>
++---+
+
+  * <<Replace:>> If the default packaging doesn't fit at all, or includes files, it shouldn't include, you
+    can completely take control over the files to include in the package:
+
+    Configuration:
+
++---+
+<configuration>
+  <assemblyDescriptor>custom-assembly.xml</assemblyDescriptor>
+</configuration>
++---+
+
+    And the file:
+
++---+
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+  <id>custom-assembly</id>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <formats>
+    <format>dir</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <useDefaultExcludes>true</useDefaultExcludes>
+      <directory>${project.basedir}</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>please-copy.aspx</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</assembly>
++---+
+
+  * <<Compose:>> This is a mix of the previous two. You replace by using a custom assembly descriptor, but you then
+   use some of the component descriptors provided by NPanday:
+
++---+
+<assembly ..>
+[..]
+  <componentDescriptors>
+    <componentDescriptor>/assemblies/components/aspnet-webapp-binaries.xml</componentDescriptor>
+    [..]
+  </componentDescriptors>
+[..]
+</assembly>
++---+
+
+

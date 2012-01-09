@@ -43,8 +43,8 @@ NPanday
     * use Maven Release for assisted release process including creation of tags, maintainance branches, and so on
 
 
-  You can read more about {{{http://maven.apache.org/maven-features.html} Maven's features}} on the Maven
-  web site.
+  You can read more about Maven's features {{{http://maven.apache.org/maven-features.html} on the Maven
+  web site}}.
 
 * NPanday Mindset
 

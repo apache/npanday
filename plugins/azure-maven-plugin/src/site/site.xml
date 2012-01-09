@@ -24,6 +24,8 @@
     <menu name="Overview">
       <item name="About" href="index.html"/>
       <item name="Goals" href="plugin-info.html"/>
+      <item name="Usage" href="usage.html"/>
+      <item name="SDK Versions" href="azure-sdk-versions.html"/>
     </menu>
 
     <menu ref="reports" />
