@@ -27,9 +27,10 @@ import org.apache.maven.project.MavenProject
 import org.codehaus.gmaven.mojo.GroovyMojo
 
 /**
+ * Lists the types and lifecycles this plugin configures when used as an extension.
+ *
  * @author Lars Corneliussen
  * @goal describe
- * @description Lists the types and lifecycles this plugin configures when used as an extension.
  */
 class DescribeMojo
     extends GroovyMojo

@@ -19,21 +19,20 @@ package npanday.plugin.aspx;
  * under the License.
  */
 
-import java.io.File;
-import java.io.IOException;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Maven Mojo for packaging .Net Web applications
  * 
  * @goal package
  * @phase package
- * @description Maven Mojo for packaging .Net Web applications
  */
 public class AspxPackageMojo
     extends AbstractMojo

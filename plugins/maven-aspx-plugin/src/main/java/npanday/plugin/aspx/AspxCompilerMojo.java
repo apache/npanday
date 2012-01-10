@@ -42,7 +42,6 @@ import java.util.List;
  *
  * @goal compile
  * @phase compile
- * @description Maven Mojo for precompiling ASPx files
  */
 public class AspxCompilerMojo
     extends AbstractMojo

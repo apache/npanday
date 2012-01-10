@@ -23,9 +23,10 @@ import npanday.lifecycle.LifecyclePrinter;
 import org.codehaus.gmaven.mojo.GroovyMojo
 import org.apache.maven.project.MavenProject;
 /**
+ * Lists the types and lifecycles this plugin configures when used as an extension.
+ *
  * @author Lars Corneliussen
  * @goal describe
- * @description Lists the types and lifecycles this plugin configures when used as an extension.
  */
 class DescribeMojo
     extends GroovyMojo

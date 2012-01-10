@@ -19,19 +19,16 @@ package npanday.plugin.aspx;
  * under the License.
  */
 
-import java.lang.StackTraceElement; 
-import java.io.File;
-import java.io.IOException;
-import java.util.Set;
-import java.util.ArrayList;
-
+import npanday.PathUtil;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
-import npanday.PathUtil;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Set;
 
 
 /**
@@ -39,7 +36,6 @@ import npanday.PathUtil;
  *
  * @goal copy-dependency
  * @phase process-sources
- * @description Maven Mojo for copying ASPx project dependencies to sourceDirectory\Bin folder
  */
 public class AspxBinDependencyResolver
         extends AbstractMojo {

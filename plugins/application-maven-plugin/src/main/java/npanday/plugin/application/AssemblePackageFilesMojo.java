@@ -47,36 +47,42 @@ public class AssemblePackageFilesMojo
     Splitter COMMANDLINE_LISTS_SPLITTER = Splitter.on( "," ).omitEmptyStrings().trimResults();
 
     /**
+     * Specifies if the goal should be skipped.
+     *
      * @parameter expression="$(skipPackaging)" default-value="false"
      */
     private boolean skip;
 
     /**
-     * @parameter expression="${assemblyDescriptor}"
-     * @description Assembly XML Descriptor file. This must be the path to your customized descriptor file.
+     * Assembly XML Descriptor file. This must be the path to your customized descriptor file.
      * <br><b>assemblyDescriptor will take precedence over {@see assemblyDescriptorRef}</b>
+     *
+     * @parameter expression="${assemblyDescriptor}"
      */
     private String assemblyDescriptor;
 
     /**
+     * Commandline version of {@see mixinAssemblyComponentDescriptors}. Spearate each item with a comma.
+     *
      * @parameter expression="${mixinAssemblyComponentDescriptorList}"
-     * @description Commandline version of {@see mixinAssemblyComponentDescriptors}. Spearate each item with a comma.
      */
     private String mixinAssemblyComponentDescriptorList;
 
     /**
-     * @parameter
-     * @description Component descriptors to be mixed into the main assembly descriptor from
+     * Component descriptors to be mixed into the main assembly descriptor from
      * {@see assemblyDescriptorRef} or {@see assemblyDescriptor}.
      * <br/>This is particularly useful, when the assembly descriptor is provided via the classpath.
+     *
+     * @parameter
      */
     private String[] mixinAssemblyComponentDescriptors;
 
     /**
-     * @parameter expression="${assemblyDescriptorRef}" default-value="application-defaults"
-     * @description A references to an assembly descriptor available on the plugin's classpath. The default
+     * A references to an assembly descriptor available on the plugin's classpath. The default
      * classpath includes these built-in descriptors. You can add others by adding dependencies to the plugin.
      * <br><b>assemblyDescriptorRef will be ignored, if {@see assemblyDescriptor} is configured</b>
+     *
+     * @parameter expression="${assemblyDescriptorRef}" default-value="application-defaults"
      */
     private String assemblyDescriptorRef;
 

@@ -43,6 +43,7 @@
     <breadcrumbs>
       <item name="NPanday Home" href="http://incubator.apache.org/npanday/" />
       <item name="NPanday ${project.version}" href="../index.html" />
+      <item name="Plugins" href="/index.html" />
     </breadcrumbs>
 
     <menu ref="parent" />
