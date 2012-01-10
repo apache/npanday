@@ -52,5 +52,5 @@ under the License.
       <artifactId>plexus-utils</artifactId>
       <version>${plexus.utils.version}</version>
     </dependency>
-  </dependencies> 
+  </dependencies>
 </project>

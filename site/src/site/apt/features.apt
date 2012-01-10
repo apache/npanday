@@ -28,15 +28,15 @@ Features
 
 * NPanday Visual Studio Add-in Features
 
-  * <Maven Builds>: Execute Maven directly from Visual Studio or run standalone from a build server.
+  [Maven Builds] Execute Maven directly from Visual Studio or run standalone from a build server.
 
-  * <Dependency Management>: Add references to the project by automatically obtaining them from a
+  [Dependency Management] Add references to the project by automatically obtaining them from a
                              shared Maven repository.
 
-  * <Project Importer>: Convenient way of converting an existing .NET Applications so that it can be
+  [Project Importer] Convenient way of converting an existing .NET Applications so that it can be
                         built using Maven outside VS, ready for Continuous Integration.
 
-  * <Auto-Sync>: Synchronization while developing the .NET Application for minimal interaction with
+  [Auto-Sync] Synchronization while developing the .NET Application for minimal interaction with
                  the POM (Project Object Model) file.
 
   []
@@ -57,13 +57,15 @@ Features
 
   * Crystal Reports Application
 
-  * ASP .NET Web Application
+  * ASP.NET Web Application (also MVC)
 
-  * ASP .Net Web Service Application
+  * ASP.NET Web Service Application
 
   * Windows Presentation Foundation (WPF)
 
   * Windows Communication Foundation (WCF)
+
+  * {{{./plugins/azure-maven-plugin/index.html}Azure Cloud Services and Worker/Web Roles}}
 
   []
 
@@ -82,21 +84,12 @@ Features
   * .NET 3.5 / Visual Studio 2008
 
   * .NET 4.0 / Visual Studio 2010
+
   []
 
   <<Note:>> There is partial support for Mono, .NET 1.1 and other vendors, but these are currently untested.
 
 * Supported Directory Structures
 
-  NPanday supported project structures are as follows:
-
-  * Flat Single Module Project
-
-  * Normal Single Project
-
-  * Flat Multi Module Project
-
-  * Normal Multi Module Project
-
-  []
+  Read about the {{{./guide/reference/supported-dir-structures.html}directory structures supported by NPanday}}.
 

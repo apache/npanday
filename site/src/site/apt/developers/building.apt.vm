@@ -123,13 +123,17 @@ mvn clean install -Prun-its
 * Generating NPanday's documentation locally
 
   NPanday documentation is generated from {{{http://maven.apache.org/doxia/references/apt-format.html} APT-files}}
-  using the {{{http://maven.apache.org/doxia/index.html} Maven Doxia Tools}}. Some
+  using the {{{http://maven.apache.org/doxia/index.html} Maven Doxia Tools}}.
 
-  The documentation site and PDF can be generated using the following command within the <<<site>>> directory of the
-  NPanday trunk:
+  The documentation site and PDF can be generated using the following command within the <<<site>>> and the
+  <<<plugins>>> directory of the NPanday trunk:
 
 ----
-mvn site
+  mvn site-deploy -P local-docs
 ----
 
-  Open <<<target/site/index.html>>> in your browser to view the documentation.
+  Open <<<file:///c:/Program Files/NPanday/docs/index.html>>> in your browser to view the documentation.
+
+  You may also override the default local deployment through an additional argument <<<-Dlocaldocs.folder=file:///...>>>.
+
+  It is recommended to add <<<-o>>> for speeding up the generation after the first successful build.

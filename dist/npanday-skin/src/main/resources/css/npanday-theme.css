@@ -57,9 +57,18 @@ body, h2, h3, #rightcol h2, pre, code, #apphead h2 small, h3, th, td {
 }
 
 /* monospaced */
-tt, code,samp,kbd,pre {
+tt,code,samp,kbd,pre {
     font-family: Consolas, Monaco, "Courier New";
     font-size: 1.0em;
+}
+
+div pre {
+ margin-right: 35px;
+}
+
+div.source pre {
+ margin-right: 7px;
+ margin-left: 7px;
 }
 
 /* inline monospace */

@@ -25,10 +25,10 @@ NPanday
 
   <<... brings Maven to the .NET developer>>
 
-  NPanday primarily provides two capabilities: a set of Maven plugins, for
-  constructing builds in Maven that use the .NET command-line tools; and a Visual Studio Addin
-  that keeps a Visual Studio project in sync with the Maven POM and adds reference resolution
-  from Maven artifact repositories.
+  NPanday primarily provides two capabilities: a set of Maven plugins for
+  constructing <<.NET-builds in Maven>>,
+  and <<a Visual Studio Addin>> that keeps a Visual Studio project in sync with the Maven POM and adds
+  reference resolution from Maven artifact repositories.
 
   Together this allows you to use a single tool across .NET,
   Java or any other Maven-based projects, including the same benefits of dependency management,
@@ -36,15 +36,13 @@ NPanday
 
   The <<Core Benefits>> of using NPanday + Maven infrastructure are:
 
-    * build artifact repositories for inter-project dependency management and centralised management of build output
+    * reproducible builds, build output distribution and inter-project dependency management
 
-    * many continuous integration servers support Maven - this makes it much easier to create automated scheduled builds
+    * easy integration with many continuous build servers
 
-    * use Maven Release for assisted release process including creation of tags, maintainance branches, and so on
-
-
-  You can read more about Maven's features {{{http://maven.apache.org/maven-features.html} on the Maven
-  web site}}.
+    * Maven Ecosystem: for example use {{{http://maven.apache.org/plugins/maven-release-plugin/}Maven Release}}
+      for assisted release process including creation of SCM tags, maintainance branches, and so on. Read more about
+      Maven's features {{{http://maven.apache.org/maven-features.html} on the Maven web site}}.
 
 * NPanday Mindset
 

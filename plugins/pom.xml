@@ -31,15 +31,13 @@
   <packaging>pom</packaging>
   <name>NPanday :: Maven Plugins</name>
   <modules>
-    <module>netplugins/NPanday.Plugin.Addin/javabinding</module>
-    <module>netplugins/NPanday.Plugin.Devenv/javabinding</module>
-    <module>netplugins/NPanday.Plugin.Settings/javabinding</module>
-    <module>netplugins/NPanday.Plugin.SysRef/javabinding</module>
-    <module>netplugins/NPanday.Plugin.Msbuild/javabinding</module>
-    <module>custom-lifecycle-maven-plugin</module>
     <module>maven-compile-plugin</module>
     <module>maven-aspx-plugin</module>
     <module>aspnet-maven-plugin</module>
+    <module>custom-lifecycle-maven-plugin</module>
+    <module>msdeploy-maven-plugin</module>
+    <module>azure-maven-plugin</module>
+    <module>application-maven-plugin</module>
     <module>maven-fxcop-plugin</module>
     <module>maven-install-plugin</module>
     <module>maven-ilmerge-plugin</module>
@@ -55,9 +53,11 @@
     <module>maven-wsdl-plugin</module>
     <module>wix-maven-plugin</module>
     <module>partcover-maven-plugin</module>
-    <module>msdeploy-maven-plugin</module>
-    <module>azure-maven-plugin</module>
-    <module>application-maven-plugin</module>
+    <module>netplugins/NPanday.Plugin.Addin/javabinding</module>
+    <module>netplugins/NPanday.Plugin.Devenv/javabinding</module>
+    <module>netplugins/NPanday.Plugin.Settings/javabinding</module>
+    <module>netplugins/NPanday.Plugin.SysRef/javabinding</module>
+    <module>netplugins/NPanday.Plugin.Msbuild/javabinding</module>
   </modules>
   <dependencies>
     <dependency>
@@ -152,7 +152,7 @@
         <reportSets>
           <reportSet>
             <reports>
-              <report>index</report>
+
             </reports>
           </reportSet>
         </reportSets>
@@ -186,14 +186,14 @@
         </site>
       </distributionManagement>
     </profile>
-    <!--profile>
+    <profile>
       <id>local-docs</id>
       <distributionManagement>
         <site>
           <id>local</id>
-          <url>file:///C:/Workbench/NPanday/docs/plugins</url>
+          <url>${localdocs.folder}/plugins</url>
         </site>
       </distributionManagement>
-    </profile-->
+    </profile>
   </profiles>
 </project>

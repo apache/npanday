@@ -1,6 +1,9 @@
- ----
- Publishing the Documentation
- ----
+ -----
+ Available Plugins
+ -----
+ -----
+ 2010-07-05
+ -----
 ~~Licensed to the Apache Software Foundation (ASF) under one
 ~~or more contributor license agreements.  See the NOTICE file
 ~~distributed with this work for additional information
@@ -18,23 +21,6 @@
 ~~specific language governing permissions and limitations
 ~~under the License.
 
-Publishing the Documentation
+Available Plugins
 
-  The documentation should be published after a release has been tagged.
-
-  There are two separate sites to publish:
-
-    * the plugins reference
-
-    * the main documentation site
-
-  This is done with the following command within the release checkout, first from the <<<plugins>>> subdirectory, then
-  the <<<site>>> subdirectory:
-
-----
-mvn site-deploy -P apache-docs
-----
-
-  <Note:> It's important to do them in this order so that the generic plugins index page will get overwritten by the
-          correct one in the docs for this version.
-
+   Find a {{{./modules.html}list of the available NPanday plugins}}

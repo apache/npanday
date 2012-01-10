@@ -44,7 +44,8 @@ NPanday User's Guide
 
       * {{{./reference/supported-dir-structures.html} Supported Directory Structures}}
 
-      * {{{./advanced/project-types.html} Available Project Types}} - if you want to understand how NPanday's lifecycles works
+      * {{{./advanced/project-types.html} Available Project Types}} - if you want to understand how NPanday's lifecycles work
+
       []
 
     []

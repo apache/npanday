@@ -49,6 +49,8 @@ under the License.
       After the release, the boostrap can hang to a previous version again
     -->
     <bootstrap.npanday.version>${project.version}</bootstrap.npanday.version>
+
+    <localdocs.folder>file:///c:/Program Files/NPanday/docs</localdocs.folder>
   </properties>
 
   <repositories>

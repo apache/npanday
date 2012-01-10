@@ -133,6 +133,8 @@ public class AssemblyInfoGeneratorMojo
     private npanday.vendor.StateMachineProcessor stateMachineProcessor;
 
     /**
+     * Adds a CustomStringAttribute for each key-value pair configured.
+     *
      * @parameter
      */
     protected Map assemblyInfo = new HashMap();
