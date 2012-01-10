@@ -54,7 +54,16 @@ class CompileLifecycleMap extends LifecycleMap
 		def default_process_sources = [np_compile_process_sources, np_compile_process_test_sources]
 		def default_install = ["org.apache.npanday.plugins:maven-install-plugin:$npandayVersion:install", mv_install]
 		
-		forTypes( [ArtifactType.DOTNET_LIBRARY, ArtifactType.LIBRARY] ) {
+		forTypes([
+
+                /* --> DLL */
+                ArtifactType.DOTNET_LIBRARY, ArtifactType.LIBRARY,
+                /* see https://issues.apache.org/jira/browse/NPANDAY-526 */
+                ArtifactType.SHARP_DEVELOP_ADDIN, ArtifactType.VISUAL_STUDIO_ADDIN,
+
+                /* --> EXE */
+                ArtifactType.DOTNET_EXECUTABLE, ArtifactType.EXE, ArtifactType.WINEXE
+                ]) {
 			LifecycleMappingBuilder b->
 			b.validate (default_validate)
 			b.generate_sources (default_generate_sources)
@@ -65,18 +74,6 @@ class CompileLifecycleMap extends LifecycleMap
 			b.test (np_test)
 			b.install (default_install)
 			b.deploy (mv_deploy)
-		}
-		forType( ArtifactType.NAR ) {
-			LifecycleMappingBuilder b->
-			b.validate (default_validate)
-			b.generate_sources (default_generate_sources)
-			b.process_sources (default_process_sources)
-			b.process_resources (default_process_resources)
-			b.compile (np_compile)
-			b.test_compile (np_test_compile)
-			b.test (np_test)
-			b._package ("org.apache.npanday.plugins:maven-webapp-plugin:$npandayVersion:package")
-			b.deploy ("org.apache.npanday.plugins:maven-webapp-plugin:$npandayVersion:deploy")
 		}
 		forTypes( [ArtifactType.DOTNET_MODULE, ArtifactType.MODULE] ) {
 			LifecycleMappingBuilder b->
@@ -103,18 +100,6 @@ class CompileLifecycleMap extends LifecycleMap
 			b.install (default_install)
 			b.deploy (mv_deploy)
 		}
-		forTypes( [ArtifactType.DOTNET_EXECUTABLE, ArtifactType.EXE, ArtifactType.WINEXE] ) {
-			LifecycleMappingBuilder b->
-			b.validate (default_validate)
-			b.generate_sources (default_generate_sources)
-			b.process_sources (default_process_sources)
-			b.process_resources (default_process_resources)
-			b.compile (np_compile)
-			b.test_compile (np_test_compile)
-			b.test (np_test)
-			b.install (default_install)
-			b.deploy (mv_deploy)
-		}
 		forTypes( [ArtifactType.DOTNET_MAVEN_PLUGIN, ArtifactType.NETPLUGIN] ) {
 			LifecycleMappingBuilder b->
 			b.validate (default_validate)
@@ -128,31 +113,8 @@ class CompileLifecycleMap extends LifecycleMap
 			b._package ("org.apache.npanday.plugins:maven-mojo-generator-plugin:$npandayVersion:generate-bindings")
             b.deploy (mv_deploy)
 		}
-		forType( ArtifactType.VISUAL_STUDIO_ADDIN ) {
-			LifecycleMappingBuilder b->
-			b.validate (default_validate)
-			b.generate_sources (default_generate_sources)
-			b.process_sources (default_process_sources)
-			b.process_resources (default_process_resources)
-			b.compile (np_compile)
-			b.test_compile (np_test_compile)
-			b.test (np_test)
-			b.install (default_install)
-			b.deploy (mv_deploy)
-		}
-		forType( ArtifactType.SHARP_DEVELOP_ADDIN ) {
-			LifecycleMappingBuilder b->
-			b.validate (default_validate)
-			b.generate_sources (default_generate_sources)
-			b.process_sources (default_process_sources)
-			b.process_resources (default_process_resources)
-			b.compile (np_compile)
-			b.test_compile (np_test_compile)
-			b.test (np_test)
-			b.install (default_install)
-			b.deploy (mv_deploy)
-		}
 
+        // TODO: Should use the custom lifecycle mapping! Just delete it?
 		forTypes( [ArtifactType.DOTNET_EXECUTABLE_CONFIG, ArtifactType.EXECONFIG] ) {
 			LifecycleMappingBuilder b->
 			b.install (default_install)

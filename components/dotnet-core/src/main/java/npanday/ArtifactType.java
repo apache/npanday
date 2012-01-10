@@ -135,9 +135,7 @@ public enum ArtifactType
     @Deprecated
     EXECONFIG( "exe.config", "null", "exe.config" ),
     
-    NAR( "nar", null, "nar" ),
-    
-    /** 
+    /**
      * Use DOTNET_MAVEN_PLUGIN instead
      */
     @Deprecated
