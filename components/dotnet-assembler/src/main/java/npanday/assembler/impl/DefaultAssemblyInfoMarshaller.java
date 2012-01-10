@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 import java.util.Map.Entry;
 
 import org.apache.maven.project.MavenProject;
@@ -94,6 +95,27 @@ final class DefaultAssemblyInfoMarshaller
             }
             sb.append( ")]" ).append("\r\n" );
         }
+
+        for(Entry<String, String> e: assemblyInfo.getAssemblyAttributes().entrySet()) {
+            if(StringUtils.isEmpty(e.getValue()))
+                continue;
+
+            // get all values per key (e.g. "A;B;C")
+            String valuesPerElement = e.getValue();
+            
+            StringTokenizer st = new StringTokenizer(valuesPerElement, ";");
+            
+            while (st.hasMoreTokens()) {
+                // each value will be assigned to the enclosing key/element
+                sb.append( "[assembly: ")
+                .append(e.getKey())
+                .append("(\"")
+                .append(st.nextToken())
+                .append("\")]")
+                .append("\r\n" );
+            }
+        }
+
 
         boolean wroteCustomStringAttribute = false;
         for(Entry<String, String> e: assemblyInfo.getCustomStringAttributes().entrySet()) {

@@ -89,7 +89,12 @@ public class AssemblyInfo
 
     private Map<String, String> customStringAttributes;
     
-    private static final Map<String, String> EMPTY_CUSTOM_STRING_ATTRIBUTES = Collections.emptyMap();;
+    private static final Map<String, String> EMPTY_CUSTOM_STRING_ATTRIBUTES = Collections.emptyMap();
+    
+    private Map<String, String> assemblyAttributes;
+    
+    private static final Map<String, String> EMPTY_ASSEMBLY_ATTRIBUTES = Collections.emptyMap();
+    
     
     /**
      * Default constructor
@@ -259,6 +264,16 @@ public class AssemblyInfo
     public void setCustomStringAttributes(Map<String, String> attributes)
     {
         this.customStringAttributes = attributes;
+    }
+    
+    public Map<String, String> getAssemblyAttributes()
+    {
+        return (assemblyAttributes != null) ? assemblyAttributes : EMPTY_ASSEMBLY_ATTRIBUTES;
+    }
+    
+    public void setAssemblyAttributes(Map<String, String> assemblyAttributes)
+    {
+        this.assemblyAttributes = assemblyAttributes;
     }
 
     public boolean equals( Object o )

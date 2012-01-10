@@ -19,26 +19,26 @@ package npanday.plugin.compile;
  * under the License.
  */
 
-import npanday.ArtifactTypeHelper;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.FileUtils;
-
-import java.io.IOException;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import npanday.InitializationException;
-import npanday.PlatformUnsupportedException;
-import npanday.vendor.*;
+import npanday.ArtifactTypeHelper;
 import npanday.assembler.AssemblerContext;
-import npanday.assembler.AssemblyInfoMarshaller;
-import npanday.assembler.AssemblyInfoException;
 import npanday.assembler.AssemblyInfo;
+import npanday.assembler.AssemblyInfoException;
+import npanday.assembler.AssemblyInfoMarshaller;
+import npanday.vendor.Vendor;
+import npanday.vendor.VendorFactory;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorUnsupportedException;
+
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Generates an AssemblyInfo.* class based on information within the pom file.
@@ -128,6 +128,11 @@ public class AssemblyInfoGeneratorMojo
     protected Map assemblyInfo = new HashMap();
 
     /**
+     * @parameter
+     */
+    protected Map assemblyAttributes = new HashMap();
+
+    /**
      * If an AssemblyInfo file exists in the source directory, then this method will not generate an AssemblyInfo.
      *
      * @throws MojoExecutionException
@@ -182,6 +187,9 @@ public class AssemblyInfoGeneratorMojo
 
         AssemblyInfo assemblyInfo = assemblerContext.getAssemblyInfo();
         assemblyInfo.setCustomStringAttributes(this.assemblyInfo);
+
+        // apply the custom attributes :
+        assemblyInfo.setAssemblyAttributes(this.assemblyAttributes);
 
         try
         {
