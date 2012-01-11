@@ -60,12 +60,12 @@ Using the NPanday Azure Maven Plugin
 </project>
 +---+
 
-* Package Worker and Web Roles
+* Include Worker and Web Roles
 
     Worker and Web Roles are to be defined as dependencies. Worker Roles will be of type <<<dotnet-application>>>
     while Web Roles will use <<<msdeploy-package>>>.
 
-** Packaging Worker Roles
+** Include Worker Roles
 
     Worker roles are C#/VB libraries, but extended with the packing for <<<dotnet-application>>>. Read about the
     {{{../application-maven-plugin/index.html}NPanday Application Maven Plugin}} for instructions on how
@@ -82,9 +82,9 @@ Using the NPanday Azure Maven Plugin
   </dependencies>
 +---+
 
-** Package Web Roles
+** Include Web Roles
 
-    Web roles are normal C#/VB Web Projects extended by MSDeploy packaging. Figure out how this works here:
+    Web roles are normal C#/VB Web Projects extended by ASP.NET and MSDeploy packaging. Figure out how this works here:
     {{{../msdeploy-maven-plugin/index.html}NPanday MSDeploy Maven Plugin}}
 
 +---+

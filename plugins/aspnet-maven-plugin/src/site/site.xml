@@ -23,6 +23,7 @@
 
     <menu name="Overview">
       <item name="About" href="index.html"/>
+      <item name="Usage" href="usage.html"/>
       <item name="Goals" href="plugin-info.html"/>
     </menu>
 

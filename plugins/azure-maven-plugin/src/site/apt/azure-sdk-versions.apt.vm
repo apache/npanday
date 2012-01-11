@@ -24,7 +24,7 @@ Supported Azure SDK Versions
 
     In order to support further versions, they have to be defined here:
     {{{${project.scm.url}/src/main/resources/META-INF/npanday/executable-plugins.xml?view=markup}executable-plugins.xml}};
-    feel free to file an issue, if you need support for newer Azure versions {{{${project.issueManagement.url}}here}}.
+    feel free to {{{${project.issueManagement.url}}file an issue}}, if you need support for newer Azure versions here.
 
 Changing the version in use
 
