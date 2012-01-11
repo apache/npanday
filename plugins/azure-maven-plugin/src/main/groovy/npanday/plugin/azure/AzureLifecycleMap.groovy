@@ -42,9 +42,9 @@ class AzureLifecycleMap extends LifecycleMap
             b.prepare_package(
                 "$azure:resolve-worker-roles",
                 "$msdeploy:resolve-azure-web-roles",
-                "$azure:process-cloud-service-configuration"
+                "$azure:process-configuration"
             )
-            b._package( "$azure:create-cloud-service-package" )
+            b._package( "$azure:create-package" )
             b.install( mv_install )
 			b.deploy( mv_deploy )
 		}))

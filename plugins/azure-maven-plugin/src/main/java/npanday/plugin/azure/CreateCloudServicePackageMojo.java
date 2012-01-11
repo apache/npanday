@@ -36,7 +36,7 @@ import java.util.Set;
  * with a configuration template (*.cscfg).
  *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
- * @goal create-cloud-service-package
+ * @goal create-package
  * @requiresDependencyResolution runtime
  */
 public class CreateCloudServicePackageMojo
