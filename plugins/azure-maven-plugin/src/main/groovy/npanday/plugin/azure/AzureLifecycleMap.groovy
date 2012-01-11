@@ -41,7 +41,7 @@ class AzureLifecycleMap extends LifecycleMap
 	    add(forType(npanday.ArtifactType.AZURE_CLOUD_SERVICE, {LifecycleMappingBuilder b ->
             b.prepare_package(
                 "$azure:resolve-worker-roles",
-                "$msdeploy:unpack-dependencies",
+                "$msdeploy:resolve-azure-web-roles",
                 "$azure:process-cloud-service-configuration"
             )
             b._package( "$azure:create-cloud-service-package" )

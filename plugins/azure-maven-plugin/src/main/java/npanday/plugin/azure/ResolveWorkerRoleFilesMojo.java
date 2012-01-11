@@ -53,7 +53,6 @@ public class ResolveWorkerRoleFilesMojo
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        // TODO: this mojo could be moved to application-maven-plugin / unpack-dependencies (as with msdeploy)
         super.execute();
 
         final Set projectDependencyArtifacts = project.getDependencyArtifacts();
@@ -70,7 +69,6 @@ public class ResolveWorkerRoleFilesMojo
 
     private void unpack( Artifact artifact ) throws MojoFailureException
     {
-        // TODO: partially duplicate code with MSDeploy unpack-dependencies
         File targetDirectory = new File( PathUtil.getPreparedPackageFolder( project ), artifact.getArtifactId() );
         try
         {

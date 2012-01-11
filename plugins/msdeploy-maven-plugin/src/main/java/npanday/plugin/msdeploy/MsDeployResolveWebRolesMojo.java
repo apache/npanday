@@ -31,14 +31,15 @@ import java.util.Set;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
- * Resolves all MSDeploy-Packages and unpacks them for further use.
+ * Resolves all MSDeploy-Packages from project dependencies and unpacks them
+ * for repackaging through the azure-maven-plugin.
  *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  *
- * @goal unpack-dependencies
+ * @goal resolve-azure-web-roles
  * @requiresDependencyResolution compile
  */
-public class MsDeployUnpackDependenciesMojo
+public class MsDeployResolveWebRolesMojo
     extends AbstractMsDeployMojo<UnpackDependencyIterationItem>
 {
     @Override
@@ -76,9 +77,6 @@ public class MsDeployUnpackDependenciesMojo
     protected List<String> getCommands(UnpackDependencyIterationItem item) throws MojoExecutionException
     {
         List<String> commands = Lists.newArrayList();
-
-        // this requires npanday.executable.impl.DefaultNetExecutable to be used, as it will respect
-        // the "home-made" quoting
 
         commands.add( "-verb:sync" );
         commands.add( "-source:package=" + item.getPackageSource().getAbsolutePath());
