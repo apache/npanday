@@ -29,6 +29,7 @@ using System.Text.RegularExpressions;
 
 using System.Reflection;
 using System.IO;
+using Microsoft.Win32;
 
 namespace NPanday.Utils
 {
@@ -46,12 +47,62 @@ namespace NPanday.Utils
             //  consider this: http://www.codeproject.com/KB/dotnet/undocumentedfusion.aspx
             //  (works, but seems to be missing the processor architecture)
             // Can also use LoadWithPartialName, but it is deprecated
-            
+
+            // First, let's find gacutil.exe. For now, we use .NET 4.0 if available to list everything and let
+            // the rest of the logic sort out the right ones - but we might want to pre-filter this to CLR 2.0
+            // and CLR 4.0 versions
+            string gacutil = "gacutil.exe";
+            Dictionary<string, KeyValuePair<string, string>> paths = new Dictionary<string, KeyValuePair<string, string>>();
+            try
+            {
+                RegistryKey sdks = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SDKs\Windows");
+                foreach (string sdk in sdks.GetSubKeyNames())
+                {
+                    using (RegistryKey key = sdks.OpenSubKey(sdk)) 
+                    {
+                        foreach (string location in key.GetSubKeyNames())
+                        {
+                            using (RegistryKey subkey = key.OpenSubKey(location))
+                            {
+                                object value = subkey.GetValue("InstallationFolder");
+
+                                if (value != null)
+                                {
+                                    string exe = Path.Combine(value.ToString(), "gacutil.exe");
+                                    if (new FileInfo(exe).Exists)
+                                    {
+                                        // override with later ones in the list
+                                        paths.Add(location, new KeyValuePair<string,string>(sdk, exe));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                string[] search = new string[] { "WinSDK-NetFx40Tools", "WinSDK-NetFx40Tools-x86",  "WinSDK-NetFx35Tools", "WinSDK-NetFx35Tools-x86", "WinSDK-SDKTools" };
+
+                foreach (string s in search)
+                {
+                    if (paths.ContainsKey(s))
+                    {
+                        KeyValuePair<string, string> pair = paths[s];
+                        gacutil = pair.Value;
+                        Console.WriteLine("Found gacutil from SDK " + pair.Key + " at " + gacutil);
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unable to find gacutil in the registry due to an exception: " + e);
+            }
+
             Process p = new Process();
 
             try
             {
-                p.StartInfo.FileName = "gacutil.exe";
+                p.StartInfo.FileName = gacutil;
                 p.StartInfo.Arguments = "/l";
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.ErrorDialog = false;
