@@ -19,39 +19,41 @@ package npanday.artifact.impl;
  * under the License.
  */
 
-import npanday.ArtifactTypeHelper;
-import npanday.artifact.*;
 import npanday.ArtifactType;
+import npanday.ArtifactTypeHelper;
 import npanday.PathUtil;
-import npanday.registry.RepositoryRegistry;
+import npanday.artifact.ApplicationConfig;
+import npanday.artifact.ArtifactContext;
+import npanday.artifact.AssemblyResolver;
+import npanday.artifact.NPandayArtifactResolutionException;
+import npanday.artifact.NetDependenciesRepository;
+import npanday.artifact.NetDependencyMatchPolicy;
 import npanday.model.netdependency.NetDependency;
-import org.apache.maven.project.MavenProject;
+import npanday.registry.RepositoryRegistry;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.versioning.VersionRange;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
-import org.apache.maven.model.Model;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Dependency;
-import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
+import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.FileWriter;
 import java.io.FileReader;
-import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides an implementation of the <code>ArtifactInstaller</code> interface.
@@ -104,23 +106,12 @@ public class ArtifactInstallerImpl
      */
     private List<ArtifactRepository> remoteArtifactRepositories;
 
-    /**
-     * Registry used for finding DAOs
-     */
-    private npanday.registry.DataAccessObjectRegistry daoRegistry;
-
 
     /**
      * Constructor. This method is intended to by invoked by the plexus-container, not by the application developer.
      */
     public ArtifactInstallerImpl()
     {
-    }
-
-    protected void initTest( ArtifactFactory artifactFactory, Logger logger )
-    {
-        this.artifactFactory = artifactFactory;
-        this.logger = logger;
     }
 
     /**
@@ -272,13 +263,34 @@ public class ArtifactInstallerImpl
     public void installArtifactWithPom( Artifact artifact, File pomFile, boolean modifyProjectMetadata )
         throws ArtifactInstallationException
     {
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        Model model;
+        try
+        {
+            model = reader.read( new FileReader( pomFile ) );
+        }
+        catch ( XmlPullParserException e )
+        {
+            throw new ArtifactInstallationException( "NPANDAY-001-012: Unable to read pom file: " + pomFile.getAbsolutePath(), e);
+        }
+        catch ( IOException e )
+        {
+            throw new ArtifactInstallationException( "NPANDAY-001-013: Unable to read pom file: " + pomFile.getAbsolutePath(), e );
+        }
+
+        installArtifactWithPom( artifact, model );
+    }
+
+    private void installArtifactWithPom( Artifact artifact, Model model )
+        throws ArtifactInstallationException
+    {
         logger.debug( "NPANDAY-001-031: artifact:" + artifact);
         logger.debug( "NPANDAY-001-032: artifact file:" + artifact.getFile());
         ApplicationConfig applicationConfig = artifactContext.getApplicationConfigFor( artifact );
-        
+
         File configExeFile = applicationConfig.getConfigBuildPath();
         logger.debug( "NPANDAY-001-032: config file:" + configExeFile);
-        
+
         if ( configExeFile.exists() )
         {
             try
@@ -296,91 +308,18 @@ public class ArtifactInstallerImpl
 
         if ( !artifact.getType().equals( "exe.config" ) )//TODO: Generalize for any attached artifact
         {
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model;
-            try
-            {
-                logger.debug( "NPANDAY-001-033: config file:" + artifact.getType());
+            logger.debug( "NPANDAY-001-033: config file:" + artifact.getType());
 
-                model = reader.read( new FileReader( pomFile ) );
-
-                if ( configExeFile.exists() )
-                {
-                    Dependency dependency = new Dependency();
-                    dependency.setGroupId( artifact.getGroupId() );
-                    dependency.setArtifactId( artifact.getArtifactId() );
-                    dependency.setVersion( artifact.getVersion() );
-                    dependency.setType( ArtifactType.DOTNET_EXECUTABLE_CONFIG.getPackagingType() );
-                    model.addDependency( dependency );
-                }
-            }
-            catch ( XmlPullParserException e )
+            if ( configExeFile.exists() )
             {
-                throw new ArtifactInstallationException( "NPANDAY-001-012: Unable to read pom file: " + pomFile.getAbsolutePath(), e);
-            }
-            catch ( IOException e )
-            {
-                throw new ArtifactInstallationException( "NPANDAY-001-013: Unable to read pom file: " + pomFile.getAbsolutePath(), e );
-            }
-
-        }
-    }
-    
-    /**
-     * background cleaner that deletes the bin folder created besides the solutions file
-     */
-    private void deleteTempDir(File pomFile)
-    {
-        //get the directory of the current pom file.
-        File pomDir = pomFile.getParentFile();
-        
-        File binDir = new File(pomDir, "bin");
-        
-        try
-        {
-            FileUtils.deleteDirectory(binDir);
-            
-            File targetDir = new File(pomDir, "target");
-            
-            String[] directories = targetDir.list();
-            
-            for(String dir:directories)
-            {
-                File insideTarget = new File(targetDir, dir);
-                if(insideTarget.isDirectory())
-                {
-                    String tempDir = insideTarget.getName();
-                    
-                    if(isAllDigit(tempDir))
-                    {
-                        
-                        FileUtils.deleteDirectory( insideTarget );
-                        
-                    }
-                }
-                                           
+                Dependency dependency = new Dependency();
+                dependency.setGroupId( artifact.getGroupId() );
+                dependency.setArtifactId( artifact.getArtifactId() );
+                dependency.setVersion( artifact.getVersion() );
+                dependency.setType( ArtifactType.DOTNET_EXECUTABLE_CONFIG.getPackagingType() );
+                model.addDependency( dependency );
             }
         }
-        catch(Exception e)
-        {
-            System.out.println("NPANDAY-001-316: Unable to delete temp bin directory: \nError Stack Trace: "+e.getMessage());
-        }
-           
-    }
-    
-    private boolean isAllDigit(String value)
-    {
-        boolean isValid=true;
-        
-        for(char index:value.toCharArray())
-        {
-           
-            if(!Character.isDigit( index ))
-            {
-                isValid = false;
-            }
-        }
-        return isValid;
     }
 
     /**
@@ -398,22 +337,7 @@ public class ArtifactInstallerImpl
         model.setArtifactId( artifactId );
         model.setVersion( version );
         model.setPackaging( packaging );
-        File tempFile;
-        FileWriter fileWriter;
-        try
-        {
-            tempFile = File.createTempFile( "mvninstall", ".pom" );
-            tempFile.deleteOnExit();
-            fileWriter = new FileWriter( tempFile );
-            new MavenXpp3Writer().write( fileWriter, model );
-        }
-        catch ( IOException e )
-        {
-            throw new ArtifactInstallationException(
-                "NPANDAY-001-015: Unable to read model: Message =" + e.getMessage(), e);
-        }
-        IOUtil.close( fileWriter );
-        installArtifactWithPom( artifact, tempFile, false );
+        installArtifactWithPom( artifact, model );
     }
 
     /**
