@@ -20,8 +20,8 @@ package npanday.artifact;
  */
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
 
@@ -54,7 +54,7 @@ public interface ArtifactInstaller
      *
      * @param artifact              the artifact to install
      * @param pomFile               the pom file of the installed artifact
-     * @param modifyProjectMetadata
+     * @param modifyProjectMetadata (unused)
      * @throws ArtifactInstallationException if there is a problem installing the artifact
      */
     void installArtifactWithPom( Artifact artifact, File pomFile, boolean modifyProjectMetadata )
@@ -85,26 +85,13 @@ public interface ArtifactInstaller
      * @param netDependencies  additional .NET artifacts to resolve and install.
      * @param javaDependencies the Java Dependencies to resolve. Typically these should be the java bindings for the
      *                         .NET plugins.
-     * @param project
+     * @param project          project to resolve relaative to
      * @throws IOException if there is a problem with installation
+     * @throws NPandayArtifactResolutionException if there is a problem with the resolution
      */
     void resolveAndInstallNetDependenciesForProfile( String profile, List<Dependency> netDependencies,
                                                      List<Dependency> javaDependencies, MavenProject project )
             throws IOException, NPandayArtifactResolutionException;
-
-    /**
-     * Installs both the artifact and all of its dependencies into the private application base.
-     *
-     *
-     * @param applicationBase the root directory of the private application base
-     * @param artifact        the artifact to install
-     * @param dependencies    the dependencies to install
-     * @param outputDir
-     * @throws IOException if there is a problem installing any of the artifacts into the private application base
-     */
-    void installArtifactAndDependenciesIntoPrivateApplicationBase( File applicationBase, Artifact artifact,
-                                                                   List<Dependency> dependencies, File outputDir )
-        throws IOException;
 
     /**
      * Initializes the installer.

@@ -39,7 +39,6 @@ import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -206,55 +205,6 @@ public class ArtifactInstallerImpl
             }
         }
 
-    }
-
-    /**
-     * TODO: this should be able to be removed - we're relying on copy side-effects of getDotNetArtifact
-     */
-    public void installArtifactAndDependenciesIntoPrivateApplicationBase( File localRepository, Artifact artifact,
-                                                                          List<Dependency> dependencies,
-                                                                          File outputDir )
-        throws IOException
-    {
-
-        for ( Dependency dependency : dependencies )
-        {
-
-            String scope = ( dependency.getScope() == null ) ? Artifact.SCOPE_COMPILE : dependency.getScope();
-            Artifact artifactDependency = artifactFactory.createDependencyArtifact( dependency.getGroupId(),
-                                                                                    dependency.getArtifactId(),
-                                                                                    VersionRange.createFromVersion(
-                                                                                        dependency.getVersion() ),
-                                                                                    dependency.getType(),
-                                                                                    dependency.getClassifier(), scope,
-                                                                                    null );
-
-            File artifactDependencyFile = PathUtil.getDotNetArtifact( artifactDependency , localRepository, outputDir );
-
-            if ( artifactDependencyFile == null || !artifactDependencyFile.exists() )
-            {
-                if (!ArtifactTypeHelper.isDotnetAnyGac( artifactDependency.getType() ))
-                {
-                    logger.warn( "NPANDAY-000-017: Could not find artifact dependency to copy in local repository: Artifact ID = " +
-                        artifactDependency.getId() + ", File Path = " +
-                        ( ( artifactDependencyFile != null ) ? artifactDependencyFile.getAbsolutePath() : null ) );
-                }
-                continue;
-            }
-
-            artifactDependency.setFile( artifactDependencyFile );
-        }
-
-        if ( artifact != null )
-        {
-            File artifactFile = artifact.getFile();
-            if ( artifactFile == null || !artifactFile.exists() )
-            {
-                throw new IOException( "NPANDAY-001-016: Could not find artifact: Artifact ID = " +
-                    artifact.getArtifactId() + ", Path = " +
-                    ( ( artifactFile != null ) ? artifactFile.getAbsolutePath() : null ) );
-            }
-        }
     }
 
     /**
