@@ -181,9 +181,6 @@
         <requirement>
           <role>npanday.registry.RepositoryRegistry</role>
         </requirement>
-        <requirement>
-          <role>npanday.registry.DataAccessObjectRegistry</role>
-        </requirement>        
       </requirements>
     </component>
     <component>
