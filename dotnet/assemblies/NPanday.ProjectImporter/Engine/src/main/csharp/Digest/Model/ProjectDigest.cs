@@ -547,12 +547,25 @@ namespace NPanday.ProjectImporter.Digest.Model
             set { existingPom = value; }
         }
 
-
-
         private bool useMsDeploy;
-        public bool UseMsDeploy {
+        public bool UseMsDeploy
+        {
             get { return useMsDeploy; }
             set { useMsDeploy = value; }
+        }
+
+        private string webConfig;
+        public string WebConfig
+        {
+            get { return webConfig; }
+            set { webConfig = value; }
+        }
+
+        private string cloudConfig;
+        public string CloudConfig
+        {
+            get { return cloudConfig; }
+            set { cloudConfig = value; }
         }
     }
 }

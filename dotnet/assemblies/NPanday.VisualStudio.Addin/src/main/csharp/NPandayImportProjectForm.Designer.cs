@@ -60,11 +60,15 @@ namespace NPanday.VisualStudio.Addin
             this.label2 = new System.Windows.Forms.Label();
             this.txtVersion = new System.Windows.Forms.TextBox();
             this.useMsDeployCheckBox = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.webConfigComboBox = new System.Windows.Forms.ComboBox();
+            this.cloudConfigComboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(434, 37);
+            this.btnBrowse.Location = new System.Drawing.Point(435, 12);
             this.btnBrowse.Margin = new System.Windows.Forms.Padding(2);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(80, 23);
@@ -76,7 +80,7 @@ namespace NPanday.VisualStudio.Addin
             // lblBrowseDotNetSolutionFile
             // 
             this.lblBrowseDotNetSolutionFile.AutoSize = true;
-            this.lblBrowseDotNetSolutionFile.Location = new System.Drawing.Point(8, 43);
+            this.lblBrowseDotNetSolutionFile.Location = new System.Drawing.Point(9, 17);
             this.lblBrowseDotNetSolutionFile.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblBrowseDotNetSolutionFile.Name = "lblBrowseDotNetSolutionFile";
             this.lblBrowseDotNetSolutionFile.Size = new System.Drawing.Size(67, 13);
@@ -85,7 +89,7 @@ namespace NPanday.VisualStudio.Addin
             // 
             // txtBrowseDotNetSolutionFile
             // 
-            this.txtBrowseDotNetSolutionFile.Location = new System.Drawing.Point(118, 40);
+            this.txtBrowseDotNetSolutionFile.Location = new System.Drawing.Point(119, 14);
             this.txtBrowseDotNetSolutionFile.Margin = new System.Windows.Forms.Padding(2);
             this.txtBrowseDotNetSolutionFile.Name = "txtBrowseDotNetSolutionFile";
             this.txtBrowseDotNetSolutionFile.Size = new System.Drawing.Size(312, 20);
@@ -94,7 +98,7 @@ namespace NPanday.VisualStudio.Addin
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(265, 172);
+            this.btnCancel.Location = new System.Drawing.Point(265, 245);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(104, 21);
@@ -105,7 +109,7 @@ namespace NPanday.VisualStudio.Addin
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(157, 172);
+            this.btnGenerate.Location = new System.Drawing.Point(157, 245);
             this.btnGenerate.Margin = new System.Windows.Forms.Padding(2);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(104, 21);
@@ -117,7 +121,7 @@ namespace NPanday.VisualStudio.Addin
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 78);
+            this.label1.Location = new System.Drawing.Point(11, 49);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 13);
             this.label1.TabIndex = 10;
@@ -125,7 +129,7 @@ namespace NPanday.VisualStudio.Addin
             // 
             // txtGroupId
             // 
-            this.txtGroupId.Location = new System.Drawing.Point(118, 74);
+            this.txtGroupId.Location = new System.Drawing.Point(119, 46);
             this.txtGroupId.Margin = new System.Windows.Forms.Padding(2);
             this.txtGroupId.Name = "txtGroupId";
             this.txtGroupId.Size = new System.Drawing.Size(171, 20);
@@ -134,7 +138,7 @@ namespace NPanday.VisualStudio.Addin
             // lblSCM
             // 
             this.lblSCM.AutoSize = true;
-            this.lblSCM.Location = new System.Drawing.Point(8, 13);
+            this.lblSCM.Location = new System.Drawing.Point(9, 113);
             this.lblSCM.Name = "lblSCM";
             this.lblSCM.Size = new System.Drawing.Size(55, 13);
             this.lblSCM.TabIndex = 12;
@@ -142,7 +146,7 @@ namespace NPanday.VisualStudio.Addin
             // 
             // txtSCMTag
             // 
-            this.txtSCMTag.Location = new System.Drawing.Point(118, 6);
+            this.txtSCMTag.Location = new System.Drawing.Point(119, 110);
             this.txtSCMTag.Name = "txtSCMTag";
             this.txtSCMTag.Size = new System.Drawing.Size(396, 20);
             this.txtSCMTag.TabIndex = 13;
@@ -154,7 +158,7 @@ namespace NPanday.VisualStudio.Addin
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 110);
+            this.label2.Location = new System.Drawing.Point(11, 81);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 14;
@@ -162,7 +166,7 @@ namespace NPanday.VisualStudio.Addin
             // 
             // txtVersion
             // 
-            this.txtVersion.Location = new System.Drawing.Point(118, 107);
+            this.txtVersion.Location = new System.Drawing.Point(119, 78);
             this.txtVersion.Margin = new System.Windows.Forms.Padding(2);
             this.txtVersion.Name = "txtVersion";
             this.txtVersion.Size = new System.Drawing.Size(171, 20);
@@ -171,19 +175,60 @@ namespace NPanday.VisualStudio.Addin
             // useMsDeployCheckBox
             // 
             this.useMsDeployCheckBox.AutoSize = true;
-            this.useMsDeployCheckBox.Location = new System.Drawing.Point(118, 141);
+            this.useMsDeployCheckBox.Location = new System.Drawing.Point(119, 208);
             this.useMsDeployCheckBox.Name = "useMsDeployCheckBox";
             this.useMsDeployCheckBox.Size = new System.Drawing.Size(264, 17);
             this.useMsDeployCheckBox.TabIndex = 16;
             this.useMsDeployCheckBox.Text = "Use Web Deploy 2.0 to package web applications";
             this.useMsDeployCheckBox.UseVisualStyleBackColor = true;
+            this.useMsDeployCheckBox.CheckedChanged += new System.EventHandler(this.useMsDeployCheckBox_CheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(10, 145);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(97, 13);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "Web configuration:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 177);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(101, 13);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "Cloud configuration:";
+            // 
+            // webConfigComboBox
+            // 
+            this.webConfigComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.webConfigComboBox.FormattingEnabled = true;
+            this.webConfigComboBox.Location = new System.Drawing.Point(119, 142);
+            this.webConfigComboBox.Name = "webConfigComboBox";
+            this.webConfigComboBox.Size = new System.Drawing.Size(171, 21);
+            this.webConfigComboBox.TabIndex = 19;
+            // 
+            // cloudConfigComboBox
+            // 
+            this.cloudConfigComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cloudConfigComboBox.FormattingEnabled = true;
+            this.cloudConfigComboBox.Location = new System.Drawing.Point(119, 174);
+            this.cloudConfigComboBox.Name = "cloudConfigComboBox";
+            this.cloudConfigComboBox.Size = new System.Drawing.Size(312, 21);
+            this.cloudConfigComboBox.TabIndex = 20;
             // 
             // NPandayImportProjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 204);
+            this.ClientSize = new System.Drawing.Size(526, 280);
             this.ControlBox = false;
+            this.Controls.Add(this.cloudConfigComboBox);
+            this.Controls.Add(this.webConfigComboBox);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.useMsDeployCheckBox);
             this.Controls.Add(this.txtVersion);
             this.Controls.Add(this.label2);
@@ -220,5 +265,9 @@ namespace NPanday.VisualStudio.Addin
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtVersion;
         private System.Windows.Forms.CheckBox useMsDeployCheckBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox webConfigComboBox;
+        private System.Windows.Forms.ComboBox cloudConfigComboBox;
     }
 }

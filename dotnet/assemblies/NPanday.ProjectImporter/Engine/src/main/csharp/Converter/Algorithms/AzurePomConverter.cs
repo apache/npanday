@@ -88,6 +88,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 AddPluginConfiguration(plugin, "frameworkVersion", "4.0");
             }
 
+            if (!string.IsNullOrEmpty(projectDigest.CloudConfig))
+            {
+                AddPluginConfiguration(plugin, "serviceConfigurationFile", projectDigest.CloudConfig);
+            }
+
             if (writePom)
             {
                 PomHelperUtility.WriteModelToPom(new FileInfo(Path.Combine(projectDigest.FullDirectoryName, "pom.xml")), Model);

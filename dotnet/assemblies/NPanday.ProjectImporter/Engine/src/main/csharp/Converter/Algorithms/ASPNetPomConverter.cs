@@ -45,8 +45,15 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             Plugin aspnetPlugin = AddPlugin("org.apache.npanday.plugins", "aspnet-maven-plugin", null, false);
             AddPluginExecution(aspnetPlugin, "prepare-package", goals.ToArray(), null);
 
-            // TODO: until XDT works, just use Web.config itself
-            AddPluginConfiguration(aspnetPlugin, "webConfig", "Web.config");
+            if (!string.IsNullOrEmpty(projectDigest.WebConfig))
+            {
+                AddPluginConfiguration(aspnetPlugin, "webConfig", "Web." + projectDigest.WebConfig + ".config");
+            }
+            else
+            {
+                // TODO: until XDT works, just use Web.config itself
+                AddPluginConfiguration(aspnetPlugin, "webConfig", "Web.config");
+            }
 
             Plugin msdeployPlugin = AddPlugin("org.apache.npanday.plugins", "msdeploy-maven-plugin", null, false);
             AddPluginExecution(msdeployPlugin, "create-msdeploy-package", new string[] { "create-package" }, null);

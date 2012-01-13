@@ -118,8 +118,13 @@ namespace NPanday.ProjectImporter
         /// <returns>An array of generated pom.xml filenames</returns>
         public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, bool verifyTests, bool useMsDeploy, ref string warningMsg)
         {
-            VerifyProjectToImport method = verifyTests ? VerifyUnitTestsToUser.VerifyTests : (VerifyProjectToImport) null;
-            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, method, useMsDeploy, ref warningMsg);    
+            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, verifyTests, useMsDeploy, null, null, ref warningMsg);    
+        }
+
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, bool verifyTests, bool useMsDeploy, string webConfig, string cloudConfig, ref string warningMsg)
+        {
+            VerifyProjectToImport method = verifyTests ? VerifyUnitTestsToUser.VerifyTests : (VerifyProjectToImport)null;
+            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, method, useMsDeploy, webConfig, cloudConfig, ref warningMsg);
         }
 
         /// <summary>
@@ -164,7 +169,7 @@ namespace NPanday.ProjectImporter
         /// <returns>An array of generated pom.xml filenames</returns>
         public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, VerifyProjectToImport verifyProjectToImport, ref string warningMsg)
         {
-            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, verifyProjectToImport, false, ref warningMsg);
+            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, verifyProjectToImport, false, null, null, ref warningMsg);
         }
 
         /// <summary>
@@ -179,7 +184,7 @@ namespace NPanday.ProjectImporter
         /// <param name="verifyProjectToImport">A delegate That will Accept a method for verifying Projects To Import</param>
         /// <param name="scmTag">adds scm tags to parent pom.xml if not string.empty or null</param>
         /// <returns>An array of generated pom.xml filenames</returns>
-        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, VerifyProjectToImport verifyProjectToImport, bool useMsDeploy, ref string warningMsg)
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, VerifyProjectToImport verifyProjectToImport, bool useMsDeploy, string webConfig, string cloudConfig, ref string warningMsg)
         {
             string[] result = null;
 
@@ -207,6 +212,8 @@ namespace NPanday.ProjectImporter
                 {
                     // set the project flag so that converters can look at it later
                     pDigest.UseMsDeploy = useMsDeploy;
+                    pDigest.CloudConfig = cloudConfig;
+                    pDigest.WebConfig = webConfig;
                     filteredPrjDigests.Add(pDigest);
                 }
                 else

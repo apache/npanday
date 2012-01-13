@@ -112,6 +112,12 @@ namespace NPanday.VisualStudio.Addin
 
                     txtVersion.Text = version;
 
+                    // assuming just one cloud project for now
+                    List<string> cloudConfigurations = new List<string>();
+
+                    // these could be per project, but assume they match up for now
+                    List<string> webConfigurations = new List<string>();
+
                     bool hasWebProjects = false, hasCloudProjects = false;
                     Solution2 solution = (Solution2)applicationObject.Solution;
                     foreach (Project project in solution.Projects)
@@ -119,10 +125,26 @@ namespace NPanday.VisualStudio.Addin
                         if (isWebProject(project))
                         {
                             hasWebProjects = true;
+                            foreach (object c in ((object[])project.ConfigurationManager.ConfigurationRowNames))
+                            {
+                                string configuration = (string) c;
+                                if (!webConfigurations.Contains(configuration))
+                                {
+                                    webConfigurations.Add(configuration);
+                                }
+                            }
                         }
                         if (isCloudProject(project))
                         {
                             hasCloudProjects = true;
+
+                            foreach (EnvDTE.ProjectItem item in project.ProjectItems)
+                            {
+                                if (item.Name.EndsWith(".cscfg", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    cloudConfigurations.Add(item.Name);
+                                }
+                            }
                         }
                     }
                     // disabled if there are cloud projects (must be on), or if there are no web projects (not useful)
@@ -131,8 +153,25 @@ namespace NPanday.VisualStudio.Addin
                     // TODO: remember this, or have a default
                     // force to false if no web projects, force to true if cloud projects
                     useMsDeployCheckBox.Checked = hasWebProjects || hasCloudProjects;
+
+                    cloudConfigComboBox.Enabled = hasCloudProjects && cloudConfigurations.Count > 0;
+                    cloudConfigComboBox.Items.Add("(Default)");
+                    cloudConfigComboBox.Items.AddRange(cloudConfigurations.ToArray());
+                    cloudConfigComboBox.SelectedItem = "(Default)";
+                    webConfigComboBox.Enabled = hasWebProjects && webConfigurations.Count > 0;
+                    webConfigComboBox.Items.Add("(Default)");
+                    webConfigComboBox.Items.AddRange(webConfigurations.ToArray());
+                    webConfigComboBox.SelectedItem = "(Default)";
+
+                    if (hasWebProjects)
+                        log.Debug("Web configurations: " + string.Join(", ", webConfigurations.ToArray()));
+                    if (hasCloudProjects)
+                        log.Debug("Cloud configuration files: " + string.Join(", ", cloudConfigurations.ToArray()));
                 }
-                catch { /*do nothing*/}
+                catch (Exception e)
+                {
+                    log.Debug("Error constructing the import form: " + e.Message, e);
+                }
 
             }
 
@@ -192,10 +231,22 @@ namespace NPanday.VisualStudio.Addin
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
+            string webConfig = null;
+            if (webConfigComboBox.SelectedItem != "(Default)")
+            {
+                webConfig = (string) webConfigComboBox.SelectedItem;
+            }
+
+            string cloudConfig = null;
+            if (cloudConfigComboBox.SelectedItem != "(Default)")
+            {
+                cloudConfig = (string)cloudConfigComboBox.SelectedItem;
+            }
+
             //Refactored code for easier Unit Testing
             try
             {
-                GeneratePom(txtBrowseDotNetSolutionFile.Text, txtGroupId.Text.Trim(), txtVersion.Text.Trim(), txtSCMTag.Text, useMsDeployCheckBox.Checked);
+                GeneratePom(txtBrowseDotNetSolutionFile.Text, txtGroupId.Text.Trim(), txtVersion.Text.Trim(), txtSCMTag.Text, useMsDeployCheckBox.Checked, webConfig, cloudConfig);
             }
             catch (Exception exception)
             {
@@ -205,6 +256,11 @@ namespace NPanday.VisualStudio.Addin
         }
 
         protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag, bool useMsDeploy)
+        {
+            GeneratePom(solutionFile, groupId, version, scmTag, useMsDeploy, null, null);
+        }
+
+        protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag, bool useMsDeploy, string webConfig, string cloudConfig)
         {
             string warningMsg = string.Empty;
             String mavenVerRegex = "^[0-9]+(" + Regex.Escape(".") + "?[0-9]+){0,3}$";
@@ -288,7 +344,7 @@ namespace NPanday.VisualStudio.Addin
                 validateSolutionStructure();
                 resyncAllArtifacts();
                 // TODO: nicer to have some sort of structure / flags for the Msdeploy bit, or this dialog will get out of control over time - perhaps a "project configuration" dialog can replace the test popup
-                string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, useMsDeploy, ref warningMsg);
+                string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, useMsDeploy, webConfig, cloudConfig, ref warningMsg);
                 string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
 
                 foreach (string pom in generatedPoms)
@@ -487,6 +543,11 @@ namespace NPanday.VisualStudio.Addin
 
             // TODO: better location for utility
             return Connect.IsFolder(project);
+        }
+
+        private void useMsDeployCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            webConfigComboBox.Enabled = useMsDeployCheckBox.Enabled;
         }
     }
 }
