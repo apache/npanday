@@ -85,19 +85,19 @@ namespace NPanday.VisualStudio.Addin
             }
         }
 
-        public void CopyArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
+        public void CopyArtifact(Artifact.Artifact artifact)
         {
-            CopyArtifactImpl(artifact, logger, ArtifactResyncSource.RemoteRepository);
+            CopyArtifactImpl(artifact, ArtifactResyncSource.RemoteRepository);
         }
 
-        public void ResyncArtifacts(NPanday.Logging.Logger logger)
+        public void ResyncArtifacts()
         {
-            ResyncArtifactsImpl(logger, ArtifactResyncSource.RemoteRepository);
+            ResyncArtifactsImpl(ArtifactResyncSource.RemoteRepository);
         }
 
-        public void ResyncArtifactsFromLocalRepository(NPanday.Logging.Logger logger)
+        public void ResyncArtifactsFromLocalRepository()
         {
-            ResyncArtifactsImpl(logger, ArtifactResyncSource.LocalRepository);
+            ResyncArtifactsImpl(ArtifactResyncSource.LocalRepository);
         }
 
         #endregion
@@ -111,17 +111,15 @@ namespace NPanday.VisualStudio.Addin
         }
 
         private void ResyncArtifactsImpl(
-            NPanday.Logging.Logger logger, 
             ArtifactResyncSource artifactResyncSource)
         {
             EnsureInitialized();
 
-            GetReferencesFromPom(logger, artifactResyncSource);
+            GetReferencesFromPom(artifactResyncSource);
         }
 
         private void CopyArtifactImpl(
             Artifact.Artifact artifact, 
-            NPanday.Logging.Logger logger, 
             ArtifactResyncSource artifactResyncSource)
         {
             EnsureInitialized();
@@ -131,7 +129,7 @@ namespace NPanday.VisualStudio.Addin
 
             if (!ArtifactUtils.Exists(artifact) || (isSnapshot && resyncFromRemoteRepo))
             {
-                if (!ArtifactUtils.DownloadFromRemoteRepository(artifact, logger))
+                if (!ArtifactUtils.DownloadFromRemoteRepository(artifact))
                 {
                     RaiseError("Unable to get the artifact {0} from any of your repositories.", artifact.ArtifactId);
                     return;
@@ -169,7 +167,7 @@ namespace NPanday.VisualStudio.Addin
             return artifactReferenceFilePath;
         }
 
-        void GetReferencesFromPom(NPanday.Logging.Logger logger, ArtifactResyncSource artifactResyncSource)
+        void GetReferencesFromPom(ArtifactResyncSource artifactResyncSource)
         {
             Artifact.ArtifactRepository repository = new NPanday.Artifact.ArtifactContext().GetArtifactRepository();
             NPanday.Model.Pom.Model m = NPanday.Utils.PomHelperUtility.ReadPomAsModel(new FileInfo(pomFile));
@@ -182,7 +180,7 @@ namespace NPanday.VisualStudio.Addin
                     if (!IsIntraProject(m, d) && d.classifier == null)
                     {
                         Artifact.Artifact artifact = repository.GetArtifact(d);
-                        CopyArtifactImpl(artifact, logger, artifactResyncSource);
+                        CopyArtifactImpl(artifact, artifactResyncSource);
                     }
                 }
             }

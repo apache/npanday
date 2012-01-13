@@ -64,7 +64,7 @@ namespace NPanday.VisualStudio.Addin_Test
         public void addMavenArtifact()
         {
             testArtifact.FileInfo = new FileInfo(FileUtils.getBaseDirectory() + "\\src\\test\\resource\\m2Copy\\ClassLibrary1.dll");
-            refManager.CopyArtifact(testArtifact, null);
+            refManager.CopyArtifact(testArtifact);
             Assert.IsTrue(new FileInfo(refManager.ReferenceFolder + "\\npanday.test\\NPanday.Test-1.0\\NPanday.Test.dll").Exists);
         }
 
@@ -72,7 +72,7 @@ namespace NPanday.VisualStudio.Addin_Test
         public void addExistingMavenArtifact()
         {
             testArtifact.FileInfo = new FileInfo(FileUtils.getBaseDirectory() + "\\src\\test\\resource\\m2Copy\\ClassLibrary1.dll");
-            refManager.CopyArtifact(testArtifact, null);
+            refManager.CopyArtifact(testArtifact);
             FileInfo copiedArtifact = new FileInfo(refManager.ReferenceFolder + "\\npanday.test\\NPanday.Test-1.0\\NPanday.Test.dll");
 
             Assert.IsTrue(copiedArtifact.Exists);
@@ -84,7 +84,7 @@ namespace NPanday.VisualStudio.Addin_Test
             //so that new artifact will have a newer timestamp
             File.SetLastWriteTime(testArtifact.FileInfo.FullName, copiedArtifact.LastWriteTime.AddMinutes(1));
 
-            refManager.CopyArtifact(testArtifact, null);
+            refManager.CopyArtifact(testArtifact);
             FileInfo copiedArtifact2 = new FileInfo(refManager.ReferenceFolder + "\\npanday.test\\NPanday.Test-1.0\\NPanday.Test.dll");
 
             Assert.IsTrue(copiedArtifact2.Exists);

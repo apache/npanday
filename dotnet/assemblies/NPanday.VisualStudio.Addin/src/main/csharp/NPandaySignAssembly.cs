@@ -19,29 +19,13 @@
 //
 #endregion
 
-using Extensibility;
-using EnvDTE;
-using EnvDTE80;
-
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
-
-using VSLangProj;
-
+using EnvDTE;
 using NPanday.Artifact;
-using NPanday.Logging;
-using NPanday.Model.Pom;
-using NPanday.Model.Settings;
-
 using NPanday.Utils;
+using VSLangProj;
 
 namespace NPanday.VisualStudio.Addin
 {
@@ -50,7 +34,6 @@ namespace NPanday.VisualStudio.Addin
 
         private ArtifactContext artifactContext;
         private Project project;
-        private NPanday.Logging.Logger logger;
         private PomHelperUtility pomUtility;
         private FileInfo pom;
         public NPandaySignAssembly()
@@ -58,10 +41,9 @@ namespace NPanday.VisualStudio.Addin
             InitializeComponent();
         }
 
-        public NPandaySignAssembly(Project project, ArtifactContext container, Logger logger, FileInfo pom)
+        public NPandaySignAssembly(Project project, ArtifactContext container, FileInfo pom)
         {
             this.project = project;
-            this.logger = logger;
             this.artifactContext = container;
 
             InitializeComponent();

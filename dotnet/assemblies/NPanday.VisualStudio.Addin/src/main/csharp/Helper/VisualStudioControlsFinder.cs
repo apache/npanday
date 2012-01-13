@@ -21,18 +21,16 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using EnvDTE;
 using EnvDTE80;
+using log4net;
 using Microsoft.VisualStudio.CommandBars;
-using NPanday.Logging;
 
 namespace NPanday.VisualStudio.Addin.Helper
 {
     public class VisualStudioControlsFinder
     {
         private readonly DTE2 _application;
-        private readonly Logger _logger;
 
         readonly IDictionary<string, List<string>> _containingCommandBarsByControlCaption = new Dictionary<string, List<string>>();
         readonly IDictionary<string, List<string>> _containingCommandBarsByCammandName = new Dictionary<string, List<string>>();
@@ -41,11 +39,11 @@ namespace NPanday.VisualStudio.Addin.Helper
         readonly IDictionary<string, CommandBarControl> _controlByBarAndCommandNamePath = new Dictionary<string, CommandBarControl>();
         private bool _indexed;
 
+        private static readonly ILog log = LogManager.GetLogger(typeof(VisualStudioControlsFinder));
 
-        public VisualStudioControlsFinder(DTE2 application, Logger logger)
+        public VisualStudioControlsFinder(DTE2 application)
         {
             _application = application;
-            _logger = logger;
         }
 
         /// <summary>
@@ -73,7 +71,7 @@ namespace NPanday.VisualStudio.Addin.Helper
                     }
                     controls = controlList.ToArray();
 
-                    _logger.Log(Level.DEBUG,
+                    log.Debug(
                                 string.Format("Found {0} command bars containing a control bound to command '{1}': {2}",
                                 barNames.Count, lookup, String.Join(",", barNames.ToArray())));
 
@@ -92,7 +90,7 @@ namespace NPanday.VisualStudio.Addin.Helper
                     }
                     controls = controlList.ToArray();
 
-                    _logger.Log(Level.DEBUG,
+                    log.Debug(
                                 string.Format("Found {0} command bars containing a control with caption '{1}': {2}",
                                 barNames.Count, normalizedCaption, String.Join(",", barNames.ToArray())));
 
@@ -100,7 +98,7 @@ namespace NPanday.VisualStudio.Addin.Helper
                 }
 
                 controls = new CommandBarControl[0];
-                _logger.Log(Level.DEBUG, "Could not find any command bar containing a command or caption named: '" + lookup + "'.");
+                log.Debug("Could not find any command bar containing a command or caption named: '" + lookup + "'.");
                 return false;
             }
 
@@ -114,7 +112,7 @@ namespace NPanday.VisualStudio.Addin.Helper
             if (commandBar == null)
             {
                 controls = new CommandBarControl[0];
-                _logger.Log(Level.DEBUG, "Could not find any command bar named: '" + commandBarName + "', and hence no contained command or caption named: " + controlCaptionOrCommandName + ".");
+                log.Debug("Could not find any command bar named: '" + commandBarName + "', and hence no contained command or caption named: " + controlCaptionOrCommandName + ".");
                 return false;
             }
 
@@ -124,7 +122,7 @@ namespace NPanday.VisualStudio.Addin.Helper
             if (control == null)
             {
                 controls = new CommandBarControl[0];
-                _logger.Log(Level.DEBUG, "Found commandbar '" + commandBarName + "', but it did not contain a control with command name or caption '" + controlCaptionOrCommandName + "'.");
+                log.Debug("Found commandbar '" + commandBarName + "', but it did not contain a control with command name or caption '" + controlCaptionOrCommandName + "'.");
                 return false;
             }
 
@@ -150,7 +148,7 @@ namespace NPanday.VisualStudio.Addin.Helper
                 string commandName = getButtonTargetCommand(control).Name;
                 if (!string.IsNullOrEmpty(commandName))
                 {
-                    _logger.Log(Level.DEBUG,
+                    log.Debug(
                                 "Control found using it's caption path '" + commandCaptionPath + "'; its better to use the command name path: " + commandNamePath);
                 }
                 return control;
@@ -204,12 +202,12 @@ namespace NPanday.VisualStudio.Addin.Helper
                     }
                     catch (Exception e)
                     {
-                        _logger.Log(Level.DEBUG, "Error on getting details for " + commandBar.Name + "->" + control.Caption + ":" + e.Message);
+                        log.Debug("Error on getting details for " + commandBar.Name + "->" + control.Caption + ":" + e.Message);
                     }
                 }
             }
             watch.Stop();
-            _logger.Log(Level.DEBUG, string.Format("Indexed {0} command items in {1:0.00} seconds.", 0, watch.Elapsed.TotalSeconds));
+            log.DebugFormat("Indexed {0} command items in {1:0.00} seconds.", 0, watch.Elapsed.TotalSeconds);
         }
 
         private void indexByCommandName(string captionPath, CommandBar commandBar, CommandBarControl control)
@@ -221,7 +219,7 @@ namespace NPanday.VisualStudio.Addin.Helper
                 string commandPath = buildCommandCaptionPath(commandBar, command.Name);
                 if (_controlByBarAndCommandNamePath.ContainsKey(commandPath))
                 {
-                    _logger.Log(Level.DEBUG,
+                    log.Debug(
                                 "Command path " + commandPath + " is ambiguous; " + captionPath +
                                 " ignored, first occurance wins.");
                 }
@@ -241,7 +239,7 @@ namespace NPanday.VisualStudio.Addin.Helper
             ;
             if (_controlByCaptionPath.ContainsKey(captionPath))
             {
-                _logger.Log(Level.DEBUG, "Caption path '" + captionPath + "' is ambiguous; first occurance wins.");
+                log.Debug("Caption path '" + captionPath + "' is ambiguous; first occurance wins.");
             }
             else
             {

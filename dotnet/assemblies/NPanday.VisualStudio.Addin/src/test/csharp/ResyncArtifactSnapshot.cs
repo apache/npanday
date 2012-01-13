@@ -38,7 +38,7 @@ namespace NPanday.VisualStudio.Addin_Test
             artifact.ArtifactId = "NPanday.Artifact";
             artifact.Extension = "dll";
 
-            refMngr.CopyArtifact(artifact,null);
+            refMngr.CopyArtifact(artifact);
         }
 
         [Test]

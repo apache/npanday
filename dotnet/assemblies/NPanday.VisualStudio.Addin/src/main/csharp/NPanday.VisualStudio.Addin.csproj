@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Licensed to the Apache Software Foundation (ASF) under one
   ~ or more contributor license agreements.  See the NOTICE file
@@ -39,6 +38,7 @@
     <Reference Include="EnvDTE" />
     <Reference Include="EnvDTE80" />
     <Reference Include="Extensibility" />
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"/>
     <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="Microsoft.VisualStudio.CommandBars" />
     <Reference Include="NPanday.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
@@ -57,16 +57,18 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml" />
-    <Reference Include="VSLangProj">
-      <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\VSLangProj\7.0.3300.0__VSLangProj\VSLangProj</HintPath>
-    </Reference>
+    <Reference Include="VSLangProj" />
     <Reference Include="VSLangProj80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="VsWebSite.Interop, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="log4net.xml" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="AddArtifactsForm.cs">
       <SubType>Form</SubType>
@@ -95,6 +97,7 @@
     </Compile>
     <Compile Include="Connect.cs" />
     <Compile Include="MavenRunner.cs" />
+    <Compile Include="OutputWindowPaneAppender.cs" />
     <Compile Include="WebServicesReferenceUtils.cs" />
     <Compile Include="Helper\VisualStudioControlsFinder.cs" />
     <Compile Include="IReferenceInfo.cs" />
@@ -174,10 +177,6 @@
       <Project>{701803D4-90F5-44D7-919D-4844FEB7F936}</Project>
       <Name>NPanday.Artifact</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\NPanday.Logging\src\main\csharp\NPanday.Logging.csproj">
-      <Project>{C511B03B-8AB7-4E61-9F6E-5E6F9F65E8CE}</Project>
-      <Name>NPanday.Logging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\NPanday.Plugin\src\main\csharp\NPanday.Plugin.csproj">
       <Project>{B760D54F-22AC-43E7-A0A6-DE313D4663AF}</Project>
       <Name>NPanday.Plugin</Name>
@@ -190,10 +189,9 @@
       <Project>{CAA4864F-F4C8-4024-8535-8B8C112307CE}</Project>
       <Name>NPanday.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\NPanday.VisualStudio\src\main\csharp\NPanday.VisualStudio.csproj">
-      <Project>{95661103-78B8-423A-80CA-41AFC69BD1DE}</Project>
-      <Name>NPanday.VisualStudio</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

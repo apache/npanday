@@ -39,9 +39,9 @@ namespace NPanday.VisualStudio.Addin
             return artifact.FileInfo.Exists;
         }
 
-        public static bool DownloadFromRemoteRepository(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
+        public static bool DownloadFromRemoteRepository(Artifact.Artifact artifact)
         {
-            return NPanday.ProjectImporter.Digest.Model.Reference.DownloadArtifact(artifact, logger);
+            return NPanday.ProjectImporter.Digest.Model.Reference.DownloadArtifact(artifact);
         }
 
         public static string GetArtifactReferenceFolder(Artifact.Artifact artifact, string referenceFolder)

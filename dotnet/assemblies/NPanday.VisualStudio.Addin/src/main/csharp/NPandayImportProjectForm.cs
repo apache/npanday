@@ -20,30 +20,23 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml.XPath;
-using Extensibility;
+using System.Windows.Forms;
+using System.Xml;
 using EnvDTE;
 using EnvDTE80;
+using log4net;
 using Microsoft.Win32;
-
-
-using NPanday.ProjectImporter;
-using NPanday.Logging;
-using System.Xml;
 
 namespace NPanday.VisualStudio.Addin
 {
     public partial class NPandayImportProjectForm : Form
     {
         private DTE2 applicationObject;
-        private NPanday.Logging.Logger logger;
+
+        private static readonly ILog log = LogManager.GetLogger(typeof(NPandayImportProjectForm));
 
         public static string FilterID(string partial)
         {
@@ -70,10 +63,9 @@ namespace NPanday.VisualStudio.Addin
         {
         }
 
-        public NPandayImportProjectForm(DTE2 applicationObject, Logger logger)
+        public NPandayImportProjectForm(DTE2 applicationObject)
         {
             this.applicationObject = applicationObject;
-            this.logger = logger;
             InitializeComponent();
 
             if (applicationObject != null && applicationObject.Solution != null && applicationObject.Solution.FileName != null)
@@ -190,8 +182,8 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception exception)
             {
-                logger.Log(Level.DEBUG, exception.StackTrace.ToString());
-                MessageBox.Show(exception.Message, "NPanday Import Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                log.Debug("Import error", exception);
+                MessageBox.Show(exception.Message, "NPanday Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -378,29 +370,29 @@ namespace NPanday.VisualStudio.Addin
                 if (refManagers.Count > 0)
                 {
                     refManagerHasError = false;
-                    logger.Log(Level.INFO, "Re-syncing artifacts... ");
+                    log.Info("Re-syncing artifacts... ");
                     try
                     {
                         foreach (IReferenceManager mgr in refManagers)
                         {
                             mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
-                            mgr.ResyncArtifacts(logger);
+                            mgr.ResyncArtifacts();
                         }
 
                         if (!refManagerHasError)
                         {
-                            logger.Log(Level.INFO, string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
+                            log.InfoFormat("done [{0}]", DateTime.Now.ToString("hh:mm tt"));
                         }
                     }
                     catch (Exception ex)
                     {
                         if (refManagerHasError)
                         {
-                            logger.Log(Level.WARNING, string.Format("{0}\n\n{1}\n\n", ex.Message, ex.StackTrace));
+                            log.Warn(ex.Message, ex);
                         }
                         else
                         {
-                            logger.Log(Level.SEVERE, (string.Format("failed: {0}\n\n{1}\n\n", ex.Message, ex.StackTrace)));
+                            log.Fatal(ex.Message, ex);
                         }
                     }
                 }
@@ -447,7 +439,7 @@ namespace NPanday.VisualStudio.Addin
         void refmanager_OnError(object sender, ReferenceErrorEventArgs e)
         {
             refManagerHasError = true;
-            logger.Log(Level.WARNING, e.Message);
+            log.Warn(e.Message);
         }
 
         private const string WEB_PROJECT_KIND_GUID = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";

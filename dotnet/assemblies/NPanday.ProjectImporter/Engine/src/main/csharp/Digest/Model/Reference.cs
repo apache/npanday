@@ -20,15 +20,12 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
-
-using NPanday.Utils;
-using System.Reflection;
-using NPanday.Model.Settings;
-using System.Windows.Forms;
 using System.Net;
+using System.Windows.Forms;
+using log4net;
 using NPanday.Artifact;
+using NPanday.Utils;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -120,6 +117,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
         #endregion
 
+        private static readonly ILog log = LogManager.GetLogger(typeof(Reference));
 
         #region HelperMethods
 
@@ -149,13 +147,13 @@ namespace NPanday.ProjectImporter.Digest.Model
             return string.Empty;
         }
 
-        public static bool DownloadArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
+        public static bool DownloadArtifact(Artifact.Artifact artifact)
         {
-            return downloadArtifactFromRemoteRepository(artifact, artifact.FileInfo.Extension, logger);
+            return downloadArtifactFromRemoteRepository(artifact, artifact.FileInfo.Extension);
         }
 
         // TODO: belongs in another utility classs
-        public static bool downloadArtifactFromRemoteRepository(Artifact.Artifact artifact, string ext, NPanday.Logging.Logger logger)
+        public static bool downloadArtifactFromRemoteRepository(Artifact.Artifact artifact, string ext)
         {
             try
             {
@@ -168,7 +166,7 @@ namespace NPanday.ProjectImporter.Digest.Model
 
                     if (artifact.Version.Contains("SNAPSHOT"))
                     {
-                        string newVersion = GetSnapshotVersion(artifact, url, logger);
+                        string newVersion = GetSnapshotVersion(artifact, url);
 
                         if (newVersion != null)
                         {
@@ -186,7 +184,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                         artifact.RemotePath = artifactContext.GetArtifactRepository().GetRemoteRepositoryPath(artifact, url, ext);
                     }
 
-                    if (downloadArtifact(artifact, logger))
+                    if (downloadArtifact(artifact))
                     {
                         return true;
                     }
@@ -200,7 +198,7 @@ namespace NPanday.ProjectImporter.Digest.Model
             }
         }
 
-        private static string GetSnapshotVersion(NPanday.Artifact.Artifact artifact, string repo, NPanday.Logging.Logger logger)
+        private static string GetSnapshotVersion(NPanday.Artifact.Artifact artifact, string repo)
         {
             WebClient client = new WebClient();
             string timeStampVersion = null;
@@ -242,17 +240,17 @@ namespace NPanday.ProjectImporter.Digest.Model
 
                 if (timeStamp == null)
                 {
-                    logger.Log(NPanday.Logging.Level.WARNING, "Timestamp was not specified in maven-metadata.xml - using default snapshot version");
+                    log.Warn("Timestamp was not specified in maven-metadata.xml - using default snapshot version");
                     return null;
                 }
 
                 if (buildNumber == null)
                 {
-                    logger.Log(NPanday.Logging.Level.WARNING, "Build number was not specified in maven-metadata.xml - using default snapshot version");
+                    log.Warn("Build number was not specified in maven-metadata.xml - using default snapshot version");
                     return null;
                 }
 
-                logger.Log(NPanday.Logging.Level.INFO, "Resolved SNAPSHOT: Timestamp = " + timeStamp + "; Build Number = " + buildNumber);
+                log.Info("Resolved SNAPSHOT: Timestamp = " + timeStamp + "; Build Number = " + buildNumber);
                 timeStampVersion = timeStamp + "-" + buildNumber;
             }
             catch (Exception e)
@@ -267,7 +265,7 @@ namespace NPanday.ProjectImporter.Digest.Model
             return timeStampVersion;
         }
 
-        static bool downloadArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger)
+        static bool downloadArtifact(Artifact.Artifact artifact)
         {
             WebClient client = new WebClient();
             bool dirCreated = false;
@@ -281,11 +279,11 @@ namespace NPanday.ProjectImporter.Digest.Model
                 }
 
 
-                logger.Log(NPanday.Logging.Level.INFO, string.Format("Download Start: {0} Downloading From {1}\n", DateTime.Now, artifact.RemotePath));
+                log.InfoFormat("Download Start: {0} Downloading From {1}\n", DateTime.Now, artifact.RemotePath);
 
                 client.DownloadFile(artifact.RemotePath, artifact.FileInfo.FullName);
 
-                logger.Log(NPanday.Logging.Level.INFO, string.Format("Download Finished: {0}\n", DateTime.Now));
+                log.InfoFormat("Download Finished: {0}\n", DateTime.Now);
 
                 string artifactDir = GetLocalUacPath(artifact, artifact.FileInfo.Extension);
 
@@ -309,7 +307,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                     artifact.FileInfo.Directory.Delete();
                 }
 
-                logger.Log(NPanday.Logging.Level.WARNING, string.Format("Download Failed {0}\n", e.Message));
+                log.WarnFormat("Download Failed {0}\n", e.Message);
 
                 return false;
             }

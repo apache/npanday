@@ -31,7 +31,7 @@ namespace NPanday.VisualStudio.Addin.Commands
         {
             context.ExecuteCommand("File.SaveAll");
 
-            NPandayImportProjectForm frm = new NPandayImportProjectForm(Application, context.Logger);
+            NPandayImportProjectForm frm = new NPandayImportProjectForm(Application);
             frm.ShowDialog();
         }
     }

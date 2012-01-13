@@ -31,9 +31,9 @@ namespace NPanday.VisualStudio.Addin
         void Remove(IReferenceInfo reference);
         void Initialize(VSLangProj80.VSProject2 project);
         string ReferenceFolder { get; }
-        void CopyArtifact(Artifact.Artifact artifact, NPanday.Logging.Logger logger);
-        void ResyncArtifacts(NPanday.Logging.Logger logger);
-        void ResyncArtifactsFromLocalRepository(NPanday.Logging.Logger logger);
+        void CopyArtifact(Artifact.Artifact artifact);
+        void ResyncArtifacts();
+        void ResyncArtifactsFromLocalRepository();
         event EventHandler<ReferenceErrorEventArgs> OnError;
     }
 }

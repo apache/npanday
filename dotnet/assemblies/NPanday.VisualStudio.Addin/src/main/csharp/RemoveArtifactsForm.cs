@@ -18,29 +18,15 @@
 // under the License.
 //
 #endregion
-using Extensibility;
-using EnvDTE;
-using EnvDTE80;
-
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
-
-using VSLangProj;
-
+using EnvDTE;
 using NPanday.Artifact;
-using NPanday.Logging;
 using NPanday.Model.Pom;
-using NPanday.Model.Settings;
 
 namespace NPanday.VisualStudio.Addin
 {
@@ -49,7 +35,6 @@ namespace NPanday.VisualStudio.Addin
         private List<NPanday.Artifact.Artifact> localArtifacts = new List<NPanday.Artifact.Artifact>();
         private ArtifactContext artifactContext;
         private Project project;
-        private NPanday.Logging.Logger logger;
         private List<Dependency> dependenciesFromPom;
 
         public RemoveArtifactsForm()
@@ -57,10 +42,9 @@ namespace NPanday.VisualStudio.Addin
             InitializeComponent();
         }
 
-        public RemoveArtifactsForm(Project project, ArtifactContext container, Logger logger)
+        public RemoveArtifactsForm(Project project, ArtifactContext container)
         {    
             this.project = project;
-            this.logger = logger;
             InitializeForm();
             InitializeComponent();
             artifactsListView.View = View.Details;           

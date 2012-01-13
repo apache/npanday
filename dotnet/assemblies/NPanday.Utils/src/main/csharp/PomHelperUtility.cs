@@ -23,12 +23,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using log4net;
 using NPanday.Model.Pom;
 
 namespace NPanday.Utils
 {
     public class PomHelperUtility
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(PomHelperUtility));
 
         private FileInfo pom;
         public bool isWebRefEmpty = false;
@@ -304,11 +306,6 @@ namespace NPanday.Utils
 
         public static NPanday.Model.Pom.Model ReadPomAsModel(FileInfo pomfile)
         {
-            return PomHelperUtility.ReadPomAsModel(pomfile, null);
-        }
-
-        public static NPanday.Model.Pom.Model ReadPomAsModel(FileInfo pomfile, NPanday.Logging.Logger logger)
-        {
             if (!pomfile.Exists)
             {
                 throw new Exception("Pom file not found: " + pomfile.FullName);
@@ -359,10 +356,7 @@ namespace NPanday.Utils
                 }
                 catch
                 {
-                    if (logger != null)
-                    {
-                        logger.Log(NPanday.Logging.Level.WARNING, "Failed to close stream reader after accessing pom.xml.");
-                    }
+                    log.Warn("Failed to close stream reader after accessing pom.xml.");
                 }
 
             }
@@ -414,11 +408,6 @@ namespace NPanday.Utils
 
         public static void WriteModelToPom(FileInfo pomFile, NPanday.Model.Pom.Model model)
         {
-            PomHelperUtility.WriteModelToPom(pomFile, model, null);
-        }
-
-        public static void WriteModelToPom(FileInfo pomFile, NPanday.Model.Pom.Model model, NPanday.Logging.Logger logger)
-        {
             if (!pomFile.Directory.Exists)
             {
                 pomFile.Directory.Create();
@@ -447,10 +436,7 @@ namespace NPanday.Utils
                 }
                 catch
                 {
-                    if (logger != null)
-                    {
-                        logger.Log(NPanday.Logging.Level.WARNING, "Failed to close stream writer after writing to pom.xml.");
-                    }
+                    log.Warn("Failed to close stream writer after writing to pom.xml.");
                 }
 
             }
@@ -1013,7 +999,7 @@ namespace NPanday.Utils
         }
 
         #region AddWebReference
-        public void AddWebReference(string name, string path, string output, NPanday.Logging.Logger logger)
+        public void AddWebReference(string name, string path, string output)
         {
             NPanday.Model.Pom.Model model = ReadPomAsModel();
 
@@ -1774,7 +1760,7 @@ namespace NPanday.Utils
         {
             string compareStr = Path.Combine(fullpath.Substring(0, fullpath.LastIndexOf("\\")), oldName);
             RemoveWebReference(compareStr, oldName);
-            AddWebReference(newName, path, output, null);
+            AddWebReference(newName, path, output);
         }
         #endregion
 

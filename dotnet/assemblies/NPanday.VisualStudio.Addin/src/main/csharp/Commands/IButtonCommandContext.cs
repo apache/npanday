@@ -21,13 +21,11 @@
 using System.IO;
 using EnvDTE;
 using NPanday.Artifact;
-using NPanday.Logging;
 
 namespace NPanday.VisualStudio.Addin.Commands
 {
     public interface IButtonCommandContext
     {
-        Logger Logger { get; }
         ArtifactContext ArtifactContext { get; }
         FileInfo CurrentSelectedProjectPom { get; }
 

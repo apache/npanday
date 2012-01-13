@@ -63,7 +63,7 @@ namespace NPanday.VisualStudio.Addin.Commands
                     }
                 }
 
-                AddArtifactsForm form = new AddArtifactsForm(project, context.ArtifactContext, context.Logger, currentPom);
+                AddArtifactsForm form = new AddArtifactsForm(project, context.ArtifactContext, currentPom);
                 form.Show();
                 break;
             }

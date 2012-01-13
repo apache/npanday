@@ -34,7 +34,6 @@
     <module>NPanday.Model.Settings</module>  
     <module>NPanday.Model.AutomationExtensibility</module>
     <module>NPanday.Utils</module>
-    <module>NPanday.Logging</module> 
     <module>NPanday.Artifact</module> 
     <module>NPanday.Plugin</module>
     <module>NPanday.Plugin.MojoGenerator</module>	
@@ -55,7 +54,6 @@
         <module>NPanday.ProjectImporter</module>
 
         <!-- TODO: should be optional -->
-        <module>NPanday.VisualStudio</module>
         <module>NPanday.VisualStudio.Addin</module>
         <module>NPanday.VisualStudio.ProjectWizard</module>
       </modules>

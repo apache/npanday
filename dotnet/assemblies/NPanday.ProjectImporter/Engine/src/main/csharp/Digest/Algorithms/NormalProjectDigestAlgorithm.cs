@@ -198,7 +198,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                         }
                         else
                         {
-                            if (Reference.downloadArtifactFromRemoteRepository(a, dll.Extension, null))
+                            if (Reference.downloadArtifactFromRemoteRepository(a, dll.Extension))
                             {
                                 //asm = Assembly.ReflectionOnlyLoadFrom(a.FileInfo.FullName);
                                 path = a.FileInfo.FullName;

@@ -35,15 +35,17 @@ using System.Xml;
 using EnvDTE;
 using EnvDTE80;
 using Extensibility;
+using log4net;
+using log4net.Config;
+using log4net.Core;
+using log4net.Repository.Hierarchy;
 using Microsoft.VisualStudio.CommandBars;
 using NPanday.Artifact;
-using NPanday.Logging;
 using NPanday.Model.Pom;
 using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
 using NPanday.Utils;
 using NPanday.VisualStudio.Addin.Commands;
 using NPanday.VisualStudio.Addin.Helper;
-using NPanday.VisualStudio.Logging;
 using VSLangProj;
 using VSLangProj80;
 
@@ -182,13 +184,13 @@ namespace NPanday.VisualStudio.Addin
                     }
                     else
                     {
-                        logger.Log(Level.DEBUG, "POM utility was requested before solution was created!");
+                        log.Debug("POM utility was requested before solution was created!");
                         util = new PomHelperUtility(new FileInfo(project.FullName), new FileInfo(project.FullName));
                     }
                 }
                 catch (Exception e)
                 {
-                    logger.Log(Level.DEBUG, "Not updating POM: " + e.Message + "\n" + e.StackTrace);
+                    log.Debug("Not updating POM: " + e.Message, e);
                 }
             }
             return util;
@@ -351,25 +353,36 @@ namespace NPanday.VisualStudio.Addin
 
                 outputWindowPane = getOrCreateOutputPane(paneName);
 
-                OutputWindowPaneHandler handler = new OutputWindowPaneHandler();
-                handler.SetOutputWindowPaneHandler(outputWindowPane);
-
-                logger = NPanday.Logging.Logger.GetLogger("UC");
-                logger.AddHandler(handler);
-
-                if (_addInInstance.Name.Contains("SNAPSHOT"))
+                try
                 {
-                    OutputWindowPaneHandler debugHandler = new OutputWindowPaneHandler();
-                    debugHandler.SetOutputWindowPaneHandler(getOrCreateOutputPane(paneName + " (DEBUG)"));
-                    debugHandler.SetLevel(Level.DEBUG);
-                    logger.AddHandler(debugHandler);
+                    Stream fileStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("NPanday.VisualStudio.log4net.xml");
+                    if (fileStream != null)
+                    {
+                        XmlConfigurator.Configure(fileStream);
+                    }
+                }
+                catch (Exception e)
+                {
+                    outputWindowPane.OutputString("Failed to configure logging subsystem: " + e.Message + "\n");
                 }
 
-                logger.Log(Level.DEBUG, "Intialized panes");
+                Level level =  Level.Info;
+                // TODO: should be a better way to enable this
+                if (_addInInstance.Name.Contains("SNAPSHOT"))
+                {
+                    level = log4net.Core.Level.Debug;
+                }
 
-                _buttonCommandRegistry = new ButtonCommandRegistry(_applicationObject, buildCommandContext, logger);
+                Hierarchy h = (Hierarchy)log4net.LogManager.GetRepository();
+                Logger rootLogger = h.Root;
+                OutputWindowPaneAppender appender = new OutputWindowPaneAppender(outputWindowPane, level);
+                rootLogger.AddAppender(appender);
 
-                _finder = new VisualStudioControlsFinder(_applicationObject, logger);
+                log.Debug("Intialized panes");
+
+                _buttonCommandRegistry = new ButtonCommandRegistry(_applicationObject, buildCommandContext);
+
+                _finder = new VisualStudioControlsFinder(_applicationObject);
                 _finder.IndexCommands();
 
                 globalSolutionEvents = (EnvDTE.SolutionEvents)((Events2)_applicationObject.Events).SolutionEvents;
@@ -383,12 +396,12 @@ namespace NPanday.VisualStudio.Addin
                 projectItemsEvents.ItemRenamed += new _dispProjectItemsEvents_ItemRenamedEventHandler(ProjectItemEvents_ItemRenamed);
             }
 
-            logger.Log(Level.DEBUG, "OnConnetion() called with connect mode " + connectMode);
+            log.Debug("OnConnection() called with connect mode " + connectMode);
 
             // this is only called once per installation
             if (connectMode == ext_ConnectMode.ext_cm_UISetup)
             {
-                logger.Log(Level.DEBUG, "Registering Startup-Command in Tools-Menu");
+                log.Debug("Registering Startup-Command in Tools-Menu");
 
                 Command toolsMenuCommand = null;
                 object[] contextGUIDS = new object[] { };
@@ -407,7 +420,7 @@ namespace NPanday.VisualStudio.Addin
                 if (toolsPopup == null)
                 {
                     string message = "Will skip adding control, as the tools popup could not be found with name '" + toolsMenuName + "'";
-                    logger.Log(Level.WARNING, message);
+                    log.Warn(message);
                     MessageBox.Show(message);
                 }
 
@@ -430,7 +443,7 @@ namespace NPanday.VisualStudio.Addin
                     else
                     {
                         string message = "Skipped adding control as the NPanday start command could not be found.";
-                        logger.Log(Level.WARNING, message);
+                        log.Warn(message);
                         MessageBox.Show(message);
                     }
                 }
@@ -439,7 +452,7 @@ namespace NPanday.VisualStudio.Addin
                     //If we are here, then the exception is probably because a command with that name
                     //  already exists. If so there is no need to recreate the command and we can
                     //  safely ignore the exception.
-                    logger.Log(Level.WARNING, "Exception occured when adding NPanday to the Tools menu: " + ex.Message);
+                    log.Warn("Exception occured when adding NPanday to the Tools menu: " + ex.Message, ex);
                 }
 
             }
@@ -491,11 +504,6 @@ namespace NPanday.VisualStudio.Addin
             public ArtifactContext ArtifactContext
             {
                 get { return _connect.container; }
-            }
-
-            public Logger Logger
-            {
-                get { return _connect.logger; }
             }
 
             public void ExecuteCommand(string visualStudioCommandName)
@@ -898,8 +906,9 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception e)
             {
-                logger.Log(Level.DEBUG, e.StackTrace);
-                MessageBox.Show("Error converting reference to artifact, not added to POM: " + e.Message, "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string msg = "Error converting reference to artifact, not added to POM: " + e.Message;
+                log.Debug(msg, e);
+                MessageBox.Show(msg, "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
         /* Commented out earlier
@@ -981,7 +990,7 @@ namespace NPanday.VisualStudio.Addin
                 {
                     if (pomUtil != null)
                     {
-                        pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty, logger);
+                        pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty);
                     }
                 }
 
@@ -1035,7 +1044,7 @@ namespace NPanday.VisualStudio.Addin
                 e.Init(path);
                 PomHelperUtility pomUtil = createPomUtility(CurrentSelectedProject);
                 if (pomUtil != null)
-                    pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty, logger);
+                    pomUtil.AddWebReference(e.Namespace, e.WsdlFile, string.Empty);
             }
             catch (Exception ex)
             {
@@ -1047,7 +1056,7 @@ namespace NPanday.VisualStudio.Addin
         {
             lock (typeof(PomHelperUtility))
             {
-                pomUtil.AddWebReference(name, path, output, logger);
+                pomUtil.AddWebReference(name, path, output);
             }
         }
 
@@ -1080,7 +1089,7 @@ namespace NPanday.VisualStudio.Addin
 
         private void launchNPandayBuildSystem()
         {
-            logger.Log(Level.DEBUG, "launchNPandayBuildSystem() called, _npandayLaunched is " + _npandayLaunched);
+            log.Debug("launchNPandayBuildSystem() called, _npandayLaunched is " + _npandayLaunched);
 
             try
             {
@@ -1191,10 +1200,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception e)
             {
-                if (logger != null)
-                {
-                    logger.Log(Level.SEVERE, "NPanday Build System failed to start up: " + e.ToString());
-                }
+                log.Fatal("NPanday Build System failed to start up: " + e.Message, e);
 
                 MessageBox.Show("Error thrown: " + e.Message + Environment.NewLine + Environment.NewLine + "Consulte the log for details.", "NPanday Build System failed to start up!");
             }
@@ -1202,7 +1208,7 @@ namespace NPanday.VisualStudio.Addin
             if (_applicationObject.Solution != null)
                 attachReferenceEvent();
 
-            logger.Log(Level.DEBUG, "launchNPandayBuildSystem() exited, _npandayLaunched is " + _npandayLaunched);
+            log.Debug("launchNPandayBuildSystem() exited, _npandayLaunched is " + _npandayLaunched);
         }
 
         CommandBarButton cleanButton;
@@ -1292,11 +1298,11 @@ namespace NPanday.VisualStudio.Addin
 
                 if (fromRemoteRepository)
                 {
-                    refmanager.ResyncArtifacts(logger);
+                    refmanager.ResyncArtifacts();
                 }
                 else
                 {
-                    refmanager.ResyncArtifactsFromLocalRepository(logger);
+                    refmanager.ResyncArtifactsFromLocalRepository();
                 }
 
                 if (!refManagerHasError)
@@ -1466,11 +1472,11 @@ namespace NPanday.VisualStudio.Addin
                             mgr.Initialize((VSProject2)project.Object);
                             if (fromRemoteRepository)
                             {
-                                mgr.ResyncArtifacts(logger);
+                                mgr.ResyncArtifacts();
                             }
                             else
                             {
-                                mgr.ResyncArtifactsFromLocalRepository(logger);
+                                mgr.ResyncArtifactsFromLocalRepository();
                             }
                             mgr = null;
                         }
@@ -2200,7 +2206,7 @@ namespace NPanday.VisualStudio.Addin
             //First selected project
             foreach (Project project in (Array)_applicationObject.ActiveSolutionProjects)
             {
-                NPandaySignAssembly frm = new NPandaySignAssembly(project, container, logger, CurrentSelectedProjectPom);
+                NPandaySignAssembly frm = new NPandaySignAssembly(project, container, CurrentSelectedProjectPom);
                 frm.ShowDialog();
                 break;
             }
@@ -2273,7 +2279,6 @@ namespace NPanday.VisualStudio.Addin
         private DTE2 _applicationObject;
         private AddIn _addInInstance;
         private OutputWindowPane outputWindowPane;
-        private NPanday.Logging.Logger logger;
         private List<CommandBarButton> addReferenceControls;
         private List<CommandBarButton> nunitControls;
         private List<CommandBarControl> buildControls;
@@ -2289,6 +2294,7 @@ namespace NPanday.VisualStudio.Addin
         private ButtonCommandRegistry _buttonCommandRegistry;
         private VisualStudioControlsFinder _finder;
 
+        private static readonly ILog log = LogManager.GetLogger(typeof(Connect));
 
         List<WebServicesReferenceWatcher> wsRefWatcher = new List<WebServicesReferenceWatcher>();
         List<WebServicesReferenceWatcher> svRefWatcher = new List<WebServicesReferenceWatcher>();

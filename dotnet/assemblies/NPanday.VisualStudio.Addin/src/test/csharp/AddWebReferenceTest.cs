@@ -75,7 +75,7 @@ namespace NPanday.VisualStudio.Addin_Test
 
             ctr = GetWebReferenceCount(pomCopyPath);
             Assert.AreEqual(0, ctr);
-            pomCopy.AddWebReference("WebRef", path, output, null);
+            pomCopy.AddWebReference("WebRef", path, output);
 
             ctr = GetWebReferenceCount(pomCopyPath);
             Assert.AreEqual(1, ctr);
@@ -89,8 +89,8 @@ namespace NPanday.VisualStudio.Addin_Test
             ctr = GetWebReferenceCount(pomCopyPath);
             Assert.AreEqual(0, ctr);
 
-            pomCopy.AddWebReference("WebRef", path, output, null);
-            pomCopy.AddWebReference("WebRef", path, output, null);
+            pomCopy.AddWebReference("WebRef", path, output);
+            pomCopy.AddWebReference("WebRef", path, output);
 
             ctr = GetWebReferenceCount(pomCopyPath);
             Assert.AreEqual(1, ctr);
@@ -104,7 +104,7 @@ namespace NPanday.VisualStudio.Addin_Test
             ctr = GetWebReferenceCount(pomCopyPath2);
             Assert.AreEqual (1, ctr);
 
-            pomCopy2.AddWebReference("WebRef", path, output, null);
+            pomCopy2.AddWebReference("WebRef", path, output);
 
             ctr = GetWebReferenceCount(pomCopyPath2);
             Assert.AreEqual(2, ctr);
@@ -113,7 +113,7 @@ namespace NPanday.VisualStudio.Addin_Test
         [Test]
         public void CheckIncludeSourceWithDiscoFileTest()
         {
-            pomCopy.AddWebReference("WebRef", testPath, output, null);
+            pomCopy.AddWebReference("WebRef", testPath, output);
             Assert.IsFalse(GetIncludeSource(pomCopyPath));
         }
 

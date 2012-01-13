@@ -34,6 +34,7 @@
     <OutputPath>..\..\..\target\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"/>
     <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="NPanday.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -125,10 +126,6 @@
     <ProjectReference Include="..\..\..\..\..\NPanday.Artifact\src\main\csharp\NPanday.Artifact.csproj">
       <Project>{701803D4-90F5-44D7-919D-4844FEB7F936}</Project>
       <Name>NPanday.Artifact</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\NPanday.Logging\src\main\csharp\NPanday.Logging.csproj">
-      <Project>{C511B03B-8AB7-4E61-9F6E-5E6F9F65E8CE}</Project>
-      <Name>NPanday.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\NPanday.Utils\src\main\csharp\NPanday.Utils.csproj">
       <Project>{CAA4864F-F4C8-4024-8535-8B8C112307CE}</Project>

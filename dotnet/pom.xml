@@ -180,12 +180,6 @@
       </dependency>  
       <dependency> 
         <groupId>org.apache.npanday</groupId>
-        <artifactId>NPanday.Logging</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version>
-        <type>dotnet-library</type>  
-      </dependency>  
-      <dependency> 
-        <groupId>org.apache.npanday</groupId>
         <artifactId>NPanday.Artifact</artifactId>  
         <version>1.5.0-incubating-SNAPSHOT</version>
         <type>dotnet-library</type>  

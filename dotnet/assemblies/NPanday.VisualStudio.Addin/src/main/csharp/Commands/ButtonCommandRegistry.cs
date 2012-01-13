@@ -20,10 +20,9 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.CommandBars;
 using EnvDTE80;
-using NPanday.Logging;
+using log4net;
+using Microsoft.VisualStudio.CommandBars;
 
 namespace NPanday.VisualStudio.Addin.Commands
 {
@@ -38,13 +37,13 @@ namespace NPanday.VisualStudio.Addin.Commands
 
         private readonly DTE2 _application;
         private readonly BuildCommandContext _buildContext;
-        private readonly Logger _logger;
 
-        public ButtonCommandRegistry(DTE2 application, BuildCommandContext buildContext, Logger logger)
+        private static readonly ILog log = LogManager.GetLogger(typeof(ButtonCommandRegistry));
+
+        public ButtonCommandRegistry(DTE2 application, BuildCommandContext buildContext)
         {
             _application = application;
             _buildContext = buildContext;
-            _logger = logger;
         }
 
         public void Excecute<TCommand>(IButtonCommandContext context)
@@ -68,7 +67,7 @@ namespace NPanday.VisualStudio.Addin.Commands
         public TCommand Add<TCommand>(CommandBar bar, int atIndex)
             where TCommand : ButtonCommand, new()
         {
-            _logger.Log(Level.DEBUG, "Adding command " + typeof(TCommand).Name + " on " + bar.Name + " at index " + atIndex);
+            log.Debug("Adding command " + typeof(TCommand).Name + " on " + bar.Name + " at index " + atIndex);
 
             TCommand command = getOrCreate<TCommand>();
 
@@ -107,7 +106,7 @@ namespace NPanday.VisualStudio.Addin.Commands
             foreach (CommandBarControl commandBarControl in _keepReferences.ToArray())
             {
 				// TODO: find (or previouvsly cache the commandbar)
-                _logger.Log(Level.DEBUG, "TODO!! Remove " + commandBarControl.Caption + " on ?? at index " + commandBarControl.Index);
+                log.Debug("TODO!! Remove " + commandBarControl.Caption + " on ?? at index " + commandBarControl.Index);
             }
         }
     }

@@ -39,7 +39,6 @@ using System.Xml;
 using VSLangProj;
 
 using NPanday.Artifact;
-using NPanday.Logging;
 using NPanday.Model.Pom;
 using NPanday.Model.Settings;
 
@@ -52,7 +51,6 @@ namespace NPanday.VisualStudio.Addin
         private List<NPanday.Artifact.Artifact> localArtifacts = new List<NPanday.Artifact.Artifact>();
         private ArtifactContext artifactContext;
         private Project project;
-        private NPanday.Logging.Logger logger;
         private FileInfo pom;
         private WebClient webClient = new WebClient();
         public bool fileProtocol = false;
@@ -77,10 +75,9 @@ namespace NPanday.VisualStudio.Addin
             get { return settingsPath; }
         }
 
-        public AddArtifactsForm(Project project, ArtifactContext container, Logger logger, FileInfo pom)
+        public AddArtifactsForm(Project project, ArtifactContext container, FileInfo pom)
         {
             this.project = project;
-            this.logger = logger;
             InitializeForm();
             InitializeComponent();
             addArtifact.Visible = true;
