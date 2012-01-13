@@ -27,7 +27,15 @@
   <artifactId>npanday-repository-builder</artifactId>  
   <packaging>pom</packaging>
   <name>NPanday :: Repository Builder</name>  
-  <dependencies> 
+  <dependencies>
+    <!-- Include Apache Parent POM which will be required by the projects as well - repository currently doesn't traverse to external parents -->
+    <dependency>
+      <groupId>org.apache</groupId>
+      <artifactId>apache</artifactId>
+      <version>10</version>
+      <type>pom</type>
+    </dependency>
+
     <!--
     NPANDAY PLUGINS
     -->
