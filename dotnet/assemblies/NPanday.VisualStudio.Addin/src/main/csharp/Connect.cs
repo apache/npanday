@@ -949,7 +949,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception ex)
             {
-                outputWindowPane.OutputString("\nError on webservice rename: " + ex.Message);
+                log.Error("Error on webservice rename: " + ex.Message);
             }
         }
 
@@ -969,7 +969,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception ex)
             {
-                outputWindowPane.OutputString("\nError on webservice delete: " + ex.Message);
+                log.Error("Error on webservice delete: " + ex.Message);
             }
         }
 
@@ -998,7 +998,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception ex)
             {
-                outputWindowPane.OutputString("\nError on webservice create: " + ex.Message);
+                log.Error("Error creating web service: " + ex.Message);
             }
         }
 
@@ -1014,7 +1014,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception ex)
             {
-                outputWindowPane.OutputString("\nError on webservice rename: " + ex.Message);
+                log.Error("Error renaming web service: " + ex.Message);
             }
         }
 
@@ -1029,7 +1029,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception ex)
             {
-                outputWindowPane.OutputString("\nError on webservice delete: " + ex.Message);
+                log.Error("Error deleting web service: " + ex.Message);
             }
         }
 
@@ -1048,7 +1048,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception ex)
             {
-                outputWindowPane.OutputString("\nError on webservice create");
+                log.Error("Error creating web service: " + ex.Message);
             }
         }
 
@@ -1096,7 +1096,7 @@ namespace NPanday.VisualStudio.Addin
                 // just to be safe, check if NPanday is already launched
                 if (_npandayLaunched)
                 {
-                    outputWindowPane.OutputString(Messages.MSG_L_NPANDAY_ALREADY_STARTED);
+                    log.Error(Messages.MSG_L_NPANDAY_ALREADY_STARTED);
                     return;
                 }
 
@@ -1127,7 +1127,7 @@ namespace NPanday.VisualStudio.Addin
                 }
                 else
                 {
-                    outputWindowPane.OutputString(Messages.MSG_L_UNABLE_TO_REGISTER_ADD_ARTIFACT_MENU);
+                    log.Error(Messages.MSG_L_UNABLE_TO_REGISTER_ADD_ARTIFACT_MENU);
                 }
 
                 foreach (CommandBar commandBar in (CommandBars)dte2.CommandBars)
@@ -1184,18 +1184,19 @@ namespace NPanday.VisualStudio.Addin
                 // outputWindowPane.Clear();
 
                 if (!placedAddStopBuildMenu)
-                    outputWindowPane.OutputString(Messages.MSG_L_UNABLE_TO_REGISTER_STOP_BUILD_MENU);
-                if (!placedNPandayMenus) outputWindowPane.OutputString(Messages.MSG_L_UNABLE_TO_REGISTER_NPANDAY_MENUS);
+                    log.Error(Messages.MSG_L_UNABLE_TO_REGISTER_STOP_BUILD_MENU);
+                if (!placedNPandayMenus)
+                    log.Error(Messages.MSG_L_UNABLE_TO_REGISTER_NPANDAY_MENUS);
                 if (!placedAllProjectMenu)
-                    outputWindowPane.OutputString(Messages.MSG_L_UNABLE_TO_REGISTER_ALL_PROJECTS_MENU);
+                    log.Error(Messages.MSG_L_UNABLE_TO_REGISTER_ALL_PROJECTS_MENU);
 
                 swStartingBuildSystem.Stop();
 
                 string[] nameParts = _addInInstance.Name.Split(' ');
                 // Version should be the second "word" in the name.
                 string NPandayVersion = (nameParts.Length > 1) ? nameParts[1] : "UNKNOWN";
-                outputWindowPane.OutputString(string.Format(Messages.MSG_L_NPANDAY_ADDIN_STARTED, NPandayVersion,
-                                                            swStartingBuildSystem.Elapsed.TotalSeconds));
+                log.InfoFormat(Messages.MSG_L_NPANDAY_ADDIN_STARTED, NPandayVersion,
+                                                            swStartingBuildSystem.Elapsed.TotalSeconds);
 
             }
             catch (Exception e)
@@ -1289,7 +1290,7 @@ namespace NPanday.VisualStudio.Addin
         private void ResyncCurrentProjectArtifacts(bool fromRemoteRepository)
         {
             refManagerHasError = false;
-            outputWindowPane.OutputString(string.Format("\n[INFO] Re-syncing artifacts in {0} project... ", CurrentSelectedProject.Name));
+            log.InfoFormat("Re-syncing artifacts in {0} project... ", CurrentSelectedProject.Name);
             try
             {
                 IReferenceManager refmanager = new ReferenceManager();
@@ -1307,23 +1308,23 @@ namespace NPanday.VisualStudio.Addin
 
                 if (!refManagerHasError)
                 {
-                    outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
+                    log.InfoFormat("done [{0}]", DateTime.Now.ToString("hh:mm tt"));
                 }
             }
             catch (Exception ex)
             {
                 if (refManagerHasError)
                 {
-                    outputWindowPane.OutputString(string.Format("\n[WARNING] {0}", ex.Message));
+                    log.Warn(ex.Message);
                 }
                 else
                 {
-                    outputWindowPane.OutputString(string.Format("failed: {0}", ex.Message));
+                    log.ErrorFormat("failed: {0}", ex.Message);
                 }
 
                 if (!ex.Message.Contains("no valid pom file"))
                 {
-                    outputWindowPane.OutputString(string.Format("\n\n{0}\n\n", ex.StackTrace));
+                    log.Debug(ex.Message, ex);
                 }
             }
         }
@@ -1332,7 +1333,7 @@ namespace NPanday.VisualStudio.Addin
         void refmanager_OnError(object sender, ReferenceErrorEventArgs e)
         {
             refManagerHasError = true;
-            outputWindowPane.OutputString("\n[WARNING] " + e.Message);
+            log.Warn(e.Message);
         }
 
         private void createStopBuildMenu(CommandBar commandBar, CommandBarControl control)
@@ -1457,7 +1458,7 @@ namespace NPanday.VisualStudio.Addin
         private void ResyncSolutionArtifacts(bool fromRemoteRepository)
         {
             refManagerHasError = false;
-            outputWindowPane.OutputString("\n[INFO] Re-syncing artifacts in all projects... ");
+            log.Info("Re-syncing artifacts in all projects... ");
             try
             {
                 if (_applicationObject.Solution != null)
@@ -1484,23 +1485,23 @@ namespace NPanday.VisualStudio.Addin
                 }
                 if (!refManagerHasError)
                 {
-                    outputWindowPane.OutputString(string.Format("done [{0}]", DateTime.Now.ToString("hh:mm tt")));
+                    log.InfoFormat("done [{0}]", DateTime.Now.ToString("hh:mm tt"));
                 }
             }
             catch (Exception ex)
             {
                 if (refManagerHasError)
                 {
-                    outputWindowPane.OutputString(string.Format("\n[WARNING] {0}", ex.Message));
+                    log.Warn(ex.Message);
                 }
                 else
                 {
-                    outputWindowPane.OutputString(string.Format("failed: {0}", ex.Message));
+                    log.ErrorFormat("failed: {0}", ex.Message);
                 }
 
                 if (!ex.Message.Contains("no valid pom file"))
                 {
-                    outputWindowPane.OutputString(string.Format("\n\n{0}\n\n", ex.StackTrace));
+                    log.Debug(ex.Message, ex);
                 }
             }
         }
@@ -1512,7 +1513,7 @@ namespace NPanday.VisualStudio.Addin
 
         void awfButton_Click(CommandBarButton Ctrl, ref bool CancelDefault)
         {
-            outputWindowPane.OutputString("\n Add web reference click.");
+            log.Debug("Add web reference click.");
         }
         #endregion
 
@@ -2222,9 +2223,9 @@ namespace NPanday.VisualStudio.Addin
         /// <seealso class='IDTExtensibility2' />
         public void OnBeginShutdown(ref Array custom)
         {
-            outputWindowPane.OutputString(Messages.MSG_L_SHUTTING_DOWN_NPANDAY);
+            log.Info(Messages.MSG_L_SHUTTING_DOWN_NPANDAY);
             mavenRunner.Quit();
-            outputWindowPane.OutputString(Messages.MSG_L_SUCCESFULLY_SHUTDOWN);
+            log.Info(Messages.MSG_L_SUCCESFULLY_SHUTDOWN);
         }
         #endregion
 
@@ -2349,7 +2350,7 @@ namespace NPanday.VisualStudio.Addin
                 }
                 catch (Exception ex)
                 {
-                    outputWindowPane.OutputString(string.Format("\nError updating {0}. [{1}]", wsInfo.Name, ex.Message));
+                    log.ErrorFormat("\nError updating {0}. [{1}]", wsInfo.Name, ex.Message);
                 }
             }
 

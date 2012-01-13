@@ -31,20 +31,20 @@ namespace NPanday.VisualStudio.Addin
     public static class Messages
     {
         public const string MSG_E_NOTIMPLEMENTED = "The method or operation is not implemented.";
-        public const string MSG_L_NPANDAY_ALREADY_STARTED = "\nNPanday Addin Has Already Started.";
-        public const string MSG_L_NPANDAY_ADDIN_STARTED = "\nNPanday Addin {0} Successfully Started (in {1:0.00} seconds).";
-        public const string MSG_L_UNABLE_TO_REGISTER_ADD_ARTIFACT_MENU = "\nCould not register the menu for adding artifacts.";
-        public const string MSG_L_UNABLE_TO_REGISTER_STOP_BUILD_MENU = "\nCould not register the menu for stopping maven builds.";
-        public const string MSG_L_UNABLE_TO_REGISTER_NPANDAY_MENUS = "\nCould not register the default NPanday menus.";
-        public const string MSG_L_UNABLE_TO_REGISTER_ALL_PROJECTS_MENU = "\nCould not register the menu for global actions on all projects.";
+        public const string MSG_L_NPANDAY_ALREADY_STARTED = "NPanday Addin Has Already Started.";
+        public const string MSG_L_NPANDAY_ADDIN_STARTED = "NPanday Addin {0} Successfully Started (in {1:0.00} seconds).";
+        public const string MSG_L_UNABLE_TO_REGISTER_ADD_ARTIFACT_MENU = "Could not register the menu for adding artifacts.";
+        public const string MSG_L_UNABLE_TO_REGISTER_STOP_BUILD_MENU = "Could not register the menu for stopping maven builds.";
+        public const string MSG_L_UNABLE_TO_REGISTER_NPANDAY_MENUS = "Could not register the default NPanday menus.";
+        public const string MSG_L_UNABLE_TO_REGISTER_ALL_PROJECTS_MENU = "Could not register the menu for global actions on all projects.";
         public const string MSG_E_NPANDAY_REMOVE_DEPENDENCY_ERROR = "NPanday Remove Dependency Error:";
         public const string MSG_Q_STOP_MAVEN_BUILD = "Do you want to stop the NPanday Build?";
         public const string MSG_EF_NOT_A_PROJECT_POM = "Not A Project Pom Error: {0} is not a project Pom, the pom is a parent pom type.";
         public const string MSG_EF_NOT_THE_PROJECT_POM = "The Pom may not be the project's Pom: Project Name: {0} is not equal to Pom artifactId: {1}";
         public const string MSG_E_PARENTPOM_NOTFOUND = "parent-pom.xml Not Found";//from Parent pom.xml to paren-pom.xml
         public const string MSG_E_EXEC_ERROR = "NPanday Execution Error: ";
-        public const string MSG_L_SHUTTING_DOWN_NPANDAY = "\nShutting Down NPanday Visual Studio Addin.";
-        public const string MSG_L_SUCCESFULLY_SHUTDOWN = "\nNPanday Successfully Stopped.";//from ShutDown to Stopped
+        public const string MSG_L_SHUTTING_DOWN_NPANDAY = "Shutting Down NPanday Visual Studio Addin.";
+        public const string MSG_L_SUCCESFULLY_SHUTDOWN = "NPanday Successfully Stopped.";//from ShutDown to Stopped
         public const string MSG_D_NPANDAY_BUILD_SYSTEM = "NPanday Build System";
         public const string MSG_T_NPANDAY_BUILDSYSTEM = "Executes the command for NPanday Addin";
         public const string MSG_C_ADD_REFERENCE = "Add &Reference...";
