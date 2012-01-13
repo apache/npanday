@@ -55,12 +55,6 @@
     <type>visual-studio-addin</type>
     <profile>VisualStudio2005</profile>
   </netDependency>
-  <netDependency>
-    <groupId>org.apache.npanday.visualstudio</groupId>
-    <artifactId>NPanday.VisualStudio</artifactId>
-    <type>library</type>
-    <profile>VisualStudio2005</profile>
-  </netDependency>
 
   <!--Plugin Framework-->
   <netDependency>

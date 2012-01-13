@@ -94,18 +94,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.visualstudio</groupId>
-      <artifactId>NPanday.VisualStudio</artifactId>
-      <version>${project.version}</version>
-      <type>dotnet-library</type>
-      <exclusions>
-        <exclusion>
-          <groupId>EnvDTE</groupId>  
-          <artifactId>EnvDTE</artifactId>  
-         </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.npanday.visualstudio</groupId>
       <artifactId>NPanday.VisualStudio.Addin</artifactId>
       <version>${project.version}</version>
       <exclusions>
