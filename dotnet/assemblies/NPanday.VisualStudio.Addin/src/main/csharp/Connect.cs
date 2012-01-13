@@ -2350,7 +2350,7 @@ namespace NPanday.VisualStudio.Addin
                 }
                 catch (Exception ex)
                 {
-                    log.ErrorFormat("\nError updating {0}. [{1}]", wsInfo.Name, ex.Message);
+                    log.ErrorFormat("Error updating {0}. [{1}]", wsInfo.Name, ex.Message);
                 }
             }
 

@@ -279,11 +279,11 @@ namespace NPanday.ProjectImporter.Digest.Model
                 }
 
 
-                log.InfoFormat("Download Start: {0} Downloading From {1}\n", DateTime.Now, artifact.RemotePath);
+                log.InfoFormat("Download Start: {0} Downloading From {1}", DateTime.Now, artifact.RemotePath);
 
                 client.DownloadFile(artifact.RemotePath, artifact.FileInfo.FullName);
 
-                log.InfoFormat("Download Finished: {0}\n", DateTime.Now);
+                log.InfoFormat("Download Finished: {0}", DateTime.Now);
 
                 string artifactDir = GetLocalUacPath(artifact, artifact.FileInfo.Extension);
 
@@ -307,7 +307,7 @@ namespace NPanday.ProjectImporter.Digest.Model
                     artifact.FileInfo.Directory.Delete();
                 }
 
-                log.WarnFormat("Download Failed {0}\n", e.Message);
+                log.WarnFormat("Download Failed {0}", e.Message);
 
                 return false;
             }
