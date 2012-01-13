@@ -124,6 +124,17 @@
       <type>dotnet-library</type>  
     </dependency> 
   </dependencies>  
+  <build>
+    <resources>
+      <resource>
+        <!-- So VS can see it too -->
+        <directory>src/main/csharp</directory>
+        <includes>
+          <include>log4net.xml</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
   <profiles> 
     <profile>
       <id>partcover</id>

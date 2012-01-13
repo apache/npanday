@@ -355,10 +355,19 @@ namespace NPanday.VisualStudio.Addin
 
                 try
                 {
+                    // Currently, MSBuild uses the namespace NPanday.VisualStudio, while NPanday uses the artifactID NPanday.VisualStudio.AddIn for embedded resources. Workaround...
                     Stream fileStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("NPanday.VisualStudio.log4net.xml");
+                    if (fileStream == null)
+                    {
+                        fileStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("NPanday.VisualStudio.Addin.log4net.xml");
+                    }
                     if (fileStream != null)
                     {
                         XmlConfigurator.Configure(fileStream);
+                    }
+                    else
+                    {
+                        outputWindowPane.OutputString("Failed to configure logging subsystem: No log4net.xml configuration found\n");
                     }
                 }
                 catch (Exception e)

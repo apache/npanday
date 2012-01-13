@@ -69,6 +69,7 @@
     <Compile Include="AddLocalMavenArtifactTest.cs" />
     <Compile Include="AddWebReferenceTest.cs" />
     <Compile Include="FileUtils.cs" />
+    <Compile Include="Log4NetConfigTest.cs" />
     <Compile Include="MavenCompilePluginConfigurationTest.cs" />
     <Compile Include="MavenResxPluginConfigurationTest.cs" />
     <Compile Include="ProjectImporterValidationTest.cs" />
