@@ -102,9 +102,31 @@
               <outputDirectory>${project.build.directory}/addin</outputDirectory>
               <includeTypes>dotnet-library</includeTypes>
               <stripVersion>true</stripVersion>
+              <!-- no way to strip this from the filename, so do it manually next -->
+              <!-- TODO: make copy-dependencies support a pattern for filename: {artifactId}.{extension} -->
+              <excludeClassifiers>net-2.0</excludeClassifiers>
             </configuration>
             <goals>
               <goal>copy-dependencies</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>log4net</id>
+            <phase>generate-resources</phase>
+            <configuration>
+              <outputDirectory>${project.build.directory}/addin</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.logging</groupId>
+                  <artifactId>log4net</artifactId>
+                  <version>1.2.11</version>
+                  <classifier>net-2.0</classifier>
+                  <destFileName>log4net.dll</destFileName>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+            <goals>
+              <goal>copy</goal>
             </goals>
           </execution>
         </executions>

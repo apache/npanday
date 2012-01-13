@@ -36,10 +36,11 @@
       <type>dotnet-library</type>
     </dependency>
     <dependency>
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>NPanday.Logging</artifactId>
-      <version>${project.version}</version>
+      <groupId>org.apache.logging</groupId>
+      <artifactId>log4net</artifactId>
+      <version>1.2.11</version>
       <type>dotnet-library</type>
+      <classifier>net-2.0</classifier>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday</groupId>
