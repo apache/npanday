@@ -19,8 +19,8 @@
 //
 #endregion
 using System;
-using System.Collections.Generic;
 using System.IO;
+using log4net;
 using NPanday.Model.Pom;
 using NPanday.ProjectImporter.Digest.Model;
 using NPanday.Utils;
@@ -29,6 +29,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 {
     public class AzurePomConverter : AbstractPomConverter
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(AzurePomConverter));
 
         public AzurePomConverter(ProjectDigest projectDigest, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId) 
             : base(projectDigest,mainPomFile,parent, groupId)
@@ -118,7 +119,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                         dependency.type = "dotnet-application";
                         break;
                     default:
-                        Console.WriteLine("Unknown role type '" + projectRef.RoleType + "' - treating as a dotnet-library");
+                        log.Warn("Unknown role type '" + projectRef.RoleType + "' - treating as a dotnet-library");
                         break;
                 }
             }

@@ -20,8 +20,9 @@
 #endregion
 using System;
 using System.IO;
-using NPanday.Model.Pom;
 using EnvDTE;
+using log4net;
+using NPanday.Model.Pom;
 
 namespace NPanday.VisualStudio.Addin
 {
@@ -35,6 +36,8 @@ namespace NPanday.VisualStudio.Addin
         string pomFile;
         string projectPath;
         Solution solution;
+
+        private static readonly ILog log = LogManager.GetLogger(typeof(ReferenceManager));
 
         #region IReferenceManager Members
 

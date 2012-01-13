@@ -583,7 +583,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                log.Error(e.Message);
             }
 
 
@@ -632,7 +632,7 @@ namespace NPanday.VisualStudio.Addin
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    log.Error(e.Message);
                 }
                 try
                 {
@@ -673,7 +673,7 @@ namespace NPanday.VisualStudio.Addin
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    log.Error(e.Message);
                 }
             }
         }

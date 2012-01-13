@@ -20,6 +20,7 @@
 #endregion
 using System;
 using System.IO;
+using log4net;
 
 namespace NPanday.VisualStudio.Addin
 {
@@ -28,6 +29,8 @@ namespace NPanday.VisualStudio.Addin
         public event EventHandler<WebReferenceEventArgs> Renamed;
         public event EventHandler<WebReferenceEventArgs> Created;
         public event EventHandler<WebReferenceEventArgs> Deleted;
+
+        private static readonly ILog log = LogManager.GetLogger(typeof(WebServicesReferenceWatcher));
 
         FileSystemWatcher watcher;
         string folderPath;
@@ -65,7 +68,7 @@ namespace NPanday.VisualStudio.Addin
 
         void watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine(e.FullPath);
+            log.Debug("web service changed: " + e.FullPath);
         }
 
         void watcher_Error(object sender, ErrorEventArgs e)

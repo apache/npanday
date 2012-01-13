@@ -20,18 +20,14 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Xml;
 using System.IO;
-
-
-using NPanday.ProjectImporter.Digest;
+using System.Windows.Forms;
+using System.Xml;
+using log4net;
+using NPanday.Artifact;
+using NPanday.Model.Pom;
 using NPanday.ProjectImporter.Digest.Model;
 using NPanday.Utils;
-using NPanday.Model.Pom;
-
-using NPanday.Artifact;
-using System.Windows.Forms;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -39,6 +35,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 {
     public abstract class AbstractPomConverter : IPomConverter
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(AbstractPomConverter));
+
         public static Dictionary<string, string> npandayTypeMap = new Dictionary<string, string>();
         static AbstractPomConverter()
         {

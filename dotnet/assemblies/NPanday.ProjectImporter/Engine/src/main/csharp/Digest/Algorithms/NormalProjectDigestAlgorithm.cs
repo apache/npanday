@@ -20,17 +20,14 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.IO;
 using System.Reflection;
+using log4net;
 using Microsoft.Build.BuildEngine;
-using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
-using NPanday.ProjectImporter.Digest.Model;
-
-using NPanday.Utils;
 using NPanday.Artifact;
-
-
+using NPanday.ProjectImporter.Digest.Model;
+using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
+using NPanday.Utils;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -38,11 +35,10 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
 {
     public class NormalProjectDigestAlgorithm : BaseProjectDigestAlgorithm, IProjectDigestAlgorithm
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(NormalProjectDigestAlgorithm));
 
         public ProjectDigest DigestProject(Dictionary<string, object> projectMap)
         {
-
-
             Project project = (Project)projectMap["Project"];
 
 
@@ -228,7 +224,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                 }
                 if (a == null || string.IsNullOrEmpty(path))
                 {
-                    Console.WriteLine("Cannot find or download the artifact " + dll.Name + ",  project may not build properly.");
+                    log.Warn("Cannot find or download the artifact " + dll.Name + ",  project may not build properly.");
                     return;
                 }
             }
@@ -308,7 +304,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                         List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(buildItem.Include, null, null);
                                         if (refs.Count == 0)
                                         {
-                                            Console.WriteLine("Unable to find reference '" + buildItem.Include + "' in " + string.Join("; ", refs.ToArray()));
+                                            log.Warn("Unable to find reference '" + buildItem.Include + "' in " + string.Join("; ", refs.ToArray()));
                                         }
                                         else if (refs.Count > 1)
                                         {
@@ -329,7 +325,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                                 catch (Exception e)
                                                 {
                                                     // skip this assembly
-                                                    Console.WriteLine("An error occurred loading assembly '" + s + "' - check that your PATH to gacutil matches your runtime environment: " + e.Message);
+                                                    log.Error("An error occurred loading assembly '" + s + "' - check that your PATH to gacutil matches your runtime environment: " + e.Message);
                                                 }
                                             }
                                             reference.SetAssemblyInfoValues(best);
@@ -465,7 +461,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 projectDigest.BaseApplicationManifest = buildItem.Include;
                                 break;
                            default:
-                                Console.WriteLine("Unhandled ItemGroup: " + buildItem.Name);
+                                log.Debug("Unhandled ItemGroup: " + buildItem.Name);
                                 break;
                         }
                     }
@@ -718,7 +714,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                         }
                         else
                         {
-                            Console.WriteLine("Unhandled Property:" + buildProperty.Name);
+                            log.Debug("Unhandled Property:" + buildProperty.Name);
                         }
 
                     }

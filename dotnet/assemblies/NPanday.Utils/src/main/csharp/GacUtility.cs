@@ -20,21 +20,19 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.Text;
-
 using System.Diagnostics;
-
-using System.Text.RegularExpressions;
-
-using System.Reflection;
 using System.IO;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using log4net;
 using Microsoft.Win32;
 
 namespace NPanday.Utils
 {
     public class GacUtility
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(GacUtility));
+
         private string gacs;
 
         private static GacUtility instance;
@@ -88,14 +86,14 @@ namespace NPanday.Utils
                     {
                         KeyValuePair<string, string> pair = paths[s];
                         gacutil = pair.Value;
-                        Console.WriteLine("Found gacutil from SDK " + pair.Key + " at " + gacutil);
+                        log.Info("Found gacutil from SDK " + pair.Key + " at " + gacutil);
                         break;
                     }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Unable to find gacutil in the registry due to an exception: " + e);
+                log.Error("Unable to find gacutil in the registry due to an exception: " + e.Message);
             }
 
             Process p = new Process();
