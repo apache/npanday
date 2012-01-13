@@ -38,7 +38,7 @@
     <Reference Include="EnvDTE" />
     <Reference Include="EnvDTE80" />
     <Reference Include="Extensibility" />
-    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"/>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="Microsoft.VisualStudio.CommandBars" />
     <Reference Include="NPanday.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
@@ -67,7 +67,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="log4net.xml" />
+    <EmbeddedResource Include="log4net.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddArtifactsForm.cs">

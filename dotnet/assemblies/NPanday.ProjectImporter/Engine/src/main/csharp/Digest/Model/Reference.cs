@@ -193,7 +193,7 @@ namespace NPanday.ProjectImporter.Digest.Model
             }
             catch (Exception e)
             {
-                MessageBox.Show("Cannot add reference of " + artifact.ArtifactId + ", an exception occurred trying to download it: " + e.Message);
+                log.Error("Cannot add reference of " + artifact.ArtifactId + ", an exception occurred trying to download it: " + e.Message);
                 return false;
             }
         }

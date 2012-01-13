@@ -780,6 +780,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     //verbose for new-import
                     if (!reference.HintFullPath.ToLower().StartsWith(prjRefPath.ToLower()) && !reference.Name.Contains("Interop"))
                     {
+                        // TODO: need to show this to the user (logging not sufficient), but should not display message box in importer code. Pass in a handler instead?
                         MessageBox.Show(
                          string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
                                      + "\nReference: {0}"

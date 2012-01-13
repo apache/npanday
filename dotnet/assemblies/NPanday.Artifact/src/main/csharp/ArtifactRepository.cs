@@ -23,14 +23,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Windows.Forms;
+using log4net;
 
 namespace NPanday.Artifact
 {
     public sealed class ArtifactRepository
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(ArtifactRepository));
 
         public string Tokenize(string id)
         {
@@ -117,7 +116,7 @@ namespace NPanday.Artifact
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.StackTrace, e.Message);
+                log.Error(e.Message, e);
             }
             return artifacts;
         }

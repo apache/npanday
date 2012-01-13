@@ -20,21 +20,13 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Windows.Forms;
-
-
-
-using NPanday.ProjectImporter.Digest;
-using NPanday.ProjectImporter.Digest.Model;
-using NPanday.Utils;
+using log4net;
 using NPanday.Model.Pom;
-
-using NPanday.Artifact;
-
 using NPanday.ProjectImporter.Converter.Algorithms;
+using NPanday.ProjectImporter.Digest.Model;
 using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
+using NPanday.Utils;
 
 
 /// Author: Leopoldo Lee Agdeppa III
@@ -43,6 +35,8 @@ namespace NPanday.ProjectImporter.Converter
 {
     public class PomConverter
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(PomConverter));
+
         // Converter Algorithm Registry
         public static Dictionary<VisualStudioProjectTypeEnum, Type> __converterAlgorithms;
         static PomConverter()
@@ -200,7 +194,7 @@ namespace NPanday.ProjectImporter.Converter
                 catch(Exception)
                 {
                     isValidUrl=false;
-                    //MessageBox.Show(string.Format("SCM Tag was not added, because the url {0} was not accessible",scmTag), "NPanday Project Import", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    log.InfoFormat("SCM Tag was not added, because the url {0} was not accessible", scmTag);
                 }
                 
                 

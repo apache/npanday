@@ -126,6 +126,7 @@ namespace NPanday.ProjectImporter.Digest
                             projectDigest.ProjectName,
                             prjRefDigest.ProjectName);
 
+                        // TODO: should not be in the importer
                         DialogResult includeResult = MessageBox.Show(errMsg, "Include Project in Pom Generation:",
                             MessageBoxButtons.YesNo,
                             MessageBoxIcon.Question);
