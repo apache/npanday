@@ -70,7 +70,7 @@
         <plugins>
           <plugin>
             <artifactId>maven-invoker-plugin</artifactId>
-            <version>1.3</version>
+            <version>1.5</version>
             <configuration>
               <projectsDirectory>src/it</projectsDirectory>
               <cloneProjectsTo>target/it</cloneProjectsTo>
@@ -81,6 +81,9 @@
               See http://npanday.codeplex.com/WorkItem/View.aspx?WorkItemId=10557
               <localRepositoryPath>target/local-repo</localRepositoryPath> -->
               <postBuildHookScript>verify.bsh</postBuildHookScript>
+              <filterProperties>
+                <npandayVersion>${bootstrap.npanday.version}</npandayVersion>
+              </filterProperties>
             </configuration>
             <executions>
               <execution>

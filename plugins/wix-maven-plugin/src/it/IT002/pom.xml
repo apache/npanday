@@ -37,8 +37,8 @@
         <version>@project.version@</version>
         <configuration>
           <objectFiles>
-	    <objectFile>Sample.wixobj</objectFile>
-	  </objectFiles>
+            <objectFile>Sample.wixobj</objectFile>
+        </objectFiles>
         </configuration>
       </plugin>
     </plugins>

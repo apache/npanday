@@ -26,6 +26,6 @@
   <version>1.2-SNAPSHOT</version>
   <modules>
     <module>VBWebApplication_Wix</module>
-	<module>WixMSI</module>
+    <module>WixMSI</module>
   </modules>
 </project>

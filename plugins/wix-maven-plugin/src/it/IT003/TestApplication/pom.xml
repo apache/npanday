@@ -34,6 +34,7 @@
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-compile-plugin</artifactId>
+        <version>@npandayVersion@</version>
         <extensions>true</extensions>
         <configuration>
           <includeSources>
@@ -48,6 +49,7 @@
       </plugin>
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
+        <version>@npandayVersion@</version>
         <artifactId>maven-resgen-plugin</artifactId>
         <configuration>
           <embeddedResources>
