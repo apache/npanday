@@ -104,7 +104,7 @@
               <stripVersion>true</stripVersion>
               <!-- no way to strip this from the filename, so do it manually next -->
               <!-- TODO: make copy-dependencies support a pattern for filename: {artifactId}.{extension} -->
-              <excludeClassifiers>net-2.0</excludeClassifiers>
+              <excludeArtifactIds>log4net</excludeArtifactIds>
             </configuration>
             <goals>
               <goal>copy-dependencies</goal>
