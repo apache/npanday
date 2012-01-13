@@ -532,7 +532,7 @@ namespace NPanday.VisualStudio.Addin
             // quick check for the right extender, in lieu of full GUID availability (see below)
             try
             {
-                if (project.Extender["WebApplication"] != null)
+                if (project.get_Extender("WebApplication") != null)
                 {
                     return true;
                 }
