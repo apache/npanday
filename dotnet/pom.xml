@@ -202,12 +202,6 @@
         <version>1.5.0-incubating-SNAPSHOT</version>
         <type>dotnet-library</type>  
       </dependency>  
-      <dependency> 
-        <groupId>org.apache.npanday.visualstudio</groupId>
-        <artifactId>NPanday.VisualStudio</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version>
-        <type>dotnet-library</type>  
-      </dependency>  
     </dependencies> 
   </dependencyManagement> 
   <dependencies>
