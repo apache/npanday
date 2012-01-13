@@ -28,14 +28,6 @@
   <packaging>pom</packaging>
   <name>NPanday :: Repository Builder</name>  
   <dependencies>
-    <!-- Include Apache Parent POM which will be required by the projects as well - repository currently doesn't traverse to external parents -->
-    <dependency>
-      <groupId>org.apache</groupId>
-      <artifactId>apache</artifactId>
-      <version>10</version>
-      <type>pom</type>
-    </dependency>
-
     <!--
     NPANDAY PLUGINS
     -->
@@ -263,20 +255,26 @@
                 <tar destfile="${project.build.directory}/repository-bin.tar">
                   <tarfileset dir="${project.build.directory}/repository-bin" preserveLeadingSlashes="true">
                     <exclude name="**/commons-*/**" />
+                    <exclude name="**/backport-util-concurrent/**" />
                     <exclude name="**/classworlds/**" />
                     <exclude name="**/com/**" />
                     <exclude name="**/de/**" />
+                    <exclude name="**/dom4j/**" />
+                    <exclude name="**/javassist/**" />
                     <exclude name="**/jdom/**" />
                     <exclude name="**/jline/**" />
                     <exclude name="**/jtidy/**" />
                     <exclude name="**/junit/**" />
+                    <exclude name="**/nekohtml/**" />
                     <exclude name="**/net/**" />
                     <exclude name="**/org/apache/ant/**" />
                     <exclude name="**/org/apache/commons/**" />
                     <exclude name="**/org/apache/apache/**" />
+                    <exclude name="**/org/apache/jackrabbit/**" />
                     <exclude name="**/org/apache/maven/**" />
                     <exclude name="**/org/codehaus/**" />
                     <exclude name="**/org/easymock/**" />
+                    <exclude name="**/org/reflections/**" />
                     <exclude name="**/org/slf4j/**" />
                     <exclude name="**/org/sonatype/**" />
                     <exclude name="**/slide/**" />
