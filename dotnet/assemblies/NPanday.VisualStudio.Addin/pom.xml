@@ -42,7 +42,7 @@
       <artifactId>log4net</artifactId>  
       <version>1.2.11</version>
       <type>dotnet-library</type> 
-      <classifier>net-2.0</classsifier>
+      <classifier>net-2.0</classifier>
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday</groupId>
