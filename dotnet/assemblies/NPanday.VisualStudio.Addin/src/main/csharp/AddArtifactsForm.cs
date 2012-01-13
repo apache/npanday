@@ -478,7 +478,7 @@ namespace NPanday.VisualStudio.Addin
                 if (!addVSProjectReference(artifact, text))
                     return;
             }
-            else if (Connect.IsWebProject(project))
+            else if (Connect.IsWebSite(project))
             {
                 if (!addVSWebProjectReference(artifact, text))
                     return;

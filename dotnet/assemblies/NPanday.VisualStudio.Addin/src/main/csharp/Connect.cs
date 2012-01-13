@@ -522,8 +522,27 @@ namespace NPanday.VisualStudio.Addin
             //stopButton.Enabled = false;
         }
 
+        public static bool IsWebSite(Project project)
+        {
+            return project.Kind.Equals(VisualStudioProjectType.GetVisualStudioProjectTypeGuid(VisualStudioProjectTypeEnum.Web_Site), StringComparison.OrdinalIgnoreCase);
+        }
+
         public static bool IsWebProject(Project project)
         {
+            // quick check for the right extender, in lieu of full GUID availability (see below)
+            try
+            {
+                if (project.Extender["WebApplication"] != null)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                // ignore
+            }
+
+            // project Kind is only the main one, so the below is not often correct. A more definitive query would be to get all the subtype GUIDs for a project (see http://www.mztools.com/articles/2007/mz2007016.aspx)
             return project.Kind.Equals(VisualStudioProjectType.GetVisualStudioProjectTypeGuid(VisualStudioProjectTypeEnum.Web_Site), StringComparison.OrdinalIgnoreCase) ||
                 project.Kind.Equals(VisualStudioProjectType.GetVisualStudioProjectTypeGuid(VisualStudioProjectTypeEnum.Web_Application), StringComparison.OrdinalIgnoreCase);
         }
@@ -696,7 +715,7 @@ namespace NPanday.VisualStudio.Addin
                 string referenceFolder = string.Empty;
                 string serviceRefFolder = string.Empty;
 
-                if (IsWebProject(project))
+                if (IsWebSite(project))
                 {
                     VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
                     referenceFolder = Path.Combine(website.Project.FullName, "App_WebReferences");
@@ -1063,7 +1082,7 @@ namespace NPanday.VisualStudio.Addin
         string projectReferenceFolder(Project project)
         {
             string wsPath = null;
-            if (IsWebProject(project))
+            if (IsWebSite(project))
             {
                 VsWebSite.VSWebSite website = (VsWebSite.VSWebSite)project.Object;
                 wsPath = Path.Combine(website.Project.FullName, "App_WebReferences");
@@ -1466,7 +1485,7 @@ namespace NPanday.VisualStudio.Addin
                     Solution2 solution = (Solution2)_applicationObject.Solution;
                     foreach (Project project in solution.Projects)
                     {
-                        if (!IsWebProject(project) && !IsFolder(project) && !IsCloudProject(project) && project.Object != null)
+                        if (!IsWebSite(project) && !IsFolder(project) && !IsCloudProject(project) && project.Object != null)
                         {
                             IReferenceManager mgr = new ReferenceManager();
                             mgr.OnError += new EventHandler<ReferenceErrorEventArgs>(refmanager_OnError);
@@ -1862,7 +1881,7 @@ namespace NPanday.VisualStudio.Addin
                 bool asked = false;
                 foreach (Project project in solution.Projects)
                 {
-                    if (!IsWebProject(project) && ProjectHasWebReferences(project))
+                    if (!IsWebSite(project) && ProjectHasWebReferences(project))
                     {
                         if (!asked && MessageBox.Show("Do you want to update webservice references?", "NPanday Build", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                         {

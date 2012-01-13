@@ -112,8 +112,25 @@ namespace NPanday.VisualStudio.Addin
 
                     txtVersion.Text = version;
 
+                    bool hasWebProjects = false, hasCloudProjects = false;
+                    Solution2 solution = (Solution2)applicationObject.Solution;
+                    foreach (Project project in solution.Projects)
+                    {
+                        if (isWebProject(project))
+                        {
+                            hasWebProjects = true;
+                        }
+                        if (isCloudProject(project))
+                        {
+                            hasCloudProjects = true;
+                        }
+                    }
+                    // disabled if there are cloud projects (must be on), or if there are no web projects (not useful)
+                    useMsDeployCheckBox.Enabled = hasWebProjects && !hasCloudProjects;
+
                     // TODO: remember this, or have a default
-                    useMsDeployCheckBox.Checked = true;
+                    // force to false if no web projects, force to true if cloud projects
+                    useMsDeployCheckBox.Checked = hasWebProjects || hasCloudProjects;
                 }
                 catch { /*do nothing*/}
 
@@ -442,26 +459,34 @@ namespace NPanday.VisualStudio.Addin
             log.Warn(e.Message);
         }
 
-        private const string WEB_PROJECT_KIND_GUID = "{E24C65DC-7377-472B-9ABA-BC803B73C61A}";
         private static bool isWebProject(Project project)
         {
             // make sure there's a project item
             if (project == null)
                 return false;
 
-            // compare the project kind to the web project guid
-            return (String.Compare(project.Kind, WEB_PROJECT_KIND_GUID, true) == 0);
+            // TODO: better location for utility
+            return Connect.IsWebProject(project);
         }
 
-        private const string FOLDER_KIND_GUID = "{66A26720-8FB5-11D2-AA7E-00C04F688DDE}";
+        private static bool isCloudProject(Project project)
+        {
+            // make sure there's a project item
+            if (project == null)
+                return false;
+
+            // TODO: better location for utility
+            return Connect.IsCloudProject(project);
+        }
+
         private static bool isFolder(Project project)
         {
             // make sure there's a project item
             if (project == null)
                 return false;
 
-            // compare the project kind to the folder guid
-            return (String.Compare(project.Kind, FOLDER_KIND_GUID, true) == 0);
+            // TODO: better location for utility
+            return Connect.IsFolder(project);
         }
     }
 }
