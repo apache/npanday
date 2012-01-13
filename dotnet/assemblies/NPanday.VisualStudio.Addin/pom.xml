@@ -38,20 +38,15 @@
       <type>dotnet-library</type> 
     </dependency>  
     <dependency> 
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>NPanday.Logging</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version>
+      <groupId>org.apache.logging</groupId>
+      <artifactId>log4net</artifactId>  
+      <version>1.2.11</version>
       <type>dotnet-library</type> 
+      <classifier>net-2.0</classsifier>
     </dependency>  
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Pom</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>dotnet-library</type> 
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday.visualstudio</groupId>
-      <artifactId>NPanday.VisualStudio</artifactId>  
       <version>1.5.0-incubating-SNAPSHOT</version>
       <type>dotnet-library</type> 
     </dependency>  

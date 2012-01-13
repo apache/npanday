@@ -59,11 +59,5 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\NPanday.Logging\src\main\csharp\NPanday.Logging.csproj">
-      <Project>{C511B03B-8AB7-4E61-9F6E-5E6F9F65E8CE}</Project>
-      <Name>NPanday.Logging</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
