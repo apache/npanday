@@ -121,6 +121,7 @@
                   <artifactId>log4net</artifactId>
                   <version>1.2.11</version>
                   <classifier>net-2.0</classifier>
+                  <type>dotnet-library</type>
                   <destFileName>log4net.dll</destFileName>
                 </artifactItem>
               </artifactItems>
