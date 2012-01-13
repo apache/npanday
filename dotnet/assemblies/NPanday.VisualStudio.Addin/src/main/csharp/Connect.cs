@@ -370,10 +370,10 @@ namespace NPanday.VisualStudio.Addin
                 // TODO: should be a better way to enable this
                 if (_addInInstance.Name.Contains("SNAPSHOT"))
                 {
-                    level = log4net.Core.Level.Debug;
+                    level = Level.Debug;
                 }
 
-                Hierarchy h = (Hierarchy)log4net.LogManager.GetRepository();
+                Hierarchy h = (Hierarchy)LogManager.GetRepository();
                 Logger rootLogger = h.Root;
                 OutputWindowPaneAppender appender = new OutputWindowPaneAppender(outputWindowPane, level);
                 rootLogger.AddAppender(appender);

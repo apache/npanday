@@ -18,7 +18,14 @@ namespace NPanday.VisualStudio
             base.AddFilter(filter);
 
             PatternLayout layout = new PatternLayout();
-            layout.ConversionPattern = "%date %-5level %logger - %message%newline";
+            if (maxLevel.CompareTo(Level.Debug) <= 0)
+            {
+                layout.ConversionPattern = "%date %-5level %logger - %message%newline";
+            }
+            else
+            {
+                layout.ConversionPattern = "[%level] %message%newline";
+            }
             layout.ActivateOptions();
             base.Layout = layout;
         }
