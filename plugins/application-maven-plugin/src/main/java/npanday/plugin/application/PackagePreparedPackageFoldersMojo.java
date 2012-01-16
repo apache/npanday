@@ -64,8 +64,7 @@ public class PackagePreparedPackageFoldersMojo
     /**
      * The Zip archiver.
      *
-     * @parameter role="component.org.codehaus.plexus.archiver.Archiver" role-hint="zip"
-     * @required
+     * @component role="org.codehaus.plexus.archiver.Archiver" role-hint="zip"
      */
     private ZipArchiver archiver;
 
