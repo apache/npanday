@@ -531,6 +531,11 @@ under the License.
         <version>1.0-alpha-9-stable-1</version>
       </dependency>
       <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-exec</artifactId>
+        <version>1.1</version>
+      </dependency>
+      <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-api</artifactId>
         <version>1.0-alpha-32</version>
