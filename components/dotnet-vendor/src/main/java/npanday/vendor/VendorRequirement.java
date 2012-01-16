@@ -130,6 +130,10 @@ public class VendorRequirement
         return vendor != null && vendorVersion != null && frameworkVersion != null;
     }
 
+    public VendorRequirement clone(){
+        return new VendorRequirement( vendor, vendorVersion,  frameworkVersion);
+    }
+
     public String toString()
     {
         return "[" + getClass().getSimpleName() + " for vendor " + visibleNullString( vendor ) + " version "

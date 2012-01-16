@@ -42,6 +42,7 @@
     <module>dotnet-registry</module>
     <module>dotnet-vendor</module>
     <module>dotnet-packaging</module>
+    <module>dotnet-msbuild</module>
   </modules>
   <dependencies>
     <dependency>

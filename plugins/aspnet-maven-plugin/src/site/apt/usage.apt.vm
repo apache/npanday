@@ -32,13 +32,15 @@ Using the NPanday ASP.NET Maven Plugin
     <execution>
       <goals>
         <goal>assemble-package-files</goal>
-        <goal>process-web-config</goal>
+        <goal>process-configs</goal>
       </goals>
     </execution>
   </executions>
 </plugin>
 +---+
 
-  Read more about how to control which files to include and not to include here:
+  Read more about configuration transformations and how to control
+  which file includes/excludes here in the
   {{{../../guide/advanced/application-packaging.html}.NET Application Packaging}}
+  section.
 

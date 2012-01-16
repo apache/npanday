@@ -28,10 +28,10 @@ import java.io.File;
 
 /**
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
- *
  * @plexus.component role="npanday.packaging.MixinAsssemblyReader"
  */
-public class MixinAsssemblyReader extends DefaultAssemblyReader
+public class MixinAsssemblyReader
+    extends DefaultAssemblyReader
 {
     private String[] componentDescriptors;
 
@@ -46,14 +46,14 @@ public class MixinAsssemblyReader extends DefaultAssemblyReader
      *
      */
     @Override
-    protected void mergeComponentsWithMainAssembly( Assembly assembly, File assemblyDir,
-                                                    AssemblerConfigurationSource configSource )
-        throws AssemblyReadException
+    protected void mergeComponentsWithMainAssembly(
+        Assembly assembly, File assemblyDir, AssemblerConfigurationSource configSource ) throws AssemblyReadException
     {
         appendComponentDescriptors( assembly );
 
-        super.mergeComponentsWithMainAssembly( assembly, assemblyDir,
-                                               configSource );    //To change body of overridden methods use File | Settings | File Templates.
+        super.mergeComponentsWithMainAssembly(
+            assembly, assemblyDir, configSource
+        );    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     /**
@@ -61,8 +61,12 @@ public class MixinAsssemblyReader extends DefaultAssemblyReader
      */
     protected void appendComponentDescriptors( Assembly assembly )
     {
-        for (String componentDescriptor : componentDescriptors){
-            getLogger().debug( "NPANDAY-110-001: Mixing in component descriptor '" + componentDescriptor + "' to assembly with id '" + assembly.getId() + "'.");
+        for ( String componentDescriptor : componentDescriptors )
+        {
+            getLogger().debug(
+                "NPANDAY-110-001: Mixing in component descriptor '" + componentDescriptor + "' to assembly with id '"
+                    + assembly.getId() + "'."
+            );
             assembly.addComponentDescriptor( componentDescriptor );
         }
     }

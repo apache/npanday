@@ -44,7 +44,7 @@ import static com.google.common.collect.Iterables.toArray;
 public class AssemblePackageFilesMojo
     extends AbstractMojo
 {
-    Splitter COMMANDLINE_LISTS_SPLITTER = Splitter.on( "," ).omitEmptyStrings().trimResults();
+    Splitter COMMANDLINE_LISTS_SPLITTER = Splitter.on( ";" ).omitEmptyStrings().trimResults();
 
     /**
      * Specifies if the goal should be skipped.
@@ -62,7 +62,7 @@ public class AssemblePackageFilesMojo
     private String assemblyDescriptor;
 
     /**
-     * Commandline version of {@see mixinAssemblyComponentDescriptors}. Spearate each item with a comma.
+     * Commandline version of {@see mixinAssemblyComponentDescriptors}. Spearate each item with a semicolon.
      *
      * @parameter expression="${mixinAssemblyComponentDescriptorList}"
      */

@@ -38,11 +38,11 @@ import java.util.List;
  *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  * @phase package
- * @goal package
+ * @goal create-package
  *
  * @since 1.5.0-incubating
  */
-public class PackagePreparedPackageFolders
+public class PackagePreparedPackageFoldersMojo
     extends AbstractIteratingMojo<PreparedPackage>
 {
 
@@ -64,7 +64,7 @@ public class PackagePreparedPackageFolders
     /**
      * The Zip archiver.
      *
-     * @parameter expression="${component.org.codehaus.plexus.archiver.Archiver#zip}"
+     * @parameter role="component.org.codehaus.plexus.archiver.Archiver" role-hint="zip"
      * @required
      */
     private ZipArchiver archiver;

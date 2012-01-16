@@ -31,8 +31,8 @@ import static com.google.common.collect.Lists.newArrayList;
  * Picks up a prepared package folder and packages it using the MSDeploy command line tool.
  *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
- * @goal create-package
  * @phase package
+ * @goal create-package
  */
 public class MsDeployCreatePackageMojo
     extends AbstractMsDeployMojo<CreatePackageIterationItem>

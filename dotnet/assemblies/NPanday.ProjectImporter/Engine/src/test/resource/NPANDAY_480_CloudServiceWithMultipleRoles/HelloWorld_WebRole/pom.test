@@ -33,13 +33,10 @@
             <id>prepare-package</id>
             <goals>
               <goal>assemble-package-files</goal>
-              <goal>process-web-config</goal>
+              <goal>process-configs</goal>
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <webConfig>Web.config</webConfig>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>

@@ -45,6 +45,21 @@ Packaging Applications in NPanday
   these is delivered by each its plugin, the {{{../../plugins/aspnet-maven-plugin/index.html}aspnet-maven-plugin}}
   and {{{../../plugins/aspnet-maven-plugin/index.html}application-maven-plugin}}.
 
+* Apply configuration transformations
+
+  NPanday supports configuration transformations through
+  {{{http://msdn.microsoft.com/en-us/library/dd465326.aspx}Microsoft Xml Document Transform}}, also called XDT. This
+  enables modifications for config files before they make it into the package. While Visual Studio (2008+) only supports
+  XDT for web.config, NPanday can apply it to all config files, even with other extensions than <<<*.config>>>
+
+  By default, NPanday will transform all <<<&lt;name&gt;.config>>> files using a corresponding XDT transformation named
+  <<<&lt;name&gt;.package.config>>>.
+
+  <<XDT currently only works with .NET 3.5 and 4.0!>>
+
+  Read about the <<<process-configs>>> goals in the plugin reference for packaging mojos in order to find out, how you
+  tweak the config handling.
+
 * Take control over what gets packaged
 
   NPandays packaging plugins try to find sensible defaults for the required package format, but those can be overridden

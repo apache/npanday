@@ -19,6 +19,7 @@ package npanday;
  * under the License.
  */
 
+import com.google.common.base.Preconditions;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.project.MavenProject;

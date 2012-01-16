@@ -30,6 +30,7 @@ import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.StateMachineProcessor;
 import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorRequirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class CapabilityMatcherImpl
             matchPolicies = new ArrayList<ExecutableMatchPolicy>();
         }
 
-        VendorInfo vendorInfo = matchVendorInfo(compilerRequirement);
+        VendorInfo vendorInfo = matchVendorInfo(compilerRequirement.getVendorRequirement());
         if ( matchPolicies == null )
         {
             matchPolicies = new ArrayList<ExecutableMatchPolicy>();
@@ -121,7 +122,7 @@ public class CapabilityMatcherImpl
                                                               List<ExecutableMatchPolicy> matchPolicies )
         throws PlatformUnsupportedException
     {
-        VendorInfo vendorInfo = matchVendorInfo(executableRequirement);
+        VendorInfo vendorInfo = matchVendorInfo(executableRequirement.getVendorRequirement());
         if ( matchPolicies == null )
         {
             matchPolicies = new ArrayList<ExecutableMatchPolicy>();
@@ -171,7 +172,7 @@ public class CapabilityMatcherImpl
         return  matchingCapabilities.get( 0 );
     }
 
-    private VendorInfo matchVendorInfo(ExecutableRequirement executableRequirement)
+    private VendorInfo matchVendorInfo(VendorRequirement executableRequirement)
         throws PlatformUnsupportedException
     {
        VendorInfo vendorInfo;

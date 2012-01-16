@@ -31,8 +31,8 @@ import npanday.vendor.VendorRequirement;
  * @see CapabilityMatcher
  */
 public class ExecutableRequirement
-    extends VendorRequirement
 {
+    private VendorRequirement vendor;
 
     private String profile;
 
@@ -46,9 +46,7 @@ public class ExecutableRequirement
     public ExecutableRequirement(
         String vendorName, String vendorVersion, String frameworkVersion, String profile, String executableVersion )
     {
-        super( vendorName, vendorVersion, frameworkVersion );
-        this.profile = profile;
-        this.executableVersion = executableVersion;
+        this(new VendorRequirement( vendorName, vendorVersion, frameworkVersion ),  profile, executableVersion);
     }
 
     public ExecutableRequirement( Vendor vendor, String vendorVersion, String frameworkVersion, String profile )
@@ -59,9 +57,23 @@ public class ExecutableRequirement
     public ExecutableRequirement(
         Vendor vendor, String vendorVersion, String frameworkVersion, String profile, String executableVersion )
     {
-        super( vendor, vendorVersion, frameworkVersion );
+        this(new VendorRequirement( vendor, vendorVersion, frameworkVersion ),  profile, executableVersion);
+    }
+
+    public ExecutableRequirement( VendorRequirement vendor, String profile, String executableVersion )
+    {
+        this.vendor = vendor;
         this.profile = profile;
         this.executableVersion = executableVersion;
+    }
+
+    public ExecutableRequirement( VendorRequirement vendor, String identifier )
+    {
+        this(vendor, identifier, null);
+    }
+
+    public VendorRequirement getVendorRequirement(){
+        return vendor;
     }
 
     public String getProfile()
