@@ -19,6 +19,7 @@ package npanday.executable.compiler.impl;
  * under the License.
  */
 
+import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandExecutor;
 import npanday.executable.CommandFilter;
@@ -70,7 +71,8 @@ public class AspxCompiler
             (String)configuration.get( "switchformats" )
         );
         commandExecutor.setLogger( logger );
-        commandExecutor.executeCommand( getExecutable(), getCommands(), null, failOnErrorOutput() );
+        String executable = PathUtil.getExecutable( getExecutable(), compilerContext.getProbingPaths(), logger );
+        commandExecutor.executeCommand( executable, getCommands(), null, failOnErrorOutput() );
     }
 
 }
