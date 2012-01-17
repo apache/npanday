@@ -45,8 +45,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             Plugin aspnetPlugin = AddPlugin("org.apache.npanday.plugins", "aspnet-maven-plugin", null, false);
             AddPluginExecution(aspnetPlugin, "prepare-package", goals.ToArray(), null);
 
-            // TODO: make it optional to configure "release" instead of "package" here
-            // Maybe set transformationHint to projectDigest.WebConfig???
+            if (!string.IsNullOrEmpty(projectDigest.WebConfig))
+            {
+                AddPluginConfiguration(aspnetPlugin, "transformationHint", projectDigest.WebConfig);
+            }
 
             Plugin msdeployPlugin = AddPlugin("org.apache.npanday.plugins", "msdeploy-maven-plugin", null, false);
             AddPluginExecution(msdeployPlugin, "create-msdeploy-package", new string[] { "create-package" }, null);
