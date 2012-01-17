@@ -18,7 +18,8 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <groupId>org.apache.npanday.plugins</groupId>
     <version>1.5.0-incubating-SNAPSHOT</version>
@@ -59,7 +60,6 @@
           <configuration>
             <excludes>
               <exclude>**/*.iml</exclude>
-
               <exclude>src/it/**</exclude>
             </excludes>
           </configuration>
@@ -67,4 +67,32 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <profiles>
+    <!-- TODO: remove when XDT doesn't rely on Visual Studio being installed -->
+    <profile>
+      <id>no-visual-studio</id>
+      <activation>
+        <file>
+          <missing>${env.PROGRAMFILES}/MSBuild/Microsoft/VisualStudio/v10.0/Web/Microsoft.Web.Publishing.Tasks.dll</missing>
+        </file>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-invoker-plugin</artifactId>
+              <configuration>
+                <pomExcludes>
+                  <!-- This test requires Visual Studio 2010 be installed -->
+                  <pomExclude>IT004_ConfigurationHandling/pom.xml</pomExclude>
+                </pomExcludes>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
 </project>
