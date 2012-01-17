@@ -24,7 +24,7 @@
   <parent>
     <artifactId>maven-dotnet-plugins</artifactId>
     <groupId>org.apache.npanday.plugins</groupId>
-    <version>1.5.0-maestrodev-5-SNAPSHOT</version>
+    <version>1.5.0-incubating-SNAPSHOT</version>
   </parent>
   <groupId>org.apache.npanday.plugins</groupId>
   <artifactId>silverlight-maven-plugin</artifactId>
