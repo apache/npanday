@@ -173,8 +173,7 @@ public class ConfigFileHandler
 
         for ( String configFilePath : scanner.getIncludedFiles() )
         {
-            File configFile = new File( configFilePath );
-
+            File configFile = new File( baseDir, configFilePath );
 
             if ( isTransformationFile( configFile ) )
             {
@@ -185,17 +184,12 @@ public class ConfigFileHandler
                 continue;
             }
 
-            final File targetConfigFile = new File( targetFolder, relativize(configFile, baseDir) );
+            final File targetConfigFile = new File( targetFolder, configFilePath );
 
             handleConfigFile(
                 vendorRequirement, configFile, transformationHint, targetConfigFile
             );
         }
-    }
-
-    private String relativize( File file, File base )
-    {
-        return base.toURI().relativize(file.toURI()).getPath();
     }
 
     private Splitter SPLIT_ON_DOTS = Splitter.on( '.' );
