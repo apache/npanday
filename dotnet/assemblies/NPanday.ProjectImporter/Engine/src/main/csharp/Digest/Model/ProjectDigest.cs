@@ -105,6 +105,19 @@ namespace NPanday.ProjectImporter.Digest.Model
             set { roleType = value; }
         }
 
+        private bool silverlightApplication;
+        public bool SilverlightApplication
+        {
+            get { return silverlightApplication; }
+            set { silverlightApplication = value; }
+        }
+
+        private List<SilverlightApplicationReference> silverlightApplicationList;
+        public List<SilverlightApplicationReference> SilverlightApplicationList
+        {
+            get { return silverlightApplicationList; }
+            set { silverlightApplicationList = value; }
+        }
 
         private Reference[] references;
         public Reference[] References

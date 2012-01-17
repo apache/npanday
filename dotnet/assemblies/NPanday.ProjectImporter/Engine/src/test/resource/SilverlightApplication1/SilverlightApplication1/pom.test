@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent>
+    <artifactId>test-parent</artifactId>
+    <groupId>test.group</groupId>
+    <version>1.2.3-SNAPSHOT</version>
+    <relativePath>..\pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>SilverlightApplication1</artifactId>
+  <packaging>silverlight-application</packaging>
+  <name>test.group : SilverlightApplication1</name>
+  <build>
+    <sourceDirectory>./</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.npanday.plugins</groupId>
+        <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>
+        <configuration>
+          <frameworkVersion>3.5</frameworkVersion>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.npanday.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>test.group</groupId>
+      <artifactId>SilverlightClassLibrary1</artifactId>
+      <version>1.2.3-SNAPSHOT</version>
+      <type>library</type>
+    </dependency>
+    <dependency>
+      <groupId>System.Net</groupId>
+      <artifactId>System.Net</artifactId>
+      <version>3.5.0.0</version>
+      <type>gac_msil</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
+    </dependency>
+  </dependencies>
+</project>

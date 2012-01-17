@@ -513,6 +513,14 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                         {
                             projectDigest.OutputType = buildProperty.Value;
                         }
+                        else if ("SilverlightApplication".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            projectDigest.SilverlightApplication = bool.Parse(buildProperty.Value);
+                        }
+                        else if ("SilverlightApplicationList".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            projectDigest.SilverlightApplicationList = SilverlightApplicationReference.parseApplicationList(buildProperty.Value);
+                        }
                         else if ("RoleType".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
                         {
                             projectDigest.RoleType = buildProperty.Value;

@@ -50,7 +50,8 @@
         <include>**/*.bmp</include>
         <include>**/*.ico</include>
 
-        <!-- silverlight? -->
+        <!-- silverlight -->
+        <include>**/*.xap</include>
 
         <!-- flash -->
         <include>**/*.swf</include>

@@ -211,11 +211,14 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
         /// </summary>
         WindowsAzure_CloudService = 1 << 28,
 
+        Silverlight = 1 << 29,
+
         // Aux types
 
-        WebDeploy2 = 1 << 29,
+        WebDeploy2 = 1 << 30,
 
-        WindowsAzure_Worker = 1 << 30,
-        // TODO: if we get to 31 we'll run out, refactor so this is an enum of the GUIDs instead
+        WindowsAzure_Worker = 1 << 31,
+
+        // TODO: we have run out of bits, refactor so this is an enum of the GUIDs instead
     }
 }

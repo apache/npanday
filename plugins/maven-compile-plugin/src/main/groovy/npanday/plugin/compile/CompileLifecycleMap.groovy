@@ -114,6 +114,20 @@ class CompileLifecycleMap extends LifecycleMap
             b.deploy (mv_deploy)
 		}
 
+        // For now, we rely on MSBuild
+        // It could be possible to construct the project more directly (using the base class):
+        //  - compile plugin
+        //  - generate AppManifest.xml
+        //  - package AppManifest.xml + target DLL + dependencies as a ZIP (extension XAP)
+        // However, there are more complexities in how msbuild performs targets
+        forTypes( [ArtifactType.SILVERLIGHT_LIBRARY, ArtifactType.SILVERLIGHT_APPLICATION] ) {
+            LifecycleMappingBuilder b->
+            b.validate (default_validate)
+            b._package (["org.apache.npanday.plugins:NPanday.Plugin.Msbuild.JavaBinding:$npandayVersion:compile","org.apache.npanday.plugins:silverlight-maven-plugin:$npandayVersion:package"])
+            b.install (default_install)
+            b.deploy (mv_deploy)
+        }
+
         // TODO: Should use the custom lifecycle mapping! Just delete it?
 		forTypes( [ArtifactType.DOTNET_EXECUTABLE_CONFIG, ArtifactType.EXECONFIG] ) {
 			LifecycleMappingBuilder b->

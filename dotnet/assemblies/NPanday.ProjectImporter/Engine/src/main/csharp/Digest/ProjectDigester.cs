@@ -81,6 +81,7 @@ namespace NPanday.ProjectImporter.Digest
         {
             List<ProjectDigest> projectDigests = new List<ProjectDigest>();
             Dictionary<string, ProjectDigest> projDigestDictionary = new Dictionary<string, ProjectDigest>();
+            Dictionary<string, ProjectDigest> projDigestGuidDictionary = new Dictionary<string, ProjectDigest>();
 
             foreach (Dictionary<string, object> project in projects)
             {
@@ -88,6 +89,7 @@ namespace NPanday.ProjectImporter.Digest
                 ProjectDigest projDigest = digestProject(project);
                 projectDigests.Add(projDigest);
                 projDigestDictionary.Add(projDigest.ProjectName, projDigest);
+                projDigestGuidDictionary.Add(projDigest.ProjectGuid, projDigest);
             }
 
             List<ProjectDigest> tobeIncluded = new List<ProjectDigest>();
@@ -150,24 +152,31 @@ namespace NPanday.ProjectImporter.Digest
             // add tobe included
             projectDigests.AddRange(tobeIncluded);
 
-
-
             // insert the projectRererences
             foreach (ProjectDigest prjDigest in projectDigests)
             {
-                if (prjDigest.ProjectReferences == null)
+                if (prjDigest.ProjectReferences != null)
                 {
-                    // if no project references proceed to the next loop
-                    continue;
+                    for (int i = 0; i < prjDigest.ProjectReferences.Length; i++)
+                    {
+                        ProjectReference prjRef = prjDigest.ProjectReferences[i];
+                        if (projDigestDictionary.ContainsKey(prjRef.Name))
+                        {
+                            ProjectDigest pd = projDigestDictionary[prjRef.Name];
+                            prjRef.ProjectReferenceDigest = pd;
+                        }
+                    }
                 }
 
-                for (int i = 0; i < prjDigest.ProjectReferences.Length; i++)
+                if (prjDigest.SilverlightApplicationList != null)
                 {
-                    ProjectReference prjRef = prjDigest.ProjectReferences[i];
-                    if (projDigestDictionary.ContainsKey(prjRef.Name))
+                    foreach (SilverlightApplicationReference app in prjDigest.SilverlightApplicationList)
                     {
-                        ProjectDigest pd = projDigestDictionary[prjRef.Name];
-                        prjRef.ProjectReferenceDigest = pd;
+                        if (!projDigestGuidDictionary.ContainsKey(app.Guid))
+                        {
+                            throw new Exception("Silverlight application in the web application project must be included in the solution: " + app.ToString());
+                        }
+                        app.Project = projDigestGuidDictionary[app.Guid];
                     }
                 }
             }

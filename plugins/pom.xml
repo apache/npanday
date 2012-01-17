@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   ~ Licensed to the Apache Software Foundation (ASF) under one
   ~ or more contributor license agreements.  See the NOTICE file
@@ -58,6 +57,7 @@
     <module>netplugins/NPanday.Plugin.Settings/javabinding</module>
     <module>netplugins/NPanday.Plugin.SysRef/javabinding</module>
     <module>netplugins/NPanday.Plugin.Msbuild/javabinding</module>
+    <module>silverlight-maven-plugin</module>
   </modules>
   <dependencies>
     <dependency>

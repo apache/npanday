@@ -427,22 +427,24 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         protected void AddInterProjectDependency(ProjectReference projectRef)
         {
+            AddDependency(CreateInterProjectDependency(projectRef.Name, projectRef.ProjectReferenceDigest));
+        }
 
+        protected Dependency CreateInterProjectDependency(string name, ProjectDigest digest)
+        {
             Dependency interDependency = new Dependency();
 
-            interDependency.artifactId = projectRef.Name;
-            interDependency.groupId = !string.IsNullOrEmpty(groupId) ? groupId : projectRef.Name;
+            interDependency.artifactId = name;
+            interDependency.groupId = !string.IsNullOrEmpty(groupId) ? groupId : name;
             interDependency.version = string.IsNullOrEmpty(version) ? "1.0-SNAPSHOT" : version;
             interDependency.type = "dotnet-library";
 
-            if (projectRef.ProjectReferenceDigest != null
-                && !string.IsNullOrEmpty(projectRef.ProjectReferenceDigest.OutputType))
+            if (digest != null
+                && !string.IsNullOrEmpty(digest.OutputType))
             {
-                interDependency.type = projectRef.ProjectReferenceDigest.OutputType.ToLower();
+                interDependency.type = digest.OutputType.ToLower();
             }
-
-            AddDependency(interDependency);
-
+            return interDependency;
         }
 
 
@@ -544,6 +546,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         protected void AddPluginExecution(Plugin plugin, string id, string[] goals, string phase)
         {
+            AddPluginExecution(plugin, id, goals, phase, null);
+        }
+
+        protected void AddPluginExecution(Plugin plugin, string id, string[] goals, string phase, Dictionary<string,string> configuration)
+        {
             if (goals.Length == 0)
                 throw new Exception("Plugin execution must contain goals");
 
@@ -560,11 +567,29 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             exe.goals = goals;
             exe.phase = phase;
 
+            if (configuration != null)
+            {
+                PluginExecutionConfiguration config = new PluginExecutionConfiguration();
+
+                List<XmlElement> elems = new List<XmlElement>();
+
+                XmlDocument xmlDocument = new XmlDocument();
+
+                foreach (string key in configuration.Keys)
+                {
+                    XmlElement elem = xmlDocument.CreateElement(key, @"http://maven.apache.org/POM/4.0.0");
+                    elem.InnerText = configuration[key];
+                    elems.Add(elem);
+                }
+
+                config.Any = elems.ToArray();
+                exe.configuration = config;
+            }
+
             list.Add(exe);
 
             plugin.executions = list.ToArray();
         }
-
 
         protected void AddPluginConfiguration(Plugin plugin, string tag, string value)
         {

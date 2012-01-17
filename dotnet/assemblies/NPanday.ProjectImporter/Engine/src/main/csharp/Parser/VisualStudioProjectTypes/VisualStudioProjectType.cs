@@ -212,6 +212,11 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
             __visualStudioProjectTypes.Add("CC5FD16D-436D-48AD-A40C-5A424C6E3E79", VisualStudioProjectTypeEnum.WindowsAzure_CloudService);
             __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.WindowsAzure_CloudService, "CC5FD16D-436D-48AD-A40C-5A424C6E3E79");
             __visualStudioProjectTypeSupported.Add("CC5FD16D-436D-48AD-A40C-5A424C6E3E79", true);
+
+            //Silverlight Project {A1591282-1198-4647-A2B1-27E5FF5F6F3B}
+            __visualStudioProjectTypes.Add("A1591282-1198-4647-A2B1-27E5FF5F6F3B", VisualStudioProjectTypeEnum.Silverlight);
+            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Silverlight, "A1591282-1198-4647-A2B1-27E5FF5F6F3B");
+            __visualStudioProjectTypeSupported.Add("A1591282-1198-4647-A2B1-27E5FF5F6F3B", true);
         }
 
 

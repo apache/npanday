@@ -174,7 +174,11 @@ public enum ArtifactType
     AZURE_CLOUD_SERVICE_CONFIGURATION ("azure-cloud-service-configuration", null, "cscfg"),
 
     /* MSDeploy support */
-    MSDEPLOY_PACKAGE ("msdeploy-package", null, "msdeploy.zip", true);
+    MSDEPLOY_PACKAGE ("msdeploy-package", null, "msdeploy.zip", true),
+
+    // Silverlight support
+    SILVERLIGHT_LIBRARY ("silverlight-library", "library", "dll"),
+    SILVERLIGHT_APPLICATION ("silverlight-application", "library", "xap", true);
 
     /**
      * The extension used for the artifact(netmodule, dll, exe)

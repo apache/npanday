@@ -150,6 +150,16 @@ namespace NPanday.ProjectImporter.Converter
                 VisualStudioProjectTypeEnum.Model_View_Controller_MVC3 | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.WebDeploy2,
                 typeof(ASPNetPomConverter)
             );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Silverlight | VisualStudioProjectTypeEnum.Windows__CSharp,
+                typeof(SilverlightPomConverter)
+            );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Silverlight | VisualStudioProjectTypeEnum.Windows__VbDotNet,
+                typeof(SilverlightPomConverter)
+            );
         }
 
 

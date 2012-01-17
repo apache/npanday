@@ -34,7 +34,7 @@
     <OutputPath>..\..\..\target\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"/>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="NPanday.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -57,9 +57,11 @@
     <Compile Include="Converter\Algorithms\ASPNetPomConverter.cs" />
     <Compile Include="Converter\Algorithms\AzurePomConverter.cs" />
     <Compile Include="Converter\Algorithms\AzureWorkerPomConverter.cs" />
+    <Compile Include="Converter\Algorithms\SilverlightPomConverter.cs" />
     <Compile Include="Converter\Algorithms\WebWithVbOrCsProjectFilePomConverter.cs" />
     <Compile Include="Digest\Algorithms\BaseProjectDigestAlgorithm.cs" />
     <Compile Include="Digest\Model\ComReference.cs" />
+    <Compile Include="Digest\Model\SilverlightApplicationReference.cs" />
     <Compile Include="ImportProjectStructureAlgorithms\AbnormalProject.cs" />
     <Compile Include="ImportProjectStructureAlgorithms\AbstractProjectAlgorithm.cs" />
     <Compile Include="ImportProjectStructureAlgorithms\FlatMultiModuleProject.cs" />

@@ -246,6 +246,15 @@ public final class CompilerContextImpl
         {
             Artifact artifact = (Artifact) i.next();
 
+            // TODO: use isAddedToClassPath instead? May need to annotate types
+            if ( !ArtifactTypeHelper.isDotnetLibrary( artifact.getType() ) && !ArtifactTypeHelper.isDotnetAnyGac(
+                artifact.getType() ) )
+            {
+                continue;
+            }
+
+            // TODO: consider scope?
+
             if ( !hasArtifact( artifact ) )
             {
                 directLibraries.add( artifact );
