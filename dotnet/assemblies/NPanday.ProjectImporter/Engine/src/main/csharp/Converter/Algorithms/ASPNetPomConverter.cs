@@ -45,6 +45,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             Plugin aspnetPlugin = AddPlugin("org.apache.npanday.plugins", "aspnet-maven-plugin", null, false);
             AddPluginExecution(aspnetPlugin, "prepare-package", goals.ToArray(), null);
 
+            if (!string.IsNullOrEmpty(projectDigest.TargetFramework))
+                AddPluginConfiguration(aspnetPlugin, "frameworkVersion", projectDigest.TargetFramework);
+
             if (!string.IsNullOrEmpty(projectDigest.WebConfig))
             {
                 AddPluginConfiguration(aspnetPlugin, "transformationHint", projectDigest.WebConfig);
