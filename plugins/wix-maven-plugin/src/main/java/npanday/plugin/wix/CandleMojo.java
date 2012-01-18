@@ -19,20 +19,17 @@ package npanday.plugin.wix;
  * under the License.
  */
 
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteException;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Goal which executes WiX candle to create a .wixobj file.
  *
  * @goal candle
- * 
+ *
  * @phase package
  */
 public class CandleMojo
@@ -44,7 +41,7 @@ public class CandleMojo
      * @required
      */
     private File[] sourceFiles;
-    
+
     /**
      * Definitions to be passed on before pre Compilation
      * @parameter expression="${definitions}"
@@ -63,70 +60,51 @@ public class CandleMojo
      */
     private File outputDirectory;
 
-    public void execute()
+    @Override
+    public String getCommand()
+    {
+        return "candle";
+    }
+
+    @Override
+    public List<String> getArguments()
         throws MojoExecutionException
     {
-        String paths = "";
-        for (int x = 0; x < sourceFiles.length; x++) {
-          File f = sourceFiles[x];
-          if ( !f.exists() )
-          {
-             throw new MojoExecutionException( "Source file does not exist " + sourceFiles[x] );
-          } else {
-            paths = paths + sourceFiles[x].getAbsolutePath() + " ";
-          }
+        List<String> arguments = new ArrayList<String>();
+
+        arguments.add( "-nologo" );
+        arguments.add( "-sw" );
+
+        if(definitions.length>0)
+        {
+            for ( String definition : definitions )
+            {
+                arguments.add( "-d" + definition );
+            }
         }
 
-        try {
-          CommandLine commandLine = new CommandLine( getWixPath( "candle" ) );
-          commandLine.addArgument( "-nologo" );
-          commandLine.addArgument( "-sw" ); 
-          
-          if(definitions.length>0)
-          {
-            for (int x = 0; x < definitions.length; x++) 
-            {
-                commandLine.addArgument( "-d" + definitions[x] );
-            }
-          }
-          
-          if(outputDirectory != null)
-          {
-            if (!outputDirectory.exists()) 
+        if(outputDirectory != null)
+        {
+            if (!outputDirectory.exists())
             {
               outputDirectory.mkdir();
             }
-            commandLine.addArgument( "-out" );
-            commandLine.addArgument( outputDirectory.getAbsolutePath() + "\\" );
-          }
-          if ( arch != null ) {
-            commandLine.addArgument( "-arch" );
-            commandLine.addArgument( arch );
-          }
-          if ( extensions != null ) {
-            for ( String ext : extensions ) {
-              commandLine.addArgument( "-ext" );
-              commandLine.addArgument( ext );
-            }
-          }
-
-          if ( arguments != null ) {
-            commandLine.addArguments( arguments );
-          }
-
-          commandLine.addArguments( paths );
-          
-          DefaultExecutor executor = new DefaultExecutor();
-          int exitValue = executor.execute(commandLine);
-          
-          if ( exitValue != 0 ) {
-              throw new MojoExecutionException( "Problem executing candle, return code " + exitValue );
-          }
-         
-        } catch (ExecuteException e) {
-          throw new MojoExecutionException( "Problem executing candle", e );
-        } catch (IOException e ) {
-          throw new MojoExecutionException( "Problem executing candle", e );
+            arguments.add( "-out" );
+            arguments.add( outputDirectory.getAbsolutePath() + "\\" );
         }
+
+        if ( arch != null ) {
+            arguments.add( "-arch " + arch );
+        }
+
+        for ( File sourceFile : sourceFiles )
+        {
+            if ( !sourceFile.exists() )
+            {
+                throw new MojoExecutionException( "Source file does not exist " + sourceFile );
+            }
+            arguments.add( sourceFile.getAbsolutePath() );
+        }
+        return arguments;
     }
 }

@@ -19,20 +19,18 @@ package npanday.plugin.wix;
  * under the License.
  */
 
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteException;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Goal which executes WiX light to create a .msi file.
  *
  * @goal light
- * 
+ *
  * @phase package
  */
 public class LightMojo
@@ -44,7 +42,7 @@ public class LightMojo
      * @required
      */
     private File[] objectFiles;
-    
+
     /**
      * Output file
      * @parameter expression="${outputFile}"
@@ -63,70 +61,63 @@ public class LightMojo
      */
     private File outputDirectory;
 
-    public void execute()
+
+    /**
+     * Localized string cultures to load from .wxl files and libraries.
+     *
+     * @parameter expression="${cultures}"
+     */
+    private String[] cultures;
+
+    @Override
+    public String getCommand()
+    {
+        return "light";
+    }
+
+    @Override
+    public List<String> getArguments()
         throws MojoExecutionException
     {
+        List<String> arguments = new ArrayList<String>();
 
-        String paths = "";
-        for (int x = 0; x < objectFiles.length; x++) {
-          File f = objectFiles[x];
-          if ( !f.exists() )
-          {
-             throw new MojoExecutionException( "Object file does not exist " + objectFiles[x] );
-          } else {
-            paths = paths + objectFiles[x].getAbsolutePath() + " ";
-          }
+        for ( File objectFile : objectFiles )
+        {
+            if ( !objectFile.exists() )
+            {
+                throw new MojoExecutionException( "Object file does not exist " + objectFile );
+            }
+            arguments.add( objectFile.getAbsolutePath() );
         }
 
         if(localizationFiles.length > 0)
         {
-          paths += "-loc ";
-          for (int x = 0; x < localizationFiles.length; x++) {
-            File f = localizationFiles[x];
-            if ( !f.exists() )
+            arguments.add( "-loc" );
+            for ( File localizationFile : localizationFiles )
             {
-               throw new MojoExecutionException( "Localization file does not exist " + objectFiles[x] );
-            } else {
-               paths = paths + localizationFiles[x].getAbsolutePath() + " ";
+                if ( !localizationFile.exists() )
+                {
+                    throw new MojoExecutionException( "Localization file does not exist " + localizationFile );
+                }
+                arguments.add( localizationFile.getAbsolutePath() );
             }
-          }
         }
-        
-        try {
-          CommandLine commandLine = new CommandLine( getWixPath( "light" ) );
-          commandLine.addArguments( paths );
 
-          if (outputFile != null) {
-            commandLine.addArgument( "-o" );
-            commandLine.addArgument( outputFile.getAbsolutePath() );
-          }
-          else if (outputDirectory != null) {
-            commandLine.addArgument( "-out" );
-            commandLine.addArgument( outputDirectory.getAbsolutePath() + "\\" );
-          }
-
-          if ( extensions != null ) {
-            for ( String ext : extensions ) {
-              commandLine.addArgument( "-ext" );
-              commandLine.addArgument( ext );
-            }
-          }
-
-          if ( arguments != null ) {
-            commandLine.addArguments( arguments );
-          }
-
-          DefaultExecutor executor = new DefaultExecutor();
-          int exitValue = executor.execute(commandLine);
-          
-          if ( exitValue != 0 ) {
-              throw new MojoExecutionException( "Problem executing light, return code " + exitValue );
-          }
-         
-        } catch (ExecuteException e) {
-         throw new MojoExecutionException( "Problem executing light", e );
-        } catch (IOException e ) {
-          throw new MojoExecutionException( "Problem executing light", e );
+        if (outputFile != null) {
+            arguments.add( "-o" );
+            arguments.add( outputFile.getAbsolutePath() );
         }
+        else if (outputDirectory != null) {
+            arguments.add( "-out" );
+            arguments.add( outputDirectory.getAbsolutePath() + "\\" );
+        }
+
+        if ( cultures != null )
+        {
+            String commaDelimitedCultures = StringUtils.join( cultures, "," );
+            arguments.add( "-cultures:" + commaDelimitedCultures );
+        }
+
+        return arguments;
     }
 }

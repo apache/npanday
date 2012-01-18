@@ -19,9 +19,15 @@ package npanday.plugin.wix;
  * under the License.
  */
 
-import java.io.File;
-
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteException;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 public abstract class AbstractWixMojo
     extends AbstractMojo
@@ -31,21 +37,74 @@ public abstract class AbstractWixMojo
     * @parameter
     */
     protected String[] extensions;
-    
+
     /**
-     * Agruments to pass to WiX executable as is
+     * Arguments to pass to WiX executable as is
      * @parameter expression="${arguments}"
      */
 
-     protected String arguments;
+    protected String arguments;
 
-     /**
-      * @parameter expression="${wix.home}" default-value="${env.WIX}"
-      */
-     private File wixHome;
-     
-     public String getWixPath( String name )
-     {
+    /**
+     * @parameter expression="${wix.home}" default-value="${env.WIX}"
+     */
+    private File wixHome;
+
+    /**
+     * Suppress schema validation of documents (performance boost)
+     *
+     * @parameter expression="${suppressSchemaValidation}"
+     */
+    private boolean suppressSchemaValidation;
+
+    public void execute()
+        throws MojoExecutionException
+    {
+        try
+        {
+            CommandLine commandLine = new CommandLine( getWixPath( getCommand() ) );
+
+            if ( extensions != null )
+            {
+                for ( String ext : extensions )
+                {
+                    commandLine.addArgument( "-ext " + ext );
+                }
+            }
+
+            if ( suppressSchemaValidation )
+            {
+                commandLine.addArgument( "-ss" );
+            }
+
+            if ( arguments != null )
+            {
+                commandLine.addArgument( arguments );
+            }
+
+            commandLine.addArguments( getArguments().toArray( new String[0] ) );
+
+            getLog().info( "Executing " + commandLine );
+
+            DefaultExecutor executor = new DefaultExecutor();
+            int exitValue = executor.execute( commandLine );
+            if ( exitValue != 0 )
+            {
+                throw new MojoExecutionException( "Problem executing " + getCommand() + ", return code " + exitValue );
+            }
+        }
+        catch ( ExecuteException e )
+        {
+            throw new MojoExecutionException( "Problem executing " + getCommand(), e );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Problem executing " + getCommand(), e );
+        }
+    }
+
+    private String getWixPath( String name )
+    {
          if ( wixHome != null )
          {
              return new File( new File( wixHome, "bin" ), name ).getAbsolutePath();
@@ -53,4 +112,8 @@ public abstract class AbstractWixMojo
          return name;
      }
 
+    public abstract String getCommand();
+
+    public abstract List<String> getArguments()
+        throws MojoExecutionException;
 }
