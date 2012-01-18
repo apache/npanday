@@ -752,7 +752,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 return dependency;
             }
 
-            List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(reference.Name, null, projectDigest.Platform);
+            List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(reference.Name, reference.Version, projectDigest.Platform);
 
             // resolve from GAC
             if (refs.Count > 0)
