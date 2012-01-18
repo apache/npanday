@@ -117,7 +117,7 @@ public class LightMojo
             arguments.add( outputDirectory.getAbsolutePath() + "\\" );
         }
 
-        if ( cultures != null )
+        if ( cultures != null && cultures.length > 0 )
         {
             String commaDelimitedCultures = StringUtils.join( cultures, "," );
             arguments.add( "-cultures:" + commaDelimitedCultures );
