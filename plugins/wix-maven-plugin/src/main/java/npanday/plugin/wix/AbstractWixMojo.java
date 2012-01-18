@@ -33,13 +33,15 @@ public abstract class AbstractWixMojo
     extends AbstractMojo
 {
     /**
-    * WiX extensions to use
-    * @parameter
-    */
+     * WiX extensions to use
+     *
+     * @parameter
+     */
     protected String[] extensions;
 
     /**
      * Arguments to pass to WiX executable as is
+     *
      * @parameter expression="${arguments}"
      */
 
@@ -105,12 +107,12 @@ public abstract class AbstractWixMojo
 
     private String getWixPath( String name )
     {
-         if ( wixHome != null )
-         {
-             return new File( new File( wixHome, "bin" ), name ).getAbsolutePath();
-         }
-         return name;
-     }
+        if ( wixHome != null )
+        {
+            return new File( new File( wixHome, "bin" ), name ).getAbsolutePath();
+        }
+        return name;
+    }
 
     public abstract String getCommand();
 

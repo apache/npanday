@@ -30,7 +30,6 @@ import java.util.List;
  * Goal which executes WiX light to create a .msi file.
  *
  * @goal light
- *
  * @phase package
  */
 public class LightMojo
@@ -38,6 +37,7 @@ public class LightMojo
 {
     /**
      * Location of the WiX object files.
+     *
      * @parameter expression="${objectFiles}"
      * @required
      */
@@ -45,18 +45,21 @@ public class LightMojo
 
     /**
      * Output file
+     *
      * @parameter expression="${outputFile}"
      */
     private File outputFile;
 
     /**
      * Location of the WiX localization files.
+     *
      * @parameter expression="${localizationFiles}"
      */
     private File[] localizationFiles;
 
-     /**
+    /**
      * Output file
+     *
      * @parameter expression="${outputDirectory}"
      */
     private File outputDirectory;
@@ -90,7 +93,7 @@ public class LightMojo
             arguments.add( objectFile.getAbsolutePath() );
         }
 
-        if(localizationFiles.length > 0)
+        if ( localizationFiles.length > 0 )
         {
             arguments.add( "-loc" );
             for ( File localizationFile : localizationFiles )
@@ -103,11 +106,13 @@ public class LightMojo
             }
         }
 
-        if (outputFile != null) {
+        if ( outputFile != null )
+        {
             arguments.add( "-o" );
             arguments.add( outputFile.getAbsolutePath() );
         }
-        else if (outputDirectory != null) {
+        else if ( outputDirectory != null )
+        {
             arguments.add( "-out" );
             arguments.add( outputDirectory.getAbsolutePath() + "\\" );
         }

@@ -29,7 +29,6 @@ import java.util.List;
  * Goal which executes WiX candle to create a .wixobj file.
  *
  * @goal candle
- *
  * @phase package
  */
 public class CandleMojo
@@ -37,6 +36,7 @@ public class CandleMojo
 {
     /**
      * Location of the WiX source files.
+     *
      * @parameter expression="${sourceFiles}"
      * @required
      */
@@ -44,18 +44,21 @@ public class CandleMojo
 
     /**
      * Definitions to be passed on before pre Compilation
+     *
      * @parameter expression="${definitions}"
      */
     private String[] definitions;
 
     /**
      * x86, intel, x64, intel64, or ia64 (default: x86)
+     *
      * @parameter expression="${arch}"
      */
     private String arch;
 
     /**
      * Output file
+     *
      * @parameter expression="${outputDirectory}"
      */
     private File outputDirectory;
@@ -75,7 +78,7 @@ public class CandleMojo
         arguments.add( "-nologo" );
         arguments.add( "-sw" );
 
-        if(definitions.length>0)
+        if ( definitions.length > 0 )
         {
             for ( String definition : definitions )
             {
@@ -83,17 +86,18 @@ public class CandleMojo
             }
         }
 
-        if(outputDirectory != null)
+        if ( outputDirectory != null )
         {
-            if (!outputDirectory.exists())
+            if ( !outputDirectory.exists() )
             {
-              outputDirectory.mkdir();
+                outputDirectory.mkdir();
             }
             arguments.add( "-out" );
             arguments.add( outputDirectory.getAbsolutePath() + "\\" );
         }
 
-        if ( arch != null ) {
+        if ( arch != null )
+        {
             arguments.add( "-arch " + arch );
         }
 
