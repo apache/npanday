@@ -98,7 +98,8 @@ public class CandleMojo
 
         if ( arch != null )
         {
-            arguments.add( "-arch " + arch );
+            arguments.add( "-arch" );
+            arguments.add( arch );
         }
 
         for ( File sourceFile : sourceFiles )

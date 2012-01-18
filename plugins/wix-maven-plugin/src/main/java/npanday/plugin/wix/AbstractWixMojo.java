@@ -70,7 +70,8 @@ public abstract class AbstractWixMojo
             {
                 for ( String ext : extensions )
                 {
-                    commandLine.addArgument( "-ext " + ext );
+                    commandLine.addArgument( "-ext" );
+                    commandLine.addArgument( ext );
                 }
             }
 
