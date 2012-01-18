@@ -197,7 +197,7 @@
               <localRepositoryPath>target/local-repo</localRepositoryPath> -->
               <postBuildHookScript>verify</postBuildHookScript>
               <filterProperties>
-                <npandayVersion>${bootstrap.npanday.version}</npandayVersion>
+                <npandayVersion>${project.version}</npandayVersion>
               </filterProperties>
             </configuration>
             <executions>
