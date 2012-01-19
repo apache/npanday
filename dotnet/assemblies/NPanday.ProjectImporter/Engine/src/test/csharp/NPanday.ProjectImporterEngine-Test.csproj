@@ -53,6 +53,7 @@
     <Compile Include="ImporterTests\AzureImportOneWebRoleTest.cs" />
     <Compile Include="ImporterTests\AzureImportWorkerRoleTest.cs" />
     <Compile Include="ImporterTests\AzureImportMultipleRolesTest.cs" />
+    <Compile Include="ImporterTests\WpfApplicationTest.cs" />
     <Compile Include="ImporterTests\SilverlightTest.cs" />
     <Compile Include="ImporterTests\MVC3ProjectTest.cs" />
     <Compile Include="ImporterTests\MsDeployImportTest.cs" />

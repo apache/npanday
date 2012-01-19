@@ -709,15 +709,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                         {
                             if (!string.IsNullOrEmpty(buildProperty.Value))
                             {
-                                try
-                                {
-                                    VisualStudioProjectTypeEnum t = VisualStudioProjectType.GetVisualStudioProjectType(buildProperty.Value);
-                                    projectDigest.ProjectType = t;
-                                }
-                                catch
-                                {
-                                    throw;
-                                }
+                                projectDigest.ProjectType = VisualStudioProjectType.GetVisualStudioProjectType(buildProperty.Value);
                             }
                         }
                         else

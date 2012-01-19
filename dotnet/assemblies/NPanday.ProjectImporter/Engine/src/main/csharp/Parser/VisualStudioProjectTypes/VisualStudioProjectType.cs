@@ -31,7 +31,7 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
     {
         static Dictionary<string, VisualStudioProjectTypeEnum> __visualStudioProjectTypes;
         static Dictionary<VisualStudioProjectTypeEnum, string> __visualStudioProjectTypeGuids;
-        static Dictionary<string, bool> __visualStudioProjectTypeSupported;
+        static Dictionary<string, bool> __visualStudioProjectTypeSupported; // TODO: should remove, and just rely on the converter registrations
         static VisualStudioProjectType()
         {
             __visualStudioProjectTypes = new Dictionary<string, VisualStudioProjectTypeEnum>();
@@ -78,13 +78,13 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
             //Windows Communication Foundation (WCF)	 {3D9AD99F-2412-4246-B90B-4EAA41C64699}
             __visualStudioProjectTypes.Add("3D9AD99F-2412-4246-B90B-4EAA41C64699", VisualStudioProjectTypeEnum.Windows_Communication_Foundation__WCF);
             __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Windows_Communication_Foundation__WCF, "3D9AD99F-2412-4246-B90B-4EAA41C64699");
-            __visualStudioProjectTypeSupported.Add("3D9AD99F-2412-4246-B90B-4EAA41C64699", false);
+            __visualStudioProjectTypeSupported.Add("3D9AD99F-2412-4246-B90B-4EAA41C64699", true);
 
 
             //Windows Presentation Foundation (WPF)	 {60DC8134-EBA5-43B8-BCC9-BB4BC16C2548}
             __visualStudioProjectTypes.Add("60DC8134-EBA5-43B8-BCC9-BB4BC16C2548", VisualStudioProjectTypeEnum.Windows_Presentation_Foundation__WPF);
             __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Windows_Presentation_Foundation__WPF, "60DC8134-EBA5-43B8-BCC9-BB4BC16C2548");
-            __visualStudioProjectTypeSupported.Add("60DC8134-EBA5-43B8-BCC9-BB4BC16C2548", false);
+            __visualStudioProjectTypeSupported.Add("60DC8134-EBA5-43B8-BCC9-BB4BC16C2548", true);
 
 
             //Visual Database Tools	 {C252FEB5-A946-4202-B1D4-9916A0590387}
@@ -237,18 +237,19 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
 
             foreach (string guidItem in strGuid.Split(';'))
             {
-                try
+                string upperGuid = guidItem.ToUpper();
+                Console.WriteLine("UG: " + upperGuid);
+                if (!__visualStudioProjectTypes.ContainsKey(upperGuid))
                 {
-                    string upperGuid = guidItem.ToUpper();
-                    projectType |= __visualStudioProjectTypes[upperGuid];
-                    if (!__visualStudioProjectTypeSupported[upperGuid])
-                    {
-                        throw new NotSupportedException("NPanday does not support projects with type GUID: " + guidItem);
-                    }
-                }
-                catch
-                {
+                    Console.WriteLine("UG WTF: " + upperGuid);
+
                     throw new NotSupportedException("Unknown project type GUID: " + guidItem);
+                }
+                Console.WriteLine("UG UG: " + upperGuid);
+                projectType |= __visualStudioProjectTypes[upperGuid];
+                if (!__visualStudioProjectTypeSupported[upperGuid])
+                {
+                    throw new NotSupportedException("NPanday does not support projects with type GUID: " + guidItem);
                 }
             }
 
