@@ -133,6 +133,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>silverlight-maven-plugin</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>wix-maven-plugin</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
     </dependency>
