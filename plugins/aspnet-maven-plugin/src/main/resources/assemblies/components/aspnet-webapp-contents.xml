@@ -30,7 +30,7 @@
         <include>**/*.aspx</include>
         <include>**/*.ascx</include>
         <include>**/*.asax</include>
-        <include>**/*.master</include>
+        <include>**/*.Master</include>
         <include>**/*.sitemaster</include>
         <include>**/*.cshtml</include>
         <include>**/*.vbhtml</include>
