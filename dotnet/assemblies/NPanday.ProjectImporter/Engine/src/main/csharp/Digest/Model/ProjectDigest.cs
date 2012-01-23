@@ -18,9 +18,8 @@
 // under the License.
 //
 #endregion
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
 
 /// Author: Leopoldo Lee Agdeppa III
@@ -49,7 +48,15 @@ namespace NPanday.ProjectImporter.Digest.Model
         {
             get
             {
-                return name != null ? name : assemblyName;
+                if (name != null)
+                    return name;
+                else if (assemblyName != null)
+                    return assemblyName;
+                else
+                {
+                    FileInfo f = new FileInfo(FullFileName);
+                    return f.Name.Substring(0, f.Name.Length - f.Extension.Length);
+                }
             }
         }
 

@@ -238,14 +238,10 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
             foreach (string guidItem in strGuid.Split(';'))
             {
                 string upperGuid = guidItem.ToUpper();
-                Console.WriteLine("UG: " + upperGuid);
                 if (!__visualStudioProjectTypes.ContainsKey(upperGuid))
                 {
-                    Console.WriteLine("UG WTF: " + upperGuid);
-
                     throw new NotSupportedException("Unknown project type GUID: " + guidItem);
                 }
-                Console.WriteLine("UG UG: " + upperGuid);
                 projectType |= __visualStudioProjectTypes[upperGuid];
                 if (!__visualStudioProjectTypeSupported[upperGuid])
                 {

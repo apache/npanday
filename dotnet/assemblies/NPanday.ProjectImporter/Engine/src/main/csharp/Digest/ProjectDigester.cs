@@ -18,16 +18,15 @@
 // under the License.
 //
 #endregion
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-
+using log4net;
 using Microsoft.Build.BuildEngine;
-using NPanday.ProjectImporter.Digest.Model;
 using NPanday.ProjectImporter.Digest.Algorithms;
-
+using NPanday.ProjectImporter.Digest.Model;
 using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
-using System;
 
 /// Author: Leopoldo Lee Agdeppa III
 

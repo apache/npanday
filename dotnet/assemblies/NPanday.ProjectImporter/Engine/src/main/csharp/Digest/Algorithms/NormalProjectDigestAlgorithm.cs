@@ -41,6 +41,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
         {
             Project project = (Project)projectMap["Project"];
 
+            log.DebugFormat("Digesting project {0}", project.FullFileName);
 
             if (!projectMap.ContainsKey("ProjectType"))
             {
