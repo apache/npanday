@@ -87,6 +87,11 @@ namespace NPanday.ProjectImporter.Digest
                 DigestProject digestProject = _digestAlgoritms[(VisualStudioProjectTypeEnum)project["ProjectType"]];
                 ProjectDigest projDigest = digestProject(project);
                 projectDigests.Add(projDigest);
+                if (projDigestDictionary.ContainsKey(projDigest.ProjectName))
+                {
+                    throw new Exception("Projects with duplicated assembly names are not supported: " + projDigest.ProjectName);
+                }
+
                 projDigestDictionary.Add(projDigest.ProjectName, projDigest);
                 projDigestGuidDictionary.Add(projDigest.ProjectGuid, projDigest);
             }
