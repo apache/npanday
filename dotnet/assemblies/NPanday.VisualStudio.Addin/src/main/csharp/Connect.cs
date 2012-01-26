@@ -623,6 +623,18 @@ namespace NPanday.VisualStudio.Addin
             string pomFilePath = string.Empty;
             foreach (Project project in solution.Projects)
             {
+                string name = null;
+                try
+                {
+                    name = project.FullName;
+                }
+                catch
+                {
+                    // ignore - project is not yet set up
+                }
+                if (string.IsNullOrEmpty(name))
+                    continue;
+
                 String key = string.Empty;
                 XmlDocument doc = new XmlDocument();
                 bool isSigned = false;
