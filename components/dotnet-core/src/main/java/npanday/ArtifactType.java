@@ -141,7 +141,7 @@ public enum ArtifactType
     
     SHARP_DEVELOP_ADDIN( "sharp-develop-addin", "library", "dll" ),
     
-    ASP ( "asp", "library", "dll" ),
+    ASP ( "asp", "library", "zip" ),
     
     GAC ( "gac", null, "dll"),
 

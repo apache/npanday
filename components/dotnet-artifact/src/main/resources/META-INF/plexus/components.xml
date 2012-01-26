@@ -121,6 +121,7 @@
       <role-hint>asp</role-hint>
       <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
       <configuration>
+        <extension>zip</extension>
         <type>asp</type>
       </configuration>
     </component>         
