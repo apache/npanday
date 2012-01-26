@@ -75,7 +75,17 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                 VisualStudioProjectTypeEnum type;
                 try
                 {
-                    type = VisualStudioProjectType.GetVisualStudioProjectType(project.ProjectTypeGUID);
+                    // Skip folders
+                    // TODO: merge with method in VS Add-in
+                    if (project.ProjectTypeGUID.Equals("{66A26720-8FB5-11D2-AA7E-00C04F688DDE}", StringComparison.OrdinalIgnoreCase)
+                        || project.ProjectTypeGUID.Equals("{2150E333-8FDC-42A3-9474-1A3956D46DE8}", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        type = VisualStudioProjectType.GetVisualStudioProjectType(project.ProjectTypeGUID);
+                    }
                 }
                 catch (Exception)
                 {
