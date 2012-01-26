@@ -121,7 +121,8 @@ namespace NPanday.VisualStudio.Addin
 
                     bool hasWebProjects = false, hasCloudProjects = false;
                     Solution2 solution = (Solution2)applicationObject.Solution;
-                    foreach (Project project in solution.Projects)
+
+                    foreach (Project project in Connect.GetAllProjects(solution.Projects))
                     {
                         bool web = isWebProject(project);
                         bool cloud = isCloudProject(project);
@@ -428,7 +429,7 @@ namespace NPanday.VisualStudio.Addin
             {
                 Solution2 solution = (Solution2)applicationObject.Solution;
                 IList<IReferenceManager> refManagers = new List<IReferenceManager>();
-                foreach (Project project in solution.Projects)
+                foreach (Project project in Connect.GetAllProjects(solution.Projects))
                 {
                     if (!isWebProject(project) && !isFolder(project) && project.Object != null)
                     {
@@ -482,11 +483,12 @@ namespace NPanday.VisualStudio.Addin
         {
             Solution2 solution = (Solution2)applicationObject.Solution;
             string solutionDir = Path.GetDirectoryName(solution.FullName);
-            bool isFlatSingleModule = (solution.Projects.Count == 1
-                && Path.GetExtension(solution.Projects.Item(1).FullName).EndsWith("proj")
-                && solutionDir == Path.GetDirectoryName(solution.Projects.Item(1).FullName));
+            Projects projects = solution.Projects;
+            bool isFlatSingleModule = (projects.Count == 1
+                && Path.GetExtension(projects.Item(1).FullName).EndsWith("proj")
+                && solutionDir == Path.GetDirectoryName(projects.Item(1).FullName));
 
-            foreach (Project project in solution.Projects)
+            foreach (Project project in Connect.GetAllProjects(projects))
             {
                 string projPath = string.Empty;
                 try { projPath = project.FullName; }

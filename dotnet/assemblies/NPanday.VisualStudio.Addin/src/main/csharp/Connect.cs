@@ -573,6 +573,34 @@ namespace NPanday.VisualStudio.Addin
             return (String.Compare(project.Kind, FOLDER_KIND_GUID, true) == 0);
         }
 
+        public static IEnumerable<Project> GetAllProjects(Projects solutionProjects)
+        {
+            List<Project> projects = new List<Project>();
+            foreach (Project project in solutionProjects)
+            {
+                addProject(projects, project);
+            }
+            return projects;
+        }
+
+        private static void addProject(List<Project> projects, Project project)
+        {
+            if (IsFolder(project))
+            {
+                foreach (ProjectItem item in project.ProjectItems)
+                {
+                    if (item.SubProject != null)
+                    {
+                        addProject(projects, item.SubProject);
+                    }
+                }
+            }
+            else
+            {
+                projects.Add(project);
+            }
+        }
+
         void InsertKeyTag(string filePath, string key)
         {
             try
@@ -621,7 +649,7 @@ namespace NPanday.VisualStudio.Addin
         {
             Solution2 solution = (Solution2)_applicationObject.Solution;
             string pomFilePath = string.Empty;
-            foreach (Project project in solution.Projects)
+            foreach (Project project in GetAllProjects(solution.Projects))
             {
                 string name = null;
                 try
@@ -729,7 +757,7 @@ namespace NPanday.VisualStudio.Addin
             this.wsRefWatcher = new List<WebServicesReferenceWatcher>();
             this.svRefWatcher = new List<WebServicesReferenceWatcher>();
 
-            foreach (Project project in solution.Projects)
+            foreach (Project project in GetAllProjects(solution.Projects))
             {
                 projectRefEventLoaded = true;
 
@@ -1502,9 +1530,9 @@ namespace NPanday.VisualStudio.Addin
             try
             {
                 if (_applicationObject.Solution != null)
-                {
+                {                    
                     Solution2 solution = (Solution2)_applicationObject.Solution;
-                    foreach (Project project in solution.Projects)
+                    foreach (Project project in GetAllProjects(solution.Projects))
                     {
                         if (!IsWebSite(project) && !IsFolder(project) && !IsCloudProject(project) && project.Object != null)
                         {
@@ -1900,7 +1928,7 @@ namespace NPanday.VisualStudio.Addin
             {
                 Solution2 solution = (Solution2)_applicationObject.Solution;
                 bool asked = false;
-                foreach (Project project in solution.Projects)
+                foreach (Project project in GetAllProjects(solution.Projects))
                 {
                     if (!IsWebSite(project) && ProjectHasWebReferences(project))
                     {

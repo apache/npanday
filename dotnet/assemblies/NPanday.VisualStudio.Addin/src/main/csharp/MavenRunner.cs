@@ -86,8 +86,6 @@ namespace NPanday.VisualStudio.Addin
         {
             Solution2 solution = (Solution2)dte2.Solution;
 
-            Projects projs = solution.Projects;
-
             bool isFlatProject = true;
 
             string[] directoryPartial = solution.FullName.Split("\\".ToCharArray());
