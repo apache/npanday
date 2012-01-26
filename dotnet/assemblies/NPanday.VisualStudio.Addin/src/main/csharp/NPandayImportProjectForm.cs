@@ -65,6 +65,7 @@ namespace NPanday.VisualStudio.Addin
 
         public NPandayImportProjectForm(DTE2 applicationObject)
         {
+            log.Debug("Projects: " + applicationObject.Solution.Projects.Count);
             this.applicationObject = applicationObject;
             InitializeComponent();
 
@@ -122,7 +123,10 @@ namespace NPanday.VisualStudio.Addin
                     Solution2 solution = (Solution2)applicationObject.Solution;
                     foreach (Project project in solution.Projects)
                     {
-                        if (isWebProject(project))
+                        bool web = isWebProject(project);
+                        bool cloud = isCloudProject(project);
+
+                        if (web)
                         {
                             hasWebProjects = true;
                             foreach (object c in ((object[])project.ConfigurationManager.ConfigurationRowNames))
@@ -134,7 +138,7 @@ namespace NPanday.VisualStudio.Addin
                                 }
                             }
                         }
-                        if (isCloudProject(project))
+                        if (cloud)
                         {
                             hasCloudProjects = true;
 
@@ -146,6 +150,8 @@ namespace NPanday.VisualStudio.Addin
                                 }
                             }
                         }
+
+                        log.DebugFormat("Project: {0} (Web = {1}, Cloud = {2}, Kind = {3})", project.Name, web, cloud, project.Kind);
                     }
                     // disabled if there are cloud projects (must be on), or if there are no web projects (not useful)
                     useMsDeployCheckBox.Enabled = hasWebProjects && !hasCloudProjects;
