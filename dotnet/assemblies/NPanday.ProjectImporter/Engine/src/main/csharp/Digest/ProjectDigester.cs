@@ -34,6 +34,8 @@ namespace NPanday.ProjectImporter.Digest
 {
     public sealed class ProjectDigester
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(ProjectDigester));
+
         public delegate ProjectDigest DigestProject(Dictionary<string, object> project);
         private static readonly Dictionary<VisualStudioProjectTypeEnum, DigestProject> _digestAlgoritms;
 
@@ -103,18 +105,19 @@ namespace NPanday.ProjectImporter.Digest
             {
                 foreach (ProjectReference projectReference in projectDigest.ProjectReferences)
                 {
-                    if (string.IsNullOrEmpty(projectReference.Name) 
-                        || !projDigestDictionary.ContainsKey(projectReference.Name))
+                    string refName = projectReference.Name;
+
+                    if (!projDigestDictionary.ContainsKey(refName))
                     {
                         Project prjRef = GetProject(projectReference.ProjectFullPath);
                         if (prjRef == null)
                         {
                             // this might not be possible
                             warningMsg = string.Format(
-                            "{0}\n    Missing Project Reference {1} located at {2}!"+
-                            "\n        Note this might cause Missing Artifact Dependency!", 
+                            "{0}\n    Missing project reference {1} located at {2}!"+
+                            "\n        Note this might cause a missing artifact dependency!", 
                                 warningMsg,
-                                projectReference.Name,
+                                refName,
                                 projectReference.ProjectFullPath);
                             continue;
                         }
@@ -126,7 +129,7 @@ namespace NPanday.ProjectImporter.Digest
 
                         ProjectDigest prjRefDigest = digestProject(projectMap);
                         string errMsg = string.Format(
-                            "Project \"{0}\"  Requires \"{1}\" which is not included in the Solution File, "
+                            "Project \"{0}\"  requires \"{1}\" which is not included in the Solution File, "
                             + "\nWould you like to include \"{1}\" Generating NPanday Project Poms?"
                             + "\nNote: Not adding \"{1}\" will result to a missing Artifact Dependency \"{1}\"",
                             projectDigest.ProjectName,

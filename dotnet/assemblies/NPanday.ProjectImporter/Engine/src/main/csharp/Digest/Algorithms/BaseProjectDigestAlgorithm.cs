@@ -29,25 +29,23 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
         {
             Project project = ProjectDigester.GetProject(projectFile);
 
-            if (project == null)
+            if (project != null)
             {
-                if (projectFile != null)
-                    return Path.GetFileNameWithoutExtension(projectFile);
-
-                return null;
-            }
-
-            foreach (BuildPropertyGroup buildPropertyGroup in project.PropertyGroups)
-            {
-                foreach (BuildProperty buildProperty in buildPropertyGroup)
+                foreach (BuildPropertyGroup buildPropertyGroup in project.PropertyGroups)
                 {
-                    if (!buildProperty.IsImported && "AssemblyName".Equals(buildProperty.Name))
+                    foreach (BuildProperty buildProperty in buildPropertyGroup)
                     {
-                        return buildProperty.Value;
-                    }
+                        if (!buildProperty.IsImported && "AssemblyName".Equals(buildProperty.Name))
+                        {
+                            return buildProperty.Value;
+                        }
 
+                    }
                 }
             }
+
+            if (projectFile != null)
+                return Path.GetFileNameWithoutExtension(projectFile);
 
             return null;
         }
