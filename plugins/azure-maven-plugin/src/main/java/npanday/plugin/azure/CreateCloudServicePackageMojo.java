@@ -29,6 +29,7 @@ import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -222,11 +223,16 @@ public class CreateCloudServicePackageMojo
             }
 
             File rolePropertiesFile = new File(project.getBuild().getDirectory(), artifact.getArtifactId() + ".roleproperties");
-            FileWriter writer = null;
+            PrintWriter writer = null;
             try
             {
-                writer = new FileWriter( rolePropertiesFile );
-                properties.store( writer, "role properties" );
+                writer = new PrintWriter( new FileWriter( rolePropertiesFile ) );
+                // can't use properties.store(), it writes a comment that CSPACK doesn't understand
+                for ( String property : properties.stringPropertyNames() )
+                {
+                    writer.println( property + "=" + properties.getProperty( property ) );
+                }
+
                 commands.add(
                     "/rolePropertiesFile:" + artifact.getArtifactId() + ";" + rolePropertiesFile.getAbsolutePath()
                 );
