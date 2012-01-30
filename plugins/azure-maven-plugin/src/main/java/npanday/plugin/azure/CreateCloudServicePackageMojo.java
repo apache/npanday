@@ -25,10 +25,12 @@ import npanday.PathUtil;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -173,11 +175,22 @@ public class CreateCloudServicePackageMojo
                 );
             }
 
+            File entryPoint = new File( roleRoot, artifact.getArtifactId() + ".dll" );
             if ( isWebRole )
             {
-                commands.add(
-                    "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath()
-                );
+                if ( entryPoint.exists() )
+                {
+                    commands.add(
+                        "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath() + ";" + entryPoint.getName()
+                    );
+                }
+                else
+                {
+                    commands.add(
+                        "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath()
+                    );
+                }
+
                 // TODO: 'Web/' is hardcoded here; where to get it from?
                 commands.add(
                     "/sitePhysicalDirectories:" + artifact.getArtifactId() + ";Web;" + roleRoot.getAbsolutePath()
@@ -185,8 +198,6 @@ public class CreateCloudServicePackageMojo
             }
             else if ( isWorkerRole )
             {
-                File entryPoint = new File( roleRoot, artifact.getArtifactId() + ".dll" );
-
                 if ( !entryPoint.exists() )
                 {
                     throw new MojoExecutionException(
@@ -197,21 +208,37 @@ public class CreateCloudServicePackageMojo
 
                 commands.add(
                     "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath() + ";"
-                        + entryPoint.getAbsolutePath()
+                        + entryPoint.getName()
                 );
+            }
+
+            Properties properties = new Properties();
+            properties.setProperty( "TargetFrameworkVersion", "v4,0" );
+            if ( entryPoint.exists() )
+            {
+                properties.setProperty( "EntryPoint", entryPoint.getName() );
             }
 
             // TODO: enable configuration of different framework pr. role; default to frameworkVersion
             // TODO: save roleprops file somewhere else?
             File rolePropertiesFile = new File(project.getBuild().getDirectory(), artifact.getArtifactId() + ".roleproperties");
+            FileWriter writer = null;
             try
             {
-                FileUtils.fileWrite( rolePropertiesFile.getAbsolutePath(), "TargetFrameWorkVersion=v4.0" );
+                writer = new FileWriter( rolePropertiesFile );
+                properties.store( writer, "role properties" );
                 commands.add(
                     "/rolePropertiesFile:" + artifact.getArtifactId() + ";" + rolePropertiesFile.getAbsolutePath()
                 );
-            } catch (java.io.IOException e) {
-                throw new MojoFailureException( "NPANDAY-123-008: Error while creating role properties file for " + artifact.getArtifactId(), e );
+            }
+            catch ( java.io.IOException e )
+            {
+                throw new MojoFailureException(
+                    "NPANDAY-123-008: Error while creating role properties file for " + artifact.getArtifactId(), e );
+            }
+            finally
+            {
+                IOUtil.close( writer );
             }
         }
 
