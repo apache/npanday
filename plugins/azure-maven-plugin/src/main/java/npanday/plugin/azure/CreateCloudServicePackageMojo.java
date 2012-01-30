@@ -212,15 +212,15 @@ public class CreateCloudServicePackageMojo
                 );
             }
 
+            // TODO: enable configuration of different framework pr. role; default to frameworkVersion
             Properties properties = new Properties();
-            properties.setProperty( "TargetFrameworkVersion", "v4,0" );
+            String v = frameworkVersion != null ? "v" + frameworkVersion : "v4.0";
+            properties.setProperty( "TargetFrameworkVersion", v );
             if ( entryPoint.exists() )
             {
                 properties.setProperty( "EntryPoint", entryPoint.getName() );
             }
 
-            // TODO: enable configuration of different framework pr. role; default to frameworkVersion
-            // TODO: save roleprops file somewhere else?
             File rolePropertiesFile = new File(project.getBuild().getDirectory(), artifact.getArtifactId() + ".roleproperties");
             FileWriter writer = null;
             try
