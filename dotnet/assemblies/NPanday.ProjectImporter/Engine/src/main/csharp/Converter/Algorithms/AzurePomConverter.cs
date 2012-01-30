@@ -115,6 +115,17 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
             if (projectRef.RoleType != null)
             {
+                string targetFramework = projectDigest.TargetFramework;
+                // TODO: same hack as above - the Azure project doesn't need to target a framework, and instead we should support different ones (See also azure-maven-plugin roleproperties generation)
+                if (string.IsNullOrEmpty(targetFramework))
+                    targetFramework = "4.0";
+
+                if (!projectRef.ProjectReferenceDigest.TargetFramework.Equals(targetFramework))
+                {
+                    log.WarnFormat("Project reference '{0}' targets a different framework version ({1}) to the Azure project ({2}), and may not succeed when uploaded to Azure.", 
+                        projectRef.Name, projectRef.ProjectReferenceDigest.TargetFramework, targetFramework);
+                }
+
                 switch (projectRef.RoleType)
                 {
                     case "Web":
