@@ -58,8 +58,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             if (projectDigest.SilverlightApplicationList != null)
             {
-                Dictionary<string, List<string>> outputs = new Dictionary<string, List<string>>();
-
                 // add silverlight dependencies and copy them into the desired location
                 foreach (SilverlightApplicationReference app in projectDigest.SilverlightApplicationList)
                 {
