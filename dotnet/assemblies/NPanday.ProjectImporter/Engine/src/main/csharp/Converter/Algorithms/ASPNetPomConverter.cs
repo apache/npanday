@@ -67,27 +67,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     dep.type = "silverlight-application";
                     dep.scope = "runtime";
                     AddDependency(dep);
-
-                    if (!outputs.ContainsKey(app.TargetDirectory))
-                    {
-                        outputs.Add(app.TargetDirectory, new List<string>());
-                    }
-                    outputs[app.TargetDirectory].Add(dep.artifactId);
-                }
-
-                // TODO: would be good for ASP.NET plugin to handle this natively from the above dependencies, direct to target/packages
-                Plugin dependencyPlugin = AddPlugin("org.apache.maven.plugins", "maven-dependency-plugin", null, false);
-                foreach (string targetDirectory in outputs.Keys)
-                {
-                    Dictionary<string, string> configuration = new Dictionary<string, string>();
-                    configuration.Add("includeTypes", "silverlight-application");
-                    configuration.Add("includeArtifactIds", string.Join(",", outputs[targetDirectory].ToArray()));
-                    configuration.Add("outputDirectory", targetDirectory);
-                    configuration.Add("overWriteReleases", "true");
-                    configuration.Add("overWriteSnapshots", "true");
-                    configuration.Add("stripVersion", "true");
-
-                    AddPluginExecution(dependencyPlugin, "copy-silverlight", new string[] { "copy-dependencies" }, "prepare-package", configuration);
                 }
             }
 

@@ -24,8 +24,21 @@
       <useProjectArtifact>true</useProjectArtifact>
       <useTransitiveDependencies>true</useTransitiveDependencies>
       <scope>runtime</scope>
+      <excludes>
+        <exclude>*:*:silverlight-application</exclude>
+      </excludes>
       <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
       <outputDirectory>bin</outputDirectory>
+    </dependencySet>
+    <dependencySet>
+      <useProjectArtifact>true</useProjectArtifact>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
+      <scope>runtime</scope>
+      <includes>
+        <include>*:*:silverlight-application</include>
+      </includes>
+      <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+      <outputDirectory>ClientBin</outputDirectory>
     </dependencySet>
   </dependencySets>
 </component>
