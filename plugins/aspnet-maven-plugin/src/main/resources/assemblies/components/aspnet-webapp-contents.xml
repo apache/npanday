@@ -30,6 +30,7 @@
         <include>**/*.aspx</include>
         <include>**/*.ascx</include>
         <include>**/*.asax</include>
+        <include>**/*.asmx</include>
         <include>**/*.svc</include>
         <include>**/*.master</include>
         <!-- due to case sensitivity, and some template projects use Master -->
