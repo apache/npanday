@@ -42,6 +42,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <frameworkVersion>4.0</frameworkVersion>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
