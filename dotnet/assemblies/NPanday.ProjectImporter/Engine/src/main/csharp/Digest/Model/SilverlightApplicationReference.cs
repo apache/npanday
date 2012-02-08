@@ -64,6 +64,10 @@ namespace NPanday.ProjectImporter.Digest.Model
             SilverlightApplicationReference reference = new SilverlightApplicationReference();
 
             string[] split = s.Split('|');
+            if (split.Length < 3)
+            {
+                throw new Exception("Missing elements in Silverlight application, expected guid|relativePath|targetDirectory; but got: " + s);
+            }
             reference.guid = split[0];
             reference.relativePath = split[1];
             reference.targetDirectory = split[2];
@@ -77,10 +81,13 @@ namespace NPanday.ProjectImporter.Digest.Model
         internal static List<SilverlightApplicationReference> parseApplicationList(string silverlightApplicationList)
         {
             List<SilverlightApplicationReference> appList = new List<SilverlightApplicationReference>();
-            string[] apps = silverlightApplicationList.Split(',');
-            foreach (string app in apps)
+            if (!string.IsNullOrEmpty(silverlightApplicationList))
             {
-                appList.Add(parseProjectString(app));
+                string[] apps = silverlightApplicationList.Split(',');
+                foreach (string app in apps)
+                {
+                    appList.Add(parseProjectString(app));
+                }
             }
             return appList;
         }
