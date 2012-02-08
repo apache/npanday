@@ -45,6 +45,7 @@ public class ArtifactTypeHelper
     public static boolean isDotnetExecutable(ArtifactType packaging)
     {
         return packaging.equals( ArtifactType.DOTNET_EXECUTABLE )
+                || packaging.equals( ArtifactType.DOTNET_WINDOWS_EXECUTABLE )
                 || packaging.equals( ArtifactType.EXE )
                 || packaging.equals( ArtifactType.WINEXE );
     }

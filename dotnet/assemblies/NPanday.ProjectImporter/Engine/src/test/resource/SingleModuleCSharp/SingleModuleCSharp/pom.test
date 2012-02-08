@@ -8,7 +8,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>SingleModuleCSharp</artifactId>
-  <packaging>dotnet-executable</packaging>
+  <packaging>dotnet-windows-executable</packaging>
   <name>test.group : SingleModuleCSharp</name>
   <build>
     <sourceDirectory>./</sourceDirectory>

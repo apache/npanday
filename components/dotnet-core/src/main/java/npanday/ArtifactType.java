@@ -48,6 +48,11 @@ public enum ArtifactType
     DOTNET_EXECUTABLE("dotnet-executable", "exe", "exe"),
     
     /**
+     * A exe-file compiled by any of the .NET compilers.
+     */
+    DOTNET_WINDOWS_EXECUTABLE("dotnet-windows-executable", "winexe", "exe"),
+
+    /**
      * Configuration file attachable to a executable
      * artifact.
     */

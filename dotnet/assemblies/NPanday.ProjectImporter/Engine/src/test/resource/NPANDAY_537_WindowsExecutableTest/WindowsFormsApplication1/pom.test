@@ -7,9 +7,9 @@
     <relativePath>..\pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>Shell32Example</artifactId>
+  <artifactId>WindowsFormsApplication1</artifactId>
   <packaging>dotnet-windows-executable</packaging>
-  <name>test.group : Shell32Example</name>
+  <name>test.group : WindowsFormsApplication1</name>
   <build>
     <sourceDirectory>./</sourceDirectory>
     <plugins>
@@ -18,6 +18,7 @@
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
+          <frameworkVersion>4.0</frameworkVersion>
           <includeSources>
             <includeSource>Form1.cs</includeSource>
             <includeSource>Form1.Designer.cs</includeSource>
@@ -34,25 +35,12 @@
         <configuration>
           <embeddedResources>
             <embeddedResource>
-              <sourceFile>Form1.resx</sourceFile>
-              <name>Shell32Example.Form1</name>
-            </embeddedResource>
-            <embeddedResource>
               <sourceFile>Properties\Resources.resx</sourceFile>
-              <name>Shell32Example.Properties.Resources</name>
+              <name>WindowsFormsApplication1.Properties.Resources</name>
             </embeddedResource>
           </embeddedResources>
         </configuration>
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>Shell32</groupId>
-      <artifactId>Shell32</artifactId>
-      <version>1.0.0.0</version>
-      <type>com_reference</type>
-      <classifier>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}-1.0-0</classifier>
-    </dependency>
-  </dependencies>
 </project>

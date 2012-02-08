@@ -62,7 +62,7 @@ class CompileLifecycleMap extends LifecycleMap
                 ArtifactType.SHARP_DEVELOP_ADDIN, ArtifactType.VISUAL_STUDIO_ADDIN,
 
                 /* --> EXE */
-                ArtifactType.DOTNET_EXECUTABLE, ArtifactType.EXE, ArtifactType.WINEXE
+                ArtifactType.DOTNET_EXECUTABLE, ArtifactType.DOTNET_WINDOWS_EXECUTABLE, ArtifactType.EXE, ArtifactType.WINEXE
                 ]) {
 			LifecycleMappingBuilder b->
 			b.validate (default_validate)

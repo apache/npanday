@@ -44,7 +44,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             npandayTypeMap.Add("library", "dotnet-library");
             npandayTypeMap.Add("module", "dotnet-module");
             npandayTypeMap.Add("exe", "dotnet-executable");
-            npandayTypeMap.Add("winexe", "dotnet-executable");
+            npandayTypeMap.Add("winexe", "dotnet-windows-executable");
         }
 
         protected RspUtility rspUtil;

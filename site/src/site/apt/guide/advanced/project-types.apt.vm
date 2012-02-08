@@ -50,7 +50,9 @@ Available Packaging Types
 
     * <<<dotnet-library>>> - builds and packages a DLL assembly file. (Deprecated naming: <<<library>>>)
 
-    * <<<dotnet-executable>>> - builds and packages an EXE assembly file (Deprecated naming: <<<exe>>>, <<<winexe>>>)
+    * <<<dotnet-executable>>> - builds and packages an EXE assembly file (Deprecated naming: <<<exe>>>)
+
+    * <<<dotnet-windows-executable>>> - builds and packages an EXE assembly file using the <<<winexe>>> target type (Deprecated naming: <<<winexe>>>)
 
     * <<<dotnet-module>>> - builds a module file, which can be linked into assemblies using the {{{../../plugins/maven-link-plugin}link plugin}} (Deprecated naming: <<<netmodule>>>)
 

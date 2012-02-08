@@ -67,7 +67,7 @@ namespace NPanday.Artifact
             {
                 return "dll";
             }
-            else if (packaging.Equals("dotnet-executable")
+            else if (packaging.Equals("dotnet-executable") || packaging.Equals("dotnet-windows-executable")
                     || packaging.Equals("winexe") || packaging.Equals("exe"))
             {
                 return "exe";

@@ -8,7 +8,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>WpfApplication1</artifactId>
-  <packaging>dotnet-executable</packaging>
+  <packaging>dotnet-windows-executable</packaging>
   <name>test.group : WpfApplication1</name>
   <build>
     <sourceDirectory>./</sourceDirectory>
