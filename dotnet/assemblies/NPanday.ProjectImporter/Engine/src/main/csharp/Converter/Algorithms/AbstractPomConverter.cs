@@ -760,9 +760,17 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 // Assembly is found at the gac
 
                 //exclude ProcessArchitecture when loading assembly on a non-32 bit machine
-                refs = GacUtility.GetInstance().GetAssemblyInfo(reference.Name, reference.Version, null);
+                List<string> versionRefs = GacUtility.GetInstance().GetAssemblyInfo(reference.Name, reference.Version, null);
+                if (versionRefs.Count == 0)
+                {
+                    throw new Exception("Unable to find assembly for '" + reference.Name + "' version '" + reference.Version + "', original refs were: " + string.Join(", ", refs.ToArray()));
+                }
+                else if (versionRefs.Count > 1)
+                {
+                    log.Warn("Found more than one reference for a single version, using the first only: " + string.Join(", ", versionRefs.ToArray()));
+                }
 
-                System.Reflection.Assembly a = System.Reflection.Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(refs[0]).FullName);
+                System.Reflection.Assembly a = System.Reflection.Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(versionRefs[0]).FullName);
 
                 Dependency refDependency = new Dependency();
                 refDependency.artifactId = reference.Name;
@@ -779,9 +787,16 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 else
                 {
                     int start = a.FullName.IndexOf("PublicKeyToken=");
-                    int length = (a.FullName.Length) - start;
-                    refDependency.classifier = a.FullName.Substring(start, length);
-                    refDependency.classifier = refDependency.classifier.Replace("PublicKeyToken=", "");
+                    if (start < 0)
+                    {
+                        int length = (a.FullName.Length) - start;
+                        refDependency.classifier = a.FullName.Substring(start, length);
+                        refDependency.classifier = refDependency.classifier.Replace("PublicKeyToken=", "");
+                    }
+                    else
+                    {
+                        log.Warn("No public key token found for GAC dependency, excluding classifier: " + a.FullName);
+                    }
                 }
 
                 return refDependency;
@@ -814,7 +829,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                          ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                         isPathReference = true;
-                    }
+                    }   
 
                 }
 
@@ -827,8 +842,14 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 {
                     refDependency.artifactId = reference.Name;
                    
+                    // TODO: not a very good parsing of .references - if we have .references, don't we already know it?
                     //get version from the name above the last path
                     string[] pathTokens = reference.HintFullPath.Split("\\\\".ToCharArray());
+                    if (pathTokens.Length < 3)
+                    {
+                        // should only hit this if it is in .references, and it was incorrectly constructed
+                        throw new Exception("Invalid hint path: " + reference.HintFullPath);
+                    }
                     refDependency.groupId = pathTokens[pathTokens.Length - 3];
                     refDependency.version = pathTokens[pathTokens.Length-2].Replace(reference.Name+"-","") ?? "1.0.0.0";
                     //refDependency.version = reference.Version ?? "1.0.0.0";
