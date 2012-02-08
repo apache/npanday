@@ -26,6 +26,14 @@ namespace NPanday.ProjectImporter.ImporterTests
     [TestFixture]
     public class WindowsExecutableTest : AbstractProjectImportTest
     {
+        public override void CheckFrameworkVersion()
+        {
+            if (Environment.Version.Major < 4)
+            {
+                Assert.Ignore("Test only runs on .NET 4.0, but is: " + Environment.Version.ToString());
+            }
+        }
+
         public override string SolutionFileRelativePath
         {
             get { return @"NPANDAY_537_WindowsExecutableTest\NPANDAY_537_WindowsExecutableTest.sln"; }
