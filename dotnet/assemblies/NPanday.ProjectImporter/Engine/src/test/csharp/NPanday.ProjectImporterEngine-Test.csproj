@@ -39,6 +39,7 @@
     <OutputPath>..\..\..\target\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL" />
     <Reference Include="NUnit.Framework">
       <HintPath>C:\Documents and Settings\user\.m2\uac\gac_msil\NUnit.Framework\2.2.8.0__NUnit\NUnit.Framework.dll</HintPath>
     </Reference>

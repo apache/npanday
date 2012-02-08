@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using NUnit.Framework;
+using log4net.Config;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -41,7 +42,11 @@ namespace NPanday.ProjectImporter.ImporterTests
 
         #endregion
 
-
+        [SetUp]
+        public void SetUpLogging()
+        {
+            BasicConfigurator.Configure();
+        }
 
         [SetUp]
         public void PrepareProjects()
