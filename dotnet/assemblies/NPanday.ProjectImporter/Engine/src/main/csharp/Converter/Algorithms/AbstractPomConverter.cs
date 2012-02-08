@@ -758,19 +758,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (refs.Count > 0)
             {
                 // Assembly is found at the gac
-
-                //exclude ProcessArchitecture when loading assembly on a non-32 bit machine
-                List<string> versionRefs = GacUtility.GetInstance().GetAssemblyInfo(reference.Name, reference.Version, null);
-                if (versionRefs.Count == 0)
+                if (refs.Count > 1)
                 {
-                    throw new Exception("Unable to find assembly for '" + reference.Name + "' version '" + reference.Version + "', original refs were: " + string.Join(", ", refs.ToArray()));
-                }
-                else if (versionRefs.Count > 1)
-                {
-                    log.Warn("Found more than one reference for a single version, using the first only: " + string.Join(", ", versionRefs.ToArray()));
+                    log.Warn("Found more than one reference for a single version, using the first only: " + string.Join(", ", refs.ToArray()));
                 }
 
-                System.Reflection.Assembly a = System.Reflection.Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(versionRefs[0]).FullName);
+                System.Reflection.Assembly a = System.Reflection.Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(refs[0]).FullName);
 
                 Dependency refDependency = new Dependency();
                 refDependency.artifactId = reference.Name;
