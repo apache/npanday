@@ -757,10 +757,13 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // resolve from GAC
             if (refs.Count > 0)
             {
+                log.DebugFormat("GAC references for {0} version {1} platform {2}: {3}", reference.Name,
+                                reference.Version, projectDigest.Platform, string.Join(", ", refs.ToArray()));
+
                 // Assembly is found at the gac
                 if (refs.Count > 1)
                 {
-                    log.Warn("Found more than one reference for a single version, using the first only: " + string.Join(", ", refs.ToArray()));
+                    log.Warn("Found more than one reference for a single version, using the first only");
                 }
 
                 System.Reflection.Assembly a = System.Reflection.Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(refs[0]).FullName);
