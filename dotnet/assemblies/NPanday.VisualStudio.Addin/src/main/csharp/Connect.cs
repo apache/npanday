@@ -921,18 +921,21 @@ namespace NPanday.VisualStudio.Addin
                     {
                         // Because this might be a "reference assembly", which is a copy in a new location,
                         // we can't just load it from the path - so try to find it in the GAC
+                        // TODO: can we get the process architecture from the project properties, so that it is more accurate if targeted to a different arch than we are generating on?
                         List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(pReference.Name, pReference.Version, null);
 
                         Assembly a = null;
+                        AssemblyName name = null;
 
                         if (refs.Count > 0)
                         {
-                            a = Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(refs[0]).FullName);
+                            name = new System.Reflection.AssemblyName(refs[0]);
+                            a = Assembly.ReflectionOnlyLoad(name.FullName);
                         }
 
                         if (a != null)
                         {
-                            refType = GacUtility.GetNPandayGacType(a.ImageRuntimeVersion, a.GetName().ProcessorArchitecture, refToken);
+                            refType = GacUtility.GetNPandayGacType(a.ImageRuntimeVersion, name.ProcessorArchitecture, refToken);
                         }
                         else
                         {
