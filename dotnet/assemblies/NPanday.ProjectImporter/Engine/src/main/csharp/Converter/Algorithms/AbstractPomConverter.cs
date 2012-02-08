@@ -766,13 +766,14 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     log.Warn("Found more than one reference for a single version, using the first only");
                 }
 
-                System.Reflection.Assembly a = System.Reflection.Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(refs[0]).FullName);
+                System.Reflection.AssemblyName name = new System.Reflection.AssemblyName(refs[0]);
+                System.Reflection.Assembly a = System.Reflection.Assembly.ReflectionOnlyLoad(name.FullName);
 
                 Dependency refDependency = new Dependency();
                 refDependency.artifactId = reference.Name;
                 refDependency.groupId = reference.Name;
 
-                refDependency.type = GacUtility.GetNPandayGacType(a, reference.PublicKeyToken);
+                refDependency.type = GacUtility.GetNPandayGacType(a.ImageRuntimeVersion, name.ProcessorArchitecture, reference.PublicKeyToken);
 
                 refDependency.version = reference.Version ?? "1.0.0.0";
 
