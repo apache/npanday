@@ -57,6 +57,7 @@ public class ArtifactTypeHelper
     public static boolean isDotnetLibrary(ArtifactType packaging)
     {
         return packaging.equals( ArtifactType.DOTNET_LIBRARY )
+                || packaging.equals( ArtifactType.COM_REFERENCE )
                 || packaging.equals( ArtifactType.LIBRARY );
     }
 
