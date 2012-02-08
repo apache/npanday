@@ -306,7 +306,7 @@ under the License.
           <branchBase>https://svn.apache.org/repos/asf/incubator/npanday/branches</branchBase>
           <useReleaseProfile>false</useReleaseProfile>
           <goals>deploy</goals>
-          <arguments>-Papache-release,dist</arguments>
+          <arguments>-Papache-release,dist,net40</arguments>
           <preparationGoals>clean install</preparationGoals>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <mavenExecutorId>forked-path</mavenExecutorId>
