@@ -101,7 +101,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 }
             }
             
-            AddPluginConfiguration(compilePlugin, "main", projectDigest.StartupObject);
+            if (projectDigest.StartupObject != "Sub Main")
+                AddPluginConfiguration(compilePlugin, "main", projectDigest.StartupObject);
             AddPluginConfiguration(compilePlugin, "doc", projectDigest.DocumentationFile);
             //AddPluginConfiguration(compilePlugin, "noconfig", "true");
             AddPluginConfiguration(compilePlugin, "imports", "import", projectDigest.GlobalNamespaceImports);
