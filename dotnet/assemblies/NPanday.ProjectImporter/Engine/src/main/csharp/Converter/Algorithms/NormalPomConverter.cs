@@ -108,9 +108,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             // add include list for the compiling
             DirectoryInfo baseDir = new DirectoryInfo(Path.GetDirectoryName(projectDigest.FullFileName));
-            List<Dictionary<string, string>> generatedResourceList = new List<Dictionary<string, string>>();
             List<string> compiles = new List<string>();
-            bool msBuildPluginAdded = false, resourceAdded = false;
+            bool msBuildPluginAdded = false;
             foreach (Compile compile in projectDigest.Compiles)
             {
                 string compilesFile = PomHelperUtility.GetRelativePath(baseDir, new FileInfo(compile.IncludeFullPath));
@@ -120,42 +119,38 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 if (compilesFile.EndsWith(".xaml.cs") || compilesFile.EndsWith(".xaml.vb"))
                 { 
                     //add the MsBuild plugin to auto generate the .g.cs/g.vb files
+                    string platform = null;
+                    // ignore AnyCPU or unknown values
+                    if (projectDigest.Platform == "x64" || projectDigest.Platform == "x86" || projectDigest.Platform == "Itanium")
+                        platform = projectDigest.Platform;
+ 
+                    // TODO: support others
+                    string configuration = "Debug";
+ 
                     if (!msBuildPluginAdded)
                     {
                         Plugin msBuildPlugin = AddPlugin("org.apache.npanday.plugins", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
                         AddPluginExecution(msBuildPlugin, "compile", "validate");
                         AddPluginConfiguration(msBuildPlugin, "frameworkVersion", ProjectDigest.TargetFramework);
+                        if (platform != null)
+                            AddPluginConfiguration(msBuildPlugin, "platform", platform);
+                        if (configuration != null && configuration != "Debug")
+                            AddPluginConfiguration(msBuildPlugin, "configuration", configuration);
                         msBuildPluginAdded = true;
                     }                    
 
-                    string prefix;
                     //set the path *.g.cs and *.g.vb files depending on target architecture of WPF projects as this changes path under obj folder
-                    switch (projectDigest.Platform)
-                    {
-                        case "AnyCPU":
-                            prefix = @"obj\Debug\";
-                            break;
-                        case "x64":
-                            prefix = @"obj\x64\Debug\";
-                            break;
-                        case "x86":
-                            prefix = @"obj\x86\Debug\";
-                            break;
-                        case "Itanium":
-                            prefix = @"obj\Itanium\Debug\";
-                            break;
-                        default:
-                            prefix = @"obj\Debug\";
-                            break;
-                    }
-                    string sub = compilesFile.Substring(compilesFile.Length - 3);
-                    compiles.Add(prefix + compilesFile.Replace(".xaml" + sub, ".g" + sub));
+                    string gFile = "obj";
+                    if (platform != null)
+                        gFile += "\\" + platform;
+                    gFile += "\\" + configuration + "\\";
 
-                    if (!resourceAdded)
-                    {
-                        generatedResourceList.Add(createResourceEntry(prefix + projectDigest.RootNamespace + ".g.resources", projectDigest.RootNamespace + ".g"));
-                        resourceAdded = true;
-                    }
+                    if (compilesFile.EndsWith(".cs"))
+                        gFile += compilesFile.Replace(".xaml.cs", ".g.cs");
+                    else
+                        gFile += compilesFile.Replace(".xaml.vb", ".g.vb");
+
+                    compiles.Add(gFile);
                 }
             }
             AddPluginConfiguration(compilePlugin, "includeSources", "includeSource", compiles.ToArray());
@@ -206,7 +201,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             AddWebReferences();
 
             //Add EmbeddedResources maven-resgen-plugin
-            AddEmbeddedResources(generatedResourceList);
+            AddEmbeddedResources();
             
 
             // Add Project Inter-dependencies

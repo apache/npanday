@@ -142,13 +142,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
         }
-
+        
         protected void AddEmbeddedResources()
-        {
-            AddEmbeddedResources(new List<Dictionary<string, string>>());
-        }
-
-        protected void AddEmbeddedResources(List<Dictionary<string,string>> generatedResourceList)
         {
             if (projectDigest != null && projectDigest.EmbeddedResources != null && projectDigest.EmbeddedResources.Length > 0)
             {
@@ -161,18 +156,20 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
                 List<Dictionary<string, string>> embeddedResourceList = new List<Dictionary<string, string>>();
-                embeddedResourceList.AddRange(generatedResourceList);
-
                 List<string> resourceList = new List<string>();   
                 foreach (EmbeddedResource embeddedResource in projectDigest.EmbeddedResources)
                 {
                     if (isResgenSupported(embeddedResource.IncludePath))
                     {
+                        Dictionary<string, string> value = new Dictionary<string, string>();
                         string sourceFile = embeddedResource.IncludePath;
                         if (sourceFile == null)
                             continue;
 
-                        embeddedResourceList.Add(createResourceEntry(sourceFile, parseEmbeddedName(projectDigest.RootNamespace, sourceFile)));
+                        value.Add("sourceFile", sourceFile);
+                        value.Add("name", parseEmbeddedName(projectDigest.RootNamespace, sourceFile));
+
+                        embeddedResourceList.Add(value);
                     }
                     else
                     {
@@ -188,14 +185,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     AddResources(resourceList);
                 }
             }
-        }
-
-        protected Dictionary<string, string> createResourceEntry(string sourceFile, string name)
-        {
-            Dictionary<string, string> value = new Dictionary<string, string>();
-            value.Add("sourceFile", sourceFile);
-            value.Add("name", name);
-            return value;
         }
 
         string parseEmbeddedName(string nameSpace, string sourceFilePath)
