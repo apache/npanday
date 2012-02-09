@@ -156,15 +156,6 @@ under the License.
       </reporting>
     </profile>
     <profile>
-      <id>apache-docs</id>
-      <distributionManagement>
-        <site>
-          <id>apache.website</id>
-          <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}</url>
-        </site>
-      </distributionManagement>
-    </profile>
-    <profile>
       <id>local-docs</id>
       <distributionManagement>
         <site>
@@ -174,4 +165,10 @@ under the License.
       </distributionManagement>
     </profile>
   </profiles>
+  <distributionManagement>
+    <site>
+      <id>apache.website</id>
+      <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}</url>
+    </site>
+  </distributionManagement>
 </project>
