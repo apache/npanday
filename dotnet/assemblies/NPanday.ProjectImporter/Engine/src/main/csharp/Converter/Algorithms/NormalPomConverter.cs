@@ -108,8 +108,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             // add include list for the compiling
             DirectoryInfo baseDir = new DirectoryInfo(Path.GetDirectoryName(projectDigest.FullFileName));
+            List<Dictionary<string, string>> generatedResourceList = new List<Dictionary<string, string>>();
             List<string> compiles = new List<string>();
-            bool msBuildPluginAdded = false;
+            bool msBuildPluginAdded = false, resourceAdded = false;
             foreach (Compile compile in projectDigest.Compiles)
             {
                 string compilesFile = PomHelperUtility.GetRelativePath(baseDir, new FileInfo(compile.IncludeFullPath));
@@ -127,34 +128,34 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                         msBuildPluginAdded = true;
                     }                    
 
-                    string gFile;
+                    string prefix;
                     //set the path *.g.cs and *.g.vb files depending on target architecture of WPF projects as this changes path under obj folder
                     switch (projectDigest.Platform)
                     {
                         case "AnyCPU":
-                            gFile = @"obj\Debug\";
+                            prefix = @"obj\Debug\";
                             break;
                         case "x64":
-                            gFile = @"obj\x64\Debug\";
+                            prefix = @"obj\x64\Debug\";
                             break;
                         case "x86":
-                            gFile = @"obj\x86\Debug\";
+                            prefix = @"obj\x86\Debug\";
                             break;
                         case "Itanium":
-                            gFile = @"obj\Itanium\Debug\";
+                            prefix = @"obj\Itanium\Debug\";
                             break;
                         default:
-                            gFile = @"obj\Debug\";
+                            prefix = @"obj\Debug\";
                             break;
                     }
-                    if (compilesFile.EndsWith(".cs"))
-                        gFile += compilesFile.Replace(".xaml.cs", ".g.cs");
-                    else
-                        gFile += compilesFile.Replace(".xaml.vb", ".g.vb");
+                    string sub = compilesFile.Substring(compilesFile.Length - 3);
+                    compiles.Add(prefix + compilesFile.Replace(".xaml" + sub, ".g" + sub));
 
-                    string gFullPath = compile.IncludeFullPath.Replace(compilesFile, gFile);
-                    
-                    compiles.Add(gFile);
+                    if (!resourceAdded)
+                    {
+                        generatedResourceList.Add(createResourceEntry(prefix + projectDigest.RootNamespace + ".g.resources", projectDigest.RootNamespace + ".g"));
+                        resourceAdded = true;
+                    }
                 }
             }
             AddPluginConfiguration(compilePlugin, "includeSources", "includeSource", compiles.ToArray());
@@ -205,7 +206,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             AddWebReferences();
 
             //Add EmbeddedResources maven-resgen-plugin
-            AddEmbeddedResources();
+            AddEmbeddedResources(generatedResourceList);
             
 
             // Add Project Inter-dependencies

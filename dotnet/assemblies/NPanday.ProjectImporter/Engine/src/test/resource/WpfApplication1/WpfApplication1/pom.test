@@ -52,6 +52,10 @@
         <configuration>
           <embeddedResources>
             <embeddedResource>
+              <sourceFile>obj\x86\Debug\WpfApplication1.g.resources</sourceFile>
+              <name>WpfApplication1.g</name>
+            </embeddedResource>
+            <embeddedResource>
               <sourceFile>Properties\Resources.resx</sourceFile>
               <name>WpfApplication1.Properties.Resources</name>
             </embeddedResource>
