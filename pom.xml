@@ -586,6 +586,12 @@ under the License.
       </modules>
     </profile>
     <profile>
+      <id>site</id>
+      <modules>
+        <module>site</module>
+      </modules>
+    </profile>
+    <profile>
       <id>pre-release</id>
       <build>
         <pluginManagement>
