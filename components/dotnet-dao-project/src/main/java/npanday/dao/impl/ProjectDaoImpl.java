@@ -36,6 +36,7 @@ import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.Os;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
 import org.codehaus.plexus.util.cli.Commandline;
@@ -994,7 +995,8 @@ public final class ProjectDaoImpl
 
         String newClassifier = classTokens[0] + "}" + classTokens[1];
 
-        String registryPath = "HKEY_CLASSES_ROOT\\TypeLib\\" + newClassifier + "\\win32\\";
+        String registryPath = "HKEY_CLASSES_ROOT\\TypeLib\\" + newClassifier;
+        registryPath += Os.isArch( "x86" ) ? "\\win32\\" : "\\win64\\";
         int lineNoOfPath = 1;
 
         List<String> parameters = new ArrayList<String>();
