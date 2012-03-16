@@ -176,17 +176,20 @@ public class CreateCloudServicePackageMojo
                 );
             }
 
-            File entryPoint = new File( roleRoot, artifact.getArtifactId() + ".dll" );
+            File entryPoint = null; 
             if ( isWebRole )
             {
+                String name = "bin" + File.separator + artifact.getArtifactId() + ".dll";
+                entryPoint = new File( roleRoot, name );
                 if ( entryPoint.exists() )
                 {
                     commands.add(
-                        "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath() + ";" + entryPoint.getName()
+                        "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath() + ";" + name
                     );
                 }
                 else
                 {
+                    getLog().warn( "NPANDAY-123-005: entry point '" + entryPoint + "' could not be found" );
                     commands.add(
                         "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath()
                     );
@@ -199,6 +202,7 @@ public class CreateCloudServicePackageMojo
             }
             else if ( isWorkerRole )
             {
+                entryPoint = new File( roleRoot, artifact.getArtifactId() + ".dll" );
                 if ( !entryPoint.exists() )
                 {
                     throw new MojoExecutionException(
@@ -217,7 +221,7 @@ public class CreateCloudServicePackageMojo
             Properties properties = new Properties();
             String v = frameworkVersion != null ? "v" + frameworkVersion : "v4.0";
             properties.setProperty( "TargetFrameworkVersion", v );
-            if ( entryPoint.exists() )
+            if ( entryPoint != null && entryPoint.exists() )
             {
                 properties.setProperty( "EntryPoint", entryPoint.getName() );
             }
