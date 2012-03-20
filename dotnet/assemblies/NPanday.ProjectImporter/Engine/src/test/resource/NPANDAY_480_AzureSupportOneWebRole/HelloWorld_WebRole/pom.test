@@ -19,6 +19,7 @@
         <extensions>true</extensions>
         <configuration>
           <frameworkVersion>4.0</frameworkVersion>
+          <define>DEBUG;TRACE</define>
           <includeSources>
             <includeSource>Default.aspx.cs</includeSource>
             <includeSource>Default.aspx.designer.cs</includeSource>
@@ -39,6 +40,7 @@
         </executions>
         <configuration>
           <frameworkVersion>4.0</frameworkVersion>
+          <transformationHint>Debug</transformationHint>
         </configuration>
       </plugin>
       <plugin>

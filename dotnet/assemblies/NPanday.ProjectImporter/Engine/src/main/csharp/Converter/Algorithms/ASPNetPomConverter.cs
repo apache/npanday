@@ -48,9 +48,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (!string.IsNullOrEmpty(projectDigest.TargetFramework))
                 AddPluginConfiguration(aspnetPlugin, "frameworkVersion", projectDigest.TargetFramework);
 
-            if (!string.IsNullOrEmpty(projectDigest.WebConfig))
+            if (!string.IsNullOrEmpty(projectDigest.Configuration))
             {
-                AddPluginConfiguration(aspnetPlugin, "transformationHint", projectDigest.WebConfig);
+                AddPluginConfiguration(aspnetPlugin, "transformationHint", projectDigest.Configuration);
             }
 
             Plugin msdeployPlugin = AddPlugin("org.apache.npanday.plugins", "msdeploy-maven-plugin", null, false);

@@ -94,6 +94,8 @@ namespace NPanday.ProjectImporter.Digest
                     throw new Exception("Projects with duplicated assembly names are not supported: " + projDigest.ProjectName);
                 }
 
+                log.DebugFormat("Digested project Name = {0}, GUID = {1}", projDigest.ProjectName, projDigest.ProjectGuid);
+
                 projDigestDictionary.Add(projDigest.ProjectName, projDigest);
                 projDigestGuidDictionary.Add(projDigest.ProjectGuid, projDigest);
             }

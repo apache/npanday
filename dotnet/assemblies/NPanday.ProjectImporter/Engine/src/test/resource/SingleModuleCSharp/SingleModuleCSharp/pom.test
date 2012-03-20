@@ -18,6 +18,7 @@
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
+          <define>DEBUG;TRACE</define>
           <includeSources>
             <includeSource>Form1.cs</includeSource>
             <includeSource>Form1.Designer.cs</includeSource>

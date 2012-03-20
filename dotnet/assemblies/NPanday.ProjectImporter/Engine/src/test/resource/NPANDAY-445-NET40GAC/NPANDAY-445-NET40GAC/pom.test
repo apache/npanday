@@ -19,6 +19,7 @@
         <extensions>true</extensions>
         <configuration>
           <frameworkVersion>4.0</frameworkVersion>
+          <define>DEBUG;TRACE</define>
           <includeSources>
             <includeSource>Class1.cs</includeSource>
             <includeSource>Properties\AssemblyInfo.cs</includeSource>

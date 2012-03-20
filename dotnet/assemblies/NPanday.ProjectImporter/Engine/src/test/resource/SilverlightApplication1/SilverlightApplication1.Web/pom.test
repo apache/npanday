@@ -19,6 +19,7 @@
         <extensions>true</extensions>
         <configuration>
           <frameworkVersion>4.0</frameworkVersion>
+          <define>DEBUG;TRACE</define>
           <includeSources>
             <includeSource>Properties\AssemblyInfo.cs</includeSource>
           </includeSources>
@@ -38,6 +39,7 @@
         </executions>
         <configuration>
           <frameworkVersion>4.0</frameworkVersion>
+          <transformationHint>Debug</transformationHint>
         </configuration>
       </plugin>
       <plugin>

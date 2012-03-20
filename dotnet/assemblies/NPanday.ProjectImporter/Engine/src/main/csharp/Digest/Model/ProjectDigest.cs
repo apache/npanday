@@ -574,13 +574,6 @@ namespace NPanday.ProjectImporter.Digest.Model
             set { useMsDeploy = value; }
         }
 
-        private string webConfig;
-        public string WebConfig
-        {
-            get { return webConfig; }
-            set { webConfig = value; }
-        }
-
         private string cloudConfig;
         public string CloudConfig
         {

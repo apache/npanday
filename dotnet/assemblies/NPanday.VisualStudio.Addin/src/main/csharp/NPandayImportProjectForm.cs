@@ -117,7 +117,7 @@ namespace NPanday.VisualStudio.Addin
                     List<string> cloudConfigurations = new List<string>();
 
                     // these could be per project, but assume they match up for now
-                    List<string> webConfigurations = new List<string>();
+                    List<string> availableConfigurations = new List<string>();
 
                     bool hasWebProjects = false, hasCloudProjects = false;
                     Solution2 solution = (Solution2)applicationObject.Solution;
@@ -127,17 +127,18 @@ namespace NPanday.VisualStudio.Addin
                         bool web = isWebProject(project);
                         bool cloud = isCloudProject(project);
 
+                        foreach (object c in ((object[])project.ConfigurationManager.ConfigurationRowNames))
+                        {
+                            string configuration = (string)c;
+                            if (!availableConfigurations.Contains(configuration))
+                            {
+                                availableConfigurations.Add(configuration);
+                            }
+                        }
+
                         if (web)
                         {
                             hasWebProjects = true;
-                            foreach (object c in ((object[])project.ConfigurationManager.ConfigurationRowNames))
-                            {
-                                string configuration = (string) c;
-                                if (!webConfigurations.Contains(configuration))
-                                {
-                                    webConfigurations.Add(configuration);
-                                }
-                            }
                         }
                         if (cloud)
                         {
@@ -165,13 +166,12 @@ namespace NPanday.VisualStudio.Addin
                     cloudConfigComboBox.Items.Add("(Default)");
                     cloudConfigComboBox.Items.AddRange(cloudConfigurations.ToArray());
                     cloudConfigComboBox.SelectedItem = "(Default)";
-                    webConfigComboBox.Enabled = hasWebProjects && webConfigurations.Count > 0;
-                    webConfigComboBox.Items.Add("(Default)");
-                    webConfigComboBox.Items.AddRange(webConfigurations.ToArray());
-                    webConfigComboBox.SelectedItem = "(Default)";
+                    configComboBox.Enabled = availableConfigurations.Count > 0;
+                    configComboBox.Items.Add("(Default)");
+                    configComboBox.Items.AddRange(availableConfigurations.ToArray());
+                    configComboBox.SelectedItem = "(Default)";
 
-                    if (hasWebProjects)
-                        log.Debug("Web configurations: " + string.Join(", ", webConfigurations.ToArray()));
+                    log.Debug("Configurations: " + string.Join(", ", availableConfigurations.ToArray()));
                     if (hasCloudProjects)
                         log.Debug("Cloud configuration files: " + string.Join(", ", cloudConfigurations.ToArray()));
                 }
@@ -238,10 +238,10 @@ namespace NPanday.VisualStudio.Addin
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            string webConfig = null;
-            if (webConfigComboBox.SelectedItem != "(Default)")
+            string configuration = null;
+            if (configComboBox.SelectedItem != "(Default)")
             {
-                webConfig = (string) webConfigComboBox.SelectedItem;
+                configuration = (string) configComboBox.SelectedItem;
             }
 
             string cloudConfig = null;
@@ -253,7 +253,7 @@ namespace NPanday.VisualStudio.Addin
             //Refactored code for easier Unit Testing
             try
             {
-                GeneratePom(txtBrowseDotNetSolutionFile.Text, txtGroupId.Text.Trim(), txtVersion.Text.Trim(), txtSCMTag.Text, useMsDeployCheckBox.Checked, webConfig, cloudConfig);
+                GeneratePom(txtBrowseDotNetSolutionFile.Text, txtGroupId.Text.Trim(), txtVersion.Text.Trim(), txtSCMTag.Text, useMsDeployCheckBox.Checked, configuration, cloudConfig);
             }
             catch (Exception exception)
             {
@@ -267,7 +267,7 @@ namespace NPanday.VisualStudio.Addin
             GeneratePom(solutionFile, groupId, version, scmTag, useMsDeploy, null, null);
         }
 
-        protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag, bool useMsDeploy, string webConfig, string cloudConfig)
+        protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag, bool useMsDeploy, string configuration, string cloudConfig)
         {
             string warningMsg = string.Empty;
             String mavenVerRegex = "^[0-9]+(" + Regex.Escape(".") + "?[0-9]+){0,3}$";
@@ -351,7 +351,7 @@ namespace NPanday.VisualStudio.Addin
                 validateSolutionStructure();
                 resyncAllArtifacts();
                 // TODO: nicer to have some sort of structure / flags for the Msdeploy bit, or this dialog will get out of control over time - perhaps a "project configuration" dialog can replace the test popup
-                string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, useMsDeploy, webConfig, cloudConfig, ref warningMsg);
+                string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, useMsDeploy, configuration, cloudConfig, ref warningMsg);
                 string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
 
                 foreach (string pom in generatedPoms)
@@ -551,11 +551,6 @@ namespace NPanday.VisualStudio.Addin
 
             // TODO: better location for utility
             return Connect.IsFolder(project);
-        }
-
-        private void useMsDeployCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            webConfigComboBox.Enabled = useMsDeployCheckBox.Enabled;
         }
     }
 }

@@ -28,6 +28,7 @@ using NPanday.Artifact;
 using NPanday.ProjectImporter.Digest.Model;
 using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
 using NPanday.Utils;
+using System.Text.RegularExpressions;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -60,6 +61,8 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             projectDigest.ProjectType = (VisualStudioProjectTypeEnum)projectMap["ProjectType"];
             projectDigest.FullFileName = project.FullFileName;
             projectDigest.FullDirectoryName = Path.GetDirectoryName(project.FullFileName);
+            if (projectMap.ContainsKey("Configuration"))
+                projectDigest.Configuration = projectMap["Configuration"].ToString();
 
             FileInfo existingPomFile = new FileInfo(Path.Combine(projectDigest.FullDirectoryName, "pom.xml"));
             if (existingPomFile.Exists)
@@ -125,7 +128,6 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             projectDigest.Folders = folders.ToArray();
             projectDigest.GlobalNamespaceImports = globalNamespaceImports.ToArray();
 			projectDigest.ComReferenceList = comReferenceList.ToArray();
-
 
             return projectDigest;
 
@@ -489,240 +491,298 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
         {
             foreach (BuildPropertyGroup buildPropertyGroup in project.PropertyGroups)
             {
-                foreach (BuildProperty buildProperty in buildPropertyGroup)
+                if (string.IsNullOrEmpty(buildPropertyGroup.Condition) || evaluateCondition(projectDigest, buildPropertyGroup.Condition))
                 {
-                    if (!buildProperty.IsImported)
+                    foreach (BuildProperty buildProperty in buildPropertyGroup)
                     {
-                        
-                        if ("RootNameSpace".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+                        if (!buildProperty.IsImported)
                         {
-                            projectDigest.RootNamespace = buildProperty.Value;
-                        }
-                        else if ("AssemblyName".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.AssemblyName = buildProperty.Value;
-                        }
-                        else if ("Name".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.Name = buildProperty.Value;
-                        }
-                        else if ("StartupObject".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.StartupObject = buildProperty.Value;
-                        }
-                        else if ("OutputType".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.OutputType = buildProperty.Value;
-                        }
-                        else if ("SilverlightApplication".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.SilverlightApplication = bool.Parse(buildProperty.Value);
-                        }
-                        else if ("SilverlightApplicationList".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.SilverlightApplicationList = SilverlightApplicationReference.parseApplicationList(buildProperty.Value);
-                        }
-                        else if ("RoleType".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.RoleType = buildProperty.Value;
-                        }
-                        else if ("SignAssembly".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.SignAssembly = buildProperty.Value;
-                        }
-                        else if ("AssemblyOriginatorKeyFile".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.AssemblyOriginatorKeyFile = buildProperty.Value;
-                        }
-                        else if ("DelaySign".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.DelaySign = buildProperty.Value;
-                        }
-                        else if ("Optimize".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.Optimize = buildProperty.Value;
-                        }
-                        else if ("AllowUnsafeBlocks".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.AllowUnsafeBlocks = buildProperty.Value;
-                        }
-                        else if ("DefineConstants".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.DefineConstants = buildProperty.Value;
-                        }
-                        else if ("ApplicationIcon".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.ApplicationIcon = buildProperty.Value;
-                        }
-                        else if ("Win32Resource".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.Win32Resource = buildProperty.Value;
-                        }
-                        else if ("ProjectGuid".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.ProjectGuid = buildProperty.Value;
-                        }
-                        else if ("Configuration".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.Configuration = buildProperty.Value;
-                        }
-                        else if ("BaseIntermediateOutputPath".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.BaseIntermediateOutputPath = buildProperty.Value;
-                        }
-                        else if ("OutputPath".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.OutputPath = buildProperty.Value;
-                        }
-                        else if ("TreatWarningsAsErrors".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.TreatWarningsAsErrors = buildProperty.Value;
-                        }
-                        else if ("Platform".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.Platform = buildProperty.Value;
-                        }
-                        else if ("ProductVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.ProductVersion = buildProperty.Value;
-                        }
-                        else if ("SchemaVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.SchemaVersion = buildProperty.Value;
-                        }
-                        else if ("TargetFrameworkVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            // changed the version to the more specific version
-                            string frameworkVersion = buildProperty.Value.Substring(1);
-                            
-                            if ("2.0".Equals(buildProperty.Value.Substring(1)))
+                            if (!string.IsNullOrEmpty(buildProperty.Condition))
                             {
-                                frameworkVersion = "2.0.50727";    
+                                log.DebugFormat("Property {0} = {1} if {2}", buildProperty.Name, buildProperty.Value, buildProperty.Condition);
+                                if (evaluateCondition(projectDigest, buildProperty.Condition))
+                                {
+                                    processProperty(projectDigest, buildProperty);
+                                }
                             }
-
-                            projectDigest.TargetFramework = frameworkVersion;
-                        }
-                        else if ("AppDesignerFolder".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.AppDesignerFolder = buildProperty.Value;
-                        }
-                        else if ("DebugSymbols".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.DebugSymbols = buildProperty.Value;
-                        }
-                        else if ("DebugType".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.DebugType = buildProperty.Value;
-                        }
-                        else if ("ErrorReport".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.ErrorReport = buildProperty.Value;
-                        }
-                        else if ("WarningLevel".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.WarningLevel = buildProperty.Value;
-                        }
-                        else if ("DocumentationFile".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.DocumentationFile = buildProperty.Value;
-                        }
-                        else if ("PostBuildEvent".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.PostBuildEvent = buildProperty.Value;
-                        }
-                        else if ("PublishUrl".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.PublishUrl = buildProperty.Value;
-                        }
-                        else if ("Install".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.Install = buildProperty.Value;
-                        }
-                        else if ("InstallFrom".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.InstallFrom = buildProperty.Value;
-                        }
-                        else if ("UpdateEnabled".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.UpdateEnabled = buildProperty.Value;
-                        }
-                        else if ("UpdateMode".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.UpdateMode = buildProperty.Value;
-                        }
-                        else if ("UpdateInterval".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.UpdateInterval = buildProperty.Value;
-                        }
-                        else if ("UpdateIntervalUnits".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.UpdateIntervalUnits = buildProperty.Value;
-                        }
-                        else if ("UpdatePeriodically".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.UpdatePeriodically = buildProperty.Value;
-                        }
-                        else if ("UpdateRequired".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.UpdateRequired = buildProperty.Value;
-                        }
-                        else if ("MapFileExtensions".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.MapFileExtensions = buildProperty.Value;
-                        }
-                        else if ("ApplicationVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.ApplicationVersion = buildProperty.Value;
-                        }
-                        else if ("IsWebBootstrapper".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.IsWebBootstrapper = buildProperty.Value;
-                        }
-                        else if ("BootstrapperEnabled".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.BootstrapperEnabled = buildProperty.Value;
-                        }
-                        else if ("PreBuildEvent".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.PreBuildEvent = buildProperty.Value;
-                        }
-                        else if ("MyType".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.MyType = buildProperty.Value;
-                        }
-                        else if ("DefineDebug".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.DefineDebug = buildProperty.Value;
-                        }
-                        else if ("DefineTrace".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.DefineTrace = buildProperty.Value;
-                        }
-                        else if ("NoWarn".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.NoWarn = buildProperty.Value;
-                        }
-                        else if ("WarningsAsErrors".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            projectDigest.WarningsAsErrors = buildProperty.Value;
-                        }
-                        else if ("ProjectTypeGuids".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            if (!string.IsNullOrEmpty(buildProperty.Value))
+                            else
                             {
-                                projectDigest.ProjectType = VisualStudioProjectType.GetVisualStudioProjectType(buildProperty.Value);
+                                log.DebugFormat("Property {0} = {1}", buildProperty.Name, buildProperty.Value);
+                                processProperty(projectDigest, buildProperty);
                             }
                         }
-                        else
-                        {
-                            log.Debug("Unhandled Property:" + buildProperty.Name);
-                        }
-
                     }
-
                 }
             }
         }
 
+        private static bool evaluateCondition(ProjectDigest projectDigest, string condition)
+        {
+            // basic evaluation of conditions, unable to find a MSBuild API to do it - many will not be supported
+
+            bool val = true;
+
+            string newCond = condition.Replace("$(Configuration)", projectDigest.Configuration);
+            newCond = newCond.Replace("$(Platform)", projectDigest.Platform);
+            newCond = newCond.Replace("$(Language)", projectDigest.Language);
+
+            if (newCond.Contains("$("))
+            {
+                log.DebugFormat("Unable to evaluation condition: {0}, unrecognized expression, assuming 'true'", newCond);
+                return true;
+            }
+
+            Match match = Regex.Match(newCond, @"^\s*'(.*)'\s*(==|!=)\s*'(.*)'\s*$");
+            if (match.Success)
+            {
+                string op = match.Groups[2].Value;
+                if (op == "==")
+                {
+                    val = match.Groups[1].Value == match.Groups[3].Value;
+                }
+                else if (op == "!=")
+                {
+                    val = match.Groups[1].Value != match.Groups[3].Value;
+                }
+                else
+                {
+                    log.WarnFormat("Unable to evaluate condition: {0}, unrecognized operator {1}, assuming 'true'", condition, op);
+                }
+            }
+            else
+            {
+                log.WarnFormat("Unable to parse condition: {0}, assuming 'true'", condition);
+            }
+
+            log.DebugFormat("Condition = {0}, Substituted = {1}, Result = {2}", condition, newCond, val);
+            return val;
+        }
+
+        private static void processProperty(ProjectDigest projectDigest, BuildProperty buildProperty)
+        {
+            if ("RootNameSpace".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.RootNamespace = buildProperty.Value;
+            }
+            else if ("AssemblyName".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.AssemblyName = buildProperty.Value;
+            }
+            else if ("Name".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.Name = buildProperty.Value;
+            }
+            else if ("StartupObject".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.StartupObject = buildProperty.Value;
+            }
+            else if ("OutputType".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.OutputType = buildProperty.Value;
+            }
+            else if ("SilverlightApplication".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.SilverlightApplication = bool.Parse(buildProperty.Value);
+            }
+            else if ("SilverlightApplicationList".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.SilverlightApplicationList = SilverlightApplicationReference.parseApplicationList(buildProperty.Value);
+            }
+            else if ("RoleType".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.RoleType = buildProperty.Value;
+            }
+            else if ("SignAssembly".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.SignAssembly = buildProperty.Value;
+            }
+            else if ("AssemblyOriginatorKeyFile".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.AssemblyOriginatorKeyFile = buildProperty.Value;
+            }
+            else if ("DelaySign".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.DelaySign = buildProperty.Value;
+            }
+            else if ("Optimize".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.Optimize = buildProperty.Value;
+            }
+            else if ("AllowUnsafeBlocks".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.AllowUnsafeBlocks = buildProperty.Value;
+            }
+            else if ("DefineConstants".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.DefineConstants = buildProperty.Value;
+            }
+            else if ("ApplicationIcon".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.ApplicationIcon = buildProperty.Value;
+            }
+            else if ("Win32Resource".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.Win32Resource = buildProperty.Value;
+            }
+            else if ("ProjectGuid".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.ProjectGuid = buildProperty.Value;
+            }
+            else if ("Configuration".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.Configuration = buildProperty.Value;
+            }
+            else if ("BaseIntermediateOutputPath".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.BaseIntermediateOutputPath = buildProperty.Value;
+            }
+            else if ("OutputPath".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.OutputPath = buildProperty.Value;
+            }
+            else if ("TreatWarningsAsErrors".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.TreatWarningsAsErrors = buildProperty.Value;
+            }
+            else if ("Platform".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.Platform = buildProperty.Value;
+            }
+            else if ("ProductVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.ProductVersion = buildProperty.Value;
+            }
+            else if ("SchemaVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.SchemaVersion = buildProperty.Value;
+            }
+            else if ("TargetFrameworkVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                // changed the version to the more specific version
+                string frameworkVersion = buildProperty.Value.Substring(1);
+
+                if ("2.0".Equals(buildProperty.Value.Substring(1)))
+                {
+                    frameworkVersion = "2.0.50727";
+                }
+
+                projectDigest.TargetFramework = frameworkVersion;
+            }
+            else if ("AppDesignerFolder".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.AppDesignerFolder = buildProperty.Value;
+            }
+            else if ("DebugSymbols".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.DebugSymbols = buildProperty.Value;
+            }
+            else if ("DebugType".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.DebugType = buildProperty.Value;
+            }
+            else if ("ErrorReport".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.ErrorReport = buildProperty.Value;
+            }
+            else if ("WarningLevel".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.WarningLevel = buildProperty.Value;
+            }
+            else if ("DocumentationFile".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.DocumentationFile = buildProperty.Value;
+            }
+            else if ("PostBuildEvent".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.PostBuildEvent = buildProperty.Value;
+            }
+            else if ("PublishUrl".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.PublishUrl = buildProperty.Value;
+            }
+            else if ("Install".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.Install = buildProperty.Value;
+            }
+            else if ("InstallFrom".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.InstallFrom = buildProperty.Value;
+            }
+            else if ("UpdateEnabled".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.UpdateEnabled = buildProperty.Value;
+            }
+            else if ("UpdateMode".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.UpdateMode = buildProperty.Value;
+            }
+            else if ("UpdateInterval".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.UpdateInterval = buildProperty.Value;
+            }
+            else if ("UpdateIntervalUnits".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.UpdateIntervalUnits = buildProperty.Value;
+            }
+            else if ("UpdatePeriodically".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.UpdatePeriodically = buildProperty.Value;
+            }
+            else if ("UpdateRequired".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.UpdateRequired = buildProperty.Value;
+            }
+            else if ("MapFileExtensions".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.MapFileExtensions = buildProperty.Value;
+            }
+            else if ("ApplicationVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.ApplicationVersion = buildProperty.Value;
+            }
+            else if ("IsWebBootstrapper".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.IsWebBootstrapper = buildProperty.Value;
+            }
+            else if ("BootstrapperEnabled".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.BootstrapperEnabled = buildProperty.Value;
+            }
+            else if ("PreBuildEvent".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.PreBuildEvent = buildProperty.Value;
+            }
+            else if ("MyType".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.MyType = buildProperty.Value;
+            }
+            else if ("DefineDebug".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.DefineDebug = buildProperty.Value;
+            }
+            else if ("DefineTrace".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.DefineTrace = buildProperty.Value;
+            }
+            else if ("NoWarn".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.NoWarn = buildProperty.Value;
+            }
+            else if ("WarningsAsErrors".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.WarningsAsErrors = buildProperty.Value;
+            }
+            else if ("ProjectTypeGuids".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                if (!string.IsNullOrEmpty(buildProperty.Value))
+                {
+                    projectDigest.ProjectType = VisualStudioProjectType.GetVisualStudioProjectType(buildProperty.Value);
+                }
+            }
+            else
+            {
+                log.Debug("Unhandled Property:" + buildProperty.Name);
+            }
+        }
     }
 }

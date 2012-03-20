@@ -121,10 +121,10 @@ namespace NPanday.ProjectImporter
             return ImportProject(solutionFile, groupId, artifactId, version, scmTag, verifyTests, useMsDeploy, null, null, ref warningMsg);    
         }
 
-        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, bool verifyTests, bool useMsDeploy, string webConfig, string cloudConfig, ref string warningMsg)
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, bool verifyTests, bool useMsDeploy, string configuration, string cloudConfig, ref string warningMsg)
         {
             VerifyProjectToImport method = verifyTests ? VerifyUnitTestsToUser.VerifyTests : (VerifyProjectToImport)null;
-            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, method, useMsDeploy, webConfig, cloudConfig, ref warningMsg);
+            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, method, useMsDeploy, configuration, cloudConfig, ref warningMsg);
         }
 
         /// <summary>
@@ -184,13 +184,21 @@ namespace NPanday.ProjectImporter
         /// <param name="verifyProjectToImport">A delegate That will Accept a method for verifying Projects To Import</param>
         /// <param name="scmTag">adds scm tags to parent pom.xml if not string.empty or null</param>
         /// <returns>An array of generated pom.xml filenames</returns>
-        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, VerifyProjectToImport verifyProjectToImport, bool useMsDeploy, string webConfig, string cloudConfig, ref string warningMsg)
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, VerifyProjectToImport verifyProjectToImport, bool useMsDeploy, string configuration, string cloudConfig, ref string warningMsg)
         {
             string[] result = null;
 
             FileInfo solutionFileInfo = new FileInfo(solutionFile);
 
             List<Dictionary<string, object>> list = ParseSolution(solutionFileInfo, ref warningMsg);
+
+            if (configuration != null)
+            {
+                foreach (Dictionary<string, object> projectMap in list)
+                {
+                    projectMap.Add("Configuration", configuration);
+                }
+            }
 
             //Checks for Invalid folder structure
             HasValidFolderStructure(list);
@@ -213,7 +221,6 @@ namespace NPanday.ProjectImporter
                     // set the project flag so that converters can look at it later
                     pDigest.UseMsDeploy = useMsDeploy;
                     pDigest.CloudConfig = cloudConfig;
-                    pDigest.WebConfig = webConfig;
                     filteredPrjDigests.Add(pDigest);
                 }
                 else
@@ -293,12 +300,6 @@ namespace NPanday.ProjectImporter
         {
             return ProjectDigester.DigestProjects(projects, ref warningMsg);
         }
-
-
-
-        
-        
-
 
         /// <summary>
         /// Facade for Getting the Project Type. 

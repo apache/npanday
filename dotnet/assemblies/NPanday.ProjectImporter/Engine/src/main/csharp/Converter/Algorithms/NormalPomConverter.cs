@@ -88,17 +88,21 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             );
             if(!string.IsNullOrEmpty(projectDigest.TargetFramework))
                 AddPluginConfiguration(compilePlugin, "frameworkVersion", projectDigest.TargetFramework);
-            
 
-            if(projectDigest.Language.Equals("vb",StringComparison.OrdinalIgnoreCase))
+            if (projectDigest.Language.Equals("vb", StringComparison.OrdinalIgnoreCase))
             {
                 AddPluginConfiguration(compilePlugin, "language", "VB");
                 AddPluginConfiguration(compilePlugin, "rootNamespace", projectDigest.RootNamespace);
-                string define = GetDefineConfigurationValue();
+                string define = GetVBDefineConfigurationValue();
                 if (!string.IsNullOrEmpty(define))
                 {
                     AddPluginConfiguration(compilePlugin, "define", define);
                 }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(projectDigest.DefineConstants))
+                    AddPluginConfiguration(compilePlugin, "define", projectDigest.DefineConstants);
             }
             
             if (projectDigest.StartupObject != "Sub Main")

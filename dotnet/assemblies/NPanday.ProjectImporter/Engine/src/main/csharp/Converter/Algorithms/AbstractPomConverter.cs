@@ -983,11 +983,14 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         }
 
-
-
-        protected string GetDefineConfigurationValue()
+        protected string GetVBDefineConfigurationValue()
         {
             List<string> defines = new List<string>();
+
+            if (!string.IsNullOrEmpty(projectDigest.DefineConstants))
+            {
+                defines.Add(projectDigest.DefineConstants);
+            }
 
             if (!string.IsNullOrEmpty(projectDigest.MyType))
             {

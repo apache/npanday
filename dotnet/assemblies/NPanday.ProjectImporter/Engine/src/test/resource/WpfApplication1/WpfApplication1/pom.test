@@ -19,6 +19,7 @@
         <extensions>true</extensions>
         <configuration>
           <frameworkVersion>4.0</frameworkVersion>
+          <define>DEBUG;TRACE</define>
           <includeSources>
             <includeSource>App.xaml.cs</includeSource>
             <includeSource>obj\x86\Debug\App.g.cs</includeSource>

@@ -62,7 +62,7 @@ namespace NPanday.VisualStudio.Addin
             this.useMsDeployCheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.webConfigComboBox = new System.Windows.Forms.ComboBox();
+            this.configComboBox = new System.Windows.Forms.ComboBox();
             this.cloudConfigComboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
@@ -188,9 +188,10 @@ namespace NPanday.VisualStudio.Addin
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(10, 145);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(97, 13);
+            this.label3.Size = new System.Drawing.Size(72, 13);
             this.label3.TabIndex = 17;
-            this.label3.Text = "Web configuration:";
+            this.label3.Text = "Configuration:";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4
             // 
@@ -201,14 +202,14 @@ namespace NPanday.VisualStudio.Addin
             this.label4.TabIndex = 18;
             this.label4.Text = "Cloud configuration:";
             // 
-            // webConfigComboBox
+            // configComboBox
             // 
-            this.webConfigComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.webConfigComboBox.FormattingEnabled = true;
-            this.webConfigComboBox.Location = new System.Drawing.Point(119, 142);
-            this.webConfigComboBox.Name = "webConfigComboBox";
-            this.webConfigComboBox.Size = new System.Drawing.Size(171, 21);
-            this.webConfigComboBox.TabIndex = 19;
+            this.configComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.configComboBox.FormattingEnabled = true;
+            this.configComboBox.Location = new System.Drawing.Point(119, 142);
+            this.configComboBox.Name = "configComboBox";
+            this.configComboBox.Size = new System.Drawing.Size(171, 21);
+            this.configComboBox.TabIndex = 19;
             // 
             // cloudConfigComboBox
             // 
@@ -226,7 +227,7 @@ namespace NPanday.VisualStudio.Addin
             this.ClientSize = new System.Drawing.Size(526, 280);
             this.ControlBox = false;
             this.Controls.Add(this.cloudConfigComboBox);
-            this.Controls.Add(this.webConfigComboBox);
+            this.Controls.Add(this.configComboBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.useMsDeployCheckBox);
@@ -267,7 +268,7 @@ namespace NPanday.VisualStudio.Addin
         private System.Windows.Forms.CheckBox useMsDeployCheckBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox webConfigComboBox;
+        private System.Windows.Forms.ComboBox configComboBox;
         private System.Windows.Forms.ComboBox cloudConfigComboBox;
     }
 }

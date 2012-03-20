@@ -18,6 +18,7 @@
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
+          <define>DEBUG;TRACE</define>
           <includeSources>
             <includeSource>Items.cs</includeSource>
             <includeSource>Properties\AssemblyInfo.cs</includeSource>

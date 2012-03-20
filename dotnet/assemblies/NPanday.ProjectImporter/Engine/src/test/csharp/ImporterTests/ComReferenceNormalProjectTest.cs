@@ -32,6 +32,15 @@ namespace NPanday.ProjectImporter.ImporterTests
             get { return @"Shell32Example\Shell32Example.sln"; }
         }
 
+        public override string SelectedConfiguration
+        {
+            // Test a release configuration
+            get
+            {
+                return "Release";
+            }
+        }
+
         [Test]
         public override void ShouldGenerateTheExpectedNumberOfPoms()
         {
