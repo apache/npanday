@@ -181,7 +181,6 @@ namespace NPanday.VisualStudio.Addin
             this.useMsDeployCheckBox.TabIndex = 16;
             this.useMsDeployCheckBox.Text = "Use Web Deploy 2.0 to package web applications";
             this.useMsDeployCheckBox.UseVisualStyleBackColor = true;
-            this.useMsDeployCheckBox.CheckedChanged += new System.EventHandler(this.useMsDeployCheckBox_CheckedChanged);
             // 
             // label3
             // 
@@ -191,7 +190,6 @@ namespace NPanday.VisualStudio.Addin
             this.label3.Size = new System.Drawing.Size(72, 13);
             this.label3.TabIndex = 17;
             this.label3.Text = "Configuration:";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4
             // 
