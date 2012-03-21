@@ -52,6 +52,7 @@
         <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-resgen-plugin</artifactId>
         <configuration>
+          <frameworkVersion>4.0</frameworkVersion>
           <embeddedResources>
             <embeddedResource>
               <sourceFile>Properties\Resources.resx</sourceFile>

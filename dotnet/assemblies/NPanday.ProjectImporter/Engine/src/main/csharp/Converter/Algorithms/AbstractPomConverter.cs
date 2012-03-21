@@ -154,6 +154,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     false
                 );
 
+                if (!string.IsNullOrEmpty(projectDigest.TargetFramework))
+                    AddPluginConfiguration(embeddedResourcePlugin, "frameworkVersion", projectDigest.TargetFramework);
 
                 List<Dictionary<string, string>> embeddedResourceList = new List<Dictionary<string, string>>();
                 List<string> resourceList = new List<string>();   
