@@ -199,12 +199,12 @@ namespace NPanday.Utils
             Regex regex;
             if (string.IsNullOrEmpty(version))
             {
-                regex = new Regex(@"\s*" + assemblyName + @",.*processorArchitecture=" + architecture + ".*", RegexOptions.IgnoreCase);
+                regex = new Regex(@"\s+" + assemblyName + @",.*processorArchitecture=" + architecture + ".*", RegexOptions.IgnoreCase);
 
             }
             else
             {
-                regex = new Regex(@"\s*" + assemblyName + @",\s*Version=" + Regex.Escape(version) + @".*processorArchitecture=" + architecture + ".*", RegexOptions.IgnoreCase);
+                regex = new Regex(@"\s+" + assemblyName + @",\s*Version=" + Regex.Escape(version) + @".*processorArchitecture=" + architecture + ".*", RegexOptions.IgnoreCase);
             }
 
             MatchCollection matches = regex.Matches(gacs);
