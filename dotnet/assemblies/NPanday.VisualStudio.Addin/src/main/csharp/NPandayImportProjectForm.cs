@@ -84,7 +84,7 @@ namespace NPanday.VisualStudio.Addin
                     }
 
                     groupId = groupId + FilterID(ConvertToPascalCase(new FileInfo(applicationObject.Solution.FileName).Name.Replace(".sln", "")));
-                    txtGroupId.Text = groupId;
+
                     string scmTag = string.Empty;  //getSCMTag(applicationObject.Solution.FileName);
                     string version = "1.0-SNAPSHOT";
                     string pomFilePath = applicationObject.Solution.FileName.Substring(0, applicationObject.Solution.FileName.LastIndexOf("\\"));
@@ -105,6 +105,11 @@ namespace NPanday.VisualStudio.Addin
                         {
                             version = node.InnerText;
                         }
+                        node = doc.SelectSingleNode("/pom:project/pom:groupId", xmlnsManager);
+                        if (node != null)
+                        {
+                            groupId = node.InnerText;
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(scmTag))
@@ -112,6 +117,7 @@ namespace NPanday.VisualStudio.Addin
                         txtSCMTag.Text = scmTag;
                     }
 
+                    txtGroupId.Text = groupId;
                     txtVersion.Text = version;
 
                     // assuming just one cloud project for now
