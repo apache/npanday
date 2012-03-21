@@ -30,9 +30,11 @@ namespace NPanday.VisualStudio.Addin
 {
     public partial class LoginForm : Form
     {
-        public LoginForm()
+        public LoginForm(string message)
         {
             InitializeComponent();
+
+            this.message.Text = message;
         }
 
         private string _username;

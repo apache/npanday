@@ -54,11 +54,12 @@ namespace NPanday.VisualStudio.Addin
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
+            this.message = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(27, 88);
+            this.btnOk.Location = new System.Drawing.Point(29, 105);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 0;
@@ -69,7 +70,7 @@ namespace NPanday.VisualStudio.Addin
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(108, 88);
+            this.btnCancel.Location = new System.Drawing.Point(110, 105);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -79,7 +80,7 @@ namespace NPanday.VisualStudio.Addin
             // 
             // txtUsername
             // 
-            this.txtUsername.Location = new System.Drawing.Point(83, 23);
+            this.txtUsername.Location = new System.Drawing.Point(85, 40);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(100, 20);
             this.txtUsername.TabIndex = 2;
@@ -87,7 +88,7 @@ namespace NPanday.VisualStudio.Addin
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 26);
+            this.label1.Location = new System.Drawing.Point(24, 43);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 3;
@@ -96,7 +97,7 @@ namespace NPanday.VisualStudio.Addin
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 52);
+            this.label2.Location = new System.Drawing.Point(24, 69);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 4;
@@ -104,11 +105,20 @@ namespace NPanday.VisualStudio.Addin
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(83, 49);
+            this.txtPassword.Location = new System.Drawing.Point(85, 66);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(100, 20);
             this.txtPassword.TabIndex = 5;
+            // 
+            // message
+            // 
+            this.message.AutoSize = true;
+            this.message.Location = new System.Drawing.Point(12, 9);
+            this.message.Name = "message";
+            this.message.Size = new System.Drawing.Size(49, 13);
+            this.message.TabIndex = 6;
+            this.message.Text = "message";
             // 
             // LoginForm
             // 
@@ -116,7 +126,8 @@ namespace NPanday.VisualStudio.Addin
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(209, 126);
+            this.ClientSize = new System.Drawing.Size(214, 145);
+            this.Controls.Add(this.message);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -143,5 +154,6 @@ namespace NPanday.VisualStudio.Addin
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.Label message;
     }
 }

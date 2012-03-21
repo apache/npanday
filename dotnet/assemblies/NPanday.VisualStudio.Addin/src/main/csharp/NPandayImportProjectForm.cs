@@ -29,6 +29,7 @@ using EnvDTE;
 using EnvDTE80;
 using log4net;
 using Microsoft.Win32;
+using System.Net;
 
 namespace NPanday.VisualStudio.Addin
 {
@@ -329,11 +330,7 @@ namespace NPanday.VisualStudio.Addin
                         if (!urlValidator.IsMatch(scmTag))
                             throw new Exception(string.Format("SCM tag {0} is incorrect format", scmTag));
 
-                        System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(scmTag);
-                        request.Method = "GET";
-                        System.Net.WebResponse response = request.GetResponse();
-                        if (response.ResponseUri.AbsoluteUri.Contains("url=")) // verify if just forwarded to a external DNS server (e.g. openDNS.com)
-                            throw new Exception(string.Format("SCM tag {0} is not accessible", scmTag));
+                        verifyRemoteAccess(scmTag, null);
                     }
                 }
                 catch
@@ -398,6 +395,40 @@ namespace NPanday.VisualStudio.Addin
                 throw new Exception(message);
             }
 
+        }
+
+        private void verifyRemoteAccess(string url, CredentialCache credentials)
+        {
+            try
+            {
+                System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
+                if (credentials != null)
+                    request.Credentials = credentials;
+                request.Method = "HEAD";
+                System.Net.WebResponse response = request.GetResponse();
+                if (response.ResponseUri.AbsoluteUri.Contains("url=")) // verify if just forwarded to a external DNS server (e.g. openDNS.com)
+                    throw new Exception(string.Format("SCM tag {0} is not accessible", url));
+            }
+            catch (WebException ex)
+            {
+                // ask for user credentials then try again
+                if (ex.Response != null && (ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    LoginForm dialog = new LoginForm("Enter SCM credentials:");
+                    if (dialog.ShowDialog(this) == DialogResult.OK)
+                    {
+                        CredentialCache cache = new CredentialCache();
+                        cache.Add(new Uri(url), "Basic", new NetworkCredential(dialog.Username, dialog.Password));
+                        verifyRemoteAccess(url, cache);
+                    }
+                    else
+                        throw new Exception("Sorry, but you are not authorized to access the specified URL.");
+                }
+                else
+                {
+                    throw new Exception("Sorry, but you have entered an invalid URL.");
+                }
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

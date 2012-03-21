@@ -245,7 +245,7 @@ namespace NPanday.VisualStudio.Addin
                     // ask for user credentials then try again
                     if (ex.Response != null && (ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        LoginForm dialog = new LoginForm();
+                        LoginForm dialog = new LoginForm("Enter repository credentials:");
                         if (dialog.ShowDialog(this) == DialogResult.OK)
                         {
                             CredentialCache cache = new CredentialCache();
