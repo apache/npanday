@@ -53,8 +53,8 @@ namespace NPanday.Plugin.Settings
                 registryFind(Microsoft_SDKs_NETFramework, "v2.0", "InstallationFolder"),
                 ProgramFilesX86(@"Microsoft.NET\SDK\v2.0"),
                 ProgramFilesX86(@"Microsoft.NET\SDK\v2.0 64bit"),
-                ProgramFilesX86(@"Microsoft SDKs\Windows\v6.0A\bin"),
                 ProgramFiles(@"Microsoft SDKs\Windows\v6.0A\bin")
+                ProgramFilesX86(@"Microsoft SDKs\Windows\v6.0A\bin"),
                 );
         }
 
