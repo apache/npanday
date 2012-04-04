@@ -35,36 +35,40 @@
     </platforms>
     <commandFilter>
       <includes>
-        <include>out</include>
-        <include>target</include>
-        <include>doc</include>
-        <include>recurse</include>
-        <include>reference</include>
         <include>addmodule</include>
-        <include>win32res</include>
-        <include>win32icon</include>
-        <include>resource</include>
-        <include>linkresource</include>
-        <include>debug</include>
-        <include>optimize</include>
-        <include>warnaserror</include>
-        <include>warn</include>
-        <include>nowarn</include>
-        <include>checked</include>
-        <include>unsafe</include>
-        <include>define</include>
-        <include>noconfig</include>
         <include>baseaddress</include>
         <include>bugreport</include>
+        <include>checked</include>
         <include>codepage</include>
-        <include>utf8output</include>
-        <include>main</include>
-        <include>fullpaths</include>
-        <include>filealign</include>
-        <include>nostdlib</include>
-        <include>lib</include>
+        <include>debug</include>
+        <include>define</include>
+        <include>doc</include>
         <include>errorreport</include>
+        <include>filealign</include>
+        <include>fullpaths</include>
+        <!-- ignored:
+        <include>help</include>
+        <include>incremental</include>
+        -->
+        <include>lib</include>
+        <include>linkresource</include>
+        <include>main</include>
+        <include>noconfig</include>
         <include>nologo</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>optimize</include>
+        <include>out</include>
+        <include>recurse</include>
+        <include>reference</include>
+        <include>resource</include>
+        <include>target</include>
+        <include>unsafe</include>
+        <include>utf8output</include>
+        <include>warn</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32res</include>
       </includes>
     </commandFilter>
   </compilerPlugin>
@@ -89,43 +93,47 @@
     </platforms>
     <commandFilter>
       <includes>
-        <include>out</include>
-        <include>target</include>
+        <include>addmodule</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>checked</include>
+        <include>codepage</include>
+        <include>debug</include>
+        <include>define</include>
         <include>delaysign</include>
         <include>doc</include>
-        <include>keyfile</include>
+        <include>errorreport</include>
+        <include>filealign</include>
+        <include>fullpaths</include>
+        <!-- ignored:
+        <include>help</include>
+        <include>incremental</include>
+        -->
         <include>keycontainer</include>
+        <include>keyfile</include>
+        <include>langversion</include>
+        <include>lib</include>
+        <include>linkresource</include>
+        <include>main</include>
+        <include>moduleassemblyname</include>
+        <include>noconfig</include>
+        <include>nologo</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>optimize</include>
+        <include>out</include>
+        <include>pdb</include>
         <include>platform</include>
         <include>recurse</include>
         <include>reference</include>
-        <include>addmodule</include>
-        <include>win32res</include>
-        <include>win32icon</include>
         <include>resource</include>
-        <include>linkresource</include>
-        <include>debug</include>
-        <include>optimize</include>
-        <include>warnaserror</include>
-        <include>warn</include>
-        <include>nowarn</include>
-        <include>checked</include>
+        <include>target</include>
         <include>unsafe</include>
-        <include>define</include>
-        <include>langversion</include>
-        <include>noconfig</include>
-        <include>baseaddress</include>
-        <include>bugreport</include>
-        <include>codepage</include>
         <include>utf8output</include>
-        <include>main</include>
-        <include>fullpaths</include>
-        <include>filealign</include>
-        <include>pdb</include>
-        <include>nostdlib</include>
-        <include>lib</include>
-        <include>errorreport</include>
-        <include>moduleassemblyname</include>
-        <include>nologo</include>
+        <include>warn</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32res</include>
       </includes>
     </commandFilter>
   </compilerPlugin>
@@ -167,44 +175,47 @@
     </assemblies>
     <commandFilter>
       <includes>
-        <include>out</include>
-        <include>target</include>
+        <include>addmodule</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>checked</include>
+        <include>codepage</include>
+        <include>debug</include>
+        <include>define</include>
         <include>delaysign</include>
         <include>doc</include>
-        <include>keyfile</include>
+        <include>errorreport</include>
+        <include>filealign</include>
+        <include>fullpaths</include>
+        <!-- ignored:
+        <include>help</include>
+        <include>incremental</include>
+        -->
         <include>keycontainer</include>
+        <include>keyfile</include>
+        <include>langversion</include>
+        <include>lib</include>
+        <include>linkresource</include>
+        <include>main</include>
+        <include>moduleassemblyname</include>
+        <include>noconfig</include>
+        <include>nologo</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>optimize</include>
+        <include>out</include>
+        <include>pdb</include>
         <include>platform</include>
         <include>recurse</include>
         <include>reference</include>
-        <include>addmodule</include>
-        <include>win32res</include>
-        <include>win32icon</include>
         <include>resource</include>
-        <include>linkresource</include>
-        <include>debug</include>
-        <include>optimize</include>
-        <include>warnaserror</include>
-        <include>warn</include>
-        <include>nowarn</include>
-        <include>checked</include>
+        <include>target</include>
         <include>unsafe</include>
-        <include>define</include>
-        <include>langversion</include>
-        <include>help</include>
-        <include>nologo</include>
-        <include>noconfig</include>
-        <include>baseaddress</include>
-        <include>bugreport</include>
-        <include>codepage</include>
         <include>utf8output</include>
-        <include>main</include>
-        <include>fullpaths</include>
-        <include>filealign</include>
-        <include>pdb</include>
-        <include>nostdlib</include>
-        <include>lib</include>
-        <include>errorreport</include>
-        <include>moduleassemblyname</include>
+        <include>warn</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32res</include>
       </includes>
     </commandFilter>
   </compilerPlugin>
@@ -234,44 +245,47 @@
     </assemblies>
     <commandFilter>
       <includes>
-        <include>out</include>
-        <include>target</include>
+        <include>addmodule</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>checked</include>
+        <include>codepage</include>
+        <include>debug</include>
+        <include>define</include>
         <include>delaysign</include>
         <include>doc</include>
-        <include>keyfile</include>
+        <include>errorreport</include>
+        <include>filealign</include>
+        <include>fullpaths</include>
+        <!-- ignored:
+        <include>help</include>
+        <include>incremental</include>
+        -->
         <include>keycontainer</include>
+        <include>keyfile</include>
+        <include>langversion</include>
+        <include>lib</include>
+        <include>linkresource</include>
+        <include>main</include>
+        <include>moduleassemblyname</include>
+        <include>noconfig</include>
+        <include>nologo</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>optimize</include>
+        <include>out</include>
+        <include>pdb</include>
         <include>platform</include>
         <include>recurse</include>
         <include>reference</include>
-        <include>addmodule</include>
-        <include>win32res</include>
-        <include>win32icon</include>
         <include>resource</include>
-        <include>linkresource</include>
-        <include>debug</include>
-        <include>optimize</include>
-        <include>warnaserror</include>
-        <include>warn</include>
-        <include>nowarn</include>
-        <include>checked</include>
+        <include>target</include>
         <include>unsafe</include>
-        <include>define</include>
-        <include>langversion</include>
-        <include>help</include>
-        <include>nologo</include>
-        <include>noconfig</include>
-        <include>baseaddress</include>
-        <include>bugreport</include>
-        <include>codepage</include>
         <include>utf8output</include>
-        <include>main</include>
-        <include>fullpaths</include>
-        <include>filealign</include>
-        <include>pdb</include>
-        <include>nostdlib</include>
-        <include>lib</include>
-        <include>errorreport</include>
-        <include>moduleassemblyname</include>
+        <include>warn</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32res</include>
       </includes>
     </commandFilter>
   </compilerPlugin>
@@ -305,44 +319,47 @@
     </assemblies>
     <commandFilter>
       <includes>
-        <include>out</include>
-        <include>target</include>
+        <include>addmodule</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>checked</include>
+        <include>codepage</include>
+        <include>debug</include>
+        <include>define</include>
         <include>delaysign</include>
         <include>doc</include>
-        <include>keyfile</include>
+        <include>errorreport</include>
+        <include>filealign</include>
+        <include>fullpaths</include>
+        <!-- ignored:
+        <include>help</include>
+        <include>incremental</include>
+        -->
         <include>keycontainer</include>
+        <include>keyfile</include>
+        <include>langversion</include>
+        <include>lib</include>
+        <include>linkresource</include>
+        <include>main</include>
+        <include>moduleassemblyname</include>
+        <include>noconfig</include>
+        <include>nologo</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>optimize</include>
+        <include>out</include>
+        <include>pdb</include>
         <include>platform</include>
         <include>recurse</include>
         <include>reference</include>
-        <include>addmodule</include>
-        <include>win32res</include>
-        <include>win32icon</include>
         <include>resource</include>
-        <include>linkresource</include>
-        <include>debug</include>
-        <include>optimize</include>
-        <include>warnaserror</include>
-        <include>warn</include>
-        <include>nowarn</include>
-        <include>checked</include>
+        <include>target</include>
         <include>unsafe</include>
-        <include>define</include>
-        <include>langversion</include>
-        <include>help</include>
-        <include>nologo</include>
-        <include>noconfig</include>
-        <include>baseaddress</include>
-        <include>bugreport</include>
-        <include>codepage</include>
         <include>utf8output</include>
-        <include>main</include>
-        <include>fullpaths</include>
-        <include>filealign</include>
-        <include>pdb</include>
-        <include>nostdlib</include>
-        <include>lib</include>
-        <include>errorreport</include>
-        <include>moduleassemblyname</include>
+        <include>warn</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32res</include>
       </includes>
     </commandFilter>
   </compilerPlugin>
@@ -377,44 +394,47 @@
     </assemblies>
     <commandFilter>
       <includes>
-        <include>out</include>
-        <include>target</include>
+        <include>addmodule</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>checked</include>
+        <include>codepage</include>
+        <include>debug</include>
+        <include>define</include>
         <include>delaysign</include>
         <include>doc</include>
-        <include>keyfile</include>
+        <include>errorreport</include>
+        <include>filealign</include>
+        <include>fullpaths</include>
+        <!-- ignored:
+        <include>help</include>
+        <include>incremental</include>
+        -->
         <include>keycontainer</include>
+        <include>keyfile</include>
+        <include>langversion</include>
+        <include>lib</include>
+        <include>linkresource</include>
+        <include>main</include>
+        <include>moduleassemblyname</include>
+        <include>noconfig</include>
+        <include>nologo</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>optimize</include>
+        <include>out</include>
+        <include>pdb</include>
         <include>platform</include>
         <include>recurse</include>
         <include>reference</include>
-        <include>addmodule</include>
-        <include>win32res</include>
-        <include>win32icon</include>
         <include>resource</include>
-        <include>linkresource</include>
-        <include>debug</include>
-        <include>optimize</include>
-        <include>warnaserror</include>
-        <include>warn</include>
-        <include>nowarn</include>
-        <include>checked</include>
+        <include>target</include>
         <include>unsafe</include>
-        <include>define</include>
-        <include>langversion</include>
-        <include>help</include>
-        <include>nologo</include>
-        <include>noconfig</include>
-        <include>baseaddress</include>
-        <include>bugreport</include>
-        <include>codepage</include>
         <include>utf8output</include>
-        <include>main</include>
-        <include>fullpaths</include>
-        <include>filealign</include>
-        <include>pdb</include>
-        <include>nostdlib</include>
-        <include>lib</include>
-        <include>errorreport</include>
-        <include>moduleassemblyname</include>
+        <include>warn</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32res</include>
       </includes>
     </commandFilter>
   </compilerPlugin>
@@ -449,44 +469,47 @@
     </assemblies>
     <commandFilter>
       <includes>
-        <include>out</include>
-        <include>target</include>
+        <include>addmodule</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>checked</include>
+        <include>codepage</include>
+        <include>debug</include>
+        <include>define</include>
         <include>delaysign</include>
         <include>doc</include>
-        <include>keyfile</include>
+        <include>errorreport</include>
+        <include>filealign</include>
+        <include>fullpaths</include>
+        <!-- ignored:
+        <include>help</include>
+        <include>incremental</include>
+        -->
         <include>keycontainer</include>
+        <include>keyfile</include>
+        <include>langversion</include>
+        <include>lib</include>
+        <include>linkresource</include>
+        <include>main</include>
+        <include>moduleassemblyname</include>
+        <include>noconfig</include>
+        <include>nologo</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>optimize</include>
+        <include>out</include>
+        <include>pdb</include>
         <include>platform</include>
         <include>recurse</include>
         <include>reference</include>
-        <include>addmodule</include>
-        <include>win32res</include>
-        <include>win32icon</include>
         <include>resource</include>
-        <include>linkresource</include>
-        <include>debug</include>
-        <include>optimize</include>
-        <include>warnaserror</include>
-        <include>warn</include>
-        <include>nowarn</include>
-        <include>checked</include>
+        <include>target</include>
         <include>unsafe</include>
-        <include>define</include>
-        <include>langversion</include>
-        <include>help</include>
-        <include>nologo</include>
-        <include>noconfig</include>
-        <include>baseaddress</include>
-        <include>bugreport</include>
-        <include>codepage</include>
         <include>utf8output</include>
-        <include>main</include>
-        <include>fullpaths</include>
-        <include>filealign</include>
-        <include>pdb</include>
-        <include>nostdlib</include>
-        <include>lib</include>
-        <include>errorreport</include>
-        <include>moduleassemblyname</include>
+        <include>warn</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32res</include>
       </includes>
     </commandFilter>
   </compilerPlugin>
@@ -511,47 +534,50 @@
     </platforms>
     <commandFilter>
       <includes>
-        <include>out</include>
-        <include>target</include>
-        <include>doc</include>
         <include>addmodule</include>
-        <include>recurse</include>
-        <include>reference</include>
-        <include>linkresource</include>
-        <include>resource</include>
-        <include>win32icon</include>
-        <include>win32resource</include>
-        <include>optimize</include>
-        <include>removeintchecks</include>
-        <include>debug</include>
-        <include>nowarn</include>
-        <include>warnaserror</include>
-        <include>define</include>
-        <include>imports</include>
-        <include>optionexplicit</include>
-        <include>optioninfer</include>
-        <include>rootnamespace</include>
-        <include>optionstrict</include>
-        <include>optioncompare</include>
-        <include>noconfig</include>
-        <include>nologo</include>
-        <include>quiet</include>
-        <include>verbose</include>
         <include>baseaddress</include>
         <include>bugreport</include>
         <include>codepage</include>
+        <include>debug</include>
+        <include>define</include>
         <include>delaysign</include>
+        <include>doc</include>
         <include>errorreport</include>
         <include>filealign</include>
+        <!-- ignored:
+        <include>help</include>
+        -->
+        <include>imports</include>
         <include>keycontainer</include>
         <include>keyfile</include>
         <include>libpath</include>
+        <include>linkresource</include>
         <include>main</include>
         <include>netcf</include>
+        <include>noconfig</include>
+        <include>nologo</include>
         <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>optimize</include>
+        <include>optioncompare</include>
+        <include>optionexplicit</include>
+        <include>optioninfer</include>
+        <include>optionstrict</include>
+        <include>out</include>
         <include>platform</include>
+        <include>quiet</include>
+        <include>recurse</include>
+        <include>reference</include>
+        <include>removeintchecks</include>
+        <include>resource</include>
+        <include>rootnamespace</include>
         <include>sdkpath</include>
+        <include>target</include>
         <include>utf8output</include>
+        <include>verbose</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32resource</include>
       </includes>
     </commandFilter>
   </compilerPlugin>
