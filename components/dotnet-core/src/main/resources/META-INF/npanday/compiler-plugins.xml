@@ -115,7 +115,6 @@
         <include>lib</include>
         <include>linkresource</include>
         <include>main</include>
-        <include>moduleassemblyname</include>
         <include>noconfig</include>
         <include>nologo</include>
         <include>nostdlib</include>
@@ -197,11 +196,11 @@
         <include>lib</include>
         <include>linkresource</include>
         <include>main</include>
-        <include>moduleassemblyname</include>
         <include>noconfig</include>
         <include>nologo</include>
         <include>nostdlib</include>
         <include>nowarn</include>
+        <include>nowin32manifest</include>
         <include>optimize</include>
         <include>out</include>
         <include>pdb</include>
@@ -215,6 +214,7 @@
         <include>warn</include>
         <include>warnaserror</include>
         <include>win32icon</include>
+        <include>win32manifest</include>
         <include>win32res</include>
       </includes>
     </commandFilter>
@@ -246,6 +246,7 @@
     <commandFilter>
       <includes>
         <include>addmodule</include>
+        <include>appconfig</include>
         <include>baseaddress</include>
         <include>bugreport</include>
         <include>checked</include>
@@ -265,13 +266,14 @@
         <include>keyfile</include>
         <include>langversion</include>
         <include>lib</include>
+        <include>link</include>
         <include>linkresource</include>
         <include>main</include>
-        <include>moduleassemblyname</include>
         <include>noconfig</include>
         <include>nologo</include>
         <include>nostdlib</include>
         <include>nowarn</include>
+        <include>nowin32manifest</include>
         <include>optimize</include>
         <include>out</include>
         <include>pdb</include>
@@ -285,6 +287,7 @@
         <include>warn</include>
         <include>warnaserror</include>
         <include>win32icon</include>
+        <include>win32manifest</include>
         <include>win32res</include>
       </includes>
     </commandFilter>
@@ -320,6 +323,7 @@
     <commandFilter>
       <includes>
         <include>addmodule</include>
+        <include>appconfig</include>
         <include>baseaddress</include>
         <include>bugreport</include>
         <include>checked</include>
@@ -339,13 +343,14 @@
         <include>keyfile</include>
         <include>langversion</include>
         <include>lib</include>
+        <include>link</include>
         <include>linkresource</include>
         <include>main</include>
-        <include>moduleassemblyname</include>
         <include>noconfig</include>
         <include>nologo</include>
         <include>nostdlib</include>
         <include>nowarn</include>
+        <include>nowin32manifest</include>
         <include>optimize</include>
         <include>out</include>
         <include>pdb</include>
@@ -359,6 +364,7 @@
         <include>warn</include>
         <include>warnaserror</include>
         <include>win32icon</include>
+        <include>win32manifest</include>
         <include>win32res</include>
       </includes>
     </commandFilter>
@@ -395,6 +401,7 @@
     <commandFilter>
       <includes>
         <include>addmodule</include>
+        <include>appconfig</include>
         <include>baseaddress</include>
         <include>bugreport</include>
         <include>checked</include>
@@ -414,13 +421,14 @@
         <include>keyfile</include>
         <include>langversion</include>
         <include>lib</include>
+        <include>link</include>
         <include>linkresource</include>
         <include>main</include>
-        <include>moduleassemblyname</include>
         <include>noconfig</include>
         <include>nologo</include>
         <include>nostdlib</include>
         <include>nowarn</include>
+        <include>nowin32manifest</include>
         <include>optimize</include>
         <include>out</include>
         <include>pdb</include>
@@ -434,6 +442,7 @@
         <include>warn</include>
         <include>warnaserror</include>
         <include>win32icon</include>
+        <include>win32manifest</include>
         <include>win32res</include>
       </includes>
     </commandFilter>
@@ -470,6 +479,7 @@
     <commandFilter>
       <includes>
         <include>addmodule</include>
+        <include>appconfig</include>
         <include>baseaddress</include>
         <include>bugreport</include>
         <include>checked</include>
@@ -489,13 +499,14 @@
         <include>keyfile</include>
         <include>langversion</include>
         <include>lib</include>
+        <include>link</include>
         <include>linkresource</include>
         <include>main</include>
-        <include>moduleassemblyname</include>
         <include>noconfig</include>
         <include>nologo</include>
         <include>nostdlib</include>
         <include>nowarn</include>
+        <include>nowin32manifest</include>
         <include>optimize</include>
         <include>out</include>
         <include>pdb</include>
@@ -509,6 +520,7 @@
         <include>warn</include>
         <include>warnaserror</include>
         <include>win32icon</include>
+        <include>win32manifest</include>
         <include>win32res</include>
       </includes>
     </commandFilter>
@@ -550,14 +562,18 @@
         <include>imports</include>
         <include>keycontainer</include>
         <include>keyfile</include>
+        <include>langversion</include>
         <include>libpath</include>
+        <include>link</include>
         <include>linkresource</include>
         <include>main</include>
+        <include>moduleassemblyname</include>
         <include>netcf</include>
         <include>noconfig</include>
         <include>nologo</include>
         <include>nostdlib</include>
         <include>nowarn</include>
+        <include>nowin32manifest</include>
         <include>optimize</include>
         <include>optioncompare</include>
         <include>optionexplicit</include>
@@ -574,9 +590,11 @@
         <include>sdkpath</include>
         <include>target</include>
         <include>utf8output</include>
+        <include>vbruntime</include>
         <include>verbose</include>
         <include>warnaserror</include>
         <include>win32icon</include>
+        <include>win32manifest</include>
         <include>win32resource</include>
       </includes>
     </commandFilter>
