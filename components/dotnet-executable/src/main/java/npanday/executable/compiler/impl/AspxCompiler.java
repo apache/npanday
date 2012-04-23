@@ -24,6 +24,7 @@ import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandExecutor;
 import npanday.executable.CommandFilter;
 import npanday.executable.ExecutionException;
+import npanday.executable.ExecutionResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,7 @@ public class AspxCompiler
     
 
     @Override
-    public void execute() throws ExecutionException, PlatformUnsupportedException
+    public ExecutionResult execute() throws ExecutionException, PlatformUnsupportedException
     {
         logger.info( "NPANDAY-068-003: Compiling Artifact: Vendor = "
             + compilerContext.getVendor() + ", Language = "
@@ -73,6 +74,7 @@ public class AspxCompiler
         commandExecutor.setLogger( logger );
         String executable = PathUtil.getExecutable( getExecutable(), compilerContext.getProbingPaths(), logger );
         commandExecutor.executeCommand( executable, getCommands(), null, failOnErrorOutput() );
+        return null;
     }
 
 }

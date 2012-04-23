@@ -82,7 +82,7 @@ public class DefaultRepositoryNetExecutable
         throw new ExecutionException( "NPANDAY-068-006: Couldn't find anything to be executed!" );
     }
 
-    public void execute() throws ExecutionException
+    public ExecutionResult execute() throws ExecutionException
     {
         List<String> commands = getCommands();
 
@@ -110,6 +110,12 @@ public class DefaultRepositoryNetExecutable
                 "NPANDAY-063-001: Executable = " + getExecutable() + ", Args = " + commands
             );
         }
+
+        return new ExecutionResult(
+            commandExecutor.getResult(),
+            commandExecutor.getStandardOut(),
+            commandExecutor.getStandardError()
+        );
     }
 
     public Vendor getVendor()

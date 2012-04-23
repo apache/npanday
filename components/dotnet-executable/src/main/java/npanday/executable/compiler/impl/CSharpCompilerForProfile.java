@@ -37,7 +37,7 @@ import java.util.Properties;
 public final class CSharpCompilerForProfile
     extends BaseCompiler
 {
-    private CompilerExecutable netCompiler;
+    private DefaultCompiler netCompiler;
     private CompilerContext compilerContext;
 
     public CSharpCompilerForProfile()

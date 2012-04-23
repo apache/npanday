@@ -36,24 +36,13 @@ import java.util.Properties;
  */
 public interface NetExecutable
 {
-
     /**
-     * Returns the commands that this compiler will use to compile the application. This list is unmodifiable.
-     *
-     * @return the commands that this compiler will use to compile the application
-     * @throws ExecutionException
-     * @throws PlatformUnsupportedException if one or more commands are not supported by the current platform.
-     */
-    List<String> getCommands() throws ExecutionException, PlatformUnsupportedException;
-
-    /**
-     * Compiles class files.
+     * Runs the executable.
      *
      * @throws npanday.executable.ExecutionException
-     *          if the compiler writes to the standard error stream.
-     *          artifact (module, library, exe, winexe) or the target artifact is not valid for the compiler
+     *         if the executable fails or writes to the standard error stream.
      */
-    void execute() throws ExecutionException, PlatformUnsupportedException;
+    ExecutionResult execute() throws ExecutionException, PlatformUnsupportedException;
 
     /**
      * Initialize this executable.
@@ -68,6 +57,6 @@ public interface NetExecutable
      *
      * @return vendor vendor framework used to run executable
      */
+    @Deprecated
     Vendor getVendor();
-
 }

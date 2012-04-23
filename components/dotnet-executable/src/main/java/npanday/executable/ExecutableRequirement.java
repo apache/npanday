@@ -67,9 +67,9 @@ public class ExecutableRequirement
         this.executableVersion = executableVersion;
     }
 
-    public ExecutableRequirement( VendorRequirement vendor, String identifier )
+    public ExecutableRequirement( VendorRequirement vendor, String profile )
     {
-        this(vendor, identifier, null);
+        this(vendor, profile, null);
     }
 
     public VendorRequirement getVendorRequirement(){

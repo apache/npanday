@@ -21,6 +21,7 @@ package npanday.executable.impl;
 
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutionException;
+import npanday.executable.ExecutionResult;
 
 /**
  * Provides a service for executing a command within a separate thread. This will be used for executing long-running
@@ -48,7 +49,7 @@ public class ThreadedNetExecutable
         }
     }
 
-    public void execute()
+    public ExecutionResult execute()
         throws ExecutionException
     {
         throw new ExecutionException( "NPANDAY-116-001: Create a thread, then use RUN - or refactor ThreadedNetExecutable");

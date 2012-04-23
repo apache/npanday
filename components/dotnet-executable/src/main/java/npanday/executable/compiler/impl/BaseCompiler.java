@@ -24,6 +24,7 @@ import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutionException;
+import npanday.executable.ExecutionResult;
 import npanday.executable.compiler.CompilerContext;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.InvalidArtifactException;
@@ -32,6 +33,7 @@ import org.codehaus.plexus.logging.Logger;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -101,7 +103,7 @@ abstract class BaseCompiler
     /**
      * @see npanday.executable.compiler.CompilerExecutable#execute()
      */
-    public void execute() throws ExecutionException, PlatformUnsupportedException
+    public ExecutionResult execute() throws ExecutionException, PlatformUnsupportedException
     {
         if ( compilerContext.getIncludeSources() == null && !(
             new File(
@@ -110,7 +112,7 @@ abstract class BaseCompiler
         ) )
         {
             logger.info( "NPANDAY-068-002: No source files to compile." );
-            return;
+            return null;
         }
         logger.info(
             "NPANDAY-068-003: Compiling Artifact: Vendor = " + compilerContext.getVendor() + ", Language = "
@@ -127,7 +129,15 @@ abstract class BaseCompiler
         commandExecutor.executeCommand(
             PathUtil.getExecutable( executable, executablePaths, logger ), getCommands(), null, failOnErrorOutput()
         );
+
+        return new ExecutionResult(
+            commandExecutor.getResult(),
+            commandExecutor.getStandardOut(),
+            commandExecutor.getStandardError()
+        );
     }
+
+    protected abstract List<String> getCommands() throws ExecutionException, PlatformUnsupportedException;
 
     public Vendor getVendor()
     {

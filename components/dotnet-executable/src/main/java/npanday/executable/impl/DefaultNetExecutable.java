@@ -26,6 +26,7 @@ import npanday.executable.CommandExecutor;
 import npanday.executable.CommandFilter;
 import npanday.executable.ExecutableContext;
 import npanday.executable.ExecutionException;
+import npanday.executable.ExecutionResult;
 import npanday.executable.NetExecutable;
 import npanday.vendor.Vendor;
 import org.codehaus.plexus.logging.Logger;
@@ -62,12 +63,12 @@ public class DefaultNetExecutable
         return Collections.unmodifiableList( filter.filter( commands ) );
     }
 
-    public void execute() throws ExecutionException, PlatformUnsupportedException
+    public ExecutionResult execute() throws ExecutionException, PlatformUnsupportedException
     {
-        innerExecute();
+        return innerExecute();
     }
 
-    public void innerExecute() throws ExecutionException, PlatformUnsupportedException
+    public ExecutionResult innerExecute() throws ExecutionException, PlatformUnsupportedException
     {
         List<String> commands = getCommands();
 
@@ -78,6 +79,13 @@ public class DefaultNetExecutable
                 executableContext.getExecutableName(), executableContext.getProbingPaths(), logger
             ), commands, null, true
         );
+
+        return new ExecutionResult(
+            commandExecutor.getResult(),
+            commandExecutor.getStandardOut(),
+            commandExecutor.getStandardError()
+            );
+
     }
 
     public Vendor getVendor()
