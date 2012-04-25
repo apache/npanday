@@ -118,24 +118,14 @@ public final class CompilerPluginsRepository
             if (vendor != null && !vendorInfo.getVendor().getVendorName().toLowerCase().equals( vendor.toLowerCase() ))
                 continue;
 
-            // TODO: check with version range!
-            if (vendorVersion != null && !vendorInfo.getVendorVersion().equals( vendorVersion ))
+            if ( VersionComparer.isVendorVersionMissmatch(vendorVersion, vendorInfo.getVendorVersion()) )
             {
                 continue;
             }
 
-            if (frameworkVersions != null && frameworkVersions.size() > 0)
+            if ( VersionComparer.isFrameworkVersionMissmatch(frameworkVersions, vendorInfo.getFrameworkVersion()) )
             {
-                if (!Iterables.any( frameworkVersions, new Predicate<String>()
-                {
-                    public boolean apply( @Nullable String frameworkVersion )
-                    {
-                        return vendorInfo.getFrameworkVersion().equals( frameworkVersion );
-                    }
-                } ))
-                {
-                    continue;
-                }
+                continue;
             }
 
             List platforms = plugin.getPlatforms();
