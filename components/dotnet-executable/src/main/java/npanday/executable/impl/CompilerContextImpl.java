@@ -247,8 +247,10 @@ public final class CompilerContextImpl
             Artifact artifact = (Artifact) i.next();
 
             // TODO: use isAddedToClassPath instead? May need to annotate types
-            if ( !ArtifactTypeHelper.isDotnetLibrary( artifact.getType() ) && !ArtifactTypeHelper.isDotnetAnyGac(
-                artifact.getType() ) )
+            if (
+                !ArtifactTypeHelper.isDotnetLibrary( artifact.getType() )
+                && !ArtifactTypeHelper.isDotnetExecutable( artifact.getType() )
+                && !ArtifactTypeHelper.isDotnetAnyGac( artifact.getType() ) )
             {
                 continue;
             }
