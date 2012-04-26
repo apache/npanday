@@ -109,7 +109,7 @@ public enum ArtifactType
     // DOTNET_("dotnet-gac_64", "library", "dll"),	
     // DOTNET_("dotnet-nar", "library", "nar"),
     // DOTNET_("dotnet-visual-studio-addin", "library", "dll"),
-    
+
     /** 
      * Use DOTNET_MODULE instead
      */
@@ -183,7 +183,13 @@ public enum ArtifactType
 
     // Silverlight support
     SILVERLIGHT_LIBRARY ("silverlight-library", "library", "dll"),
-    SILVERLIGHT_APPLICATION ("silverlight-application", "library", "xap", true);
+    SILVERLIGHT_APPLICATION ("silverlight-application", "library", "xap", true),
+
+    /* Nuget support */
+    NUGET_PACKAGE ("nuget-package", null, "nupkg"),
+    DOTNET_LIBRARY_IMPORTER("dotnet-library-importer", null, "pom")
+    ;
+
 
     /**
      * The extension used for the artifact(netmodule, dll, exe)

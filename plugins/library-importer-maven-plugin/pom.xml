@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements.  See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership.  The ASF licenses this file
+  ~ to you under the Apache License, version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>maven-dotnet-plugins</artifactId>
+    <groupId>org.apache.npanday.plugins</groupId>
+    <version>1.5.0-incubating-SNAPSHOT</version>
+  </parent>
+  <groupId>org.apache.npanday.plugins</groupId>
+  <artifactId>library-importer-maven-plugin</artifactId>
+  <packaging>maven-plugin</packaging>
+
+  <name>NPanday :: Library Importer Maven Plugin</name>
+  <description>Maven Plugin for importing libraries and Nuget packages</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <executions>
+          <!-- tests are yet included by super pom -->
+          <execution>
+            <id>grovy-main</id>
+            <goals>
+              <goal>generateStubs</goal>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>generate-plexus-config</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>file:///${pom.basedir}/src/main/script/plexus_component_xml.groovy</source>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+        <groupId>org.apache.npanday</groupId>
+        <artifactId>dotnet-nuget</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.npanday</groupId>
+        <artifactId>dotnet-model-library-import</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.gmaven</groupId>
+      <artifactId>gmaven-mojo</artifactId>
+      <version>${gmaven.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>groovy-all-minimal</artifactId>
+          <groupId>org.codehaus.groovy</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-archiver</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>${plexus.utils.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-digest</artifactId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+
+  <!-- REMOVE PROFILE WHEN NPANDAY-558 is done -->
+  <profiles>
+    <profile>
+      <id>disable-its</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-invoker-plugin</artifactId>
+              <configuration>
+                <pomExcludes>
+                  <!-- This test requires Visual Studio 2010 be installed -->
+                  <pomExclude>*/pom.xml</pomExclude>
+                </pomExcludes>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
+</project>

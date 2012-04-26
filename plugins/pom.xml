@@ -58,6 +58,8 @@
     <module>netplugins/NPanday.Plugin.SysRef/javabinding</module>
     <module>netplugins/NPanday.Plugin.Msbuild/javabinding</module>
     <module>silverlight-maven-plugin</module>
+    <!--module>nuget-maven-plugin</module-->
+    <module>library-importer-maven-plugin</module>
   </modules>
   <dependencies>
     <dependency>
@@ -189,6 +191,7 @@
               <projectsDirectory>src/it</projectsDirectory>
               <cloneProjectsTo>target/it</cloneProjectsTo>
               <showErrors>true</showErrors>
+              <debug>true</debug>
               <pomIncludes>
                 <pomInclude>*/pom.xml</pomInclude>
               </pomIncludes>

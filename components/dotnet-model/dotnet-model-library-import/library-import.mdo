@@ -1,0 +1,142 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements.  See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership.  The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+<model xmlns="http://modello.codehaus.org/MODELLO/1.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://modello.codehaus.org/MODELLO/1.4.0 http://modello.codehaus.org/xsd/modello-1.4.0.xsd"
+       xml.namespace="http://npanday.apache.org/library-import/1.0.0">
+  <id>library-imports</id>
+  <name>LibraryImports</name>
+  <description></description>
+  <defaults>
+    <default>
+      <key>package</key>
+      <value>npanday.model.library.imports</value>
+    </default>
+  </defaults>
+  <versionDefinition>
+    <type>namespace</type>
+  </versionDefinition>
+  <classes>
+    <class rootElement="true" xml.tagName="libs" xsd.compositor="sequence">
+      <name>LibraryImports</name>
+      <fields>
+        <field>
+          <name>nugetSources</name>
+          <association>
+            <type>NugetSources</type>
+            <multiplicity>1</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>nugetImports</name>
+          <association xml.itemsStyle="flat" xml.tagName="nuget">
+            <type>NugetImport</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>NugetSources</name>
+      <fields>
+        <field xml.attribute="true" xml.tagName="addNugetGallery">
+          <name>addNugetGallery</name>
+          <type>boolean</type>
+        </field>
+        <field>
+          <name>customSources</name>
+          <association xml.itemsStyle="flat" xml.tagName="custom">
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>NugetImport</name>
+      <fields>
+        <field xml.tagName="package">
+          <name>packageName</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>versions</name>
+          <association xml.itemsStyle="flat" xml.tagName="version">
+            <type>ImportVersion</type>
+            <multiplicity>n</multiplicity>
+          </association>
+        </field>
+        <field xml.tagName="libDirs">
+          <name>libraryDirectories</name>
+          <association>
+            <type>LibraryDirectories</type>
+            <multiplicity>1</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>referenceMappings</name>
+          <association xml.itemsStyle="flat" xml.tagName="mapReference">
+            <type>ReferenceMapping</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>ImportVersion</name>
+      <fields>
+        <field xml.attribute="true">
+          <name>source</name>
+          <type>String</type>
+        </field>
+        <field xml.attribute="true" xml.tagName="mapTo">
+          <name>maven</name>
+          <type>String</type>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>LibraryDirectories</name>
+      <fields>
+        <field xml.tagName="default">
+          <name>defaultDirectory</name>
+          <type>String</type>
+        </field>
+
+        <!-- TODO: support importing multiple library folders by adding classifiers to the version -->
+      </fields>
+    </class>
+    <class>
+      <name>ReferenceMapping</name>
+      <fields>
+        <field xml.attribute="true" xml.tagName="name">
+          <name>name</name>
+          <type>String</type>
+        </field>
+
+        <field xml.attribute="true" xml.tagName="ignore">
+          <name>ignore</name>
+          <type>boolean</type>
+        </field>
+
+        <!-- TODO: add 'namePattern' for regex matching -->
+        <!-- TODO: allow for specify mapping to different artifact -->
+      </fields>
+    </class>
+  </classes>
+</model>

@@ -36,7 +36,8 @@
     <module>netdependency</module>  
     <module>configuration-appenders</module>  
     <module>settings</module>
-  </modules>  
+    <module>dotnet-model-library-import</module>
+  </modules>
   <dependencies> 
     <dependency> 
       <groupId>org.codehaus.plexus</groupId>  

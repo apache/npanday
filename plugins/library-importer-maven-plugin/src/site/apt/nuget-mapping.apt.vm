@@ -1,0 +1,353 @@
+~~ Licensed to the Apache Software Foundation (ASF) under one
+~~ or more contributor license agreements.  See the NOTICE file
+~~ distributed with this work for additional information
+~~ regarding copyright ownership.  The ASF licenses this file
+~~ to you under the Apache License, Version 2.0 (the
+~~ "License"); you may not use this file except in compliance
+~~ with the License.  You may obtain a copy of the License at
+~~
+~~   http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing,
+~~ software distributed under the License is distributed on an
+~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~~ KIND, either express or implied.  See the License for the
+~~ specific language governing permissions and limitations
+~~ under the License.
+
+~~ NOTE: For help withuses the syntax of this file, see:
+~~ http://maven.apache.org/doxia/references/apt-format.html
+
+Mapping Nuget Packages to NPanday Artifacts
+
+* The caveat
+
+    Nuget packages can contain just about everything. The library importer tries to extract the essense and
+    republish that as NPanday Artifact.
+
+    Lets have a look at the contents of a typical Nuget Package:
+
+** Package files
+
++---+
+RavenDB.1.0.701
++- content
+|  +- Web.config.transform
++- lib
+|  +- net35
+|  |  +- Raven.Abstractions-3.5.dll
+|  |  +- Raven.Abstractions-3.5.pdb
+|  |  +- Raven.Abstractions-3.5.XML
+|  |  +- Raven.Client.Lightweight-3.5.dll
+|  |  +- Raven.Client.Lightweight-3.5.pdb
+|  |  +- Raven.Client.Lightweight-3.5.XML
+|  +- net40
+|  |  +- AsyncCtpLibrary.dll
+|  |  +- AsyncCtpLibrary.xml
+|  |  +- Raven.Abstractions.dll
+|  |  +- Raven.Abstractions.pdb
+|  |  +- Raven.Abstractions.XML
+|  |  +- Raven.Client.Debug.dll
+|  |  +- Raven.Client.Debug.pdb
+|  |  +- Raven.Client.Lightweight.dll
+|  |  +- Raven.Client.Lightweight.pdb
+|  |  +- Raven.Client.Lightweight.XML
+|  |  +- Raven.Client.MvcIntegration.dll
+|  |  +- Raven.Client.MvcIntegration.pdb
+|  +- sl40
+|     +- AsyncCtpLibrary_Silverlight.dll
+|     +- AsyncCtpLibrary_Silverlight.xml
+|     +- MissingBitFromSilverlight.dll
+|     +- MissingBitFromSilverlight.pdb
+|     +- Raven.Client.Silverlight.dll
+|     +- Raven.Client.Silverlight.pdb
+|     +- Raven.Client.Silverlight.XML
++- package
+|  +- services
+|     +- metadata
+|        +- core-properties
+|           +- b502965c79da455fa5fc0751b2dac785.psmdcp
++- RavenDB.nuspec
++- server
+|  +- BouncyCastle.Crypto.dll
+|  +- BouncyCastle.Crypto.pdb
+|  +- Esent.Interop.dll
+|  +- Esent.Interop.pdb
+|  +- Esent.Interop.xml
+|  +- ICSharpCode.NRefactory.dll
+|  +- Lucene.Net.Contrib.Spatial.dll
+|  +- Lucene.Net.Contrib.Spatial.pdb
+|  +- Lucene.Net.Contrib.Spatial.xml
+|  +- Lucene.Net.Contrib.SpellChecker.dll
+|  +- Lucene.Net.Contrib.SpellChecker.pdb
+|  +- Lucene.Net.Contrib.SpellChecker.xml
+|  +- Lucene.Net.dll
+|  +- Lucene.Net.pdb
+|  +- Lucene.Net.xml
+|  +- Newtonsoft.Json.dll
+|  +- Newtonsoft.Json.pdb
+|  +- Newtonsoft.Json.xml
+|  +- NLog.dll
+|  +- NLog.xml
+|  +- Raven.Abstractions.dll
+|  +- Raven.Abstractions.pdb
+|  +- Raven.Abstractions.XML
+|  +- Raven.Database.dll
+|  +- Raven.Database.pdb
+|  +- Raven.Database.XML
+|  +- Raven.Munin.dll
+|  +- Raven.Munin.pdb
+|  +- Raven.Munin.XML
+|  +- Raven.Server.exe
+|  +- Raven.Server.exe.config
+|  +- Raven.Storage.Esent.dll
+|  +- Raven.Storage.Esent.pdb
+|  +- Raven.Storage.Managed.dll
+|  +- Raven.Storage.Managed.pdb
+|  +- Raven.Studio.xap
++- tools
+|  +- Raven.Backup.exe
+|  +- Raven.Backup.pdb
+|  +- Raven.Smuggler.exe
+|  +- Raven.Smuggler.pdb
++- [Content_Types].xml
++- _rels
+   +- .rels
++---+
+
+    With the library importer, you have to configigure one of the <<<lib>>> directories, by specifying <<<libDirs/default>>>.
+    In future versions we plan to let you import multiple lib-directories at once. But we are not sure how to map the
+    framework name to <<<group::artifact::version::type::classifier>>>.
+
+    {{{https://issues.apache.org/jira/browse/NPANDAY-557} See issue NPANDAY-557}}
+
+** Nuspec
+
++---+
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>RavenDB</id>                                           <!-- used as package id -->
+        <version>1.0.701</version>                                 <!-- used as version for each artifact, if not overriden -->
+        <title>RavenDB</title>                                     <!-- copied to project.name -->
+        <authors>Hibernating Rhinos</authors>                      <!-- copied to project.developers -->
+        <owners>Hibernating Rhinos</owners>                        <!-- ignored -->
+        <licenseUrl>http://www.ravendb.net/licensing</licenseUrl>  <!-- copied to project.licence-->
+        <projectUrl>http://www.ravendb.net/</projectUrl>           <!-- copied to project.url -->
+        <iconUrl>http://static.ravendb.net/logo-for-nuget.png</iconUrl> <!-- ignored -->
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>  <!-- ignored -->
+        <!-- description copied to pom.description -->
+        <description>Raven is a document database for the .NET/Windows platform, offering a flexible data model design to fit the needs of real world systems.</description>
+        <language>en-US</language>                                 <!-- ignored -->
+        <tags>nosql ravendb raven document database</tags>         <!-- ignored -->
+        <dependencies>                                             <!-- combined with real lib dependencies -->
+            <dependency id="NLog" version="[2.0.0.2000]" />
+            <dependency id="Newtonsoft.Json" version="[4.0.8]" />
+        </dependencies>
+        <frameworkAssemblies>                                      <!-- ignored -->
+            <frameworkAssembly assemblyName="System.ComponentModel.Composition" targetFramework=".NETFramework4.0" />
+        </frameworkAssemblies>
+    </metadata>
+</package>
++---+
+
+   Please note, that the specified dependencies are package dependencies! The package (or its id) will eventually
+   become the group id. So we have to combine those dependencies with the real dependencies of the contained
+   libraries in order to get real Maven dependencies between the resulting artifacts.
+
+** The essense
+
+    Lets say, we have configured <<<net40>>> as the default library directory.
+
++---+
+RavenDB.1.0.701
++- content                               // ignored
++- lib
+|  +- net35                              // ignored
+|  +- net40
+|  |  +- AsyncCtpLibrary.dll             -> RavenDB:AsyncCtpLibrary:dotnet-library:1.0.701
+|  |  +- AsyncCtpLibrary.xml             // currently ignored
+|  |  +- Raven.Abstractions.dll          -> RavenDB:AsyncCtpLibrary:dotnet-library:1.0.701
+|  |  +- Raven.Abstractions.pdb          // currently ignored
+|  |  +- Raven.Abstractions.XML          // currently ignored
+|  |  +- Raven.Client.Debug.dll          -> RavenDB:Raven.Client.Debug:dotnet-library:1.0.701
+|  |  +- Raven.Client.Debug.pdb          // currently ignored
+|  |  +- Raven.Client.Lightweight.dll    -> RavenDB:Raven.Client.Lightweight:dotnet-library:1.0.701
+|  |  +- Raven.Client.Lightweight.pdb    // currently ignored
+|  |  +- Raven.Client.Lightweight.XML    // currently ignored
+|  |  +- Raven.Client.MvcIntegration.dll -> RavenDB:Raven.Client.MvcIntegration:dotnet-library:1.0.701
+|  |  +- Raven.Client.MvcIntegration.pdb // currently ignored
+|  +- sl40                               // ignored
++- package                               // ignored
++- RavenDB.nuspec                        // extracted
++- server                                // ignored
++- tools                                 // ignored
++---+
+
+** Dependency mapping
+
+    Let's have a look at the manifest of <<<Raven.Client.MvcIntegration>>>:
+
++----+
+Raven.Client.MvcIntegration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  references mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  references System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+  references System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+  references System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  references Raven.Client.Lightweight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593
+  references Raven.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593
+  references Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
+  references System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
++----+
+
+  References to anything with Microsofts known public key tokens and System.* references will be filtered out
+  by default.
+
+  We have two package-internal references here: <<<Raven.Client.Lightweight>>> and <<<Raven.Abstractions>>>, and one
+  package external reference: <<<Newtonsoft.Json>>>.
+
+  The library importer will expect to find the exaxt strong name in the current or any of the package dependencies. Package
+  dependencies will be resolved according to Nugets rules, but ONLY inside of the specified package imports in all
+  of the <<<*.lib.xml>>> files.
+
+  If there is any mismatch found, the library importer will fail; it will then be necessary to manually reconfigure or
+  ignore the dependency by using <<<mapReference>>> in the library import definition.
+
+** The resulting poms
+
++---+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>RavenDB</groupId>
+    <artifactId>AsyncCtpLibrary</artifactId>
+    <version>1.0.701</version>
+    <packaging>dotnet-library</packaging>
+    <name>RavenDB :: AsyncCtpLibrary</name>
+    <description>Raven is a document database for the .NET/Windows platform, offering a flexible data model design to fit the needs of real world systems.</description>
+    <url>http://www.ravendb.net/</url>
+    <licenses>
+        <license>
+            <url>http://www.ravendb.net/licensing</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Hibernating Rhinos</name>
+        </developer>
+    </developers>
+</project>
++---+
+
++---+
+<?xml version="1.0" encoding="UTF-8"?>
+<project ..>
+...
+<artifactId>Raven.Abstractions</artifactId>
+...
+<name>RavenDB :: Raven.Abstractions</name>
+...
+<dependencies>
+    <dependency>
+        <groupId>Newtonsoft.Json</groupId>
+        <artifactId>Newtonsoft.Json</artifactId>
+        <version>4.0.8</version>
+        <type>dotnet-library</type>
+    </dependency>
+</dependencies>
+</project>
++---+
+
++---+
+<?xml version="1.0" encoding="UTF-8"?>
+<project ..>
+...
+<artifactId>Raven.Client.Debug</artifactId>
+...
+<name>RavenDB :: Raven.Client.Debug</name>
+...
+<dependencies>
+    <dependency>
+        <groupId>RavenDB</groupId>
+        <artifactId>Raven.Client.Lightweight</artifactId>
+        <version>1.0.701</version>
+        <type>dotnet-library</type>
+    </dependency>
+    <dependency>
+        <groupId>Newtonsoft.Json</groupId>
+        <artifactId>Newtonsoft.Json</artifactId>
+        <version>4.0.8</version>
+        <type>dotnet-library</type>
+    </dependency>
+</dependencies>
+</project>
++---+
+
++---+
+<?xml version="1.0" encoding="UTF-8"?>
+<project ..>
+...
+<artifactId>Raven.Client.Lightweight</artifactId>
+...
+<name>RavenDB :: Raven.Client.Lightweight</name>
+...
+<dependencies>
+    <dependency>
+        <groupId>Newtonsoft.Json</groupId>
+        <artifactId>Newtonsoft.Json</artifactId>
+        <version>4.0.8</version>
+        <type>dotnet-library</type>
+    </dependency>
+    <dependency>
+        <groupId>RavenDB</groupId>
+        <artifactId>Raven.Abstractions</artifactId>
+        <version>1.0.701</version>
+        <type>dotnet-library</type>
+    </dependency>
+    <dependency>
+        <groupId>NLog</groupId>
+        <artifactId>NLog</artifactId>
+        <version>2.0.0</version>
+        <type>dotnet-library</type>
+    </dependency>
+    <dependency>
+        <groupId>RavenDB</groupId>
+        <artifactId>AsyncCtpLibrary</artifactId>
+        <version>1.0.701</version>
+        <type>dotnet-library</type>
+    </dependency>
+</dependencies>
+</project>
++---+
+
++---+
+<?xml version="1.0" encoding="UTF-8"?>
+<project ..>
+...
+<artifactId>Raven.Client.MvcIntegration</artifactId>
+...
+<name>RavenDB :: Raven.Client.MvcIntegration</name>
+...
+<dependencies>
+    <dependency>
+        <groupId>RavenDB</groupId>
+        <artifactId>Raven.Client.Lightweight</artifactId>
+        <version>1.0.701</version>
+        <type>dotnet-library</type>
+    </dependency>
+    <dependency>
+        <groupId>RavenDB</groupId>
+        <artifactId>Raven.Abstractions</artifactId>
+        <version>1.0.701</version>
+        <type>dotnet-library</type>
+    </dependency>
+    <dependency>
+        <groupId>Newtonsoft.Json</groupId>
+        <artifactId>Newtonsoft.Json</artifactId>
+        <version>4.0.8</version>
+        <type>dotnet-library</type>
+    </dependency>
+</dependencies>
+</project>
++---+

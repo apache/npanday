@@ -43,6 +43,7 @@
     <module>dotnet-vendor</module>
     <module>dotnet-packaging</module>
     <module>dotnet-msbuild</module>
+    <module>dotnet-nuget</module>
   </modules>
   <dependencies>
     <dependency>

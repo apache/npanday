@@ -1,0 +1,140 @@
+~~ Licensed to the Apache Software Foundation (ASF) under one
+~~ or more contributor license agreements.  See the NOTICE file
+~~ distributed with this work for additional information
+~~ regarding copyright ownership.  The ASF licenses this file
+~~ to you under the Apache License, Version 2.0 (the
+~~ "License"); you may not use this file except in compliance
+~~ with the License.  You may obtain a copy of the License at
+~~
+~~   http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing,
+~~ software distributed under the License is distributed on an
+~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~~ KIND, either express or implied.  See the License for the
+~~ specific language governing permissions and limitations
+~~ under the License.
+
+~~ NOTE: For help withuses the syntax of this file, see:
+~~ http://maven.apache.org/doxia/references/apt-format.html
+
+Using the NPanday Nuget Maven Plugin
+
+* Prerequisites
+
+    The plugin should run out of the box, but will need to resolve these from a third-party repository.
+    If they can't be resolved, they must be downloaded and installed to the PATH manually.
+
+    * {{{http://nuget.codeplex.com/}Nuget 1.7+, will be automatically resolved}}
+
+    * {{{http://nuget.codeplex.com/}ManifestInfo 1.0+, will be automatically resolved}}
+
+
+* Usage
+
+    The library importer will find all <<<*.lib.xml>>> files in your directory and then resolve
+    all the listed packages. Afterwards it will try to resolve all references, generate the poms,
+    and then install and deploy the generated libraries+poms in the corresponding phases.
+
+    The pom artifact, <<<test:libimporter>>> in this case, will not be installed or deployed.
+
+** Define the project
+
++---+
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>test</groupId>
+    <artifactId>libimporter</artifactId>
+    <version>1-SNAPSHOT</version>
+    <packaging>dotnet-library-importer</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.npanday.plugins</groupId>
+                <artifactId>library-importer-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--<distributionManagement .../>-->
+
+</project>
++---+
+
+** Add definitions on libraries/packages to import
+
++---+
+<libs xmlns="http://npanday.apache.org/library-import/1.0.0">
+    <nuget>
+        <package>NUnit</package>
+        <version source="2.6.0.12054" mapTo="2.6.0"/>
+    </nuget>
+    <nuget>
+        <package>FluentAssertions</package>
+        <version source="1.7.1.1" mapTo="1.7.1"/>
+        <libDirs>
+            <default>net40</default>
+        </libDirs>
+    </nuget>
+    <nuget>
+        <package>FakeItEasy</package>
+        <version source="1.7.4257.42" mapTo="1.7.4257"/>
+        <libDirs>
+            <default>net40</default>
+        </libDirs>
+    </nuget>
+</libs>
++---+
+
+** Execution
+
+   When executing with <<<mvn install>>> this will result in the following libraries to be installed.
+
++---+
+/NUnit/nunit.framework/2.6.0/nunit.framework-2.6.0.dll
+/NUnit/nunit.framework/2.6.0/nunit.framework-2.6.0.pom
+
+..
+..
++---+
+
+** Metadata mapping
+
+    The library importer tries to extract as much information as possible and put it into the pom.
+    This will library dependencies both within the same and external to other packages.
+
++---+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>NUnit</groupId>
+    <artifactId>nunit.framework</artifactId>
+    <version>2.6.0</version>
+    <packaging>dotnet-library</packaging>
+    <name>NUnit :: nunit.framework</name>
+    <description>NUnit is a unit-testing framework for all .Net languages with a strong TDD focus.</description>
+    <licenses>
+        <license>
+            <url>http://nunit.org/nuget/license.html</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Charlie Poole</name>
+        </developer>
+    </developers>
+</project>
++---+
+
+* Examples
+
+    For further examples have a look at the integration tests for {{library-importer-maven-plugin}}
+

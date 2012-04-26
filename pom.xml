@@ -37,6 +37,7 @@ under the License.
   <properties>
     <mavenVersion>2.2.1</mavenVersion>
     <plexus.utils.version>1.5.15</plexus.utils.version>
+    <gmaven.version>1.2</gmaven.version>
     <!-- if you want to build NPanday with a specific version, replace this -->
     <!-- 
       Note: this will cause problems trying to release the first time. We can do
@@ -379,7 +380,7 @@ under the License.
         <plugin>
             <groupId>org.codehaus.gmaven</groupId>
             <artifactId>gmaven-plugin</artifactId>
-            <version>1.2</version>
+            <version>${gmaven.version}</version>
             <executions>
               <execution>
                 <id>groovy-tests</id>
