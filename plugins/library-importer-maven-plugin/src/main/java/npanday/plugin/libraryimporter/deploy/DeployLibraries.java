@@ -45,6 +45,7 @@ public class DeployLibraries
                     "NPANDAY-152-002: artifact " + artifact.getId() + " has yet been deployed to " + repo.getUrl()
                 );
             }
+            return;
         }
 
         if ( getLog().isDebugEnabled() )
