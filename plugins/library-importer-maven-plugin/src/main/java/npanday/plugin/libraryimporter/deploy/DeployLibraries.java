@@ -19,20 +19,11 @@
 
 package npanday.plugin.libraryimporter.deploy;
 
-import com.google.common.base.Strings;
-import npanday.plugin.libraryimporter.model.NugetPackage;
 import npanday.plugin.libraryimporter.model.NugetPackageLibrary;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
-import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.artifact.ProjectArtifactMetadata;
-
-import java.io.File;
 
 /**
  * Mojo for deploying the resolved libraries to the local repository.
@@ -46,7 +37,27 @@ public class DeployLibraries
     @Override
     protected void handleGeneratedArtifacts( NugetPackageLibrary lib, Artifact artifact ) throws MojoExecutionException, MojoFailureException
     {
-       deploy( artifact.getFile(), artifact );
+        ArtifactRepository repo = getDeploymentRepository();
+        if (lib.getMarkerFileFor( artifact, repo ).exists()){
+            if ( getLog().isDebugEnabled() )
+            {
+                getLog().debug(
+                    "NPANDAY-152-002: artifact " + artifact.getId() + " has yet been deployed to " + repo.getUrl()
+                );
+            }
+        }
+
+        if ( getLog().isDebugEnabled() )
+        {
+            getLog().debug(
+                "NPANDAY-152-001: deploying artifact " + artifact.getId() + " to " + repo.getUrl()
+            );
+        }
+
+
+        deploy( artifact.getFile(), artifact, repo );
+
+        markDeployed( lib, artifact, repo );
     }
 
 }

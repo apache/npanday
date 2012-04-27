@@ -22,6 +22,7 @@ package npanday.plugin.libraryimporter.install;
 import npanday.plugin.libraryimporter.model.NugetPackageLibrary;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
@@ -36,6 +37,18 @@ public class InstallLibraries
     @Override
     protected void handleGeneratedArtifacts( NugetPackageLibrary lib, Artifact artifact ) throws MojoExecutionException
     {
+        ArtifactRepository repo = getLocalArtifactRepository();
+
+        if (lib.getMarkerFileFor( artifact, repo ).exists()){
+            if ( getLog().isDebugEnabled() )
+            {
+                getLog().debug(
+                    "NPANDAY-146-002: artifact has yet been installed to local repository: " + artifact.getId()
+                );
+            }
+            return;
+        }
+
         if ( getLog().isDebugEnabled() )
         {
             getLog().debug(
@@ -45,7 +58,9 @@ public class InstallLibraries
 
         try
         {
-            installer.install( lib.getMavenArtifactFile(), artifact, getLocalArtifactRepository() );
+            install( lib, artifact, repo );
+
+            markDeployed( lib, artifact, repo);
         }
         catch ( ArtifactInstallationException e )
         {

@@ -115,10 +115,11 @@ public abstract class AbstractDeployMojo
      *
      * @param source   the file to deploy
      * @param artifact the artifact definition
+     * @param deploymentRepo
      * @throws ArtifactDeploymentException if an error occurred deploying the artifact
      */
     protected void deploy(
-        File source, Artifact artifact ) throws MojoExecutionException, MojoFailureException
+        File source, Artifact artifact, ArtifactRepository deploymentRepo ) throws MojoExecutionException, MojoFailureException
     {
         int retryFailedDeploymentCount = Math.max( 1, Math.min( 10, this.retryFailedDeploymentCount ) );
         ArtifactDeploymentException exception = null;
@@ -133,7 +134,8 @@ public abstract class AbstractDeployMojo
                             + retryFailedDeploymentCount
                     );
                 }
-                deployer.deploy( source, artifact, getDeploymentRepository(), getLocalArtifactRepository() );
+                deployer.deploy( source, artifact, deploymentRepo, getLocalArtifactRepository() );
+
                 exception = null;
                 break;
             }

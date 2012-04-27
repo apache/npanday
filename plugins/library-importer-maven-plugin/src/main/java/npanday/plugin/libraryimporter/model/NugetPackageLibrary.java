@@ -27,10 +27,15 @@ import npanday.plugin.libraryimporter.AssemblyInfo;
 import npanday.plugin.libraryimporter.LibImporterPathUtils;
 import npanday.plugin.libraryimporter.ManifestInfoParser;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.model.Model;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.List;
 
@@ -261,5 +266,31 @@ public class NugetPackageLibrary
     {
         String folderName = getMavenGroupId() + "_" + getMavenArtifactId() + "_" + getMavenPackaging() + "_" + getMavenVersion();
         return new File( mavenProjectsCacheDirectory, folderName);
+    }
+
+    public File getMarkerFileFor( Artifact artifact, ArtifactRepository repo )
+        throws MojoExecutionException
+    {
+        try
+        {
+            byte[] bytesOfMessage = (artifact.getId() + repo.getUrl()).getBytes("UTF-8");
+            MessageDigest md = MessageDigest.getInstance( "MD5" );
+            byte[] digest = md.digest(bytesOfMessage);
+            BigInteger bigInt = new BigInteger(1,digest);
+            String hashtext = bigInt.toString(16);
+            while(hashtext.length() < 32 ){
+                hashtext = "0"+hashtext;
+            }
+            return new File( getMavenProjectFolder(),  hashtext + ".deploy-marker");
+        }
+        catch ( UnsupportedEncodingException e )
+        {
+            throw new MojoExecutionException("NPANDAY-145-005: Couldn't get the UTF-8 bytes", e);
+
+        }
+        catch ( NoSuchAlgorithmException e )
+        {
+            throw new MojoExecutionException("NPANDAY-145-006: Couldn't find MD5 algorithm", e);
+        }
     }
 }

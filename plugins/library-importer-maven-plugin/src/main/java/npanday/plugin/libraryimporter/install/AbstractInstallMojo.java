@@ -24,6 +24,7 @@ import npanday.plugin.libraryimporter.model.NugetPackageLibrary;
 import npanday.plugin.libraryimporter.skeletons.AbstractHandleEachLibraryMojo;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -125,7 +126,9 @@ public abstract class AbstractInstallMojo
      */
     protected File getLocalRepoFile( ArtifactMetadata metadata )
     {
-        String path = getLocalArtifactRepository().pathOfLocalRepositoryMetadata( metadata, getLocalArtifactRepository() );
+        String path = getLocalArtifactRepository().pathOfLocalRepositoryMetadata(
+            metadata, getLocalArtifactRepository()
+        );
         return new File( getLocalArtifactRepository().getBasedir(), path );
     }
 
@@ -140,8 +143,7 @@ public abstract class AbstractInstallMojo
      * @param artifact The artifact for which to create checksums, must not be <code>null</code>.
      * @throws MojoExecutionException If the checksums could not be installed.
      */
-    protected void installChecksums( Artifact artifact )
-        throws MojoExecutionException
+    protected void installChecksums( Artifact artifact ) throws MojoExecutionException
     {
         if ( !createChecksums )
         {
@@ -167,11 +169,10 @@ public abstract class AbstractInstallMojo
      * Installs the checksums for the specified file (if it exists).
      *
      * @param installedFile The path to the already installed file in the local repo for which to generate checksums,
-     *            must not be <code>null</code>.
+     *                      must not be <code>null</code>.
      * @throws MojoExecutionException If the checksums could not be installed.
      */
-    private void installChecksums( File installedFile )
-        throws MojoExecutionException
+    private void installChecksums( File installedFile ) throws MojoExecutionException
     {
         boolean signatureFile = installedFile.getName().endsWith( ".asc" );
         if ( installedFile.isFile() && !signatureFile )
@@ -184,16 +185,16 @@ public abstract class AbstractInstallMojo
     /**
      * Installs a checksum for the specified file.
      *
-     * @param originalFile The path to the file from which the checksum is generated, must not be <code>null</code>.
+     * @param originalFile  The path to the file from which the checksum is generated, must not be <code>null</code>.
      * @param installedFile The base path from which the path to the checksum files is derived by appending the given
-     *            file extension, must not be <code>null</code>.
-     * @param digester The checksum algorithm to use, must not be <code>null</code>.
-     * @param ext The file extension (including the leading dot) to use for the checksum file, must not be
-     *            <code>null</code>.
+     *                      file extension, must not be <code>null</code>.
+     * @param digester      The checksum algorithm to use, must not be <code>null</code>.
+     * @param ext           The file extension (including the leading dot) to use for the checksum file, must not be
+     *                      <code>null</code>.
      * @throws MojoExecutionException If the checksum could not be installed.
      */
-    private void installChecksum( File originalFile, File installedFile, Digester digester, String ext )
-        throws MojoExecutionException
+    private void installChecksum( File originalFile, File installedFile, Digester digester, String ext ) throws
+        MojoExecutionException
     {
         String checksum;
         getLog().debug( "Calculating " + digester.getAlgorithm() + " checksum for " + originalFile );
@@ -203,8 +204,9 @@ public abstract class AbstractInstallMojo
         }
         catch ( DigesterException e )
         {
-            throw new MojoExecutionException( "Failed to calculate " + digester.getAlgorithm() + " checksum for "
-                + originalFile, e );
+            throw new MojoExecutionException(
+                "Failed to calculate " + digester.getAlgorithm() + " checksum for " + originalFile, e
+            );
         }
 
         File checksumFile = new File( installedFile.getAbsolutePath() + ext );
@@ -223,12 +225,15 @@ public abstract class AbstractInstallMojo
     protected ArtifactRepository getLocalArtifactRepository()
     {
         ArtifactRepositoryLayout layout = new DefaultRepositoryLayout();
-        if (!Strings.isNullOrEmpty( localRepository )) {
+        if ( !Strings.isNullOrEmpty( localRepository ) )
+        {
             String localRepoUrl = new File( localRepository ).toURI().toString();
 
             getLog().info( "NPANDAY-146-002: Using alternate local repository " + localRepository );
 
-            localArtifactRepository = artifactRepositoryFactory.createArtifactRepository( "library-importer-local", localRepoUrl, layout, null, null );
+            localArtifactRepository = artifactRepositoryFactory.createArtifactRepository(
+                "library-importer-local", localRepoUrl, layout, null, null
+            );
         }
         return localArtifactRepository;
     }
@@ -247,6 +252,32 @@ public abstract class AbstractInstallMojo
         handleGeneratedArtifacts( lib, artifact );
     }
 
-    protected abstract void handleGeneratedArtifacts( NugetPackageLibrary lib, Artifact artifact ) throws MojoExecutionException,
+    protected void install( NugetPackageLibrary lib, Artifact artifact, ArtifactRepository localRepository ) throws
+        ArtifactInstallationException,
+        MojoExecutionException
+    {
+
+        installer.install( lib.getMavenArtifactFile(), artifact, localRepository );
+    }
+
+    protected void markDeployed( NugetPackageLibrary lib, Artifact artifact, ArtifactRepository repo ) throws
+        MojoExecutionException
+    {
+        File markerFile = lib.getMarkerFileFor( artifact, repo );
+
+        try
+        {
+            markerFile.createNewFile();
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-146-003: Error creating marker file for " + repo.getUrl() + ": " + markerFile.toPath()
+            );
+        }
+    }
+
+    protected abstract void handleGeneratedArtifacts( NugetPackageLibrary lib, Artifact artifact ) throws
+        MojoExecutionException,
         MojoFailureException;
 }
