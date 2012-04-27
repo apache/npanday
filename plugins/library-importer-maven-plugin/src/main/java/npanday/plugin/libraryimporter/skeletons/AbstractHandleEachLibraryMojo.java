@@ -38,7 +38,7 @@ public abstract class AbstractHandleEachLibraryMojo
 
         for ( NugetPackage nuget : getNugetImports() )
         {
-            for ( NugetPackageLibrary lib : nuget.getLibraries( mavenProjectsCacheDirectory ) )
+            for ( NugetPackageLibrary lib : nuget.getLibraries( getLog(), mavenProjectsCacheDirectory ) )
             {
 
                 handleLibrary( lib );

@@ -229,7 +229,7 @@ public abstract class AbstractInstallMojo
         {
             String localRepoUrl = new File( localRepository ).toURI().toString();
 
-            getLog().info( "NPANDAY-146-002: Using alternate local repository " + localRepository );
+            getLog().debug( "NPANDAY-146-002: Using alternate local repository " + localRepository );
 
             localArtifactRepository = artifactRepositoryFactory.createArtifactRepository(
                 "library-importer-local", localRepoUrl, layout, null, null

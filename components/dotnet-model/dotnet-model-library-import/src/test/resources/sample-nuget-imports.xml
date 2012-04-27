@@ -33,7 +33,9 @@
 
     <mapReference
       name="AssemblyName"
-      ignore="true"/>
+      ignore="true">
+      <toPackage id="pname" version="1.0" />
+    </mapReference>
 
   </nuget>
 </libs>

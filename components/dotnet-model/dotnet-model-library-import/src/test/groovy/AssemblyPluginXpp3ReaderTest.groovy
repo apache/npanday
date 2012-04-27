@@ -50,6 +50,11 @@ class AssemblyPluginXpp3ReaderTest
     assert model.nugetImports[0].referenceMappings[0].name == "AssemblyName"
     assert model.nugetImports[0].referenceMappings[0].ignore
 
+    assert model.nugetImports[0].referenceMappings[0].mapToPackage != null
+    assert model.nugetImports[0].referenceMappings[0].mapToPackage.id == "pname"
+    assert model.nugetImports[0].referenceMappings[0].mapToPackage.version == "1.0"
+
+
     assert model.nugetSources != null
     assert model.nugetSources.addNugetGallery
     assert model.nugetSources.customSources.size() == 1

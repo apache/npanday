@@ -74,7 +74,7 @@ public class GeneratePackageArtifactsMojo
 
         for ( NugetPackage nuget : nugetImports )
         {
-            for ( NugetPackageLibrary lib : nuget.getLibraries(mavenProjectsCacheDirectory) )
+            for ( NugetPackageLibrary lib : nuget.getLibraries(getLog(), mavenProjectsCacheDirectory) )
             {
                 imports.add( lib );
             }

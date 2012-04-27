@@ -23,9 +23,12 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import npanday.model.library.imports.ReferenceMapping;
+import npanday.model.library.imports.ReferenceToPackageMapping;
+import npanday.nuget.NugetVersionSpec;
 import npanday.plugin.libraryimporter.AssemblyInfo;
 import npanday.plugin.libraryimporter.LibImporterPathUtils;
 import npanday.plugin.libraryimporter.ManifestInfoParser;
+import npanday.plugin.libraryimporter.NuspecDependency;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.model.Model;
@@ -55,6 +58,8 @@ public class NugetPackageLibrary
     private AssemblyInfo assemblyInfo;
 
     private List<NugetPackageLibrary> dependencies;
+
+    private List<NugetPackageLibrary> known;
 
     public NugetPackageLibrary( NugetPackage nuget, File lib, File mavenProjectsCacheDirectory )
     {
@@ -124,6 +129,7 @@ public class NugetPackageLibrary
     {
         Iterable<AssemblyInfo> references = getAssemblyInfo().getReferences();
 
+        known = imports;
         dependencies = Lists.newArrayList();
 
         for ( final AssemblyInfo ref : references )
@@ -137,20 +143,31 @@ public class NugetPackageLibrary
             List<NugetPackageLibrary> matchingStrongNameAndPackage = Lists.newArrayList();
             List<NugetPackageLibrary> matchingName = Lists.newArrayList();
             List<NugetPackageLibrary> matchingNameAndPackage = Lists.newArrayList();
+            String exactPackageScope = "";
+
             for ( NugetPackageLibrary lib : imports )
             {
-                boolean inScope = nuget.isDependentOn( lib.getNugetPackage() ) || nuget == lib.getNugetPackage();
-
-                if ( lib.getAssemblyInfo().getStrongName().equals( ref.getStrongName() ) )
-                {
-                    matchingStrongName.add( lib );
-                    if ( inScope )
-                    {
-                        matchingStrongNameAndPackage.add( lib );
-                    }
-                }
                 if ( lib.name.equals( ref.getName() ) )
                 {
+                    NugetPackage targetPackage = tryGetToPackageMapping( lib.getAssemblyInfo() );
+                    if (targetPackage != null){
+                        exactPackageScope = targetPackage.toString() + "/";
+                    }
+
+                    boolean inScope =
+                        targetPackage != null
+                        ? lib.getNugetPackage() == targetPackage
+                        : nuget.isDependentOn( lib.getNugetPackage() ) || nuget == lib.getNugetPackage();
+
+                    if ( lib.getAssemblyInfo().getStrongName().equals( ref.getStrongName() ) )
+                    {
+                        matchingStrongName.add( lib );
+                        if ( inScope )
+                        {
+                            matchingStrongNameAndPackage.add( lib );
+                        }
+                    }
+
                     matchingName.add( lib );
                     if ( inScope )
                     {
@@ -164,25 +181,25 @@ public class NugetPackageLibrary
                 String help = "";
                 if ( matchingNameAndPackage.size() > 0 )
                 {
-                    help = ", but found matches by name and package: " + matchingName;
+                    help += System.getProperty("line.separator") + " - but found matches by name and package: " + matchingName;
                 }
                 if ( matchingStrongName.size() > 0 )
                 {
-                    help = ", but found exact matches in different package(s): " + matchingStrongName;
+                    help += System.getProperty("line.separator") + " - but found exact matches in different package(s): " + matchingStrongName;
                 }
                 if ( matchingName.size() > 0 )
                 {
-                    help = ", but found matches by name only: " + matchingName;
+                    help += System.getProperty("line.separator") + " - but found matches by name only: " + matchingName;
                 }
 
                 if ( !Strings.isNullOrEmpty( help ) )
                 {
-                    help += ". Please use the config to tweak reference resolving.";
+                    help += System.getProperty("line.separator") + "Please use the config to tweak reference resolving.";
                 }
 
                 throw new MojoExecutionException(
-                    "NPANDAY-145-002: Could not find exact match for reference from " + nuget.getName() + " / " + name
-                        + " to '" + ref.getStrongName() + "'" + help
+                    "NPANDAY-145-002: Could not find exact match for reference from " + nuget.getName() + "/" + name
+                        + " to " + exactPackageScope + "[" + ref.getStrongName() + "]" + help
                 );
             }
 
@@ -199,6 +216,23 @@ public class NugetPackageLibrary
         }
 
         return dependencies;
+    }
+
+    private NugetPackage tryGetToPackageMapping(AssemblyInfo ref) throws MojoExecutionException
+    {
+        ReferenceMapping referenceMapping = nuget.tryFindReferenceMappingFor( ref );
+        if (referenceMapping != null && referenceMapping.getMapToPackage() != null)
+        {
+            NuspecDependency dep = new NuspecDependency();
+            ReferenceToPackageMapping mapToPackage = referenceMapping.getMapToPackage();
+            dep.setId( mapToPackage.getId() );
+
+            // TODO: support real version ranges here?
+            dep.setVersion( NugetVersionSpec.parse( "[" + mapToPackage.getVersion() + "]" ) );
+            return nuget.resolveDependencyAmongAllKnown( dep );
+        }
+
+        return null;
     }
 
     private boolean isExcluded( AssemblyInfo ref )

@@ -135,7 +135,32 @@
         </field>
 
         <!-- TODO: add 'namePattern' for regex matching -->
+
+        <field xml.tagName="toPackage">
+          <name>mapToPackage</name>
+          <association>
+            <type>ReferenceToPackageMapping</type>
+            <multiplicity>1</multiplicity>
+          </association>
+        </field>
+
         <!-- TODO: allow for specify mapping to different artifact -->
+      </fields>
+    </class>
+
+    <class>
+      <name>ReferenceToPackageMapping</name>
+      <fields>
+        <field xml.attribute="true">
+          <name>id</name>
+          <type>String</type>
+        </field>
+
+        <field xml.attribute="true">
+          <name>version</name>
+          <type>String</type>
+        </field>
+
       </fields>
     </class>
   </classes>

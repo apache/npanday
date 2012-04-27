@@ -30,12 +30,14 @@ import npanday.model.library.imports.NugetImport;
 import npanday.model.library.imports.NugetSources;
 import npanday.model.library.imports.ReferenceMapping;
 import npanday.nuget.NugetSemanticVersion;
+import npanday.nuget.NugetVersionSpec;
 import npanday.plugin.libraryimporter.AssemblyInfo;
 import npanday.plugin.libraryimporter.LibImporterPathUtils;
 import npanday.plugin.libraryimporter.NuspecDependency;
 import npanday.plugin.libraryimporter.NuspecMetadata;
 import npanday.plugin.libraryimporter.NuspecParser;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.util.Collection;
@@ -50,6 +52,8 @@ public class NugetPackage
     private NuspecMetadata metadata;
 
     private List<NugetPackage> dependencies;
+
+    private Collection<NugetPackage> knownPackages;
 
     public static List<NugetPackage> Convert(
         Iterable<NugetImport> imports, NugetSources nugetSources, File packageRootDirectory )
@@ -109,16 +113,35 @@ public class NugetPackage
         return new File( packageRootDirectory, getName() + "." + getVersion() );
     }
 
-    public Iterable<NugetPackageLibrary> getLibraries(File mavenProjectsCacheDirectory) throws MojoExecutionException
+    public Iterable<NugetPackageLibrary> getLibraries( Log log, File mavenProjectsCacheDirectory ) throws
+        MojoExecutionException
     {
         List<File> libDirectories = getLibraryDirectories();
 
         List<NugetPackageLibrary> libImports = Lists.newArrayList();
         for ( File libDir : libDirectories )
         {
-            for ( File lib : LibImporterPathUtils.getLibraries( libDir ) )
+            for ( File libFile : LibImporterPathUtils.getLibraries( libDir ) )
             {
-                libImports.add( new NugetPackageLibrary( this, lib, mavenProjectsCacheDirectory ) );
+                NugetPackageLibrary lib = new NugetPackageLibrary( this, libFile, mavenProjectsCacheDirectory );
+
+                ReferenceMapping referenceMapping = tryFindReferenceMappingFor( lib.getAssemblyInfo() );
+                if ( referenceMapping != null && referenceMapping.getMapToPackage() != null )
+                {
+                    if ( log.isDebugEnabled() )
+                    {
+                        log.debug(
+                            "NPANDAY-142-004: Will skip inclusion for " + lib
+                                + " since references to it are mapped to a different package ("
+                                + referenceMapping.getMapToPackage().getId() + ", v"
+                                + referenceMapping.getMapToPackage().getVersion() + ")."
+                        );
+                    }
+
+                    continue;
+                }
+
+                libImports.add( lib );
             }
         }
         return libImports;
@@ -200,43 +223,52 @@ public class NugetPackage
     {
         Preconditions.checkArgument( dependencies == null, "Dependencies have already been resolved" );
 
+        knownPackages = packages;
         dependencies = Lists.newArrayList();
         for ( Object depO : getNuspec().getDependencies() )
         {
             // NOTE: stub-generator should IMHO generate List<NuspecDependency>
             NuspecDependency dep = (NuspecDependency) depO;
-
-            NugetPackage highest = null;
-            for ( NugetPackage pkg : packages )
-            {
-                if ( !pkg.getName().equals( dep.getId() ) )
-                {
-                    continue;
-                }
-
-                if ( dep.getVersion() != null && !dep.getVersion().isSatisfiedBy( pkg.getVersion() ) )
-                {
-                    continue;
-                }
-
-                if ( highest == null || highest.getVersion().compareTo( pkg.getVersion() ) < 0 )
-                {
-                    highest = pkg;
-                }
-
-            }
-
-            if ( highest == null )
-            {
-                throw new MojoExecutionException(
-                    "NPANDAY-142-004: Could not resolve dependency " + dep + " among the nuget imports."
-                );
-            }
+            NugetPackage highest = resolveDependencyAmongAllKnown( dep );
 
             dependencies.add( highest );
         }
 
         return dependencies;
+    }
+
+    public NugetPackage resolveDependencyAmongAllKnown( NuspecDependency dep ) throws MojoExecutionException
+    {
+        NugetVersionSpec depVersion = dep.getVersion();
+        String depId = dep.getId();
+
+        NugetPackage highest = null;
+        for ( NugetPackage pkg : getKnownPackages() )
+        {
+            if ( !pkg.getName().equals( depId ) )
+            {
+                continue;
+            }
+
+            if ( depVersion != null && !depVersion.isSatisfiedBy( pkg.getVersion() ) )
+            {
+                continue;
+            }
+
+            if ( highest == null || highest.getVersion().compareTo( pkg.getVersion() ) < 0 )
+            {
+                highest = pkg;
+            }
+
+        }
+
+        if ( highest == null )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-142-004: Could not resolve dependency " + dep + " among the nuget imports."
+            );
+        }
+        return highest;
     }
 
     public Collection<NugetPackage> getDependencies()
@@ -279,7 +311,8 @@ public class NugetPackage
 
             sources.addAll( nugetSources.getCustomSources() );
 
-            if (nugetSources.isAddNugetGallery()){
+            if ( nugetSources.isAddNugetGallery() )
+            {
                 sources.add( "https://go.microsoft.com/fwlink/?LinkID=206669" );
             }
 
@@ -287,5 +320,14 @@ public class NugetPackage
         }
 
         return null;
+    }
+
+    public Collection<NugetPackage> getKnownPackages()
+    {
+        Preconditions.checkNotNull(
+            dependencies, "Dependencies have not been resolved yet, there fore known packages are not available either"
+        );
+
+        return knownPackages;
     }
 }
