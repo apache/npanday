@@ -18,23 +18,14 @@
  */
 package npanday.plugin.install;
 
-import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
-import npanday.artifact.ArtifactContext;
-import npanday.dao.Project;
-import npanday.dao.ProjectDao;
-import npanday.dao.ProjectDaoException;
-import npanday.dao.ProjectDependency;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
-import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -82,11 +73,6 @@ public class InstallerMojo
     private File pomFile;
 
     /**
-     * @component
-     */
-    private ArtifactContext artifactContext;
-
-    /**
      * Install into the GAC?
      *
      * @parameter expression="${isGacInstall}" default-value = "false"
@@ -118,17 +104,12 @@ public class InstallerMojo
     private String profile;
 
     /**
-     * @component
-     */
-    private npanday.registry.DataAccessObjectRegistry daoRegistry;
-
-    /**
      * The artifact factory component, which is used for creating artifacts.
      *
      * @component
      */
     private ArtifactFactory artifactFactory;
-    
+
     /**
      * Used for resolving snapshot
      *
@@ -139,29 +120,19 @@ public class InstallerMojo
     public void execute()
         throws MojoExecutionException
     {
-        long startTime = System.currentTimeMillis();
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
-       SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
-
-        ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        dao.init( artifactFactory, artifactResolver );
-        dao.openConnection();
-
-        artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
-        if ( project.getPackaging().equals( "pom" ) )
-        {
-            storeMavenProject( project );
-        }
-        else
+        if ( !project.getPackaging().equals( "pom" ) )
         {
             if ( isGacInstall )
             {
                 try
                 {
-                    NetExecutable netExecutable = netExecutableFactory.getNetExecutableFor(
-                        new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), null );
+                    NetExecutable netExecutable = netExecutableFactory.getExecutable(
+                        new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), null
+                    );
                     netExecutable.execute();
-                    getLog().info( "NPANDAY-xxx-003: Installed Assembly into GAC: Assembly = " +
+                    getLog().info( "NPANDAY-1400-003: Installed Assembly into GAC: Assembly = " +
                         project.getArtifact().getFile() + ",  Vendor = " + netExecutable.getVendor().getVendorName() );
                 }
                 catch ( ExecutionException e )
@@ -174,22 +145,10 @@ public class InstallerMojo
                     throw new MojoExecutionException( "NPANDAY-1400-001: Platform Unsupported: Vendor " + vendor +
                         ", frameworkVersion = " + frameworkVersion + ", Profile = " + profile, e );
                 }
-                storeMavenProject( project );
             }
 
-            //UAC install
-            try
-            {
-               artifactContext.getArtifactInstaller().installArtifactWithPom( project.getArtifact(), pomFile, true );
-            }
-            catch ( ArtifactInstallationException e )
-            {
-                throw new MojoExecutionException( "NPANDAY-1001-000: Failed to install artifacts", e );
-            }
+            getLog().warn( "NPANDAY-251: removed UAC?? install here!" );
         }
-
-        long endTime = System.currentTimeMillis();
-        getLog().info( "Mojo Execution Time = " + ( endTime - startTime ) );
     }
 
     public List<String> getCommands()
@@ -199,44 +158,5 @@ public class InstallerMojo
         commands.add( "/i" );
         commands.add( project.getArtifact().getFile().getAbsolutePath() );
         return commands;
-    }
-
-    //TODO: Handle parent poms
-    private void storeMavenProject( MavenProject project )
-        throws MojoExecutionException
-    {
-        ProjectDao dao = (ProjectDao) daoRegistry.find( "dao:project" );
-        Project proj = new Project();
-        proj.setGroupId( project.getGroupId() );
-        proj.setArtifactId( project.getArtifactId() );
-        proj.setVersion( project.getVersion() );
-        proj.setPublicKeyTokenId( project.getArtifact().getClassifier() );
-        proj.setArtifactType( project.getArtifact().getType() );
-        proj.setResolved( true );
-        for ( Dependency dependency : (List<Dependency>) project.getDependencies() )
-        {
-            ProjectDependency projectDependency = new ProjectDependency();
-            projectDependency.setGroupId( dependency.getGroupId() );
-            projectDependency.setArtifactId( dependency.getArtifactId() );
-            projectDependency.setVersion( dependency.getVersion() );
-            projectDependency.setPublicKeyTokenId( dependency.getClassifier() );
-            projectDependency.setArtifactType( dependency.getType() );
-            proj.addProjectDependency( projectDependency );
-        }
-
-        try
-        {
-            File targetDir = PathUtil.getPrivateApplicationBaseDirectory( project );
-            dao.storeProjectAndResolveDependencies( proj, localRepository, new ArrayList<ArtifactRepository>(),
-                                                    targetDir );
-        }
-        catch ( java.io.IOException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-1001-001: Failed to install artifacts", e );
-        }
-        catch( ProjectDaoException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-1001-002: Failed to install artifacts", e );
-        }
     }
 }

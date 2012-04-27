@@ -50,8 +50,7 @@ public interface AssemblerContext
      * @return the marshaller for the specified language
      * @throws AssemblyInfoException if no marshaller can be found for the specified language
      */
-    AssemblyInfoMarshaller getAssemblyInfoMarshallerFor( String language )
-        throws AssemblyInfoException;
+    AssemblyInfoMarshaller getAssemblyInfoMarshallerFor( String language ) throws AssemblyInfoException;
 
     /**
      * Returns the class extension (cs, vb) for the specified language.
@@ -60,7 +59,7 @@ public interface AssemblerContext
      * @return the class extension (cs, vb) for the specified language.
      * @throws PlatformUnsupportedException the language is not supported
      */
-    String getClassExtensionFor(String language) throws PlatformUnsupportedException;
+    String getClassExtensionFor( String language ) throws PlatformUnsupportedException;
 
     /**
      * Initializes the context
@@ -68,7 +67,6 @@ public interface AssemblerContext
      * @param mavenProject the maven project
      * @throws InitializationException if the context cannot be initialized
      */
-    void init( MavenProject mavenProject )
-        throws InitializationException;
+    void init( MavenProject mavenProject ) throws InitializationException;
 
 }

@@ -1114,9 +1114,9 @@ public abstract class AbstractCompilerMojo
   
         try
         {
-            CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutableFor(getCompilerRequirement(),
-                    getCompilerConfig(),
-                    project);
+            CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutable(
+                getCompilerRequirement(), getCompilerConfig(), project
+            );
 
             File compiledArtifact = compilerExecutable.getCompiledArtifact();
 

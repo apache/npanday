@@ -20,12 +20,11 @@ package npanday.executable.impl;
  */
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
 import npanday.PlatformUnsupportedException;
 import npanday.RepositoryNotFoundException;
-import npanday.artifact.ArtifactContext;
-import npanday.artifact.ArtifactException;
 import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutionException;
 import npanday.executable.compiler.CompilerCapability;
@@ -80,11 +79,6 @@ public final class CompilerContextImpl
     private List<Artifact> directLibraries;
 
     private List<Artifact> modules;
-
-    /**
-     * @plexus.requirement
-     */
-    private ArtifactContext artifactContext;
 
     /**
      * @plexus.requirement
@@ -182,17 +176,8 @@ public final class CompilerContextImpl
 
     public List<Artifact> getDirectModuleDependencies()
     {
-        List<Artifact> artifacts;
-        try
-        {
-            artifacts = artifactContext.getNetModulesFor( project.getArtifact() );
-        }
-        catch ( ArtifactException e )
-        {
-            logger.error( "NPANDAY-061-000: Improper Initialization of the Net Modules", e );
-            return new ArrayList<Artifact>();
-            //TODO: How to handle this: usually implies improper init of ArtifactContext
-        }
+        List<Artifact> artifacts = Lists.newArrayList();
+
         if ( config.isTestCompile() && ArtifactTypeHelper.isDotnetModule( config.getArtifactType() ) )
         {
             artifacts.add( project.getArtifact() );
@@ -378,7 +363,6 @@ public final class CompilerContextImpl
         libraries = new ArrayList<Artifact>();
         directLibraries = new ArrayList<Artifact>();
         modules = new ArrayList<Artifact>();
-        artifactContext.init( project, project.getRemoteArtifactRepositories(), config.getLocalRepository() );
         compilerCapability = capability;
 
         // initialize base class

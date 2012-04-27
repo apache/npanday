@@ -18,13 +18,19 @@
  */
 package npanday.plugin.generator;
 
+import npanday.ArtifactType;
+import npanday.LocalRepositoryUtil;
 import npanday.PathUtil;
-import npanday.artifact.ArtifactContext;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutionException;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.SettingsUtil;
 import npanday.vendor.VendorRequirement;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -106,7 +112,7 @@ public class MojoGeneratorMojo
     /**
      * @component
      */
-    private ArtifactContext artifactContext;
+    private ArtifactFactory artifactFactory;
 
     /** @parameter default-value="false" */
     private boolean skip;
@@ -121,7 +127,6 @@ public class MojoGeneratorMojo
 
         SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
-        artifactContext.init( project, project.getRemoteArtifactRepositories(), localRepository );
         try
         {    
             List<String> commands = new ArrayList<String>();
@@ -135,15 +140,34 @@ public class MojoGeneratorMojo
             commands.add( "groupId=" + project.getGroupId() );
             commands.add( "artifactId=" + project.getArtifactId() );
             commands.add( "artifactVersion=" + project.getVersion());
-            netExecutableFactory.getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.MojoGenerator",
-                                                                 vendorRequirement, localRepository, commands,
-                                                                 true, targetDir ).execute();
+
+            Artifact artifact = artifactFactory.createDependencyArtifact(
+                "org.apache.npanday.plugins",
+                "NPanday.Plugin.MojoGenerator",
+                VersionRange.createFromVersion( project.getVersion() ),
+                ArtifactType.DOTNET_EXECUTABLE.getPackagingType(),
+                null,
+                "runtime"
+            );
+
+            netExecutableFactory.getPluginRunner(
+                project, artifact, null, vendorRequirement, LocalRepositoryUtil.create( localRepository ), commands,
+                targetDir
+            ).execute();
         }
         catch ( PlatformUnsupportedException e )
         {
             throw new MojoExecutionException( "", e );
         }
         catch ( ExecutionException e )
+        {
+            throw new MojoExecutionException( "", e );
+        }
+        catch ( ArtifactNotFoundException e )
+        {
+            throw new MojoExecutionException( "", e );
+        }
+        catch ( ArtifactResolutionException e )
         {
             throw new MojoExecutionException( "", e );
         }

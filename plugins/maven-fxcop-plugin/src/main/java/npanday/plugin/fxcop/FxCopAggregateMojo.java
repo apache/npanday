@@ -20,8 +20,6 @@ package npanday.plugin.fxcop;
 
 import npanday.ArtifactType;
 import npanday.PlatformUnsupportedException;
-import npanday.artifact.AssemblyResolver;
-import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.registry.RepositoryRegistry;
@@ -98,11 +96,6 @@ public class FxCopAggregateMojo
     private String profile;
 
     /**
-     * @component
-     */
-    private AssemblyResolver assemblyResolver;
-
-    /**
      * @parameter expression="${settings.localRepository}"
      * @readonly
      */
@@ -138,20 +131,7 @@ public class FxCopAggregateMojo
             throw new MojoExecutionException("NPANDAY-xxx-000: Unable to add dependencies from " + project.getFile(), e);
         }
 
-        try
-        {
-            assemblyResolver.resolveTransitivelyFor( project, aggregateDependencies,
-                                                     project.getRemoteArtifactRepositories(), localRepository,
-                                                     true );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( e.getMessage() );
-        }
-        catch( NPandayArtifactResolutionException e )
-        {
-            throw new MojoExecutionException( e.getMessage() );
-        }
+        getLog().warn( "NPANDAY-251: removed dependency resolution here!" );
 
         for ( Artifact artifact : (Set<Artifact>) project.getDependencyArtifacts() )
         {
@@ -170,7 +150,9 @@ public class FxCopAggregateMojo
 
         try
         {
-            netExecutableFactory.getNetExecutableFor( new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), null ).execute();
+            netExecutableFactory.getExecutable(
+                new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), null
+            ).execute();
         }
         catch ( ExecutionException e )
         {

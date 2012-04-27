@@ -128,8 +128,9 @@ public class ExistingResxGenerator extends AbstractMojo
             	File file = new File(project.getBuild().getSourceDirectory() + File.separator + embeddedResource.getSourceFile());
             	if(!file.exists()) continue;
                 commands = getCommands(file.getAbsoluteFile(), resourceDirectory, embeddedResource.getName());
-                netExecutableFactory.getNetExecutableFor(
-                    new ExecutableRequirement( vendor, null, frameworkVersion, "RESGEN" ), commands, netHome )
+                netExecutableFactory.getExecutable(
+                    new ExecutableRequirement( vendor, null, frameworkVersion, "RESGEN" ), commands, netHome
+                )
                     .execute();
             }
           
@@ -146,9 +147,9 @@ public class ExistingResxGenerator extends AbstractMojo
             	  name = project.getArtifactId() + "." + name.substring(0, name.lastIndexOf('.'));
 
             	  commands = getCommands(file.getAbsoluteFile(), resourceDirectory, name);
-                   netExecutableFactory.getNetExecutableFor(
-                       new ExecutableRequirement( vendor, null, frameworkVersion, "RESGEN" ), commands,
-                                                             netHome )
+                   netExecutableFactory.getExecutable(
+                       new ExecutableRequirement( vendor, null, frameworkVersion, "RESGEN" ), commands, netHome
+                   )
                        .execute();
               }
             }

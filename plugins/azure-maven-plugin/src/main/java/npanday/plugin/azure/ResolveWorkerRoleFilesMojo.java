@@ -38,7 +38,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  * @goal resolve-worker-roles
- * @requiresDependencyResolution runtime
+ * TODO requiresDependencyResolution runtime
  */
 public class ResolveWorkerRoleFilesMojo
     extends AbstractNPandayMojo

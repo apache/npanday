@@ -54,7 +54,7 @@ import java.util.Set;
  *
  * @phase package
  * @goal merge-assemblies
- * @requiresDependencyResolution runtime
+ * TODO requiresDependencyResolution runtime
  */
 public class AssemblyMerger extends AbstractMojo
 {
@@ -240,7 +240,7 @@ public class AssemblyMerger extends AbstractMojo
         {
             // ilmerge.exe
             // determine how to set /lib:[assemblyPath]
-            CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutableFor(
+            CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutable(
                 getCompilerRequirement(), getCompilerConfig(), project
             );
 
@@ -395,7 +395,9 @@ public class AssemblyMerger extends AbstractMojo
             }
 
             outputDirectory.mkdirs();
-            netExecutableFactory.getNetExecutableFor( new ExecutableRequirement( vendor, null, frameworkVersion, executable ), commands, netHome ).execute();
+            netExecutableFactory.getExecutable(
+                new ExecutableRequirement( vendor, null, frameworkVersion, executable ), commands, netHome
+            ).execute();
 
             if ( mergedArtifactTempDirectory != null )
             {

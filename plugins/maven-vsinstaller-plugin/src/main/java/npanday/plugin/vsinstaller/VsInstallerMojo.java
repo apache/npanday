@@ -19,9 +19,6 @@
 
 package npanday.plugin.vsinstaller;
 
-import npanday.artifact.ArtifactContext;
-import npanday.artifact.ArtifactInstaller;
-import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.registry.RepositoryRegistry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFileFilter;
@@ -77,13 +74,6 @@ public class VsInstallerMojo
     private String localRepository;
 
     /**
-     * Provides services for obtaining artifact information and dependencies
-     *
-     * @component
-     */
-    private ArtifactContext artifactContext;
-
-    /**
      * Provides access to configuration information used by NPanday.
      *
      * @component
@@ -101,7 +91,6 @@ public class VsInstallerMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        artifactContext.init( null, mavenProject.getRemoteArtifactRepositories(), new File( localRepository ) );
         Map<String, ArtifactHandler> map = new HashMap<String, ArtifactHandler>();
 
         for ( ArtifactHandler artifactHandler : artifactHandlers )
@@ -121,23 +110,7 @@ public class VsInstallerMojo
             mavenProject.getBuild().setDirectory( new File( mavenProject.getBasedir(), "target" ).getAbsolutePath() );
         }
 
-        try
-        {
-            ArtifactInstaller installer = artifactContext.getArtifactInstaller();
-            installer.resolveAndInstallNetDependenciesForProfile( "VisualStudio2005", null, null, mavenProject );
-        }
-        catch ( NPandayArtifactResolutionException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-121-002: Error resolving dependencies for 'VisualStudio2005'", e
-            );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException(
-                "NPANDAY-121-003: IO error on resolving dependencies for 'VisualStudio2005'", e
-            );
-        }
+        getLog().warn( "NPANDAY-251: removed net dependency resolution for VS2005-profile here!" );
 
         collectDefaultVSAddinDirectories();
 

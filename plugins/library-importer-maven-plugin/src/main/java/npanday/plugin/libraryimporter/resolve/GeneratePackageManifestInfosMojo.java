@@ -71,7 +71,7 @@ public class GeneratePackageManifestInfosMojo
                 try
                 {
 
-                    executable = netExecutableFactory.getNetExecutableFor(
+                    executable = netExecutableFactory.getExecutable(
                         getExecutableRequirement(), Lists.newArrayList(
                         libDir.getAbsolutePath(), "-x", "-r", "-q", "-o", manifestInfoFile.getAbsolutePath()
                     ), null

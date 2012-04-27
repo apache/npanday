@@ -127,8 +127,9 @@ public abstract class AbstractMsDeployMojo<T>
 
             try
             {
-                final NetExecutable executable = netExecutableFactory.getNetExecutableFor(
-                    new ExecutableRequirement( vendor, vendorVersion, frameworkVersion, executableIdentifier ), getCommands(iterationItem), null
+                final NetExecutable executable = netExecutableFactory.getExecutable(
+                    new ExecutableRequirement( vendor, vendorVersion, frameworkVersion, executableIdentifier ),
+                    getCommands( iterationItem ), null
                 );
                 executable.execute();
             }

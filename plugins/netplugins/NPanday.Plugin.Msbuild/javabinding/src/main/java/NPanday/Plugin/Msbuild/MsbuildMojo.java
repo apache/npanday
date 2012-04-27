@@ -37,7 +37,7 @@ import org.codehaus.plexus.util.FileUtils;
 /**
  * @phase validate
  * @goal compile
- * @requiresDependencyResolution test
+ * TODO requiresDependencyResolution test
  */
 public class MsbuildMojo
     extends npanday.plugin.AbstractMojo

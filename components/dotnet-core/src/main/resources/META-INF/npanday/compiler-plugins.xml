@@ -1417,7 +1417,6 @@
     <pluginClass>npanday.executable.compiler.impl.RubyCompiler</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>RubyCompiler.exe</executable>
-    <netDependencyId>RubyCompiler</netDependencyId>
     <language>RUBY</language>
     <profile>FULL</profile>
     <frameworkVersions>

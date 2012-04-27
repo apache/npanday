@@ -19,19 +19,15 @@
 
 package npanday.nuget;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
-import npanday.executable.ExecutionResult;
 import npanday.executable.NetExecutable;
 import npanday.executable.NetExecutableFactory;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
@@ -50,7 +46,7 @@ public class NugetInvoker
         PlatformUnsupportedException,
         NugetException
     {
-        final NetExecutable executable = netExecutableFactory.getNetExecutableFor(
+        final NetExecutable executable = netExecutableFactory.getExecutable(
             executableRequirement, buildCommands( parameters ), null
         );
 

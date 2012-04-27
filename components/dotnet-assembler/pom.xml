@@ -40,11 +40,7 @@
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-model-assembly-plugins</artifactId>  
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-artifact</artifactId>  
-    </dependency>  
+    </dependency>
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-core</artifactId>  

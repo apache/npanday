@@ -415,21 +415,16 @@ under the License.
         <artifactId>dotnet-assembler</artifactId>  
         <version>1.5.0-incubating-SNAPSHOT</version> 
       </dependency>  
-      <dependency> 
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-dao-project</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
+        <artifactId>dotnet-dao-project</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-executable</artifactId>  
         <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
-        <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-artifact</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
+      </dependency>
       <dependency> 
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-plugin</artifactId>  

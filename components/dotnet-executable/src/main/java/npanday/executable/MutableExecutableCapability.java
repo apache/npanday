@@ -62,8 +62,6 @@ public class MutableExecutableCapability
 
     private String profile;
 
-    private String netDependencyId;
-
     private List<String> probingPaths;
 
     public String getProfile()
@@ -174,16 +172,6 @@ public class MutableExecutableCapability
     public void setCommandCapability( CommandCapability commandCapability )
     {
         this.commandCapability = commandCapability;
-    }
-
-    public String getNetDependencyId()
-    {
-        return netDependencyId;
-    }
-
-    public void setNetDependencyId( String executableLocation )
-    {
-        this.netDependencyId = executableLocation;
     }
 
     public List<String> getProbingPaths()

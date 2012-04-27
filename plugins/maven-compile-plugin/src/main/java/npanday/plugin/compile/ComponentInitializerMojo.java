@@ -20,8 +20,6 @@ package npanday.plugin.compile;
  */
 
 import npanday.InitializationException;
-import npanday.artifact.AssemblyResolver;
-import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.assembler.AssemblerContext;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -37,6 +35,8 @@ import java.io.File;
  * @goal initialize
  * @phase compile
  * @description Initializes and validates the setup.
+ *
+ * @require
  */
 public class ComponentInitializerMojo
     extends AbstractMojo
@@ -56,10 +56,6 @@ public class ComponentInitializerMojo
      */
     private File localRepository;
 
-    /**
-     * @component
-     */
-    private AssemblyResolver assemblyResolver;
 
     /**
      * @component
@@ -69,21 +65,8 @@ public class ComponentInitializerMojo
     public void execute()
         throws MojoExecutionException
     {
-        long startTime = System.currentTimeMillis();
 
-        try
-        {
-            assemblyResolver.resolveTransitivelyFor( project, project.getDependencies(),
-                                                     project.getRemoteArtifactRepositories(), localRepository, true );
-        }
-        catch ( java.io.IOException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-901-003: IO error on resolving project dependencies", e );
-        }
-        catch( NPandayArtifactResolutionException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-901-004: error on resolving project dependencies", e );
-        }
+        getLog().warn( "NPANDAY-231: removed dependency resolution here!" );
 
         try
         {
@@ -95,6 +78,5 @@ public class ComponentInitializerMojo
         }
 
         long endTime = System.currentTimeMillis();
-        getLog().info( "Mojo Execution Time = " + ( endTime - startTime ) );
     }
 }

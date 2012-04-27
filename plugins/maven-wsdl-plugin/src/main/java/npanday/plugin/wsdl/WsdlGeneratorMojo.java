@@ -229,7 +229,7 @@ public class WsdlGeneratorMojo
             List<String> commands = getCommandsFor( webreference );
             try
             {
-                netExecutableFactory.getNetExecutableFor(
+                netExecutableFactory.getExecutable(
                     new ExecutableRequirement( vendor, null, frameworkVersion, profile ), commands, netHome
                 ).execute();
             }

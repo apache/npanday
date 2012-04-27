@@ -177,7 +177,7 @@ public class XsdGeneratorMojo
         FileUtils.mkdir( outputDirectory );
         try
         {
-            netExecutableFactory.getNetExecutableFor(
+            netExecutableFactory.getExecutable(
                 new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), netHome
             ).execute();
         }

@@ -44,24 +44,6 @@
       <repository-config>/META-INF/npanday/executable-plugins.xml</repository-config>
     </repository>
     <repository>
-      <repository-name>net-dependencies</repository-name>
-      <repository-class>npanday.artifact.impl.NetDependenciesRepositoryImpl</repository-class>
-      <repository-config>/META-INF/npanday/net-dependencies.xml</repository-config>
-      <init-param>
-        <param-name>npanday.version</param-name>
-        <param-value>${pom.version}</param-value>
-      </init-param>
-    </repository>
-    <repository>
-      <repository-name>connections</repository-name>
-      <repository-class>npanday.registry.ConnectionsRepository</repository-class>
-      <repository-config>/META-INF/npanday/null.properties</repository-config>
-      <init-param>
-        <param-name>dao:project</param-name>
-        <param-value>npanday.dao.impl.ProjectDaoImpl</param-value>
-      </init-param>
-    </repository>
-    <repository>
       <repository-name>configuration-appenders</repository-name>
       <repository-class>npanday.plugin.impl.ConfigurationAppendersRepository</repository-class>
       <repository-config>/META-INF/npanday/configuration-appenders.xml</repository-config>

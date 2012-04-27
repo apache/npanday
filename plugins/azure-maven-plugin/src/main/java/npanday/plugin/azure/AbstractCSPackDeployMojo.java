@@ -68,7 +68,7 @@ public abstract class AbstractCSPackDeployMojo
         try
         {
             // TODO: confusion of 'identifier' and 'profile' / align to new NPANDAY-499
-            final NetExecutable executable = netExecutableFactory.getNetExecutableFor(
+            final NetExecutable executable = netExecutableFactory.getExecutable(
                 new ExecutableRequirement(
                     vendor, vendorVersion, frameworkVersion, executableIdentifier, executableVersion
                     /*, executableProfile*/

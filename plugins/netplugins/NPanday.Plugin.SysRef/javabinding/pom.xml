@@ -38,11 +38,7 @@ under the License.
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-executable</artifactId>  
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-artifact</artifactId>  
-    </dependency>  
+    </dependency>
     <dependency> 
       <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-plugin</artifactId>  

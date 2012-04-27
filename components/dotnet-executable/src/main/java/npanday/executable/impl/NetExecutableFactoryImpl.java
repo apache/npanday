@@ -19,10 +19,12 @@ package npanday.executable.impl;
  * under the License.
  */
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import npanday.ArtifactType;
 import npanday.InitializationException;
 import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
-import npanday.artifact.ArtifactContext;
 import npanday.executable.CapabilityMatcher;
 import npanday.executable.ExecutableCapability;
 import npanday.executable.ExecutableConfig;
@@ -38,6 +40,7 @@ import npanday.executable.compiler.CompilerContext;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
+import npanday.resolver.NPandayArtifactResolver;
 import npanday.vendor.IllegalStateException;
 import npanday.vendor.StateMachineProcessor;
 import npanday.vendor.Vendor;
@@ -45,6 +48,14 @@ import npanday.vendor.VendorInfo;
 import npanday.vendor.VendorInfoRepository;
 import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
+import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
@@ -52,6 +63,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides an implementation of <code>NetExecutableFactory</code>.
@@ -69,11 +82,6 @@ public class NetExecutableFactoryImpl
      * @plexus.requirement
      */
     private CapabilityMatcher capabilityMatcher;
-
-    /**
-     * @plexus.requirement
-     */
-    private ArtifactContext artifactContext;
 
     /**
      * @plexus.requirement
@@ -105,11 +113,26 @@ public class NetExecutableFactoryImpl
      */
     private StateMachineProcessor processor;
 
+    /**
+     * @plexus.requirement
+     */
+    private NPandayArtifactResolver artifactResolver;
+
+    /**
+     * @plexus.requirement
+     */
+    private ArtifactFactory artifactFactory;
+
+    /**
+     * @plexus.requirement
+     */
+    private ArtifactMetadataSource artifactMetadataSource;
 
     /**
      * @see NetExecutableFactory
      */
-    public NetExecutable getNetExecutableFor( ExecutableRequirement executableRequirement, List<String> commands, File netHome )
+    public NetExecutable getExecutable(
+        ExecutableRequirement executableRequirement, List<String> commands, File netHome )
         throws PlatformUnsupportedException
     {
         // TODO: construct ExcecutableConfig from the outside
@@ -146,11 +169,11 @@ public class NetExecutableFactoryImpl
     }
 
     /**
-     * @see NetExecutableFactory#getCompilerExecutableFor(npanday.executable.compiler.CompilerRequirement,
+     * @see NetExecutableFactory#getCompilerExecutable(npanday.executable.compiler.CompilerRequirement,
      *      npanday.executable.compiler.CompilerConfig, org.apache.maven.project.MavenProject)
      */
-    public CompilerExecutable getCompilerExecutableFor( CompilerRequirement compilerRequirement,
-                                                        CompilerConfig compilerConfig, MavenProject project)
+    public CompilerExecutable getCompilerExecutable(
+        CompilerRequirement compilerRequirement, CompilerConfig compilerConfig, MavenProject project )
         throws PlatformUnsupportedException
     {
         File targetDir = PathUtil.getPrivateApplicationBaseDirectory( project );
@@ -167,16 +190,13 @@ public class NetExecutableFactoryImpl
 
         if ( executionPaths == null || executionPaths.size() == 0 )
         {
-            String netDependencyId = compilerCapability.getNetDependencyId();
-
-            if ( netDependencyId != null )
+            getLogger().warn( "NPANDAY-231: previously netDependencyId was used to resolve some private bin path..." );
+            // TODO: remove!
+            Artifact artifact = null;
+            if ( artifact != null )
             {
-                Artifact artifact = artifactContext.getArtifactByID( netDependencyId );
-                if ( artifact != null )
-                {
-                    File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, compilerConfig.getLocalRepository(), targetDir );
-                    executionPaths.add( artifactPath.getParentFile().getAbsolutePath() );
-                }
+                File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, compilerConfig.getLocalRepository(), targetDir );
+                executionPaths.add( artifactPath.getParentFile().getAbsolutePath() );
             }
 
             compilerConfig.setExecutionPaths( executionPaths );
@@ -192,45 +212,65 @@ public class NetExecutableFactoryImpl
         }
     }
 
-    public NetExecutable getNetExecutableFromRepository( String groupId, String artifactId,
-                                                         VendorRequirement vendorRequirement, File localRepository,
-                                                         List<String> commands, boolean isIsolatedAppDomain, File targetDir )
-        throws PlatformUnsupportedException
-    {
-        if ( isIsolatedAppDomain )
+    public NetExecutable getPluginRunner(
+        MavenProject project, Artifact pluginArtifact, Set<Artifact> additionalDependencies,
+        VendorRequirement vendorRequirement, ArtifactRepository localRepository, List<String> commands,
+        File targetDir ) throws
+
+        PlatformUnsupportedException,
+        ArtifactResolutionException,
+        ArtifactNotFoundException{
+
+        Set dependencies = Sets.newHashSet(pluginArtifact);
+        if (additionalDependencies != null)
         {
-            List<Artifact> artifacts = artifactContext.getArtifactsFor( groupId, artifactId, null, null );
-            if ( artifacts.size() == 0 )
-            {
-                throw new PlatformUnsupportedException(
-                    "NPANDAY-066-024: Could not locate the executable - missing entry in the net-dependencies.xml file: GroupId = "
-                        + groupId + ", ArtifactId = " + artifactId );
-            }
-
-            Artifact artifact = artifacts.get( 0 );
-            if ( artifact == null )
-            {
-                throw new PlatformUnsupportedException(
-                    "NPANDAY-066-025: Could not locate the executable: GroupId = " + groupId + ", ArtifactId = "
-                        + artifactId );
-            }
-
-            File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository, targetDir );
-            commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
-            //TODO: Replace
-            String pluginArtifactPath = PathUtil.getPrivateApplicationBaseFileFor(
-                artifactContext.getArtifactsFor( "org.apache.npanday.plugins", "NPanday.Plugin", null, null ).get( 0 ),
-                localRepository, targetDir ).getAbsolutePath();
-
-            commands.add( "pluginArtifactPath=" + pluginArtifactPath );
-            return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner",
-                                                   vendorRequirement, localRepository, commands, false, targetDir );
+            dependencies.addAll( additionalDependencies );
         }
+
+        // need to resolve what we can here since we need the path!
+        Set<Artifact> artifacts = makeAvailable(
+            project.getArtifact(), project.getManagedVersionMap(), dependencies, targetDir, localRepository,
+            // TODO: consider, if this must be getRemotePluginRepositories()!!
+            project.getRemoteArtifactRepositories()
+        );
+
+        commands.add( "startProcessAssembly=" + pluginArtifact.getFile().getAbsolutePath() );
+        String pluginArtifactPath = findArtifact( artifacts, "NPanday.Plugin").getFile().getAbsolutePath();
+        commands.add( "pluginArtifactPath=" + pluginArtifactPath );
+
+        return getArtifactExecutable(
+            project, createPluginRunnerArtifact(), dependencies, vendorRequirement, localRepository, commands, targetDir
+        );
+    }
+
+    public NetExecutable getArtifactExecutable(
+        MavenProject project, Artifact executableArtifact, Set<Artifact> additionalDependencies,
+        VendorRequirement vendorRequirement, ArtifactRepository localRepository, List<String> commands,
+        File targetDir ) throws
+
+        PlatformUnsupportedException,
+        ArtifactResolutionException,
+        ArtifactNotFoundException
+    {
+        Set dependencies = Sets.newHashSet(executableArtifact);
+        if (additionalDependencies != null){
+            dependencies.addAll( additionalDependencies );
+        }
+
+        makeAvailable(
+            project.getArtifact(), project.getManagedVersionMap(), dependencies, targetDir, localRepository,
+            // TODO: consider, if this must be getRemotePluginRepositories()!!
+            project.getRemoteArtifactRepositories()
+        );
+
+        File artifactPath = executableArtifact.getFile();
 
         if ( commands == null )
         {
             commands = new ArrayList<String>();
         }
+
+        // TODO: this should be a separate implementation of NetExecutable, configured only for MONO!!!
 
         VendorInfo vendorInfo;
         try
@@ -247,22 +287,13 @@ public class NetExecutableFactoryImpl
         {
             throw new PlatformUnsupportedException( "NPANDAY-066-020: Missing Vendor Information: " + vendorInfo );
         }
-        List<Artifact> artifacts = artifactContext.getArtifactsFor( groupId, artifactId, null, null );
-        if ( artifacts.size() == 0 )
-        {
-            throw new PlatformUnsupportedException(
-                "NPANDAY-066-022: Could not locate the executable- missing entry in the net-dependencies.xml: GroupId = "
-                    + groupId + ", ArtifactId = " + artifactId );
-        }
-        Artifact artifact = artifacts.get( 0 );
-
         getLogger().debug( "NPANDAY-066-003: Found Vendor: " + vendorInfo );
 
-        File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, localRepository, targetDir );
+
+
         List<String> modifiedCommands = new ArrayList<String>();
         String exe = null;
 
-        // TODO: this should be a separate implementation of NetExecutable, configured only for MONO!!!
         if ( vendorInfo.getVendor().equals( Vendor.MONO ) )
         {
             List<File> executablePaths = vendorInfo.getExecutablePaths();
@@ -323,60 +354,98 @@ public class NetExecutableFactoryImpl
         }
     }
 
-    public NetExecutable getPluginLoaderFor( Artifact artifact, VendorRequirement vendorRequirement, String localRepository,
-                                             File parameterFile, String mojoName, File targetDir )
-        throws PlatformUnsupportedException
+    public Artifact findArtifact( Set<Artifact> artifacts, String artifactId ) throws ArtifactNotFoundException
     {
-        //AssemblyRepositoryLayout layout = new AssemblyRepositoryLayout();
-        File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, new File( localRepository ), targetDir );
+        List<String> ids = Lists.newArrayList();
+        for ( Artifact a : artifacts )
+        {
+            ids.add( a.getArtifactId() );
+
+            if ( a.getArtifactId().equalsIgnoreCase( artifactId ) )
+            {
+                return a;
+            }
+        }
+
+        throw new ArtifactNotFoundException(
+            "NPANDAY-066-11: Could not find artifact " + artifactId + " among " + ids, "*", artifactId, "*", "*", null,
+            null, null, null, null
+        );
+    }
+
+    public NetExecutable getPluginExecutable(
+        MavenProject project, Artifact pluginArtifact, VendorRequirement vendorRequirement,
+        ArtifactRepository localRepository, File parameterFile, String mojoName, File targetDir ) throws
+        PlatformUnsupportedException,
+        ArtifactResolutionException,
+        ArtifactNotFoundException
+    {
+        Set<Artifact> dependencies = Sets.newHashSet(pluginArtifact);
+
+        dependencies.add(
+            artifactFactory.createDependencyArtifact(
+                "org.apache.npanday", "NPanday.Model.Pom",
+                VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
+                ArtifactType.DOTNET_LIBRARY.getPackagingType(), null, "runtime"
+            )
+        );
+
+        dependencies.add(
+            artifactFactory.createDependencyArtifact(
+                "org.apache.npanday.plugins", "NPanday.Plugin",
+                VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
+                ArtifactType.DOTNET_LIBRARY.getPackagingType(), null, "runtime"
+            )
+        );
+
+        dependencies.add(
+            artifactFactory.createDependencyArtifact(
+                "org.apache.npanday.plugins", "NPanday.Plugin.Loader",
+                VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
+                ArtifactType.DOTNET_LIBRARY.getPackagingType(), null, "runtime"
+            )
+        );
+
+        // preresolve this one
+        artifactResolver.resolve( pluginArtifact, project.getRemoteArtifactRepositories(), localRepository );
+        File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginArtifact, null, targetDir );
 
         List<String> commands = new ArrayList<String>();
         commands.add( "parameterFile=" + parameterFile.getAbsolutePath() );
         commands.add( "assemblyFile=" + artifactPath.getAbsolutePath() );
         commands.add( "mojoName=" + mojoName );//ArtifactId = namespace
-
-        // make sure plugin artifact is present to run with in the application base
-        // TODO: can we do this transitively from the loader or the plugin artifact? Hardcoding the transitive deps
-        // here
-        Artifact modelArtifact = artifactContext.getArtifactsFor(
-            "org.apache.npanday", "NPanday.Model.Pom", null, null
-        ).get( 0 );
-
-        PathUtil.getPrivateApplicationBaseFileFor( modelArtifact, new File( localRepository ), targetDir );
-
-        Artifact pluginArtifact = artifactContext.getArtifactsFor(
-            "org.apache.npanday.plugins", "NPanday.Plugin", null, null
-        ).get( 0 );
-
-        PathUtil.getPrivateApplicationBaseFileFor( pluginArtifact, new File( localRepository ), targetDir );
-
-        Artifact pluginLoaderArtifact =
-            artifactContext.getArtifactsFor( "org.apache.npanday.plugins", "NPanday.Plugin.Loader", null, null ).get(
-                0 );
-        artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginLoaderArtifact, new File( localRepository ), targetDir );
         commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
 
-        return getNetExecutableFromRepository( "org.apache.npanday.plugins", "NPanday.Plugin.Runner", vendorRequirement,
-                                               new File( localRepository ), commands, false, targetDir );
+        return getPluginRunner(
+            project, pluginArtifact, dependencies, vendorRequirement, localRepository, commands, targetDir
+        );
     }
 
-    public Artifact getArtifactFor( String groupId, String artifactId )
-        throws PlatformUnsupportedException
+    private Artifact createPluginRunnerArtifact()
     {
-        List<Artifact> artifacts = artifactContext.getArtifactsFor( groupId, artifactId, null, null );
-        if ( artifacts.size() == 0 )
-        {
-            throw new PlatformUnsupportedException(
-                "NPANDAY-066-023: Could not locate the plugin - missing entry in the net-dependencies.xml file: GroupId = "
-                    + groupId + ", ArtifactId = " + artifactId );
+        return artifactFactory.createDependencyArtifact(
+                "org.apache.npanday.plugins", "NPanday.Plugin.Runner",
+                VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
+                ArtifactType.DOTNET_EXECUTABLE.getPackagingType(), null, "runtime"
+            );
+    }
+
+    private Set<Artifact> makeAvailable(
+        Artifact originating, Map managedVersions, Set<Artifact> artifacts, File targetDir,
+        ArtifactRepository localRepository, List remoteArtifactRepositories ) throws
+        ArtifactResolutionException,
+        ArtifactNotFoundException
+    {
+        ArtifactResolutionResult results = artifactResolver.resolveTransitively(
+            artifacts, originating, managedVersions, localRepository, remoteArtifactRepositories, artifactMetadataSource,
+            new ScopeArtifactFilter( "runtime" )
+        );
+
+        for(Object ao : results.getArtifacts()){
+            Artifact a = (Artifact)ao;
+            a.setFile( PathUtil.getPrivateApplicationBaseFileFor( a, null, targetDir ) );
         }
 
-        Artifact artifact = artifacts.get( 0 );
-        if ( artifact == null )
-        {
-            throw new PlatformUnsupportedException(
-                "NPANDAY-066-021: Could not locate the plugin: GroupId = " + groupId + ", ArtifactId = " + artifactId );
-        }
-        return artifact;
+        return results.getArtifacts();
     }
 }

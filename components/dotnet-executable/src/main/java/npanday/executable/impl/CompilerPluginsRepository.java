@@ -157,8 +157,6 @@ public final class CompilerPluginsRepository
                 CommandFilter filter = plugin.getCommandFilter();
                 platformCapability.setCoreAssemblies( coreAssemblies );
 
-                platformCapability.setNetDependencyId( plugin.getNetDependencyId() );
-
                 List<String> includes = ( filter != null ) ? filter.getIncludes() : new ArrayList<String>();
                 List<String> excludes = ( filter != null ) ? filter.getExcludes() : new ArrayList<String>();
                 platformCapability.setCommandCapability(

@@ -78,7 +78,7 @@ public class XspStarterMojo
                 Vendor.MONO.getVendorName(), null, frameworkVersion, "XSP:START"
             );
 
-            Runnable executable = (Runnable) netExecutableFactory.getNetExecutableFor(
+            Runnable executable = (Runnable) netExecutableFactory.getExecutable(
                 executableRequirement, new ArrayList<String>(), netHome
             );
 

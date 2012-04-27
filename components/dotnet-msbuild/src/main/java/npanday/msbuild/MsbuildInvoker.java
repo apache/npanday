@@ -43,8 +43,9 @@ public class MsbuildInvoker
         PlatformUnsupportedException,
         MsbuildException
     {
-        final NetExecutable executable = netExecutableFactory.getNetExecutableFor(
-            new ExecutableRequirement(parameters.getVendorRequirement(), "MSBUILD"
+        final NetExecutable executable = netExecutableFactory.getExecutable(
+            new ExecutableRequirement(
+                parameters.getVendorRequirement(), "MSBUILD"
             ), buildCommands( parameters ), null
         );
 

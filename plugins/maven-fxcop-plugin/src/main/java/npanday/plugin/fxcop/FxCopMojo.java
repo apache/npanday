@@ -21,8 +21,6 @@ package npanday.plugin.fxcop;
 import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
 import npanday.PlatformUnsupportedException;
-import npanday.artifact.AssemblyResolver;
-import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.registry.RepositoryRegistry;
@@ -92,11 +90,6 @@ public class FxCopMojo
     private String profile;
 
     /**
-     * @component
-     */
-    private AssemblyResolver assemblyResolver;
-
-    /**
      * @parameter expression="${settings.localRepository}"
      * @readonly
      */
@@ -129,20 +122,7 @@ public class FxCopMojo
 
         SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
-        try
-        {
-            assemblyResolver.resolveTransitivelyFor( project, project.getDependencies(),
-                                                     project.getRemoteArtifactRepositories(), localRepository,
-                                                     true );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( e.getMessage() );
-        }
-        catch( NPandayArtifactResolutionException e )
-        {
-            throw new MojoExecutionException( e.getMessage() );
-        }
+        getLog().warn( "NPANDAY-231: removed dependency resolution here!" );
 
         Set<Artifact> artifacts = project.getDependencyArtifacts();
         for ( Artifact artifact : artifacts )
@@ -166,7 +146,9 @@ public class FxCopMojo
 
         try
         {
-            netExecutableFactory.getNetExecutableFor( new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), null ).execute();
+            netExecutableFactory.getExecutable(
+                new ExecutableRequirement( vendor, null, frameworkVersion, profile ), getCommands(), null
+            ).execute();
         }
         catch ( ExecutionException e )
         {

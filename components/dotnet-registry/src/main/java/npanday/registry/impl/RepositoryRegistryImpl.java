@@ -82,7 +82,7 @@ public class RepositoryRegistryImpl
         }
         catch ( NPandayRepositoryException e )
         {
-            throw new InitializationException( "NPANDAY-082-010: Error loading registry-config.xml = ", e );
+            throw new InitializationException( "NPANDAY-082-010: Error loading registry-config.xml", e );
         }
     }
 

@@ -26,7 +26,6 @@
     <vendor>MICROSOFT</vendor>
     <vendorVersion>1</vendorVersion>
     <executable>RubyCompiler.exe</executable>
-    <netDependencyId>RubyCompiler</netDependencyId>
     <language>RUBY</language>
     <profile>FULL</profile>
     <frameworkVersions>

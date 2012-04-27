@@ -18,6 +18,43 @@
   -->
 <component-set>
   <components>
-    <!-- use annotations instead -->
+    <component>
+      <role>npanday.resolver.NPandayArtifactResolver</role>
+      <implementation>npanday.resolver.DefaultNPandayArtifactResolver</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
+      <role>npanday.resolver.NPandayDependencyResolution</role>
+      <implementation>npanday.resolver.NPandayDependencyResolution</implementation>
+      <requirements>
+        <requirement>
+          <role>npanday.resolver.NPandayArtifactResolver</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
+        </requirement>
+      </requirements>
+    </component>
+
+    <!-- resolving contributors -->
+    <component>
+      <role>npanday.resolver.ArtifactResolvingContributor</role>
+      <role-hint>gac</role-hint>
+      <implementation>npanday.resolver.resolvers.GacResolver</implementation>
+    </component>
+
+    <component>
+      <role>npanday.resolver.ArtifactResolvingContributor</role>
+      <role-hint>com</role-hint>
+      <implementation>npanday.resolver.resolvers.ComReferenceResolver</implementation>
+    </component>
   </components>
 </component-set>

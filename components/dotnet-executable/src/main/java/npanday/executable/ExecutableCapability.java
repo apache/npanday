@@ -42,7 +42,7 @@ public interface ExecutableCapability
      * Returns the command options that the executable is capable of supporting.
      *
      * @return the command capability that the executable is capable of supporting. This capability is used to
-     * determine
+     *         determine
      *         the command line parameters that the executable supports.
      */
     CommandCapability getCommandCapability();
@@ -115,13 +115,6 @@ public interface ExecutableCapability
      * @return
      */
     java.util.Properties getPluginConfiguration();
-
-    /**
-     * Returns the net dependency id (within the net-dependencies.xml file).
-     *
-     * @return the net dependency id
-     */
-    String getNetDependencyId();
 
     /**
      * Retrieves the paths, the executable is most likely to be found on. Can contain

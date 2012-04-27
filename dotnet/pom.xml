@@ -73,10 +73,6 @@
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-resolver-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
-          <configuration>
-            <!-- TODO: Can we remove it, then? -->
-            <skip>true</skip>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>

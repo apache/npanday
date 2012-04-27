@@ -20,9 +20,8 @@
 package npanday.plugin.test;
 
 import npanday.ArtifactTypeHelper;
+import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
-import npanday.artifact.AssemblyResolver;
-import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
@@ -143,11 +142,6 @@ public class TesterMojo extends AbstractMojo
      * @required
      */
     private File nUnitResultErrorOutputPath;
-
-    /**
-     * @component
-     */
-    private AssemblyResolver assemblyResolver;
 
     /**
      * The local Maven repository.
@@ -284,19 +278,8 @@ public class TesterMojo extends AbstractMojo
             return;
         }
 
-        try
-        {
-            assemblyResolver.resolveTransitivelyFor( project, project.getDependencies(),
-                                                     project.getRemoteArtifactRepositories(), localRepository, true );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( e.getMessage() );
-        }
-        catch( NPandayArtifactResolutionException e )
-        {
-            throw new MojoExecutionException( e.getMessage() );
-        }
+        // TODO: resolve dependencies with scope test here
+        getLog().warn( "NPANDAY-251: removed dependency resolution here!" );
 
         List<Artifact> nunitLibs = new ArrayList<Artifact>();
         Set<Artifact> artifacts = project.getDependencyArtifacts();
@@ -316,13 +299,11 @@ public class TesterMojo extends AbstractMojo
             {
                 try
                 {
-                    // TODO: adjust the filename to not include the version, if we aren't copying from the UAC later
-                    //       (there will be several other instances of such uses of getFile() that need to be corrected)
-                    FileUtils.copyFileToDirectory( artifact.getFile(), new File( testAssemblyPath ) );
+                    PathUtil.copyPlainArtifactFileToDirectory( artifact, new File( testAssemblyPath ) );
                 }
                 catch ( IOException e )
                 {
-                    throw new MojoExecutionException( "NPANDAY-1100-002: Artifact = " + artifact.toString(), e );
+                    throw new MojoExecutionException( "NPANDAY-1100-002: Error on copying artifact " + artifact.toString(), e );
                 }
             }
         }
@@ -387,8 +368,10 @@ public class TesterMojo extends AbstractMojo
         {
             try
             {
-                NetExecutable executable = netExecutableFactory.getNetExecutableFor(
-                    new ExecutableRequirement( vendor, vendorVersion, executionFrameworkVersion, profile), commands, executableHome );
+                NetExecutable executable = netExecutableFactory.getExecutable(
+                    new ExecutableRequirement( vendor, vendorVersion, executionFrameworkVersion, profile ), commands,
+                    executableHome
+                );
 
                 executable.execute();
             }

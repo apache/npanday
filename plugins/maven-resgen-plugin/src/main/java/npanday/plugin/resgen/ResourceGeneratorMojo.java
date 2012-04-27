@@ -18,7 +18,6 @@
  */
 package npanday.plugin.resgen;
 
-import npanday.artifact.ArtifactContext;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -76,11 +75,6 @@ public class ResourceGeneratorMojo
      * @parameter expression = "${vendorVersion}"
      */
     private String vendorVersion;
-
-    /**
-     * @component
-     */
-    private ArtifactContext artifactContext;
 
     /**
      * @component

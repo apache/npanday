@@ -1,5 +1,3 @@
-package npanday.plugin.azure;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,8 @@ package npanday.plugin.azure;
  * specific language governing permissions and limitations
  * under the License.
  */
+
+package npanday.plugin.azure;
 
 import com.google.common.collect.Lists;
 import npanday.ArtifactType;
@@ -40,7 +40,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  * @goal create-package
- * @requiresDependencyResolution runtime
+ * TODO requiresDependencyResolution runtime
  */
 public class CreateCloudServicePackageMojo
     extends AbstractCSPackDeployMojo

@@ -43,7 +43,6 @@
     <module>maven-link-plugin</module>
     <module>maven-mojo-generator-plugin</module>
     <module>maven-resgen-plugin</module>
-    <module>maven-repository-plugin</module>
     <module>maven-resolver-plugin</module>
     <module>maven-test-plugin</module>
     <module>maven-vsinstaller-plugin</module>
@@ -68,15 +67,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-dao-project</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.npanday</groupId>
       <artifactId>dotnet-executable</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-artifact</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.npanday</groupId>

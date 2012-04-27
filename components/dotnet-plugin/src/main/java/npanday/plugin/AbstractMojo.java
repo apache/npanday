@@ -19,23 +19,26 @@ package npanday.plugin;
  * under the License.
  */
 
+import npanday.ArtifactType;
+import npanday.LocalRepositoryUtil;
 import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
-import npanday.artifact.ArtifactContext;
-import npanday.artifact.AssemblyResolver;
-import npanday.artifact.NPandayArtifactResolutionException;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutableFactory;
 import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.model.Dependency;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
@@ -55,7 +58,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -74,6 +76,21 @@ public abstract class AbstractMojo
     public void contextualize(Context context) throws ContextException {
         container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
     }
+
+    /**
+     * @component
+     */
+    private ArtifactResolver resolver;
+
+    /**
+     * @component
+     */
+    private ArtifactFactory artifactFactory;
+
+    /**
+     * @component
+     */
+    private ArtifactMetadataSource metadataSource;
 
     /**
      * Executes the mojo.
@@ -145,25 +162,28 @@ public abstract class AbstractMojo
         }
 
         MavenProject project = getMavenProject();
+
         // TODO: should be configurable, but relies on it being passed into everywhere
         File targetDir = PathUtil.getPrivateApplicationBaseDirectory( project );
-
-        ArtifactContext artifactContext = null;
 
         VendorRequirement vendorRequirement = new VendorRequirement( getVendor(), getVendorVersion(), getFrameworkVersion());
 
         try
         {
-            String localRepository = getLocalRepository();
+            ArtifactRepository localRepository = LocalRepositoryUtil.create( getLocalRepository() );
 
-            artifactContext = (ArtifactContext) container.lookup(ArtifactContext.ROLE);
-            artifactContext.init( project, project.getRemoteArtifactRepositories(), new File( localRepository ) );
+            Artifact artifact = artifactFactory.createDependencyArtifact(
+                getMojoGroupId(),
+                getMojoArtifactId(),
+                VersionRange.createFromVersion(project.getVersion()),
+                ArtifactType.DOTNET_MAVEN_PLUGIN.getPackagingType(),
+                null,
+                "runtime"
+            );
 
-            Artifact artifact = getNetExecutableFactory().getArtifactFor(getMojoGroupId(), getMojoArtifactId());
-            resolveArtifact(project, artifact, targetDir);
-            getNetExecutableFactory().getPluginLoaderFor( artifact, vendorRequirement,
-                                                          getLocalRepository(), paramFile,
-                                                          getClassName(), targetDir ).execute();
+            getNetExecutableFactory().getPluginExecutable(
+                project, artifact, vendorRequirement, localRepository, paramFile, getClassName(), targetDir
+            ).execute();
         }
         catch ( PlatformUnsupportedException e )
         {
@@ -174,67 +194,16 @@ public abstract class AbstractMojo
         {
             throw new MojoExecutionException( "NPANDAY-115-006: Error occurred while running the .NET plugin", e );
         }
-        catch ( ComponentLookupException e )
+        catch ( ArtifactNotFoundException e )
         {
-            throw new MojoFailureException( "NPANDAY-115-007: Internal component composition error", e );
+            throw new MojoFailureException( "NPANDAY-115-010: Error on resolving plugin artifact(s)", e );
         }
-        finally
+        catch ( ArtifactResolutionException e )
         {
-            release(artifactContext);
+            throw new MojoFailureException( "NPANDAY-115-011: Error on resolving plugin artifact(s)", e );
         }
 
         postExecute();
-    }
-
-    private void resolveArtifact( MavenProject project, Artifact artifact, File targetDir )
-        throws ComponentLookupException, MojoExecutionException
-    {
-        File localRepository = new File(getLocalRepository());
-        
-        if (PathUtil.getPrivateApplicationBaseFileFor(artifact, localRepository, targetDir ).exists())
-        {
-            return;
-        }
-
-        AssemblyResolver assemblyResolver = null;
-        try {
-            assemblyResolver = (AssemblyResolver) container.lookup(AssemblyResolver.ROLE);
-
-            Dependency dependency = new Dependency();
-            dependency.setGroupId(artifact.getGroupId());
-            dependency.setArtifactId(artifact.getArtifactId());
-            dependency.setVersion(artifact.getVersion());
-            dependency.setScope(Artifact.SCOPE_RUNTIME);
-            dependency.setType(artifact.getType());
-
-            try
-            {
-                assemblyResolver.resolveTransitivelyFor( project, Collections.singletonList( dependency ),
-                                                         project.getRemoteArtifactRepositories(), localRepository,
-                                                         false );
-            }
-            catch( NPandayArtifactResolutionException e )
-            {
-                throw new MojoExecutionException( "NPANDAY-115-008: Error on resolving " + dependency, e );
-            }
-            catch (IOException e)
-            {
-               throw new MojoExecutionException( "NPANDAY-115-008: IO error on resolving " + dependency, e );
-            }
-        }
-        finally {
-            release(assemblyResolver);
-        }
-    }
-
-    private void release(Object component) {
-        try {
-            if (component != null) {
-                container.release(component);
-            }
-        } catch (ComponentLifecycleException e) {
-            // ignore
-        }
     }
 
     private Set<Field> getAnnotatedFieldsFrom( Field[] fields )

@@ -27,21 +27,21 @@
   </parent>  
   <modelVersion>4.0.0</modelVersion>  
   <artifactId>NPanday.ProjectImporterConsole</artifactId>  
-  <packaging>dotnet-executable</packaging>  
+  <packaging>dotnet-executable</packaging>
   <name>NPanday :: Project Importer :: Console</name>  
-  <build> 
-    <plugins> 
-      <plugin> 
-        <artifactId>maven-assembly-plugin</artifactId>  
-        <configuration> 
-          <descriptorRefs> 
-            <descriptorRef>src</descriptorRef> 
-          </descriptorRefs> 
-        </configuration> 
-      </plugin> 
-    </plugins> 
-  </build>  
-  <dependencies> 
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>src</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
     <dependency> 
       <groupId>org.apache.npanday.visualstudio</groupId>
       <artifactId>NPanday.ProjectImporterEngine</artifactId>  

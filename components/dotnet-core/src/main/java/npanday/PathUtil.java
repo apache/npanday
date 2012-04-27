@@ -21,6 +21,7 @@ package npanday;
 
 import com.google.common.base.Preconditions;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
@@ -109,27 +110,6 @@ public final class PathUtil
     }
 
     /**
-     * Returns the path of the artifact within the local repository using the default repository layout.
-     *
-     * @param artifact        the artifact to find the path of.  This value should not be null.
-     * @param localRepository the local repository.  This value should not be null.
-     * @return the path of the artifact within the local maven repository or null if either of the specified
-     *         parameters is null
-     */
-    public static File getMavenLocalRepositoryFileFor( Artifact artifact, File localRepository )
-    {
-        if ( artifact == null )
-        {
-            throw new NullPointerException( "NPANDAY-040-007: Artifact is null - Cannot get repository file." );
-        }
-        if ( localRepository == null )
-        {
-            throw new NullPointerException( "NPANDAY-040-008: Local Repository is null - Cannot get repository file." );
-        }
-        return new File( localRepository, new DefaultRepositoryLayout().pathOf( artifact ) );
-    }
-
-    /**
      * Returns the path of the artifact within the private application base.
      *
      *
@@ -146,13 +126,8 @@ public final class PathUtil
             logger.warning( "NPANDAY-040-003: Artifact is null - Cannot get application file." );
             return null;
         }
-        if ( localRepository == null )
-        {
-            logger.warning( "NPANDAY-040-004: Local Repository is null - Cannot get application file." );
-            return null;
-        }
-        
-        return  getDotNetArtifact( artifact, localRepository, outputDir );
+
+        return  getDotNetArtifact( artifact, outputDir );
     }
 
     /**
@@ -164,7 +139,7 @@ public final class PathUtil
      * @return the path of the artifact within the user assembly cache or null if either of the specified
      *         parameters is null
      */
-    public static File getDotNetArtifact( Artifact artifact, File localRepository, File outputDir )
+    public static File getDotNetArtifact( Artifact artifact, File outputDir )
     {
         if ( artifact == null )
         {
@@ -179,18 +154,7 @@ public final class PathUtil
 
         try
         {
-            File artifactFile = artifact.getFile();
-            File sourceFile;
-            if ( artifactFile != null && artifactFile.exists() )
-            {
-                sourceFile = artifactFile;
-            }
-            else
-            {
-                sourceFile = getMavenLocalRepositoryFileFor( artifact, localRepository );
-            }
-
-            FileUtils.copyFile( sourceFile, targetFile );
+            FileUtils.copyFile( artifact.getFile(), targetFile );
         }
         catch (IOException ioe)
         {
@@ -285,5 +249,35 @@ public final class PathUtil
     {
         String folderName = project.getArtifactId();
         return new File(new File(project.getBuild().getDirectory(), "packages"), folderName);
+    }
+
+    /**
+     * Builds an filename with artifact id and extension only.
+     */
+    public static String getPlainArtifactFileName( Artifact artifact )
+    {
+        return artifact.getArtifactId() + "." + ArtifactType.getArtifactTypeForPackagingName(artifact.getType()).getExtension();
+    }
+
+    /**
+     * Will strip the version and classifier!
+     */
+    public static void copyPlainArtifactFileToDirectory( Artifact artifact, File targetFolder)
+        throws IOException
+    {
+        File destination = new File(
+            targetFolder, PathUtil.getPlainArtifactFileName( artifact )
+        );
+
+        try
+        {
+            FileUtils.copyFile(
+                artifact.getFile(), destination
+            );
+        }
+        catch ( IOException e )
+        {
+            throw new IOException( "Error on copying " + artifact + " to" + destination);
+        }
     }
 }
