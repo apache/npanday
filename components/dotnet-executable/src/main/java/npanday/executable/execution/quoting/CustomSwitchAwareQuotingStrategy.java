@@ -48,6 +48,8 @@ public class CustomSwitchAwareQuotingStrategy
         new SwitchFormat( '-', ':' )
     };
 
+    private boolean ignorePrequoted = false;
+
     public CustomSwitchAwareQuotingStrategy( )
     {
 
@@ -61,6 +63,11 @@ public class CustomSwitchAwareQuotingStrategy
     public String quoteAndEscape(
         String source, char quoteChar, char[] escapedChars, char[] quotingTriggers, char escapeChar, boolean force )
     {
+        if (ignorePrequoted && (source.contains( "\"" ) || source.contains( "'" )))
+        {
+            return source;
+        }
+
         for ( SwitchFormat format : supportedSwitchFormats )
         {
             if ( format.isMatchingSwitch( source ) )
@@ -143,6 +150,11 @@ public class CustomSwitchAwareQuotingStrategy
     public void addQuoteNormally( String switchName )
     {
            quoteNormally.add( switchName );
+    }
+
+    public void setIgnorePrequoted( )
+    {
+        ignorePrequoted = true;
     }
 }
 

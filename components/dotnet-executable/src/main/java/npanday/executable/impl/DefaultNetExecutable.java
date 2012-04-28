@@ -72,7 +72,8 @@ public class DefaultNetExecutable
     {
         List<String> commands = getCommands();
 
-        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor((String)configuration.get( "switchformats" ));
+        CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor(
+            configuration);
         commandExecutor.setLogger( logger );
         commandExecutor.executeCommand(
             PathUtil.getExecutable(

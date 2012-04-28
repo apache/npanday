@@ -87,7 +87,7 @@ public class DefaultRepositoryNetExecutable
         List<String> commands = getCommands();
 
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor(
-            (String)configuration.get( "switchformats" )
+           configuration
         );
         commandExecutor.setLogger( logger );
 

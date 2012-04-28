@@ -123,7 +123,7 @@ abstract class BaseCompiler
         Collection<String> executablePaths = compilerContext.getProbingPaths();
 
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor(
-            (String)configuration.get( "switchformats" )
+           configuration
         );
         commandExecutor.setLogger( logger );
         commandExecutor.executeCommand(

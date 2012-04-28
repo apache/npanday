@@ -124,17 +124,40 @@ public interface CommandExecutor
          * Returns a default instance of the command executor
          *
          * @return a default instance of the command executor
-         * @param switchformats
+         * @param quotingConfiguration
          */
-        public static CommandExecutor createDefaultCommmandExecutor( String switchformats )
+        public static CommandExecutor createDefaultCommmandExecutor( java.util.Properties quotingConfiguration )
         {
-            if (isNullOrEmpty(switchformats))
-                return new UnifiedShellCommandExecutor( new CustomSwitchAwareQuotingStrategy() );
-            else
-                return new UnifiedShellCommandExecutor( new CustomSwitchAwareQuotingStrategy( parseSwitchFormats(switchformats)) );
+
+            CustomSwitchAwareQuotingStrategy quotingStrategy = new CustomSwitchAwareQuotingStrategy();
+            if ( quotingConfiguration != null )
+            {
+                String switchformats = (String) quotingConfiguration.get( "switchformats" );
+                String rawSwitches = (String) quotingConfiguration.get( "rawswitches" );
+                boolean ignorePrequoted = "true".equals(quotingConfiguration.get( "ignoreprequoted" ));
+
+                if ( !isNullOrEmpty( switchformats ) )
+                {
+                    new CustomSwitchAwareQuotingStrategy( parseSwitchFormats( switchformats ) );
+                }
+
+                if (ignorePrequoted) {
+                    quotingStrategy.setIgnorePrequoted();
+                }
+
+                if ( !isNullOrEmpty( rawSwitches ) )
+                {
+                    for ( String s : SPLIT_ON_COMMA_OR_SEMICOLON.split( rawSwitches ) )
+                    {
+                        quotingStrategy.addIgnore( s );
+                    }
+                }
+            }
+            return new UnifiedShellCommandExecutor( quotingStrategy );
         }
 
         static Splitter SPLIT_ON_PIPE = Splitter.on('|').trimResults().omitEmptyStrings();
+        static Splitter SPLIT_ON_COMMA_OR_SEMICOLON = Splitter.onPattern(",|;").trimResults().omitEmptyStrings();
 
         private static SwitchFormat[] parseSwitchFormats( String switchformats )
         {

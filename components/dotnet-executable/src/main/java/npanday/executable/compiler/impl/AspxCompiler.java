@@ -69,8 +69,8 @@ public class AspxCompiler
             + compilerContext.getArtifact().getAbsolutePath() );
 
         CommandExecutor commandExecutor = CommandExecutor.Factory.createDefaultCommmandExecutor(
-            (String)configuration.get( "switchformats" )
-        );
+            configuration
+            );
         commandExecutor.setLogger( logger );
         String executable = PathUtil.getExecutable( getExecutable(), compilerContext.getProbingPaths(), logger );
         commandExecutor.executeCommand( executable, getCommands(), null, failOnErrorOutput() );
