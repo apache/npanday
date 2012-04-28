@@ -272,7 +272,7 @@ public abstract class AbstractInstallMojo
         catch ( IOException e )
         {
             throw new MojoExecutionException(
-                "NPANDAY-146-003: Error creating marker file for " + repo.getUrl() + ": " + markerFile.toPath()
+                "NPANDAY-146-003: Error creating marker file for " + repo.getUrl() + ": " + markerFile.getAbsolutePath()
             );
         }
     }
