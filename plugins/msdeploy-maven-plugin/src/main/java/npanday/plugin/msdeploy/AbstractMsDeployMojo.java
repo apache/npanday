@@ -157,7 +157,7 @@ public abstract class AbstractMsDeployMojo<T>
 
     protected abstract void beforeCommandExecution( T iterationItem );
 
-    protected abstract List<T> prepareIterationItems() throws MojoFailureException;
+    protected abstract List<T> prepareIterationItems() throws MojoFailureException, MojoExecutionException;
 
-    protected abstract List<String> getCommands(T item) throws MojoExecutionException;
+    protected abstract List<String> getCommands(T item) throws MojoExecutionException, MojoFailureException;
 }

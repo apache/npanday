@@ -37,6 +37,7 @@ import org.codehaus.plexus.util.FileUtils;
 /**
  * @phase validate
  * @goal compile
+ *
  * TODO requiresDependencyResolution test
  */
 public class MsbuildMojo

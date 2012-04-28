@@ -37,6 +37,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  *
  * @goal resolve-azure-web-roles
+ *
  * TODO requiresDependencyResolution compile
  */
 public class MsDeployResolveWebRolesMojo

@@ -54,6 +54,7 @@ import java.util.Set;
  *
  * @phase package
  * @goal merge-assemblies
+ *
  * TODO requiresDependencyResolution runtime
  */
 public class AssemblyMerger extends AbstractMojo
