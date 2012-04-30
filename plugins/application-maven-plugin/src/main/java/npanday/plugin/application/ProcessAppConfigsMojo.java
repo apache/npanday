@@ -19,6 +19,7 @@
 
 package npanday.plugin.application;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import npanday.ArtifactType;
 import npanday.PathUtil;
@@ -53,6 +54,14 @@ public class ProcessAppConfigsMojo
      * @parameter default-value="app.config"
      */
     private String appConfigFile;
+
+    /**
+     * By default this will be the ${artifactId}.${extension}.config; but in
+     * some cases it might be necessary to have the config named differently.
+     *
+     * @parameter
+     */
+    private String targetConfigFileNameOverride;
 
     /**
      * The transformation to apply to the configurations
@@ -146,8 +155,15 @@ public class ProcessAppConfigsMojo
         configFileHandler.setWorkingFolder( workingFolder );
 
         String extension = ArtifactType.getArtifactTypeForPackagingName( project.getPackaging() ).getExtension();
+
+        String targetConfigFileName = targetConfigFileNameOverride;
+        if ( Strings.isNullOrEmpty( targetConfigFileName ) )
+        {
+            targetConfigFileName = project.getArtifactId() + "." + extension + ".config";
+        }
+
         File targetConfigFile = new File(
-            targetFolder, project.getArtifactId() + "." + extension + ".config"
+            targetFolder, targetConfigFileName
         );
 
         final VendorRequirement vendorRequirement = getVendorRequirement();
