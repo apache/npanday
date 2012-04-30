@@ -26,7 +26,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  */
 public class SyncDestination
 {
-    private String computerName, username, password, authType, serverId;
+    private String computerName, username, password, authType = "basic", serverId;
 
     public String getComputerName()
     {
