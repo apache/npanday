@@ -33,6 +33,7 @@
       <switchformats>
         -;\w+(\:\w+);=
       </switchformats>
+      <ignoreprequoted>true</ignoreprequoted>
     </pluginConfiguration>
 
     <vendor>MICROSOFT</vendor>
