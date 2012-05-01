@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package npanday.plugin.msdeploy;
+package npanday.plugin.msdeploy.sync;
 
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * @author <a href="mailto:me@lcorneliussen.de>Lars Corneliussen, Faktum Software</a>
  */
-public class SyncDestination
+public class Destination
 {
     private String computerName, username, password, authType = "basic", serverId;
 

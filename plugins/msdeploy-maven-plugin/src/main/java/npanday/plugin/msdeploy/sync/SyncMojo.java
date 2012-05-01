@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package npanday.plugin.msdeploy;
+package npanday.plugin.msdeploy.sync;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import npanday.ArtifactType;
 import npanday.LocalRepositoryUtil;
+import npanday.plugin.msdeploy.AbstractMsDeployMojo;
 import npanday.resolver.NPandayArtifactResolver;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -42,7 +43,6 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +55,7 @@ import java.util.Set;
  * @goal sync
  */
 public class SyncMojo
-    extends AbstractMsDeployMojo<SyncCommand>
+    extends AbstractMsDeployMojo<Item>
     implements Contextualizable
 {
     /**
@@ -71,12 +71,12 @@ public class SyncMojo
     /**
      * @parameter
      */
-    List<SyncCommand> items;
+    List<Item> items;
 
     /**
      * @parameter
      */
-    SyncDestination destination;
+    Destination destination;
 
     /**
      * @parameter default-value="${settings}"
@@ -114,25 +114,25 @@ public class SyncMojo
     }
 
     @Override
-    protected void afterCommandExecution( SyncCommand iterationItem ) throws MojoExecutionException
+    protected void afterCommandExecution( Item iterationItem ) throws MojoExecutionException
     {
 
     }
 
     @Override
-    protected void beforeCommandExecution( SyncCommand iterationItem )
+    protected void beforeCommandExecution( Item iterationItem )
     {
 
     }
 
     @Override
-    protected List<SyncCommand> prepareIterationItems() throws MojoFailureException, MojoExecutionException
+    protected List<Item> prepareIterationItems() throws MojoFailureException, MojoExecutionException
     {
         Set<Artifact> artifacts = Sets.newHashSet();
 
         setCredentials( destination );
 
-        for ( SyncCommand item : items )
+        for ( Item item : items )
         {
             Artifact artifact = artifactFactory.createDependencyArtifact(
                 item.getGroupId(), item.getArtifactId(), VersionRange.createFromVersion( item.getVersion() ),
@@ -163,7 +163,7 @@ public class SyncMojo
         return items;
     }
 
-    private void setCredentials( SyncDestination destination ) throws MojoExecutionException
+    private void setCredentials( Destination destination ) throws MojoExecutionException
     {
         if (destination == null)
             return;
@@ -197,7 +197,7 @@ public class SyncMojo
     }
 
     @Override
-    protected List<String> getCommands( SyncCommand item ) throws MojoExecutionException, MojoFailureException
+    protected List<String> getCommands( Item item ) throws MojoExecutionException, MojoFailureException
     {
         List<String> commands = Lists.newArrayList();
 

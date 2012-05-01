@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package npanday.plugin.msdeploy;
+package npanday.plugin.msdeploy.sync;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  */
-public class SyncCommand
+public class Item
 {
     private Artifact artifact;
 
@@ -44,9 +44,9 @@ public class SyncCommand
 
     private SyncEvent preSync, postSync;
 
-    private SyncDestination destination;
+    private Destination destination;
 
-    public void contextualize( Artifact artifact, SyncDestination destination ) throws MojoFailureException
+    public void contextualize( Artifact artifact, Destination destination ) throws MojoFailureException
     {
         this.artifact = artifact;
 
@@ -72,7 +72,7 @@ public class SyncCommand
     @Override
     public String toString()
     {
-        return "SyncCommand{" + "packageSource=" + groupId + ":" + artifactId + ":" + version + ", packageTarget="
+        return "Item{" + "packageSource=" + groupId + ":" + artifactId + ":" + version + ", packageTarget="
             + getDestinationArgument() + '}';
     }
 
@@ -182,12 +182,12 @@ public class SyncCommand
         this.postSync = postSync;
     }
 
-    public SyncDestination getDestination()
+    public Destination getDestination()
     {
         return destination;
     }
 
-    public void setDestination( SyncDestination destination )
+    public void setDestination( Destination destination )
     {
         this.destination = destination;
     }

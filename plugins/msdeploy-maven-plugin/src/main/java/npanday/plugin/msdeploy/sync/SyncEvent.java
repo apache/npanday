@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package npanday.plugin.msdeploy;
+package npanday.plugin.msdeploy.sync;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;

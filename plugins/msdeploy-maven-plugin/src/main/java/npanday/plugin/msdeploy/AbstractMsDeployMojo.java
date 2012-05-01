@@ -118,7 +118,7 @@ public abstract class AbstractMsDeployMojo<T>
 
         final List<T> iterationItems = prepareIterationItems();
 
-        getLog().info( "NPANDAY-120-003: Configured exection items " + iterationItems );
+        getLog().info( "NPANDAY-120-003: Configured exection syncCommands " + iterationItems );
 
         for(T iterationItem : iterationItems ){
             getLog().info( "NPANDAY-120-004: Exectuting iteration item " + iterationItem );
