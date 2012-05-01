@@ -138,7 +138,7 @@ public interface CommandExecutor
 
                 if ( !isNullOrEmpty( switchformats ) )
                 {
-                    new CustomSwitchAwareQuotingStrategy( parseSwitchFormats( switchformats ) );
+                    quotingStrategy = new CustomSwitchAwareQuotingStrategy( parseSwitchFormats( switchformats ) );
                 }
 
                 if (ignorePrequoted) {
