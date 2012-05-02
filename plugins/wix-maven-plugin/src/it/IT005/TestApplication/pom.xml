@@ -67,6 +67,7 @@
         <groupId>org.apache.npanday.examples</groupId>
         <artifactId>TestLibrary</artifactId>
         <version>1.2-SNAPSHOT</version>
+        <type>dotnet-library</type>
       </dependency>
     </dependencies>
 </project>
