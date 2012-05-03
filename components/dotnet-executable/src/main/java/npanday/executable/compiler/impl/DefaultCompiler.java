@@ -116,6 +116,9 @@ public final class DefaultCompiler
 
             for ( Artifact artifact : references )
             {
+                if (artifact.getFile() == null){
+                    throw new ExecutionException( "NPANDAY-155-001: File for " + artifact + " has not been resolved!" );
+                }
                 String path = artifact.getFile().getAbsolutePath();
 
                 if( !path.contains( ".jar" ) )
@@ -326,7 +329,7 @@ public final class DefaultCompiler
                 FileUtils.fileAppend(responseFilePath, escapeCmdParams(command) + " ");
             }
         } catch (java.io.IOException e) {
-            throw new ExecutionException( "Error while creating response file for the commands.", e );
+            throw new ExecutionException( "NPANDAY-155-002: Error while creating response file for the commands.", e );
         }
         filteredCommands.clear();
         responseFilePath = "@" + responseFilePath;

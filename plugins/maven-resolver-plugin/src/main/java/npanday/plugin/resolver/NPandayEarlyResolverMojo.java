@@ -81,7 +81,7 @@ public class NPandayEarlyResolverMojo
     private File localRepository;
 
     /**
-     * @parameter default-value="compile"
+     * @parameter default-value="test"
      */
     private String requiredScope;
 
@@ -106,7 +106,7 @@ public class NPandayEarlyResolverMojo
         SettingsUtil.applyCustomSettingsIfAvailable( getLog(), repositoryRegistry, settingsPath );
 
         getLog().warn(
-            "NPANDAY-149-002: Mojo for resolving dependencies is executed! It should only be run, "
+            "NPANDAY-149-002: Mojo for resolving dependencies beforehand is executed! It should only be run, "
                 + "if native maven plugins require special dependencies to be resolved!"
         );
 

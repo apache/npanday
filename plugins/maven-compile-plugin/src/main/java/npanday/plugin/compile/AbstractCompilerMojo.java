@@ -21,6 +21,7 @@ package npanday.plugin.compile;
 
 import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
+import npanday.LocalRepositoryUtil;
 import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
 import npanday.assembler.AssemblerContext;
@@ -33,8 +34,10 @@ import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
+import npanday.resolver.NPandayDependencyResolution;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -105,6 +108,11 @@ public abstract class AbstractCompilerMojo
      * @required
      */
     protected MavenProjectHelper projectHelper;
+
+    /**
+     * @component
+     */
+    private NPandayDependencyResolution dependencyResolution;
 
     /**
      * The location of the local Maven repository.
@@ -1099,6 +1107,18 @@ public abstract class AbstractCompilerMojo
             throws MojoExecutionException
     {
         long startTime = System.currentTimeMillis();
+
+        String scope = test ? "test" : "compile";
+        try
+        {
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), scope );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-900-010: Could not satisfy required dependencies for scope " + scope, e
+            );
+        }
 
         //Modifies the AssemblyInfo.cs files to match the version of the pom
 		try

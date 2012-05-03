@@ -21,6 +21,9 @@ package npanday.plugin.application;
 
 import com.google.common.collect.Lists;
 import npanday.ArtifactType;
+import npanday.LocalRepositoryUtil;
+import npanday.resolver.NPandayDependencyResolution;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
@@ -69,15 +72,37 @@ public class PackagePreparedPackageFoldersMojo
     private ZipArchiver archiver;
 
     /**
+     * @component
+     */
+    private NPandayDependencyResolution dependencyResolution;
+
+    /**
+     * The location of the local Maven repository.
+     *
+     * @parameter expression="${settings.localRepository}"
+     */
+    protected File localRepository;
+
+    /**
      * The directory for the created zip
      *
      * @parameter expression = "${outputDirectory}" default-value = "${project.build.directory}"
      */
     private File outputDirectory;
 
-
     public void execute() throws MojoExecutionException, MojoFailureException
     {
+        try
+        {
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), "runtime" );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-130-006: Could not resolve all runtime dependencies", e
+            );
+        }
+
         executeItems();
     }
 
@@ -96,7 +121,7 @@ public class PackagePreparedPackageFoldersMojo
         }
         else
         {
-            getLog().debug( "NPANDAY-130-000: Did not find a prepared package!" );
+            getLog().debug( "NPANDAY-130-005: Did not find a prepared package!" );
         }
 
         return list;

@@ -21,14 +21,20 @@ package npanday.plugin.aspnet;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
+import npanday.LocalRepositoryUtil;
 import npanday.packaging.DirectoryPackagePreparer;
 import npanday.packaging.MixinAsssemblyReader;
 import npanday.packaging.PackagePreparationConfigurationSource;
+import npanday.resolver.NPandayDependencyResolution;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFileFilter;
+
+import java.io.File;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Iterables.toArray;
@@ -100,8 +106,27 @@ public class AssemblePackageFilesMojo
      */
     private MixinAsssemblyReader assemblyReader;
 
+    /**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
+     * @required
+     */
+    protected MavenProject project;
 
-/**
+    /**
+     * @component
+     */
+    private NPandayDependencyResolution dependencyResolution;
+
+    /**
+     * The location of the local Maven repository.
+     *
+     * @parameter expression="${settings.localRepository}"
+     */
+    protected File localRepository;
+
+    /**
      * @component
      */
     private DirectoryPackagePreparer packagePreparer;
@@ -111,6 +136,18 @@ public class AssemblePackageFilesMojo
         throws MojoExecutionException, MojoFailureException
     {
         long startTime = System.currentTimeMillis();
+
+        try
+        {
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), "runtime" );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-130-006: Could not resolve all runtime dependencies", e
+            );
+        }
+
 
         setupParameters();
 

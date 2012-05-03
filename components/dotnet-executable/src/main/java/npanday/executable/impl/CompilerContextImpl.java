@@ -37,6 +37,7 @@ import npanday.registry.Repository;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.Vendor;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.logging.LogEnabled;
@@ -231,6 +232,9 @@ public final class CompilerContextImpl
         {
             Artifact artifact = (Artifact) i.next();
 
+            if (!new ScopeArtifactFilter( isTestCompile() ? "test" : "compile" ).include( artifact ))
+                continue;
+
             // TODO: use isAddedToClassPath instead? May need to annotate types
             if (
                 !ArtifactTypeHelper.isDotnetLibrary( artifact.getType() )
@@ -239,8 +243,6 @@ public final class CompilerContextImpl
             {
                 continue;
             }
-
-            // TODO: consider scope?
 
             if ( !hasArtifact( artifact ) )
             {
