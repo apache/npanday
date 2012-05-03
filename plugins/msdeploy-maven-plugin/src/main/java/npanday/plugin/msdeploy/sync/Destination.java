@@ -26,7 +26,9 @@ import org.apache.maven.plugin.MojoExecutionException;
  */
 public class Destination
 {
-    private String computerName, username, password, authType = "basic", serverId;
+    private String computerName, username, password, authType, serverId;
+
+    private boolean local;
 
     public String getComputerName()
     {
@@ -86,5 +88,15 @@ public class Destination
     protected void setSettingsPassword( String password )
     {
         this.password = password;
+    }
+
+    public boolean getLocal()
+    {
+        return local;
+    }
+
+    public void setLocal( boolean local )
+    {
+        this.local = local;
     }
 }

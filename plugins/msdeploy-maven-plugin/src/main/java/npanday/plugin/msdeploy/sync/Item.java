@@ -20,6 +20,7 @@
 package npanday.plugin.msdeploy.sync;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoFailureException;
@@ -87,25 +88,27 @@ public class Item
             parts.add( "contentPath=" + contentPath );
         }
 
-        if (destination != null) {
-            if ( destination.getComputerName() != null )
-            {
-                parts.add( "computerName=" + destination.getComputerName() );
-            }
+        if ( destination != null
+            && !Strings.isNullOrEmpty(destination.getComputerName())
+            && !destination.getLocal()) {
 
-            if ( destination.getUsername() != null )
-            {
-                parts.add( "username=" + destination.getUsername() );
-            }
+            parts.add( "computerName=" + destination.getComputerName() );
 
-            if ( destination.getPassword() != null )
-            {
-                parts.add( "password=" + destination.getPassword() );
-            }
+            if (!Strings.isNullOrEmpty( destination.getServerId())) {
+                if ( destination.getUsername() != null )
+                {
+                    parts.add( "username=" + destination.getUsername() );
+                }
 
-            if ( destination.getAuthType() != null )
-            {
-                parts.add( "authType=" + destination.getAuthType() );
+                if ( destination.getPassword() != null )
+                {
+                    parts.add( "password=" + destination.getPassword() );
+                }
+
+                if ( destination.getAuthType() != null )
+                {
+                    parts.add( "authType=" + destination.getAuthType() );
+                }
             }
         }
 
