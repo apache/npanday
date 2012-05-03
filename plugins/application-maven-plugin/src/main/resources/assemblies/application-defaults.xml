@@ -31,6 +31,6 @@
      Just specifying bare file names would need a fix for:
      http://jira.codehaus.org/browse/MASSEMBLY-585
      -->
-    <componentDescriptor>/assemblies/components/application-binaries.xml</componentDescriptor>
+    <componentDescriptor>assemblies/components/application-binaries.xml</componentDescriptor>
   </componentDescriptors>
 </assembly>

@@ -31,7 +31,7 @@
      Just specifying bare file names would need a fix for:
      http://jira.codehaus.org/browse/MASSEMBLY-585
      -->
-    <componentDescriptor>/assemblies/components/aspnet-webapp-binaries.xml</componentDescriptor>
-    <componentDescriptor>/assemblies/components/aspnet-webapp-contents.xml</componentDescriptor>
+    <componentDescriptor>assemblies/components/aspnet-webapp-binaries.xml</componentDescriptor>
+    <componentDescriptor>assemblies/components/aspnet-webapp-contents.xml</componentDescriptor>
   </componentDescriptors>
 </assembly>
