@@ -21,10 +21,14 @@ package npanday.plugin.msdeploy;
 
 import com.google.common.collect.Lists;
 import npanday.ArtifactType;
+import npanday.LocalRepositoryUtil;
+import npanday.resolver.NPandayDependencyResolution;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
 
@@ -37,12 +41,45 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  *
  * @goal resolve-azure-web-roles
- *
- * TODO requiresDependencyResolution compile
  */
-public class MsDeployResolveWebRolesMojo
+public class ResolveAzureWebRolesMojo
     extends AbstractMsDeployMojo<UnpackDependencyIterationItem>
 {
+    /**
+     * @component
+     */
+    private NPandayDependencyResolution dependencyResolution;
+
+    /**
+     * The location of the local Maven repository.
+     *
+     * @parameter expression="${settings.localRepository}"
+     */
+    protected File localRepository;
+
+    /**
+     * Up to which scope dependencies should be considered.
+     *
+     * @parameter default-value="compile"
+     */
+    protected String dependencyScope;
+
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException
+    {
+        try
+        {
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), dependencyScope );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-156-000: Could not satisfy required dependencies for scope " + dependencyScope, e
+            );
+        }
+        super.execute();
+    }
+
     @Override
     protected void afterCommandExecution( UnpackDependencyIterationItem iterationItem ) throws MojoExecutionException
     {
