@@ -81,8 +81,8 @@ public class Package
     @Override
     public String toString()
     {
-        return "Item{" + "packageSource=" + groupId + ":" + artifactId + ":" + version + ", packageTarget="
-            + getDestinationArgument() + '}';
+        return "Item{" + "packageSource=" + groupId + ":" + artifactId + ":" + version + ", " + getDestinationSummary()
+            + '}';
     }
 
     static Joiner JOIN_ON_COMMA = Joiner.on( "," ).skipNulls();
@@ -93,17 +93,17 @@ public class Package
 
         if ( !Strings.isNullOrEmpty( iisApp ) )
         {
-            parts.add( "iisApp=\"" + iisApp + "\"");
+            parts.add( "iisApp=\"" + iisApp + "\"" );
         }
         else if ( !Strings.isNullOrEmpty( contentPath ) )
         {
-            parts.add( "contentPath=\"" + contentPath  + "\"");
+            parts.add( "contentPath=\"" + contentPath + "\"" );
         }
 
         if ( destination != null && !Strings.isNullOrEmpty( destination.getComputerName() ) && !destination.getLocal() )
         {
 
-            parts.add( "computerName=\"" + destination.getComputerName() + "\"");
+            parts.add( "computerName=\"" + destination.getComputerName() + "\"" );
 
             if ( !Strings.isNullOrEmpty( destination.getServerId() ) )
             {
@@ -144,7 +144,8 @@ public class Package
         // cant get overriding the physical app path to work
         if ( !Strings.isNullOrEmpty( iisApp ) && !Strings.isNullOrEmpty( contentPath ) )
         {
-            commands.add( "-replace:objectName=dirPath,targetAttributeName=path,match=^,replace=\"" + contentPath + "\"" );
+            commands.add( "-replace:objectName=dirPath,targetAttributeName=path,match=^,
+            replace=\"" + contentPath + "\"" );
         } */
 
         return commands;
@@ -238,5 +239,26 @@ public class Package
     public void setClassifier( String classifier )
     {
         this.classifier = classifier;
+    }
+
+    public String getDestinationSummary()
+    {
+        String d = contentPath;
+        if ( !Strings.isNullOrEmpty( iisApp ) )
+        {
+            d = iisApp;
+        }
+        d += " on ";
+
+        if ( destination == null || destination.getLocal() )
+        {
+            d += "local machine";
+        }
+        else
+        {
+            d += destination.getComputerName();
+        }
+
+        return d;
     }
 }
