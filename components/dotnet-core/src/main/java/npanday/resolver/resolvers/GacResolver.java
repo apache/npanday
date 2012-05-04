@@ -23,6 +23,7 @@ import npanday.resolver.ArtifactResolvingContributor;
 import npanday.ArtifactTypeHelper;
 import npanday.PathUtil;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 
 import java.io.File;
 import java.util.Set;
@@ -34,7 +35,9 @@ import java.util.Set;
 public class GacResolver
     implements ArtifactResolvingContributor
 {
-    public void contribute(Artifact artifact, Set<Artifact> additionalDependenciesCollector ){
+    public void contribute(Artifact artifact, Set<Artifact> additionalDependenciesCollector ) throws
+        ArtifactNotFoundException
+    {
 
         File artifactFile = null;
         String artifactType = artifact.getType();
@@ -51,9 +54,15 @@ public class GacResolver
             }
         }
 
-        if (artifactFile != null && artifactFile.exists()) {
-            artifact.setFile( artifactFile );
-            artifact.setResolved( true );
+        if (artifactFile != null) {
+            if (artifactFile.exists()) {
+                artifact.setFile( artifactFile );
+                artifact.setResolved( true );
+            }
+            else{
+               throw new ArtifactNotFoundException("NPANDAY-158-001: Could not resolve gac-dependency " + artifact + ", tried " + artifactFile, artifact);
+            }
         }
+
     }
 }
