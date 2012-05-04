@@ -30,6 +30,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
@@ -54,9 +55,25 @@ public class NPandayDependencyResolution
     private ArtifactFactory artifactFactory;
     private ArtifactMetadataSource metaDataSource;
 
-    public void require(MavenProject project, ArtifactRepository localRepository, String scope) throws
+    public Set<Artifact> require(MavenProject project, ArtifactRepository localRepository, String scope) throws
         ArtifactResolutionException
     {
+        ArtifactFilter scopeFilter = null;
+        if ( !Strings.isNullOrEmpty( scope )){
+            scopeFilter = new ScopeArtifactFilter( scope );
+        }
+
+        return require( project, localRepository, scopeFilter );
+    }
+
+    public Set<Artifact> require(
+        MavenProject project, ArtifactRepository localRepository, ArtifactFilter filter ) throws
+        ArtifactResolutionException
+    {
+        if (getLogger().isDebugEnabled()) {
+            getLogger().debug( "NPANDAY-148-007: Resolving dependencies for " + project.getArtifact() );
+        }
+
         try
         {
             if ( project.getDependencyArtifacts() == null )
@@ -64,15 +81,10 @@ public class NPandayDependencyResolution
                 createArtifactsForMaven2BackCompat( project );
             }
 
-            ArtifactFilter scopeFilter = null;
-            if ( !Strings.isNullOrEmpty( scope )){
-                scopeFilter = new ScopeArtifactFilter( scope );
-            }
-
             ArtifactResolutionResult result = artifactResolver.resolveTransitively(
                 project.getDependencyArtifacts(), project.getArtifact(), project.getManagedVersionMap(),
                 localRepository, project.getRemoteArtifactRepositories(), metaDataSource,
-                scopeFilter
+                filter
             );
 
             /*
@@ -82,6 +94,8 @@ public class NPandayDependencyResolution
             * */
 
             addResolvedSpecialsToProjectDependencies( project, result );
+
+            return result.getArtifacts();
         }
         catch ( ArtifactResolutionException e )
         {
@@ -109,19 +123,19 @@ public class NPandayDependencyResolution
             Artifact a = (Artifact) ao;
             if ( !project.getDependencyArtifacts().contains( a ) )
             {
-                getLogger().info( "NPANDAY-184-005: Adding custom resolved " + a + " to project.dependencyArtifacts" );
+                getLogger().info( "NPANDAY-148-005: Adding custom resolved " + a + " to project.dependencyArtifacts" );
 
                 project.getDependencyArtifacts().add( a );
-            }
-            else
-            {
-                getLogger().info( "NPANDAY-184-006: " + a + " is yet in project.dependencyArtifacts" );
             }
         }
     }
 
     private void createArtifactsForMaven2BackCompat( MavenProject project ) throws InvalidVersionSpecificationException
     {
+        if (getLogger().isDebugEnabled()) {
+            getLogger().debug( "NPANDAY-148-008: creating dependency collection for maven 2 projects" );
+        }
+
         project.setDependencyArtifacts( Sets.newHashSet() );
         for ( Object o : project.getDependencies() )
         {

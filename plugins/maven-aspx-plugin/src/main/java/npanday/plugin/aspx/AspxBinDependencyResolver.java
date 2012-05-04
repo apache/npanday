@@ -1,5 +1,3 @@
-package npanday.plugin.aspx;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,8 @@ package npanday.plugin.aspx;
  * specific language governing permissions and limitations
  * under the License.
  */
+
+package npanday.plugin.aspx;
 
 import npanday.LocalRepositoryUtil;
 import npanday.PathUtil;

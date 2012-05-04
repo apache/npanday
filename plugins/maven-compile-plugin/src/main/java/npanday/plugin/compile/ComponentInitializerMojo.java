@@ -20,7 +20,10 @@ package npanday.plugin.compile;
  */
 
 import npanday.InitializationException;
+import npanday.LocalRepositoryUtil;
 import npanday.assembler.AssemblerContext;
+import npanday.resolver.NPandayDependencyResolution;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -56,17 +59,30 @@ public class ComponentInitializerMojo
      */
     private File localRepository;
 
-
     /**
      * @component
      */
     private AssemblerContext assemblerContext;
 
+    /**
+     * @component
+     */
+    private NPandayDependencyResolution dependencyResolution;
+
     public void execute()
         throws MojoExecutionException
     {
-
-        getLog().warn( "NPANDAY-231: removed dependency resolution here!" );
+        // TODO: sadly we must resolve dependencies here because of 'org.apache.maven.plugins:maven-remote-resources-plugin:1.2.1:process' running later
+        try
+        {
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), "test" );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-901-003: Could not satisfy required dependencies for scope " + "test", e
+            );
+        }
 
         try
         {

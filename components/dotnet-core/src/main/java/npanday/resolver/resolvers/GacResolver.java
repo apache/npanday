@@ -19,9 +19,9 @@
 
 package npanday.resolver.resolvers;
 
-import npanday.resolver.ArtifactResolvingContributor;
 import npanday.ArtifactTypeHelper;
 import npanday.PathUtil;
+import npanday.resolver.ArtifactResolvingContributor;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 
@@ -30,37 +30,41 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:me@lcorneliussen.de>Lars Corneliussen, Faktum Software</a>
- *
  */
 public class GacResolver
     implements ArtifactResolvingContributor
 {
-    public void contribute(Artifact artifact, Set<Artifact> additionalDependenciesCollector ) throws
+    public void contribute( Artifact artifact, Set<Artifact> additionalDependenciesCollector ) throws
         ArtifactNotFoundException
     {
 
         File artifactFile = null;
         String artifactType = artifact.getType();
 
-        if ( ArtifactTypeHelper.isDotnetAnyGac( artifactType ))
+        if ( ArtifactTypeHelper.isDotnetAnyGac( artifactType ) )
         {
-            if (!ArtifactTypeHelper.isDotnet4Gac(artifactType))
+            if ( !ArtifactTypeHelper.isDotnet4Gac( artifactType ) )
             {
-                artifactFile = PathUtil.getGlobalAssemblyCacheFileFor( artifact, new File( "C:\\WINDOWS\\assembly\\" ) );
+                artifactFile = PathUtil.getGlobalAssemblyCacheFileFor(
+                    artifact, new File( "C:\\WINDOWS\\assembly\\" )
+                );
             }
             else
             {
-                artifactFile = PathUtil.getGACFile4Artifact(artifact);
+                artifactFile = PathUtil.getGACFile4Artifact( artifact );
             }
-        }
 
-        if (artifactFile != null) {
-            if (artifactFile.exists()) {
+            if ( artifactFile.exists() )
+            {
                 artifact.setFile( artifactFile );
                 artifact.setResolved( true );
             }
-            else{
-               throw new ArtifactNotFoundException("NPANDAY-158-001: Could not resolve gac-dependency " + artifact + ", tried " + artifactFile, artifact);
+            else
+            {
+                throw new ArtifactNotFoundException(
+                    "NPANDAY-158-001: Could not resolve gac-dependency " + artifact + ", tried " + artifactFile,
+                    artifact
+                );
             }
         }
 

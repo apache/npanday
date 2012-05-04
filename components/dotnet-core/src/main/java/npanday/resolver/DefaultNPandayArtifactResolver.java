@@ -19,6 +19,7 @@
 
 package npanday.resolver;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import npanday.resolver.resolvers.GacResolver;
 import org.apache.maven.artifact.Artifact;
@@ -29,6 +30,7 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.resolver.DebugResolutionListener;
+import org.apache.maven.artifact.resolver.ResolutionListener;
 import org.apache.maven.artifact.resolver.WarningResolutionListener;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
@@ -64,6 +66,8 @@ public class DefaultNPandayArtifactResolver
 
     private PlexusContainer container;
 
+    NPandayResolutionListener listener;
+
     private Set<Artifact> customResolveCache = Sets.newHashSet();
 
     public void resolve( Artifact artifact, List remoteRepositories, ArtifactRepository localRepository ) throws
@@ -94,7 +98,8 @@ public class DefaultNPandayArtifactResolver
         ArtifactResolutionException,
         ArtifactNotFoundException
     {
-        filter = intercept( filter );
+        listeners = intercept( listeners );
+
 
         return original.resolveTransitively(
             artifacts, originatingArtifact, managedVersions, localRepository, remoteRepositories, source, filter,
@@ -102,7 +107,24 @@ public class DefaultNPandayArtifactResolver
         );
     }
 
-    private void runCustomResolvers( Artifact artifact )
+
+
+    private List intercept( List listeners )
+    {
+        if (listeners == null)
+            listeners = Lists.newArrayList();
+
+        listeners.add( listener );
+
+        return listeners;
+    }
+
+    public void contextualize( Context context ) throws ContextException
+    {
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    }
+
+    protected void runCustomResolvers( Artifact artifact ) throws ArtifactNotFoundException
     {
         if ( contributors == null || contributors.length == 0 )
         {
@@ -136,33 +158,11 @@ public class DefaultNPandayArtifactResolver
         }
     }
 
-    private ArtifactFilter intercept( ArtifactFilter filter )
-    {
-        AndArtifactFilter andArtifactFilter = new AndArtifactFilter();
-        if ( filter != null )
-        {
-            andArtifactFilter.add( filter );
-        }
-        andArtifactFilter.add(
-            new ArtifactFilter()
-            {
-                public boolean include( Artifact artifact )
-                {
-                    runCustomResolvers( artifact );
-                    return true;
-                }
-            }
-        );
-        return andArtifactFilter;
-    }
-
-    public void contextualize( Context context ) throws ContextException
-    {
-        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
-    }
-
     public void initialize() throws InitializationException
     {
+        listener = new NPandayResolutionListener(this);
+        listener.enableLogging( getLogger() );
+
         try
         {
             List list = container.lookupList(

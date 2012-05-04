@@ -52,7 +52,7 @@ import java.util.Set;
  * @author <a href="me@lcorneliussen.de">Lars Corneliussen, Faktum Software</a>
  * @goal resolve
  */
-public class NPandayEarlyResolverMojo
+public class ResolveMojo
     extends AbstractMojo
 {
     /**
