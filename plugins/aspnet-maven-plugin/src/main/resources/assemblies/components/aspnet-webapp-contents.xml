@@ -63,9 +63,13 @@
         <include>crossdomain.xml</include>
       </includes>
       <excludes>
-        <exclude>bin/**</exclude>
-        <exclude>obj/**</exclude>
-        <exclude>target/**</exclude>
+        <exclude>**/bin/**</exclude>
+        <exclude>**/obj/**</exclude>
+        <exclude>**/target/**</exclude>
+        <exclude>**/web.debug.config</exclude>
+        <exclude>**/Web.Debug.config</exclude>
+        <exclude>**/web.release.config</exclude>
+        <exclude>**/Web.Release.config</exclude>
       </excludes>
     </fileSet>
   </fileSets>

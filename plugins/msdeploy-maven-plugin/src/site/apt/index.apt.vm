@@ -23,9 +23,10 @@ NPanday MSDeploy Maven Plugin
   The MSDeploy Maven Plugin is a wrapper for {{{http://www.iis.net/download/webdeploy}Microsoft Web Deploy}},
   also called MSDeploy. It picks up the collected package files (for example collected by
   {{{../aspnet-maven-plugin/index.html}aspnet-maven-plugin}}) and packs them to a zip (*.msdeploy.zip)
-  which can be used for deployment both manually and with the MSDeploy commandline tool.
+  or resolves and deploys other packages to arbitrary destinations, as for example IIS or plain folders on remote
+  machines.
 
-  Deploying directly to remote destinations though Maven/NPanday is currently not supported.
+  It also allows executing commands on remote machines using the preSync and postSync events on the SyncMojo.
 
   Have a look at the {{{./usage.html}usage documentation}} in order to find out how to configure it for
   your project.

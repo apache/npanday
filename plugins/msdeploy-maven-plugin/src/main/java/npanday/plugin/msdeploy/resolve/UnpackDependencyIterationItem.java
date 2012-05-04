@@ -1,4 +1,4 @@
-package npanday.plugin.msdeploy;
+package npanday.plugin.msdeploy.resolve;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,8 +19,9 @@ package npanday.plugin.msdeploy;
  * under the License.
  */
 
-import npanday.ArtifactType;
 import npanday.PathUtil;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
@@ -28,32 +29,26 @@ import java.io.File;
 /**
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  */
-public class CreatePackageIterationItem
+public class UnpackDependencyIterationItem
 {
-    private String classifier;
-
-    private File packageFile;
-
     private File packageSource;
 
-    public CreatePackageIterationItem( MavenProject project )
-    {
-        this.classifier = null;
-        this.packageSource = PathUtil.getPreparedPackageFolder( project );
-        this.packageFile = new File(
-            project.getBuild().getDirectory(),
-            project.getArtifactId() + "." + ArtifactType.MSDEPLOY_PACKAGE.getExtension()
-        );
-    }
+    private File packageTarget;
 
-    public String getClassifier()
-    {
-        return classifier;
-    }
+    private Artifact artifact;
 
-    public File getPackageFile()
+    public UnpackDependencyIterationItem( MavenProject project, Artifact artifact ) throws MojoFailureException
     {
-        return packageFile;
+        this.artifact = artifact;
+
+        if (!artifact.isResolved()){
+           throw new MojoFailureException( "NPANDAY-124-000: The artifact should already have been resolved: " + artifact);
+        }
+
+        packageSource = artifact.getFile();
+        assert packageSource != null : "package source should not be null here";
+
+        packageTarget = new File( PathUtil.getPreparedPackageFolder( project ), artifact.getArtifactId() );
     }
 
     public File getPackageSource()
@@ -61,9 +56,15 @@ public class CreatePackageIterationItem
         return packageSource;
     }
 
+    public File getPackageTarget()
+    {
+        return packageTarget;
+    }
+
     @Override
     public String toString()
     {
-        return "CreatePackageIterationItem{" + "classifier='" + classifier + '\'' + '}';
+        return "UnpackDependencyIterationItem{" + "packageSource=" + packageSource + ", packageTarget=" + packageTarget
+            + ", artifact=" + artifact + '}';
     }
 }

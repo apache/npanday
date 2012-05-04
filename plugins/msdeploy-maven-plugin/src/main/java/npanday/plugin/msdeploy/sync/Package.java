@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  */
-public class Item
+public class Package
 {
     private Artifact artifact;
 
@@ -41,7 +41,15 @@ public class Item
 
     private String version;
 
+    private String classifier;
+
     private String contentPath;
+
+    /**
+     * If specified, the iisApp provider will be used. Specify {@link #contentPath}
+     * if you want to override the physical path for the application that is created here.
+     */
+    private String iisApp;
 
     private SyncEvent preSync, postSync;
 
@@ -83,18 +91,22 @@ public class Item
     {
         List<String> parts = Lists.newArrayList();
 
-        if ( contentPath != null )
+        if ( !Strings.isNullOrEmpty( iisApp ) )
         {
-            parts.add( "contentPath=" + contentPath );
+            parts.add( "iisApp=\"" + iisApp + "\"");
+        }
+        else if ( !Strings.isNullOrEmpty( contentPath ) )
+        {
+            parts.add( "contentPath=\"" + contentPath  + "\"");
         }
 
-        if ( destination != null
-            && !Strings.isNullOrEmpty(destination.getComputerName())
-            && !destination.getLocal()) {
+        if ( destination != null && !Strings.isNullOrEmpty( destination.getComputerName() ) && !destination.getLocal() )
+        {
 
-            parts.add( "computerName=" + destination.getComputerName() );
+            parts.add( "computerName=\"" + destination.getComputerName() + "\"");
 
-            if (!Strings.isNullOrEmpty( destination.getServerId())) {
+            if ( !Strings.isNullOrEmpty( destination.getServerId() ) )
+            {
                 if ( destination.getUsername() != null )
                 {
                     parts.add( "username=" + destination.getUsername() );
@@ -113,6 +125,29 @@ public class Item
         }
 
         return JOIN_ON_COMMA.join( parts );
+    }
+
+    public List<String> getAdditionalArguments()
+    {
+        List<String> commands = Lists.newArrayList();
+        if ( getPreSync() != null )
+        {
+            commands.add( "-preSync:" + getPreSync().getArgumentPart() );
+        }
+
+        if ( getPostSync() != null )
+        {
+            commands.add( "-postSync:" + getPostSync().getArgumentPart() );
+        }
+
+        /*
+        // cant get overriding the physical app path to work
+        if ( !Strings.isNullOrEmpty( iisApp ) && !Strings.isNullOrEmpty( contentPath ) )
+        {
+            commands.add( "-replace:objectName=dirPath,targetAttributeName=path,match=^,replace=\"" + contentPath + "\"" );
+        } */
+
+        return commands;
     }
 
     public Artifact getArtifact()
@@ -193,5 +228,15 @@ public class Item
     public void setDestination( Destination destination )
     {
         this.destination = destination;
+    }
+
+    public String getClassifier()
+    {
+        return classifier;
+    }
+
+    public void setClassifier( String classifier )
+    {
+        this.classifier = classifier;
     }
 }

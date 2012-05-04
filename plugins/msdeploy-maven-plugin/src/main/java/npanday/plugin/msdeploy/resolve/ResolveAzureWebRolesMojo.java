@@ -1,4 +1,4 @@
-package npanday.plugin.msdeploy;
+package npanday.plugin.msdeploy.resolve;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,6 +22,7 @@ package npanday.plugin.msdeploy;
 import com.google.common.collect.Lists;
 import npanday.ArtifactType;
 import npanday.LocalRepositoryUtil;
+import npanday.plugin.msdeploy.AbstractMsDeployMojo;
 import npanday.resolver.NPandayDependencyResolution;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;

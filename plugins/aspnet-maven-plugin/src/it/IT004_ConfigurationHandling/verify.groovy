@@ -18,7 +18,7 @@
  */
 
 
-def packageDir = new File(basedir, "target\\packages\\IT003_AdditionalComponents")
+def packageDir = new File(basedir, "target\\packages\\IT004_ConfigurationHandling")
 assert packageDir.exists()
 
 assert new File(packageDir, "web.config").exists()

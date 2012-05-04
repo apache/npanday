@@ -26,7 +26,7 @@ Using the NPanday ASP.NET Maven Plugin
 
   * {{{http://www.iis.net/download/webdeploy}Web Deploy 2.0 Download}}
 
-* Usage
+* Usage for Web Applications
 
   In order to enable the packaging, add the plugin to your POMs build
   configuration.
@@ -39,7 +39,7 @@ Using the NPanday ASP.NET Maven Plugin
   <executions>
     <execution>
       <goals>
-        <goal>create-package</goal>
+        <goal>create-iisApp-package</goal>
       </goals>
     </execution>
   </executions>

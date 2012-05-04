@@ -19,18 +19,36 @@ package npanday.plugin.msdeploy;
  * under the License.
  */
 
+import com.google.common.collect.Lists;
+import npanday.LocalRepositoryUtil;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
+import npanday.plugin.msdeploy.sync.Destination;
 import npanday.registry.RepositoryRegistry;
+import npanday.resolver.NPandayArtifactResolver;
 import npanday.vendor.SettingsUtil;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.settings.Server;
+import org.apache.maven.settings.Settings;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 
@@ -39,6 +57,7 @@ import java.util.List;
  */
 public abstract class AbstractMsDeployMojo<T>
     extends AbstractMojo
+    implements Contextualizable
 {
     /**
      * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
@@ -112,16 +131,93 @@ public abstract class AbstractMsDeployMojo<T>
      */
     protected MavenProjectHelper projectHelper;
 
+    /**
+     * True if untrusted SSL connections are allowed; otherwise, false. The default is false.
+     *
+     * @parameter default-value="false"
+     */
+    boolean allowUntrusted;
+
+    /**
+     * Specifies that files will be compared by using their CRC (Cyclic Redundancy Check) checksum and ignoring their last write time. This setting is useful when you want to copy only the files whose content has changed, and ignore files that have the same content but different time stamps.
+     *
+     * @parameter default-value="false"
+     */
+    boolean useCheckSum;
+
+    /**
+     * Specifies that the command will be run without actually making any changes.
+     *
+     * @parameter default-value="false"
+     */
+    boolean whatIf;
+
+    /**
+     * Specifies that the Informational verbosity level will be included in the output of the operation. By default, the verbosity levels of Warning, Error, and Fatal are included. The Informational verbosity level will return all messages that are triggered during an operation.
+     *
+     * @parameter default-value="false"
+     */
+    boolean verbose;
+
+    /**
+     * Specifies the number of times the provider will retry after a failure. <number> specifies the number of
+     * retries. The default number of retries is 5. By default, there is a delay of one second between each retry.
+     *
+     * @parameter default-value="1"
+     */
+    int retryAttempts;
+
+    /**
+     * Specifies, in milliseconds, the interval between provider retry attempts. <milliseconds> specifies the number
+     * of milliseconds between retries. The default is 1000 (one second).
+     *
+     * @parameter default-value="1000"
+     */
+    int retryInterval;
+
+    /**
+     * @parameter default-value="${settings.localRepository}"
+     */
+    String localRepository;
+
+    /**
+     * @parameter default-value="${settings}"
+     */
+    Settings settings;
+
+    /**
+     * @component
+     */
+    protected ArtifactFactory artifactFactory;
+
+    /**
+     * @component
+     */
+    protected NPandayArtifactResolver artifactResolver;
+
+    protected PlexusContainer container;
+
+    protected Object maven2Or3SecDispatcher;
+
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
+
+        try
+        {
+            maven2Or3SecDispatcher = container.lookup( SecDispatcher.ROLE, "maven" );
+        }
+        catch ( ComponentLookupException e )
+        {
+            throw new MojoExecutionException( "NPANDAY-120-008: Error on resolving SecDispatcher", e );
+        }
 
         final List<T> iterationItems = prepareIterationItems();
 
         getLog().info( "NPANDAY-120-003: Configured exection syncCommands " + iterationItems );
 
         for(T iterationItem : iterationItems ){
-            getLog().info( "NPANDAY-120-004: Exectuting iteration item " + iterationItem );
+            getLog().info( "NPANDAY-120-005: Exectuting iteration item " + iterationItem );
 
             beforeCommandExecution(iterationItem);
 
@@ -160,4 +256,82 @@ public abstract class AbstractMsDeployMojo<T>
     protected abstract List<T> prepareIterationItems() throws MojoFailureException, MojoExecutionException;
 
     protected abstract List<String> getCommands(T item) throws MojoExecutionException, MojoFailureException;
+
+    protected String decrypt( String password ) throws MojoExecutionException
+    {
+        try
+        {
+            Method decrypt = maven2Or3SecDispatcher.getClass().getMethod( "decrypt", String.class );
+            return (String) decrypt.invoke(
+                maven2Or3SecDispatcher, password
+            );
+        }
+        catch ( Exception e )
+        {
+            throw new MojoExecutionException( "NPANDAY-120-006: Error on decrypting password", e );
+        }
+    }
+
+    protected void resolve( Artifact artifact ) throws ArtifactResolutionException, ArtifactNotFoundException
+    {
+        artifactResolver.resolve(
+            artifact, project.getRemoteArtifactRepositories(), LocalRepositoryUtil.create( localRepository )
+        );
+    }
+
+    protected Server getServerSettings( String serverId) throws MojoExecutionException
+    {
+        Server server = settings.getServer( serverId );
+
+        if ( server == null )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-120-007: Could not find credentials for server " + serverId
+            );
+        }
+        return server;
+    }
+
+    public List<String> getDefaultCommands()
+    {
+        List<String> commands = Lists.newArrayList();
+
+        if ( allowUntrusted )
+        {
+            commands.add( "-allowUntrusted" );
+        }
+
+        if ( useCheckSum )
+        {
+            commands.add( "-usechecksum" );
+        }
+
+        if ( whatIf )
+        {
+            commands.add( "-whatIf" );
+        }
+
+        if ( verbose )
+        {
+            commands.add( "-verbose" );
+        }
+
+        if ( retryAttempts > 1 )
+        {
+            commands.add( "-retryAttempts:" + retryAttempts );
+
+        }
+
+        if ( retryInterval != 1000 )
+        {
+            commands.add( "-retryAttempts:" + retryInterval );
+        }
+
+        return commands;
+    }
+
+    public void contextualize( Context context ) throws ContextException
+    {
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    }
 }

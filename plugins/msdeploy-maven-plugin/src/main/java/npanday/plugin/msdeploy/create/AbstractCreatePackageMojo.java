@@ -1,5 +1,3 @@
-package npanday.plugin.msdeploy;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,8 +17,11 @@ package npanday.plugin.msdeploy;
  * under the License.
  */
 
+package npanday.plugin.msdeploy.create;
+
 import com.google.common.collect.Lists;
 import npanday.ArtifactType;
+import npanday.plugin.msdeploy.AbstractMsDeployMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import java.util.List;
@@ -28,17 +29,13 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
- * Picks up a prepared package folder and packages it using the MSDeploy command line tool.
- *
- * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
- * @phase package
- * @goal create-package
+ * @author <a href="mailto:me@lcorneliussen.de>Lars Corneliussen, Faktum Software</a>
  */
-public class MsDeployCreatePackageMojo
-    extends AbstractMsDeployMojo<CreatePackageIterationItem>
+public class AbstractCreatePackageMojo
+    extends AbstractMsDeployMojo<Package>
 {
     @Override
-    protected void afterCommandExecution( CreatePackageIterationItem iterationItem ) throws MojoExecutionException
+    protected void afterCommandExecution( Package iterationItem ) throws MojoExecutionException
     {
         if ( !iterationItem.getPackageFile().exists() )
         {
@@ -51,27 +48,27 @@ public class MsDeployCreatePackageMojo
     }
 
     @Override
-    protected void beforeCommandExecution( CreatePackageIterationItem iterationItem )
+    protected void beforeCommandExecution( Package iterationItem )
     {
 
     }
 
     @Override
-    protected List<CreatePackageIterationItem> prepareIterationItems()
+    protected List<Package> prepareIterationItems()
     {
         // TODO: NPANDAY-497 Support multiple packages with different classifiers
         return newArrayList(
-            new CreatePackageIterationItem(project)
+            new Package(project)
         );
     }
 
     @Override
-    protected List<String> getCommands(CreatePackageIterationItem item) throws MojoExecutionException
+    protected List<String> getCommands(Package item) throws MojoExecutionException
     {
         List<String> commands = Lists.newArrayList();
 
         commands.add( "-verb:sync" );
-        commands.add( "-source:contentPath=" + item.getPackageSource().getAbsolutePath() );
+        commands.add( "-source:" + item.getSourceArgument() );
         commands.add( "-dest:package=" + item.getPackageFile().getAbsolutePath() );
 
         return commands;
