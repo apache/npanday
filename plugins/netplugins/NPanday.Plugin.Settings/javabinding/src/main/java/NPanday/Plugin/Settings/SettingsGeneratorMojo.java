@@ -23,6 +23,7 @@ import npanday.PathUtil;
 import npanday.plugin.FieldAnnotation;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.SettingsUtil;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -96,6 +97,11 @@ public class SettingsGeneratorMojo
      */
     @FieldAnnotation()
     public java.lang.String npandaySettingsPath;
+
+    /**
+     * @component
+     */
+    private ArtifactFactory artifactFactory;
 
     public String getMojoArtifactId()
     {
@@ -263,5 +269,10 @@ public class SettingsGeneratorMojo
         throws MojoExecutionException, MojoFailureException
     {
         SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath);
+    }
+
+    public ArtifactFactory getArtifactFactory()
+    {
+        return artifactFactory;
     }
 }

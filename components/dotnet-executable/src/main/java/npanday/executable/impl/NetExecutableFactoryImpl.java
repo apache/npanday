@@ -235,6 +235,7 @@ public class NetExecutableFactoryImpl
         );
 
         commands.add( "startProcessAssembly=" + pluginArtifact.getFile().getAbsolutePath() );
+
         String pluginArtifactPath = findArtifact( artifacts, "NPanday.Plugin").getFile().getAbsolutePath();
         commands.add( "pluginArtifactPath=" + pluginArtifactPath );
 
@@ -382,42 +383,26 @@ public class NetExecutableFactoryImpl
     {
         Set<Artifact> dependencies = Sets.newHashSet(pluginArtifact);
 
-        dependencies.add(
-            artifactFactory.createDependencyArtifact(
-                "org.apache.npanday", "NPanday.Model.Pom",
-                VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
-                ArtifactType.DOTNET_LIBRARY.getPackagingType(), null, "runtime"
-            )
+        Artifact loaderArtifact = artifactFactory.createDependencyArtifact(
+            "org.apache.npanday.plugins", "NPanday.Plugin.Loader",
+            VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
+            ArtifactType.DOTNET_EXECUTABLE.getPackagingType(), null, "runtime"
         );
-
         dependencies.add(
-            artifactFactory.createDependencyArtifact(
-                "org.apache.npanday.plugins", "NPanday.Plugin",
-                VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
-                ArtifactType.DOTNET_LIBRARY.getPackagingType(), null, "runtime"
-            )
-        );
-
-        dependencies.add(
-            artifactFactory.createDependencyArtifact(
-                "org.apache.npanday.plugins", "NPanday.Plugin.Loader",
-                VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
-                ArtifactType.DOTNET_LIBRARY.getPackagingType(), null, "runtime"
-            )
+            pluginArtifact
         );
 
         // preresolve this one
         artifactResolver.resolve( pluginArtifact, project.getRemoteArtifactRepositories(), localRepository );
-        File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginArtifact, null, targetDir );
+        File pluginArtifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginArtifact, null, targetDir );
 
         List<String> commands = new ArrayList<String>();
         commands.add( "parameterFile=" + parameterFile.getAbsolutePath() );
-        commands.add( "assemblyFile=" + artifactPath.getAbsolutePath() );
+        commands.add( "assemblyFile=" + pluginArtifactPath.getAbsolutePath() );
         commands.add( "mojoName=" + mojoName );//ArtifactId = namespace
-        commands.add( "startProcessAssembly=" + artifactPath.getAbsolutePath() );
 
         return getPluginRunner(
-            project, pluginArtifact, dependencies, vendorRequirement, localRepository, commands, targetDir
+            project, loaderArtifact, dependencies, vendorRequirement, localRepository, commands, targetDir
         );
     }
 

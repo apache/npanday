@@ -20,6 +20,7 @@
 package NPanday.Plugin.SysRef;
 
 import npanday.plugin.FieldAnnotation;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 
 /**
  * @phase SysRef
@@ -75,7 +76,12 @@ public class SysRefMojo
         */
         private npanday.plugin.PluginContext pluginContext;
 
-        public String getMojoArtifactId()
+    /**
+     * @component
+     */
+    private ArtifactFactory artifactFactory;
+
+    public String getMojoArtifactId()
         {
             return "NPanday.Plugin.SysRef";
         }
@@ -125,4 +131,8 @@ public class SysRefMojo
             return frameworkVersion;
         }
 
+    public ArtifactFactory getArtifactFactory()
+    {
+        return artifactFactory;
+    }
 }

@@ -20,6 +20,7 @@ package NPanday.Plugin.Devenv;
  */
 
 import npanday.plugin.FieldAnnotation;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 
 /**
  * @phase deploy
@@ -75,7 +76,12 @@ public class DevenvMojo
         */
         private npanday.plugin.PluginContext pluginContext;
 
-        public String getMojoArtifactId()
+    /**
+     * @component
+     */
+    private ArtifactFactory artifactFactory;
+
+    public String getMojoArtifactId()
         {
             return "NPanday.Plugin.Devenv";
         }
@@ -125,4 +131,8 @@ public class DevenvMojo
             return frameworkVersion;
         }
 
+    public ArtifactFactory getArtifactFactory()
+    {
+        return artifactFactory;
+    }
 }

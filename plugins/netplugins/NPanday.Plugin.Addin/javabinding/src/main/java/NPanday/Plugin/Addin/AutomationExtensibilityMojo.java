@@ -20,6 +20,7 @@ package NPanday.Plugin.Addin;
  */
 
 import npanday.plugin.FieldAnnotation;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 
 /**
  * @phase package
@@ -75,7 +76,12 @@ public class AutomationExtensibilityMojo
         */
         private npanday.plugin.PluginContext pluginContext;
 
-        public String getMojoArtifactId()
+    /**
+     * @component
+     */
+    private ArtifactFactory artifactFactory;
+
+    public String getMojoArtifactId()
         {
             return "NPanday.Plugin.Addin";
         }
@@ -125,4 +131,8 @@ public class AutomationExtensibilityMojo
             return frameworkVersion;
         }
 
+    public ArtifactFactory getArtifactFactory()
+    {
+        return artifactFactory;
+    }
 }

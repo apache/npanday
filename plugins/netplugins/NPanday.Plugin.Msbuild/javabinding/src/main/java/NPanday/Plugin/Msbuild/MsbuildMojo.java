@@ -28,6 +28,7 @@ import java.util.Map;
 import npanday.plugin.FieldAnnotation;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -114,6 +115,11 @@ public class MsbuildMojo
      * @parameter default-value="true"
      */
     private boolean copyReferences = true;
+
+    /**
+     * @component
+     */
+    private ArtifactFactory artifactFactory;
 
     public String getMojoArtifactId()
     {
@@ -233,5 +239,10 @@ public class MsbuildMojo
         project.addResource( resource );
 
         return super.preExecute();
+    }
+
+    public ArtifactFactory getArtifactFactory()
+    {
+        return artifactFactory;
     }
 }

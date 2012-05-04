@@ -77,20 +77,6 @@ public abstract class AbstractMojo
         container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
     }
 
-    /**
-     * @component
-     */
-    private ArtifactResolver resolver;
-
-    /**
-     * @component
-     */
-    private ArtifactFactory artifactFactory;
-
-    /**
-     * @component
-     */
-    private ArtifactMetadataSource metadataSource;
 
     /**
      * Executes the mojo.
@@ -172,10 +158,10 @@ public abstract class AbstractMojo
         {
             ArtifactRepository localRepository = LocalRepositoryUtil.create( getLocalRepository() );
 
-            Artifact artifact = artifactFactory.createDependencyArtifact(
+            Artifact artifact = getArtifactFactory().createDependencyArtifact(
                 getMojoGroupId(),
                 getMojoArtifactId(),
-                VersionRange.createFromVersion(project.getVersion()),
+                VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
                 ArtifactType.DOTNET_MAVEN_PLUGIN.getPackagingType(),
                 null,
                 "runtime"
@@ -277,6 +263,8 @@ public abstract class AbstractMojo
     public abstract String getVendorVersion();
 
     public abstract String getFrameworkVersion();
+
+    public abstract ArtifactFactory getArtifactFactory();
 
     /**
      * Override this method for pre-execution commands.

@@ -28,6 +28,9 @@
         <requirement>
           <role>npanday.plugin.PluginContext</role>
         </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
+        </requirement>
       </requirements>
     </component>
     <component>
