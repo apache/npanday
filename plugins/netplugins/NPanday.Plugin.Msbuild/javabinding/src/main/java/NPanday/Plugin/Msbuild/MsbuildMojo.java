@@ -25,10 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import npanday.LocalRepositoryUtil;
 import npanday.plugin.FieldAnnotation;
+import npanday.resolver.NPandayDependencyResolution;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -38,8 +41,6 @@ import org.codehaus.plexus.util.FileUtils;
 /**
  * @phase validate
  * @goal compile
- *
- * TODO requiresDependencyResolution test
  */
 public class MsbuildMojo
     extends npanday.plugin.AbstractMojo
@@ -121,6 +122,11 @@ public class MsbuildMojo
      */
     private ArtifactFactory artifactFactory;
 
+    /**
+     * @component
+     */
+    private NPandayDependencyResolution dependencyResolution;
+
     public String getMojoArtifactId()
     {
         return "NPanday.Plugin.Msbuild";
@@ -175,6 +181,17 @@ public class MsbuildMojo
     public boolean preExecute()
         throws MojoExecutionException, MojoFailureException
     {
+        try
+        {
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), "test" );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-154-010: Could not satisfy required dependencies of scope test", e
+            );
+        }
+
         if ( copyReferences )
         {
             Map<String,MavenProject> projects = new HashMap<String,MavenProject>();

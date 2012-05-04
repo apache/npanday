@@ -19,11 +19,16 @@ package npanday.plugin.aspx;
  * under the License.
  */
 
+import npanday.LocalRepositoryUtil;
 import npanday.PathUtil;
+import npanday.resolver.NPandayDependencyResolution;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
@@ -55,25 +60,69 @@ public class AspxBinDependencyResolver
      */
     private File binDir;
 
+    /**
+     * @component
+     */
+    private NPandayDependencyResolution dependencyResolution;
+
+    /**
+     * The scope up to which dependencies should be included.
+     *
+     * @parameter default-value="runtime"
+     */
+    private String scope;
+
+    /**
+     * The location of the local Maven repository.
+     *
+     * @parameter expression="${settings.localRepository}"
+     */
+    private File localRepository;
+
+    /**
+     * The maven project.
+     *
+     * @parameter expression="${project}"
+     * @required
+     */
+    protected MavenProject project;
+
+    private void resolveDependencies() throws MojoExecutionException
+    {
+        try
+        {
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), scope );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-157-003: Could not satisfy required dependencies of scope " + scope, e
+            );
+        }
+    }
+
     public void execute()
             throws MojoExecutionException, MojoFailureException {
+
+        resolveDependencies();
+
+        ScopeArtifactFilter filter = new ScopeArtifactFilter( scope );
+
         for (Artifact dependency : dependencies) {
+
+            if (!filter.include( dependency )){
+                continue;
+            }
+
             try {
-                String filename = dependency.getArtifactId() + "." + dependency.getArtifactHandler().getExtension();
-                File targetFile = new File(binDir, filename);
-
+                File targetFile = new File(binDir, PathUtil.getPlainArtifactFileName(dependency));
                 if (!targetFile.exists()) {
-                    getLog().debug("NPANDAY-000-0001: copy dependency: typeof:" +  dependency.getClass());
-                    getLog().debug("NPANDAY-000-0001: copy dependency: " + dependency);
-                    getLog().debug("NPANDAY-000-0002: copying " + dependency.getFile().getAbsolutePath() + " to " + targetFile);
-                    File sourceFile = PathUtil.getGACFile4Artifact(dependency);
-
-                    FileUtils.copyFile(sourceFile, targetFile);
-                    
+                    getLog().debug("NPANDAY-157-001: copy dependency " +  dependency + " to " + targetFile);
+                    FileUtils.copyFile(dependency.getFile(), targetFile);
                 }
             }
             catch (IOException ioe) {
-                throw new MojoExecutionException("NPANDAY-000-00002: Error copying dependency " + dependency, ioe);
+                throw new MojoExecutionException("NPANDAY-157-002: Error copying dependency " + dependency, ioe);
                 
             }
         }

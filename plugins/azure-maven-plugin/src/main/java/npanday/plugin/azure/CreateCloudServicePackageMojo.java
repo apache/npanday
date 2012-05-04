@@ -21,8 +21,12 @@ package npanday.plugin.azure;
 
 import com.google.common.collect.Lists;
 import npanday.ArtifactType;
+import npanday.LocalRepositoryUtil;
 import npanday.PathUtil;
+import npanday.resolver.NPandayDependencyResolution;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.IOUtil;
@@ -40,7 +44,6 @@ import java.util.Set;
  *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  * @goal create-package
- * TODO requiresDependencyResolution runtime
  */
 public class CreateCloudServicePackageMojo
     extends AbstractCSPackDeployMojo
@@ -60,6 +63,39 @@ public class CreateCloudServicePackageMojo
      * @parameter expression="${azure.generateConfigurationFile}" default-value="true"
      */
     private boolean generateConfigurationFile;
+
+    /**
+     * @component
+     */
+    private NPandayDependencyResolution dependencyResolution;
+
+    /**
+     * The scope up to which dependencies should be included.
+     *
+     * @parameter default-value="runtime"
+     */
+    private String scope;
+
+    /**
+     * The location of the local Maven repository.
+     *
+     * @parameter expression="${settings.localRepository}"
+     */
+    private File localRepository;
+
+    private void resolveDependencies() throws MojoExecutionException
+    {
+        try
+        {
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), scope );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-131-004: Could not satisfy required dependencies of scope " + scope, e
+            );
+        }
+    }
 
     @Override
     protected void afterCommandExecution() throws MojoExecutionException
@@ -129,10 +165,19 @@ public class CreateCloudServicePackageMojo
 
         commands.add( "/out:" + packageFile.getAbsolutePath() );
 
+        resolveDependencies();
+        ScopeArtifactFilter filter = new ScopeArtifactFilter( scope );
+
         final Set projectDependencyArtifacts = project.getDependencyArtifacts();
         for ( Object artifactAsObject : projectDependencyArtifacts )
         {
             Artifact artifact = (Artifact) artifactAsObject;
+
+            if (!filter.include( artifact ))
+            {
+                continue;
+            }
+
             final boolean isWebRole = artifact.getType().equals(
                 ArtifactType.MSDEPLOY_PACKAGE.getPackagingType()
             ) || artifact.getType().equals(

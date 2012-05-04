@@ -37,7 +37,6 @@ class CompileLifecycleMap extends LifecycleMap
 
         def np_generate_settings = "org.apache.npanday.plugins:NPanday.Plugin.Settings.JavaBinding:$npandayVersion:generate-settings"
         def np_compile_init = "org.apache.npanday.plugins:maven-compile-plugin:$npandayVersion:initialize"
-        def np_resolve = "org.apache.npanday.plugins:maven-resolver-plugin:$npandayVersion:resolve"
         def np_generate_assemblyinfo = "org.apache.npanday.plugins:maven-compile-plugin:$npandayVersion:generate-assembly-info"
         def np_compile_process_sources = "org.apache.npanday.plugins:maven-compile-plugin:$npandayVersion:process-sources"
         def np_compile_process_test_sources = "org.apache.npanday.plugins:maven-compile-plugin:$npandayVersion:process-test-sources"
@@ -48,7 +47,7 @@ class CompileLifecycleMap extends LifecycleMap
         def np_test_compile = "org.apache.npanday.plugins:maven-compile-plugin:$npandayVersion:testCompile"
         def np_test = "org.apache.npanday.plugins:maven-test-plugin:$npandayVersion:test"
 
-		def default_validate = [np_compile_init, np_resolve, np_generate_settings]
+		def default_validate = [np_compile_init, np_generate_settings]
 		def default_generate_sources = [np_generate_assemblyinfo]
 		def default_process_resources = [np_resgen_copy, np_resgen_generate, np_resgen_resx]
 		def default_process_sources = [np_compile_process_sources, np_compile_process_test_sources]

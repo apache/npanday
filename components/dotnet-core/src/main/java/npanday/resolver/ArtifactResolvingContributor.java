@@ -20,6 +20,7 @@
 package npanday.resolver;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 
 import java.util.Set;
 
@@ -36,5 +37,5 @@ public interface ArtifactResolvingContributor
      *
      * @param artifact
      */
-    void contribute(Artifact artifact, Set<Artifact> additionalDependenciesCollector );
+    void contribute(Artifact artifact, Set<Artifact> additionalDependenciesCollector ) throws ArtifactNotFoundException;
 }

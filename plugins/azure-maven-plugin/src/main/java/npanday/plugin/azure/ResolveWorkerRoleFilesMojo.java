@@ -20,8 +20,12 @@
 package npanday.plugin.azure;
 
 import npanday.ArtifactType;
+import npanday.LocalRepositoryUtil;
 import npanday.PathUtil;
+import npanday.resolver.NPandayDependencyResolution;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -38,8 +42,6 @@ import java.util.Set;
  *
  * @author <a href="mailto:lcorneliussen@apache.org">Lars Corneliussen</a>
  * @goal resolve-worker-roles
- *
- * TODO requiresDependencyResolution runtime
  */
 public class ResolveWorkerRoleFilesMojo
     extends AbstractNPandayMojo
@@ -52,14 +54,56 @@ public class ResolveWorkerRoleFilesMojo
      */
     private ZipUnArchiver unarchiver;
 
+    /**
+     * @component
+     */
+    private NPandayDependencyResolution dependencyResolution;
+
+    /**
+     * The scope up to which dependencies should be included.
+     *
+     * @parameter default-value="runtime"
+     */
+    private String scope;
+
+    /**
+     * The location of the local Maven repository.
+     *
+     * @parameter expression="${settings.localRepository}"
+     */
+    private File localRepository;
+
+    private void resolveDependencies() throws MojoExecutionException
+    {
+        try
+        {
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), scope );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-131-004: Could not satisfy required dependencies of scope " + scope, e
+            );
+        }
+    }
+
     public void execute() throws MojoExecutionException, MojoFailureException
     {
+        resolveDependencies();
+
         super.execute();
+
+        ScopeArtifactFilter filter = new ScopeArtifactFilter( scope );
 
         final Set projectDependencyArtifacts = project.getDependencyArtifacts();
         for ( Object artifactAsObject : projectDependencyArtifacts )
         {
             Artifact artifact = (Artifact) artifactAsObject;
+            if (!filter.include( artifact ))
+            {
+                 continue;
+            }
+
             if ( artifact.getType().equals( ArtifactType.DOTNET_APPLICATION.getPackagingType() )
                 || artifact.getType().equals( ArtifactType.DOTNET_APPLICATION.getExtension() ) )
             {

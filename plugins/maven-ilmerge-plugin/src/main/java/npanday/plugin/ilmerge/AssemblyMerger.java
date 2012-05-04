@@ -19,6 +19,7 @@
 package npanday.plugin.ilmerge;
 
 import npanday.ArtifactType;
+import npanday.LocalRepositoryUtil;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
@@ -27,9 +28,11 @@ import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.executable.compiler.KeyInfo;
 import npanday.registry.RepositoryRegistry;
+import npanday.resolver.NPandayDependencyResolution;
 import npanday.vendor.SettingsUtil;
 import npanday.vendor.Vendor;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -54,8 +57,6 @@ import java.util.Set;
  *
  * @phase package
  * @goal merge-assemblies
- *
- * TODO requiresDependencyResolution runtime
  */
 public class AssemblyMerger extends AbstractMojo
 {
@@ -229,13 +230,27 @@ public class AssemblyMerger extends AbstractMojo
      */
     private boolean mergedArtifactReplacesProjectArtifact;
 
-    /**  
+    /**
+     * @component
+     */
+    private NPandayDependencyResolution dependencyResolution;
+
+    /**
+     * The scope up to which dependencies should be resolved.
+     *
+     * @parameter default-value="runtime"
+     */
+    private String requiredScope;
+
+    /**
      * Merges the specified assemblies into a primary assembly with classifier "merged".
      */
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
         SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
+
+        resolveDependencies();
 
         try
         {
@@ -294,7 +309,7 @@ public class AssemblyMerger extends AbstractMojo
             candidateArtifacts.addAll(project.getAttachedArtifacts());
 
             ArtifactSelector internalizeArtifactSelector = new ArtifactSelector( internalizeSet, null );
-            
+
             Set internalizeArtifacts = new HashSet();
 
             for ( Iterator it = candidateArtifacts.iterator(); it.hasNext(); )
@@ -441,13 +456,27 @@ public class AssemblyMerger extends AbstractMojo
         catch ( PlatformUnsupportedException e )
         {
             throw new MojoExecutionException( "NPANDAY-1501-003: Platform Unsupported", e );
-        }        
+        }
         catch ( IOException e )
         {
             throw new MojoExecutionException( "NPANDAY-1501-004: Unable to overwrite default artifact file", e );
-        }        
+        }
     }
-    
+
+    private void resolveDependencies() throws MojoExecutionException
+    {
+        try
+        {
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), requiredScope );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-1501-012: Could not satisfy required dependencies of scope " + requiredScope, e
+            );
+        }
+    }
+
     private String getFileNameMinusExtension(File file)
     {
         if (file==null) return null;

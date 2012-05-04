@@ -28,7 +28,6 @@
         <phases>
           <validate>
             org.apache.npanday.plugins:maven-compile-plugin:initialize,
-            org.apache.npanday.plugins:maven-resolver-plugin:resolve,
             org.apache.npanday.plugins:NPanday.Plugin.Settings.JavaBinding:generate-settings
           </validate>
           <generate-sources>            
