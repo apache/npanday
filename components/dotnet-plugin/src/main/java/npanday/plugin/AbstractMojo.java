@@ -28,11 +28,9 @@ import npanday.executable.NetExecutableFactory;
 import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -77,6 +75,11 @@ public abstract class AbstractMojo
         container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
     }
 
+    // TODO: get npandayVersion injected somehow
+    private String npandayVersion = "1.5.0-incubating-SNAPSHOT";
+
+    // TODO: get the version of the actual plugin to run; this can be external to NPanday!!!
+    private String pluginVersion = "1.5.0-incubating-SNAPSHOT";
 
     /**
      * Executes the mojo.
@@ -161,14 +164,15 @@ public abstract class AbstractMojo
             Artifact artifact = getArtifactFactory().createDependencyArtifact(
                 getMojoGroupId(),
                 getMojoArtifactId(),
-                VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
+                VersionRange.createFromVersion( pluginVersion ),
                 ArtifactType.DOTNET_MAVEN_PLUGIN.getPackagingType(),
                 null,
                 "runtime"
             );
 
             getNetExecutableFactory().getPluginExecutable(
-                project, artifact, vendorRequirement, localRepository, paramFile, getClassName(), targetDir
+                project, artifact, vendorRequirement, localRepository, paramFile, getClassName(), targetDir,
+                npandayVersion
             ).execute();
         }
         catch ( PlatformUnsupportedException e )

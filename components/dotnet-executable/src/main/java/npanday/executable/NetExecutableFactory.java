@@ -64,15 +64,15 @@ public interface NetExecutableFactory
 
     NetExecutable getPluginExecutable(
         MavenProject project, Artifact artifact, VendorRequirement vendorRequirement,
-        ArtifactRepository localRepository, File parameterFile, String mojoName, File targetDir ) throws
+        ArtifactRepository localRepository, File parameterFile, String mojoName, File targetDir, String npandayVersion ) throws
         PlatformUnsupportedException,
         ArtifactResolutionException,
         ArtifactNotFoundException;
 
     public NetExecutable getPluginRunner(
         MavenProject project, Artifact pluginArtifact, Set<Artifact> additionalDependencies,
-        VendorRequirement vendorRequirement, ArtifactRepository localRepository, List<String> commands,
-        File targetDir ) throws
+        VendorRequirement vendorRequirement, ArtifactRepository localRepository, List<String> commands, File targetDir,
+        String npandayVersion ) throws
 
         PlatformUnsupportedException,
         ArtifactResolutionException,

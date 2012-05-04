@@ -117,6 +117,9 @@ public class MojoGeneratorMojo
     /** @parameter default-value="false" */
     private boolean skip;
 
+    // TODO: get npandayVersion injected somehow
+    private String npandayVersion = "1.5.0-incubating-SNAPSHOT";
+
     public void execute()
         throws MojoExecutionException
     {
@@ -144,7 +147,7 @@ public class MojoGeneratorMojo
             Artifact artifact = artifactFactory.createDependencyArtifact(
                 "org.apache.npanday.plugins",
                 "NPanday.Plugin.MojoGenerator",
-                VersionRange.createFromVersion( project.getVersion() ),
+                VersionRange.createFromVersion( npandayVersion ),
                 ArtifactType.DOTNET_EXECUTABLE.getPackagingType(),
                 null,
                 "runtime"
@@ -152,7 +155,7 @@ public class MojoGeneratorMojo
 
             netExecutableFactory.getPluginRunner(
                 project, artifact, null, vendorRequirement, LocalRepositoryUtil.create( localRepository ), commands,
-                targetDir
+                targetDir, npandayVersion
             ).execute();
         }
         catch ( PlatformUnsupportedException e )

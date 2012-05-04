@@ -214,8 +214,8 @@ public class NetExecutableFactoryImpl
 
     public NetExecutable getPluginRunner(
         MavenProject project, Artifact pluginArtifact, Set<Artifact> additionalDependencies,
-        VendorRequirement vendorRequirement, ArtifactRepository localRepository, List<String> commands,
-        File targetDir ) throws
+        VendorRequirement vendorRequirement, ArtifactRepository localRepository, List<String> commands, File targetDir,
+        String npandayVersion ) throws
 
         PlatformUnsupportedException,
         ArtifactResolutionException,
@@ -240,7 +240,7 @@ public class NetExecutableFactoryImpl
         commands.add( "pluginArtifactPath=" + pluginArtifactPath );
 
         return getArtifactExecutable(
-            project, createPluginRunnerArtifact(), dependencies, vendorRequirement, localRepository, commands, targetDir
+            project, createPluginRunnerArtifact( npandayVersion ), dependencies, vendorRequirement, localRepository, commands, targetDir
         );
     }
 
@@ -376,7 +376,7 @@ public class NetExecutableFactoryImpl
 
     public NetExecutable getPluginExecutable(
         MavenProject project, Artifact pluginArtifact, VendorRequirement vendorRequirement,
-        ArtifactRepository localRepository, File parameterFile, String mojoName, File targetDir ) throws
+        ArtifactRepository localRepository, File parameterFile, String mojoName, File targetDir, String npandayVersion ) throws
         PlatformUnsupportedException,
         ArtifactResolutionException,
         ArtifactNotFoundException
@@ -385,7 +385,7 @@ public class NetExecutableFactoryImpl
 
         Artifact loaderArtifact = artifactFactory.createDependencyArtifact(
             "org.apache.npanday.plugins", "NPanday.Plugin.Loader",
-            VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
+            VersionRange.createFromVersion( npandayVersion ),
             ArtifactType.DOTNET_EXECUTABLE.getPackagingType(), null, "runtime"
         );
         dependencies.add(
@@ -402,15 +402,16 @@ public class NetExecutableFactoryImpl
         commands.add( "mojoName=" + mojoName );//ArtifactId = namespace
 
         return getPluginRunner(
-            project, loaderArtifact, dependencies, vendorRequirement, localRepository, commands, targetDir
+            project, loaderArtifact, dependencies, vendorRequirement, localRepository, commands, targetDir,
+            npandayVersion
         );
     }
 
-    private Artifact createPluginRunnerArtifact()
+    private Artifact createPluginRunnerArtifact( String npandayVersion )
     {
         return artifactFactory.createDependencyArtifact(
                 "org.apache.npanday.plugins", "NPanday.Plugin.Runner",
-                VersionRange.createFromVersion( "1.5.0-incubating-SNAPSHOT" ),
+                VersionRange.createFromVersion( npandayVersion ),
                 ArtifactType.DOTNET_EXECUTABLE.getPackagingType(), null, "runtime"
             );
     }
