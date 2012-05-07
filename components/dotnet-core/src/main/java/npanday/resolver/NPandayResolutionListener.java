@@ -22,6 +22,7 @@ package npanday.resolver;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ResolutionListener;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
@@ -34,13 +35,21 @@ public class NPandayResolutionListener
 {
     private DefaultNPandayArtifactResolver resolver;
 
-    public NPandayResolutionListener( DefaultNPandayArtifactResolver resolver )
+    private ArtifactFilter filter;
+
+    public NPandayResolutionListener( DefaultNPandayArtifactResolver resolver, ArtifactFilter filter )
     {
         this.resolver = resolver;
+        this.filter = filter;
     }
 
     public void testArtifact( Artifact node )
     {
+        if ( filter != null && !filter.include( node ) )
+        {
+            return;
+        }
+
         try
         {
             resolver.runCustomResolvers( node );

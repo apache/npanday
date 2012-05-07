@@ -66,8 +66,6 @@ public class DefaultNPandayArtifactResolver
 
     private PlexusContainer container;
 
-    NPandayResolutionListener listener;
-
     private Set<Artifact> customResolveCache = Sets.newHashSet();
 
     public void resolve( Artifact artifact, List remoteRepositories, ArtifactRepository localRepository ) throws
@@ -98,8 +96,7 @@ public class DefaultNPandayArtifactResolver
         ArtifactResolutionException,
         ArtifactNotFoundException
     {
-        listeners = intercept( listeners );
-
+        listeners = intercept( listeners, filter );
 
         return original.resolveTransitively(
             artifacts, originatingArtifact, managedVersions, localRepository, remoteRepositories, source, filter,
@@ -109,10 +106,13 @@ public class DefaultNPandayArtifactResolver
 
 
 
-    private List intercept( List listeners )
+    private List intercept( List listeners, ArtifactFilter filter )
     {
         if (listeners == null)
             listeners = Lists.newArrayList();
+
+        NPandayResolutionListener listener = new NPandayResolutionListener(this, filter);
+        listener.enableLogging( getLogger() );
 
         listeners.add( listener );
 
@@ -160,9 +160,6 @@ public class DefaultNPandayArtifactResolver
 
     public void initialize() throws InitializationException
     {
-        listener = new NPandayResolutionListener(this);
-        listener.enableLogging( getLogger() );
-
         try
         {
             List list = container.lookupList(

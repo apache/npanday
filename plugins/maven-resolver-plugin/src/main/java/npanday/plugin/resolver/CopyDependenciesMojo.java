@@ -20,6 +20,7 @@
 package npanday.plugin.resolver;
 
 import com.google.common.base.Strings;
+import npanday.ArtifactType;
 import npanday.LocalRepositoryUtil;
 import npanday.PathUtil;
 import npanday.registry.RepositoryRegistry;
@@ -31,10 +32,8 @@ import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
-import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.InversionArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
-import org.apache.maven.artifact.resolver.filter.TypeArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -95,7 +94,7 @@ public class CopyDependenciesMojo
     private NPandayDependencyResolution dependencyResolution;
 
     /**
-     * @parameter default-value="${project.build.directory}\.dependencies"
+     * @parameter default-value="${project.build.directory}\.references"
      */
     private File outputDirectory;
 
@@ -106,9 +105,25 @@ public class CopyDependenciesMojo
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
+        String skipReason = "";
+
+        if ( !skip )
+        {
+            ArtifactType knownType = ArtifactType.getArtifactTypeForPackagingName(
+                project.getPackaging()
+            );
+
+            if ( knownType == null )
+            {
+                skip = true;
+                skipReason =
+                    ", because the current project (type:" + project.getPackaging() + ") is not build with NPanday";
+            }
+        }
+
         if ( skip )
         {
-            getLog().info( "NPANDAY-158-001: Mojo for resolving dependencies was intentionally skipped" );
+            getLog().info( "NPANDAY-158-001: Mojo for copying dependencies was intentionally skipped" + skipReason );
             return;
         }
 
@@ -121,14 +136,9 @@ public class CopyDependenciesMojo
         typeIncludes.add( new DotnetLibraryArtifactFilter() );
         includeFilter.add( typeIncludes );
 
-        if ( !Strings.isNullOrEmpty(includeScope))
+        if ( !Strings.isNullOrEmpty( includeScope ) )
         {
             includeFilter.add( new ScopeArtifactFilter( includeScope ) );
-        }
-
-        if ( !Strings.isNullOrEmpty(excludeScope))
-        {
-            includeFilter.add( new InversionArtifactFilter( new ScopeArtifactFilter( excludeScope ) ) );
         }
 
         Set<Artifact> artifacts;
@@ -140,24 +150,40 @@ public class CopyDependenciesMojo
         }
         catch ( ArtifactResolutionException e )
         {
-            throw new MojoExecutionException( "NPANDAY-158-003: dependency resolution for scope " + includeScope + " failed!", e );
+            throw new MojoExecutionException(
+                "NPANDAY-158-003: dependency resolution for scope " + includeScope + " failed!", e
+            );
         }
 
+        /**
+         * Should be resolved, but then not copied
+         */
+        if ( !Strings.isNullOrEmpty( excludeScope ) )
+        {
+            includeFilter.add( new InversionArtifactFilter( new ScopeArtifactFilter( excludeScope ) ) );
+        }
 
-        for (Artifact dependency : artifacts) {
-            if (!includeFilter.include( dependency )){
+        for ( Artifact dependency : artifacts )
+        {
+            if ( !includeFilter.include( dependency ) )
+            {
+                getLog().debug( "NPANDAY-158-006: dependency " + dependency + " was excluded" );
+
                 continue;
             }
 
-            try {
-                File targetFile = new File(outputDirectory, PathUtil.getPlainArtifactFileName( dependency ));
-                if (!targetFile.exists()) {
-                    getLog().debug("NPANDAY-158-004: copy dependency " +  dependency + " to " + targetFile);
+            try
+            {
+                File targetFile = new File( outputDirectory, PathUtil.getPlainArtifactFileName( dependency ) );
+                if ( !targetFile.exists() )
+                {
+                    getLog().debug( "NPANDAY-158-004: copy dependency " + dependency + " to " + targetFile );
                     FileUtils.copyFile( dependency.getFile(), targetFile );
                 }
             }
-            catch (IOException ioe) {
-                throw new MojoExecutionException("NPANDAY-158-005: Error copying dependency " + dependency, ioe);
+            catch ( IOException ioe )
+            {
+                throw new MojoExecutionException( "NPANDAY-158-005: Error copying dependency " + dependency, ioe );
             }
         }
     }
