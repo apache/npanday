@@ -44,28 +44,7 @@ public final class RubyCompiler
     public List<String> getCommands()
         throws ExecutionException
     {
-        if ( compilerContext == null )
-        {
-            throw new ExecutionException( "NPANDAY-068-000: Compiler has not been initialized with a context" );
-        }
-        List<String> commands = new ArrayList<String>();
-
-        String sourceDirectory = compilerContext.getSourceDirectoryName();
-        File srcDir = new File( sourceDirectory );
-        commands.add( "--" + compilerContext.getTargetArtifactType().getExtension() );
-        for ( String command : compilerContext.getCommands() )
-        {
-            if ( command.startsWith( "main:" ) )
-            {   String className = command.split( "[:]" )[1];
-                File classFile = new File("target/build-sources/" + className);
-                commands.add( "'" + classFile.getAbsolutePath() + "'");
-            }
-            else
-            {
-                commands.add( command );
-            }
-        }
-        return commands;
+        throw new ExecutionException( "NPANDAY-068-001: Ruby support has been discontinued" );
     }
 
 }

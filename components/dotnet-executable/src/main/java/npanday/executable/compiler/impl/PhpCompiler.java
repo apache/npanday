@@ -43,30 +43,7 @@ public final class PhpCompiler
     public List<String> getCommands()
         throws ExecutionException
     {
-        List<Artifact> resources = compilerContext.getLibraryDependencies();
-
-        String sourceDirectory = compilerContext.getSourceDirectoryName();
-        String artifactFilePath = compilerContext.getArtifact().getAbsolutePath();
-        String targetArtifactType = compilerContext.getTargetArtifactType().getTargetCompileType();
-
-        List<String> commands = new ArrayList<String>();
-        commands.add( "/out:" + artifactFilePath );
-        commands.add( "/target:" + targetArtifactType );
-
-        if ( !resources.isEmpty() )
-        {
-            for ( Artifact artifact : resources )
-            {
-                String path = artifact.getFile().getAbsolutePath();
-                commands.add( "/reference:" + path );
-            }
-        }
-        String[] files = FileUtils.getFilesFromExtension( sourceDirectory, new String[]{"php"} );
-        for ( String file : files )
-        {
-            commands.add( file );
-        }
-        return commands;
+        throw new ExecutionException( "NPANDAY-162-001: Php support has been discontinued" );
     }
 
 }

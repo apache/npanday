@@ -42,11 +42,23 @@ public class CompilerConfig
 
     private File localRepository;
 
-    private List<String> includeSources;
+    private List<String> deprecatedIncludeSourcesConfiguration;
 
     private File outputDirectory;
 
     private File assemblyPath;
+
+    private String[] includes;
+
+    private String[] excludes;
+
+    private String[] testIncludes;
+
+    private String[] testExcludes;
+
+    private String language;
+
+    private String languageFileExtension;
 
 
     /**
@@ -131,21 +143,21 @@ public class CompilerConfig
 
 
     /**
-     * Sets Include Sources
+     * @deprecated Rather use setSourceExcludes + setSourceIncludes!
      *
-     * @param includeSources sources file List
+     * @param deprecatedIncludeSourcesConfiguration sources file List
      */
-    public void setIncludeSources( List<String> includeSources )
+    public void setDeprecatedIncludeSourcesConfiguration( List<String> deprecatedIncludeSourcesConfiguration )
     {
-        this.includeSources = includeSources;
+        this.deprecatedIncludeSourcesConfiguration = deprecatedIncludeSourcesConfiguration;
     }
 
     /**
      * Gets Include Sources
      */
-    public List<String> getIncludeSources()
+    public List<String> getDeprecatedIncludeSourcesConfiguration()
     {
-        return includeSources;
+        return deprecatedIncludeSourcesConfiguration;
     }
 
     /**
@@ -180,5 +192,49 @@ public class CompilerConfig
     public File getAssemblyPath()
     {
         return assemblyPath;
+    }
+
+    public void setSourcePatterns( String[] includes, String[] excludes, String[] testIncludes, String[] testExcludes)
+    {
+        this.includes = includes;
+        this.excludes = excludes;
+        this.testIncludes = testIncludes;
+        this.testExcludes = testExcludes;
+    }
+
+    public String[] getIncludes()
+    {
+        return includes;
+    }
+
+    public String[] getExcludes()
+    {
+        return excludes;
+    }
+
+    public String[] getTestIncludes()
+    {
+        return testIncludes;
+    }
+
+    public String[] getTestExcludes()
+    {
+        return testExcludes;
+    }
+
+    public void setLanguage( String language, String languageFileExtension )
+    {
+       this.language = language;
+        this.languageFileExtension = languageFileExtension;
+    }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public String getLanguageFileExtension()
+    {
+        return languageFileExtension;
     }
 }

@@ -20,12 +20,13 @@ package npanday.executable.impl;
  */
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
 import npanday.PlatformUnsupportedException;
 import npanday.RepositoryNotFoundException;
-import npanday.executable.CommandExecutor;
 import npanday.executable.ExecutionException;
 import npanday.executable.compiler.CompilerCapability;
 import npanday.executable.compiler.CompilerConfig;
@@ -53,8 +54,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 /**
  * Provides an implementation of the Compiler Context.
  *
@@ -65,6 +64,9 @@ public final class CompilerContextImpl
     extends ExecutableContextImpl
     implements CompilerContext, LogEnabled
 {
+
+    private String NEW_LINE = System.getProperty( "line.separator" );
+
     /**
      * The maven project
      */
@@ -196,9 +198,10 @@ public final class CompilerContextImpl
 
     public KeyInfo getKeyInfo()
     {
-        if ( ( compilerCapability.getVendorInfo().getVendor().equals( Vendor.MICROSOFT )
-            && compilerCapability.getVendorInfo().getFrameworkVersion().equals( "1.1.4322" ) )
-            || config.getKeyInfo() == null )
+        if ( (
+            compilerCapability.getVendorInfo().getVendor().equals( Vendor.MICROSOFT )
+                && compilerCapability.getVendorInfo().getFrameworkVersion().equals( "1.1.4322" )
+        ) || config.getKeyInfo() == null )
         {
             return KeyInfo.Factory.createDefaultKeyInfo();
         }
@@ -217,11 +220,15 @@ public final class CompilerContextImpl
 
     private void addProjectArtifactForTestCompile( List<Artifact> libraries )
     {
-        if ( config.isTestCompile() && ( ArtifactTypeHelper.isDotnetLibrary( config.getArtifactType() )
-            || ArtifactTypeHelper.isDotnetMavenPlugin( config.getArtifactType() ) )
-            && project.getArtifact().getFile() != null && project.getArtifact().getFile().exists()
-            && !libraries.contains( project.getArtifact() ) && !ArtifactTypeHelper.isDotnetModule(
-            project.getArtifact().getType() ) )
+        if ( config.isTestCompile() && (
+            ArtifactTypeHelper.isDotnetLibrary( config.getArtifactType() ) || ArtifactTypeHelper.isDotnetMavenPlugin(
+                config.getArtifactType()
+            )
+        ) && project.getArtifact().getFile() != null && project.getArtifact().getFile().exists() && !libraries.contains(
+            project.getArtifact()
+        ) && !ArtifactTypeHelper.isDotnetModule(
+            project.getArtifact().getType()
+        ) )
         {
             libraries.add( project.getArtifact() );
         }
@@ -233,14 +240,15 @@ public final class CompilerContextImpl
         {
             Artifact artifact = (Artifact) i.next();
 
-            if (!new ScopeArtifactFilter( isTestCompile() ? "test" : "compile" ).include( artifact ))
+            if ( !new ScopeArtifactFilter( isTestCompile() ? "test" : "compile" ).include( artifact ) )
+            {
                 continue;
+            }
 
             // TODO: use isAddedToClassPath instead? May need to annotate types
-            if (
-                !ArtifactTypeHelper.isDotnetLibrary( artifact.getType() )
-                && !ArtifactTypeHelper.isDotnetExecutable( artifact.getType() )
-                && !ArtifactTypeHelper.isDotnetAnyGac( artifact.getType() ) )
+            if ( !ArtifactTypeHelper.isDotnetLibrary( artifact.getType() ) && !ArtifactTypeHelper.isDotnetExecutable(
+                artifact.getType()
+            ) && !ArtifactTypeHelper.isDotnetAnyGac( artifact.getType() ) )
             {
                 continue;
             }
@@ -254,9 +262,11 @@ public final class CompilerContextImpl
             for ( Iterator j = project.getDependencies().iterator(); j.hasNext() && !found; )
             {
                 Dependency dependency = (Dependency) j.next();
-                if ( dependency.getGroupId().equals( artifact.getGroupId() )
-                    && dependency.getArtifactId().equals( artifact.getArtifactId() ) && dependency.getVersion().equals(
-                    artifact.getBaseVersion() ) )
+                if ( dependency.getGroupId().equals( artifact.getGroupId() ) && dependency.getArtifactId().equals(
+                    artifact.getArtifactId()
+                ) && dependency.getVersion().equals(
+                    artifact.getBaseVersion()
+                ) )
                 {
                     found = true;
                 }
@@ -303,11 +313,11 @@ public final class CompilerContextImpl
         return compilerCapability;
     }
 
-    public String getSourceDirectoryName()
+    public File getGeneratedSourcesDirectory()
     {
         return ( config.isTestCompile() )
-            ? project.getBuild().getDirectory() + File.separator + "build-test-sources"
-            : project.getBuild().getDirectory() + File.separator + "build-sources";
+            ? new File( project.getBuild().getDirectory(), "build-test-sources" )
+            : new File( project.getBuild().getDirectory(), "build-sources" );
     }
 
     public File getTargetDirectory()
@@ -322,8 +332,7 @@ public final class CompilerContextImpl
      * @return
      * @throws InvalidArtifactException
      */
-    public File getArtifact()
-        throws InvalidArtifactException
+    public File getArtifact() throws InvalidArtifactException
     {
         ArtifactType artifactType = config.getArtifactType();
         if ( artifactType == null || artifactType.equals( ArtifactType.NULL ) )
@@ -331,7 +340,8 @@ public final class CompilerContextImpl
             throw new InvalidArtifactException( "NPANDAY-061-001: Artifact Type cannot be null" );
         }
 
-        //TODO: The test-plugin has a dependency on this fileName/dir. If we change it here, it will break the plugin. Fix this encapsulation issue.
+        //TODO: The test-plugin has a dependency on this fileName/dir. If we change it here,
+        // it will break the plugin. Fix this encapsulation issue.
         String fileName = ( config.isTestCompile() )
             ? project.getBuild().getDirectory() + File.separator + project.getArtifactId() + "-test.dll"
             : project.getBuild().getDirectory() + File.separator + project.getArtifactId() + "."
@@ -339,26 +349,25 @@ public final class CompilerContextImpl
         return new File( fileName );
     }
 
-    public CompilerExecutable getCompilerExecutable()
-        throws ExecutionException
+    public CompilerExecutable getCompilerExecutable() throws ExecutionException
     {
-        return (CompilerExecutable)getNetExecutable();
+        return (CompilerExecutable) getNetExecutable();
     }
 
-    public Repository find( String repositoryName )
-        throws RepositoryNotFoundException
+    public Repository find( String repositoryName ) throws RepositoryNotFoundException
     {
         Repository repository = repositoryRegistry.find( repositoryName );
         if ( repository == null )
         {
             throw new RepositoryNotFoundException(
-                "NPANDAY-061-002: Could not find repository: Name = " + repositoryName );
+                "NPANDAY-061-002: Could not find repository: Name = " + repositoryName
+            );
         }
         return repository;
     }
 
-    public void init( CompilerCapability capability, CompilerConfig config, MavenProject project )
-        throws PlatformUnsupportedException
+    public void init( CompilerCapability capability, CompilerConfig config, MavenProject project ) throws
+        PlatformUnsupportedException
     {
 
         this.project = project;
@@ -384,10 +393,14 @@ public final class CompilerContextImpl
                 {
                     modules.add( artifact );
                 }
-                else if ( ( artifactType != ArtifactType.NULL && (
-                    StringUtils.equals( artifactType.getTargetCompileType(), "library" )
-                        || artifactType.getExtension().equals( "dll" ) || artifactType.getExtension().equals(
-                        "exe" ) ) ) || type.equals( "jar" ) )
+                else if ( (
+                    artifactType != ArtifactType.NULL && (
+                        StringUtils.equals( artifactType.getTargetCompileType(), "library" )
+                            || artifactType.getExtension().equals( "dll" ) || artifactType.getExtension().equals(
+                            "exe"
+                        )
+                    )
+                ) || type.equals( "jar" ) )
                 {
                     libraries.add( artifact );
                 }
@@ -397,9 +410,13 @@ public final class CompilerContextImpl
                     moveInteropDllToBuildDirectory( artifact );
                     libraries.add( artifact );
                 }
-                else if ( ( artifactType != null && ( "library".equals( artifactType.getTargetCompileType() )
-                    || "dll".equals( artifactType.getExtension() ) || "exe".equals( artifactType.getExtension() ) ) )
-                    || "jar".equals( type ) )
+                else if ( (
+                    artifactType != null && (
+                        "library".equals( artifactType.getTargetCompileType() ) || "dll".equals(
+                            artifactType.getExtension()
+                        ) || "exe".equals( artifactType.getExtension() )
+                    )
+                ) || "jar".equals( type ) )
                 {
                     libraries.add( artifact );
                 }
@@ -409,11 +426,12 @@ public final class CompilerContextImpl
 
         String basedir = project.getBuild().getDirectory() + File.separator + "assembly-resources" + File.separator;
         linkedResources = new File( basedir, "linkresource" ).exists() ? Arrays.asList(
-            new File( basedir, "linkresource" ).listFiles() ) : new ArrayList<File>();
+            new File( basedir, "linkresource" ).listFiles()
+        ) : new ArrayList<File>();
         getEmbeddedResources( new File( basedir, "resource" ) );
-        win32resources = new File( basedir, "win32res" ).exists()
-            ? Arrays.asList( new File( basedir, "win32res" ).listFiles() )
-            : new ArrayList<File>();
+        win32resources = new File( basedir, "win32res" ).exists() ? Arrays.asList(
+            new File( basedir, "win32res" ).listFiles()
+        ) : new ArrayList<File>();
         File win32IconDir = new File( basedir, "win32icon" );
         if ( win32IconDir.exists() )
         {
@@ -421,8 +439,8 @@ public final class CompilerContextImpl
             if ( icons.length > 1 )
             {
                 throw new PlatformUnsupportedException(
-                    "NPANDAY-061-007: There is more than one win32icon in resource directory: Number = "
-                        + icons.length );
+                    "NPANDAY-061-007: There is more than one win32icon in resource directory: Number = " + icons.length
+                );
             }
             if ( icons.length == 1 )
             {
@@ -431,10 +449,215 @@ public final class CompilerContextImpl
         }
     }
 
-    public List<String> getIncludeSources()
+    public Set<File> expandIncludedSourceFiles()
     {
-        // TODO: directory scanner should run already here!
-        return config.getIncludeSources();
+        Set<File> files = Sets.newHashSet();
+        if ( config.getDeprecatedIncludeSourcesConfiguration() != null )
+        {
+            for ( String file : config.getDeprecatedIncludeSourcesConfiguration() )
+            {
+                files.add( new File( file ) );
+            }
+        }
+
+        files.addAll( expandSources( getGeneratedSourcesDirectory() ) );
+
+        String defaultSourceRoot = isTestCompile() ? project.getBuild().getTestSourceDirectory() : project.getBuild().getSourceDirectory();
+
+        Set<String> additionalRoots = Sets.newHashSet();
+        List bareRoots = isTestCompile() ? project.getTestCompileSourceRoots() : project.getCompileSourceRoots();
+
+        if ( bareRoots != null) {
+            for(Object root : project.getCompileSourceRoots()){
+                if (!root.equals( defaultSourceRoot ) ){
+                    additionalRoots.add( (String)root );
+                }
+            }
+        }
+
+        if ( additionalRoots.size() > 0 )
+        {
+           getLogger().info(
+                "NPANDAY-161-004: Adding additional compile source roots: " + additionalRoots
+            );
+
+            for(String root : additionalRoots){
+                files.addAll( expandSources( new File( root ) ) );
+            }
+        }
+
+        if ( !isSourceAndTestsTogether() )
+        {
+            files.addAll( isTestCompile() ? expandTestSourceFilePatterns() : expandMainSourceFilePatterns());
+        }
+        else
+        {
+            List<File> mainSources = expandMainSourceFilePatterns();
+            List<File> testSources = expandTestSourceFilePatterns();
+
+            getLogger().info(
+                "NPANDAY-161-002: Since source and tests reside in same folder, "
+                    + " test sources will be excluded from main sources and vice versa"
+            );
+
+            if ( isTestCompile() )
+            {
+                List<File> sources = Lists.newArrayList();
+                sources.addAll( testSources );
+                sources.removeAll( mainSources );
+                files.addAll( sources );
+            }
+            else
+            {
+                List<File> sources = Lists.newArrayList();
+                sources.addAll( mainSources );
+                sources.removeAll( testSources );
+                files.addAll( sources );
+            }
+        }
+
+        getLogger().info( "NPANDAY-161-004: Found " + files.size() + " source files to compile" );
+
+        return files;
+    }
+
+    private List<File> expandMainSourceFilePatterns()
+    {
+        getLogger().debug(
+            "NPANDAY-161-007: Expanding main sources"
+        );
+        List<String> includes = Lists.newArrayList();
+        if ( config.getIncludes() != null )
+        {
+            includes.addAll( Lists.newArrayList( config.getIncludes() ) );
+        }
+        List<String> excludes = Lists.newArrayList();
+        if ( config.getExcludes() != null )
+        {
+            excludes.addAll( Lists.newArrayList( config.getExcludes() ) );
+        }
+
+        if ( includes.size() == 0 )
+        {
+            includes.add( "**/*." + config.getLanguageFileExtension() );
+        }
+
+        //target files
+        excludes.add( "**/obj/**" );
+        excludes.add( "**/bin/**" );
+        excludes.add( "**/target/**" );
+
+        File root = new File( project.getBuild().getSourceDirectory() );
+
+        return expandSources( root, includes, excludes );
+    }
+
+    private List<File> expandTestSourceFilePatterns()
+    {
+        getLogger().debug(
+            "NPANDAY-161-008: Expanding test sources"
+        );
+        List<String> includes = Lists.newArrayList();
+        if ( config.getTestIncludes() != null )
+        {
+            includes.addAll( Lists.newArrayList( config.getTestIncludes() ) );
+        }
+        List<String> excludes = Lists.newArrayList();
+        if ( config.getTestExcludes() != null )
+        {
+            excludes.addAll( Lists.newArrayList( config.getTestExcludes() ) );
+        }
+
+        if ( includes.size() == 0 )
+        {
+            if ( !isSourceAndTestsTogether() )
+            {
+                includes.add( "**/*." + config.getLanguageFileExtension() );
+            }
+            else
+            {
+                getLogger().info(
+                    "NPANDAY-161-006: Since source and tests reside in same folder, "
+                        + "and no default includes are stated, conventions for finding tests will be applied."
+                );
+                includes.add( "**/Test/*" + config.getLanguageFileExtension() );
+                includes.add( "**/Tests/*" + config.getLanguageFileExtension() );
+                includes.add( "**/*Tests." + config.getLanguageFileExtension() );
+                includes.add( "**/*Test." + config.getLanguageFileExtension() );
+            }
+        }
+
+        //target files
+        excludes.add( "**/obj/**" );
+        excludes.add( "**/bin/**" );
+        excludes.add( "**/target/**" );
+
+        File root = new File( project.getBuild().getTestSourceDirectory() );
+
+        return expandSources( root, includes, excludes );
+    }
+
+    private List<File> expandSources( File directory )
+    {
+        return expandSources( directory, Lists.newArrayList( "**/*." + config.getLanguageFileExtension() ), null );
+    }
+
+    private List<File> expandSources( File directory, Iterable<String> includes, Iterable<String> excludes )
+    {
+        if ( !directory.exists() || directory.list().length == 0 )
+        {
+            getLogger().debug( "NPANDAY-161-000: " + directory + " is empty; no sources found" );
+            return Lists.newArrayList();
+        }
+
+        DirectoryScanner scanner = createScanner( directory, includes, excludes );
+        scanner.scan();
+
+        List<File> files = Lists.newArrayList();
+        for ( String fs : scanner.getIncludedFiles() )
+        {
+
+            if ( !fs.endsWith( "." + config.getLanguageFileExtension() ) )
+            {
+                continue;
+            }
+
+            files.add( new File( directory, fs ) );
+        }
+
+        if ( getLogger().isDebugEnabled() )
+        {
+            getLogger().debug(
+                "NPANDAY-161-001: scanned for source files:" + NEW_LINE + " - directory: " + directory.getAbsolutePath()
+                    + NEW_LINE + " - includes: " + includes + NEW_LINE + " - excludes: " + excludes + NEW_LINE
+                    + " - included (*.*): " + scanner.getIncludedFiles().length + NEW_LINE + " - included sources (*."
+                    + config.getLanguageFileExtension() + "): " + files.size() + NEW_LINE + " - excluded: "
+                    + scanner.getExcludedFiles().length + NEW_LINE + " - ignored: "
+                    + scanner.getNotIncludedFiles().length
+            );
+        }
+
+        return files;
+    }
+
+    private DirectoryScanner createScanner( File root, Iterable<String> includes, Iterable<String> excludes )
+    {
+        DirectoryScanner scanner = new DirectoryScanner();
+        scanner.setBasedir( root );
+
+        if ( includes != null )
+        {
+            scanner.setIncludes( Iterables.toArray( includes, String.class ) );
+        }
+        if ( excludes != null )
+        {
+            scanner.setExcludes( Iterables.toArray( excludes, String.class ) );
+        }
+
+        // TODO: NPANDAY-210 Maven is usually case sensitive, right?
+        scanner.setCaseSensitive( false );
+        scanner.addDefaultExcludes();
+        return scanner;
     }
 
     public File getOutputDirectory()
@@ -471,8 +694,7 @@ public final class CompilerContextImpl
         this.embeddedResourceArgs = embeddedResourceArgs;
     }
 
-    private void moveInteropDllToBuildDirectory( Artifact artifact )
-        throws PlatformUnsupportedException
+    private void moveInteropDllToBuildDirectory( Artifact artifact ) throws PlatformUnsupportedException
     {
         try
         {
@@ -500,5 +722,10 @@ public final class CompilerContextImpl
         {
             throw new PlatformUnsupportedException( e );
         }
+    }
+
+    public boolean isSourceAndTestsTogether()
+    {
+        return project.getBuild().getSourceDirectory().equals( project.getBuild().getTestSourceDirectory() );
     }
 }

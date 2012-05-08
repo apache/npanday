@@ -19,6 +19,7 @@ package npanday.plugin.compile;
  * under the License.
  */
 
+import com.google.common.collect.Lists;
 import npanday.ArtifactType;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerRequirement;
@@ -27,6 +28,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Maven Mojo for compiling Class files to the .NET Intermediate Language.
@@ -89,8 +91,11 @@ public final class CompilerMojo
             compilerConfig.setOutputDirectory(outputDirectory);
         }
 
+        compilerConfig.setLanguage(language, getLanguageFileExtension());
 
+        compilerConfig.setSourcePatterns(includes, excludes, testIncludes, testExcludes);
 
+        // TODO: NPANDAY-210 maybe this should be removed?
         if ( includeSources != null && includeSources.length != 0 )
         {
             ArrayList<String> srcs = new ArrayList<String>();
@@ -102,7 +107,7 @@ public final class CompilerMojo
                 }
             }
 
-          	compilerConfig.setIncludeSources(srcs);
+          	compilerConfig.setDeprecatedIncludeSourcesConfiguration( srcs );
         }
 
         compilerConfig.setCommands( getParameters() );

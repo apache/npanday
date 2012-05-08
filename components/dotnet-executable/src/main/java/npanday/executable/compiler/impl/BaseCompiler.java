@@ -105,15 +105,6 @@ abstract class BaseCompiler
      */
     public ExecutionResult execute() throws ExecutionException, PlatformUnsupportedException
     {
-        if ( compilerContext.getIncludeSources() == null && !(
-            new File(
-                compilerContext.getSourceDirectoryName()
-            ).exists()
-        ) )
-        {
-            logger.info( "NPANDAY-068-002: No source files to compile." );
-            return null;
-        }
         logger.info(
             "NPANDAY-068-003: Compiling Artifact: Vendor = " + compilerContext.getVendor() + ", Language = "
                 + compilerContext.getVendor() + ", Assembly Name = " + compilerContext.getArtifact().getAbsolutePath()

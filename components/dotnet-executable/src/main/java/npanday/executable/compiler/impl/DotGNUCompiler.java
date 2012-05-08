@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Compiler for DotGNU.
@@ -50,14 +51,12 @@ public final class DotGNUCompiler
         List<Artifact> resources = compilerContext.getLibraryDependencies();
         List<Artifact> modules = compilerContext.getDirectModuleDependencies();
 
-        String sourceDirectory = compilerContext.getSourceDirectoryName();
         String artifactFilePath = compilerContext.getArtifact().getAbsolutePath();
         String targetArtifactType = compilerContext.getTargetArtifactType().getTargetCompileType();
 
         List<String> commands = new ArrayList<String>();
         commands.add( "/out:" + artifactFilePath );
         commands.add( "/target:" + targetArtifactType );
-        commands.add( "/recurse:" + sourceDirectory + File.separator + "**" );
         if ( !modules.isEmpty() )
         {
             StringBuffer sb = new StringBuffer();
@@ -89,6 +88,17 @@ public final class DotGNUCompiler
         {
             commands.addAll( compilerContext.getCommands() );
         }
+
+        Set<File> sourceFiles = compilerContext.expandIncludedSourceFiles();
+        if( sourceFiles != null && !sourceFiles.isEmpty() )
+        {
+            for(File includeSource : sourceFiles )
+            {
+                // TODO: consider relative paths
+                commands.add(includeSource.getAbsolutePath());
+            }
+        }
+
         //TODO: Apply command filter
         return commands;
     }

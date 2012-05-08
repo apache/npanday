@@ -430,18 +430,49 @@ public abstract class AbstractCompilerMojo
     protected String[] testImports;
 
     /**
-     * Included Source Codes
+     * Included source files
      *
      * @parameter expression = "${includeSources}"
+     * @deprecated Use includes + excludes instead!
      */
     protected File[] includeSources;
 
     /**
-     * Included Source Codes
+     * Included test source files
      *
      * @parameter expression = "${testIncludeSources}"
+     * @deprecated Use includes + excludes instead!
      */
     protected File[] testIncludeSources;
+
+
+    /**
+     * Source file patterns to be included in compile.
+     *
+     * @parameter
+     */
+    protected String[] includes;
+
+    /**
+     * Source file patterns to be included in compile.
+     *
+     * @parameter
+     */
+    protected String[] excludes;
+
+    /**
+     * Source file patterns to be included in compile.
+     *
+     * @parameter
+     */
+    protected String[] testIncludes;
+
+    /**
+     * Source file patterns to be included in compile.
+     *
+     * @parameter
+     */
+    protected String[] testExcludes;
 
     /**
      * Embed the specified resource
@@ -1372,6 +1403,18 @@ public abstract class AbstractCompilerMojo
             {
                 throw new MojoExecutionException( "NPANDAY-902-010: Problem generating assembly attributes class", e );
             }
+        }
+    }
+
+    public String getLanguageFileExtension() throws MojoExecutionException
+    {
+        try
+        {
+            return assemblerContext.getClassExtensionFor( language );
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException( "NPANDAY-902-011: Language is not supported: Language = " + language, e );
         }
     }
 

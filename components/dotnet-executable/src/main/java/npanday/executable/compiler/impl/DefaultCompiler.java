@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A default compiler that can be used in most cases.
@@ -67,7 +68,6 @@ public final class DefaultCompiler
         List<Artifact> references = compilerContext.getDirectLibraryDependencies();
         List<Artifact> modules = compilerContext.getDirectModuleDependencies();
 
-        String sourceDirectory = compilerContext.getSourceDirectoryName();
         String artifactFilePath = compilerContext.getArtifact().getAbsolutePath();
         String targetArtifactType = compilerContext.getTargetArtifactType().getTargetCompileType();
 
@@ -92,10 +92,6 @@ public final class DefaultCompiler
 
 
         commands.add( "/target:" + targetArtifactType );
-        if(compilerContext.getIncludeSources() == null || compilerContext.getIncludeSources().isEmpty() )
-        {
-            commands.add( "/recurse:" + sourceDirectory + File.separator + "**");
-        }
         if ( modules != null && !modules.isEmpty() )
         {
             StringBuffer sb = new StringBuffer();
@@ -272,50 +268,13 @@ public final class DefaultCompiler
 
         FileUtils.mkdir(TempDir);
 
-        // TODO: move includeSources expansion to the compiler context (handle excludes there)
-        if(compilerContext.getIncludeSources() != null && !compilerContext.getIncludeSources().isEmpty() )
+        Set<File> sourceFiles = compilerContext.expandIncludedSourceFiles();
+        if( sourceFiles != null && !sourceFiles.isEmpty() )
         {
-            int folderCtr=0;
-            for(String includeSource : compilerContext.getIncludeSources())
+            for(File includeSource : sourceFiles )
             {
-
-                String[] sourceTokens = includeSource.replace('\\', '/').split("/");
-
-                String lastToken = sourceTokens[sourceTokens.length-1];
-
-                if(fileExt=="")
-                {
-
-                    String[] extToken = lastToken.split( "\\." );
-                    fileExt = "."+extToken[extToken.length-1];
-                }
-
-                try
-                {
-                    String fileToCheck = TempDir+File.separator+lastToken;
-                    if(FileUtils.fileExists( fileToCheck ))
-                    {
-                        String subTempDir = TempDir+File.separator+folderCtr+File.separator;
-                        FileUtils.mkdir( subTempDir );
-                        FileUtils.copyFileToDirectory( includeSource, subTempDir);
-                        folderCtr++;
-
-                    }
-                    else
-                    {
-                        FileUtils.copyFileToDirectory( includeSource, TempDir);
-                    }
-                }
-                catch(Exception e)
-                {
-                    System.out.println(e.getMessage());
-                }
-                //part of original code.
-                //filteredCommands.add(includeSource);
+                filteredCommands.add(includeSource.getAbsolutePath());
             }
-            String recurseCmd = "/recurse:" + TempDir+File.separator + "*" + fileExt + "";
-            filteredCommands.add(recurseCmd);
-
         }
         if ( logger.isDebugEnabled() )
         {

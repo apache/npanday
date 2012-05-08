@@ -29,6 +29,7 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Interface defining compiler services.
@@ -97,14 +98,6 @@ public interface CompilerContext
      */
     List<Artifact> getModuleDependencies();
 
-    /**
-     * Returns the source directory (or test source directory) path of the class files. These are defined in the pom.xml
-     * by the properties ${build.sourceDirectory} or ${build.testSourceDirectory}.
-     *
-     * @return Returns the source directory (or test source directory) path of the class files.
-     */
-    String getSourceDirectoryName();
-    
     File getTargetDirectory();
 
     /**
@@ -189,7 +182,7 @@ public interface CompilerContext
     /**
      * The list of sources to be included in the compilation.
      */
-    List<String> getIncludeSources();
+    Set<File> expandIncludedSourceFiles();
 
     /**
      * The directory to store the compile output too.

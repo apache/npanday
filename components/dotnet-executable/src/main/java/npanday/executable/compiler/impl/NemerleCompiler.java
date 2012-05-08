@@ -23,8 +23,10 @@ import npanday.executable.ExecutionException;
 import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.FileUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -48,7 +50,6 @@ public final class NemerleCompiler
         List<Artifact> resources = compilerContext.getLibraryDependencies();
         List<Artifact> modules = compilerContext.getDirectModuleDependencies();
 
-        String sourceDirectory = compilerContext.getSourceDirectoryName();
         String artifactFilePath = compilerContext.getArtifact().getAbsolutePath();
         String targetArtifactType = compilerContext.getTargetArtifactType().getTargetCompileType();
 
@@ -74,11 +75,17 @@ public final class NemerleCompiler
                 commands.add( "/reference:" + path );
             }
         }
-        String[] files = FileUtils.getFilesFromExtension( sourceDirectory, new String[]{"n"} );
-        for ( String file : files )
+
+        Set<File> sourceFiles = compilerContext.expandIncludedSourceFiles();
+        if( sourceFiles != null && !sourceFiles.isEmpty() )
         {
-            commands.add( file );
+            for(File includeSource : sourceFiles )
+            {
+                // TODO: consider relative paths
+                commands.add( includeSource.getAbsolutePath() );
+            }
         }
+
         commands.addAll( compilerContext.getCommands() );
         return commands;
     }

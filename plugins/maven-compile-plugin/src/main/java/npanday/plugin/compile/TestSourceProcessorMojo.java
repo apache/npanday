@@ -42,38 +42,6 @@ import java.util.ArrayList;
 public class TestSourceProcessorMojo
     extends AbstractMojo
 {
-
-    /**
-     * Source directory containing the copied test class files.
-     *
-     * @parameter expression = "${sourceDirectory}" default-value="${project.build.testSourceDirectory}"
-     * @required
-     */
-    private File sourceDirectory;
-
-    /**
-     * Output directory for the test sources.
-     *
-     * @parameter expression = "${outputDirectory}" default-value="${project.build.directory}/build-test-sources"
-     * @required
-     */
-    private File outputDirectory;
-
-    /**
-     * @parameter expression = "${testExcludes}"
-     */
-    private String[] testExcludes;
-    
-    /**
-     * @parameter expression = "${includes}"
-     */
-    private String[] includes;    
-    
-    /**
-     * @component
-     */
-    private AssemblerContext assemblerContext;
-    
     /**
      * .NET Language. The default value is <code>C_SHARP</code>. Not case or white-space sensitive.
      *
@@ -85,70 +53,9 @@ public class TestSourceProcessorMojo
     public void execute()
         throws MojoExecutionException
     {
-        long startTime = System.currentTimeMillis();
-
-        if ( !sourceDirectory.exists() )
-        {
-            getLog().info( "NPANDAY-905-001: No test source files to copy" );
-            return;
-        }
-        DirectoryScanner directoryScanner = new DirectoryScanner();
-        directoryScanner.setBasedir( sourceDirectory.getAbsolutePath() );
-
-        // TODO: this should use test source includes/excludes
-
-        List<String> excludeList = new ArrayList<String>();
-        excludeList.add( "*.suo" );
-        excludeList.add( "*.csproj" );
-        excludeList.add( "*.vbproj" );
-        excludeList.add( "*.sln" );
-        excludeList.add( "obj/**" );
-        excludeList.add( "bin/**" );
-        excludeList.add( "target/**" );
-        
-        List<String> includeList = new ArrayList<String>();
-        try
-        {
-            includeList.add( "**/*." + assemblerContext.getClassExtensionFor( language ) );
-        }
-        catch ( PlatformUnsupportedException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-904-003: Language is not supported: Language = " + language, e );
-        }
-        for (int i = 0; i < includes.length; ++i)
-        {
-            includeList.add(includes[i]);
-        }
-        directoryScanner.setIncludes( includeList.toArray( includes ) );
-        
-        for ( int i = 0; i < testExcludes.length; ++i )
-        {
-            excludeList.add( testExcludes[i] );
-        }
-        directoryScanner.setExcludes( excludeList.toArray( new String[excludeList.size()] ) );
-
-        directoryScanner.addDefaultExcludes();
-        directoryScanner.scan();
-        String[] files = directoryScanner.getIncludedFiles();
         getLog().info(
-            "NPANDAY-905-002: Copying test source files: From = " + sourceDirectory + ",  To = " + outputDirectory );
-        for ( String file : files )
-        {
-            try
-            {
-                File sourceFile = new File( sourceDirectory, file );
-                File targetFile = new File( outputDirectory, file );
-                if ( sourceFile.lastModified() > targetFile.lastModified() )
-                {
-                    FileUtils.copyFile( sourceFile, targetFile );
-                }
-            }
-            catch ( IOException e )
-            {
-                throw new MojoExecutionException( "NPANDAY-905-000: Unable to process test sources", e );
-            }
-        }
-        long endTime = System.currentTimeMillis();
-        getLog().info( "Mojo Execution Time = " + ( endTime - startTime ) );
+            "NPANDAY-905-002: Copying test source files has been skipped (see NPANDAY-210) - We could allow filtering of "
+                + "test sources here, though!"
+        );
     }
 }

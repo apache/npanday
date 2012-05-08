@@ -19,7 +19,10 @@ package npanday.plugin.compile;
  * under the License.
  */
 
+import com.google.common.collect.Lists;
 import npanday.ArtifactType;
+import npanday.PlatformUnsupportedException;
+import npanday.assembler.AssemblerContext;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.executable.compiler.KeyInfo;
@@ -27,6 +30,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Compiles test classes.
@@ -39,7 +43,6 @@ import java.util.ArrayList;
 public final class TestCompilerMojo
     extends AbstractCompilerMojo
 {
-
     /**
      * Compiles the class files.
      *
@@ -63,9 +66,6 @@ public final class TestCompilerMojo
 
     }
 
-
-
-
     protected void initializeDefaults()
     {
         if ( testLanguage == null )
@@ -85,9 +85,6 @@ public final class TestCompilerMojo
 
     }
 
-
-
-
     protected CompilerRequirement getCompilerRequirement() throws MojoExecutionException
     {
         return new CompilerRequirement(
@@ -106,10 +103,6 @@ public final class TestCompilerMojo
         compilerConfig.setTestCompile( true );
         compilerConfig.setLocalRepository( localRepository );
 
-
-
-
-
         if ( testKeyfile != null )
         {
             KeyInfo keyInfo = KeyInfo.Factory.createDefaultKeyInfo();
@@ -117,8 +110,11 @@ public final class TestCompilerMojo
             compilerConfig.setKeyInfo( keyInfo );
         }
 
+        compilerConfig.setLanguage(language, getLanguageFileExtension());
 
+        compilerConfig.setSourcePatterns(includes, excludes, testIncludes, testExcludes);
 
+        // TODO: NPANDAY-210 maybe this should be removed?
         if ( testIncludeSources != null && testIncludeSources.length != 0 )
         {
             ArrayList<String> srcs = new ArrayList<String>();
@@ -130,7 +126,7 @@ public final class TestCompilerMojo
                 }
             }
 
-          	compilerConfig.setIncludeSources(srcs);
+          	compilerConfig.setDeprecatedIncludeSourcesConfiguration( srcs );
         }
 
 
@@ -311,7 +307,5 @@ public final class TestCompilerMojo
 
         return params;
     }
-
-
 }
 
