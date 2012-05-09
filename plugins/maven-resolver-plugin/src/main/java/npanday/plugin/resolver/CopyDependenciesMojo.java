@@ -175,10 +175,15 @@ public class CopyDependenciesMojo
             try
             {
                 File targetFile = new File( outputDirectory, PathUtil.getPlainArtifactFileName( dependency ) );
-                if ( !targetFile.exists() )
+                if ( !targetFile.exists()
+                    || targetFile.lastModified() != dependency.getFile().lastModified()
+                    || targetFile.length() != dependency.getFile().length() )
                 {
-                    getLog().debug( "NPANDAY-158-004: copy dependency " + dependency + " to " + targetFile );
+                    getLog().info( "NPANDAY-158-004: copy dependency " + dependency + " to " + targetFile );
                     FileUtils.copyFile( dependency.getFile(), targetFile );
+                }
+                else{
+                    getLog().debug( "NPANDAY-158-007: dependency " + dependency + " is yet up to date" );
                 }
             }
             catch ( IOException ioe )
