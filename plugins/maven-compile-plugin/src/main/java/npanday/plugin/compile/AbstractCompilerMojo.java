@@ -1187,7 +1187,7 @@ public abstract class AbstractCompilerMojo
                 generateAssemblyAttributesIfNecessary(compilerExecutable.getTargetFramework());
 
                 Boolean sourceFilesUpToDate = (Boolean) super.getPluginContext().get("SOURCE_FILES_UP_TO_DATE");
-                if (((sourceFilesUpToDate == null) || sourceFilesUpToDate) &&
+                if ((sourceFilesUpToDate != null && sourceFilesUpToDate) &&
                         System.getProperty("forceCompile") == null && compilerExecutable.getCompiledArtifact() != null &&
                         compilerExecutable.getCompiledArtifact().exists())
                 {
