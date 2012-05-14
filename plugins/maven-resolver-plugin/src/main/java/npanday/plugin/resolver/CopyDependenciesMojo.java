@@ -30,6 +30,7 @@ import npanday.resolver.filter.DotnetLibraryArtifactFilter;
 import npanday.resolver.filter.OrArtifactFilter;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.InversionArtifactFilter;
@@ -106,7 +107,6 @@ public class CopyDependenciesMojo
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         String skipReason = "";
-
         if ( !skip )
         {
             ArtifactType knownType = ArtifactType.getArtifactTypeForPackagingName(
@@ -179,7 +179,7 @@ public class CopyDependenciesMojo
                     || targetFile.lastModified() != dependency.getFile().lastModified()
                     || targetFile.length() != dependency.getFile().length() )
                 {
-                    getLog().info( "NPANDAY-158-004: copy dependency " + dependency + " to " + targetFile );
+                    getLog().info( "NPANDAY-158-004: copy " + dependency.getFile() + " to " + targetFile );
                     FileUtils.copyFile( dependency.getFile(), targetFile );
                 }
                 else{
