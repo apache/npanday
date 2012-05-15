@@ -117,7 +117,7 @@ public class CopyDependenciesMojo
             {
                 skip = true;
                 skipReason =
-                    ", because the current project (type:" + project.getPackaging() + ") is not build with NPanday";
+                    ", because the current project (type:" + project.getPackaging() + ") is not built with NPanday";
             }
         }
 
