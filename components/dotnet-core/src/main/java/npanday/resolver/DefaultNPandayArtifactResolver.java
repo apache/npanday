@@ -137,7 +137,6 @@ public class DefaultNPandayArtifactResolver
 
         for ( ArtifactResolvingContributor contributor : contributors )
         {
-
             Set<Artifact> additionalDependenciesCollector = Sets.newHashSet();
             contributor.contribute( artifact, additionalDependenciesCollector );
 
@@ -157,6 +156,8 @@ public class DefaultNPandayArtifactResolver
                     "NPANDAY-147-001: " + contributor.getClass().getName() + " resolved " + artifact.getId() + " to "
                         + artifact.getFile()
                 );
+
+                return;
             }
         }
 
