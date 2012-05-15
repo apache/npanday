@@ -33,6 +33,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.InversionArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
@@ -43,6 +44,7 @@ import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -104,6 +106,21 @@ public class CopyDependenciesMojo
      */
     private boolean skip;
 
+    /**
+     * The reactor projects.
+     *
+     * @parameter expression="${reactorProjects}"
+     */
+    protected List<MavenProject> reactorProjects;
+
+    /**
+     * If specified, Artifacts that are part of the same reactor will not be copied.
+     * Transitive dependencies of these artifacts will still get copied, though.
+     *
+     * @parameter default-value="false"
+     */
+    private boolean skipReactorArtifacts;
+
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         String skipReason = "";
@@ -161,6 +178,22 @@ public class CopyDependenciesMojo
         if ( !Strings.isNullOrEmpty( excludeScope ) )
         {
             includeFilter.add( new InversionArtifactFilter( new ScopeArtifactFilter( excludeScope ) ) );
+        }
+
+        if ( skipReactorArtifacts ){
+            getLog().info( "NPANDAY-158-008: " + reactorProjects );
+
+            includeFilter.add( new InversionArtifactFilter( new ArtifactFilter()
+            {
+                public boolean include( Artifact artifact )
+                {
+                    for (MavenProject project : reactorProjects){
+                        if (project.getArtifact().getId().equals( artifact.getId() ))
+                            return true;
+                    }
+                    return false;
+                }
+            } ));
         }
 
         for ( Artifact dependency : artifacts )
