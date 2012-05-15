@@ -126,36 +126,40 @@ public class DefaultNPandayArtifactResolver
 
     protected void runCustomResolvers( Artifact artifact ) throws ArtifactNotFoundException
     {
-        if ( contributors == null || contributors.length == 0 )
+        if ( artifact.isResolved() )
         {
-            contributors = new ArtifactResolvingContributor[]{ new GacResolver() };
+            return;
         }
+
+        getLogger().debug(
+            "NPANDAY-147-007: trying to resolve " + artifact.getId() + " using resolving contributors"
+        );
 
         for ( ArtifactResolvingContributor contributor : contributors )
         {
-            if ( !artifact.isResolved() )
+
+            Set<Artifact> additionalDependenciesCollector = Sets.newHashSet();
+            contributor.contribute( artifact, additionalDependenciesCollector );
+
+            if ( additionalDependenciesCollector.size() > 0 )
             {
-                Set<Artifact> additionalDependenciesCollector = Sets.newHashSet();
-                contributor.contribute( artifact, additionalDependenciesCollector);
+                getLogger().error(
+                    "NPANDAY-147-006: " + artifact.getId()
+                        + " required additional dependencies to be added, but we do not support that yet."
+                );
+            }
 
-                if (additionalDependenciesCollector.size() > 0){
-                    getLogger().error(
-                        "NPANDAY-147-006: " + artifact.getId()
-                            + " required additional dependencies to be added, but we do not support that yet."
-                    );
-                }
+            if ( artifact.isResolved() )
+            {
+                customResolveCache.add( artifact );
 
-                if ( artifact.isResolved() )
-                {
-                    customResolveCache.add( artifact );
-
-                    getLogger().info(
-                        "NPANDAY-147-001: " + contributor.getClass().getName() + " resolved " + artifact.getId()
-                            + " to " + artifact.getFile()
-                    );
-                }
+                getLogger().info(
+                    "NPANDAY-147-001: " + contributor.getClass().getName() + " resolved " + artifact.getId() + " to "
+                        + artifact.getFile()
+                );
             }
         }
+
     }
 
     public void initialize() throws InitializationException

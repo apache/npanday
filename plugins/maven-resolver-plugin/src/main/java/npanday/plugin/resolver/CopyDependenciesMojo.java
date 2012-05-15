@@ -113,7 +113,7 @@ public class CopyDependenciesMojo
                 project.getPackaging()
             );
 
-            if ( knownType == null )
+            if ( knownType.equals( ArtifactType.NULL ))
             {
                 skip = true;
                 skipReason =
