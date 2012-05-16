@@ -20,6 +20,7 @@
 package npanday.plugin.test;
 
 import npanday.ArtifactTypeHelper;
+import npanday.LocalRepositoryUtil;
 import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandExecutor;
@@ -28,9 +29,12 @@ import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.executable.NetExecutableFactory;
 import npanday.registry.RepositoryRegistry;
+import npanday.resolver.NPandayDependencyResolution;
 import npanday.vendor.SettingsUtil;
 import npanday.vendor.StateMachineProcessor;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -108,14 +112,14 @@ public class TesterMojo extends AbstractMojo
     /**
      * Directory where reports are written.
      * 
-     * @parameter expression = "${reportsDirectory}" default-value = "${project.build.directory}/nunit-reports"
+     * @parameter expression = "${reportsDirectory}" default-value = "${project.build.directory}\\nunit-reports"
      */
     private String reportsDirectory;
 
     /**
      * Test Assembly Location
      * 
-     * @parameter expression = "${testAssemblyPath}" default-value = "${project.build.directory}/test-assemblies"
+     * @parameter expression = "${testAssemblyPath}" default-value = "${project.build.directory}\\test-assemblies"
      */
     private String testAssemblyPath;
 
@@ -195,6 +199,11 @@ public class TesterMojo extends AbstractMojo
      * @component
      */
     private NetExecutableFactory netExecutableFactory;
+
+    /**
+     * @component
+     */
+    private NPandayDependencyResolution dependencyResolution;
     
     private File getExecutableHome() 
     {
@@ -278,11 +287,20 @@ public class TesterMojo extends AbstractMojo
             return;
         }
 
-        // TODO: resolve dependencies with scope test here
-        getLog().warn( "NPANDAY-251: removed dependency resolution here!" );
-
         List<Artifact> nunitLibs = new ArrayList<Artifact>();
-        Set<Artifact> artifacts = project.getDependencyArtifacts();
+        Set<Artifact> artifacts;
+        try
+        {
+            artifacts = dependencyResolution.require(
+                project, LocalRepositoryUtil.create( localRepository ), new ScopeArtifactFilter( "test" )
+            );
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-1100-009: dependency resolution for scope test failed!", e
+            );
+        }
 
         for ( Artifact artifact : artifacts )
         {
@@ -291,29 +309,16 @@ public class TesterMojo extends AbstractMojo
                 continue;
             }
 
-            if ( artifact.getGroupId().equals( "NUnit" ) )
+            try
             {
-                nunitLibs.add( artifact );
+                PathUtil.copyPlainArtifactFileToDirectory( artifact, new File( testAssemblyPath ) );
             }
-            else
+            catch ( IOException e )
             {
-                try
-                {
-                    PathUtil.copyPlainArtifactFileToDirectory( artifact, new File( testAssemblyPath ) );
-                }
-                catch ( IOException e )
-                {
-                    throw new MojoExecutionException( "NPANDAY-1100-002: Error on copying artifact " + artifact.toString(), e );
-                }
+                throw new MojoExecutionException( "NPANDAY-1100-002: Error on copying artifact " + artifact, e );
             }
         }
 
-        if ( nunitLibs.size() == 0 )
-        {
-            throw new MojoExecutionException( "NPANDAY-1100-003: Could not find any nunit libraries." );
-        }
-
-        // Copy Main Artifact
         try
         {
             if ( project.getArtifact() != null && project.getArtifact().getFile() != null
@@ -326,8 +331,7 @@ public class TesterMojo extends AbstractMojo
         {
             throw new MojoExecutionException( "NPANDAY-1100-004: Unable to copy library to target directory: ", e );
         }
-        // TODO: Check timestamps
-        // Copy Test Artifact
+
         try
         {
             FileUtils.copyFileToDirectory( new File( testFileName ), new File( testAssemblyPath ) );
@@ -335,22 +339,6 @@ public class TesterMojo extends AbstractMojo
         catch ( IOException e )
         {
             throw new MojoExecutionException( "NPANDAY-1100-005: Unable to copy library to target directory: ", e );
-        }
-
-        // Copy NUnit Dependencies
-        for ( Artifact artifact : nunitLibs )
-        {
-            File file = new File( testAssemblyPath + File.separator + artifact.getArtifactId() + ".dll" );
-            try
-            {
-                FileUtils.copyFile( artifact.getFile(), file );
-            }
-            catch ( IOException e )
-            {
-                throw new MojoExecutionException(
-                                                  "NPANDAY-1100-006: Unable to copy nunit library to target directory: File = "
-                                                      + file.getAbsolutePath(), e );
-            }
         }
 
         FileUtils.mkdir( reportsDirectory );

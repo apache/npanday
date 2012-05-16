@@ -277,7 +277,7 @@ public final class PathUtil
         }
         catch ( IOException e )
         {
-            throw new IOException( "Error on copying " + artifact + " to" + destination);
+            throw new IOException( "Error on copying " + artifact + " to " + destination);
         }
     }
 }
