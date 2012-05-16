@@ -166,7 +166,8 @@ public final class CompilerContextImpl
 
     public boolean shouldCompile()
     {
-        if (isTestCompile() && getSourceFiles().size() == 0){
+        if ( isTestCompile() && getSourceFiles().size() == 0 )
+        {
             logger.info( "NPANDAY-061-017: Skipping test compile; no sources found" );
             return false;
         }
@@ -450,12 +451,14 @@ public final class CompilerContextImpl
     }
 
     Set<File> expandedSourceFiles;
+
     public Set<File> getSourceFiles()
     {
-        if (expandedSourceFiles == null)
-            expandedSourceFiles = expandSourceFiles();
+        // TODO: cache source files - but it seems that this instance is reused... ??
+        /*if (expandedSourceFiles == null)
+            expandedSourceFiles = expandSourceFiles();*/
 
-        return expandedSourceFiles;
+        return expandSourceFiles();
     }
 
     private Set<File> expandSourceFiles()
@@ -471,33 +474,43 @@ public final class CompilerContextImpl
 
         files.addAll( expandSources( getGeneratedSourcesDirectory() ) );
 
-        String defaultSourceRoot = isTestCompile() ? project.getBuild().getTestSourceDirectory() : project.getBuild().getSourceDirectory();
+        String defaultSourceRoot = isTestCompile()
+            ? project.getBuild().getTestSourceDirectory()
+            : project.getBuild().getSourceDirectory();
 
         Set<String> additionalRoots = Sets.newHashSet();
         List bareRoots = isTestCompile() ? project.getTestCompileSourceRoots() : project.getCompileSourceRoots();
 
-        if ( bareRoots != null) {
-            for(Object root : project.getCompileSourceRoots()){
-                if (!root.equals( defaultSourceRoot ) ){
-                    additionalRoots.add( (String)root );
+        if ( bareRoots != null )
+        {
+            for ( Object root : project.getCompileSourceRoots() )
+            {
+                if ( !root.equals( defaultSourceRoot ) )
+                {
+                    additionalRoots.add( (String) root );
                 }
             }
         }
 
         if ( additionalRoots.size() > 0 )
         {
-           getLogger().debug(
+            getLogger().debug(
                 "NPANDAY-061-009: Adding additional compile source roots: " + additionalRoots
             );
 
-            for(String root : additionalRoots){
+            for ( String root : additionalRoots )
+            {
                 files.addAll( expandSources( new File( root ) ) );
             }
         }
 
-        if ( !isSourceAndTestsTogether() )
+        if ( isTestCompile() )
         {
-            files.addAll( isTestCompile() ? expandTestSourceFilePatterns() : expandMainSourceFilePatterns());
+            files.addAll( expandTestSourceFilePatterns() );
+        }
+        else if ( !isSourceAndTestsTogether() )
+        {
+            files.addAll( expandMainSourceFilePatterns() );
         }
         else
         {
@@ -505,27 +518,21 @@ public final class CompilerContextImpl
             List<File> testSources = expandTestSourceFilePatterns();
 
             getLogger().debug(
-                "NPANDAY-061-010: Since source and tests reside in same folder, "
-                    + " test sources will be excluded from main sources and vice versa"
+                "NPANDAY-061-014: Since tests (" + testSources.size()
+                    + " files) reside in same folder as main sources (" + mainSources.size() + " files),"
+                    + " they will be excluded from main sources"
             );
 
-            if ( isTestCompile() )
-            {
-                List<File> sources = Lists.newArrayList();
-                sources.addAll( testSources );
-                sources.removeAll( mainSources );
-                files.addAll( sources );
-            }
-            else
-            {
-                List<File> sources = Lists.newArrayList();
-                sources.addAll( mainSources );
-                sources.removeAll( testSources );
-                files.addAll( sources );
-            }
+            List<File> sources = Lists.newArrayList();
+            sources.addAll( mainSources );
+            sources.removeAll( testSources );
+            files.addAll( sources );
         }
 
-        logger.info( "NPANDAY-061-011: Found " + files.size() + " source files" );
+        logger.info(
+            "NPANDAY-061-011: Found " + files.size() + " source files for " + ( isTestCompile() ? "test" : "main" )
+                + " compile"
+        );
 
         return files;
     }
@@ -589,8 +596,8 @@ public final class CompilerContextImpl
                     "NPANDAY-061-014: Since source and tests reside in same folder, "
                         + "and no default includes are stated, conventions for finding tests will be applied."
                 );
-                includes.add( "**/Test/*" + config.getLanguageFileExtension() );
-                includes.add( "**/Tests/*" + config.getLanguageFileExtension() );
+                includes.add( "**/Test/**/*.*" + config.getLanguageFileExtension() );
+                includes.add( "**/Tests/**/*.*" + config.getLanguageFileExtension() );
                 includes.add( "**/*Tests." + config.getLanguageFileExtension() );
                 includes.add( "**/*Test." + config.getLanguageFileExtension() );
             }
