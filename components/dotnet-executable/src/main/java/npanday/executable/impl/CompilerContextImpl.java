@@ -483,7 +483,7 @@ public final class CompilerContextImpl
 
         if ( bareRoots != null )
         {
-            for ( Object root : project.getCompileSourceRoots() )
+            for ( Object root : bareRoots )
             {
                 if ( !root.equals( defaultSourceRoot ) )
                 {
