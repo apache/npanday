@@ -59,27 +59,9 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  * @phase test
  * @description Runs NUnit tests
  */
-public class TesterMojo extends AbstractMojo
+public class TesterMojo
+    extends AbstractTestrelatedMojo
 {
-    /**
-     * @parameter expression="${npanday.settings}" default-value="${user.home}/.m2"
-     */
-    private String settingsPath;
-
-    /**
-     * @component
-     */
-    private RepositoryRegistry repositoryRegistry;
-
-    /**
-     * The maven project.
-     * 
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
-
     /**
      * The home of nunit. Use this if you 1) have not added nunit to your path and you only have MS installed; or 2)
      * have mono installed and want to use another version of nunit.
@@ -117,13 +99,6 @@ public class TesterMojo extends AbstractMojo
     private String reportsDirectory;
 
     /**
-     * Test Assembly Location
-     * 
-     * @parameter expression = "${testAssemblyPath}" default-value = "${project.build.directory}\\test-assemblies"
-     */
-    private String testAssemblyPath;
-
-    /**
      * nUnitXmlFilePath
      * 
      * @parameter default-value = "${project.build.directory}/nunit-reports/TEST-${project.build.finalName}.xml"
@@ -148,36 +123,9 @@ public class TesterMojo extends AbstractMojo
     private File nUnitResultErrorOutputPath;
 
     /**
-     * The local Maven repository.
-     * 
-     * @parameter expression="${settings.localRepository}"
-     * @readonly
-     */
-    private File localRepository;
-
-    /**
-     * The artifact acts as an Integration test project
-     *
-     * @parameter
-     */
-    protected boolean integrationTest;
-
-    /**
      * @component
      */
     private StateMachineProcessor processor;
-
-    /**
-     * The Vendor for the Compiler. Not case or white-space sensitive.
-     *
-     * @parameter expression="${vendor}"
-     */
-    private String vendor;
-
-    /**
-     * @parameter expression = "${vendorVersion}"
-     */
-    private String vendorVersion;
 
     /**
      * Specify the name of the NUnit command to be run, from within the <i>nunitHome</i>/bin directory.
@@ -198,18 +146,12 @@ public class TesterMojo extends AbstractMojo
     /**
      * @component
      */
-    private NetExecutableFactory netExecutableFactory;
-
-    /**
-     * @component
-     */
     private NPandayDependencyResolution dependencyResolution;
     
     private File getExecutableHome() 
     {
         return (nunitHome != null) ? new File(nunitHome, "bin") : null;
     }
-
 
     private List<String> getCommandsFor( )
     {
@@ -223,16 +165,8 @@ public class TesterMojo extends AbstractMojo
 
 
 
-        if(integrationTest)
-        {
-            // use the artifact itself if its an integration
-            commands.add( testAssemblyPath + File.separator + project.getArtifactId() + ".dll" );
-        }
-        else
-        {
-            // if not use the commpiled test
-            commands.add( testAssemblyPath + File.separator + project.getArtifactId() + "-test.dll" );
-        }
+
+        commands.add( testAssemblyPath + File.separator + getTestFileName() );
 
         String switchChar = "/";
         commands.add( switchChar + "xml:" + nUnitXmlFilePath.getAbsolutePath() );
@@ -257,8 +191,8 @@ public class TesterMojo extends AbstractMojo
         return commands;
     }
 
-    public void execute()
-        throws MojoExecutionException, MojoFailureException
+    @Override
+    protected void innerExecute() throws MojoExecutionException, MojoFailureException
     {
         String skipTests = System.getProperty( "maven.test.skip" );
         if ( ( skipTests != null && skipTests.equalsIgnoreCase( "true" ) ) || skipTest )
@@ -267,8 +201,8 @@ public class TesterMojo extends AbstractMojo
             return;
         }
 
-        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
-        
+        super.innerExecute();
+
         String testFileName = "";
 
         if(integrationTest)

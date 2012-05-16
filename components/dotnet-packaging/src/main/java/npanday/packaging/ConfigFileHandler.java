@@ -157,6 +157,7 @@ public class ConfigFileHandler
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir( baseDir );
         scanner.setIncludes( includes );
+        scanner.setCaseSensitive( false );
 
         List<String> excludesList = Lists.newArrayList(excludes);
         excludesList.addAll( Lists.newArrayList( DEFAULT_EXCLUDES ) );

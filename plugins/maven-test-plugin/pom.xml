@@ -35,5 +35,9 @@ under the License.
       <artifactId>plexus-utils</artifactId>
       <version>${plexus.utils.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>dotnet-packaging</artifactId>
+    </dependency>
   </dependencies>
 </project>

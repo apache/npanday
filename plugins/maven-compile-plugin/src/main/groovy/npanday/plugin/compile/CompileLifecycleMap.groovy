@@ -45,7 +45,9 @@ class CompileLifecycleMap extends LifecycleMap
         def np_resgen_resx = "org.apache.npanday.plugins:maven-resgen-plugin:$npandayVersion:generate-existing-resx-to-resource"
         def np_compile = "org.apache.npanday.plugins:maven-compile-plugin:$npandayVersion:compile"
         def np_test_compile = "org.apache.npanday.plugins:maven-compile-plugin:$npandayVersion:testCompile"
+
         def np_test = "org.apache.npanday.plugins:maven-test-plugin:$npandayVersion:test"
+        def np_test_configs = "org.apache.npanday.plugins:maven-test-plugin:$npandayVersion:process-test-configs"
 
 		def default_validate = [np_compile_init, np_generate_settings]
 		def default_generate_sources = [np_generate_assemblyinfo]
@@ -70,6 +72,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.process_resources (default_process_resources)
 			b.compile (np_compile)
 			b.test_compile (np_test_compile)
+            b.process_test_classes(np_test_configs)
 			b.test (np_test)
 			b.install (default_install)
 			b.deploy (mv_deploy)
@@ -81,6 +84,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.process_resources (default_process_resources)
 			b.compile (np_compile)
 			b.test_compile (np_test_compile)
+            b.process_test_classes(np_test_configs)
 			b.test (np_test)
 			b._package ("org.apache.npanday.plugins:maven-link-plugin:$npandayVersion:package")
 			b.install (default_install)
@@ -94,6 +98,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.process_resources (default_process_resources)
 			b.compile (np_compile, "org.apache.npanday.plugins:maven-aspx-plugin:$npandayVersion:compile")
 			b.test_compile (np_test_compile)
+            b.process_test_classes(np_test_configs)
 			b.test (np_test)
 			b._package ("org.apache.npanday.plugins:maven-aspx-plugin:$npandayVersion:package")
 			b.install (default_install)
@@ -107,6 +112,7 @@ class CompileLifecycleMap extends LifecycleMap
 			b.process_resources (default_process_resources)
 			b.compile (np_compile)
 			b.test_compile (np_test_compile)
+            b.process_test_classes(np_test_configs)
 			b.test (np_test)
 			b.install (default_install)
 			b._package ("org.apache.npanday.plugins:maven-mojo-generator-plugin:$npandayVersion:generate-bindings")
