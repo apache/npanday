@@ -52,8 +52,6 @@ public final class TestCompilerMojo
     public void execute()
         throws MojoExecutionException
     {
-
-
         String skipTests = System.getProperty( "maven.test.skip" );
         if ( ( skipTests != null && skipTests.equalsIgnoreCase( "true" ) ) || skipTestCompile )
         {
@@ -63,7 +61,6 @@ public final class TestCompilerMojo
 
         // execute as a test
         super.execute(true);
-
     }
 
     protected void initializeDefaults()
@@ -93,8 +90,6 @@ public final class TestCompilerMojo
 
     protected CompilerConfig getCompilerConfig()  throws MojoExecutionException
     {
-
-        //Config
         CompilerConfig compilerConfig = new CompilerConfig();
 
         compilerConfig.setCommands( getParameters() );

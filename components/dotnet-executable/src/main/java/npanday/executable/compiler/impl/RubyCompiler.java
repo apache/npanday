@@ -35,6 +35,12 @@ import java.util.List;
 public final class RubyCompiler
     extends BaseCompiler
 {
+    public boolean shouldCompile()
+    {
+        // TODO: figure out when ruby compile can be skipped; or just remove this all together :)
+        return true;
+    }
+
     public boolean failOnErrorOutput()
     {
         //MONO writes warnings to standard error: this turns off failing builds on warnings for MONO

@@ -33,6 +33,11 @@ public class AspxCompiler
     extends BaseCompiler
 {
 
+    public boolean shouldCompile()
+    {
+        return true;
+    }
+
     public boolean failOnErrorOutput()
     {       
         return true;

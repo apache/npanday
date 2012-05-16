@@ -70,6 +70,7 @@ import java.util.regex.Pattern;
  * Abstract Class for compile mojos for both test-compile and compile.
  *
  * @author Shane Isbell, Leopoldo Lee Agdeppa III
+ * @author <a href="me@lcorneliussen.de">Lars Corneliussen, Faktum Software</a>
  */
 public abstract class AbstractCompilerMojo
         extends AbstractMojo
@@ -1168,6 +1169,11 @@ public abstract class AbstractCompilerMojo
             CompilerExecutable compilerExecutable = netExecutableFactory.getCompilerExecutable(
                 getCompilerRequirement(), getCompilerConfig(), project
             );
+
+            if (!compilerExecutable.shouldCompile()) {
+                getLog().debug("NPANDAY-900-010: Compiler vetoed compile, see preceding log entries for details");
+                return;
+            }
 
             File compiledArtifact = compilerExecutable.getCompiledArtifact();
 

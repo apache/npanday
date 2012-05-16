@@ -22,6 +22,7 @@ package npanday.executable.compiler.impl;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandFilter;
 import npanday.executable.ExecutionException;
+import npanday.executable.ExecutionResult;
 import npanday.executable.execution.quoting.CustomSwitchAwareQuotingStrategy;
 import npanday.vendor.Vendor;
 import org.apache.maven.artifact.Artifact;
@@ -51,6 +52,17 @@ public final class DefaultCompiler
         strategy.addQuoteNormally("resource");
     }
 
+    @Override
+    public ExecutionResult execute() throws ExecutionException, PlatformUnsupportedException
+    {
+        return super.execute();
+    }
+
+    public boolean shouldCompile()
+    {
+        return compilerContext.shouldCompile();
+    }
+
     public boolean failOnErrorOutput()
     {
         //MONO writes warnings to standard error: this turns off failing builds on warnings for MONO
@@ -74,8 +86,6 @@ public final class DefaultCompiler
         compilerContext.getFrameworkVersion();
 
         List<String> commands = new ArrayList<String>();
-
-
 
         if(compilerContext.getOutputDirectory() != null)
         {
@@ -268,7 +278,7 @@ public final class DefaultCompiler
 
         FileUtils.mkdir(TempDir);
 
-        Set<File> sourceFiles = compilerContext.expandIncludedSourceFiles();
+        Set<File> sourceFiles = compilerContext.getSourceFiles();
         if( sourceFiles != null && !sourceFiles.isEmpty() )
         {
             for(File includeSource : sourceFiles )

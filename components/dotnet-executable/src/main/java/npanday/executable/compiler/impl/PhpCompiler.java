@@ -35,6 +35,12 @@ public final class PhpCompiler
     extends BaseCompiler
 {
 
+    public boolean shouldCompile()
+    {
+        // TODO: figure out when php compile can be skipped; or just remove this all together :)
+        return true;
+    }
+
     public boolean failOnErrorOutput()
     {
         return true;

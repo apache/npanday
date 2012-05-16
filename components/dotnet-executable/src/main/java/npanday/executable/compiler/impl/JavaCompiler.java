@@ -25,6 +25,11 @@ import java.util.List;
 
 public class JavaCompiler extends BaseCompiler
 {
+    public boolean shouldCompile()
+    {
+        return true;
+    }
+
     public boolean failOnErrorOutput()
     {
         return false;

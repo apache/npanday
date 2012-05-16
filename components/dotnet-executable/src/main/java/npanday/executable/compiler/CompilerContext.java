@@ -180,9 +180,16 @@ public interface CompilerContext
     boolean isTestCompile();
 
     /**
+     * Figures out, if a compile run is necessary.
+     *
+     * @return
+     */
+    boolean shouldCompile();
+
+    /**
      * The list of sources to be included in the compilation.
      */
-    Set<File> expandIncludedSourceFiles();
+    Set<File> getSourceFiles();
 
     /**
      * The directory to store the compile output too.

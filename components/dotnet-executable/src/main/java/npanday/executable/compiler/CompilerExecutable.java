@@ -32,6 +32,11 @@ import java.io.File;
 public interface CompilerExecutable
     extends NetExecutable
 {
+    /**
+     *
+     * @return
+     */
+    boolean shouldCompile();
 
     /**
      * Returns the assembly path for this executable.

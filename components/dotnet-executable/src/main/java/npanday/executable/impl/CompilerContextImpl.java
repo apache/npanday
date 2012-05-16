@@ -164,6 +164,16 @@ public final class CompilerContextImpl
         return config.isTestCompile();
     }
 
+    public boolean shouldCompile()
+    {
+        if (isTestCompile() && getSourceFiles().size() == 0){
+            logger.info( "NPANDAY-061-017: Skipping test compile; no sources found" );
+            return false;
+        }
+
+        return true;
+    }
+
     public void enableLogging( Logger logger )
     {
         this.logger = logger;
@@ -303,16 +313,6 @@ public final class CompilerContextImpl
         return logger;
     }
 
-    public CompilerConfig getNetCompilerConfig()
-    {
-        return config;
-    }
-
-    public CompilerCapability getCompilerCapability()
-    {
-        return compilerCapability;
-    }
-
     public File getGeneratedSourcesDirectory()
     {
         return ( config.isTestCompile() )
@@ -439,7 +439,7 @@ public final class CompilerContextImpl
             if ( icons.length > 1 )
             {
                 throw new PlatformUnsupportedException(
-                    "NPANDAY-061-007: There is more than one win32icon in resource directory: Number = " + icons.length
+                    "NPANDAY-061-008: There is more than one win32icon in resource directory: Number = " + icons.length
                 );
             }
             if ( icons.length == 1 )
@@ -449,7 +449,16 @@ public final class CompilerContextImpl
         }
     }
 
-    public Set<File> expandIncludedSourceFiles()
+    Set<File> expandedSourceFiles;
+    public Set<File> getSourceFiles()
+    {
+        if (expandedSourceFiles == null)
+            expandedSourceFiles = expandSourceFiles();
+
+        return expandedSourceFiles;
+    }
+
+    private Set<File> expandSourceFiles()
     {
         Set<File> files = Sets.newHashSet();
         if ( config.getDeprecatedIncludeSourcesConfiguration() != null )
@@ -477,8 +486,8 @@ public final class CompilerContextImpl
 
         if ( additionalRoots.size() > 0 )
         {
-           getLogger().info(
-                "NPANDAY-161-004: Adding additional compile source roots: " + additionalRoots
+           getLogger().debug(
+                "NPANDAY-061-009: Adding additional compile source roots: " + additionalRoots
             );
 
             for(String root : additionalRoots){
@@ -495,8 +504,8 @@ public final class CompilerContextImpl
             List<File> mainSources = expandMainSourceFilePatterns();
             List<File> testSources = expandTestSourceFilePatterns();
 
-            getLogger().info(
-                "NPANDAY-161-002: Since source and tests reside in same folder, "
+            getLogger().debug(
+                "NPANDAY-061-010: Since source and tests reside in same folder, "
                     + " test sources will be excluded from main sources and vice versa"
             );
 
@@ -516,7 +525,7 @@ public final class CompilerContextImpl
             }
         }
 
-        getLogger().info( "NPANDAY-161-004: Found " + files.size() + " source files to compile" );
+        logger.info( "NPANDAY-061-011: Found " + files.size() + " source files" );
 
         return files;
     }
@@ -524,7 +533,7 @@ public final class CompilerContextImpl
     private List<File> expandMainSourceFilePatterns()
     {
         getLogger().debug(
-            "NPANDAY-161-007: Expanding main sources"
+            "NPANDAY-061-012: Expanding main sources"
         );
         List<String> includes = Lists.newArrayList();
         if ( config.getIncludes() != null )
@@ -555,7 +564,7 @@ public final class CompilerContextImpl
     private List<File> expandTestSourceFilePatterns()
     {
         getLogger().debug(
-            "NPANDAY-161-008: Expanding test sources"
+            "NPANDAY-061-013: Expanding test sources"
         );
         List<String> includes = Lists.newArrayList();
         if ( config.getTestIncludes() != null )
@@ -576,8 +585,8 @@ public final class CompilerContextImpl
             }
             else
             {
-                getLogger().info(
-                    "NPANDAY-161-006: Since source and tests reside in same folder, "
+                getLogger().debug(
+                    "NPANDAY-061-014: Since source and tests reside in same folder, "
                         + "and no default includes are stated, conventions for finding tests will be applied."
                 );
                 includes.add( "**/Test/*" + config.getLanguageFileExtension() );
@@ -606,7 +615,7 @@ public final class CompilerContextImpl
     {
         if ( !directory.exists() || directory.list().length == 0 )
         {
-            getLogger().debug( "NPANDAY-161-000: " + directory + " is empty; no sources found" );
+            getLogger().debug( "NPANDAY-061-015: " + directory + " is empty; no sources found" );
             return Lists.newArrayList();
         }
 
@@ -628,7 +637,7 @@ public final class CompilerContextImpl
         if ( getLogger().isDebugEnabled() )
         {
             getLogger().debug(
-                "NPANDAY-161-001: scanned for source files:" + NEW_LINE + " - directory: " + directory.getAbsolutePath()
+                "NPANDAY-061-016: scanned for source files:" + NEW_LINE + " - directory: " + directory.getAbsolutePath()
                     + NEW_LINE + " - includes: " + includes + NEW_LINE + " - excludes: " + excludes + NEW_LINE
                     + " - included (*.*): " + scanner.getIncludedFiles().length + NEW_LINE + " - included sources (*."
                     + config.getLanguageFileExtension() + "): " + files.size() + NEW_LINE + " - excluded: "

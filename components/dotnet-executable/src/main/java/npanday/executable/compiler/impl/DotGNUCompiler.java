@@ -36,6 +36,11 @@ import java.util.Set;
 public final class DotGNUCompiler
     extends BaseCompiler
 {
+    public boolean shouldCompile()
+    {
+        return true;
+    }
+
     public boolean failOnErrorOutput()
     {
         return true;
@@ -89,7 +94,7 @@ public final class DotGNUCompiler
             commands.addAll( compilerContext.getCommands() );
         }
 
-        Set<File> sourceFiles = compilerContext.expandIncludedSourceFiles();
+        Set<File> sourceFiles = compilerContext.getSourceFiles();
         if( sourceFiles != null && !sourceFiles.isEmpty() )
         {
             for(File includeSource : sourceFiles )

@@ -21,7 +21,6 @@ package npanday.executable.compiler.impl;
 
 import npanday.executable.ExecutionException;
 import org.apache.maven.artifact.Artifact;
-import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,6 +37,12 @@ import java.util.Set;
 public final class NemerleCompiler
     extends BaseCompiler
 {
+
+    public boolean shouldCompile()
+    {
+        // TODO: figure out when nemerle compile can be skipped; or just remove this all together :)
+        return true;
+    }
 
     public boolean failOnErrorOutput()
     {
@@ -76,7 +81,7 @@ public final class NemerleCompiler
             }
         }
 
-        Set<File> sourceFiles = compilerContext.expandIncludedSourceFiles();
+        Set<File> sourceFiles = compilerContext.getSourceFiles();
         if( sourceFiles != null && !sourceFiles.isEmpty() )
         {
             for(File includeSource : sourceFiles )

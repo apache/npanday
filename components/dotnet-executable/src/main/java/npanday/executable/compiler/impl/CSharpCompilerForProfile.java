@@ -52,6 +52,11 @@ public final class CSharpCompilerForProfile
         this.compilerContext = (CompilerContext) npandayContext;
     }
 
+    public boolean shouldCompile()
+    {
+        return netCompiler.shouldCompile();
+    }
+
     public boolean failOnErrorOutput()
     {
         return netCompiler.failOnErrorOutput();
