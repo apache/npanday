@@ -168,12 +168,6 @@ public class NugetPackage
         else
         {
             libDirectories = LibImporterPathUtils.getLibDirectories( packageDir );
-            if ( libDirectories.size() == 0 )
-            {
-                throw new MojoExecutionException(
-                    "NPANDAY-142-002: " + getName() + " doesn't seem to contain any libraries"
-                );
-            }
             if ( libDirectories.size() > 1 )
             {
                 throw new MojoExecutionException(
@@ -245,7 +239,7 @@ public class NugetPackage
         NugetPackage highest = null;
         for ( NugetPackage pkg : getKnownPackages() )
         {
-            if ( !pkg.getName().equals( depId ) )
+            if ( !pkg.getName().equalsIgnoreCase( depId ) )
             {
                 continue;
             }

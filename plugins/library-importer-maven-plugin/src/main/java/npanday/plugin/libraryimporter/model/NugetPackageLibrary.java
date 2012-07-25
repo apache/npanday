@@ -198,8 +198,9 @@ public class NugetPackageLibrary
                 }
 
                 throw new MojoExecutionException(
-                    "NPANDAY-145-002: Could not find exact match for reference from " + nuget.getName() + "/" + name
-                        + " to " + exactPackageScope + "[" + ref.getStrongName() + "]" + help
+                    "NPANDAY-145-002: Could not find exact match for reference from " + nuget + "/" + name
+                        + " to " + exactPackageScope + "[" + ref.getStrongName() + "]; "
+                        + "package-dependencies are: " + nuget.getDependencies() + help
                 );
             }
 

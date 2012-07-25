@@ -23,6 +23,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.maven.plugin.MojoExecutionException;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -39,6 +40,11 @@ public class LibImporterPathUtils
     {
         File libDir = new File( packageDir, "lib" );
         Map<String, File> libDirs = Maps.newHashMap();
+        if ( !libDir.exists() )
+        {
+            return libDirs;
+        }
+
         if ( getLibraries( libDir ).size() > 0 )
         {
             libDirs.put("lib", libDir );

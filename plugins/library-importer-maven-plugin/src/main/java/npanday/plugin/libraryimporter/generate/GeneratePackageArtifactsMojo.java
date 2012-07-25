@@ -69,7 +69,16 @@ public class GeneratePackageArtifactsMojo
 
         for ( NugetPackage nuget : nugetImports )
         {
-            nuget.resolveDependencies( nugetImports );
+            try
+            {
+                nuget.resolveDependencies( nugetImports );
+            }
+            catch (MojoExecutionException e)
+            {
+                throw new MojoExecutionException(
+                    "NPANDAY-141-004: Could not satisfy dependency for " + nuget + ".", e
+                );
+            }
         }
 
         for ( NugetPackage nuget : nugetImports )
