@@ -20,37 +20,38 @@
 package npanday.plugin.libraryimporter.skeletons;
 
 import npanday.plugin.libraryimporter.model.NugetPackage;
-import npanday.plugin.libraryimporter.model.NugetPackageLibrary;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * @author <a href="mailto:me@lcorneliussen.de>Lars Corneliussen, Faktum Software</a>
  */
-public abstract class AbstractHandleEachLibraryMojo
-    extends AbstractHandleEachImportMojo
+public abstract class AbstractHandleEachImportMojo
+    extends AbstractLibraryImportsProvidingMojo
 {
+
     @Override
-    protected void handleNugetPackage( NugetPackage nuget) throws MojoExecutionException, MojoFailureException
+    protected void innerExecute() throws MojoExecutionException, MojoFailureException
     {
-        for ( NugetPackageLibrary lib : nuget.getLibraries( getLog(), mavenProjectsCacheDirectory ) )
+        super.innerExecute();
+
+        for ( NugetPackage nuget : getNugetImports() )
         {
-            getLog().debug( "NPANDAY-152-000: handling lib " + lib.toString() );
+            getLog().debug( "NPANDAY-151-000: handling package " + nuget.toString() );
             try {
-                handleLibrary( lib );
+                handleNugetPackage(nuget);
             }
             catch (MojoExecutionException e){
-                throw new MojoExecutionException( "NPANDAY-152-001: error handling " + lib.toString(), e);
+                throw new MojoExecutionException( "NPANDAY-151-001: error handling " + nuget.toString(), e);
             }
             catch (MojoFailureException e){
-                throw new MojoExecutionException( "NPANDAY-152-002: error handling " + lib.toString(), e);
+                throw new MojoExecutionException( "NPANDAY-151-002: error handling " + nuget.toString(), e);
             }
             catch (Exception e){
-                throw new MojoExecutionException( "NPANDAY-152-003: error handling " + lib.toString(), e);
+                throw new MojoExecutionException( "NPANDAY-151-003: error handling " + nuget.toString(), e);
             }
         }
     }
 
-    protected abstract void handleLibrary( NugetPackageLibrary lib ) throws MojoExecutionException, MojoFailureException;
+    protected abstract void handleNugetPackage( NugetPackage nuget ) throws MojoExecutionException, MojoFailureException;
 }
-

@@ -20,6 +20,7 @@
 package npanday.plugin.libraryimporter.resolve;
 
 import npanday.plugin.libraryimporter.model.NugetPackage;
+import npanday.plugin.libraryimporter.skeletons.AbstractHandleEachImportMojo;
 import npanday.plugin.libraryimporter.skeletons.AbstractLibraryImportsProvidingMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -39,95 +40,79 @@ import java.util.zip.ZipInputStream;
  * @goal extract-nuspec
  */
 public class ExtractNuspecFromPackagesMojo
-    extends AbstractLibraryImportsProvidingMojo
+    extends AbstractHandleEachImportMojo
 {
     @Override
-    protected void innerExecute() throws MojoExecutionException, MojoFailureException
+    protected void handleNugetPackage( NugetPackage nuget ) throws MojoExecutionException, MojoFailureException
     {
-        super.innerExecute();
-
-        for ( NugetPackage nuget :  getNugetImports() )
+        FileInputStream zipFile = null;
+        try
         {
-            if ( nuget.getNuspecFile().exists() )
+            zipFile = new FileInputStream(  nuget.getPackageFile().getAbsolutePath() );
+            ZipInputStream zip = new ZipInputStream( zipFile );
+            ZipEntry ze;
+
+            String foundSpec = null;
+
+            while ( ( ze = zip.getNextEntry() ) != null )
+            {
+                if ( ze.getName().endsWith( ".nuspec" ) )
+                {
+                    foundSpec = ze.getName();
+
+                    byte[] buf = new byte[1024];
+
+                    FileOutputStream fileoutputstream = null;
+                    try
+                    {
+                        fileoutputstream = new FileOutputStream( nuget.getNuspecFile().getAbsolutePath() );
+
+                        int n;
+                        while ( ( n = zip.read( buf, 0, 1024 ) ) > -1 )
+                        {
+                            fileoutputstream.write( buf, 0, n );
+                        }
+                    }
+                    finally
+                    {
+                        IOUtil.close( fileoutputstream );
+                    }
+
+                    break;
+                }
+            }
+
+            if ( foundSpec == null )
+            {
+                throw new MojoExecutionException(
+                    "NPANDAY-139-004: Could not find nuspec in package file " + nuget.getPackageFile()
+                );
+            }
+            else
             {
                 if ( getLog().isDebugEnabled() )
                 {
                     getLog().debug(
-                        "NPANDAY-139-006: skipping nuspec extraction; does already exist " +  nuget.getNuspecFile()
+                        "NPANDAY-139-005: found nuspec " + foundSpec + " and extracted to " + nuget.getNuspecFile()
                     );
                 }
-                continue;
             }
-
-            FileInputStream zipFile = null;
-            try
-            {
-                zipFile = new FileInputStream(  nuget.getPackageFile().getAbsolutePath() );
-                ZipInputStream zip = new ZipInputStream( zipFile );
-                ZipEntry ze;
-
-                String foundSpec = null;
-
-                while ( ( ze = zip.getNextEntry() ) != null )
-                {
-                    if ( ze.getName().endsWith( ".nuspec" ) )
-                    {
-                        foundSpec = ze.getName();
-
-                        byte[] buf = new byte[1024];
-
-                        FileOutputStream fileoutputstream = null;
-                        try
-                        {
-                            fileoutputstream = new FileOutputStream( nuget.getNuspecFile().getAbsolutePath() );
-
-                            int n;
-                            while ( ( n = zip.read( buf, 0, 1024 ) ) > -1 )
-                            {
-                                fileoutputstream.write( buf, 0, n );
-                            }
-                        }
-                        finally
-                        {
-                            IOUtil.close( fileoutputstream );
-                        }
-
-                        break;
-                    }
-                }
-
-                if ( foundSpec == null )
-                {
-                    throw new MojoExecutionException(
-                        "NPANDAY-139-004: Could not find nuspec in package file " + nuget.getPackageFile()
-                    );
-                }
-                else
-                {
-                    if ( getLog().isDebugEnabled() )
-                    {
-                        getLog().debug(
-                            "NPANDAY-139-005: found nuspec " + foundSpec + " and extracted to " + nuget.getNuspecFile()
-                        );
-                    }
-                }
-            }
-            catch ( FileNotFoundException e )
-            {
-                throw new MojoExecutionException(
-                    "NPANDAY-139-001: Could not find package file " + nuget.getPackageFile().getAbsolutePath()
-                );
-            }
-            catch ( IOException e )
-            {
-                throw new MojoExecutionException(
-                    "NPANDAY-139-003: Error on reading or extracting zip contents of " + nuget.getPackageFile()
-                );
-            }
-            finally
-            {
-                IOUtil.close( zipFile );
-            }
+        }
+        catch ( FileNotFoundException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-139-001: Could not find package file " + nuget.getPackageFile().getAbsolutePath()
+            );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-139-003: Error on reading or extracting zip contents of " + nuget.getPackageFile()
+            );
+        }
+        finally
+        {
+            IOUtil.close( zipFile );
         }
     }
 

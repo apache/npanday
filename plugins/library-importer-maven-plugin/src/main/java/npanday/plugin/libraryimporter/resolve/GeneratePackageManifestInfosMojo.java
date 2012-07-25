@@ -21,9 +21,12 @@ package npanday.plugin.libraryimporter.resolve;
 
 import com.google.common.collect.Lists;
 import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.plugin.libraryimporter.model.NugetPackage;
+import npanday.plugin.libraryimporter.skeletons.AbstractHandleEachImportMojo;
+import npanday.plugin.libraryimporter.skeletons.AbstractLibraryImportsProvidingMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -36,64 +39,83 @@ import java.io.File;
  * @goal generate-package-manifestinfos
  */
 public class GeneratePackageManifestInfosMojo
-    extends AbstractManifestInfoMojo
+    extends AbstractHandleEachImportMojo
 {
-    @Override
-    protected void innerExecute() throws MojoExecutionException, MojoFailureException
+    /**
+     * The executable identifier used to locate the right configurations from executable-plugins.xml. Can't be changed.
+     */
+    private String executableIdentifier = "MANIFESTINFO";
+
+    /**
+     * The configured executable version, from executable-plugins.xml, to be used. Should align to a installed
+     * Azure SDK version.
+     *
+     * @parameter expression="${nuget.version}" default-value="1.0"
+     */
+    private String executableVersion;
+
+    /**
+     * The configured executable profile, from executable-plugins.xml, to be used.
+     *
+     * @parameter expression="${nuget.profile}"
+     */
+    private String executableProfile;
+
+    protected ExecutableRequirement getExecutableRequirement()
     {
-        super.innerExecute();
+        // TODO: profile is actually an identifier; the real profile has yet to be supported
+        return new ExecutableRequirement( getVendorRequirement(), executableIdentifier, executableVersion );
+    }
 
-        for ( NugetPackage nuget : getNugetImports() )
+    @Override
+    protected void handleNugetPackage( NugetPackage nuget ) throws MojoExecutionException, MojoFailureException
+    {
+        for ( File libDir : nuget.getLibraryDirectories() )
         {
-            for ( File libDir : nuget.getLibraryDirectories() )
+            File manifestInfoFile = new File( libDir, "manifestinfo.xml" );
+
+            if ( manifestInfoFile.exists() )
             {
-                File manifestInfoFile = new File( libDir, "manifestinfo.xml" );
-
-                if ( manifestInfoFile.exists() )
-                {
-                    if ( getLog().isDebugEnabled() )
-                    {
-                        getLog().debug(
-                            "NPANDAY-140-002: skipping; manifest info does already exist for " + libDir
-                        );
-                    }
-                    continue;
-                }
-
                 if ( getLog().isDebugEnabled() )
                 {
                     getLog().debug(
-                        "NPANDAY-140-002: running manifestinfo for " + libDir
+                        "NPANDAY-140-002: skipping; manifest info does already exist for " + libDir
                     );
                 }
+                continue;
+            }
 
-                final NetExecutable executable;
-                try
-                {
+            if ( getLog().isDebugEnabled() )
+            {
+                getLog().debug(
+                    "NPANDAY-140-002: running manifestinfo for " + libDir
+                );
+            }
 
-                    executable = netExecutableFactory.getExecutable(
-                        getExecutableRequirement(), Lists.newArrayList(
-                        libDir.getAbsolutePath(), "-x", "-r", "-q", "-o", manifestInfoFile.getAbsolutePath()
-                    ), null
-                    );
+            final NetExecutable executable;
+            try
+            {
 
-                    executable.execute();
-                }
-                catch ( ExecutionException e )
-                {
-                    throw new MojoExecutionException(
-                        "NPANDAY-140-000: Error occured when running manifestinfo for " + libDir, e
-                    );
-                }
-                catch ( PlatformUnsupportedException e )
-                {
-                    throw new MojoExecutionException(
-                        "NPANDAY-140-001: Error occured when running manifestinfo for " + libDir, e
-                    );
-                }
+                executable = netExecutableFactory.getExecutable(
+                    getExecutableRequirement(), Lists.newArrayList(
+                    libDir.getAbsolutePath(), "-x", "-r", "-q", "-o", manifestInfoFile.getAbsolutePath()
+                ), null
+                );
+
+                executable.execute();
+            }
+            catch ( ExecutionException e )
+            {
+                throw new MojoExecutionException(
+                    "NPANDAY-140-000: Error occured when running manifestinfo for " + libDir, e
+                );
+            }
+            catch ( PlatformUnsupportedException e )
+            {
+                throw new MojoExecutionException(
+                    "NPANDAY-140-001: Error occured when running manifestinfo for " + libDir, e
+                );
             }
         }
-
     }
-
 }

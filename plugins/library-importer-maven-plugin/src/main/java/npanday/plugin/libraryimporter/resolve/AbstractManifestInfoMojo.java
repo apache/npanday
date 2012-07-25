@@ -37,29 +37,5 @@ public abstract class AbstractManifestInfoMojo
      */
     protected NugetInvoker nugetInvoker;
 
-    /**
-     * The executable identifier used to locate the right configurations from executable-plugins.xml. Can't be changed.
-     */
-    private String executableIdentifier = "MANIFESTINFO";
 
-    /**
-     * The configured executable version, from executable-plugins.xml, to be used. Should align to a installed
-     * Azure SDK version.
-     *
-     * @parameter expression="${nuget.version}" default-value="1.0"
-     */
-    private String executableVersion;
-
-    /**
-     * The configured executable profile, from executable-plugins.xml, to be used.
-     *
-     * @parameter expression="${nuget.profile}"
-     */
-    private String executableProfile;
-
-    protected ExecutableRequirement getExecutableRequirement()
-    {
-        // TODO: profile is actually an identifier; the real profile has yet to be supported
-        return new ExecutableRequirement( getVendorRequirement(), executableIdentifier, executableVersion );
-    }
 }
