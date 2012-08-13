@@ -66,7 +66,7 @@ Setting up an Artifact Repository
 
     * <Name>: NPanday Remote Repository
 
-    * <URL>: {{http://repo.npanday.org/archiva/repository/npanday-group}}
+    * <URL>: {{http://vmbuild.apache.org/archiva/repository/npanday-group}}
 
     []
 
@@ -83,14 +83,14 @@ Setting up an Artifact Repository
   separate repositories.
 
   For the NPanday releases, they can be obtained as above either from the <<<npanday>>> subdirectory of the downloaded
-  repository, or from the remote URL: {{http://repo.npanday.org/archiva/repository/npanday-releases}}.
+  repository, or from a Maven repository.
 
   For the dependencies, there are two needs:
 
     * the Open RDF repository, which can be proxied from {{http://repository.aduna-software.org/maven2}}.
       Only the <<<info/aduna/**>>> and <<<org/openrdf/**>>> artifacts need to be proxied.
 
-    * 3rd party .NET dependencies. Some can be obtained from {{http://repo.npanday.org/archiva/repository/3rdparty/}},
+    * 3rd party .NET dependencies. Some can be obtained from {{http://vmbuild.apache.org/archiva/repository/3rdparty/}},
       or they can be uploaded manually to your own managed repository. Currently, only NUnit is included there.
 
     []
