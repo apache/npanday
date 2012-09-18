@@ -28,5 +28,5 @@ Supported Azure SDK Versions
 
 Changing the version in use
 
-    If you need to change the version of the SDK used, configure <<<executableVersion>>> on the <<<azure-maven-plugin>>,
+    If you need to change the version of the SDK used, configure <<<executableVersion>>> on the <<<azure-maven-plugin>>>,
     or override it through the commandline by using <<<-Dazuresdk.version=...>>>.
