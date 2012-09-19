@@ -30,7 +30,6 @@ import npanday.resolver.filter.DotnetLibraryArtifactFilter;
 import npanday.resolver.filter.OrArtifactFilter;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
@@ -41,6 +40,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
+import org.reflections.vfs.SystemDir;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,9 +51,9 @@ import java.util.Set;
  * Resolves and copies .NET assemblies.
  *
  * @author <a href="me@lcorneliussen.de">Lars Corneliussen, Faktum Software</a>
- * @goal copy-dependencies
+ * @goal list-dependencies
  */
-public class CopyDependenciesMojo
+public class ListDependenciesMojo
     extends AbstractMojo
 {
     /**
@@ -140,18 +140,13 @@ public class CopyDependenciesMojo
 
         if ( skip )
         {
-            getLog().info( "NPANDAY-158-001: Mojo for copying dependencies was intentionally skipped" + skipReason );
+            getLog().info( "NPANDAY-161-001: Mojo for listing dependencies was intentionally skipped" + skipReason );
             return;
         }
 
         SettingsUtil.applyCustomSettingsIfAvailable( getLog(), repositoryRegistry, settingsPath );
 
         AndArtifactFilter includeFilter = new AndArtifactFilter();
-
-        OrArtifactFilter typeIncludes = new OrArtifactFilter();
-        typeIncludes.add( new DotnetExecutableArtifactFilter() );
-        typeIncludes.add( new DotnetLibraryArtifactFilter() );
-        includeFilter.add( typeIncludes );
 
         if ( !Strings.isNullOrEmpty( includeScope ) )
         {
@@ -168,7 +163,7 @@ public class CopyDependenciesMojo
         catch ( ArtifactResolutionException e )
         {
             throw new MojoExecutionException(
-                "NPANDAY-158-003: dependency resolution for scope " + includeScope + " failed!", e
+                "NPANDAY-161-003: dependency resolution for scope " + includeScope + " failed!", e
             );
         }
 
@@ -181,7 +176,7 @@ public class CopyDependenciesMojo
         }
 
         if ( skipReactorArtifacts ){
-            getLog().info( "NPANDAY-158-008: " + reactorProjects );
+            getLog().info( "NPANDAY-161-008: " + reactorProjects );
 
             includeFilter.add( new InversionArtifactFilter( new ArtifactFilter()
             {
@@ -196,33 +191,20 @@ public class CopyDependenciesMojo
             } ));
         }
 
+        getLog().info(
+                "The following files have been resolved:"
+        );
         for ( Artifact dependency : artifacts )
         {
             if ( !includeFilter.include( dependency ) )
             {
-                getLog().debug( "NPANDAY-158-006: dependency " + dependency + " was excluded" );
-
+                getLog().debug( "NPANDAY-161-006: dependency " + dependency + " was excluded" );
                 continue;
             }
 
-            try
-            {
-                File targetFile = new File( outputDirectory, PathUtil.getPlainArtifactFileName( dependency ) );
-                if ( !targetFile.exists()
-                    || targetFile.lastModified() != dependency.getFile().lastModified()
-                    || targetFile.length() != dependency.getFile().length() )
-                {
-                    getLog().info( "NPANDAY-158-004: copy " + dependency.getFile() + " to " + targetFile );
-                    FileUtils.copyFile( dependency.getFile(), targetFile );
-                }
-                else{
-                    getLog().debug( "NPANDAY-158-007: dependency " + dependency + " is yet up to date" );
-                }
-            }
-            catch ( IOException ioe )
-            {
-                throw new MojoExecutionException( "NPANDAY-158-005: Error copying dependency " + dependency, ioe );
-            }
+            getLog().info(
+                    "   " + dependency.getId() + ":" + dependency.getScope() + " -> " + dependency.getFile()
+            );
         }
     }
 
