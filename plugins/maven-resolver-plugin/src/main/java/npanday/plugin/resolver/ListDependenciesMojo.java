@@ -124,20 +124,6 @@ public class ListDependenciesMojo
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         String skipReason = "";
-        if ( !skip )
-        {
-            ArtifactType knownType = ArtifactType.getArtifactTypeForPackagingName(
-                project.getPackaging()
-            );
-
-            if ( knownType.equals( ArtifactType.NULL ))
-            {
-                skip = true;
-                skipReason =
-                    ", because the current project (type:" + project.getPackaging() + ") is not built with NPanday";
-            }
-        }
-
         if ( skip )
         {
             getLog().info( "NPANDAY-161-001: Mojo for listing dependencies was intentionally skipped" + skipReason );
