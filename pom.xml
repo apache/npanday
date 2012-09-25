@@ -660,12 +660,12 @@ under the License.
   </profiles>
   <distributionManagement>
     <repository>
-      <id>vmbuild.releases</id>
-      <url>http://vmbuild.apache.org/archiva/repository/npanday-releases/</url>
+      <id>archiva-repository.releases</id>
+      <url>https://archiva-repository.apache.org/archiva/repository/npanday-releases/</url>
     </repository>
     <snapshotRepository>
-      <id>vmbuild.snapshots</id>
-      <url>http://vmbuild.apache.org/archiva/repository/npanday-snapshots/</url>
+      <id>archiva-repository.snapshots</id>
+      <url>https://archiva-repository.apache.org/archiva/repository/snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 </project>
