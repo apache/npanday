@@ -78,7 +78,7 @@ under the License.
       </releases>
       <id>npanday.snapshots</id>
       <name>NPanday Snapshot Repository</name>
-      <url>http://vmbuild.apache.org/archiva/repository/npanday-snapshots</url>
+      <url>https://archiva-repository.apache.org/archiva/repository/npanday-snapshots</url>
     </repository>
   </repositories>
 
@@ -89,7 +89,7 @@ under the License.
       </releases>
       <id>npanday.snapshots</id>
       <name>NPanday Snapshot Repository</name>
-      <url>http://vmbuild.apache.org/archiva/repository/npanday-snapshots</url>
+      <url>https://archiva-repository.apache.org/archiva/repository/npanday-snapshots</url>
     </pluginRepository>
   </pluginRepositories>
 
