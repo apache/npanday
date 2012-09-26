@@ -88,6 +88,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 AddPluginConfiguration(plugin, "frameworkVersion", "4.0");
             }
 
+            if (!string.IsNullOrEmpty(projectDigest.ProductVersion) && projectDigest.ProductVersion != "1.6")
+                AddPluginConfiguration(plugin, "executableVersion", projectDigest.ProductVersion);
+
             if (!string.IsNullOrEmpty(projectDigest.CloudConfig))
             {
                 AddPluginConfiguration(plugin, "serviceConfigurationFile", projectDigest.CloudConfig);

@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="ImporterTests\AbstractProjectImportTest.cs" />
     <Compile Include="ImporterTests\AbstractAzureImportTest.cs" />
+    <Compile Include="ImporterTests\AzureImportSDKVersionTest.cs" />
     <Compile Include="ImporterTests\ComReferenceNormalProjectTest.cs" />
     <Compile Include="ImporterTests\AzureImportOneWebRoleTest.cs" />
     <Compile Include="ImporterTests\AzureImportWorkerRoleTest.cs" />
