@@ -36,7 +36,7 @@ under the License.
     <dependency>
       <groupId>org.apache.npanday.its</groupId>
       <artifactId>npanday-its</artifactId>
-      <version>1.4.1-incubating-SNAPSHOT</version>
+      <version>${project.version}</version>
       <classifier>tests</classifier>
     </dependency>
   </dependencies>    
