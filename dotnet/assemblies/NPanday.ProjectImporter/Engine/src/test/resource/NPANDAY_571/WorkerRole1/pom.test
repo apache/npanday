@@ -59,8 +59,7 @@
       <groupId>Microsoft.WindowsAzure.ServiceRuntime</groupId>
       <artifactId>Microsoft.WindowsAzure.ServiceRuntime</artifactId>
       <version>1.7.0.0</version>
-      <type>gac_msil</type>
-      <classifier>31bf3856ad364e35</classifier>
+      <type>dotnet-library</type>
     </dependency>
     <dependency>
       <groupId>Microsoft.WindowsAzure.StorageClient</groupId>
