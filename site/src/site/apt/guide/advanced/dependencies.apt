@@ -61,7 +61,7 @@ Project Dependencies
   As mentioned above, the special type of <<<gac_msil>>> is available to refer to dependencies in the GAC.
 
   For all other dependencies, they should be located in a remote artifact repository. NPanday offers a few dependencies
-  in the repository {{http://vmbuild.apache.org/archiva/repository/3rdparty/}}. More commonly however, you will establish
+  in the repository {{https://archiva-repository.apache.org/archiva/repository/3rdparty/}}. More commonly however, you will establish
   and populate your own artifact repository as described in
   {{{../devinfra/artifact-repository.html} Setting up an Artifact Repository}}.
 

@@ -59,7 +59,7 @@ under the License.
     <repository>
       <id>3rdparty</id>
       <name>3rd Party .NET Repository</name>
-      <url>http://vmbuild.apache.org/archiva/repository/3rdparty</url>
+      <url>https://archiva-repository.apache.org/archiva/repository/3rdparty</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
