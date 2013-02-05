@@ -95,8 +95,16 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // Add Project Inter-dependencies
             AddInterProjectDependenciesToList();
 
-            // filter the rsp included assemblies
-            FilterRSPIncludedReferences();
+            // filter the rsp and SDK included assemblies
+            //  This includes just a subset of the provided libraries that are automatically available to a Silverlight application.
+            //  Setting them to 'provided' scope may be more accurate, if NPanday core were to support it. The motivation is to avoid
+            //  Adding incorrect dependencies referring to the GAC which are likely to be inconsistent across generations (including
+            //  making the unit tests for this class fail).
+            List<string> sdkReferences = new List<string>();
+            sdkReferences.Add("System.Windows");
+            sdkReferences.Add("System.Windows.Browser");
+            sdkReferences.Add("System.Net");
+            FilterSdkReferences(sdkReferences);
 
             // Add Project Reference Dependencies
             AddProjectReferenceDependenciesToList();

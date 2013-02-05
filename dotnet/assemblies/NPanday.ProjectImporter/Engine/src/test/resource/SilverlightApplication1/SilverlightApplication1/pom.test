@@ -34,12 +34,5 @@
       <version>1.2.3-SNAPSHOT</version>
       <type>library</type>
     </dependency>
-    <dependency>
-      <groupId>System.Net</groupId>
-      <artifactId>System.Net</artifactId>
-      <version>3.5.0.0</version>
-      <type>gac_msil</type>
-      <classifier>b03f5f7f11d50a3a</classifier>
-    </dependency>
   </dependencies>
 </project>

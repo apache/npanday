@@ -214,7 +214,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
             // filter the rsp included assemblies
-            FilterRSPIncludedReferences();
+            FilterReferences();
             // Add Project Reference Dependencies
             AddProjectReferenceDependenciesToList();
 
@@ -226,27 +226,33 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         }
 
-
-
-        protected void FilterRSPIncludedReferences()
+        protected void FilterSdkReferences(List<string> sdkReferences)
         {
             List<Reference> list = new List<Reference>();
 
             foreach (Reference reference in projectDigest.References)
             {
-                if (!string.IsNullOrEmpty(projectDigest.Language))
+                if (!sdkReferences.Contains(reference.Name))
                 {
-                    if (!rspUtil.IsRspIncluded(reference.Name, projectDigest.Language))
+                    if (!string.IsNullOrEmpty(projectDigest.Language))
+                    {
+                        if (!rspUtil.IsRspIncluded(reference.Name, projectDigest.Language))
+                        {
+                            list.Add(reference);
+                        }
+                    }
+                    else
                     {
                         list.Add(reference);
                     }
                 }
-                else
-                {
-                    list.Add(reference);
-                }
             }
             projectDigest.References = list.ToArray();
+        }
+
+        protected void FilterReferences()
+        {
+            FilterSdkReferences(new List<string>());
         }
 
 
