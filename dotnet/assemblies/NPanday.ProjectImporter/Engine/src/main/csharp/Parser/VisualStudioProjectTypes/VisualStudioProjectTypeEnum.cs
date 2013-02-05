@@ -206,19 +206,25 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
         Model_View_Controller_MVC3 = 1 << 27,
 
         /// <summary>
+        /// Project Type: ASP MVC 4,
+        /// GUID: {E3E379DF-F4C6-4180-9B81-6769533ABE47}
+        /// </summary>
+        Model_View_Controller_MVC4 = 1 << 28,
+
+        /// <summary>
         /// Project Type: Windows Azure Cloud Service
         /// GUID: {CC5FD16D-436D-48AD-A40C-5A424C6E3E797}
         /// </summary>
-        WindowsAzure_CloudService = 1 << 28,
+        WindowsAzure_CloudService = 1 << 29,
 
-        Silverlight = 1 << 29,
+        Silverlight = 1 << 30,
 
         // Aux types
 
-        WebDeploy2 = 1 << 30,
+        WebDeploy2 = 1 << 31,
 
-        WindowsAzure_Worker = 1 << 31,
+        WindowsAzure_Worker = 1L << 32,
 
-        // TODO: we have run out of bits, refactor so this is an enum of the GUIDs instead
+        // TODO: refactor so this is an enum of the GUIDs instead
     }
 }

@@ -123,6 +123,11 @@ namespace NPanday.ProjectImporter.Converter
             );
 
             __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC4 | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.Web_Application,
+                typeof(NormalPomConverter)
+            );
+
+            __converterAlgorithms.Add(
                 VisualStudioProjectTypeEnum.Model_View_Controller_MVC | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.WebDeploy2,
                 typeof(ASPNetPomConverter)
             );
@@ -131,6 +136,12 @@ namespace NPanday.ProjectImporter.Converter
                 VisualStudioProjectTypeEnum.Model_View_Controller_MVC3 | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.WebDeploy2,
                 typeof(ASPNetPomConverter)
             );
+            
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC4 | VisualStudioProjectTypeEnum.Windows__CSharp | VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.WebDeploy2,
+                typeof(ASPNetPomConverter)
+            );
+
             __converterAlgorithms.Add(
                 VisualStudioProjectTypeEnum.Model_View_Controller_MVC | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.Web_Application,
                 typeof(NormalPomConverter)
@@ -142,12 +153,22 @@ namespace NPanday.ProjectImporter.Converter
             );
 
             __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC4 | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.Web_Application,
+                typeof(NormalPomConverter)
+            );
+
+            __converterAlgorithms.Add(
                 VisualStudioProjectTypeEnum.Model_View_Controller_MVC | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.WebDeploy2,
                 typeof(ASPNetPomConverter)
             );
 
             __converterAlgorithms.Add(
                 VisualStudioProjectTypeEnum.Model_View_Controller_MVC3 | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.WebDeploy2,
+                typeof(ASPNetPomConverter)
+            );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.Model_View_Controller_MVC4 | VisualStudioProjectTypeEnum.Windows__VbDotNet | VisualStudioProjectTypeEnum.Web_Application | VisualStudioProjectTypeEnum.WebDeploy2,
                 typeof(ASPNetPomConverter)
             );
 

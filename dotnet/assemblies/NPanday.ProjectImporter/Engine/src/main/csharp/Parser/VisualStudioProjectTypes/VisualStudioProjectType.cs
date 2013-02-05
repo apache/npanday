@@ -207,7 +207,12 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
             __visualStudioProjectTypes.Add("E53F8FEA-EAE0-44A6-8774-FFD645390401", VisualStudioProjectTypeEnum.Model_View_Controller_MVC3);
             __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Model_View_Controller_MVC3, "E53F8FEA-EAE0-44A6-8774-FFD645390401");
             __visualStudioProjectTypeSupported.Add("E53F8FEA-EAE0-44A6-8774-FFD645390401", true);
-            
+
+            //Model View Controller (MVC) {E3E379DF-F4C6-4180-9B81-6769533ABE47}
+            __visualStudioProjectTypes.Add("E3E379DF-F4C6-4180-9B81-6769533ABE47", VisualStudioProjectTypeEnum.Model_View_Controller_MVC4);
+            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Model_View_Controller_MVC4, "E3E379DF-F4C6-4180-9B81-6769533ABE47");
+            __visualStudioProjectTypeSupported.Add("E3E379DF-F4C6-4180-9B81-6769533ABE47", true);
+
             //Windows Azure Project {CC5FD16D-436D-48AD-A40C-5A424C6E3E79}
             __visualStudioProjectTypes.Add("CC5FD16D-436D-48AD-A40C-5A424C6E3E79", VisualStudioProjectTypeEnum.WindowsAzure_CloudService);
             __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.WindowsAzure_CloudService, "CC5FD16D-436D-48AD-A40C-5A424C6E3E79");
