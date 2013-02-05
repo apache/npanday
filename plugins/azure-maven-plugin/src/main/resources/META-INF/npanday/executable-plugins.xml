@@ -68,4 +68,54 @@
     </platforms>
 
   </executablePlugin>
+  <executablePlugin>
+    <profile>CSPACK</profile>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+
+    <executable>cspack</executable>
+    <executableVersion>1.8</executableVersion>
+
+    <vendor>MICROSOFT</vendor>
+
+    <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+    </frameworkVersions>
+
+    <probingPaths>
+       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\v1.8@InstallPath}\bin</probingPath>
+    </probingPaths>
+
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+
+  </executablePlugin>
+  <executablePlugin>
+    <profile>CSPACK</profile>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+
+    <executable>cspack</executable>
+    <executableVersion>1.9</executableVersion>
+
+    <vendor>MICROSOFT</vendor>
+
+    <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+    </frameworkVersions>
+
+    <probingPaths>
+       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\v1.9@InstallPath}\bin</probingPath>
+    </probingPaths>
+
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+
+  </executablePlugin>
 </executablePlugins>
