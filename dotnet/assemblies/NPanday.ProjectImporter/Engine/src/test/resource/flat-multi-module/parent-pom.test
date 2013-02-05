@@ -7,7 +7,7 @@
   <name>test.group : test-parent</name>
   <version>1.2.3-SNAPSHOT</version>
   <modules>
-    <module>consoleApp2</module>
     <module>.</module>
+    <module>consoleApp2</module>
   </modules>
 </project>

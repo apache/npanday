@@ -7,7 +7,7 @@
   <name>test.group : test-parent</name>
   <version>1.2.3-SNAPSHOT</version>
   <modules>
-    <module>SilverlightApplication5.Web</module>
     <module>SilverlightApplication5</module>
+    <module>SilverlightApplication5.Web</module>
   </modules>
 </project>

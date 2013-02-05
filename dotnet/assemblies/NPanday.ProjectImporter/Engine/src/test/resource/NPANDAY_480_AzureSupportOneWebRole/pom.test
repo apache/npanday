@@ -7,7 +7,7 @@
   <name>test.group : test-parent</name>
   <version>1.2.3-SNAPSHOT</version>
   <modules>
-    <module>HelloWorld_WebRole</module>
     <module>HelloWorld</module>
+    <module>HelloWorld_WebRole</module>
   </modules>
 </project>

@@ -7,7 +7,7 @@
   <name>test.group : test-parent</name>
   <version>1.2.3-SNAPSHOT</version>
   <modules>
-    <module>SAClassLibrary</module>
     <module>SA110</module>
+    <module>SAClassLibrary</module>
   </modules>
 </project>

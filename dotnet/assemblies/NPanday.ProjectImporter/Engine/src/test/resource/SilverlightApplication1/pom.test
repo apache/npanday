@@ -7,9 +7,9 @@
   <name>test.group : test-parent</name>
   <version>1.2.3-SNAPSHOT</version>
   <modules>
-    <module>SilverlightClassLibrary1</module>
-    <module>SilverlightApplication2</module>
     <module>SilverlightApplication1</module>
     <module>SilverlightApplication1.Web</module>
+    <module>SilverlightApplication2</module>
+    <module>SilverlightClassLibrary1</module>
   </modules>
 </project>

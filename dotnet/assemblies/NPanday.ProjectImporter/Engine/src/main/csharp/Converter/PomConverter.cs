@@ -240,6 +240,7 @@ namespace NPanday.ProjectImporter.Converter
 
                 }
 
+                modules.Sort();
                 model.modules = modules.ToArray();
 
                 if (writePom)

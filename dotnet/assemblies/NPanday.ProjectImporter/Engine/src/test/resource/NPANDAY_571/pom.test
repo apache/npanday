@@ -7,7 +7,7 @@
   <name>test.group : test-parent</name>
   <version>1.2.3-SNAPSHOT</version>
   <modules>
-    <module>WorkerRole1</module>
     <module>NPANDAY_571_AzureSDKVersionTest</module>
+    <module>WorkerRole1</module>
   </modules>
 </project>
