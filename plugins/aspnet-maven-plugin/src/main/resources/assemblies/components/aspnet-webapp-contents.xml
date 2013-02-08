@@ -57,6 +57,12 @@
         <!-- silverlight -->
         <include>**/*.xap</include>
 
+        <!-- web fonts -->
+        <include>**/*.woff</include>
+        <include>**/*.eot</include>
+        <include>**/*.svg</include>
+        <include>**/*.ttf</include>
+
         <!-- flash -->
         <include>**/*.swf</include>
         <include>**/*.flv</include>
