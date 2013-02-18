@@ -26,6 +26,7 @@ under the License.
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>3.0</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
@@ -43,6 +44,7 @@ under the License.
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>3.0</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
