@@ -44,6 +44,7 @@
         <include>**/*.js</include>
         <include>**/*.htm</include>
         <include>**/*.html</include>
+        <include>**/*.xml</include>
         <include>robots.txt</include>
 
         <!-- graphics -->
@@ -66,7 +67,6 @@
         <!-- flash -->
         <include>**/*.swf</include>
         <include>**/*.flv</include>
-        <include>crossdomain.xml</include>
       </includes>
       <excludes>
         <exclude>**/bin/**</exclude>
@@ -76,6 +76,7 @@
         <exclude>**/Web.Debug.config</exclude>
         <exclude>**/web.release.config</exclude>
         <exclude>**/Web.Release.config</exclude>
+        <exclude>**/pom.xml</exclude>
       </excludes>
     </fileSet>
   </fileSets>
