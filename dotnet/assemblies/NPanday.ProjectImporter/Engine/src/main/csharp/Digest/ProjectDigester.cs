@@ -239,6 +239,7 @@ namespace NPanday.ProjectImporter.Digest
                 return null;
             }
 
+            // Note: even though .ccproj is excluded here, it isn't a problem since it will never be called (only used for resolving ProjectReferences onto this project)
             if (!(projectFileInfo.Extension.ToUpper().Equals(".CSPROJ") || projectFileInfo.Extension.ToUpper().Equals(".VBPROJ")))
             {
                 throw new Exception( "Unrecognized project type: " + projectFileInfo.Extension + " for file " + projectFile );
