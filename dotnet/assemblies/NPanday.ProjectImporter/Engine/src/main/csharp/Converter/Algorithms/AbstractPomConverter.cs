@@ -795,6 +795,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 string path = Path.Combine(directory, reference.Name + ".dll");
                 if (File.Exists(path))
                 {
+                    // Note that a "provided" scope may be more appropriate here, if NPanday were to support it
+                    // This could likewise replace the GAC types as all of that lookup should occur at build time
+
+                    WarnNonPortableReference(path);
+
                     string var = "npanday." + entry.Key;
                     AddProperty(var, directory);
                     Dependency refDependency = CreateDependencyFromSystemPath(reference, "${" + var + "}/" + reference.Name + ".dll");
