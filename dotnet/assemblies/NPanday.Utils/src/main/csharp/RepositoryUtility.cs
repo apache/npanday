@@ -37,7 +37,7 @@ namespace NPanday.Utils
             try
             {
                 string m2Dir = Path.GetFullPath(string.Format("{0}\\..\\.m2", System.Environment.GetFolderPath(Environment.SpecialFolder.Personal)));
-                string artifactDir = Path.Combine(m2Dir, string.Format(@"repository\{0}\{1}\{2}", groupId, artifactId, version));
+                string artifactDir = Path.Combine(m2Dir, string.Format(@"repository\{0}\{1}\{2}", groupId.Replace('.','\\'), artifactId, version));
                 string artifactFilename = string.Format("{0}-{1}{2}", artifactId, version, Path.GetExtension(filename));
 
                 if (!File.Exists(filename))
