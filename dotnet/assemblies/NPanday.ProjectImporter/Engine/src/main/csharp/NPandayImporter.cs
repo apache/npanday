@@ -188,6 +188,9 @@ namespace NPanday.ProjectImporter
         {
             string[] result = null;
 
+            if (depSearchConfig == null)
+                depSearchConfig = new DependencySearchConfiguration();
+
             FileInfo solutionFileInfo = new FileInfo(solutionFile);
 
             List<Dictionary<string, object>> list = ParseSolution(solutionFileInfo, ref warningMsg);
@@ -221,7 +224,7 @@ namespace NPanday.ProjectImporter
                     // set the project flag so that converters can look at it later
                     pDigest.UseMsDeploy = useMsDeploy;
                     pDigest.CloudConfig = cloudConfig;
-                    pDigest.DependencySearchConfig = depSearchConfig != null ? depSearchConfig : new DependencySearchConfiguration();
+                    pDigest.DependencySearchConfig = depSearchConfig;
                     filteredPrjDigests.Add(pDigest);
                 }
                 else
@@ -263,9 +266,18 @@ namespace NPanday.ProjectImporter
             }
             if (nonPortableReferences.Count > 0)
             {
-                warningMsg += "\nThe build may not be portable if local references are used:"
+                if (depSearchConfig.CopyToMaven)
+                {
+                    warningMsg += "The following artifacts were copied to the local Maven repository:"
                          + "\n\t" + string.Join("\n\t", nonPortableReferences.ToArray())
                          + "\nDeploying the reference to a Repository will make the code portable to other machines";
+                }
+                else
+                {
+                    warningMsg += "\nThe build may not be portable if local references are used:"
+                         + "\n\t" + string.Join("\n\t", nonPortableReferences.ToArray())
+                         + "\nDeploying the reference to a Repository will make the code portable to other machines";
+                }
             }
             return result;
         }

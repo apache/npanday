@@ -68,6 +68,7 @@ namespace NPanday.VisualStudio.Addin
             this.searchGacCheckBox = new System.Windows.Forms.CheckBox();
             this.searchRefAssembliesCheckBox = new System.Windows.Forms.CheckBox();
             this.searchFrameworkCheckBox = new System.Windows.Forms.CheckBox();
+            this.copyToMavenCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -267,12 +268,23 @@ namespace NPanday.VisualStudio.Addin
             this.searchFrameworkCheckBox.Text = "Framework";
             this.searchFrameworkCheckBox.UseVisualStyleBackColor = true;
             // 
+            // copyToMavenCheckBox
+            // 
+            this.copyToMavenCheckBox.AutoSize = true;
+            this.copyToMavenCheckBox.Location = new System.Drawing.Point(549, 118);
+            this.copyToMavenCheckBox.Name = "copyToMavenCheckBox";
+            this.copyToMavenCheckBox.Size = new System.Drawing.Size(180, 17);
+            this.copyToMavenCheckBox.TabIndex = 3;
+            this.copyToMavenCheckBox.Text = "Copy to Local Maven Repository";
+            this.copyToMavenCheckBox.UseVisualStyleBackColor = true;
+            // 
             // NPandayImportProjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(734, 280);
             this.ControlBox = false;
+            this.Controls.Add(this.copyToMavenCheckBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cloudConfigComboBox);
             this.Controls.Add(this.configComboBox);
@@ -324,5 +336,6 @@ namespace NPanday.VisualStudio.Addin
         private System.Windows.Forms.CheckBox searchGacCheckBox;
         private System.Windows.Forms.CheckBox searchRefAssembliesCheckBox;
         private System.Windows.Forms.CheckBox searchFrameworkCheckBox;
+        private System.Windows.Forms.CheckBox copyToMavenCheckBox;
     }
 }

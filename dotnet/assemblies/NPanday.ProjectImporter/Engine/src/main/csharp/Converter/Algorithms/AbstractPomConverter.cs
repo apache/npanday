@@ -841,7 +841,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     // Note that a "provided" scope may be more appropriate here, if NPanday were to support it
                     // This could likewise replace the GAC types as all of that lookup should occur at build time
 
-                    WarnNonPortableReference(path);
+                    WarnNonPortableReference(path, reference);
 
                     string var = "npanday." + entry.Key;
                     AddProperty(var, directory);
@@ -1002,9 +1002,14 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return null;
         }
 
-        private void WarnNonPortableReference(string path)
+        private void WarnNonPortableReference(string path, Reference reference)
         {
             log.WarnFormat("Adding non-portable reference to POM: {0}", path);
+
+            if (projectDigest.DependencySearchConfig.CopyToMaven)
+            {
+                RepositoryUtility.InstallAssembly(path, reference.Name, reference.Name, reference.Version ?? "1.0.0.0");
+            }
 
             nonPortableReferences.Add(path);
         }
@@ -1017,7 +1022,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 //verbose for new-import
                 if (!reference.HintFullPath.ToLower().StartsWith(prjRefPath.ToLower()) && !reference.Name.Contains("Interop"))
                 {
-                    WarnNonPortableReference(reference.HintFullPath);
+                    WarnNonPortableReference(reference.HintFullPath, reference);
 
                     return CreateDependencyFromSystemPath(reference, reference.HintFullPath);
                 }

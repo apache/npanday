@@ -262,6 +262,7 @@ namespace NPanday.VisualStudio.Addin
             depSearchConfig.SearchFramework = searchFrameworkCheckBox.Checked;
             depSearchConfig.SearchReferenceAssemblies = searchRefAssembliesCheckBox.Checked;
             depSearchConfig.SearchGac = searchGacCheckBox.Checked;
+            depSearchConfig.CopyToMaven = copyToMavenCheckBox.Checked;
 
             //Refactored code for easier Unit Testing
             try

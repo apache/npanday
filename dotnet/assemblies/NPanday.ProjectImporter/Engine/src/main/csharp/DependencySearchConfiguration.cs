@@ -35,5 +35,8 @@ namespace NPanday.ProjectImporter
 
         private bool searchGac = true;
         public bool SearchGac { get { return searchGac; } set { searchGac = value; } }
+
+        private bool copyToMaven = false;
+        public bool CopyToMaven { get { return copyToMaven; } set { copyToMaven = value; } }
     }
 }
