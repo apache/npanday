@@ -33,15 +33,17 @@
       <groupId>Microsoft.VisualBasic</groupId>
       <artifactId>Microsoft.VisualBasic</artifactId>
       <version>10.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>b03f5f7f11d50a3a</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.Framework40}/Microsoft.VisualBasic.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>System.IdentityModel</groupId>
       <artifactId>System.IdentityModel</artifactId>
       <version>4.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>b77a5c561934e089</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.Framework40}/System.IdentityModel.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>System.Web.Mvc</groupId>
@@ -51,4 +53,7 @@
       <classifier>31bf3856ad364e35</classifier>
     </dependency>
   </dependencies>
+  <properties>
+    <npanday.Framework40>C:\Windows\Microsoft.NET\Framework\v4.0.30319</npanday.Framework40>
+  </properties>
 </project>

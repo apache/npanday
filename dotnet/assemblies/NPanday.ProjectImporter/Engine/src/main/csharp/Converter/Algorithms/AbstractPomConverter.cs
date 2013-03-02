@@ -74,6 +74,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         
         protected NPanday.Model.Pom.Model model;
         private static List<Artifact.Artifact> testingArtifacts;
+        private Dictionary<string, string> TargetFrameworkDirectories;
 
         public NPanday.Model.Pom.Model Model
         {
@@ -756,6 +757,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // NPanday uses the following order:
             //  - Files from artifact repository
             //  - The hintpath (step 3 above)
+            //  - The target framework directories (step 4 above)
             //  - The GAC (step 7 above)
 
             Dependency refDependency;
@@ -767,6 +769,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (refDependency == null)
                 refDependency = ResolveDependencyFromHintPath(reference);
 
+            // resolve from target framework directories
+            if (refDependency == null)
+                refDependency = ResolveDependencyFromTargetFrameworkDirectories(reference);
+
             // resolve from GAC
             if (refDependency == null)
                 refDependency = ResolveDependencyFromGAC(reference);
@@ -775,6 +781,153 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 log.DebugFormat("Unable to resolve {0}", reference.Name);
 
             return refDependency;
+        }
+
+        private Dependency ResolveDependencyFromTargetFrameworkDirectories(Reference reference)
+        {
+            Dictionary<string,string> directories = GetTargetFrameworkDirectories();
+
+            foreach (KeyValuePair<string,string> entry in directories)
+            {
+                string directory = entry.Value;
+                string path = Path.Combine(directory, reference.Name + ".dll");
+                if (File.Exists(path))
+                {
+                    string var = "npanday." + entry.Key;
+                    AddProperty(var, directory);
+                    Dependency refDependency = CreateDependencyFromSystemPath(reference, "${" + var + "}/" + reference.Name + ".dll");
+                    log.DebugFormat("Resolved {0} from target framework directories: {1}:{2}:{3}",
+                        reference.Name, refDependency.groupId, refDependency.artifactId, refDependency.version);
+                    return refDependency;
+                }
+            }
+            return null;
+        }
+
+        private void AddProperty(string var, string value)
+        {
+            if (model.properties == null)
+                model.properties = new ModelProperties();
+
+            List<XmlElement> elems = new List<XmlElement>();
+            if (model.properties.Any != null)
+            {
+                foreach (XmlElement e in model.properties.Any)
+                {
+                    Console.WriteLine(e.ToString());
+                    if (e.Name == var)
+                    {
+                        if (e.InnerText != value)
+                            throw new Exception("Inconsistent property: " + var + " replacing " + e.Value + " with " + value);
+                        else
+                            return;
+                    }
+                    else
+                    {
+                        elems.Add(e);
+                    }
+                }
+            }
+
+            XmlDocument xmlDocument = new XmlDocument();
+
+            XmlElement elem = xmlDocument.CreateElement(var, @"http://maven.apache.org/POM/4.0.0");
+            elem.InnerText = value;
+            elems.Add(elem);
+
+            model.properties.Any = elems.ToArray();
+        }
+
+        protected Dictionary<string, string> GetTargetFrameworkDirectories()
+        {
+            if (TargetFrameworkDirectories == null)
+            {
+                // TODO: add support for Silverlight
+                // TODO: add support for WinFX, which adds: $(CLR_REF_PATH) and $(WinFXAssemblyDirectory) (constructed by an MSBuild task)
+                // TODO: add support for CompactFramework, which overwrites with the output of the GetDeviceFrameworkPath MSBuild task
+
+                Dictionary<string, string> targetFrameworkDirectories = new Dictionary<string, string>();
+
+                if (projectDigest.TargetFramework == "4.0")
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version40", "Framework40");
+                else if (projectDigest.TargetFramework == "3.5")
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version35", "Framework35");
+                else if (projectDigest.TargetFramework == "3.5" || projectDigest.TargetFramework == "3.0")
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version30", "Framework30");
+                else if (projectDigest.TargetFramework == "3.5" || projectDigest.TargetFramework == "3.0" || projectDigest.TargetFramework == "2.0")
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version20", "Framework20");
+                else if (projectDigest.TargetFramework == "1.1")
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version11", "Framework11");
+                else
+                    log.WarnFormat("Unsupported framework version for determining target framework directories: {0}", projectDigest.TargetFramework);
+
+                // Add SDK directory
+                if (projectDigest.TargetFramework == "4.0")
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version40", "FrameworkSdk40");
+                else if (projectDigest.TargetFramework == "3.5")
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version35", "FrameworkSdk35");
+                else if (projectDigest.TargetFramework == "3.0")
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version30", "FrameworkSdk30");
+                else if (projectDigest.TargetFramework == "2.0")
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version20", "FrameworkSdk20");
+                else if (projectDigest.TargetFramework == "1.1")
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version11", "FrameworkSdk11");
+
+                log.InfoFormat("Target framework directories: {0}", string.Join(",", new List<string>(targetFrameworkDirectories.Values).ToArray()));
+                TargetFrameworkDirectories = targetFrameworkDirectories;
+            }
+            return TargetFrameworkDirectories;
+        }
+
+        private void AddTargetFrameworkDirectory(Dictionary<string, string> directories, string method, string version, string key)
+        {
+            // If the VS requirement moves up to a newer .NET requirement, we can just do:
+            //  ToolLocationHelper.GetPathToDotNetFramework(TargetDotNetFrameworkVersion.Version40);
+            // However, when targetting an earlier version we end up with Microsoft.Build.Utilities and Microsoft.Build.Utilities.v4.0
+            // in the list of assemblies, and there's no guarantee the types will be loaded from the right one
+
+            // Iterate over loaded assemblies to find ToolLocationHelper
+            Type helperType = null;
+            Type versionType = null;
+            foreach (System.Reflection.Assembly a in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (a.GetName().Name.StartsWith("Microsoft.Build.Utilities"))
+                {
+                    foreach (Type t in a.GetExportedTypes())
+                    {
+                        if (t.Name == "ToolLocationHelper")
+                        {
+                            helperType = t;
+                        }
+                        else if (t.Name == "TargetDotNetFrameworkVersion")
+                        {
+                            versionType = t;
+                        }
+                    }
+                }
+            }
+
+            if (helperType == null)
+            {
+                log.Error("Unable to find ToolLocationHelper type");
+            }
+            else if (versionType == null)
+            {
+                log.Error("Unable to find TargetDotNetFrameworkVersion type");
+            }
+            else
+            {
+                log.DebugFormat("Using ToolLocationHelper from {0}; TargetDotNetFrameworkVersion from {1}", 
+                    helperType.Assembly.GetName(), versionType.Assembly.GetName());
+
+                string value = (string)helperType.InvokeMember(method,
+                    System.Reflection.BindingFlags.InvokeMethod, System.Type.DefaultBinder, "",
+                    new object[] { Enum.Parse(versionType, version) });
+
+                log.DebugFormat("Adding target directory {0} = {1}", key, value);
+                if (value == "" || value == null) throw new Exception("key bad: " + key + "; " + helperType.Assembly.GetName() + ", " + versionType.Assembly.GetName());
+                directories.Add(key, value);
+            }
         }
 
         private Dependency ResolveDependencyFromLocalRepository(Reference reference)
@@ -818,14 +971,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 {
                     WarnNonPortableReference(reference.HintFullPath);
 
-                    Dependency refDependency = new Dependency();
-                    refDependency.artifactId = reference.Name;
-                    refDependency.groupId = reference.Name;
-                    refDependency.version = reference.Version ?? "1.0.0.0";
-                    refDependency.type = "dotnet-library";
-                    refDependency.scope = "system";
-                    refDependency.systemPath = reference.HintFullPath;
-                    return refDependency;
+                    return CreateDependencyFromSystemPath(reference, reference.HintFullPath);
                 }
                 else
                 {
@@ -853,6 +999,18 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 }
             }
             return null;
+        }
+
+        private static Dependency CreateDependencyFromSystemPath(Reference reference, string path)
+        {
+            Dependency refDependency = new Dependency();
+            refDependency.artifactId = reference.Name;
+            refDependency.groupId = reference.Name;
+            refDependency.version = reference.Version ?? "1.0.0.0";
+            refDependency.type = "dotnet-library";
+            refDependency.scope = "system";
+            refDependency.systemPath = path;
+            return refDependency;
         }
 
         private Dependency ResolveDependencyFromGAC(Reference reference)

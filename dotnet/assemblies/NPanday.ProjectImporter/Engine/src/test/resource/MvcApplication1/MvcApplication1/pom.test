@@ -62,8 +62,9 @@
       <groupId>System.Data.Entity</groupId>
       <artifactId>System.Data.Entity</artifactId>
       <version>4.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>b77a5c561934e089</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.Framework40}/System.Data.Entity.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>System.Web.Mvc</groupId>
@@ -90,43 +91,52 @@
       <groupId>System.Web.DynamicData</groupId>
       <artifactId>System.Web.DynamicData</artifactId>
       <version>4.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>31bf3856ad364e35</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.Framework40}/System.Web.DynamicData.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>System.Web.Entity</groupId>
       <artifactId>System.Web.Entity</artifactId>
       <version>4.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>b77a5c561934e089</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.Framework40}/System.Web.Entity.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>System.Web.ApplicationServices</groupId>
       <artifactId>System.Web.ApplicationServices</artifactId>
       <version>4.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>31bf3856ad364e35</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.Framework40}/System.Web.ApplicationServices.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>System.ComponentModel.DataAnnotations</groupId>
       <artifactId>System.ComponentModel.DataAnnotations</artifactId>
       <version>4.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>31bf3856ad364e35</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.Framework40}/System.ComponentModel.DataAnnotations.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>System.Web.Abstractions</groupId>
       <artifactId>System.Web.Abstractions</artifactId>
       <version>4.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>31bf3856ad364e35</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.Framework40}/System.Web.Abstractions.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>System.Web.Routing</groupId>
       <artifactId>System.Web.Routing</artifactId>
       <version>4.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>31bf3856ad364e35</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.Framework40}/System.Web.Routing.dll</systemPath>
     </dependency>
   </dependencies>
+  <properties>
+    <npanday.Framework40>C:\Windows\Microsoft.NET\Framework\v4.0.30319</npanday.Framework40>
+  </properties>
 </project>

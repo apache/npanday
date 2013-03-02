@@ -656,6 +656,10 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             {
                 projectDigest.SchemaVersion = buildProperty.Value;
             }
+            else if ("TargetFrameworkIdentifier".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.TargetFrameworkIdentifier = buildProperty.Value;
+            }
             else if ("TargetFrameworkVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
             {
                 // changed the version to the more specific version

@@ -71,8 +71,12 @@
       <groupId>System.Data.Services.Client</groupId>
       <artifactId>System.Data.Services.Client</artifactId>
       <version>4.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>b77a5c561934e089</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.Framework40}/System.Data.Services.Client.dll</systemPath>
     </dependency>
   </dependencies>
+  <properties>
+    <npanday.Framework40>C:\Windows\Microsoft.NET\Framework\v4.0.30319</npanday.Framework40>
+  </properties>
 </project>

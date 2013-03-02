@@ -68,8 +68,9 @@
       <groupId>System.Xaml</groupId>
       <artifactId>System.Xaml</artifactId>
       <version>4.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>b77a5c561934e089</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.Framework40}/System.Xaml.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>WindowsBase</groupId>
@@ -93,4 +94,7 @@
       <classifier>31bf3856ad364e35</classifier>
     </dependency>
   </dependencies>
+  <properties>
+    <npanday.Framework40>C:\Windows\Microsoft.NET\Framework\v4.0.30319</npanday.Framework40>
+  </properties>
 </project>

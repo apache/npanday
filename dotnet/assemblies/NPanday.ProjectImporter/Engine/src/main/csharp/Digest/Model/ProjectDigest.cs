@@ -580,5 +580,12 @@ namespace NPanday.ProjectImporter.Digest.Model
             get { return cloudConfig; }
             set { cloudConfig = value; }
         }
+
+        private string targetFrameworkIdentifier;
+        public string TargetFrameworkIdentifier
+        {
+            get { return targetFrameworkIdentifier; }
+            set { targetFrameworkIdentifier = value; } 
+        }
     }
 }
