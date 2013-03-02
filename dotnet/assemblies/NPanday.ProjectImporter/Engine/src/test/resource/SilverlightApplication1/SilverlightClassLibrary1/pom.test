@@ -25,20 +25,15 @@
       <groupId>System.Windows</groupId>
       <artifactId>System.Windows</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.SilverlightFramework30}/System.Windows.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
     <dependency>
       <groupId>System.Net</groupId>
       <artifactId>System.Net</artifactId>
       <version>3.5.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.SilverlightFramework30}/System.Net.dll</systemPath>
+      <type>gac_msil</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
   </dependencies>
-  <properties>
-    <npanday.SilverlightFramework30>C:\Program Files\Reference Assemblies\Microsoft\Framework\Silverlight\v3.0\</npanday.SilverlightFramework30>
-  </properties>
 </project>

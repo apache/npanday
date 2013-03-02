@@ -25,28 +25,22 @@
       <groupId>mscorlib</groupId>
       <artifactId>mscorlib</artifactId>
       <version>2.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.SilverlightFramework50}/mscorlib.dll</systemPath>
+      <type>gac_32_4</type>
+      <classifier>b77a5c561934e089</classifier>
     </dependency>
     <dependency>
       <groupId>System.Windows</groupId>
       <artifactId>System.Windows</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.SilverlightFramework50}/System.Windows.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
     <dependency>
       <groupId>System.Net</groupId>
       <artifactId>System.Net</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.SilverlightFramework50}/System.Net.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
   </dependencies>
-  <properties>
-    <npanday.SilverlightFramework50>C:\Program Files\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0\</npanday.SilverlightFramework50>
-  </properties>
 </project>

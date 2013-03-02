@@ -64,6 +64,11 @@ namespace NPanday.VisualStudio.Addin
             this.label4 = new System.Windows.Forms.Label();
             this.configComboBox = new System.Windows.Forms.ComboBox();
             this.cloudConfigComboBox = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.searchGacCheckBox = new System.Windows.Forms.CheckBox();
+            this.searchRefAssembliesCheckBox = new System.Windows.Forms.CheckBox();
+            this.searchFrameworkCheckBox = new System.Windows.Forms.CheckBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnBrowse
@@ -98,7 +103,7 @@ namespace NPanday.VisualStudio.Addin
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(265, 245);
+            this.btnCancel.Location = new System.Drawing.Point(369, 245);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(104, 21);
@@ -109,7 +114,7 @@ namespace NPanday.VisualStudio.Addin
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(157, 245);
+            this.btnGenerate.Location = new System.Drawing.Point(261, 245);
             this.btnGenerate.Margin = new System.Windows.Forms.Padding(2);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(104, 21);
@@ -218,12 +223,57 @@ namespace NPanday.VisualStudio.Addin
             this.cloudConfigComboBox.Size = new System.Drawing.Size(312, 21);
             this.cloudConfigComboBox.TabIndex = 20;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.searchGacCheckBox);
+            this.groupBox1.Controls.Add(this.searchRefAssembliesCheckBox);
+            this.groupBox1.Controls.Add(this.searchFrameworkCheckBox);
+            this.groupBox1.Location = new System.Drawing.Point(534, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(186, 100);
+            this.groupBox1.TabIndex = 21;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Dependency Search Locations";
+            // 
+            // searchGacCheckBox
+            // 
+            this.searchGacCheckBox.AutoSize = true;
+            this.searchGacCheckBox.Checked = true;
+            this.searchGacCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.searchGacCheckBox.Location = new System.Drawing.Point(15, 70);
+            this.searchGacCheckBox.Name = "searchGacCheckBox";
+            this.searchGacCheckBox.Size = new System.Drawing.Size(137, 17);
+            this.searchGacCheckBox.TabIndex = 2;
+            this.searchGacCheckBox.Text = "Global Assembly Cache";
+            this.searchGacCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // searchRefAssembliesCheckBox
+            // 
+            this.searchRefAssembliesCheckBox.AutoSize = true;
+            this.searchRefAssembliesCheckBox.Location = new System.Drawing.Point(15, 47);
+            this.searchRefAssembliesCheckBox.Name = "searchRefAssembliesCheckBox";
+            this.searchRefAssembliesCheckBox.Size = new System.Drawing.Size(131, 17);
+            this.searchRefAssembliesCheckBox.TabIndex = 1;
+            this.searchRefAssembliesCheckBox.Text = "Reference Assemblies";
+            this.searchRefAssembliesCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // searchFrameworkCheckBox
+            // 
+            this.searchFrameworkCheckBox.AutoSize = true;
+            this.searchFrameworkCheckBox.Location = new System.Drawing.Point(15, 24);
+            this.searchFrameworkCheckBox.Name = "searchFrameworkCheckBox";
+            this.searchFrameworkCheckBox.Size = new System.Drawing.Size(78, 17);
+            this.searchFrameworkCheckBox.TabIndex = 0;
+            this.searchFrameworkCheckBox.Text = "Framework";
+            this.searchFrameworkCheckBox.UseVisualStyleBackColor = true;
+            // 
             // NPandayImportProjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 280);
+            this.ClientSize = new System.Drawing.Size(734, 280);
             this.ControlBox = false;
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cloudConfigComboBox);
             this.Controls.Add(this.configComboBox);
             this.Controls.Add(this.label4);
@@ -245,6 +295,8 @@ namespace NPanday.VisualStudio.Addin
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NPanday Import Dot Net Solution";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -268,5 +320,9 @@ namespace NPanday.VisualStudio.Addin
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox configComboBox;
         private System.Windows.Forms.ComboBox cloudConfigComboBox;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox searchGacCheckBox;
+        private System.Windows.Forms.CheckBox searchRefAssembliesCheckBox;
+        private System.Windows.Forms.CheckBox searchFrameworkCheckBox;
     }
 }

@@ -600,5 +600,11 @@ namespace NPanday.ProjectImporter.Digest.Model
             set { silverlightVersion = value; }
         }
 
+        private DependencySearchConfiguration dependencySearchConfig;
+        internal DependencySearchConfiguration DependencySearchConfig
+        {
+            get { return dependencySearchConfig; }
+            set { dependencySearchConfig = value; }
+        }
     }
 }

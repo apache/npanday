@@ -48,45 +48,34 @@
       <artifactId>Microsoft.WindowsAzure.Configuration</artifactId>
       <version>1.7.0.0</version>
       <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.WindowsAzureLibrariesforNETv17NET40CacheclientReferenceAssembliesforVisualStudio}/Microsoft.WindowsAzure.Configuration.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>Microsoft.WindowsAzure.Diagnostics</groupId>
       <artifactId>Microsoft.WindowsAzure.Diagnostics</artifactId>
       <version>1.7.0.0</version>
       <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.WindowsAzureLibrariesforNETv17NET40CacheclientReferenceAssembliesforVisualStudio}/Microsoft.WindowsAzure.Diagnostics.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>Microsoft.WindowsAzure.ServiceRuntime</groupId>
       <artifactId>Microsoft.WindowsAzure.ServiceRuntime</artifactId>
       <version>1.7.0.0</version>
       <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.WindowsAzureLibrariesforNETv17NET40CacheclientReferenceAssembliesforVisualStudio}/Microsoft.WindowsAzure.ServiceRuntime.dll</systemPath>
-    </dependency>
+      <type>gac_msil</type>
+      <classifier>31bf3856ad364e35</classifier>
     </dependency>
     <dependency>
       <groupId>Microsoft.WindowsAzure.StorageClient</groupId>
       <artifactId>Microsoft.WindowsAzure.StorageClient</artifactId>
       <version>1.7.0.0</version>
       <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.WindowsAzureLibrariesforNETv17NET40CacheclientReferenceAssembliesforVisualStudio}/Microsoft.WindowsAzure.StorageClient.dll</systemPath>
     </dependency>
     <dependency>
       <groupId>System.Data.Services.Client</groupId>
       <artifactId>System.Data.Services.Client</artifactId>
       <version>4.0.0.0</version>
       <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.Framework40}/System.Data.Services.Client.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>b77a5c561934e089</classifier>
     </dependency>
   </dependencies>
-  <properties>
-    <npanday.WindowsAzureLibrariesforNETv17NET40CacheclientReferenceAssembliesforVisualStudio>C:\Program Files\Microsoft SDKs\Windows Azure\.NET SDK\2012-06\ref\</npanday.WindowsAzureLibrariesforNETv17NET40CacheclientReferenceAssembliesforVisualStudio>
-    <npanday.Framework40>C:\Windows\Microsoft.NET\Framework\v4.0.30319</npanday.Framework40>
-  </properties>
 </project>

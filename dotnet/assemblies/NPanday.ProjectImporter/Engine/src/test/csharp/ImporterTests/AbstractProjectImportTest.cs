@@ -22,6 +22,7 @@ using System.IO;
 
 
 using NUnit.Framework;
+using NPanday.ProjectImporter;
 
 namespace NPanday.ProjectImporter.ImporterTests
 {
@@ -60,6 +61,11 @@ namespace NPanday.ProjectImporter.ImporterTests
             get { return null; }
         }
 
+        public virtual DependencySearchConfiguration DepSearchConfig
+        {
+            get { return null; }
+        }
+
         [Test]
         [TestFixtureSetUp]
         public void ShouldBeAbleImportProject()
@@ -76,7 +82,7 @@ namespace NPanday.ProjectImporter.ImporterTests
             try
             {
                 string warnMsg = string.Empty;
-                generatedPomFiles = NPandayImporter.ImportProject(solutionFile, "test.group", "test-parent", "1.2.3-SNAPSHOT", string.Empty, false, UseMsDeploy, SelectedConfiguration, CloudConfiguration, ref warnMsg);
+                generatedPomFiles = NPandayImporter.ImportProject(solutionFile, "test.group", "test-parent", "1.2.3-SNAPSHOT", string.Empty, false, UseMsDeploy, SelectedConfiguration, CloudConfiguration, DepSearchConfig, ref warnMsg);
 
             }
             catch (Exception e)

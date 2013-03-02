@@ -62,86 +62,71 @@
       <groupId>System.Data.Entity</groupId>
       <artifactId>System.Data.Entity</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.Framework40}/System.Data.Entity.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>b77a5c561934e089</classifier>
     </dependency>
     <dependency>
       <groupId>System.Web.Mvc</groupId>
       <artifactId>System.Web.Mvc</artifactId>
       <version>3.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.ASPNETMVC3}/System.Web.Mvc.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>31bf3856ad364e35</classifier>
     </dependency>
     <dependency>
       <groupId>System.Web.WebPages</groupId>
       <artifactId>System.Web.WebPages</artifactId>
       <version>1.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.ASPNETWebPages}/System.Web.WebPages.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>31bf3856ad364e35</classifier>
     </dependency>
     <dependency>
       <groupId>System.Web.Helpers</groupId>
       <artifactId>System.Web.Helpers</artifactId>
       <version>1.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.ASPNETWebPages}/System.Web.Helpers.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>31bf3856ad364e35</classifier>
     </dependency>
     <dependency>
       <groupId>System.Web.DynamicData</groupId>
       <artifactId>System.Web.DynamicData</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.Framework40}/System.Web.DynamicData.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>31bf3856ad364e35</classifier>
     </dependency>
     <dependency>
       <groupId>System.Web.Entity</groupId>
       <artifactId>System.Web.Entity</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.Framework40}/System.Web.Entity.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>b77a5c561934e089</classifier>
     </dependency>
     <dependency>
       <groupId>System.Web.ApplicationServices</groupId>
       <artifactId>System.Web.ApplicationServices</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.Framework40}/System.Web.ApplicationServices.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>31bf3856ad364e35</classifier>
     </dependency>
     <dependency>
       <groupId>System.ComponentModel.DataAnnotations</groupId>
       <artifactId>System.ComponentModel.DataAnnotations</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.Framework40}/System.ComponentModel.DataAnnotations.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>31bf3856ad364e35</classifier>
     </dependency>
     <dependency>
       <groupId>System.Web.Abstractions</groupId>
       <artifactId>System.Web.Abstractions</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.Framework40}/System.Web.Abstractions.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>31bf3856ad364e35</classifier>
     </dependency>
     <dependency>
       <groupId>System.Web.Routing</groupId>
       <artifactId>System.Web.Routing</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-      <scope>system</scope>
-      <systemPath>${npanday.Framework40}/System.Web.Routing.dll</systemPath>
+      <type>gac_msil4</type>
+      <classifier>31bf3856ad364e35</classifier>
     </dependency>
   </dependencies>
-  <properties>
-    <npanday.Framework40>C:\Windows\Microsoft.NET\Framework\v4.0.30319</npanday.Framework40>
-    <npanday.ASPNETMVC3>c:\Program Files\Microsoft ASP.NET\ASP.NET MVC 3\Assemblies\</npanday.ASPNETMVC3>
-    <npanday.ASPNETWebPages>c:\Program Files\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\Assemblies\</npanday.ASPNETWebPages>
-  </properties>
 </project>

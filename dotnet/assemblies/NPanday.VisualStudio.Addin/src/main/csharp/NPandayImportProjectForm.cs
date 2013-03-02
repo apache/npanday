@@ -30,6 +30,7 @@ using EnvDTE80;
 using log4net;
 using Microsoft.Win32;
 using System.Net;
+using NPanday.ProjectImporter;
 
 namespace NPanday.VisualStudio.Addin
 {
@@ -257,10 +258,15 @@ namespace NPanday.VisualStudio.Addin
                 cloudConfig = (string)cloudConfigComboBox.SelectedItem;
             }
 
+            DependencySearchConfiguration depSearchConfig = new DependencySearchConfiguration();
+            depSearchConfig.SearchFramework = searchFrameworkCheckBox.Checked;
+            depSearchConfig.SearchReferenceAssemblies = searchRefAssembliesCheckBox.Checked;
+            depSearchConfig.SearchGac = searchGacCheckBox.Checked;
+
             //Refactored code for easier Unit Testing
             try
             {
-                GeneratePom(txtBrowseDotNetSolutionFile.Text, txtGroupId.Text.Trim(), txtVersion.Text.Trim(), txtSCMTag.Text, useMsDeployCheckBox.Checked, configuration, cloudConfig);
+                GeneratePom(txtBrowseDotNetSolutionFile.Text, txtGroupId.Text.Trim(), txtVersion.Text.Trim(), txtSCMTag.Text, useMsDeployCheckBox.Checked, configuration, cloudConfig, depSearchConfig);
             }
             catch (Exception exception)
             {
@@ -271,10 +277,10 @@ namespace NPanday.VisualStudio.Addin
 
         protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag, bool useMsDeploy)
         {
-            GeneratePom(solutionFile, groupId, version, scmTag, useMsDeploy, null, null);
+            GeneratePom(solutionFile, groupId, version, scmTag, useMsDeploy, null, null, null);
         }
 
-        protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag, bool useMsDeploy, string configuration, string cloudConfig)
+        protected void GeneratePom(String solutionFile, String groupId, String version, String scmTag, bool useMsDeploy, string configuration, string cloudConfig, DependencySearchConfiguration depSearchConfig)
         {
             string warningMsg = string.Empty;
             String mavenVerRegex = "^[0-9]+(" + Regex.Escape(".") + "?[0-9]+){0,3}$";
@@ -354,7 +360,7 @@ namespace NPanday.VisualStudio.Addin
                 validateSolutionStructure();
                 resyncAllArtifacts();
                 // TODO: nicer to have some sort of structure / flags for the Msdeploy bit, or this dialog will get out of control over time - perhaps a "project configuration" dialog can replace the test popup
-                string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, useMsDeploy, configuration, cloudConfig, ref warningMsg);
+                string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, useMsDeploy, configuration, cloudConfig, depSearchConfig, ref warningMsg);
                 string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
 
                 foreach (string pom in generatedPoms)

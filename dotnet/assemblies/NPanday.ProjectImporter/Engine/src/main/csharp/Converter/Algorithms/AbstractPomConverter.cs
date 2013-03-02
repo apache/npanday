@@ -778,15 +778,15 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 refDependency = ResolveDependencyFromHintPath(reference);
 
             // resolve from target framework directories
-            if (refDependency == null)
+            if (refDependency == null && projectDigest.DependencySearchConfig.SearchFramework)
                 refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkDirectories());
 
             // resolve from registered assembly directories
-            if (refDependency == null)
+            if (refDependency == null && projectDigest.DependencySearchConfig.SearchReferenceAssemblies)
                 refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkAssemblyFoldersEx());
 
             // resolve from GAC
-            if (refDependency == null)
+            if (refDependency == null && projectDigest.DependencySearchConfig.SearchGac)
                 refDependency = ResolveDependencyFromGAC(reference);
 
             if (refDependency == null)

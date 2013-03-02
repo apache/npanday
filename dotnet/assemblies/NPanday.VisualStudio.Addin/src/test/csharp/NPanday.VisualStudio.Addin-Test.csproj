@@ -82,6 +82,10 @@
       <Project>{701803D4-90F5-44D7-919D-4844FEB7F936}</Project>
       <Name>NPanday.Artifact</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NPanday.ProjectImporter\Engine\src\main\csharp\NPanday.ProjectImporterEngine.csproj">
+      <Project>{91FC215D-C041-4000-8F71-C04A9EEABE55}</Project>
+      <Name>NPanday.ProjectImporterEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\NPanday.Utils\src\main\csharp\NPanday.Utils.csproj">
       <Project>{CAA4864F-F4C8-4024-8535-8B8C112307CE}</Project>
       <Name>NPanday.Utils</Name>
