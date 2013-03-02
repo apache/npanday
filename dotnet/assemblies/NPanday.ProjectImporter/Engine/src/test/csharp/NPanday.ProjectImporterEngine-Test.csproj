@@ -23,7 +23,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <RootNameSpace>NPanday.ProjectImporter</RootNameSpace>
     <AssemblyName>NPanday.ProjectImporterEngine-Test</AssemblyName>
-    <BaseIntermediateOutputPath>C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\target\obj\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\..\..\target\obj\</BaseIntermediateOutputPath>
     <OutputType>Library</OutputType>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
@@ -32,7 +32,7 @@
     <UpgradeBackupLocation />
   </PropertyGroup>
   <PropertyGroup>
-    <OutputPath>C:\build\nmaven-0.14-SNAPSHOT-R667430\assemblies\NMaven.ProjectImporter\Engine\target\bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\target\bin\Debug\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
