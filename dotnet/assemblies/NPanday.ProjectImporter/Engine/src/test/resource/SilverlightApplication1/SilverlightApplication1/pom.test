@@ -31,15 +31,13 @@
       <groupId>System.Windows</groupId>
       <artifactId>System.Windows</artifactId>
       <version>4.0.0.0</version>
-      <type>gac_msil4</type>
-      <classifier>b03f5f7f11d50a3a</classifier>
+      <type>dotnet-library</type>
     </dependency>
     <dependency>
       <groupId>System.Net</groupId>
       <artifactId>System.Net</artifactId>
       <version>3.5.0.0</version>
-      <type>gac_msil</type>
-      <classifier>b03f5f7f11d50a3a</classifier>
+      <type>dotnet-library</type>
     </dependency>
   </dependencies>
 </project>

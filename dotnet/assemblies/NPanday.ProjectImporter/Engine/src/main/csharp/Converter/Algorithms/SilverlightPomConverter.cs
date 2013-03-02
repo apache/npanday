@@ -92,6 +92,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             //Add EmbeddedResources maven-resgen-plugin
             AddEmbeddedResources();
 
+            // do not resolve any dependencies from the GAC for silverlight projects
+            projectDigest.DependencySearchConfig.SearchGac = false;
 
             // Add Project Inter-dependencies
             AddInterProjectDependenciesToList();
@@ -104,7 +106,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 PomHelperUtility.WriteModelToPom(new FileInfo(Path.GetDirectoryName(projectDigest.FullFileName) + @"\pom.xml"), Model);
             }
         }
-        
+
         protected override Dictionary<string, string> GetTargetFrameworkDirectories()
         {
             if (TargetFrameworkDirectories == null)
