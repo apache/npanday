@@ -194,3 +194,34 @@ present - they haven't been matched up.
 
 The project sync API should be tested for reimporting existing projects with
 certain characteristics.
+
+## Reference Resolution
+
+The reference resolution now mostly matches that of MSBuild, after first
+checking the local Maven repository.
+
+This may still yield different results to Visual Studio, which looks
+primarily at Reference Assemblies at design time. If we moved to .Net 4.0 we
+would be able to more easily use the Microsoft.Build.Utilities to lookup both
+the framework libraries (Which currently use reflection), and the reference
+assemblies (through a similar method in ToolLocationHelper).
+
+In either case, these lookups should just be done to validate the artifact
+exists somewhere. They should not be put into the POM in either case as that
+reduced portability.
+
+Ideally, such dependencies could be marked as `provided` instead, and
+NPanday's own resolution should be able to lookup the correct framework
+library locations.
+
+There remains some difference in the resolution process done on import (based
+on the MSBuild project alone), and that in the ReferenceAdded handler in
+Connect.cs (which has access to the actual project including the reference
+path which points at the Reference Assembly). Potential improvements here:
+ - abstract out the reference resolution into a common library
+ - allow passing in the reference paths to the import so that a project
+   import gets consistent behaviour within the addin (mostly making the prior
+   lookups redundant here, but useful in the Maven plugins)
+ - persist configuration of the project import so that add reference knows to
+   use the framework libraries, etc. for lookup.
+
