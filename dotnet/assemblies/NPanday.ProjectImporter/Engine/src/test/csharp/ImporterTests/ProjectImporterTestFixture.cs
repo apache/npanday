@@ -22,6 +22,7 @@ using System.Text;
 using System.IO;
 using NUnit.Framework;
 using log4net.Config;
+using log4net;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -67,6 +68,7 @@ namespace NPanday.ProjectImporter.ImporterTests
         public void FinalizationProcess()
         {
             // just incase we need to finilize after running some tests
+            LogManager.Shutdown();
         }
 
     }

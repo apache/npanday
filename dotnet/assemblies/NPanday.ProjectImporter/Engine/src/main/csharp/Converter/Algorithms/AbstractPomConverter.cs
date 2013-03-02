@@ -771,6 +771,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (refDependency == null)
                 refDependency = ResolveDependencyFromGAC(reference);
 
+            if (refDependency == null)
+                log.DebugFormat("Unable to resolve {0}", reference.Name);
+
             return refDependency;
         }
 
@@ -779,6 +782,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             Artifact.Artifact artifact = GetArtifact(reference);
             if (artifact != null)
             {
+                log.DebugFormat("Resolved {0} from local repository: {1}:{2}:{3}", 
+                    reference.Name, artifact.GroupId, artifact.ArtifactId, artifact.Version);
+
                 Dependency dependency = new Dependency();
                 dependency.artifactId = artifact.ArtifactId;
                 dependency.groupId = artifact.GroupId;
@@ -789,6 +795,19 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return null;
         }
 
+        private void WarnNonPortableReference(string path)
+        {
+            log.WarnFormat("Adding non-portable reference to POM: {0}", path);
+
+            // TODO: need to show this to the user (logging not sufficient), but should not display message box in importer code. Pass in a handler instead?
+            MessageBox.Show(
+             string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
+                         + "\nReference: {0}"
+                         + "\nDeploying the reference to a Repository, will make the code portable to other machines",
+                 path
+             ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
         private Dependency ResolveDependencyFromHintPath(Reference reference)
         {
             if (!string.IsNullOrEmpty(reference.HintFullPath) && new FileInfo(reference.HintFullPath).Exists)
@@ -797,13 +816,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 //verbose for new-import
                 if (!reference.HintFullPath.ToLower().StartsWith(prjRefPath.ToLower()) && !reference.Name.Contains("Interop"))
                 {
-                    // TODO: need to show this to the user (logging not sufficient), but should not display message box in importer code. Pass in a handler instead?
-                    MessageBox.Show(
-                     string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
-                                 + "\nReference: {0}"
-                                 + "\nDeploying the reference to a Repository, will make the code portable to other machines",
-                         reference.HintFullPath
-                     ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    WarnNonPortableReference(reference.HintFullPath);
 
                     Dependency refDependency = new Dependency();
                     refDependency.artifactId = reference.Name;
@@ -832,6 +845,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     refDependency.groupId = pathTokens[pathTokens.Length - 3];
                     refDependency.version = pathTokens[pathTokens.Length-2].Replace(reference.Name+"-","") ?? "1.0.0.0";                    
                     refDependency.type = "dotnet-library";
+
+                    log.DebugFormat("Resolved {0} from previously resolved references: {1}:{2}:{3}", 
+                        reference.Name, refDependency.groupId, refDependency.artifactId, refDependency.version);
+                    
                     return refDependency;
                 }
             }
@@ -881,6 +898,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                         log.Warn("No public key token found for GAC dependency, excluding classifier: " + a.FullName);
                     }
                 }
+
+                log.DebugFormat("Resolved {0} from GAC: {1}:{2}:{3}:{4}",
+                    reference.Name, refDependency.groupId, refDependency.artifactId, refDependency.version, refDependency.classifier);
 
                 return refDependency;
             }
