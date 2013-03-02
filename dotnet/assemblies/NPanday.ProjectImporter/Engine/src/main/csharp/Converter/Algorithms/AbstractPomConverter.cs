@@ -741,6 +741,22 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         protected Dependency ResolveDependency(Reference reference)
         {
+            // For MSbuild, the typical order is as follows (from Microsoft.Common.targets):
+            // (1) Files from current project - indicated by {CandidateAssemblyFiles}
+            // (2) $(ReferencePath) - the reference path property, which comes from the .USER file.
+            // (3) The hintpath from the referenced item itself, indicated by {HintPathFromItem}.
+            // (4) The directory of MSBuild's "target" runtime from GetFrameworkPath.
+            //     The "target" runtime folder is the folder of the runtime that MSBuild is a part of.
+            // (5) Registered assembly folders, indicated by {Registry:*,*,*}
+            // (6) Legacy registered assembly folders, indicated by {AssemblyFolders}
+            // (7) Resolve to the GAC.
+            // (8) Treat the reference's Include as if it were a real file name.
+            // (9) Look in the application's output folder (like bin\debug)
+
+            // NPanday uses the following order:
+            //  - Files from artifact repository
+            //  - The hintpath (step 3 above)
+            //  - The GAC (step 7 above)
 
             // resolve first from artifact
             Artifact.Artifact artifact = GetArtifact(reference);
@@ -752,6 +768,52 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 dependency.version = artifact.Version;
                 dependency.type = "dotnet-library";
                 return dependency;
+            }
+
+            // resolve using hint path
+            if (!string.IsNullOrEmpty(reference.HintFullPath) && new FileInfo(reference.HintFullPath).Exists)
+            {
+                string prjRefPath = Path.Combine(projectDigest.FullDirectoryName, ".references");
+                //verbose for new-import
+                if (!reference.HintFullPath.ToLower().StartsWith(prjRefPath.ToLower()) && !reference.Name.Contains("Interop"))
+                {
+                    // TODO: need to show this to the user (logging not sufficient), but should not display message box in importer code. Pass in a handler instead?
+                    MessageBox.Show(
+                     string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
+                                 + "\nReference: {0}"
+                                 + "\nDeploying the reference to a Repository, will make the code portable to other machines",
+                         reference.HintFullPath
+                     ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    Dependency refDependency = new Dependency();
+                    refDependency.artifactId = reference.Name;
+                    refDependency.groupId = reference.Name;
+                    refDependency.version = reference.Version ?? "1.0.0.0";
+                    refDependency.type = "dotnet-library";
+                    refDependency.scope = "system";
+                    refDependency.systemPath = reference.HintFullPath;
+                    return refDependency;
+                }
+                else
+                {
+                    // The dependency is in .references, or an Interop. 
+                    // TODO: not a very good parsing of .references - if we have .references, don't we already know it from local repo?
+
+                    Dependency refDependency = new Dependency();
+                    refDependency.artifactId = reference.Name;
+                   
+                    //get version from the name above the last path
+                    string[] pathTokens = reference.HintFullPath.Split("\\\\".ToCharArray());
+                    if (pathTokens.Length < 3)
+                    {
+                        // should only hit this if it is in .references, and it was incorrectly constructed
+                        throw new Exception("Invalid hint path: " + reference.HintFullPath);
+                    }
+                    refDependency.groupId = pathTokens[pathTokens.Length - 3];
+                    refDependency.version = pathTokens[pathTokens.Length-2].Replace(reference.Name+"-","") ?? "1.0.0.0";                    
+                    refDependency.type = "dotnet-library";
+                    return refDependency;
+                }
             }
 
             List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(reference.Name, reference.Version, projectDigest.Platform);
@@ -801,78 +863,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 return refDependency;
             }
 
-            bool isPathReference = false;
-
-            // resolve using system path
-            if (!string.IsNullOrEmpty(reference.HintFullPath) && new FileInfo(reference.HintFullPath).Exists)
-            {
-
-                // silent for re-import
-                //commented out 
-                //if (projectDigest.ExistingPom != null)
-                //{
-                //    return null;
-                //}
-                //else
-                {
-                    string prjRefPath = Path.Combine(projectDigest.FullDirectoryName, ".references");
-                    //verbose for new-import
-                    if (!reference.HintFullPath.ToLower().StartsWith(prjRefPath.ToLower()) && !reference.Name.Contains("Interop"))
-                    {
-                        // TODO: need to show this to the user (logging not sufficient), but should not display message box in importer code. Pass in a handler instead?
-                        MessageBox.Show(
-                         string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
-                                     + "\nReference: {0}"
-                                     + "\nDeploying the reference to a Repository, will make the code portable to other machines",
-                             reference.HintFullPath
-                         ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                        isPathReference = true;
-                    }   
-
-                }
-
-
-                // uncomment this if systemPath is supported
-
-                Dependency refDependency = new Dependency();
-
-                if (!isPathReference)
-                {
-                    refDependency.artifactId = reference.Name;
-                   
-                    // TODO: not a very good parsing of .references - if we have .references, don't we already know it?
-                    //get version from the name above the last path
-                    string[] pathTokens = reference.HintFullPath.Split("\\\\".ToCharArray());
-                    if (pathTokens.Length < 3)
-                    {
-                        // should only hit this if it is in .references, and it was incorrectly constructed
-                        throw new Exception("Invalid hint path: " + reference.HintFullPath);
-                    }
-                    refDependency.groupId = pathTokens[pathTokens.Length - 3];
-                    refDependency.version = pathTokens[pathTokens.Length-2].Replace(reference.Name+"-","") ?? "1.0.0.0";
-                    //refDependency.version = reference.Version ?? "1.0.0.0";
-                    
-                    refDependency.type = "dotnet-library";
-                    //refDependency.scope = "system";
-                    //refDependency.systemPath = reference.HintFullPath;
-
-                }
-                else
-                {
-                    refDependency.artifactId = reference.Name;
-                    refDependency.groupId = reference.Name;
-                    refDependency.version = reference.Version ?? "1.0.0.0";
-                    refDependency.type = "dotnet-library";
-                    refDependency.scope = "system";
-                    refDependency.systemPath = reference.HintFullPath;
-                }
-                
-                return refDependency;
-            }
-
             return null;
-
         }
 
         Artifact.Artifact GetArtifactFromRepoUsingEmbeddedAssemblyVersionNumber(Reference reference)
