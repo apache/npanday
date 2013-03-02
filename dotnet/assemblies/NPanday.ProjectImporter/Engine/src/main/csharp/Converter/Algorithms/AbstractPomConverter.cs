@@ -841,11 +841,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     // Note that a "provided" scope may be more appropriate here, if NPanday were to support it
                     // This could likewise replace the GAC types as all of that lookup should occur at build time
 
-                    WarnNonPortableReference(path, reference);
-
                     string var = "npanday." + entry.Key;
                     AddProperty(var, directory);
                     Dependency refDependency = CreateDependencyFromSystemPath(reference, "${" + var + "}/" + reference.Name + ".dll");
+
+                    WarnNonPortableReference(path, refDependency);
+
                     log.DebugFormat("Resolved {0} from target framework directories: {1}:{2}:{3}",
                         reference.Name, refDependency.groupId, refDependency.artifactId, refDependency.version);
                     return refDependency;
@@ -1002,15 +1003,23 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return null;
         }
 
-        private void WarnNonPortableReference(string path, Reference reference)
+        private void WarnNonPortableReference(string path, Dependency refDependency)
         {
-            log.WarnFormat("Adding non-portable reference to POM: {0}", path);
-
             if (projectDigest.DependencySearchConfig.CopyToMaven)
             {
-                RepositoryUtility.InstallAssembly(path, reference.Name, reference.Name, reference.Version ?? "1.0.0.0");
+                log.InfoFormat("Copying to Maven local repository: {0} as {1}:{2}:{3}", path, refDependency.groupId, refDependency.artifactId, refDependency.version);
+                RepositoryUtility.InstallAssembly(path, refDependency.groupId, refDependency.artifactId, refDependency.version);
+
+                // reset the dependency
+                refDependency.scope = null;
+                refDependency.systemPath = null;
+            }
+            else
+            {
+                log.WarnFormat("Adding non-portable reference to POM: {0}", path);
             }
 
+            // add to list regardless so we can get a message at the end in a user presentable way
             nonPortableReferences.Add(path);
         }
 
@@ -1022,9 +1031,13 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 //verbose for new-import
                 if (!reference.HintFullPath.ToLower().StartsWith(prjRefPath.ToLower()) && !reference.Name.Contains("Interop"))
                 {
-                    WarnNonPortableReference(reference.HintFullPath, reference);
+                    Dependency refDependency = CreateDependencyFromSystemPath(reference, reference.HintFullPath);
 
-                    return CreateDependencyFromSystemPath(reference, reference.HintFullPath);
+                    WarnNonPortableReference(reference.HintFullPath, refDependency);
+
+                    log.DebugFormat("Resolved {0} from hint path: {1}:{2}:{3}", reference.Name, refDependency.groupId, refDependency.artifactId, refDependency.version);
+
+                    return refDependency;
                 }
                 else
                 {
