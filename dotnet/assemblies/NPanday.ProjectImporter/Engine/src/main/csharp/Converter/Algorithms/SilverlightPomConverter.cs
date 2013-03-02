@@ -51,11 +51,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 Model.scm = scmHolder;
             }
 
-            if (!string.IsNullOrEmpty(projectDigest.TargetFramework))
-            {
-                Plugin msbuildPlugin = AddPlugin("org.apache.npanday.plugins", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
-                AddPluginConfiguration(msbuildPlugin, "frameworkVersion", projectDigest.TargetFramework);
-            }
+            // don't configure framework version for MSBuild since it's the Silverlight version, not the .NET Framework and not needed
 
             // add for types only
             AddPlugin("org.apache.npanday.plugins", "maven-compile-plugin", null, true);
