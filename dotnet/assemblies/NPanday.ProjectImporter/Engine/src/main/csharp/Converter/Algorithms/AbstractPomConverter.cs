@@ -28,6 +28,8 @@ using NPanday.Artifact;
 using NPanday.Model.Pom;
 using NPanday.ProjectImporter.Digest.Model;
 using NPanday.Utils;
+using Microsoft.Win32;
+using System.Text.RegularExpressions;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -763,6 +765,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             //  - Files from artifact repository
             //  - The hintpath (step 3 above)
             //  - The target framework directories (step 4 above)
+            //  - The registered assembly directories (step 5 above)
             //  - The GAC (step 7 above)
 
             Dependency refDependency;
@@ -776,7 +779,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             // resolve from target framework directories
             if (refDependency == null)
-                refDependency = ResolveDependencyFromTargetFrameworkDirectories(reference);
+                refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkDirectories());
+
+            // resolve from registered assembly directories
+            if (refDependency == null)
+                refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkAssemblyFoldersEx());
 
             // resolve from GAC
             if (refDependency == null)
@@ -788,11 +795,44 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return refDependency;
         }
 
-        private Dependency ResolveDependencyFromTargetFrameworkDirectories(Reference reference)
+        private Dictionary<string,string> GetTargetFrameworkAssemblyFoldersEx()
         {
-            Dictionary<string,string> directories = GetTargetFrameworkDirectories();
+            Dictionary<string,string> directories = new Dictionary<string,string>();
 
-            foreach (KeyValuePair<string,string> entry in directories)
+            RegistryKey root = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\" + projectDigest.TargetFrameworkIdentifier);
+            bool found = false;
+            foreach (string key in root.GetSubKeyNames())
+            {
+                if (key.StartsWith(projectDigest.TargetFrameworkVersion))
+                {
+                    RegistryKey assemblyFolderEx = root.OpenSubKey(key + "\\AssemblyFoldersEx");
+                    GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, assemblyFolderEx);
+                    found = true;
+                }
+            }
+
+            if (!found)
+                log.WarnFormat("No AssemblyFoldersEx registry key found for {0} {1}", projectDigest.TargetFrameworkIdentifier, projectDigest.TargetFrameworkVersion);
+
+            return directories;
+        }
+
+        protected static void GetTargetFrameworkDirectoriesAssemblyFoldersEx(Dictionary<string, string> targetFrameworkDirectories, RegistryKey assemblyFolderEx)
+        {
+            foreach (string key in assemblyFolderEx.GetSubKeyNames())
+            {
+                string v = (string)assemblyFolderEx.OpenSubKey(key).GetValue(null);
+                if (v != null)
+                {
+                    // strip non-alphanumeric characters to make a property
+                    targetFrameworkDirectories.Add(new Regex("[^A-Za-z0-9]").Replace(key, ""), v);
+                }
+            }
+        }
+
+        private Dependency ResolveDependencyFromDirectories(Reference reference, Dictionary<string, string> directories)
+        {
+            foreach (KeyValuePair<string, string> entry in directories)
             {
                 string directory = entry.Value;
                 string path = Path.Combine(directory, reference.Name + ".dll");

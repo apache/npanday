@@ -49,11 +49,13 @@
       <groupId>System.Web.Mvc</groupId>
       <artifactId>System.Web.Mvc</artifactId>
       <version>2.0.0.0</version>
-      <type>gac_msil</type>
-      <classifier>31bf3856ad364e35</classifier>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.ASPNETMVC3}/System.Web.Mvc.dll</systemPath>
     </dependency>
   </dependencies>
   <properties>
     <npanday.Framework40>C:\Windows\Microsoft.NET\Framework\v4.0.30319</npanday.Framework40>
+    <npanday.ASPNETMVC3>c:\Program Files\Microsoft ASP.NET\ASP.NET MVC 3\Assemblies\</npanday.ASPNETMVC3>
   </properties>
 </project>

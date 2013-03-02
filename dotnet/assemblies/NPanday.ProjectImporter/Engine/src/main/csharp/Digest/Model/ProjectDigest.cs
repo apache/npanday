@@ -586,7 +586,7 @@ namespace NPanday.ProjectImporter.Digest.Model
             set { cloudConfig = value; }
         }
 
-        private string targetFrameworkIdentifier;
+        private string targetFrameworkIdentifier = ".NETFramework";
         public string TargetFrameworkIdentifier
         {
             get { return targetFrameworkIdentifier; }

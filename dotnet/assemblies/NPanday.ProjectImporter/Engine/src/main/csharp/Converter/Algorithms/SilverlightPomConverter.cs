@@ -26,7 +26,6 @@ using System.Collections.Generic;
 using log4net;
 using Microsoft.Win32;
 using System;
-using System.Text.RegularExpressions;
 
 namespace NPanday.ProjectImporter.Converter.Algorithms
 {
@@ -123,15 +122,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                         log.Warn("Unable to find Silverlight framework in registry");
 
                     RegistryKey assemblyFolderEx = root.OpenSubKey("AssemblyFoldersEx");
-                    foreach (string key in assemblyFolderEx.GetSubKeyNames())
-                    {
-                        string v = (string)assemblyFolderEx.OpenSubKey(key).GetValue(null);
-                        if (v != null)
-                        {
-                            // strip non-alphanumeric characters to make a property
-                            targetFrameworkDirectories.Add(new Regex("[^A-Za-z0-9]").Replace(key, ""), v);
-                        }
-                    }
+                    GetTargetFrameworkDirectoriesAssemblyFoldersEx(targetFrameworkDirectories, assemblyFolderEx);
                 }
                 catch (Exception e)
                 {
