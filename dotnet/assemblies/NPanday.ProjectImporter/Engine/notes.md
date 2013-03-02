@@ -1,10 +1,13 @@
 # Project Importer Notes
 
-The following notes are intended to partially document the current design, and primarily assist in future refactoring and cleanup efforts.
+The following notes are intended to partially document the current design,
+and primarily assist in future refactoring and cleanup efforts.
 
 ## POM Converters
 
-Currently, there is a functional class, PomConverter, which is responsible for allocating the appropriate type of IPomConverter instance and executing its conversion methods, depending on the type of project.
+Currently, there is a functional class, PomConverter, which is responsible
+for allocating the appropriate type of IPomConverter instance and executing
+its conversion methods, depending on the type of project.
 
 The PomConverter class handles making the parent project.
 
@@ -33,33 +36,48 @@ The following are converted by the NormalPomConverter:
 
 The parent POM generation can be turned into a new project converter.
 
-All converters can be made to work from the single abstract converter, with functionality pushed up.
+All converters can be made to work from the single abstract converter, with
+functionality pushed up.
 
-The types can be turned into filters - single conversion stream, but additional elements process the model as it progresses.
+The types can be turned into filters - single conversion stream, but
+additional elements process the model as it progresses.
 
 Add a fallback project type for converting unrecognised projects to a basic POM.
 
-The duplication of handling SCM URLs should be rationalised. In addition, the API refers to an "SCM tag", but it is constantly treated as an Subversion URL. A richer SCM structure should be possible to support different connection/viewer elements, as well as other SCM systems.
+The duplication of handling SCM URLs should be rationalised. In addition, the
+API refers to an "SCM tag", but it is constantly treated as an Subversion
+URL. A richer SCM structure should be possible to support different
+connection/viewer elements, as well as other SCM systems.
 
-AddPluginConfiguration in the AbstractPomConverter should rename the overloaded methods to be clearer what types of arguments are passed. There also appears to be some hardcoded configuration options in the one that takes properties - this appears to be a shortcut for certain types that could be clearer.
+AddPluginConfiguration in the AbstractPomConverter should rename the
+overloaded methods to be clearer what types of arguments are passed. There
+also appears to be some hardcoded configuration options in the one that takes
+properties - this appears to be a shortcut for certain types that could be
+clearer.
 
 ## Project Type Importers
 
-The project type importers determine the structure of the project, and create POMs as appropriate. The following formats are supported:
+The project type importers determine the structure of the project, and create
+POMs as appropriate. The following formats are supported:
 
- * "Abnormal" - represents a project structure that is not supported, for example if the project is outside of the solution directory
- * Flat Multi Module - multiple projects where one is in the same directory as the solution
+ * "Abnormal" - represents a project structure that is not supported, for
+   example if the project is outside of the solution directory
+ * Flat Multi Module - multiple projects where one is in the same directory
+   as the solution
  * Flat Single Module - single project in the same directory as the solution
  * Single Module - single project in a subdirectory of the solution
  * Multi Module - multiple projects in subdirectories of the solution
 
 All derive from the AbstractProjectAlgorithm.
 
-The inconsistency in naming should be corrected (importer on the interface, but the types are just "Project", and the base class is an "ProjectAlgorithm").
+The inconsistency in naming should be corrected (importer on the interface,
+but the types are just "Project", and the base class is an
+"ProjectAlgorithm").
 
 ## Project Digesters
 
-Has an interface for digesting a project, and a base class that provides a utility method.
+Has an interface for digesting a project, and a base class that provides a
+utility method.
 
 Two implementations:
 
@@ -73,23 +91,36 @@ The "normal" digester performs the following steps:
  * add build properties
  * add build items - including resolving references
 
-The web digester has a little duplication, but mostly omits the unnecessary pieces.
+The web digester has a little duplication, but mostly omits the unnecessary
+pieces.
 
-Like with the converters, the web project need not be as unique and this might be better dealt with as a filter over a single digest process. It should at least factor out the common code.
+Like with the converters, the web project need not be as unique and this
+might be better dealt with as a filter over a single digest process. It
+should at least factor out the common code.
 
-In addition, the existing POM file is read. This is used both for reimporting (see below), and for retaining dependencies on a full import. Ideally, this would only be read when needed, not in the digest process.
+In addition, the existing POM file is read. This is used both for reimporting
+(see below), and for retaining dependencies on a full import. Ideally, this
+would only be read when needed, not in the digest process.
 
-The BaseProjectDigesterAlgorithm contains a method GetAssemblyName that seems to also digest the whole project for a single value. This could be slowing the process down and refactored to avoid the need.
+The BaseProjectDigesterAlgorithm contains a method GetAssemblyName that seems
+to also digest the whole project for a single value. This could be slowing
+the process down and refactored to avoid the need.
 
-AddDependency looks for duplicates keyed only on group and artefact ID - if there are any with different types and/or classifiers (which is valid), they may not be added.
+AddDependency looks for duplicates keyed only on group and artefact ID - if
+there are any with different types and/or classifiers (which is valid), they
+may not be added.
 
 ## Parser
 
-This only contains a solution parser, which should be removed in favour of EnvDTE. However, we don't want automation in the project importer library, so we should instead pass that information in to the importer (as there is very little actual data used from the solutions).
+This only contains a solution parser, which should be removed in favour of
+EnvDTE. However, we don't want automation in the project importer library, so
+we should instead pass that information in to the importer (as there is very
+little actual data used from the solutions).
 
 ## Validator
 
-This does a small amount of validation, but primarily determines what project type importer to use.
+This does a small amount of validation, but primarily determines what project
+type importer to use.
 
 This should be folded into the project type importer structure.
 
@@ -97,23 +128,37 @@ This also contains the project type enumerations.
 
 ## Verifier
 
-Despite the name, this seems to only be for re-syncing an existing POM when re-importing.
+Despite the name, this seems to only be for re-syncing an existing POM when
+re-importing.
 
 Should rename appropriately.
 
-This could potentially be merged with the VS operations that modify the POM on the fly so that they behave the same way and there is less logic in the addin.
+This could potentially be merged with the VS operations that modify the POM
+on the fly so that they behave the same way and there is less logic in the
+addin.
 
-Note that this contains a form and some message boxes to ask questions if the project structure changes. These should be moved into the add-in. These could potentially be passed in as change request listeners, or the API split to determine the changes, then apply them and let the add in determine what to ask in the middle.
+Note that this contains a form and some message boxes to ask questions if the
+project structure changes. These should be moved into the add-in. These could
+potentially be passed in as change request listeners, or the API split to
+determine the changes, then apply them and let the add in determine what to
+ask in the middle.
 
 ## Utility classes
 
-A note on NPanday.Utils is worth making here. There's an odd split between utilities operating on Model.Pom - several copies exist in the POM converters that are also in the utilities. Ideally, the utilities library would be split into functional groups with POM operations added to Model.Pom directly (or a companion assembly), and moved out of the project importer.
+A note on NPanday.Utils is worth making here. There's an odd split between
+utilities operating on Model.Pom - several copies exist in the POM converters
+that are also in the utilities. Ideally, the utilities library would be split
+into functional groups with POM operations added to Model.Pom directly (or a
+companion assembly), and moved out of the project importer.
 
-Some of the methods in here, such as HasPlugin, read the POM each time they are called. This could lead to many POM reads for a single import / addin operation that is a performance concern.
+Some of the methods in here, such as HasPlugin, read the POM each time they
+are called. This could lead to many POM reads for a single import / addin
+operation that is a performance concern.
 
 # Required test cases
 
-The following are the test cases we need to exercise. Some are already present - they haven't been matched up.
+The following are the test cases we need to exercise. Some are already
+present - they haven't been matched up.
 
 ## Project Importer
 
@@ -147,4 +192,5 @@ The following are the test cases we need to exercise. Some are already present -
 
 ## Project Synchronization
 
-The project sync API should be tested for reimporting existing projects with certain characteristics.
+The project sync API should be tested for reimporting existing projects with
+certain characteristics.
