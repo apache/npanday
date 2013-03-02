@@ -23,13 +23,19 @@ using NPanday.Model.Pom;
 using NPanday.ProjectImporter.Digest.Model;
 using NPanday.Utils;
 using System.Collections.Generic;
+using log4net;
+using Microsoft.Win32;
+using System;
+using System.Text.RegularExpressions;
 
 namespace NPanday.ProjectImporter.Converter.Algorithms
 {
     public class SilverlightPomConverter : NormalPomConverter
     {
-        public SilverlightPomConverter(ProjectDigest projectDigest, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId) 
-            : base(projectDigest,mainPomFile,parent, groupId)
+        private static readonly ILog log = LogManager.GetLogger(typeof(SilverlightPomConverter));
+
+        public SilverlightPomConverter(ProjectDigest projectDigest, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId)
+            : base(projectDigest, mainPomFile, parent, groupId)
         {
         }
 
@@ -91,17 +97,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // Add Project Inter-dependencies
             AddInterProjectDependenciesToList();
 
-            // filter the rsp and SDK included assemblies
-            //  This includes just a subset of the provided libraries that are automatically available to a Silverlight application.
-            //  Setting them to 'provided' scope may be more accurate, if NPanday core were to support it. The motivation is to avoid
-            //  Adding incorrect dependencies referring to the GAC which are likely to be inconsistent across generations (including
-            //  making the unit tests for this class fail).
-            List<string> sdkReferences = new List<string>();
-            sdkReferences.Add("System.Windows");
-            sdkReferences.Add("System.Windows.Browser");
-            sdkReferences.Add("System.Net");
-            FilterSdkReferences(sdkReferences);
-
             // Add Project Reference Dependencies
             AddProjectReferenceDependenciesToList();
 
@@ -109,6 +104,44 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             {
                 PomHelperUtility.WriteModelToPom(new FileInfo(Path.GetDirectoryName(projectDigest.FullFileName) + @"\pom.xml"), Model);
             }
+        }
+        
+        protected override Dictionary<string, string> GetTargetFrameworkDirectories()
+        {
+            if (TargetFrameworkDirectories == null)
+            {
+                Dictionary<string, string> targetFrameworkDirectories = new Dictionary<string, string>();
+
+                try
+                {
+                    RegistryKey root = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SDKs\Silverlight\v" + projectDigest.TargetFramework);
+                    RegistryKey referenceAssemblies = root.OpenSubKey("ReferenceAssemblies");
+                    string value = (string)referenceAssemblies.GetValue("SLRuntimeInstallPath");
+                    if (value != null)
+                        targetFrameworkDirectories.Add("SilverlightFramework" + projectDigest.TargetFramework.Replace(".", ""), value);
+                    else
+                        log.Warn("Unable to find Silverlight framework in registry");
+
+                    RegistryKey assemblyFolderEx = root.OpenSubKey("AssemblyFoldersEx");
+                    foreach (string key in assemblyFolderEx.GetSubKeyNames())
+                    {
+                        string v = (string)assemblyFolderEx.OpenSubKey(key).GetValue(null);
+                        if (v != null)
+                        {
+                            // strip non-alphanumeric characters to make a property
+                            targetFrameworkDirectories.Add(new Regex("[^A-Za-z0-9]").Replace(key, ""), v);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.Error("Unable to find Silverlight framework in the registry due to an exception: " + e.Message);
+                }
+
+                log.InfoFormat("Target framework directories: {0}", string.Join(",", new List<string>(targetFrameworkDirectories.Values).ToArray()));
+                TargetFrameworkDirectories = targetFrameworkDirectories;
+            }
+            return TargetFrameworkDirectories;
         }
     }
 }

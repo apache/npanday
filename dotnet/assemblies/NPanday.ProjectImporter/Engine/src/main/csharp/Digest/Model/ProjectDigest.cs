@@ -587,5 +587,13 @@ namespace NPanday.ProjectImporter.Digest.Model
             get { return targetFrameworkIdentifier; }
             set { targetFrameworkIdentifier = value; } 
         }
+
+        private string silverlightVersion;
+        public string SilverlightVersion
+        {
+            get { return silverlightVersion; }
+            set { silverlightVersion = value; }
+        }
+
     }
 }

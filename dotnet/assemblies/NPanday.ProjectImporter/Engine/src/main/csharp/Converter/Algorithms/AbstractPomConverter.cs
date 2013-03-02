@@ -80,7 +80,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         
         protected NPanday.Model.Pom.Model model;
         private static List<Artifact.Artifact> testingArtifacts;
-        private Dictionary<string, string> TargetFrameworkDirectories;
+
+        // TODO: this might be more effective if it was cached across instances, 
+        // but would need to be mapped by TargetFrameworkIdentifier and TargetFrameworkVersion
+        protected Dictionary<string, string> TargetFrameworkDirectories;
 
         public NPanday.Model.Pom.Model Model
         {
@@ -845,11 +848,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             model.properties.Any = elems.ToArray();
         }
 
-        protected Dictionary<string, string> GetTargetFrameworkDirectories()
+        protected virtual Dictionary<string, string> GetTargetFrameworkDirectories()
         {
             if (TargetFrameworkDirectories == null)
             {
-                // TODO: add support for Silverlight
                 // TODO: add support for WinFX, which adds: $(CLR_REF_PATH) and $(WinFXAssemblyDirectory) (constructed by an MSBuild task)
                 // TODO: add support for CompactFramework, which overwrites with the output of the GetDeviceFrameworkPath MSBuild task
 

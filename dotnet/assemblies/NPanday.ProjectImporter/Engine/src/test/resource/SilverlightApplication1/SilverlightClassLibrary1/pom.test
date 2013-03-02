@@ -15,16 +15,30 @@
     <plugins>
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
-        <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>
-        <configuration>
-          <frameworkVersion>3.5</frameworkVersion>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>System.Windows</groupId>
+      <artifactId>System.Windows</artifactId>
+      <version>4.0.0.0</version>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.SilverlightFramework30}/System.Windows.dll</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>System.Net</groupId>
+      <artifactId>System.Net</artifactId>
+      <version>3.5.0.0</version>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.SilverlightFramework30}/System.Net.dll</systemPath>
+    </dependency>
+  </dependencies>
+  <properties>
+    <npanday.SilverlightFramework30>C:\Program Files\Reference Assemblies\Microsoft\Framework\Silverlight\v3.0\</npanday.SilverlightFramework30>
+  </properties>
 </project>

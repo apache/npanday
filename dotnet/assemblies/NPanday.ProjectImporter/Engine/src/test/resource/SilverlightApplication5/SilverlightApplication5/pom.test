@@ -15,16 +15,38 @@
     <plugins>
       <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
-        <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>
-        <configuration>
-          <frameworkVersion>3.5</frameworkVersion>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-compile-plugin</artifactId>
         <extensions>true</extensions>
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>mscorlib</groupId>
+      <artifactId>mscorlib</artifactId>
+      <version>2.0.0.0</version>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.SilverlightFramework50}/mscorlib.dll</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>System.Windows</groupId>
+      <artifactId>System.Windows</artifactId>
+      <version>4.0.0.0</version>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.SilverlightFramework50}/System.Windows.dll</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>System.Net</groupId>
+      <artifactId>System.Net</artifactId>
+      <version>4.0.0.0</version>
+      <type>dotnet-library</type>
+      <scope>system</scope>
+      <systemPath>${npanday.SilverlightFramework50}/System.Net.dll</systemPath>
+    </dependency>
+  </dependencies>
+  <properties>
+    <npanday.SilverlightFramework50>C:\Program Files\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0\</npanday.SilverlightFramework50>
+  </properties>
 </project>
