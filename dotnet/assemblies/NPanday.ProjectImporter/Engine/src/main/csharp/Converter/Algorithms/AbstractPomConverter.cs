@@ -758,7 +758,24 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             //  - The hintpath (step 3 above)
             //  - The GAC (step 7 above)
 
+            Dependency refDependency;
+
             // resolve first from artifact
+            refDependency = ResolveDependencyFromLocalRepository(reference);
+
+            // resolve using hint path
+            if (refDependency == null)
+                refDependency = ResolveDependencyFromHintPath(reference);
+
+            // resolve from GAC
+            if (refDependency == null)
+                refDependency = ResolveDependencyFromGAC(reference);
+
+            return refDependency;
+        }
+
+        private Dependency ResolveDependencyFromLocalRepository(Reference reference)
+        {
             Artifact.Artifact artifact = GetArtifact(reference);
             if (artifact != null)
             {
@@ -769,8 +786,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 dependency.type = "dotnet-library";
                 return dependency;
             }
+            return null;
+        }
 
-            // resolve using hint path
+        private Dependency ResolveDependencyFromHintPath(Reference reference)
+        {
             if (!string.IsNullOrEmpty(reference.HintFullPath) && new FileInfo(reference.HintFullPath).Exists)
             {
                 string prjRefPath = Path.Combine(projectDigest.FullDirectoryName, ".references");
@@ -815,10 +835,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     return refDependency;
                 }
             }
+            return null;
+        }
 
+        private Dependency ResolveDependencyFromGAC(Reference reference)
+        {
             List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(reference.Name, reference.Version, projectDigest.Platform);
-
-            // resolve from GAC
             if (refs.Count > 0)
             {
                 log.DebugFormat("GAC references for {0} version {1} platform {2}: {3}", reference.Name,
