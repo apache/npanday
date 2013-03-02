@@ -857,29 +857,29 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
                 Dictionary<string, string> targetFrameworkDirectories = new Dictionary<string, string>();
 
-                if (projectDigest.TargetFramework == "4.0")
+                if (projectDigest.TargetFrameworkVersion == "v4.0")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version40", "Framework40");
-                else if (projectDigest.TargetFramework == "3.5")
+                else if (projectDigest.TargetFrameworkVersion == "v3.5")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version35", "Framework35");
-                else if (projectDigest.TargetFramework == "3.5" || projectDigest.TargetFramework == "3.0")
+                else if (projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version30", "Framework30");
-                else if (projectDigest.TargetFramework == "3.5" || projectDigest.TargetFramework == "3.0" || projectDigest.TargetFramework == "2.0")
+                else if (projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0" || projectDigest.TargetFrameworkVersion == "v2.0")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version20", "Framework20");
-                else if (projectDigest.TargetFramework == "1.1")
+                else if (projectDigest.TargetFrameworkVersion == "v1.1")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version11", "Framework11");
                 else
-                    log.WarnFormat("Unsupported framework version for determining target framework directories: {0}", projectDigest.TargetFramework);
+                    log.WarnFormat("Unsupported framework version for determining target framework directories: {0}", projectDigest.TargetFrameworkVersion);
 
                 // Add SDK directory
-                if (projectDigest.TargetFramework == "4.0")
+                if (projectDigest.TargetFrameworkVersion == "v4.0")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version40", "FrameworkSdk40");
-                else if (projectDigest.TargetFramework == "3.5")
+                else if (projectDigest.TargetFrameworkVersion == "v3.5")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version35", "FrameworkSdk35");
-                else if (projectDigest.TargetFramework == "3.0")
+                else if (projectDigest.TargetFrameworkVersion == "v3.0")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version30", "FrameworkSdk30");
-                else if (projectDigest.TargetFramework == "2.0")
+                else if (projectDigest.TargetFrameworkVersion == "v2.0")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version20", "FrameworkSdk20");
-                else if (projectDigest.TargetFramework == "1.1")
+                else if (projectDigest.TargetFrameworkVersion == "v1.1")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version11", "FrameworkSdk11");
 
                 log.InfoFormat("Target framework directories: {0}", string.Join(",", new List<string>(targetFrameworkDirectories.Values).ToArray()));
@@ -896,12 +896,13 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // in the list of assemblies, and there's no guarantee the types will be loaded from the right one
 
             // Iterate over loaded assemblies to find ToolLocationHelper
-            Type helperType = null;
-            Type versionType = null;
+            bool found = false;
             foreach (System.Reflection.Assembly a in AppDomain.CurrentDomain.GetAssemblies())
             {
                 if (a.GetName().Name.StartsWith("Microsoft.Build.Utilities"))
                 {
+                    Type helperType = null;
+                    Type versionType = null;
                     foreach (Type t in a.GetExportedTypes())
                     {
                         if (t.Name == "ToolLocationHelper")
@@ -913,30 +914,34 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                             versionType = t;
                         }
                     }
+                    if (helperType == null)
+                    {
+                        log.Error("Unable to find ToolLocationHelper type");
+                    }
+                    else if (versionType == null)
+                    {
+                        log.Error("Unable to find TargetDotNetFrameworkVersion type");
+                    }
+                    else
+                    {
+                        log.DebugFormat("Using ToolLocationHelper from {0}; TargetDotNetFrameworkVersion from {1}",
+                            helperType.Assembly.GetName(), versionType.Assembly.GetName());
+
+                        string value = (string)helperType.InvokeMember(method,
+                            System.Reflection.BindingFlags.InvokeMethod, System.Type.DefaultBinder, "",
+                            new object[] { Enum.Parse(versionType, version) });
+
+                        log.DebugFormat("Adding target directory {0} = {1}", key, value);
+                        if (!string.IsNullOrEmpty(value))
+                        {
+                            directories.Add(key, value);
+                            found = true;
+                        }
+                    }
                 }
             }
-
-            if (helperType == null)
-            {
-                log.Error("Unable to find ToolLocationHelper type");
-            }
-            else if (versionType == null)
-            {
-                log.Error("Unable to find TargetDotNetFrameworkVersion type");
-            }
-            else
-            {
-                log.DebugFormat("Using ToolLocationHelper from {0}; TargetDotNetFrameworkVersion from {1}", 
-                    helperType.Assembly.GetName(), versionType.Assembly.GetName());
-
-                string value = (string)helperType.InvokeMember(method,
-                    System.Reflection.BindingFlags.InvokeMethod, System.Type.DefaultBinder, "",
-                    new object[] { Enum.Parse(versionType, version) });
-
-                log.DebugFormat("Adding target directory {0} = {1}", key, value);
-                if (value == "" || value == null) throw new Exception("key bad: " + key + "; " + helperType.Assembly.GetName() + ", " + versionType.Assembly.GetName());
-                directories.Add(key, value);
-            }
+            if (!found)
+                log.WarnFormat("Unable to find framework location for {0} {1}", method, version);
         }
 
         private Dependency ResolveDependencyFromLocalRepository(Reference reference)

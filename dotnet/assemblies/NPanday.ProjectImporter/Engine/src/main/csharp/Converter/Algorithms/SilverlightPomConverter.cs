@@ -114,7 +114,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
                 try
                 {
-                    RegistryKey root = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SDKs\Silverlight\v" + projectDigest.TargetFramework);
+                    RegistryKey root = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SDKs\Silverlight\" + projectDigest.TargetFrameworkVersion);
                     RegistryKey referenceAssemblies = root.OpenSubKey("ReferenceAssemblies");
                     string value = (string)referenceAssemblies.GetValue("SLRuntimeInstallPath");
                     if (value != null)

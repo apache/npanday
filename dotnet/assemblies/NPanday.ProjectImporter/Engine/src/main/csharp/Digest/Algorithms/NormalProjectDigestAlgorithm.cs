@@ -582,7 +582,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             }
             else if ("SilverlightVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
             {
-                projectDigest.SilverlightVersion = buildProperty.Value.Replace("$(TargetFrameworkVersion)", projectDigest.TargetFramework);
+                projectDigest.SilverlightVersion = buildProperty.Value.Replace("$(TargetFrameworkVersion)", projectDigest.TargetFrameworkVersion);
             }
             else if ("SilverlightApplication".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
             {
@@ -666,10 +666,13 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             }
             else if ("TargetFrameworkVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase) && projectDigest.TargetFramework == null)
             {
+                // Raw value from project
+                projectDigest.TargetFrameworkVersion = buildProperty.Value;
+
                 // changed the version to the more specific version
                 string frameworkVersion = buildProperty.Value.Substring(1);
 
-                if ("2.0".Equals(buildProperty.Value.Substring(1)))
+                if ("2.0".Equals(frameworkVersion))
                 {
                     frameworkVersion = "2.0.50727";
                 }
