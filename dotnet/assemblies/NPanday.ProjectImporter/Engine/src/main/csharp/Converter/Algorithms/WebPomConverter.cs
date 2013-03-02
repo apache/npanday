@@ -173,17 +173,18 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
         // override to insert only an NPanday artifact
-        protected override void AddProjectReferenceDependency(Reference reference)
+        protected override Dependency GetProjectReferenceDependency(Reference reference)
         {
-            Dependency dep = GetProjectReferenceDependency(reference);
+            Dependency dep = base.GetProjectReferenceDependency(reference);
             if (dep != null)
             {
                 if (!("library".Equals(dep.type, StringComparison.OrdinalIgnoreCase)
                       || "dotnet-library".Equals(dep.type, StringComparison.OrdinalIgnoreCase)))
                 {
-                    AddDependency(dep);
+                    return dep;
                 }
             }
+            return null;
         }
     }
 }

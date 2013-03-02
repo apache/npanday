@@ -281,7 +281,7 @@ namespace NPanday.ProjectImporter.Converter
 
 
 
-        public static NPanday.Model.Pom.Model[] ConvertProjectsToPomModels(ProjectDigest[] projectDigests, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePoms, string scmTag, List<Reference> missingReferences)
+        public static NPanday.Model.Pom.Model[] ConvertProjectsToPomModels(ProjectDigest[] projectDigests, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePoms, string scmTag, List<Reference> missingReferences, List<string> nonPortableReferences)
         {
             try
             {
@@ -290,7 +290,7 @@ namespace NPanday.ProjectImporter.Converter
                 List<NPanday.Model.Pom.Model> models = new List<NPanday.Model.Pom.Model>();
                 foreach (ProjectDigest projectDigest in projectDigests)
                 {
-                    NPanday.Model.Pom.Model model = ConvertProjectToPomModel(projectDigest, mainPomFile, parent, groupId, writePoms, scmTag, missingReferences);
+                    NPanday.Model.Pom.Model model = ConvertProjectToPomModel(projectDigest, mainPomFile, parent, groupId, writePoms, scmTag, missingReferences, nonPortableReferences);
                     
                     models.Add(model);
                 }
@@ -302,7 +302,7 @@ namespace NPanday.ProjectImporter.Converter
             }
         }
 
-        public static NPanday.Model.Pom.Model ConvertProjectToPomModel(ProjectDigest projectDigest, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePom, string scmTag, List<Reference> missingReferences)
+        public static NPanday.Model.Pom.Model ConvertProjectToPomModel(ProjectDigest projectDigest, string mainPomFile, NPanday.Model.Pom.Model parent, string groupId, bool writePom, string scmTag, List<Reference> missingReferences, List<string> nonPortableReferences)
         {
             if (!__converterAlgorithms.ContainsKey(projectDigest.ProjectType))
             {
@@ -331,6 +331,7 @@ namespace NPanday.ProjectImporter.Converter
                converter.ConvertProjectToPomModel(scmTag);
 
                missingReferences.AddRange(converter.GetMissingReferences());
+               nonPortableReferences.AddRange(converter.GetNonPortableReferences());
 
                return converter.Model;
            }

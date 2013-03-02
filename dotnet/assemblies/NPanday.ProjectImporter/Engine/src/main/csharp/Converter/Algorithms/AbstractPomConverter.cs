@@ -55,6 +55,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         protected string groupId;
         protected string version;
 
+        private List<string> nonPortableReferences;
+
+        public List<string> GetNonPortableReferences()
+        {
+            return nonPortableReferences;
+        }
 
         protected ProjectDigest projectDigest;
 
@@ -97,6 +103,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             this.model.build = new NPanday.Model.Pom.Build();
 
             this.missingReferences = new List<Reference>();
+            this.nonPortableReferences = new List<string>();
 
             // TODO: this is a hack because of bad design. The things that talk to the local repository should be pulled out of here, and able to be stubbed/mocked instead
             if (testingArtifacts != null)
@@ -459,7 +466,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
         }
 
-        protected Dependency GetProjectReferenceDependency(Reference reference)
+        protected virtual Dependency GetProjectReferenceDependency(Reference reference)
         {
             Dependency refDependency = ResolveDependency(reference);
             if (refDependency == null)
@@ -487,20 +494,15 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return refDependency;
         }
 
-        protected virtual void AddProjectReferenceDependency(Reference reference)
-        {
-            Dependency dep = GetProjectReferenceDependency(reference);
-            if (dep != null)
-            {
-                AddDependency(dep);
-            }
-        }
-
         protected void AddProjectReferenceDependenciesToList()
         {
             foreach (Reference reference in projectDigest.References)
             {
-                AddProjectReferenceDependency(reference);
+                Dependency dep = GetProjectReferenceDependency(reference);
+                if (dep != null)
+                {
+                    AddDependency(dep);
+                }
             }
         }
 
@@ -952,13 +954,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         {
             log.WarnFormat("Adding non-portable reference to POM: {0}", path);
 
-            // TODO: need to show this to the user (logging not sufficient), but should not display message box in importer code. Pass in a handler instead?
-            MessageBox.Show(
-             string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
-                         + "\nReference: {0}"
-                         + "\nDeploying the reference to a Repository, will make the code portable to other machines",
-                 path
-             ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            nonPortableReferences.Add(path);
         }
 
         private Dependency ResolveDependencyFromHintPath(Reference reference)

@@ -47,7 +47,7 @@ namespace NPanday.ProjectImporter
         #region Import Project Type Strategy Pattern
         // A strategy pattern with a twists, using c# delegates
 
-        delegate string[] ImportProjectTypeDelegate(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom, List<Reference> missingReferences);
+        delegate string[] ImportProjectTypeDelegate(ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, bool writePom, List<Reference> missingReferences, List<string> nonPortableReferences);
         static Dictionary<ProjectStructureType, ImportProjectTypeDelegate> _importProject;
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace NPanday.ProjectImporter
         }
 
 
-        public static string[] ImportProjectType(ProjectStructureType structureType, ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, List<Reference> missingReferences)
+        public static string[] ImportProjectType(ProjectStructureType structureType, ProjectDigest[] prjDigests, string solutionFile, string groupId, string artifactId, string version, string scmTag, List<Reference> missingReferences, List<string> nonPortableReferences)
         {
-            return _importProject[structureType](prjDigests, solutionFile, groupId, artifactId, version, scmTag, true, missingReferences);
+            return _importProject[structureType](prjDigests, solutionFile, groupId, artifactId, version, scmTag, true, missingReferences, nonPortableReferences);
         }
 
         #endregion
@@ -249,7 +249,8 @@ namespace NPanday.ProjectImporter
             }
 
             List<Reference> missingReferences = new List<Reference>();
-            result = ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag, missingReferences);
+            List<string> nonPortableReferences = new List<string>();
+            result = ImportProjectType(structureType, filteredPrjDigests.ToArray(), solutionFile, groupId, artifactId, version, scmTag, missingReferences, nonPortableReferences);
             if (missingReferences.Count > 0)
             {
                 warningMsg += "\nThe following references could not be resolved from Maven or the GAC:";
@@ -259,9 +260,13 @@ namespace NPanday.ProjectImporter
                 }
                 warningMsg += "\nPlease update the defaults in pom.xml and re-sync references, or re-add them using 'Add Maven Artifact'.";
             }
-
+            if (nonPortableReferences.Count > 0)
+            {
+                warningMsg += "\nThe build may not be portable if local references are used:"
+                         + "\n\t" + string.Join("\n\t", nonPortableReferences.ToArray())
+                         + "\nDeploying the reference to a Repository will make the code portable to other machines";
+            }
             return result;
-
         }
 
         #endregion
