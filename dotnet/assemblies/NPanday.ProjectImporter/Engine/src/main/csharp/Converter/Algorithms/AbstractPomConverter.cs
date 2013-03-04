@@ -1042,6 +1042,16 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
             else
             {
+                // if it is in the project, we still consider it non-portable because packaging plugins will exclude system dependencies
+                // however, we can adjust the path to be a bit more portable across different checkouts
+                // first, check if the library is somewhere inside the solution (mainPomFile is top-most POM)
+                string projectRoot = new DirectoryInfo(mainPomFile).Parent.FullName;
+                if (PathUtility.IsSubdirectoryOf(projectRoot, path))
+                {
+                    // if so, adjust path to be relative to this project's POM file
+                    path = "${basedir}\\" + PathUtility.MakeRelative(projectDigest.FullDirectoryName + "\\", path);
+                    refDependency.systemPath = path;
+                }
                 log.WarnFormat("Adding non-portable reference to POM: {0}", path);
             }
 

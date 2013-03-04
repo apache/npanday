@@ -87,5 +87,29 @@ namespace NPanday.Utils
         {
             return new DirectoryInfo(Path.Combine(projectRoot.FullName, DefaultBuildDirectoryName));
         }
+
+        public static bool IsSubdirectoryOf(string basedir, string path)
+        {
+            basedir = new DirectoryInfo(basedir).FullName;
+
+            DirectoryInfo p = new DirectoryInfo(path);
+            do
+            {
+                if (p.Parent.FullName == basedir)
+                {
+                    return true;
+                }
+                p = p.Parent;
+            }
+            while (p.Parent != null);
+
+            return false;
+        }
+
+        public static string MakeRelative(string basedir, string path)
+        {
+            Uri relativeUri = new Uri(basedir).MakeRelativeUri(new Uri(path));
+            return Uri.UnescapeDataString(relativeUri.ToString()).Replace('/', Path.DirectorySeparatorChar);
+        }
     }
 }
