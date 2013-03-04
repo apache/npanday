@@ -855,7 +855,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     AddProperty(var, directory);
                     Dependency refDependency = CreateDependencyFromSystemPath(reference, "${" + var + "}/" + reference.Name + ".dll");
 
-                    WarnNonPortableReference(path, refDependency);
+                    // We do not list these as non-portable, for two reasons:
+                    //  - they should not be copied to the local repository, because there can be multiple conflicting versions in different SDKs
+                    //    (any copying would require a rigorous use of classifiers)
+                    //  - they should not be included in packages (e.g. for MSDeploy), which the system packaging currently avoids
 
                     log.DebugFormat("Resolved {0} from {1} directories: {2}:{3}:{4}",
                         reference.Name, label, refDependency.groupId, refDependency.artifactId, refDependency.version);
