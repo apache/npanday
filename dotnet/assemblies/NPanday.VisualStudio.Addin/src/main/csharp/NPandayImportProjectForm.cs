@@ -260,7 +260,7 @@ namespace NPanday.VisualStudio.Addin
 
             DependencySearchConfiguration depSearchConfig = new DependencySearchConfiguration();
             depSearchConfig.SearchFramework = searchFrameworkCheckBox.Checked;
-            depSearchConfig.SearchReferenceAssemblies = searchRefAssembliesCheckBox.Checked;
+            depSearchConfig.SearchAssemblyFoldersEx = searchAssemblyFoldersExCheckBox.Checked;
             depSearchConfig.SearchGac = searchGacCheckBox.Checked;
             depSearchConfig.CopyToMaven = copyToMavenCheckBox.Checked;
 

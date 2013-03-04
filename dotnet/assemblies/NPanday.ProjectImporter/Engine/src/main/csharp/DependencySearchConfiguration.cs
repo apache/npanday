@@ -30,8 +30,8 @@ namespace NPanday.ProjectImporter
         private bool searchFramework = false;
         public bool SearchFramework { get { return searchFramework; } set { searchFramework = value; } }
 
-        private bool searchReferenceAssemblies = false;
-        public bool SearchReferenceAssemblies { get { return searchReferenceAssemblies; } set { searchReferenceAssemblies = value; } }
+        private bool searchAssemblyFoldersEx = false;
+        public bool SearchAssemblyFoldersEx { get { return searchAssemblyFoldersEx; } set { searchAssemblyFoldersEx = value; } }
 
         private bool searchGac = true;
         public bool SearchGac { get { return searchGac; } set { searchGac = value; } }

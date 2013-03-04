@@ -782,7 +782,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkDirectories(), "target framework");
 
             // resolve from registered assembly directories
-            if (refDependency == null && projectDigest.DependencySearchConfig.SearchReferenceAssemblies)
+            if (refDependency == null && projectDigest.DependencySearchConfig.SearchAssemblyFoldersEx)
                 refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkAssemblyFoldersEx(), "extra assembly folder");
 
             // resolve from GAC

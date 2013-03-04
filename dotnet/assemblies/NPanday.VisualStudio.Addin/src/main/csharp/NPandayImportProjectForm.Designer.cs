@@ -66,7 +66,7 @@ namespace NPanday.VisualStudio.Addin
             this.cloudConfigComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.searchGacCheckBox = new System.Windows.Forms.CheckBox();
-            this.searchRefAssembliesCheckBox = new System.Windows.Forms.CheckBox();
+            this.searchAssemblyFoldersExCheckBox = new System.Windows.Forms.CheckBox();
             this.searchFrameworkCheckBox = new System.Windows.Forms.CheckBox();
             this.copyToMavenCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
@@ -227,7 +227,7 @@ namespace NPanday.VisualStudio.Addin
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.searchGacCheckBox);
-            this.groupBox1.Controls.Add(this.searchRefAssembliesCheckBox);
+            this.groupBox1.Controls.Add(this.searchAssemblyFoldersExCheckBox);
             this.groupBox1.Controls.Add(this.searchFrameworkCheckBox);
             this.groupBox1.Location = new System.Drawing.Point(534, 12);
             this.groupBox1.Name = "groupBox1";
@@ -248,15 +248,15 @@ namespace NPanday.VisualStudio.Addin
             this.searchGacCheckBox.Text = "Global Assembly Cache";
             this.searchGacCheckBox.UseVisualStyleBackColor = true;
             // 
-            // searchRefAssembliesCheckBox
+            // searchAssemblyFoldersExCheckBox
             // 
-            this.searchRefAssembliesCheckBox.AutoSize = true;
-            this.searchRefAssembliesCheckBox.Location = new System.Drawing.Point(15, 47);
-            this.searchRefAssembliesCheckBox.Name = "searchRefAssembliesCheckBox";
-            this.searchRefAssembliesCheckBox.Size = new System.Drawing.Size(131, 17);
-            this.searchRefAssembliesCheckBox.TabIndex = 1;
-            this.searchRefAssembliesCheckBox.Text = "Reference Assemblies";
-            this.searchRefAssembliesCheckBox.UseVisualStyleBackColor = true;
+            this.searchAssemblyFoldersExCheckBox.AutoSize = true;
+            this.searchAssemblyFoldersExCheckBox.Location = new System.Drawing.Point(15, 47);
+            this.searchAssemblyFoldersExCheckBox.Name = "searchAssemblyFoldersExCheckBox";
+            this.searchAssemblyFoldersExCheckBox.Size = new System.Drawing.Size(134, 17);
+            this.searchAssemblyFoldersExCheckBox.TabIndex = 1;
+            this.searchAssemblyFoldersExCheckBox.Text = "Extra Assembly Folders";
+            this.searchAssemblyFoldersExCheckBox.UseVisualStyleBackColor = true;
             // 
             // searchFrameworkCheckBox
             // 
@@ -334,7 +334,7 @@ namespace NPanday.VisualStudio.Addin
         private System.Windows.Forms.ComboBox cloudConfigComboBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox searchGacCheckBox;
-        private System.Windows.Forms.CheckBox searchRefAssembliesCheckBox;
+        private System.Windows.Forms.CheckBox searchAssemblyFoldersExCheckBox;
         private System.Windows.Forms.CheckBox searchFrameworkCheckBox;
         private System.Windows.Forms.CheckBox copyToMavenCheckBox;
     }
