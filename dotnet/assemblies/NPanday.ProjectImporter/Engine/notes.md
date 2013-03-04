@@ -200,15 +200,9 @@ certain characteristics.
 The reference resolution now mostly matches that of MSBuild, after first
 checking the local Maven repository.
 
-This may still yield different results to Visual Studio, which looks
-primarily at Reference Assemblies at design time. If we moved to .Net 4.0 we
-would be able to more easily use the Microsoft.Build.Utilities to lookup both
-the framework libraries (Which currently use reflection), and the reference
-assemblies (through a similar method in ToolLocationHelper).
-
-In either case, these lookups should just be done to validate the artifact
-exists somewhere. They should not be put into the POM in either case as that
-reduced portability.
+These lookups should just be done to validate the artifact exists somewhere.
+They should not be put into the POM in either case as that reduced
+portability.
 
 Ideally, such dependencies could be marked as `provided` instead, and
 NPanday's own resolution should be able to lookup the correct framework

@@ -753,7 +753,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // (1) Files from current project - indicated by {CandidateAssemblyFiles}
             // (2) $(ReferencePath) - the reference path property, which comes from the .USER file.
             // (3) The hintpath from the referenced item itself, indicated by {HintPathFromItem}.
-            // (4) The directory of MSBuild's "target" runtime from GetFrameworkPath.
+            // (4) The directory of MSBuild's "target" runtime from GetReferenceAssemblyPaths (if applicable) and GetFrameworkPath (<= 3.5).
             //     The "target" runtime folder is the folder of the runtime that MSBuild is a part of.
             // (5) Registered assembly folders, indicated by {Registry:*,*,*}
             // (6) Legacy registered assembly folders, indicated by {AssemblyFolders}
@@ -779,11 +779,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             // resolve from target framework directories
             if (refDependency == null && projectDigest.DependencySearchConfig.SearchFramework)
-                refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkDirectories());
+                refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkDirectories(), "target framework");
 
             // resolve from registered assembly directories
             if (refDependency == null && projectDigest.DependencySearchConfig.SearchReferenceAssemblies)
-                refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkAssemblyFoldersEx());
+                refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkAssemblyFoldersEx(), "extra assembly folder");
 
             // resolve from GAC
             if (refDependency == null && projectDigest.DependencySearchConfig.SearchGac)
@@ -800,18 +800,25 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             Dictionary<string,string> directories = new Dictionary<string,string>();
 
             RegistryKey root = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\" + projectDigest.TargetFrameworkIdentifier);
-            bool found = false;
-            foreach (string key in root.GetSubKeyNames())
+
+            if (projectDigest.TargetFrameworkVersion == "v4.0")
             {
-                if (key.StartsWith(projectDigest.TargetFrameworkVersion))
-                {
-                    RegistryKey assemblyFolderEx = root.OpenSubKey(key + "\\AssemblyFoldersEx");
-                    GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, assemblyFolderEx);
-                    found = true;
-                }
+                GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v4.0.30319\\AssemblyFoldersEx"));
+            }
+            if (projectDigest.TargetFrameworkVersion == "v3.5")
+            {
+                GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v3.5\\AssemblyFoldersEx"));
+            }
+            if (projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0")
+            {
+                GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v3.0\\AssemblyFoldersEx"));
+            }
+            if (projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0" || projectDigest.TargetFrameworkVersion == "v2.0")
+            {
+                GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v2.0.50727\\AssemblyFoldersEx"));
             }
 
-            if (!found)
+            if (directories.Count == 0)
                 log.WarnFormat("No AssemblyFoldersEx registry key found for {0} {1}", projectDigest.TargetFrameworkIdentifier, projectDigest.TargetFrameworkVersion);
 
             return directories;
@@ -819,18 +826,21 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         protected static void GetTargetFrameworkDirectoriesAssemblyFoldersEx(Dictionary<string, string> targetFrameworkDirectories, RegistryKey assemblyFolderEx)
         {
-            foreach (string key in assemblyFolderEx.GetSubKeyNames())
+            if (assemblyFolderEx != null)
             {
-                string v = (string)assemblyFolderEx.OpenSubKey(key).GetValue(null);
-                if (v != null)
+                foreach (string key in assemblyFolderEx.GetSubKeyNames())
                 {
-                    // strip non-alphanumeric characters to make a property
-                    targetFrameworkDirectories.Add(new Regex("[^A-Za-z0-9]").Replace(key, ""), v);
+                    string v = (string)assemblyFolderEx.OpenSubKey(key).GetValue(null);
+                    if (v != null)
+                    {
+                        // strip non-alphanumeric characters to make a property
+                        targetFrameworkDirectories.Add(new Regex("[^A-Za-z0-9]").Replace(key, ""), v);
+                    }
                 }
             }
         }
 
-        private Dependency ResolveDependencyFromDirectories(Reference reference, Dictionary<string, string> directories)
+        private Dependency ResolveDependencyFromDirectories(Reference reference, Dictionary<string, string> directories, string label)
         {
             foreach (KeyValuePair<string, string> entry in directories)
             {
@@ -847,8 +857,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
                     WarnNonPortableReference(path, refDependency);
 
-                    log.DebugFormat("Resolved {0} from target framework directories: {1}:{2}:{3}",
-                        reference.Name, refDependency.groupId, refDependency.artifactId, refDependency.version);
+                    log.DebugFormat("Resolved {0} from {1} directories: {2}:{3}:{4}",
+                        reference.Name, label, refDependency.groupId, refDependency.artifactId, refDependency.version);
                     return refDependency;
                 }
             }
@@ -895,33 +905,46 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             {
                 // TODO: add support for WinFX, which adds: $(CLR_REF_PATH) and $(WinFXAssemblyDirectory) (constructed by an MSBuild task)
                 // TODO: add support for CompactFramework, which overwrites with the output of the GetDeviceFrameworkPath MSBuild task
+                // TODO: may need to accommodate design-time facades which have special treatment in MSBuild
 
                 Dictionary<string, string> targetFrameworkDirectories = new Dictionary<string, string>();
 
                 if (projectDigest.TargetFrameworkVersion == "v4.0")
-                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version40", "Framework40");
-                else if (projectDigest.TargetFrameworkVersion == "v3.5")
+                {
+                    // v4.0 overrides the path to just include the reference assemblies
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkReferenceAssemblies", "Version40", "FrameworkRef40");
+                }
+                if (projectDigest.TargetFrameworkVersion == "v3.5")
+                {
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkReferenceAssemblies", "Version35", "FrameworkRef35");
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version35", "Framework35");
-                else if (projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0")
+                }
+                if (projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0")
+                {
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkReferenceAssemblies", "Version30", "FrameworkRef30");
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version30", "Framework30");
-                else if (projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0" || projectDigest.TargetFrameworkVersion == "v2.0")
+                }
+                if (projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0" || projectDigest.TargetFrameworkVersion == "v2.0")
+                {
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version20", "Framework20");
-                else if (projectDigest.TargetFrameworkVersion == "v1.1")
+                }
+                if (projectDigest.TargetFrameworkVersion == "v1.1")
+                {
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFramework", "Version11", "Framework11");
-                else
+                }
+
+                if (targetFrameworkDirectories.Count == 0)
+                {
                     log.WarnFormat("Unsupported framework version for determining target framework directories: {0}", projectDigest.TargetFrameworkVersion);
+                }
 
                 // Add SDK directory
                 if (projectDigest.TargetFrameworkVersion == "v4.0")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version40", "FrameworkSdk40");
                 else if (projectDigest.TargetFrameworkVersion == "v3.5")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version35", "FrameworkSdk35");
-                else if (projectDigest.TargetFrameworkVersion == "v3.0")
-                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version30", "FrameworkSdk30");
-                else if (projectDigest.TargetFrameworkVersion == "v2.0")
-                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version20", "FrameworkSdk20");
-                else if (projectDigest.TargetFrameworkVersion == "v1.1")
-                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version11", "FrameworkSdk11");
+                // Version30 is unsupported for this call
+                // no value for SDK 2.0
 
                 log.InfoFormat("Target framework directories: {0}", string.Join(",", new List<string>(targetFrameworkDirectories.Values).ToArray()));
                 TargetFrameworkDirectories = targetFrameworkDirectories;
