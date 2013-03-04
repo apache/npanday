@@ -134,6 +134,20 @@
       </build>
     </profile>  
     <profile>
+      <id>net35</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.npanday.plugins</groupId>
+            <artifactId>maven-test-plugin</artifactId>
+            <configuration>
+              <executionFrameworkVersion>3.5</executionFrameworkVersion>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>net40</id>
       <build>
         <plugins>
