@@ -97,6 +97,13 @@ public class CreateCloudServicePackageMojo
         }
     }
 
+    /**
+     * Dependency aliases to use, in case they don't match the artifact ID.
+     *
+     * @parameter
+     */
+    private Properties aliases;
+
     @Override
     protected void afterCommandExecution() throws MojoExecutionException
     {
@@ -190,10 +197,13 @@ public class CreateCloudServicePackageMojo
                 ArtifactType.DOTNET_APPLICATION.getExtension()
             );
 
+            // if the artifact ID is a key, replace it, otherwise use the original
+            String dependencyArtifactId = aliases.getProperty( artifact.getArtifactId(), artifact.getArtifactId() );
+
             if ( !isWebRole && !isWorkerRole )
             {
                 throw new MojoExecutionException(
-                    "NPANDAY-123-005: Artifact type " + artifact.getType() + " of artifact " + artifact.getArtifactId()
+                    "NPANDAY-123-005: Artifact type " + artifact.getType() + " of artifact " + dependencyArtifactId
                         + " is not supported for azure cloud services.\n\nPlease use "
                         + ArtifactType.DOTNET_APPLICATION.getPackagingType() + " for worker roles, and "
                         + ArtifactType.MSDEPLOY_PACKAGE.getPackagingType() + " for web roles"
@@ -206,17 +216,17 @@ public class CreateCloudServicePackageMojo
 
             if ( isWebRole )
             {
-                getLog().debug( "NPANDAY-123-003: Found web role " + artifact.getArtifactId() );
+                getLog().debug( "NPANDAY-123-003: Found web role " + dependencyArtifactId );
             }
             else if ( isWorkerRole )
             {
-                getLog().debug( "NPANDAY-123-004: Found worker role " + artifact.getArtifactId() );
+                getLog().debug( "NPANDAY-123-004: Found worker role " + dependencyArtifactId );
             }
 
             if ( !roleRoot.exists() )
             {
                 throw new MojoExecutionException(
-                    "NPANDAY-123-006: Could not find worker/web role root for " + artifact.getArtifactId() + ": "
+                    "NPANDAY-123-006: Could not find worker/web role root for " + dependencyArtifactId + ": "
                         + roleRoot
                 );
             }
@@ -224,40 +234,40 @@ public class CreateCloudServicePackageMojo
             File entryPoint = null; 
             if ( isWebRole )
             {
-                String name = "bin" + File.separator + artifact.getArtifactId() + ".dll";
+                String name = "bin" + File.separator + dependencyArtifactId + ".dll";
                 entryPoint = new File( roleRoot, name );
                 if ( entryPoint.exists() )
                 {
                     commands.add(
-                        "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath() + ";" + name
+                        "/role:" + dependencyArtifactId + ";" + roleRoot.getAbsolutePath() + ";" + name
                     );
                 }
                 else
                 {
                     getLog().warn( "NPANDAY-123-005: entry point '" + entryPoint + "' could not be found" );
                     commands.add(
-                        "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath()
+                        "/role:" + dependencyArtifactId + ";" + roleRoot.getAbsolutePath()
                     );
                 }
 
                 // TODO: 'Web/' is hardcoded here; where to get it from?
                 commands.add(
-                    "/sitePhysicalDirectories:" + artifact.getArtifactId() + ";Web;" + canonical( roleRoot )
+                    "/sitePhysicalDirectories:" + dependencyArtifactId + ";Web;" + canonical( roleRoot )
                 );
             }
             else if ( isWorkerRole )
             {
-                entryPoint = new File( roleRoot, artifact.getArtifactId() + ".dll" );
+                entryPoint = new File( roleRoot, dependencyArtifactId + ".dll" );
                 if ( !entryPoint.exists() )
                 {
                     throw new MojoExecutionException(
-                        "NPANDAY-123-007: Could not find entry point dll for " + artifact.getArtifactId() + ": "
+                        "NPANDAY-123-007: Could not find entry point dll for " + dependencyArtifactId + ": "
                             + entryPoint
                     );
                 }
 
                 commands.add(
-                    "/role:" + artifact.getArtifactId() + ";" + roleRoot.getAbsolutePath() + ";"
+                    "/role:" + dependencyArtifactId + ";" + roleRoot.getAbsolutePath() + ";"
                         + entryPoint.getName()
                 );
             }
@@ -271,7 +281,7 @@ public class CreateCloudServicePackageMojo
                 properties.setProperty( "EntryPoint", entryPoint.getName() );
             }
 
-            File rolePropertiesFile = new File(project.getBuild().getDirectory(), artifact.getArtifactId() + ".roleproperties");
+            File rolePropertiesFile = new File(project.getBuild().getDirectory(), dependencyArtifactId + ".roleproperties");
             PrintWriter writer = null;
             try
             {
@@ -283,13 +293,13 @@ public class CreateCloudServicePackageMojo
                 }
 
                 commands.add(
-                    "/rolePropertiesFile:" + artifact.getArtifactId() + ";" + rolePropertiesFile.getAbsolutePath()
+                    "/rolePropertiesFile:" + dependencyArtifactId + ";" + rolePropertiesFile.getAbsolutePath()
                 );
             }
             catch ( java.io.IOException e )
             {
                 throw new MojoFailureException(
-                    "NPANDAY-123-008: Error while creating role properties file for " + artifact.getArtifactId(), e );
+                    "NPANDAY-123-008: Error while creating role properties file for " + dependencyArtifactId, e );
             }
             finally
             {
