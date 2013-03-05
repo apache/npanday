@@ -242,7 +242,7 @@ public class CreateCloudServicePackageMojo
 
                 // TODO: 'Web/' is hardcoded here; where to get it from?
                 commands.add(
-                    "/sitePhysicalDirectories:" + artifact.getArtifactId() + ";Web;" + roleRoot.getAbsolutePath()
+                    "/sitePhysicalDirectories:" + artifact.getArtifactId() + ";Web;" + canonical( roleRoot )
                 );
             }
             else if ( isWorkerRole )
@@ -300,4 +300,13 @@ public class CreateCloudServicePackageMojo
         return commands;
     }
 
+    private String canonical( File f )
+    {
+        String path = f.getAbsolutePath();
+
+        // CSPack is very fussy - lowercase the drive letter and you get
+        // sitesroot, uppercase and it is omitted (!)
+        // See: http://social.msdn.microsoft.com/Forums/bs-Latn-BA/windowsazuredevelopment/thread/014ce124-5ca6-46ce-b1ea-3d677a092f65
+        return path.substring( 0, 1 ).toLowerCase() + path.substring( 1 );
+    }
 }
