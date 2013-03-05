@@ -29,6 +29,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Build.BuildEngine;
 using System.Xml;
 using System.Windows.Forms;
+using log4net;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -36,6 +37,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
 {
     public class ProjectSolutionParser
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(ProjectSolutionParser));
 
         protected static string PROJECT_REFERENCE_REGEX;
 
@@ -87,8 +89,9 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                         type = VisualStudioProjectType.GetVisualStudioProjectType(project.ProjectTypeGUID);
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    log.ErrorFormat("Error reading project with type GUID {0}: {1}", project.ProjectTypeGUID, e.Message);
                     if (string.Empty.Equals(UnsupportedProjectsMessage))
                     {
                         UnsupportedProjectsMessage += project.ProjectName;
@@ -138,7 +141,23 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                 {
                     Microsoft.Build.BuildEngine.Project prj = new Microsoft.Build.BuildEngine.Project(BUILD_ENGINE);
 
-                    prj.Load(fullpath);
+                    try
+                    {
+                        prj.Load(fullpath);
+                    }
+                    catch (Exception e)
+                    {
+                        log.Error("Error reading project from path " + fullpath, e);
+                        if (string.Empty.Equals(UnsupportedProjectsMessage))
+                        {
+                            UnsupportedProjectsMessage += project.ProjectName;
+                        }
+                        else
+                        {
+                            UnsupportedProjectsMessage += ", " + project.ProjectName;
+                        }
+                        continue;
+                    }
 
                     //ParseInnerData(dictionary, match.Groups["projectInnerData"].ToString());
                     ParseProjectReferences(dictionary, project, solution);
@@ -237,7 +256,15 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
 
 
                     Microsoft.Build.BuildEngine.Project prj = new Microsoft.Build.BuildEngine.Project(BUILD_ENGINE);
-                    prj.Load(projectReferenceFullPath);
+
+                    try
+                    {
+                        prj.Load(projectReferenceFullPath);
+                    }
+                    catch (Exception e)
+                    {
+                        log.Error("Unable to load project reference from " + projectReferenceFullPath, e);
+                    }
 
                     return prj;
 
