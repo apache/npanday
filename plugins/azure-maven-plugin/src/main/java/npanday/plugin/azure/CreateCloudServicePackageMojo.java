@@ -102,7 +102,7 @@ public class CreateCloudServicePackageMojo
      *
      * @parameter
      */
-    private Properties aliases;
+    private Properties aliases = new Properties();
 
     @Override
     protected void afterCommandExecution() throws MojoExecutionException
