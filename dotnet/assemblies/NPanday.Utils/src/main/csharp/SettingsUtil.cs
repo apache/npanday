@@ -288,6 +288,15 @@ namespace NPanday.Utils
                 }
             }
 
+            if (settings.mirrors != null)
+            {
+                foreach (Mirror mirror in settings.mirrors)
+                {
+                    // assumes you only changed url of existing ones
+                    settingsXmlDoc.SelectSingleNode("//settings/mirrors/mirror[id = '" + mirror.id + "']/url").InnerText = mirror.url;
+                }
+            }
+
             settingsXmlDoc.Save(path);
         }
 
@@ -504,7 +513,7 @@ namespace NPanday.Utils
         /// <param name="isSnapshotEnabled">True if snapshot is enabled</param>
         /// <param name="settings">The settings</param>
         /// <returns>The repository</returns>
-        public static Repository AddRepositoryToProfile(Profile profile, string url, bool isReleaseEnabled, bool isSnapshotEnabled)
+        public static Repository SetProfileRepository(Profile profile, string url, bool isReleaseEnabled, bool isSnapshotEnabled)
         {
             Repository repository = GetRepositoryFromProfile(profile, url);
 
@@ -514,18 +523,8 @@ namespace NPanday.Utils
                 repository.url = url;
                 UpdateRepository(profile, repository, isReleaseEnabled, isSnapshotEnabled);
 
-                // add repository to profile
-                if (profile.repositories == null)
-                {
-                    profile.repositories = new Repository[] { repository };
-                }
-                else
-                {
-                    List<Repository> repositories = new List<Repository>();
-                    repositories.AddRange(profile.repositories);
-                    repositories.Insert(0, repository);
-                    profile.repositories = repositories.ToArray();
-                }
+                // set repository on profile
+                profile.repositories = new Repository[] { repository };
             }
             return repository;
         }
@@ -568,31 +567,10 @@ namespace NPanday.Utils
             repository.snapshots = snapshotsPolicy;
             if (repository.id == null)
             {
-                repository.id = generateRepositoryId(profile);
+                repository.id = "npanday.repo";
             }
         }
         #endregion
-
-        private static string generateRepositoryId(Profile profile)
-        {
-            int ctr = 0;
-            if (profile.repositories != null)
-            {
-                foreach (Repository repo in profile.repositories)
-                {
-                    if (repo.id != null && repo.id.StartsWith("npanday.repo."))
-                    {
-                        int index = int.Parse(repo.id.Substring(13));
-
-                        if (index >= ctr)
-                        {
-                            ctr = index + 1;
-                        }
-                    }
-                }
-            }
-            return "npanday.repo." + ctr;
-        }
 
         public static Dictionary<string,string> GetSettingsRepositories()
         {
@@ -669,6 +647,21 @@ namespace NPanday.Utils
         public static Profile GetDefaultProfile(Settings settings, bool create)
         {
             return GetProfile(settings, SettingsUtil.defaultProfileID, create);
+        }
+
+        public static void SetMirrorUrl(Settings settings, string selectedUrl)
+        {
+            // set the mirror, if it already exists
+            if (settings.mirrors != null)
+            {
+                foreach (Mirror mirror in settings.mirrors)
+                {
+                    if (mirror.mirrorOf.Contains("central") || mirror.mirrorOf.EndsWith("*"))
+                    {
+                        mirror.url = selectedUrl;
+                    }
+                }
+            }
         }
     }
 

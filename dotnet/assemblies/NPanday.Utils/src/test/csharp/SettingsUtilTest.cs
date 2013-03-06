@@ -52,7 +52,7 @@ namespace NPanday.Utils_Test
 
             Profile profile = SettingsUtil.GetDefaultProfile(_settings, true);
             Assert.IsNotNull(profile);
-            SettingsUtil.AddRepositoryToProfile(profile, _repoUrl1, true, false);
+            SettingsUtil.SetProfileRepository(profile, _repoUrl1, true, false);
 
             Assert.AreEqual(1, _settings.profiles.Length, "Settings does not contain a profile");
 
@@ -72,7 +72,7 @@ namespace NPanday.Utils_Test
             Profile profile = SettingsUtil.GetDefaultProfile(_settings, false);
             Assert.IsNotNull(profile);
 
-            SettingsUtil.AddRepositoryToProfile(profile, _repoUrl2, true, false);
+            SettingsUtil.SetProfileRepository(profile, _repoUrl2, true, false);
 
             Assert.AreEqual(1, _settings.profiles.Length, "Settings does not contain a profile");
             Assert.AreEqual(2, _settings.profiles[0].repositories.Length);

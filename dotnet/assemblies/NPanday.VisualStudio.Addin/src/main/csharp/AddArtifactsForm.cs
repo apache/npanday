@@ -585,8 +585,11 @@ namespace NPanday.VisualStudio.Addin
                 }
 
                 // add repository to profile
-                NPanday.Model.Settings.Repository repo = SettingsUtil.AddRepositoryToProfile(getDefaultProfile(), selectedUrl, checkBoxRelease.Checked, checkBoxSnapshot.Checked);
+                NPanday.Model.Settings.Repository repo = SettingsUtil.SetProfileRepository(getDefaultProfile(), selectedUrl, checkBoxRelease.Checked, checkBoxSnapshot.Checked);
                 selectedRepoUrl = selectedUrl;
+
+                // set the mirror too
+                SettingsUtil.SetMirrorUrl(settings, selectedUrl);
 
                 // make NPanday.id profile active
                 SettingsUtil.AddActiveProfile(settings, SettingsUtil.defaultProfileID);
