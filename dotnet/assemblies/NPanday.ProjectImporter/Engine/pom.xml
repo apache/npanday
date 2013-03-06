@@ -105,6 +105,27 @@
       <type>gac_msil</type>
       <classifier>b03f5f7f11d50a3a</classifier>
     </dependency>
+    <dependency>
+      <groupId>Microsoft.Build.Tasks</groupId>
+      <artifactId>Microsoft.Build.Tasks</artifactId>
+      <version>2.0.0.0</version>
+      <type>gac_msil</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
+    </dependency>
+    <dependency>
+      <groupId>Microsoft.Build.Utilities</groupId>
+      <artifactId>Microsoft.Build.Utilities</artifactId>
+      <version>2.0.0.0</version>
+      <type>gac_msil</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
+    </dependency>
+    <dependency>
+      <groupId>Microsoft.Build.Framework</groupId>
+      <artifactId>Microsoft.Build.Framework</artifactId>
+      <version>2.0.0.0</version>
+      <type>gac_msil</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
+    </dependency>
   </dependencies>   
   <profiles>
     <profile>

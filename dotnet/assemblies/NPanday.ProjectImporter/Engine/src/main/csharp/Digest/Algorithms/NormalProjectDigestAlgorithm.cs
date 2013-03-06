@@ -29,6 +29,8 @@ using NPanday.ProjectImporter.Digest.Model;
 using NPanday.ProjectImporter.Parser.VisualStudioProjectTypes;
 using NPanday.Utils;
 using System.Text.RegularExpressions;
+using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -444,6 +446,17 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 embeddedResource.SubType = buildItem.GetMetadata("SubType");
                                 embeddedResource.Generator = buildItem.GetMetadata("Generator");
                                 embeddedResource.LastGenOutput = buildItem.GetMetadata("LastGenOutput");
+                                embeddedResource.WithCulture = buildItem.GetMetadata("WithCulture");
+                                if (string.IsNullOrEmpty(embeddedResource.WithCulture))
+                                {
+                                    Microsoft.Build.Tasks.AssignCulture task = new Microsoft.Build.Tasks.AssignCulture();
+                                    task.Files = new TaskItem[]{
+                                        new TaskItem(buildItem.Include)
+                                    };
+                                    task.BuildEngine = new DigestingBuildEngine();
+                                    bool result = task.Execute();
+                                    embeddedResource.WithCulture = task.AssignedFiles[0].GetMetadata("Culture");
+                                }
 
                                 embeddedResources.Add(embeddedResource);
                                 break;

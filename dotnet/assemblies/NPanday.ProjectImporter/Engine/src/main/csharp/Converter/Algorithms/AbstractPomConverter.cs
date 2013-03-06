@@ -170,10 +170,15 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 if (!string.IsNullOrEmpty(projectDigest.TargetFramework))
                     AddPluginConfiguration(embeddedResourcePlugin, "frameworkVersion", projectDigest.TargetFramework);
 
+                bool cultures = false;
                 List<Dictionary<string, string>> embeddedResourceList = new List<Dictionary<string, string>>();
                 List<string> resourceList = new List<string>();   
                 foreach (EmbeddedResource embeddedResource in projectDigest.EmbeddedResources)
                 {
+                    // Until NPanday supports satellite assemblies, run MSBuild to generate them
+                    if (!string.IsNullOrEmpty(embeddedResource.WithCulture))
+                        cultures = true;
+
                     if (isResgenSupported(embeddedResource.IncludePath))
                     {
                         Dictionary<string, string> value = new Dictionary<string, string>();
@@ -198,6 +203,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 if (resourceList.Count > 0)
                 {
                     AddResources(resourceList);
+                }
+                if (cultures)
+                {
+                    Plugin msBuildPlugin = AddPlugin("org.apache.npanday.plugins", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
+                    AddPluginExecution(msBuildPlugin, "compile", "validate");
                 }
             }
         }
@@ -526,21 +536,19 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 plugins.AddRange(model.build.plugins);
             }
 
-
             // Add NPanday compile plugin 
             NPanday.Model.Pom.Plugin plugin = new NPanday.Model.Pom.Plugin();
             plugin.groupId = groupId;
             plugin.artifactId = artifactId;
             plugin.version = version;
             plugin.extensions = extensions;
-            
-            plugins.Add(plugin);
-            
+
+            if (!plugins.Contains(plugin))
+                plugins.Add(plugin);
 
             model.build.plugins = plugins.ToArray();
 
             return plugin;
-
         }
 
         /// <summary>

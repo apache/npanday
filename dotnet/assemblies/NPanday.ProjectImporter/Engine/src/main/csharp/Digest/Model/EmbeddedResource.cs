@@ -65,6 +65,12 @@ namespace NPanday.ProjectImporter.Digest.Model
             get { return lastGenOutput; }
             set { lastGenOutput = value; }
         }
-            
+
+        private string withCulture;
+        public string WithCulture
+        {
+            get { return withCulture; }
+            set { withCulture = value; }
+        }
     }
 }
