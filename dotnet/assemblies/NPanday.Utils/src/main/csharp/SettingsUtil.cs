@@ -247,7 +247,7 @@ namespace NPanday.Utils
                 }
                 else
                 {
-                    XmlNode profilesNode = settingsXmlDoc.SelectSingleNode("//*[local-name='profiles']");
+                    XmlNode profilesNode = settingsXmlDoc.SelectSingleNode("//settings/profiles");
                     if (profilesNode == null)
                     {
                         // create profiles
