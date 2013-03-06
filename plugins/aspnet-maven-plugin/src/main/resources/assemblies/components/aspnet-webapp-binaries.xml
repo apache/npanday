@@ -41,4 +41,14 @@
       <outputDirectory>ClientBin</outputDirectory>
     </dependencySet>
   </dependencySets>
+  <fileSets>
+    <fileSet>
+      <useDefaultExcludes>true</useDefaultExcludes>
+      <directory>${project.basedir}/bin</directory>
+      <outputDirectory>/bin</outputDirectory>
+      <includes>
+        <include>*/${project.artifactId}.resources.dll</include>
+      </includes>
+    </fileSet>
+  </fileSets>
 </component>
