@@ -606,5 +606,12 @@ namespace NPanday.ProjectImporter.Digest.Model
             get { return dependencySearchConfig; }
             set { dependencySearchConfig = value; }
         }
+
+        private bool hostInBrowser;
+        public bool HostInBrowser
+        {
+            get { return hostInBrowser; }
+            set { hostInBrowser = value; }
+        }
     }
 }

@@ -593,6 +593,10 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             {
                 projectDigest.OutputType = buildProperty.Value;
             }
+            else if ("HostInBrowser".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.HostInBrowser = bool.Parse(buildProperty.Value);
+            }
             else if ("SilverlightVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
             {
                 projectDigest.SilverlightVersion = buildProperty.Value.Replace("$(TargetFrameworkVersion)", projectDigest.TargetFrameworkVersion);

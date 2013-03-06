@@ -114,7 +114,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // add include list for the compiling
             DirectoryInfo baseDir = new DirectoryInfo(Path.GetDirectoryName(projectDigest.FullFileName));
             List<string> compiles = new List<string>();
-            bool msBuildPluginAdded = false;
+            Plugin msBuildPlugin = null;
             foreach (Compile compile in projectDigest.Compiles)
             {
                 string compilesFile = PomHelperUtility.GetRelativePath(baseDir, new FileInfo(compile.IncludeFullPath));
@@ -132,16 +132,15 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     // TODO: support others
                     string configuration = "Debug";
  
-                    if (!msBuildPluginAdded)
+                    if (msBuildPlugin == null)
                     {
-                        Plugin msBuildPlugin = AddPlugin("org.apache.npanday.plugins", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
+                        msBuildPlugin = AddPlugin("org.apache.npanday.plugins", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
                         AddPluginExecution(msBuildPlugin, "compile", "validate");
                         AddPluginConfiguration(msBuildPlugin, "frameworkVersion", ProjectDigest.TargetFramework);
                         if (platform != null)
                             AddPluginConfiguration(msBuildPlugin, "platform", platform);
                         if (configuration != null && configuration != "Debug")
                             AddPluginConfiguration(msBuildPlugin, "configuration", configuration);
-                        msBuildPluginAdded = true;
                     }                    
 
                     //set the path *.g.cs and *.g.vb files depending on target architecture of WPF projects as this changes path under obj folder
@@ -158,6 +157,16 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     compiles.Add(gFile);
                 }
             }
+
+            // Add XBAP artifacts if relevant
+            if (projectDigest.HostInBrowser)
+            {
+                if (msBuildPlugin == null)
+                    msBuildPlugin = AddPlugin("org.apache.npanday.plugins", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
+
+                AddPluginConfiguration(msBuildPlugin, "attachXBAP", "true");
+            }
+
             AddPluginConfiguration(compilePlugin, "includeSources", "includeSource", compiles.ToArray());
 
             if ("true".Equals(projectDigest.SignAssembly, StringComparison.OrdinalIgnoreCase)
@@ -218,7 +227,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // Add Project Reference Dependencies
             AddProjectReferenceDependenciesToList();
 
-            
             if (writePom)
             {
                 PomHelperUtility.WriteModelToPom(new FileInfo(Path.Combine(projectDigest.FullDirectoryName, "pom.xml")), Model);

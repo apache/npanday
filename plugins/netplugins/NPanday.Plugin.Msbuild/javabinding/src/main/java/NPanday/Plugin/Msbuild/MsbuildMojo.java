@@ -36,6 +36,7 @@ import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
@@ -118,6 +119,11 @@ public class MsbuildMojo
     private boolean copyReferences = true;
 
     /**
+     * @parameter default-value="false"
+     */
+    private boolean attachXBAP = false;
+
+    /**
      * @component
      */
     private ArtifactFactory artifactFactory;
@@ -126,6 +132,11 @@ public class MsbuildMojo
      * @component
      */
     private NPandayDependencyResolution dependencyResolution;
+
+    /**
+     * @component
+     */
+    private MavenProjectHelper projectHelper;
 
     public String getMojoArtifactId()
     {
@@ -254,6 +265,10 @@ public class MsbuildMojo
         resource.setDirectory( directory );
         resource.addInclude( "**/*.resources" );
         project.addResource( resource );
+
+        if (attachXBAP) {
+            projectHelper.attachArtifact(project, "xbap", new File(directory, project.getArtifactId() + ".xbap"));
+        }
 
         return super.preExecute();
     }
