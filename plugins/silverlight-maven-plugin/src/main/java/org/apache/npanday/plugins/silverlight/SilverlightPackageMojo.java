@@ -24,6 +24,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
 
 import java.io.File;
 
@@ -53,6 +54,11 @@ public class SilverlightPackageMojo
      */
     protected MavenProject project;
 
+    /**
+     * @component
+     */
+    private MavenProjectHelper projectHelper;
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -68,5 +74,13 @@ public class SilverlightPackageMojo
 
         getLog().debug( "Set the artifact file to '" + artifact.getAbsolutePath() + "'." );
         project.getArtifact().setFile( artifact );
+
+        // include the DLL for silverlight applications as well
+        if ( !"dll".equals( type.getExtension() ) )
+        {
+            File dllFile = new File( outputDirectory, project.getArtifactId() + ".dll" );
+            getLog().debug( "Attaching the DLL file '" + dllFile.getAbsolutePath() + "'." );
+            projectHelper.attachArtifact( project, "dll", dllFile );
+        }
     }
 }
