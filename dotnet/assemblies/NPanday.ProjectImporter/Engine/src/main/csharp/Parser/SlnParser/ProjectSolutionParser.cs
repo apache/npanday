@@ -52,7 +52,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             BUILD_ENGINE = new Engine(msBuildPath);
         }
 
-        public List<Dictionary<string, object>> Parse(FileInfo solutionFile, ref string warningMsg)
+        public List<Dictionary<string, object>> Parse(FileInfo solutionFile, Dictionary<string, string> globalProperties, ref string warningMsg)
         {
             NPanday.ProjectImporter.Parser.SlnParser.Model.Solution solution;
 
@@ -143,6 +143,14 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
 
                     try
                     {
+                        // TODO: if we update to a .NET 3.5 minimum we can pass in ProjectLoadSettings.IgnoreMissingImports, and ignore the visualstudioversion
+                        if (globalProperties != null)
+                        {
+                            foreach (KeyValuePair<string, string> entry in globalProperties)
+                            {
+                                prj.GlobalProperties.SetProperty(entry.Key, entry.Value);
+                            }
+                        }
                         prj.Load(fullpath);
                     }
                     catch (Exception e)
@@ -259,6 +267,7 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
 
                     try
                     {
+                        // TODO: if we update to a .NET 3.5 minimum we can pass in ProjectLoadSettings.IgnoreMissingImports
                         prj.Load(projectReferenceFullPath);
                     }
                     catch (Exception e)

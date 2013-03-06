@@ -361,7 +361,9 @@ namespace NPanday.VisualStudio.Addin
                 validateSolutionStructure();
                 resyncAllArtifacts();
                 // TODO: nicer to have some sort of structure / flags for the Msdeploy bit, or this dialog will get out of control over time - perhaps a "project configuration" dialog can replace the test popup
-                string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, useMsDeploy, configuration, cloudConfig, depSearchConfig, ref warningMsg);
+                Dictionary<string, string> globalProperties = new Dictionary<string, string>();
+                globalProperties.Add("VisualStudioVersion", applicationObject.Version);
+                string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, useMsDeploy, configuration, cloudConfig, depSearchConfig, globalProperties, ref warningMsg);
                 string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
 
                 foreach (string pom in generatedPoms)

@@ -123,8 +123,13 @@ namespace NPanday.ProjectImporter
 
         public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, bool verifyTests, bool useMsDeploy, string configuration, string cloudConfig, DependencySearchConfiguration depSearchConfig, ref string warningMsg)
         {
+            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, verifyTests, useMsDeploy, configuration, cloudConfig, depSearchConfig, null, ref warningMsg);
+        }
+
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, bool verifyTests, bool useMsDeploy, string configuration, string cloudConfig, DependencySearchConfiguration depSearchConfig, Dictionary<string, string> globalProperties, ref string warningMsg)
+        {
             VerifyProjectToImport method = verifyTests ? VerifyUnitTestsToUser.VerifyTests : (VerifyProjectToImport)null;
-            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, method, useMsDeploy, configuration, cloudConfig, depSearchConfig, ref warningMsg);
+            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, method, useMsDeploy, configuration, cloudConfig, depSearchConfig, globalProperties, ref warningMsg);
         }
 
         /// <summary>
@@ -169,7 +174,7 @@ namespace NPanday.ProjectImporter
         /// <returns>An array of generated pom.xml filenames</returns>
         public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, VerifyProjectToImport verifyProjectToImport, ref string warningMsg)
         {
-            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, verifyProjectToImport, false, null, null, null, ref warningMsg);
+            return ImportProject(solutionFile, groupId, artifactId, version, scmTag, verifyProjectToImport, false, null, null, null, null, ref warningMsg);
         }
 
         /// <summary>
@@ -184,7 +189,7 @@ namespace NPanday.ProjectImporter
         /// <param name="verifyProjectToImport">A delegate That will Accept a method for verifying Projects To Import</param>
         /// <param name="scmTag">adds scm tags to parent pom.xml if not string.empty or null</param>
         /// <returns>An array of generated pom.xml filenames</returns>
-        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, VerifyProjectToImport verifyProjectToImport, bool useMsDeploy, string configuration, string cloudConfig, DependencySearchConfiguration depSearchConfig, ref string warningMsg)
+        public static string[] ImportProject(string solutionFile, string groupId, string artifactId, string version, string scmTag, VerifyProjectToImport verifyProjectToImport, bool useMsDeploy, string configuration, string cloudConfig, DependencySearchConfiguration depSearchConfig, Dictionary<string, string> globalProperties, ref string warningMsg)
         {
             string[] result = null;
 
@@ -193,7 +198,7 @@ namespace NPanday.ProjectImporter
 
             FileInfo solutionFileInfo = new FileInfo(solutionFile);
 
-            List<Dictionary<string, object>> list = ParseSolution(solutionFileInfo, ref warningMsg);
+            List<Dictionary<string, object>> list = ParseSolution(solutionFileInfo, globalProperties, ref warningMsg);
 
             if (configuration != null)
             {
@@ -303,9 +308,9 @@ namespace NPanday.ProjectImporter
         /// </summary>
         /// <param name="solutionFile">the full path of the *.sln (visual studio solution) file you want to parse</param>
         /// <returns></returns>
-        public static List<Dictionary<string, object>> ParseSolution(FileInfo solutionFile, ref string warningMsg)
+        public static List<Dictionary<string, object>> ParseSolution(FileInfo solutionFile, Dictionary<string, string> globalProperties, ref string warningMsg)
         {
-            return SolutionParser.ParseSolution(solutionFile, ref warningMsg);
+            return SolutionParser.ParseSolution(solutionFile, globalProperties, ref warningMsg);
         }
 
         /// <summary>
@@ -330,10 +335,5 @@ namespace NPanday.ProjectImporter
         {
             return ProjectValidator.GetProjectStructureType(solutionFile, projectDigests);
         }
-
-
-
-       
-
     }
 }

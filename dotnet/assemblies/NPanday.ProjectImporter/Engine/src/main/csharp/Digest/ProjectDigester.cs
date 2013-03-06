@@ -250,6 +250,8 @@ namespace NPanday.ProjectImporter.Digest
             Engine engine = new Engine(msBuildPath);
 
             Project project = new Project(engine);
+
+            // TODO: if we update to a .NET 3.5 minimum we can pass in ProjectLoadSettings.IgnoreMissingImports
             project.Load(projectFile);
 
             return project;
