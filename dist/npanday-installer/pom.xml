@@ -65,6 +65,18 @@
           <groupId>Microsoft.Build.Engine</groupId>  
           <artifactId>Microsoft.Build.Engine</artifactId>  
         </exclusion>        
+        <exclusion>
+          <groupId>Microsoft.Build.Framework</groupId>  
+          <artifactId>Microsoft.Build.Framework</artifactId>  
+        </exclusion>        
+        <exclusion>
+          <groupId>Microsoft.Build.Utilities</groupId>  
+          <artifactId>Microsoft.Build.Utilities</artifactId>  
+        </exclusion>        
+        <exclusion>
+          <groupId>Microsoft.Build.Tasks</groupId>  
+          <artifactId>Microsoft.Build.Tasks</artifactId>  
+        </exclusion>        
       </exclusions>
       <type>dotnet-library</type>
     </dependency>
