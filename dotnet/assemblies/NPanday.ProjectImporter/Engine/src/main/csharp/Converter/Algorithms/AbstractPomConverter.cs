@@ -862,9 +862,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     // Note that a "provided" scope may be more appropriate here, if NPanday were to support it
                     // This could likewise replace the GAC types as all of that lookup should occur at build time
 
-                    string var = "npanday." + entry.Key;
-                    AddProperty(var, directory);
-                    Dependency refDependency = CreateDependencyFromSystemPath(reference, "${" + var + "}/" + reference.Name + ".dll");
+                    // While it would be nice to introduce properties to make them replacable and reduce repetition, these will not resolve correctly
+                    // for transitive dependencies in Maven, so we need to remove them.
+                    // string var = "npanday." + entry.Key;
+                    // AddProperty(var, directory);
+                    // Dependency refDependency = CreateDependencyFromSystemPath(reference, "${" + var + "}/" + reference.Name + ".dll");
+                    Dependency refDependency = CreateDependencyFromSystemPath(reference, path);
 
                     // We do not list these as non-portable, for two reasons:
                     //  - they should not be copied to the local repository, because there can be multiple conflicting versions in different SDKs
@@ -1054,15 +1057,17 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             else
             {
                 // if it is in the project, we still consider it non-portable because packaging plugins will exclude system dependencies
-                // however, we can adjust the path to be a bit more portable across different checkouts
+                // it would be nice to adjust the path to be a bit more portable across different checkouts like below, however basedir
+                // will not resolve correctly as a transitive dependency
+                // logic retained in case other opportunities return in the future
                 // first, check if the library is somewhere inside the solution (mainPomFile is top-most POM)
-                string projectRoot = new DirectoryInfo(mainPomFile).Parent.FullName;
-                if (PathUtility.IsSubdirectoryOf(projectRoot, path))
-                {
+                // string projectRoot = new DirectoryInfo(mainPomFile).Parent.FullName;
+                // if (PathUtility.IsSubdirectoryOf(projectRoot, path))
+                // {
                     // if so, adjust path to be relative to this project's POM file
-                    path = "${basedir}\\" + PathUtility.MakeRelative(projectDigest.FullDirectoryName + "\\", path);
-                    refDependency.systemPath = path;
-                }
+                    // path = "${basedir}\\" + PathUtility.MakeRelative(projectDigest.FullDirectoryName + "\\", path);
+                    // refDependency.systemPath = path;
+                // }
                 log.WarnFormat("Adding non-portable reference to POM: {0}", path);
             }
 
