@@ -251,6 +251,8 @@ namespace NPanday.VisualStudio.Addin
             // searchAssemblyFoldersExCheckBox
             // 
             this.searchAssemblyFoldersExCheckBox.AutoSize = true;
+            this.searchAssemblyFoldersExCheckBox.Checked = true;
+            this.searchAssemblyFoldersExCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.searchAssemblyFoldersExCheckBox.Location = new System.Drawing.Point(15, 47);
             this.searchAssemblyFoldersExCheckBox.Name = "searchAssemblyFoldersExCheckBox";
             this.searchAssemblyFoldersExCheckBox.Size = new System.Drawing.Size(134, 17);
@@ -261,6 +263,8 @@ namespace NPanday.VisualStudio.Addin
             // searchFrameworkCheckBox
             // 
             this.searchFrameworkCheckBox.AutoSize = true;
+            this.searchFrameworkCheckBox.Checked = true;
+            this.searchFrameworkCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.searchFrameworkCheckBox.Location = new System.Drawing.Point(15, 24);
             this.searchFrameworkCheckBox.Name = "searchFrameworkCheckBox";
             this.searchFrameworkCheckBox.Size = new System.Drawing.Size(78, 17);
@@ -271,6 +275,8 @@ namespace NPanday.VisualStudio.Addin
             // copyToMavenCheckBox
             // 
             this.copyToMavenCheckBox.AutoSize = true;
+            this.copyToMavenCheckBox.Checked = true;
+            this.copyToMavenCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.copyToMavenCheckBox.Location = new System.Drawing.Point(549, 118);
             this.copyToMavenCheckBox.Name = "copyToMavenCheckBox";
             this.copyToMavenCheckBox.Size = new System.Drawing.Size(180, 17);

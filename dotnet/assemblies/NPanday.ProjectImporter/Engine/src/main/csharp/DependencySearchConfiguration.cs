@@ -27,16 +27,16 @@ namespace NPanday.ProjectImporter
 {
     public class DependencySearchConfiguration
     {
-        private bool searchFramework = false;
+        private bool searchFramework = true;
         public bool SearchFramework { get { return searchFramework; } set { searchFramework = value; } }
 
-        private bool searchAssemblyFoldersEx = false;
+        private bool searchAssemblyFoldersEx = true;
         public bool SearchAssemblyFoldersEx { get { return searchAssemblyFoldersEx; } set { searchAssemblyFoldersEx = value; } }
 
         private bool searchGac = true;
         public bool SearchGac { get { return searchGac; } set { searchGac = value; } }
 
-        private bool copyToMaven = false;
+        private bool copyToMaven = true;
         public bool CopyToMaven { get { return copyToMaven; } set { copyToMaven = value; } }
     }
 }
