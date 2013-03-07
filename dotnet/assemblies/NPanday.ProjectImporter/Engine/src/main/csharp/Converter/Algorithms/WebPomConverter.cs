@@ -173,9 +173,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
 
         // override to insert only an NPanday artifact
-        protected override Dependency GetProjectReferenceDependency(Reference reference)
+        protected override Dependency GetProjectReferenceDependency(Reference reference, bool searchGac)
         {
-            Dependency dep = base.GetProjectReferenceDependency(reference);
+            Dependency dep = base.GetProjectReferenceDependency(reference, searchGac);
             if (dep != null)
             {
                 if (!("library".Equals(dep.type, StringComparison.OrdinalIgnoreCase)

@@ -225,7 +225,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             // filter the rsp included assemblies
             FilterReferences();
             // Add Project Reference Dependencies
-            AddProjectReferenceDependenciesToList();
+            AddProjectReferenceDependenciesToList(true);
 
             if (writePom)
             {

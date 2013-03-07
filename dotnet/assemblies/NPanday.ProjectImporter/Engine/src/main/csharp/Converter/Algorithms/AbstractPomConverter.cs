@@ -484,9 +484,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
         }
 
-        protected virtual Dependency GetProjectReferenceDependency(Reference reference)
+        protected virtual Dependency GetProjectReferenceDependency(Reference reference, bool searchGac)
         {
-            Dependency refDependency = ResolveDependency(reference);
+            Dependency refDependency = ResolveDependency(reference, searchGac);
             if (refDependency == null)
             {
                 missingReferences.Add(reference);
@@ -512,11 +512,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return refDependency;
         }
 
-        protected void AddProjectReferenceDependenciesToList()
+        protected void AddProjectReferenceDependenciesToList(bool searchGac)
         {
             foreach (Reference reference in projectDigest.References)
             {
-                Dependency dep = GetProjectReferenceDependency(reference);
+                Dependency dep = GetProjectReferenceDependency(reference, searchGac);
                 if (dep != null)
                 {
                     AddDependency(dep);
@@ -758,7 +758,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
         }
 
 
-        protected Dependency ResolveDependency(Reference reference)
+        protected Dependency ResolveDependency(Reference reference, bool searchGac)
         {
             // For MSbuild, the typical order is as follows (from Microsoft.Common.targets):
             // (1) Files from current project - indicated by {CandidateAssemblyFiles}
@@ -797,7 +797,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkAssemblyFoldersEx(), "extra assembly folder", true);
 
             // resolve from GAC
-            if (refDependency == null && projectDigest.DependencySearchConfig.SearchGac)
+            if (refDependency == null && searchGac)
                 refDependency = ResolveDependencyFromGAC(reference);
 
             if (refDependency == null)

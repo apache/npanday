@@ -92,14 +92,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             //Add EmbeddedResources maven-resgen-plugin
             AddEmbeddedResources();
 
-            // do not resolve any dependencies from the GAC for silverlight projects
-            projectDigest.DependencySearchConfig.SearchGac = false;
-
             // Add Project Inter-dependencies
             AddInterProjectDependenciesToList();
 
             // Add Project Reference Dependencies
-            AddProjectReferenceDependenciesToList();
+            // do not resolve any dependencies from the GAC for silverlight projects
+            AddProjectReferenceDependenciesToList(false);
 
             if (writePom)
             {

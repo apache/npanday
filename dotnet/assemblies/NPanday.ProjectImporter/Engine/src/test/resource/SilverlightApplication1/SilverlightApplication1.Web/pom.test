@@ -61,19 +61,22 @@
       <groupId>System.Web.DynamicData</groupId>
       <artifactId>System.Web.DynamicData</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
+      <type>gac_msil4</type>
+      <classifier>31bf3856ad364e35</classifier>
     </dependency>
     <dependency>
       <groupId>System.Web.Entity</groupId>
       <artifactId>System.Web.Entity</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
+      <type>gac_msil4</type>
+      <classifier>b77a5c561934e089</classifier>
     </dependency>
     <dependency>
       <groupId>System.Web.ApplicationServices</groupId>
       <artifactId>System.Web.ApplicationServices</artifactId>
       <version>4.0.0.0</version>
-      <type>dotnet-library</type>
+      <type>gac_msil4</type>
+      <classifier>31bf3856ad364e35</classifier>
     </dependency>
     <dependency>
       <groupId>test.group</groupId>
