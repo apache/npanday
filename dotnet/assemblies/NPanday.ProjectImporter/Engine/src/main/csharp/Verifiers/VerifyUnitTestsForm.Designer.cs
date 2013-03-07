@@ -58,9 +58,10 @@ namespace NPanday.ProjectImporter.Verifiers
             // 
             // cmdOK
             // 
-            this.cmdOK.Location = new System.Drawing.Point(362, 288);
+            this.cmdOK.Location = new System.Drawing.Point(272, 234);
+            this.cmdOK.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmdOK.Name = "cmdOK";
-            this.cmdOK.Size = new System.Drawing.Size(82, 28);
+            this.cmdOK.Size = new System.Drawing.Size(62, 23);
             this.cmdOK.TabIndex = 5;
             this.cmdOK.Text = "&OK";
             this.cmdOK.UseVisualStyleBackColor = true;
@@ -69,16 +70,18 @@ namespace NPanday.ProjectImporter.Verifiers
             // chkListTestUnits
             // 
             this.chkListTestUnits.FormattingEnabled = true;
-            this.chkListTestUnits.Location = new System.Drawing.Point(33, 44);
+            this.chkListTestUnits.Location = new System.Drawing.Point(25, 36);
+            this.chkListTestUnits.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chkListTestUnits.Name = "chkListTestUnits";
-            this.chkListTestUnits.Size = new System.Drawing.Size(411, 225);
+            this.chkListTestUnits.Size = new System.Drawing.Size(309, 184);
             this.chkListTestUnits.TabIndex = 0;
             // 
             // cmdReset
             // 
-            this.cmdReset.Location = new System.Drawing.Point(272, 288);
+            this.cmdReset.Location = new System.Drawing.Point(204, 234);
+            this.cmdReset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmdReset.Name = "cmdReset";
-            this.cmdReset.Size = new System.Drawing.Size(84, 28);
+            this.cmdReset.Size = new System.Drawing.Size(63, 23);
             this.cmdReset.TabIndex = 4;
             this.cmdReset.Text = "&Reset";
             this.cmdReset.UseVisualStyleBackColor = true;
@@ -87,17 +90,19 @@ namespace NPanday.ProjectImporter.Verifiers
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 15);
+            this.label1.Location = new System.Drawing.Point(22, 12);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(318, 17);
+            this.label1.Size = new System.Drawing.Size(225, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "Select Projects that will be used as Unit Tests:";
             // 
             // cmdSelectAll
             // 
-            this.cmdSelectAll.Location = new System.Drawing.Point(178, 288);
+            this.cmdSelectAll.Location = new System.Drawing.Point(134, 234);
+            this.cmdSelectAll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmdSelectAll.Name = "cmdSelectAll";
-            this.cmdSelectAll.Size = new System.Drawing.Size(88, 27);
+            this.cmdSelectAll.Size = new System.Drawing.Size(66, 22);
             this.cmdSelectAll.TabIndex = 3;
             this.cmdSelectAll.Text = "Select &All";
             this.cmdSelectAll.UseVisualStyleBackColor = true;
@@ -105,9 +110,10 @@ namespace NPanday.ProjectImporter.Verifiers
             // 
             // cmdSelectNone
             // 
-            this.cmdSelectNone.Location = new System.Drawing.Point(67, 288);
+            this.cmdSelectNone.Location = new System.Drawing.Point(50, 234);
+            this.cmdSelectNone.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmdSelectNone.Name = "cmdSelectNone";
-            this.cmdSelectNone.Size = new System.Drawing.Size(105, 26);
+            this.cmdSelectNone.Size = new System.Drawing.Size(79, 21);
             this.cmdSelectNone.TabIndex = 2;
             this.cmdSelectNone.Text = "Select &None";
             this.cmdSelectNone.UseVisualStyleBackColor = true;
@@ -115,9 +121,10 @@ namespace NPanday.ProjectImporter.Verifiers
             // 
             // VerifyUnitTestsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AcceptButton = this.cmdOK;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(471, 341);
+            this.ClientSize = new System.Drawing.Size(353, 277);
             this.Controls.Add(this.cmdSelectNone);
             this.Controls.Add(this.cmdSelectAll);
             this.Controls.Add(this.label1);
@@ -125,6 +132,7 @@ namespace NPanday.ProjectImporter.Verifiers
             this.Controls.Add(this.chkListTestUnits);
             this.Controls.Add(this.cmdOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "VerifyUnitTestsForm";
             this.Text = "Project Unit Tests";
             this.ResumeLayout(false);
