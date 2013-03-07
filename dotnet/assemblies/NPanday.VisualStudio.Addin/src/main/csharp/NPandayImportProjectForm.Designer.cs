@@ -308,7 +308,7 @@ namespace NPanday.VisualStudio.Addin
             this.Name = "NPandayImportProjectForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "NPanday Import Dot Net Solution";
+            this.Text = "NPanday Generate Maven POMs From Solution";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
