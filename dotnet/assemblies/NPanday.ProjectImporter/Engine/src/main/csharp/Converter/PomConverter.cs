@@ -331,7 +331,12 @@ namespace NPanday.ProjectImporter.Converter
                converter.ConvertProjectToPomModel(scmTag);
 
                missingReferences.AddRange(converter.GetMissingReferences());
-               nonPortableReferences.AddRange(converter.GetNonPortableReferences());
+
+               foreach (string s in converter.GetNonPortableReferences())
+               {
+                   if (!nonPortableReferences.Contains(s))
+                       nonPortableReferences.Add(s);
+               }
 
                return converter.Model;
            }
