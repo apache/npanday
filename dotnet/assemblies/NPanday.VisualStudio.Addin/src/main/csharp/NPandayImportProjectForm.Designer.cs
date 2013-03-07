@@ -280,8 +280,10 @@ namespace NPanday.VisualStudio.Addin
             // 
             // NPandayImportProjectForm
             // 
+            this.AcceptButton = this.btnGenerate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(734, 280);
             this.ControlBox = false;
             this.Controls.Add(this.copyToMavenCheckBox);
