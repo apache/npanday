@@ -1015,15 +1015,19 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                         log.DebugFormat("Using ToolLocationHelper from {0}; TargetDotNetFrameworkVersion from {1}",
                             helperType.Assembly.GetName(), versionType.Assembly.GetName());
 
-                        string value = (string)helperType.InvokeMember(method,
-                            System.Reflection.BindingFlags.InvokeMethod, System.Type.DefaultBinder, "",
-                            new object[] { Enum.Parse(versionType, version) });
-
-                        log.DebugFormat("Adding target directory {0} = {1}", key, value);
-                        if (!string.IsNullOrEmpty(value))
+                        if (Enum.IsDefined(versionType, version))
                         {
-                            directories.Add(key, value);
-                            found = true;
+                            string value = (string)helperType.InvokeMember(method,
+                                System.Reflection.BindingFlags.InvokeMethod, System.Type.DefaultBinder, "",
+                                new object[] { Enum.Parse(versionType, version) });
+
+                            log.DebugFormat("Adding target directory {0} = {1}", key, value);
+                            if (!string.IsNullOrEmpty(value))
+                            {
+                                directories.Add(key, value);
+                                found = true;
+                                break;
+                            }
                         }
                     }
                 }
