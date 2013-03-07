@@ -114,7 +114,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (projectRef.ProjectReferenceDigest != null
                 && !string.IsNullOrEmpty(projectRef.ProjectReferenceDigest.OutputType))
             {
-                dependency.type = projectRef.ProjectReferenceDigest.OutputType.ToLower();
+                string type = projectRef.ProjectReferenceDigest.OutputType.ToLower();
+                if (npandayTypeMap.ContainsKey(type))
+                    type = npandayTypeMap[type];
+                dependency.type = type;
             }
             if (projectRef.RoleType != null)
             {

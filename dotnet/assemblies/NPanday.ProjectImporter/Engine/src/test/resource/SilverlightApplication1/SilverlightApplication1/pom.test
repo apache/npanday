@@ -25,7 +25,7 @@
       <groupId>test.group</groupId>
       <artifactId>SilverlightClassLibrary1</artifactId>
       <version>1.2.3-SNAPSHOT</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
     <dependency>
       <groupId>System.Windows</groupId>

@@ -32,7 +32,7 @@
       <groupId>test.group</groupId>
       <artifactId>SAClassLibrary</artifactId>
       <version>1.2.3-SNAPSHOT</version>
-      <type>library</type>
+      <type>dotnet-library</type>
     </dependency>
   </dependencies>
 </project>

@@ -467,7 +467,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (digest != null
                 && !string.IsNullOrEmpty(digest.OutputType))
             {
-                interDependency.type = digest.OutputType.ToLower();
+                string type = digest.OutputType.ToLower();
+                if (npandayTypeMap.ContainsKey(type))
+                    type = npandayTypeMap[type];
+                interDependency.type = type;
             }
             return interDependency;
         }
