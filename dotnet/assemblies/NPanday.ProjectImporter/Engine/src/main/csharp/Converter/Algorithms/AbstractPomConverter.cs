@@ -816,15 +816,15 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             {
                 GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v4.0.30319\\AssemblyFoldersEx"));
             }
-            if (projectDigest.TargetFrameworkVersion == "v3.5")
+            if (projectDigest.TargetFrameworkVersion == "v4.0" || projectDigest.TargetFrameworkVersion == "v3.5")
             {
                 GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v3.5\\AssemblyFoldersEx"));
             }
-            if (projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0")
+            if (projectDigest.TargetFrameworkVersion == "v4.0" || projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0")
             {
                 GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v3.0\\AssemblyFoldersEx"));
             }
-            if (projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0" || projectDigest.TargetFrameworkVersion == "v2.0")
+            if (projectDigest.TargetFrameworkVersion == "v4.0" || projectDigest.TargetFrameworkVersion == "v3.5" || projectDigest.TargetFrameworkVersion == "v3.0" || projectDigest.TargetFrameworkVersion == "v2.0")
             {
                 GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v2.0.50727\\AssemblyFoldersEx"));
             }
@@ -845,7 +845,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     if (v != null)
                     {
                         // strip non-alphanumeric characters to make a property
-                        targetFrameworkDirectories.Add(new Regex("[^A-Za-z0-9]").Replace(key, ""), v);
+                        string k = new Regex("[^A-Za-z0-9]").Replace(key, "");
+                        // ignore duplicates, we add in decreasing priority already
+                        if (!targetFrameworkDirectories.ContainsKey(k))
+                            targetFrameworkDirectories.Add(k, v);
                     }
                 }
             }
@@ -859,6 +862,14 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 string path = Path.Combine(directory, reference.Name + ".dll");
                 if (File.Exists(path))
                 {
+                    // check that it is the right version, if a version was required
+                    if (!string.IsNullOrEmpty(reference.Version))
+                    {
+                        Version v = System.Reflection.AssemblyName.GetAssemblyName(path).Version;
+                        if (!v.ToString().Equals(reference.Version))
+                            continue;
+                    }
+
                     // Note that a "provided" scope may be more appropriate here, if NPanday were to support it
                     // This could likewise replace the GAC types as all of that lookup should occur at build time
 
