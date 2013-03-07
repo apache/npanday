@@ -60,7 +60,7 @@ namespace NPanday.Utils_Test
 
             Assert.IsNotNull(repository, "Repository '" + _repoUrl1 + "' was not added to profile");
 
-            Assert.AreEqual("npanday.repo.0", repository.id);
+            Assert.AreEqual("npanday.repo", repository.id);
             Assert.AreEqual(_repoUrl1, repository.url);
         }
 
@@ -75,16 +75,14 @@ namespace NPanday.Utils_Test
             SettingsUtil.SetProfileRepository(profile, _repoUrl2, true, false);
 
             Assert.AreEqual(1, _settings.profiles.Length, "Settings does not contain a profile");
-            Assert.AreEqual(2, _settings.profiles[0].repositories.Length);
+            Assert.AreEqual(1, _settings.profiles[0].repositories.Length);
 
             Repository repository = SettingsUtil.GetRepositoryFromProfile(profile, _repoUrl1);
-            Assert.IsNotNull(repository, "Repository '" + _repoUrl1 + "' was not in the profile");
-            Assert.AreEqual("npanday.repo.0", repository.id);
-            Assert.AreEqual(_repoUrl1, repository.url);
+            Assert.IsNull(repository, "Repository '" + _repoUrl1 + "' was in the profile");
 
             repository = SettingsUtil.GetRepositoryFromProfile(profile, _repoUrl2);
             Assert.IsNotNull(repository, "Repository '" + _repoUrl2 + "' was not added to profile");
-            Assert.AreEqual("npanday.repo.1", repository.id);
+            Assert.AreEqual("npanday.repo", repository.id);
             Assert.AreEqual(_repoUrl2, repository.url);
         }
 

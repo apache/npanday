@@ -293,7 +293,9 @@ namespace NPanday.Utils
                 foreach (Mirror mirror in settings.mirrors)
                 {
                     // assumes you only changed url of existing ones
-                    settingsXmlDoc.SelectSingleNode("//settings/mirrors/mirror[id = '" + mirror.id + "']/url").InnerText = mirror.url;
+                    XmlNode node = settingsXmlDoc.SelectSingleNode("//settings/mirrors/mirror[id = '" + mirror.id + "']/url");
+                    if (node != null)
+                        node.InnerText = mirror.url;
                 }
             }
 
