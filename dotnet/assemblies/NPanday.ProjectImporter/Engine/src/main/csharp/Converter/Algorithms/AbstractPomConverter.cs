@@ -790,11 +790,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
             // resolve from target framework directories
             if (refDependency == null && projectDigest.DependencySearchConfig.SearchFramework)
-                refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkDirectories(), "target framework");
+                refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkDirectories(), "target framework", false);
 
             // resolve from registered assembly directories
             if (refDependency == null && projectDigest.DependencySearchConfig.SearchAssemblyFoldersEx)
-                refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkAssemblyFoldersEx(), "extra assembly folder");
+                refDependency = ResolveDependencyFromDirectories(reference, GetTargetFrameworkAssemblyFoldersEx(), "extra assembly folder", true);
 
             // resolve from GAC
             if (refDependency == null && projectDigest.DependencySearchConfig.SearchGac)
@@ -851,7 +851,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
         }
 
-        private Dependency ResolveDependencyFromDirectories(Reference reference, Dictionary<string, string> directories, string label)
+        private Dependency ResolveDependencyFromDirectories(Reference reference, Dictionary<string, string> directories, string label, bool warnNonPortable)
         {
             foreach (KeyValuePair<string, string> entry in directories)
             {
@@ -869,10 +869,17 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     // Dependency refDependency = CreateDependencyFromSystemPath(reference, "${" + var + "}/" + reference.Name + ".dll");
                     Dependency refDependency = CreateDependencyFromSystemPath(reference, path);
 
-                    // We do not list these as non-portable, for two reasons:
-                    //  - they should not be copied to the local repository, because there can be multiple conflicting versions in different SDKs
-                    //    (any copying would require a rigorous use of classifiers)
-                    //  - they should not be included in packages (e.g. for MSDeploy), which the system packaging currently avoids
+                    if (warnNonPortable)
+                    {
+                        WarnNonPortableReference(path, refDependency);
+                    }
+                    else
+                    {
+                        // We do not list these as non-portable, for two reasons:
+                        //  - they should not be copied to the local repository, because there can be multiple conflicting versions in different SDKs
+                        //    (any copying would require a rigorous use of classifiers)
+                        //  - they should not be included in packages (e.g. for MSDeploy), which the system packaging currently avoids
+                    }
 
                     log.DebugFormat("Resolved {0} from {1} directories: {2}:{3}:{4}",
                         reference.Name, label, refDependency.groupId, refDependency.artifactId, refDependency.version);
