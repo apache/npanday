@@ -364,7 +364,7 @@ namespace NPanday.VisualStudio.Addin
                 Dictionary<string, string> globalProperties = new Dictionary<string, string>();
                 globalProperties.Add("VisualStudioVersion", applicationObject.Version);
                 string[] generatedPoms = ProjectImporter.NPandayImporter.ImportProject(file.FullName, groupId, artifactId, version, scmTag, true, useMsDeploy, configuration, cloudConfig, depSearchConfig, globalProperties, ref warningMsg);
-                string str = string.Format("NPanday Import Project has Successfully Generated Pom Files!\n");
+                string str = string.Format("NPanday Import Project has Successfully Generated POM Files!\n");
 
                 foreach (string pom in generatedPoms)
                 {
@@ -376,8 +376,7 @@ namespace NPanday.VisualStudio.Addin
                     str = string.Format("{0}\n\nwith Warning(s):{1}", str, warningMsg);
                 }
 
-                MessageBox.Show(str, "NPanday Import Done:");
-
+                MessageBox.Show(str, this.Text);
 
                 // Close the Dialog Here
                 this.DialogResult = DialogResult.OK;
