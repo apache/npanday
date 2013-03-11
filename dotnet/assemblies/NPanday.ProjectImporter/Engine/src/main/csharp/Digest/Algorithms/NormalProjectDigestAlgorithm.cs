@@ -308,7 +308,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                         // complete name
                                         reference.SetAssemblyInfoValues(buildItem.Include);
                                     }
-                                    else if (!rsp.IsRspIncluded(buildItem.Include,projectDigest.Language) && projectDigest.DependencySearchConfig.SearchGac)
+                                    else if (!rsp.IsRspIncluded(buildItem.Include,projectDigest.Language) && projectDigest.DependencySearchConfig.SearchGac && projectDigest.TargetFrameworkIdentifier != "Silverlight")
                                     {
                                         // simple name needs to be resolved
                                         List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(buildItem.Include, null, null);

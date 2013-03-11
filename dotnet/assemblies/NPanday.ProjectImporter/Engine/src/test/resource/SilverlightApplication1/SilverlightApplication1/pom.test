@@ -27,17 +27,5 @@
       <version>1.2.3-SNAPSHOT</version>
       <type>dotnet-library</type>
     </dependency>
-    <dependency>
-      <groupId>System.Windows</groupId>
-      <artifactId>System.Windows</artifactId>
-      <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-    </dependency>
-    <dependency>
-      <groupId>System.Net</groupId>
-      <artifactId>System.Net</artifactId>
-      <version>3.5.0.0</version>
-      <type>dotnet-library</type>
-    </dependency>
   </dependencies>
 </project>

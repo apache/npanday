@@ -20,24 +20,4 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>mscorlib</groupId>
-      <artifactId>mscorlib</artifactId>
-      <version>2.0.0.0</version>
-      <type>dotnet-library</type>
-    </dependency>
-    <dependency>
-      <groupId>System.Windows</groupId>
-      <artifactId>System.Windows</artifactId>
-      <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-    </dependency>
-    <dependency>
-      <groupId>System.Net</groupId>
-      <artifactId>System.Net</artifactId>
-      <version>4.0.0.0</version>
-      <type>dotnet-library</type>
-    </dependency>
-  </dependencies>
 </project>
