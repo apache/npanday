@@ -41,7 +41,7 @@
         <executions>
           <!-- tests are yet included by super pom -->
           <execution>
-            <id>grovy-main</id>
+            <id>groovy-main</id>
             <goals>
               <goal>generateStubs</goal>
               <goal>compile</goal>
