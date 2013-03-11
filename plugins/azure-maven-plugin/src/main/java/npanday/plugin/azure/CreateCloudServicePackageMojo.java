@@ -239,7 +239,7 @@ public class CreateCloudServicePackageMojo
                 if ( entryPoint.exists() )
                 {
                     commands.add(
-                        "/role:" + dependencyArtifactId + ";" + roleRoot.getAbsolutePath() + ";" + name
+                        "/role:" + dependencyArtifactId + ";" + roleRoot.getAbsolutePath() + ";" + entryPoint.getName()
                     );
                 }
                 else
