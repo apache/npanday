@@ -38,7 +38,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
 {
     public class WebProjectDigestAlgorithm : BaseProjectDigestAlgorithm, IProjectDigestAlgorithm
     {
-        public ProjectDigest DigestProject(Dictionary<string, object> projectMap)
+        public ProjectDigest DigestProject(Dictionary<string, object> projectMap, DependencySearchConfiguration depSearchConfig)
         {
             ProjectDigest projectDigest = new ProjectDigest();
             projectDigest.ProjectType = (VisualStudioProjectTypeEnum)projectMap["ProjectType"];
@@ -48,6 +48,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                 projectDigest.TargetFramework = projectMap["TargetFramework"].ToString();
             if (projectMap.ContainsKey("Configuration"))
                 projectDigest.Configuration = projectMap["Configuration"].ToString();
+            projectDigest.DependencySearchConfig = depSearchConfig;
 
             FileInfo existingPomFile = new FileInfo(Path.Combine(projectDigest.FullDirectoryName, "pom.xml"));
             if(existingPomFile.Exists)

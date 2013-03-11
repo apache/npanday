@@ -40,7 +40,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(NormalProjectDigestAlgorithm));
 
-        public ProjectDigest DigestProject(Dictionary<string, object> projectMap)
+        public ProjectDigest DigestProject(Dictionary<string, object> projectMap, DependencySearchConfiguration depSearchConfig)
         {
             Project project = (Project)projectMap["Project"];
 
@@ -65,6 +65,8 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             projectDigest.FullDirectoryName = Path.GetDirectoryName(project.FullFileName);
             if (projectMap.ContainsKey("Configuration"))
                 projectDigest.Configuration = projectMap["Configuration"].ToString();
+
+            projectDigest.DependencySearchConfig = depSearchConfig;
 
             FileInfo existingPomFile = new FileInfo(Path.Combine(projectDigest.FullDirectoryName, "pom.xml"));
             if (existingPomFile.Exists)
@@ -279,6 +281,9 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 projectReferences.Add(prjRef);
                                 break;
                             case "Reference":
+                                // TODO: significant refactoring needed here - it should be calling the same resolution code that is in
+                                //   AbstractPomConverter to find the right artifact based on the simple name
+
                                 Reference reference = new Reference(projectBasePath);
                                 //set processorArchitecture property to platform, it will be used by GacUtility in 
                                 // order to resolve artifact to right processor architecture
@@ -303,7 +308,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                         // complete name
                                         reference.SetAssemblyInfoValues(buildItem.Include);
                                     }
-                                    else if (!rsp.IsRspIncluded(buildItem.Include,projectDigest.Language))
+                                    else if (!rsp.IsRspIncluded(buildItem.Include,projectDigest.Language) && projectDigest.DependencySearchConfig.SearchGac)
                                     {
                                         // simple name needs to be resolved
                                         List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(buildItem.Include, null, null);

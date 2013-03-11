@@ -211,7 +211,7 @@ namespace NPanday.ProjectImporter
             //Checks for Invalid folder structure
             HasValidFolderStructure(list);
 
-            ProjectDigest[] prjDigests = DigestProjects(list, ref warningMsg);
+            ProjectDigest[] prjDigests = DigestProjects(list, depSearchConfig, ref warningMsg);
 
 
             ProjectStructureType structureType = GetProjectStructureType(solutionFile, prjDigests);
@@ -320,9 +320,9 @@ namespace NPanday.ProjectImporter
         /// </summary>
         /// <param name="projects">list retured from ParseSolution</param>
         /// <returns></returns>
-        public static ProjectDigest[] DigestProjects(List<Dictionary<string, object>> projects, ref string warningMsg)
+        public static ProjectDigest[] DigestProjects(List<Dictionary<string, object>> projects, DependencySearchConfiguration depSearchConfig, ref string warningMsg)
         {
-            return ProjectDigester.DigestProjects(projects, ref warningMsg);
+            return ProjectDigester.DigestProjects(projects, depSearchConfig, ref warningMsg);
         }
 
         /// <summary>

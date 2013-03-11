@@ -36,7 +36,7 @@ namespace NPanday.ProjectImporter.Digest
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(ProjectDigester));
 
-        public delegate ProjectDigest DigestProject(Dictionary<string, object> project);
+        public delegate ProjectDigest DigestProject(Dictionary<string, object> project, DependencySearchConfiguration depSearchConfig);
         private static readonly Dictionary<VisualStudioProjectTypeEnum, DigestProject> _digestAlgoritms;
 
         static ProjectDigester()
@@ -78,7 +78,7 @@ namespace NPanday.ProjectImporter.Digest
 
         
 
-        public static ProjectDigest[] DigestProjects(List<Dictionary<string, object>> projects, ref string warningMsg)
+        public static ProjectDigest[] DigestProjects(List<Dictionary<string, object>> projects, DependencySearchConfiguration depSearchConfig, ref string warningMsg)
         {
             List<ProjectDigest> projectDigests = new List<ProjectDigest>();
             Dictionary<string, ProjectDigest> projDigestDictionary = new Dictionary<string, ProjectDigest>();
@@ -87,7 +87,7 @@ namespace NPanday.ProjectImporter.Digest
             foreach (Dictionary<string, object> project in projects)
             {
                 DigestProject digestProject = _digestAlgoritms[(VisualStudioProjectTypeEnum)project["ProjectType"]];
-                ProjectDigest projDigest = digestProject(project);
+                ProjectDigest projDigest = digestProject(project, depSearchConfig);
                 projectDigests.Add(projDigest);
                 if (projDigestDictionary.ContainsKey(projDigest.ProjectName))
                 {
@@ -129,7 +129,7 @@ namespace NPanday.ProjectImporter.Digest
                         Dictionary<string, object> projectMap = new Dictionary<string, object>();
                         projectMap.Add("Project", prjRef);
 
-                        ProjectDigest prjRefDigest = digestProject(projectMap);
+                        ProjectDigest prjRefDigest = digestProject(projectMap, depSearchConfig);
                         string errMsg = string.Format(
                             "Project \"{0}\"  requires \"{1}\" which is not included in the Solution File, "
                             + "\nWould you like to include \"{1}\" Generating NPanday Project Poms?"

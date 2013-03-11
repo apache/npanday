@@ -30,6 +30,6 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
 {
     public interface IProjectDigestAlgorithm
     {
-        ProjectDigest DigestProject(Dictionary<string, object> projectMap);
+        ProjectDigest DigestProject(Dictionary<string, object> projectMap, DependencySearchConfiguration depSearchConfig);
     }
 }
