@@ -1,5 +1,4 @@
-﻿using System;
-#region Apache License, Version 2.0
+﻿#region Apache License, Version 2.0
 //
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
@@ -19,17 +18,18 @@
 // under the License.
 //
 #endregion
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Build.Framework;
 using System.Collections;
 using log4net;
 
-namespace NPanday.ProjectImporter.Digest.Algorithms
+namespace NPanday.ProjectImporter.Utils
 {
-    class DigestingBuildEngine : IBuildEngine
+    class LogOnlyBuildEngine : IBuildEngine
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(NormalProjectDigestAlgorithm));
+        private static readonly ILog log = LogManager.GetLogger(typeof(LogOnlyBuildEngine));
 
         public int ColumnNumberOfTaskNode { get { throw new NotImplementedException(); } }
         public int LineNumberOfTaskNode { get { throw new NotImplementedException(); } }

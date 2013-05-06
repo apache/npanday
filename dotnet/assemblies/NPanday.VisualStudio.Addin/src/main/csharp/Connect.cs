@@ -48,6 +48,7 @@ using NPanday.VisualStudio.Addin.Commands;
 using NPanday.VisualStudio.Addin.Helper;
 using VSLangProj;
 using VSLangProj80;
+using NPanday.ProjectImporter.Utils;
 
 #endregion
 
@@ -130,6 +131,8 @@ namespace NPanday.VisualStudio.Addin
                 {
                     string resxName = projectItem.ContainingProject.Name + "." + projectItem.Name.Replace(".resx", "");
 
+                    log.DebugFormat("Adding resource {0}", resxName);
+
                     //check if resx plugin already exists
                     if (!pomUtil.HasPlugin("org.apache.npanday.plugins", "maven-resgen-plugin"))
                     {
@@ -166,6 +169,16 @@ namespace NPanday.VisualStudio.Addin
                     else
                     {
                         pomUtil.AddMavenResxPluginConfiguration("org.apache.npanday.plugins", "maven-resgen-plugin", "embeddedResources", "embeddedResource", projectItem.Name, resxName);
+                    }
+
+                    string culture = MSBuildUtils.DetermineResourceCulture(projectItem.Name);
+                    if (!string.IsNullOrEmpty(culture))
+                    {
+                        log.DebugFormat("Resource has culture {0}, adding MSBuild plugin to POM", culture);
+                        if (!pomUtil.HasPlugin("org.apache.npanday.plugins", "NPanday.Plugin.Msbuild.JavaBinding"))
+                        {
+                            pomUtil.AddPlugin("org.apache.npanday.plugins", "NPanday.Plugin.Msbuild.JavaBinding", null, false, null, "compile");
+                        }
                     }
                 }
             }

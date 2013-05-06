@@ -64,7 +64,7 @@
     <Compile Include="Converter\Algorithms\WebWithVbOrCsProjectFilePomConverter.cs" />
     <Compile Include="DependencySearchConfiguration.cs" />
     <Compile Include="Digest\Algorithms\BaseProjectDigestAlgorithm.cs" />
-    <Compile Include="Digest\Algorithms\DigestingBuildEngine.cs" />
+    <Compile Include="Utils\LogOnlyBuildEngine.cs" />
     <Compile Include="Digest\Model\ComReference.cs" />
     <Compile Include="Digest\Model\SilverlightApplicationReference.cs" />
     <Compile Include="ImportProjectStructureAlgorithms\AbnormalProject.cs" />
@@ -110,6 +110,7 @@
     <Compile Include="Parser\SlnParser\SemanticalData.cs" />
     <Compile Include="Parser\SlnParser\Semantics.cs" />
     <Compile Include="Parser\SlnParser\SolutionFactory.cs" />
+    <Compile Include="Utils\MSBuildUtils.cs" />
     <Compile Include="Validator\ProjectStructureType.cs" />
     <Compile Include="Validator\ProjectValidator.cs" />
     <Compile Include="Verifiers\VerifyProjectImportSyncronization.cs" />

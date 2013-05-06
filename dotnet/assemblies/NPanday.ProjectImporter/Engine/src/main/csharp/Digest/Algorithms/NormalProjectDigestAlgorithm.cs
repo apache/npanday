@@ -31,6 +31,7 @@ using NPanday.Utils;
 using System.Text.RegularExpressions;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using NPanday.ProjectImporter.Utils;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -454,13 +455,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                 embeddedResource.WithCulture = buildItem.GetMetadata("WithCulture");
                                 if (string.IsNullOrEmpty(embeddedResource.WithCulture))
                                 {
-                                    Microsoft.Build.Tasks.AssignCulture task = new Microsoft.Build.Tasks.AssignCulture();
-                                    task.Files = new TaskItem[]{
-                                        new TaskItem(buildItem.Include)
-                                    };
-                                    task.BuildEngine = new DigestingBuildEngine();
-                                    bool result = task.Execute();
-                                    embeddedResource.WithCulture = task.AssignedFiles[0].GetMetadata("Culture");
+                                    embeddedResource.WithCulture = MSBuildUtils.DetermineResourceCulture(buildItem.Include);
                                 }
 
                                 embeddedResources.Add(embeddedResource);
