@@ -585,6 +585,7 @@ namespace NPanday.VisualStudio.Addin
 
         private static void addProject(List<Project> projects, Project project)
         {
+            log.DebugFormat("Adding solution project: {0}, type: {1}", project.Name, project.Kind);
             if (IsFolder(project))
             {
                 foreach (ProjectItem item in project.ProjectItems)

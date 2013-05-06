@@ -135,12 +135,15 @@ namespace NPanday.VisualStudio.Addin
                         bool web = isWebProject(project);
                         bool cloud = isCloudProject(project);
 
-                        foreach (object c in ((object[])project.ConfigurationManager.ConfigurationRowNames))
+                        if (project.ConfigurationManager != null && project.ConfigurationManager.ConfigurationRowNames != null)
                         {
-                            string configuration = (string)c;
-                            if (!availableConfigurations.Contains(configuration))
+                            foreach (object c in ((object[])project.ConfigurationManager.ConfigurationRowNames))
                             {
-                                availableConfigurations.Add(configuration);
+                                string configuration = (string)c;
+                                if (!availableConfigurations.Contains(configuration))
+                                {
+                                    availableConfigurations.Add(configuration);
+                                }
                             }
                         }
 
