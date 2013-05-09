@@ -168,7 +168,7 @@ public class TesterMojo
 
         commands.add( testAssemblyPath + File.separator + getTestFileName() );
 
-        String switchChar = "/";
+        String switchChar = "-";
         commands.add( switchChar + "xml:" + nUnitXmlFilePath.getAbsolutePath() );
 
         commands.add( switchChar + "output:" + nUnitResultOutputPath.getAbsolutePath() );
