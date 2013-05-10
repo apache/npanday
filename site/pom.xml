@@ -38,7 +38,6 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>2.2</version>
         <executions>
           <execution>
             <id>site</id>
@@ -52,7 +51,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.2-beta-3</version>
+        <version>2.2.1</version>
         <configuration>
           <descriptor>src/site/assembly/docs.xml</descriptor>
         </configuration>
@@ -109,7 +108,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.4</version>
+        <version>2.7-SNAPSHOT</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -165,10 +164,4 @@ under the License.
       </distributionManagement>
     </profile>
   </profiles>
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}</url>
-    </site>
-  </distributionManagement>
 </project>
