@@ -1,5 +1,5 @@
  ----
- Project Types
+ Packaging Applications in NPanday
  ----
  ----
  2012-01-09
@@ -34,6 +34,7 @@ Packaging Applications in NPanday
 
   [[2]] <<<package:>>> Somehow pack up the collected files in the desired format and attach it
         as project artifact.
+
   []
 
   Collecting files for a package utilizes components from the
@@ -52,8 +53,8 @@ Packaging Applications in NPanday
   enables modifications for config files before they make it into the package. While Visual Studio (2008+) only supports
   XDT for web.config, NPanday can apply it to all config files, even with other extensions than <<<*.config>>>
 
-  By default, NPanday will transform all <<<&lt;name&gt;.config>>> files using a corresponding XDT transformation named
-  <<<&lt;name&gt;.package.config>>>.
+  By default, NPanday will transform all <<<\<name\>.config>>> files using a corresponding XDT transformation named
+  <<<\<name\>.package.config>>>.
 
   <<XDT currently only works with .NET 3.5 and 4.0!>>
 
@@ -78,7 +79,7 @@ Packaging Applications in NPanday
 </configuration>
 +---+
 
-    And then by provide the file: <<<\$basedir\custom-assembly-component.xml>>>
+    And then by provide the file: <<<$basedir\custom-assembly-component.xml>>>
 
 +---+
 <component xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -86,7 +87,7 @@ Packaging Applications in NPanday
   <fileSets>
     <fileSet>
       <useDefaultExcludes>true</useDefaultExcludes>
-      <directory>${project.basedir}</directory>
+      <directory>\${project.basedir}</directory>
       <outputDirectory>/</outputDirectory>
       <includes>
         <include>copy-also.txt</include>
@@ -121,7 +122,7 @@ Packaging Applications in NPanday
   <fileSets>
     <fileSet>
       <useDefaultExcludes>true</useDefaultExcludes>
-      <directory>${project.basedir}</directory>
+      <directory>\${project.basedir}</directory>
       <outputDirectory>/</outputDirectory>
       <includes>
         <include>please-copy.aspx</include>
