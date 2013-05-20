@@ -442,7 +442,7 @@ public abstract class AbstractCompilerMojo
      * Included test source files
      *
      * @parameter expression = "${testIncludeSources}"
-     * @deprecated Use includes + excludes instead!
+     * @deprecated Use testIncludes + testExcludes instead!
      */
     protected File[] testIncludeSources;
 
@@ -466,6 +466,7 @@ public abstract class AbstractCompilerMojo
      *
      * @parameter
      */
+    protected String[] testIncludes;
     protected String[] testIncludes;
 
     /**
