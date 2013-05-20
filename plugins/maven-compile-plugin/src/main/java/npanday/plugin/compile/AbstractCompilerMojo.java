@@ -467,7 +467,6 @@ public abstract class AbstractCompilerMojo
      * @parameter
      */
     protected String[] testIncludes;
-    protected String[] testIncludes;
 
     /**
      * Source file patterns to be included in compile.
