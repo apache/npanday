@@ -138,6 +138,12 @@ public class MsbuildMojo
      */
     private MavenProjectHelper projectHelper;
 
+    /**
+     * @parameter expression="${msbuild.extraArguments}"
+     */
+    @FieldAnnotation()
+    public String extraArguments;
+
     public String getMojoArtifactId()
     {
         return "NPanday.Plugin.Msbuild";

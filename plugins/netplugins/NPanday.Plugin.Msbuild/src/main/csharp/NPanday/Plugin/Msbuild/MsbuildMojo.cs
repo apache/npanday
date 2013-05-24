@@ -47,6 +47,9 @@ namespace NPanday.Plugin.Msbuild
         [FieldAttribute("mavenProject", Expression = "${project}", Type = "org.apache.maven.project.MavenProject")]
         public NPanday.Model.Pom.Model mavenProject;
 
+        [FieldAttribute("extraArguments", Expression = "${msbuild.extraArguments}", Type = "java.lang.String")]
+        public string extraArguments;
+
         public override Type GetMojoImplementationType()
         {
             return this.GetType();
@@ -60,7 +63,6 @@ namespace NPanday.Plugin.Msbuild
             }
             else
             {
-                Console.WriteLine("[INFO] Executing MsBuild Plugin");
                 Directory.SetCurrentDirectory(mavenProject.build.sourceDirectory);
             
                 string projectName = mavenProject.artifactId;
@@ -78,8 +80,14 @@ namespace NPanday.Plugin.Msbuild
                 // must use /v:q here, as /v:m and above report the csc command, that includes '/errorprompt', which
                 // erroneously triggers the NPANDAY-063-001 error
                 // BuildingInsideVisualStudio is required to avoid building project references on framework 2.0
-                ProcessStartInfo processStartInfo =
-                   new ProcessStartInfo("msbuild", "/v:q /p:BuildProjectReferences=false /p:BuildingInsideVisualStudio=true " + projectName);
+                string args = "/v:q /p:BuildProjectReferences=false /p:BuildingInsideVisualStudio=true";
+                if (!string.IsNullOrEmpty(extraArguments))
+                {
+                    args += " " + extraArguments;
+                }
+                Console.WriteLine("[INFO] Executing MsBuild Plugin with arguments " + args);
+
+                ProcessStartInfo processStartInfo = new ProcessStartInfo("msbuild", args + " " + projectName);
                 processStartInfo.UseShellExecute = false;
                 Process p = System.Diagnostics.Process.Start(processStartInfo);
                 p.WaitForExit();
