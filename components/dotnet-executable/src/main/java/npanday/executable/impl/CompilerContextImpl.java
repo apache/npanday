@@ -46,6 +46,7 @@ import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.PathTool;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -695,14 +696,20 @@ public final class CompilerContextImpl
             {
                 File f = new File( basedir, file );
                 embeddedResources.add( f );
+
+                String executionRoot = System.getProperty( "user.dir" );
+                // TODO: ideally, all execution would happen from the project basedir, not the user.dir
+                //String executionRoot = project.getBasedir().getAbsolutePath();
+                String path = PathTool.getRelativeFilePath( executionRoot, f.getPath() );
+
                 if ( f.getName().endsWith( ".resources" ) )
                 {
-                    embeddedResourceArgs.add( f.getAbsolutePath() );
+                    embeddedResourceArgs.add( path );
                 }
                 else
                 {
                     String resourceName = project.getArtifactId() + "." + file.replace( File.separatorChar, '.' );
-                    embeddedResourceArgs.add( f.getAbsolutePath() + "," + resourceName );
+                    embeddedResourceArgs.add( path + "," + resourceName );
                 }
             }
         }
