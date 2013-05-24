@@ -600,6 +600,8 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             else if ("SilverlightVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
             {
                 projectDigest.SilverlightVersion = buildProperty.Value.Replace("$(TargetFrameworkVersion)", projectDigest.TargetFrameworkVersion);
+                // BusinessApplication template doesn't set the target framework identifier, which we need to find the right things later
+                projectDigest.TargetFrameworkIdentifier = "Silverlight";
             }
             else if ("SilverlightApplication".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
             {
