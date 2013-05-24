@@ -778,6 +778,13 @@ public abstract class AbstractCompilerMojo
     private RepositoryRegistry repositoryRegistry;
 
     /**
+     * Attach PDB file as artifact, if <code>isDebug</code> enabled.
+     *
+     * @parameter expression = "${attachPdb}" default-value="false"
+     */
+    protected boolean attachPdb;
+
+    /**
      * Compiles the class files.
      *
      * @throws MojoExecutionException thrown if MOJO is unable to compile the class files or if the environment is not
@@ -1171,7 +1178,7 @@ public abstract class AbstractCompilerMojo
             );
 
             if (!compilerExecutable.shouldCompile()) {
-                getLog().debug("NPANDAY-900-010: Compiler vetoed compile, see preceding log entries for details");
+                getLog().debug("NPANDAY-900-011: Compiler vetoed compile, see preceding log entries for details");
                 return;
             }
 
@@ -1206,10 +1213,7 @@ public abstract class AbstractCompilerMojo
                 }
             }
 
-
-//            FileUtils.mkdir("target");
             FileUtils.mkdir(project.getBuild().getDirectory());
-
 
             long startTimeCompile = System.currentTimeMillis();
             compilerExecutable.execute();
@@ -1236,22 +1240,42 @@ public abstract class AbstractCompilerMojo
                     project.getBuild().getSourceDirectory(), e);
         }
         long endTime = System.currentTimeMillis();
-        getLog().info("Mojo Execution Time = " + (endTime - startTime));
+        getLog().info("NPANDAY-900-013: Mojo Execution Time = " + (endTime - startTime));
     }
 
     private void attachArtifact(File artifact, String classifier) {
+        if ( isDebug && attachPdb )
+        {
+            attachPdbArtifact(artifact, classifier);
+        }
         if ( classifier != null )
         {
-            getLog().debug("Attaching artifact " + artifact.getPath() + " with classifier: " + classifier);
+            getLog().debug("NPANDAY-900-014: Attaching artifact " + artifact.getPath() + " with classifier: " + classifier);
             projectHelper.attachArtifact(project, artifact, classifier);
         }
         else
         {
-            getLog().debug("Attaching default project artifact " + artifact.getPath());
+            getLog().debug("NPANDAY-900-015: Attaching default project artifact " + artifact.getPath());
             project.getArtifact().setFile(artifact);
         }
     }
 
+    private void attachPdbArtifact(File artifact, String classifier)
+    {
+       File artifactDirectory = artifact.getParentFile();
+       String pdbName = null;
+       if ( pdb != null )
+       {
+    	   pdbName = pdb;
+       }
+       else
+       {
+    	   pdbName = artifact.getName().substring(0,artifact.getName().lastIndexOf("."));
+       }
+       File pdbFile = new File(artifactDirectory, pdbName + "." + ArtifactType.DOTNET_SYMBOLS.getExtension());
+       getLog().debug("NPANDAY-900-016: Attaching pdb project artifact " + pdbFile.getPath());
+       projectHelper.attachArtifact(project, ArtifactType.DOTNET_SYMBOLS.getPackagingType(), classifier, pdbFile);
+    }
 
     protected abstract void initializeDefaults() throws MojoExecutionException;
 

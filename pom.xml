@@ -290,6 +290,12 @@ under the License.
     <contributor>
       <name>Adrián Boimvaser</name>
     </contributor>
+    <contributor>
+      <name>Valerijus Drozdovas</name>
+    </contributor>
+    <contributor>
+      <name>Victor Stefoglo</name>
+    </contributor>
   </contributors>
   <modules>
     <module>components</module>
