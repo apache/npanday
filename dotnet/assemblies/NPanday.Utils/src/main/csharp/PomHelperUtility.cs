@@ -128,7 +128,7 @@ namespace NPanday.Utils
 
         }
 
-        public void AddPlugin(string groupId, string artifactId, string version, bool extensions, PluginConfiguration pluginConf)
+        public void AddPlugin(string groupId, string artifactId, string version, bool extensions, PluginConfiguration pluginConf, string pluginGoal)
         {
             NPanday.Model.Pom.Model model = ReadPomAsModel();
 
@@ -150,6 +150,11 @@ namespace NPanday.Utils
                 plugin.configuration = pluginConf;
             }
 
+            if (null != pluginGoal || !String.Empty.Equals(pluginGoal))
+            {
+                addPluginExecution(plugin, pluginGoal, null);
+            }
+
             plugins.Add(plugin);
 
 
@@ -159,8 +164,10 @@ namespace NPanday.Utils
 
         }
 
-
-
+        public void AddPlugin(string groupId, string artifactId, string version, bool extensions, PluginConfiguration pluginConf)
+        {
+            AddPlugin(groupId, artifactId, version, extensions, pluginConf, null);
+        }
 
         public DirectoryInfo TestSourceDirectory
         {
