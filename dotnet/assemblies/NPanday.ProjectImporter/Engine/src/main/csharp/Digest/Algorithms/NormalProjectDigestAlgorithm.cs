@@ -302,14 +302,14 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                         reference.HintPath = fullHint;
                                     SetReferenceFromFile(new FileInfo(fullHint), reference);
                                 }
-                                if (string.IsNullOrEmpty(reference.HintPath) || !(new FileInfo(reference.HintPath).Exists))
+                                if ((string.IsNullOrEmpty(reference.HintPath) || !(new FileInfo(reference.HintPath).Exists)) && !rsp.IsRspIncluded(buildItem.Include, projectDigest.Language))
                                 {
                                     if (buildItem.Include.Contains(","))
                                     {
                                         // complete name
                                         reference.SetAssemblyInfoValues(buildItem.Include);
                                     }
-                                    else if (!rsp.IsRspIncluded(buildItem.Include,projectDigest.Language) && projectDigest.DependencySearchConfig.SearchGac && projectDigest.TargetFrameworkIdentifier != "Silverlight")
+                                    else if (projectDigest.DependencySearchConfig.SearchGac && projectDigest.TargetFrameworkIdentifier != "Silverlight")
                                     {
                                         // simple name needs to be resolved
                                         List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(buildItem.Include, null, null);
@@ -341,10 +341,14 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                                             }
                                             reference.SetAssemblyInfoValues(best);
                                         }
-                                        else 
+                                        else
                                         {
                                             reference.SetAssemblyInfoValues(refs[0]);
                                         }
+                                    }
+                                    else
+                                    {
+                                        reference.Name = buildItem.Include;
                                     }
                                 }
                                 if ("NUnit.Framework".Equals(reference.Name, StringComparison.OrdinalIgnoreCase))

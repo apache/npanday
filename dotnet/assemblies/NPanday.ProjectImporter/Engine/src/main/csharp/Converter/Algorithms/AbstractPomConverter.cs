@@ -491,11 +491,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             {
                 missingReferences.Add(reference);
 
-                // TODO: check if reference.Version is always set - ResolveDependency does some filename parsing that we should factor out so it's not done multiple times
+                // TODO: this construction is done multiple times - centralise
+                //  - also warn on the default version assigned which is often not correct
                 refDependency = new Dependency();
                 refDependency.groupId = reference.Name;
                 refDependency.artifactId = reference.Name;
-                refDependency.version = reference.Version;
+                refDependency.version = reference.Version ?? "1.0.0.0";
                 refDependency.type = "dotnet-library";
             }
 
