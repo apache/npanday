@@ -63,7 +63,14 @@ namespace NPanday.ProjectImporter.ImporterTests
 
         public virtual DependencySearchConfiguration DepSearchConfig
         {
-            get { return null; }
+            get
+            {
+                DependencySearchConfiguration depSearchConfig = new DependencySearchConfiguration();
+                depSearchConfig.SearchFramework = false;
+                depSearchConfig.SearchAssemblyFoldersEx = false;
+                depSearchConfig.CopyToMaven = false;
+                return depSearchConfig;
+            }
         }
 
         [Test]
