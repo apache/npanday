@@ -81,7 +81,7 @@
           <execution>
             <id>create-msdeploy-package</id>
             <goals>
-              <goal>create-package</goal>
+              <goal>create-iisApp-package</goal>
             </goals>
           </execution>
         </executions>

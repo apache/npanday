@@ -44,6 +44,7 @@
           </execution>
         </executions>
         <configuration>
+          <frameworkVersion>4.0</frameworkVersion>
           <attachXBAP>true</attachXBAP>
         </configuration>
       </plugin>
