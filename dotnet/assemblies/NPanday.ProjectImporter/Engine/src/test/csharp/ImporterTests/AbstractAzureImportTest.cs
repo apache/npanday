@@ -26,9 +26,10 @@ namespace NPanday.ProjectImporter.ImporterTests
     {
         public override List<Artifact.Artifact> GetTestArtifacts()
         {
+            // values for Azure SDK 1.6, which is the default
             List<Artifact.Artifact> artifacts = new List<Artifact.Artifact>();
-            artifacts.Add(createArtifact("Microsoft.WindowsAzure.Diagnostics"));
-            artifacts.Add(createArtifact("Microsoft.WindowsAzure.ServiceRuntime"));
+            artifacts.Add(createArtifact("Microsoft.WindowsAzure.Diagnostics", "1.0.0.0"));
+            artifacts.Add(createArtifact("Microsoft.WindowsAzure.ServiceRuntime", "1.0.0.0"));
             artifacts.Add(createArtifact("Microsoft.WindowsAzure.StorageClient", "1.1.0.0"));
             return artifacts;
         }

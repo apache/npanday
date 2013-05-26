@@ -26,6 +26,16 @@ namespace NPanday.ProjectImporter.ImporterTests
     [TestFixture]
     public class AzureImportSDKVersionTest : AbstractAzureImportTest
     {
+        public override List<Artifact.Artifact> GetTestArtifacts()
+        {
+            List<Artifact.Artifact> artifacts = new List<Artifact.Artifact>();
+            artifacts.Add(createArtifact("Microsoft.WindowsAzure.Configuration", "1.7.0.0"));
+            artifacts.Add(createArtifact("Microsoft.WindowsAzure.Diagnostics", "1.7.0.0"));
+            artifacts.Add(createArtifact("Microsoft.WindowsAzure.ServiceRuntime", "1.7.0.0"));
+            artifacts.Add(createArtifact("Microsoft.WindowsAzure.StorageClient", "1.7.0.0"));
+            return artifacts;
+        }
+
         public override void CheckFrameworkVersion()
         {
             if (Environment.Version.Major < 4)
