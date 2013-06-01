@@ -24,6 +24,7 @@ under the License.
     <executable>al</executable>
     <profile>AL</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>3.0</frameworkVersion>
@@ -43,6 +44,7 @@ under the License.
     <executable>al</executable>
     <profile>AL</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.0</frameworkVersion>
       <frameworkVersion>2.0.50727</frameworkVersion>

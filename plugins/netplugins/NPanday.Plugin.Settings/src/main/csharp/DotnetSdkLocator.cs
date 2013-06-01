@@ -29,6 +29,7 @@ namespace NPanday.Plugin.Settings
         RegistryKey Microsoft_SDKs_NETFramework = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\SDKs\.NETFramework");
         RegistryKey Microsoft_SDKs_Windows_70 = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0");
         RegistryKey Microsoft_SDKs_Windows_70a = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A");
+        RegistryKey Microsoft_SDKs_Windows_80a = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.0A");
 
         string ProgramFilesX86(string subfolders){
             string programFiles = Environment.GetEnvironmentVariable("PROGRAMFILES(X86)")
@@ -75,11 +76,20 @@ namespace NPanday.Plugin.Settings
         public string Find4_0()
         {
             return PathUtil.FirstExisting(
-                registryFind(Microsoft_NETFramework, "sdkInstallRootv4.0"), // does not exist, I thinkg (lcorneliussen)
                 // prefer 32 bit until its made explicit
                 registryFind(Microsoft_SDKs_Windows_70a, "WinSDK-NetFx40Tools", "InstallationFolder"),
                 registryFind(Microsoft_SDKs_Windows_70a, "WinSDK-NetFx40Tools-x86", "InstallationFolder"),
                 registryFind(Microsoft_SDKs_Windows_70a, "WinSDK-NetFx40Tools-x64", "InstallationFolder")
+            );
+        }
+
+        public string Find4_5()
+        {
+            return PathUtil.FirstExisting(
+                // prefer 32 bit until its made explicit
+                registryFind(Microsoft_SDKs_Windows_80a, "WinSDK-NetFx40Tools", "InstallationFolder"),
+                registryFind(Microsoft_SDKs_Windows_80a, "WinSDK-NetFx40Tools-x86", "InstallationFolder"),
+                registryFind(Microsoft_SDKs_Windows_80a, "WinSDK-NetFx40Tools-x64", "InstallationFolder")
             );
         }
 

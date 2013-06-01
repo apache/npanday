@@ -24,6 +24,7 @@ under the License.
     <executable>ILMerge</executable>
     <profile>ILMERGE</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>3.0</frameworkVersion>
@@ -42,6 +43,7 @@ under the License.
     <executable>ILRepack</executable>
     <profile>ILREPACK</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>3.0</frameworkVersion>
@@ -60,6 +62,7 @@ under the License.
     <executable>ILRepack</executable>
     <profile>ILREPACK</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>3.0</frameworkVersion>

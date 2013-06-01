@@ -196,11 +196,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 );
                 AddPluginConfiguration(testPlugin, "integrationTest", "true");
 
-                // for running .net framework 4.0 unit tests add new parameter in order to tell NUnit which runtime to use. If there is a way to get this 
-                // parameter from maven-compile-plugin use it
-                if (projectDigest.TargetFramework == "4.0")
+                // for running .net framework 4.0+ unit tests add new parameter in order to tell NUnit which runtime to
+                // use. If there is a way to get this parameter from maven-compile-plugin use it
+                if (projectDigest.TargetFramework == "4.5" || projectDigest.TargetFramework == "4.0")
                 {
-                    AddPluginConfiguration(testPlugin, "executionFrameworkVersion", "4.0");
+                    AddPluginConfiguration(testPlugin, "executionFrameworkVersion", projectDigest.TargetFramework);
                 }
             }
 
