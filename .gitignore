@@ -8,3 +8,4 @@ pom-java.xml
 bin
 obj
 plugins/netplugins/*/src/main/java
+.idea
