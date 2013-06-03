@@ -291,7 +291,7 @@ namespace NPanday.Plugin.Settings
                 vendors.Add(vendor);
             }
             // SDK only
-            if (new DirectoryInfo(sdkInstallRoot45).Exists)
+            if (sdkInstallRoot45 != null && new DirectoryInfo(sdkInstallRoot45).Exists)
             {
                 npandaySettingsVendorsVendor vendor = new npandaySettingsVendorsVendor();
                 vendor.vendorName = "MICROSOFT";
