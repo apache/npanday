@@ -26,7 +26,7 @@ if ( index >= 0 ) {
 def repositoryComponentIds = []
 def repositoryBasedir = new File(project.build.directory + "/repository/releases");
 def generateGuid = { "{"+java.util.UUID.randomUUID().toString().toUpperCase() + "}" }
-def visualStudioVersions = ['2005', '2008', '2010']
+def visualStudioVersions = ['2005', '2008', '2010', '2012']
 
 def addinArtifacts = []
 new File(project.build.directory + "/addin").eachFile { addinArtifacts << it }
@@ -59,6 +59,9 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
       }
       Property(Id:"VS2010INSTALLED") {
         RegistrySearch(Id:"VS2010INSTALLED", Root:"HKCR", Key:"VisualStudio.DTE.10.0", Type: "raw")
+      }
+      Property(Id:"VS2012INSTALLED") {
+        RegistrySearch(Id:"VS2012INSTALLED", Root:"HKCR", Key:"VisualStudio.DTE.11.0", Type: "raw")
       }
 
       Condition(Message:"NPanday cannot be installed on Windows 9x/ME", "VersionNT")
