@@ -23,9 +23,11 @@ import npanday.ArtifactTypeHelper;
 import npanday.PathUtil;
 import npanday.resolver.ArtifactResolvingContributor;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 
 import java.io.File;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,7 +36,7 @@ import java.util.Set;
 public class GacResolver
     implements ArtifactResolvingContributor
 {
-    public void contribute( Artifact artifact, Set<Artifact> additionalDependenciesCollector ) throws
+    public void tryResolve( Artifact artifact, Set<Artifact> additionalDependenciesCollector ) throws
         ArtifactNotFoundException
     {
 
@@ -69,4 +71,10 @@ public class GacResolver
         }
 
     }
+
+	public void contribute(Artifact artifact, ArtifactRepository localRepository, List remoteRepositories,
+			Set<Artifact> additionalDependenciesCollector) throws ArtifactNotFoundException 
+	{
+		// NO-OP
+	}
 }

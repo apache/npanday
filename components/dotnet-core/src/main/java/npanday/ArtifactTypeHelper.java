@@ -128,4 +128,15 @@ public class ArtifactTypeHelper
                 || packaging.equals( ArtifactType.GAC_32_4)
                 || packaging.equals( ArtifactType.GAC_64_4);
     }
+    
+    public static boolean isComReference(String packaging)
+    {
+        return isComReference(ArtifactType.getArtifactTypeForPackagingName(packaging));
+    }
+    
+    public static boolean isComReference(ArtifactType artifactType)
+    {
+        return artifactType.equals( ArtifactType.COM_REFERENCE );
+    }
+
 }

@@ -64,5 +64,10 @@ public interface NPandayArtifactResolver
      * something with the ones relevant to your context.
      */
     public Set<Artifact> getCustomResolveCache();
+    
+    /**
+     * Custom artifacts dependencies resolved by contributors. 
+     */
+    public Set<Artifact> getCustomDependenciesCache();
 }
 

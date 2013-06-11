@@ -94,8 +94,13 @@ public class NPandayDependencyResolution
             * */
 
             addResolvedSpecialsToProjectDependencies( project, result );
-
-            return result.getArtifacts();
+            // Add custom contribute dependencies to maven project dependencies 
+            project.getDependencyArtifacts().addAll(artifactResolver.getCustomDependenciesCache());
+            
+            Set<Artifact> resultRequire = Sets.newLinkedHashSet(result.getArtifacts());
+            resultRequire.addAll(artifactResolver.getCustomDependenciesCache());
+            
+            return resultRequire;
         }
         catch ( ArtifactResolutionException e )
         {
@@ -128,6 +133,7 @@ public class NPandayDependencyResolution
                 project.getDependencyArtifacts().add( a );
             }
         }
+        
     }
 
     private void createArtifactsForMaven2BackCompat( MavenProject project ) throws InvalidVersionSpecificationException

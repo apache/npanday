@@ -19,8 +19,10 @@
 
 package npanday.resolver.resolvers;
 
+import npanday.ArtifactTypeHelper;
 import npanday.resolver.ArtifactResolvingContributor;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.Os;
 import org.codehaus.plexus.util.cli.CommandLineException;
@@ -47,14 +49,20 @@ public class ComReferenceResolver
     extends AbstractLogEnabled
     implements ArtifactResolvingContributor
 {
-    public void contribute( Artifact artifact, Set<Artifact> additionalDependenciesCollector )
+	public void contribute(Artifact artifact, ArtifactRepository localRepository, List remoteRepositories,
+			Set<Artifact> additionalDependenciesCollector) 
+	{
+		// NO-OP
+	}
+	
+    public void tryResolve( Artifact artifact, Set<Artifact> additionalDependenciesCollector )
     {
         // resolve com reference
         // flow:
         // 1. generate the interop dll in temp folder and resolve to that path during dependency resolution
         // 2. cut and paste the dll to buildDirectory and update the paths once we grab the reference of
         // MavenProject (CompilerContext.java)
-        if ( artifact.getType().equals( "com_reference" ) )
+        if ( ArtifactTypeHelper.isComReference(artifact.getType()) )
         {
             String tokenId = artifact.getClassifier();
             String interopPath = null;

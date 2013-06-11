@@ -19,7 +19,10 @@
 
 package npanday.resolver;
 
+import java.util.List;
+
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ResolutionListener;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
@@ -36,11 +39,18 @@ public class NPandayResolutionListener
     private DefaultNPandayArtifactResolver resolver;
 
     private ArtifactFilter filter;
+    
+    private ArtifactRepository localRepository;
+    
+    private List remoteRepositories;
 
-    public NPandayResolutionListener( DefaultNPandayArtifactResolver resolver, ArtifactFilter filter )
+    public NPandayResolutionListener( DefaultNPandayArtifactResolver resolver, ArtifactFilter filter,
+            ArtifactRepository localRepository, List remoteRepositories )
     {
         this.resolver = resolver;
         this.filter = filter;
+        this.localRepository = localRepository;
+        this.remoteRepositories = remoteRepositories;
     }
 
     public void testArtifact( Artifact node )
@@ -52,7 +62,7 @@ public class NPandayResolutionListener
 
         try
         {
-            resolver.runCustomResolvers( node );
+            resolver.runArtifactContributors( node, localRepository, remoteRepositories );
         }
         catch ( ArtifactNotFoundException e )
         {

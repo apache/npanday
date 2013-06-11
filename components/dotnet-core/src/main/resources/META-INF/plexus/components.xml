@@ -56,5 +56,19 @@
       <role-hint>com</role-hint>
       <implementation>npanday.resolver.resolvers.ComReferenceResolver</implementation>
     </component>
+    
+     <component>
+      <role>npanday.resolver.ArtifactResolvingContributor</role>
+      <role-hint>pdb</role-hint>
+      <implementation>npanday.resolver.resolvers.PdbAssemblyResolver</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
+        </requirement>
+      </requirements>
+    </component>
   </components>
 </component-set>

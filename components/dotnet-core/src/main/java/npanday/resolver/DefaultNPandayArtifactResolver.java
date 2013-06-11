@@ -19,6 +19,7 @@
 
 package npanday.resolver;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import npanday.resolver.resolvers.GacResolver;
@@ -50,6 +51,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 /**
  * Wraps the default Maven artifact resolver and executes all implementations
  * of {@link npanday.resolver.ArtifactResolvingContributor} for each artiact.
@@ -67,6 +70,8 @@ public class DefaultNPandayArtifactResolver
     private PlexusContainer container;
 
     private Set<Artifact> customResolveCache = Sets.newHashSet();
+    
+    private Set<Artifact> customDependenciesCache = Sets.newHashSet();
 
     public void resolve( Artifact artifact, List remoteRepositories, ArtifactRepository localRepository ) throws
         ArtifactResolutionException,
@@ -77,6 +82,8 @@ public class DefaultNPandayArtifactResolver
         original.resolve(
             artifact, remoteRepositories, localRepository
         );
+        
+        runCustomDependencyContributors(artifact, localRepository, remoteRepositories);
     }
 
     public void resolveAlways( Artifact artifact, List remoteRepositories, ArtifactRepository localRepository ) throws
@@ -88,6 +95,8 @@ public class DefaultNPandayArtifactResolver
         original.resolveAlways(
             artifact, remoteRepositories, localRepository
         );
+        
+        runCustomDependencyContributors(artifact, localRepository, remoteRepositories);
     }
 
     public ArtifactResolutionResult resolveTransitively(
@@ -96,22 +105,25 @@ public class DefaultNPandayArtifactResolver
         ArtifactResolutionException,
         ArtifactNotFoundException
     {
-        listeners = intercept( listeners, filter );
+        listeners = intercept( listeners, filter, localRepository, remoteRepositories );
 
         return original.resolveTransitively(
             artifacts, originatingArtifact, managedVersions, localRepository, remoteRepositories, source, filter,
             listeners
         );
+        
     }
 
 
 
-    private List intercept( List listeners, ArtifactFilter filter )
+    private List intercept( List listeners, ArtifactFilter filter, ArtifactRepository localRepository,
+            List remoteRepositories )
     {
         if (listeners == null)
             listeners = Lists.newArrayList();
 
-        NPandayResolutionListener listener = new NPandayResolutionListener(this, filter);
+        NPandayResolutionListener listener = new NPandayResolutionListener(this, filter, localRepository, 
+                remoteRepositories);
         listener.enableLogging( getLogger() );
 
         listeners.add( listener );
@@ -122,6 +134,16 @@ public class DefaultNPandayArtifactResolver
     public void contextualize( Context context ) throws ContextException
     {
         container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    }
+    
+    public void runArtifactContributors(Artifact artifact, ArtifactRepository localRepository, 
+            List remoteRepositories) throws ArtifactNotFoundException 
+    {
+        if(artifact.isResolved()) {
+            runCustomDependencyContributors(artifact, localRepository, remoteRepositories);
+        } else {
+            runCustomResolvers(artifact);
+        }
     }
 
     protected void runCustomResolvers( Artifact artifact ) throws ArtifactNotFoundException
@@ -138,15 +160,7 @@ public class DefaultNPandayArtifactResolver
         for ( ArtifactResolvingContributor contributor : contributors )
         {
             Set<Artifact> additionalDependenciesCollector = Sets.newHashSet();
-            contributor.contribute( artifact, additionalDependenciesCollector );
-
-            if ( additionalDependenciesCollector.size() > 0 )
-            {
-                getLogger().error(
-                    "NPANDAY-147-006: " + artifact.getId()
-                        + " required additional dependencies to be added, but we do not support that yet."
-                );
-            }
+            contributor.tryResolve( artifact, additionalDependenciesCollector );
 
             if ( artifact.isResolved() )
             {
@@ -156,11 +170,54 @@ public class DefaultNPandayArtifactResolver
                     "NPANDAY-147-001: " + contributor.getClass().getName() + " resolved " + artifact.getId() + " to "
                         + artifact.getFile()
                 );
-
+                
+                if ( additionalDependenciesCollector.size() > 0 )
+                {
+                   addContributeArtifactsToDependenciesCache(additionalDependenciesCollector);
+                }
                 return;
             }
         }
 
+    }
+    
+    protected void runCustomDependencyContributors(Artifact artifact, ArtifactRepository localRepository, List remoteRepositories) throws ArtifactNotFoundException
+    {
+        if ( !artifact.isResolved() )
+        {
+            throw new IllegalArgumentException(
+                    String.format("NPANDAY-147-008: Artifact[groupId:'%s', artifactId:'%s', type:'%s', version:'%s']" +
+                    		" could not be unresoved", 
+                            artifact.getGroupId(), artifact.getArtifactId(), artifact.getType(), artifact.getVersion()));
+        }
+
+        for ( ArtifactResolvingContributor contributor : contributors )
+        {
+            Set<Artifact> additionalDependenciesCollector = Sets.newHashSet();
+            contributor.contribute(artifact, localRepository, remoteRepositories, additionalDependenciesCollector);
+
+            if ( additionalDependenciesCollector.size() > 0 )
+            {
+               addContributeArtifactsToDependenciesCache(additionalDependenciesCollector);
+            }
+        }
+
+    }
+    
+    private void addContributeArtifactsToDependenciesCache(Set<Artifact> artifacts)
+    {
+    	if (artifacts == null || artifacts.isEmpty()) 
+    	{
+    		return;
+    	}
+    	
+		Set<Artifact> resolvedArtifacts = Sets.filter(artifacts, new Predicate<Artifact>(){
+			public boolean apply(@Nullable Artifact artifact) {
+				return artifact !=null && artifact.isResolved() && artifact.getFile() != null 
+						&& artifact.getFile().exists();
+			}});
+		
+		customDependenciesCache.addAll(resolvedArtifacts);
     }
 
     public void initialize() throws InitializationException
@@ -247,5 +304,10 @@ public class DefaultNPandayArtifactResolver
     public Set<Artifact> getCustomResolveCache()
     {
         return customResolveCache;
+    }
+    
+    public Set<Artifact> getCustomDependenciesCache() 
+    {
+        return customDependenciesCache;
     }
 }
