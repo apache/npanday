@@ -19,6 +19,9 @@ package npanday.executable.compiler.impl;
  * under the License.
  */
 
+import com.google.common.base.Function;
+import com.google.common.collect.Interners;
+import com.google.common.collect.Iterables;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandFilter;
 import npanday.executable.ExecutionException;
@@ -28,6 +31,7 @@ import npanday.vendor.Vendor;
 import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.FileUtils;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -253,29 +257,8 @@ public final class DefaultCompiler
         CommandFilter filter = compilerContext.getCommandFilter();
 
         List<String> filteredCommands = filter.filter( commands );
-        //Include Sources code is being copied to temporary folder for the recurse option
 
-        String fileExt = "";
-        String frameWorkVer = ""+compilerContext.getFrameworkVersion();
-        String TempDir = "";
         String targetDir = ""+compilerContext.getTargetDirectory();
-
-        Date date = new Date();
-        String Now =""+date.getDate()+date.getHours()+date.getMinutes()+date.getSeconds();
-
-        // TODO: Why can't the tmp dir just be a static one?
-        TempDir = targetDir+File.separator+Now;
-
-        try
-        {
-            FileUtils.deleteDirectory( TempDir );
-        }
-        catch(Exception e)
-        {
-            //Does Precautionary delete for tempDir 
-        }
-
-        FileUtils.mkdir(TempDir);
 
         Set<File> sourceFiles = compilerContext.getSourceFiles();
         if( sourceFiles != null && !sourceFiles.isEmpty() )
@@ -289,13 +272,16 @@ public final class DefaultCompiler
         {
             logger.debug( "commands: " + filteredCommands );
         }
-        String responseFilePath = TempDir + File.separator + "responsefile.rsp";
+        String responseFilePath = targetDir + File.separator + "responsefile.rsp";
+
         try
         {
+            StringBuilder builder = new StringBuilder();
             for(String command : filteredCommands)
             {
-                FileUtils.fileAppend(responseFilePath, escapeCmdParams(command) + " ");
+                builder.append(escapeCmdParams(command) + " ");
             }
+            FileUtils.fileWrite(responseFilePath, builder.toString());
         } catch (java.io.IOException e) {
             throw new ExecutionException( "NPANDAY-155-002: Error while creating response file for the commands.", e );
         }
