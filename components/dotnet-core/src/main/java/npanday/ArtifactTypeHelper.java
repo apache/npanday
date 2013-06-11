@@ -139,4 +139,12 @@ public class ArtifactTypeHelper
         return artifactType.equals( ArtifactType.COM_REFERENCE );
     }
 
+    public static boolean isDotnetLibraryOrExecutable(ArtifactType artifactType) {
+        return isDotnetLibrary(artifactType) || isDotnetExecutable(artifactType);
+    }
+
+    public static boolean isDotnetLibraryOrExecutable(String packaging)
+    {
+        return isDotnetLibraryOrExecutable( ArtifactType.getArtifactTypeForPackagingName( packaging ) );
+    }
 }

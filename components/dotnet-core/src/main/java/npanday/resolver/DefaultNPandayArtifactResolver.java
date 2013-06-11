@@ -170,7 +170,7 @@ public class DefaultNPandayArtifactResolver
                     "NPANDAY-147-001: " + contributor.getClass().getName() + " resolved " + artifact.getId() + " to "
                         + artifact.getFile()
                 );
-                
+
                 if ( additionalDependenciesCollector.size() > 0 )
                 {
                    addContributeArtifactsToDependenciesCache(additionalDependenciesCollector);
@@ -178,7 +178,6 @@ public class DefaultNPandayArtifactResolver
                 return;
             }
         }
-
     }
     
     protected void runCustomDependencyContributors(Artifact artifact, ArtifactRepository localRepository, List remoteRepositories) throws ArtifactNotFoundException
@@ -187,9 +186,13 @@ public class DefaultNPandayArtifactResolver
         {
             throw new IllegalArgumentException(
                     String.format("NPANDAY-147-008: Artifact[groupId:'%s', artifactId:'%s', type:'%s', version:'%s']" +
-                    		" could not be unresoved", 
+                    		" could not be unresolved",
                             artifact.getGroupId(), artifact.getArtifactId(), artifact.getType(), artifact.getVersion()));
         }
+
+        getLogger().debug(
+                "NPANDAY-147-009: trying to find complementary artifacts for " + artifact.getId() + " using resolving contributors"
+        );
 
         for ( ArtifactResolvingContributor contributor : contributors )
         {

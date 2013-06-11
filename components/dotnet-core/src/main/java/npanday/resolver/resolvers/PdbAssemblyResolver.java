@@ -45,8 +45,7 @@ public class PdbAssemblyResolver extends AbstractLogEnabled implements ArtifactR
         final ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName(artifact.getType());
         if ( !ArtifactTypeHelper.isDotnetAnyGac(artifactType) && 
              !ArtifactTypeHelper.isComReference(artifactType) &&
-             artifactType != ArtifactType.NULL &&
-             artifactType != ArtifactType.DOTNET_SYMBOLS) 
+             ArtifactTypeHelper.isDotnetLibraryOrExecutable(artifactType))
         {
             tryResolveArtifactPdbAssembly(artifact, localRepository, remoteRepositories, 
                     additionalDependenciesCollector);
@@ -67,21 +66,18 @@ public class PdbAssemblyResolver extends AbstractLogEnabled implements ArtifactR
     {
         Artifact pdbArtifact = artifactFactory.createArtifactWithClassifier(artifact.getGroupId(), artifact.getArtifactId(), 
                 artifact.getVersion(), ArtifactType.DOTNET_SYMBOLS.getPackagingType(), artifact.getClassifier());
-        boolean pdbArtifactFound = true;
         try {
             mavenResolver.resolve(pdbArtifact, remoteRepositories, localRepository);
+
+            // the complimentary artifact should have the same scope as the leading one
+            pdbArtifact.setScope(artifact.getScope());
+
+            getLogger().debug("NPANDAY-157-001: found a pdb for " + artifact.getId());
+            additionalDependenciesCollector.add(pdbArtifact);
         } catch (ArtifactNotFoundException e) {
-            // Ignore PDF assembly not found exception
-            pdbArtifactFound = false;
+            getLogger().debug("NPANDAY-157-002: no pdb found for " + artifact.getId());
         } catch (ArtifactResolutionException e) {
             throw new ArtifactNotFoundException(e.getMessage(), artifact);
         }
-        
-        if (pdbArtifactFound) 
-        {
-            additionalDependenciesCollector.add(pdbArtifact);
-        }
-        
     }
-
 }
