@@ -25,6 +25,7 @@ import npanday.LocalRepositoryUtil;
 import npanday.PathUtil;
 import npanday.registry.RepositoryRegistry;
 import npanday.resolver.NPandayDependencyResolution;
+import npanday.resolver.filter.DebugSymbolsArtifactFilter;
 import npanday.resolver.filter.DotnetExecutableArtifactFilter;
 import npanday.resolver.filter.DotnetLibraryArtifactFilter;
 import npanday.resolver.filter.OrArtifactFilter;
@@ -92,6 +93,13 @@ public class CopyDependenciesMojo
     private String excludeScope;
 
     /**
+     * Specifies, if pdbs should be copied, too.
+     *
+     * @parameter default-value="true" expression="${includePdbs}"
+     */
+    private Boolean includePdbs;
+
+    /**
      * @component
      */
     private NPandayDependencyResolution dependencyResolution;
@@ -151,6 +159,11 @@ public class CopyDependenciesMojo
         OrArtifactFilter typeIncludes = new OrArtifactFilter();
         typeIncludes.add( new DotnetExecutableArtifactFilter() );
         typeIncludes.add( new DotnetLibraryArtifactFilter() );
+
+        if (includePdbs){
+            typeIncludes.add( new DebugSymbolsArtifactFilter() );
+        }
+
         includeFilter.add( typeIncludes );
 
         if ( !Strings.isNullOrEmpty( includeScope ) )
@@ -188,8 +201,12 @@ public class CopyDependenciesMojo
                 public boolean include( Artifact artifact )
                 {
                     for (MavenProject project : reactorProjects){
-                        if (project.getArtifact().getId().equals( artifact.getId() ))
+                        // we don't care about the type and the classifier here
+                        if (project.getGroupId().equals(artifact.getGroupId())
+                                && project.getArtifactId().equals(artifact.getArtifactId())
+                                && project.getVersion().equals(artifact.getVersion())){
                             return true;
+                        }
                     }
                     return false;
                 }

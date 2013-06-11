@@ -142,6 +142,10 @@ public class ListDependenciesMojo
         Set<Artifact> artifacts;
         try
         {
+            // TODO: Workarround. Somehow in the first run, PDBs wont be part of the result!
+            dependencyResolution.require(
+                    project, LocalRepositoryUtil.create( localRepository ), includeFilter
+            );
             artifacts = dependencyResolution.require(
                 project, LocalRepositoryUtil.create( localRepository ), includeFilter
             );
@@ -154,7 +158,7 @@ public class ListDependenciesMojo
         }
 
         /**
-         * Should be resolved, but then not copied
+         * Should be resolved, but then not shown
          */
         if ( !Strings.isNullOrEmpty( excludeScope ) )
         {
@@ -169,8 +173,12 @@ public class ListDependenciesMojo
                 public boolean include( Artifact artifact )
                 {
                     for (MavenProject project : reactorProjects){
-                        if (project.getArtifact().getId().equals( artifact.getId() ))
+                        // we don't care about the type and the classifier here
+                        if (project.getGroupId().equals(artifact.getGroupId())
+                                && project.getArtifactId().equals(artifact.getArtifactId())
+                                && project.getVersion().equals(artifact.getVersion())){
                             return true;
+                        }
                     }
                     return false;
                 }
