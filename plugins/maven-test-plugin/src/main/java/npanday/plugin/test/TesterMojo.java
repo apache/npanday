@@ -204,15 +204,18 @@ public class TesterMojo
         super.innerExecute();
 
         String testFileName = "";
+        String pdbTestFileName = "";
 
         if(integrationTest)
         {
             getLog().info("NPANDAY-1100-000.1: Artifact is an Integration Test");
             testFileName = project.getBuild().getDirectory() + File.separator + project.getArtifactId() + ".dll";
+            pdbTestFileName = project.getBuild().getDirectory() + File.separator + project.getArtifactId() + ".pdb";
         }
         else
         {
             testFileName = project.getBuild().getDirectory() + File.separator + project.getArtifactId() + "-test.dll";
+            pdbTestFileName = project.getBuild().getDirectory() + File.separator + project.getArtifactId() + "-test.pdb";
         }
 
         if ( !( new File( testFileName ).exists() ) )
@@ -269,6 +272,11 @@ public class TesterMojo
         try
         {
             FileUtils.copyFileToDirectory( new File( testFileName ), new File( testAssemblyPath ) );
+            File pdbTestFile = new File( pdbTestFileName );
+            if ( pdbTestFile.exists() ) 
+            {
+                FileUtils.copyFileToDirectory( pdbTestFile, new File( testAssemblyPath ) );
+            }
         }
         catch ( IOException e )
         {
