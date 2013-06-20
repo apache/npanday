@@ -22,9 +22,11 @@ package npanday.resolver.resolvers;
 import npanday.ArtifactTypeHelper;
 import npanday.PathUtil;
 import npanday.resolver.ArtifactResolvingContributor;
+import npanday.resolver.NPandayResolutionCache;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 
 import java.io.File;
 import java.util.List;
@@ -36,7 +38,9 @@ import java.util.Set;
 public class GacResolver
     implements ArtifactResolvingContributor
 {
-    public void tryResolve( Artifact artifact, Set<Artifact> additionalDependenciesCollector ) throws
+    NPandayResolutionCache cache;
+
+    public void tryResolve(Artifact artifact, Set<Artifact> additionalDependenciesCollector, ArtifactFilter filter) throws
         ArtifactNotFoundException
     {
 
@@ -45,6 +49,10 @@ public class GacResolver
 
         if ( ArtifactTypeHelper.isDotnetAnyGac( artifactType ) )
         {
+            if (cache.applyTo(artifact)){
+                return;
+            }
+
             if ( !ArtifactTypeHelper.isDotnet4Gac( artifactType ) )
             {
                 artifactFile = PathUtil.getGlobalAssemblyCacheFileFor(
@@ -60,6 +68,7 @@ public class GacResolver
             {
                 artifact.setFile( artifactFile );
                 artifact.setResolved( true );
+                cache.put(artifact);
             }
             else
             {
@@ -73,7 +82,7 @@ public class GacResolver
     }
 
 	public void contribute(Artifact artifact, ArtifactRepository localRepository, List remoteRepositories,
-			Set<Artifact> additionalDependenciesCollector) throws ArtifactNotFoundException 
+                           Set<Artifact> additionalDependenciesCollector, ArtifactFilter filter) throws ArtifactNotFoundException
 	{
 		// NO-OP
 	}

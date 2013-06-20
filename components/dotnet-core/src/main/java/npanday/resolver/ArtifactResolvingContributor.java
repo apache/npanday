@@ -22,6 +22,7 @@ package npanday.resolver;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 
 import java.util.List;
 import java.util.Set;
@@ -40,19 +41,22 @@ public interface ArtifactResolvingContributor
      * <b>Note:</b><i>run before maven artifact resolver.</i>
      * @param artifact the artifact to be resolved.
      * @param additionalDependenciesCollector additional dependencies of resolved artifact.
+     * @param filter
      */
-    void tryResolve(Artifact artifact, Set<Artifact> additionalDependenciesCollector ) throws ArtifactNotFoundException;
+    void tryResolve(Artifact artifact, Set<Artifact> additionalDependenciesCollector, ArtifactFilter filter) throws ArtifactNotFoundException;
     
     /**
      * Contribute with additional dependencies for resolved artifact.<br>
      * 
      * <b>Note:</b><i>run after maven artifact resolver.</i>
+     *
      * @param artifact resolved artifact.
      * @param localRepository maven local repository.
      * @param remoteRepositories maven remote repositories.
      * @param additionalDependenciesCollector additional dependencies of resolved artifact.
+     * @param filter
      * @throws ArtifactNotFoundException
      */
     void contribute(Artifact artifact, ArtifactRepository localRepository,
-            List remoteRepositories, Set<Artifact> additionalDependenciesCollector) throws ArtifactNotFoundException;
+                    List remoteRepositories, Set<Artifact> additionalDependenciesCollector, ArtifactFilter filter) throws ArtifactNotFoundException;
 }

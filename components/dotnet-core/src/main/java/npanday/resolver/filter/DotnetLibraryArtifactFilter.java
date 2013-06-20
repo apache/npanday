@@ -33,4 +33,9 @@ public class DotnetLibraryArtifactFilter
     {
         return ArtifactTypeHelper.isDotnetLibrary( artifact.getType() );
     }
+
+    @Override
+    public String toString() {
+        return "DotnetLibrary";
+    }
 }

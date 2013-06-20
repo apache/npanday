@@ -55,19 +55,7 @@ public class NPandayResolutionListener
 
     public void testArtifact( Artifact node )
     {
-        if ( filter != null && !filter.include( node ) )
-        {
-            return;
-        }
 
-        try
-        {
-            resolver.runArtifactContributors( node, localRepository, remoteRepositories );
-        }
-        catch ( ArtifactNotFoundException e )
-        {
-            throw new RuntimeException( "NPANDAY-159-000: Error finding artifact " + node, e );
-        }
     }
 
     public void startProcessChildren( Artifact artifact )
@@ -80,6 +68,19 @@ public class NPandayResolutionListener
 
     public void includeArtifact( Artifact artifact )
     {
+        if ( filter != null && !filter.include( artifact ) )
+        {
+            return;
+        }
+
+        try
+        {
+            resolver.runArtifactContributors( artifact, localRepository, remoteRepositories );
+        }
+        catch ( ArtifactNotFoundException e )
+        {
+            throw new RuntimeException( "NPANDAY-159-000: Error finding artifact " + artifact, e );
+        }
     }
 
     public void omitForNearer( Artifact omitted, Artifact kept )

@@ -30,10 +30,15 @@ import npanday.executable.NetExecutable;
 import npanday.executable.NetExecutableFactory;
 import npanday.registry.RepositoryRegistry;
 import npanday.resolver.NPandayDependencyResolution;
+import npanday.resolver.filter.DotnetAssemblyArtifactFilter;
+import npanday.resolver.filter.DotnetSymbolsArtifactFilter;
+import npanday.resolver.filter.OrArtifactFilter;
 import npanday.vendor.SettingsUtil;
 import npanday.vendor.StateMachineProcessor;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
+import org.apache.maven.artifact.resolver.filter.InversionArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -147,7 +152,15 @@ public class TesterMojo
      * @component
      */
     private NPandayDependencyResolution dependencyResolution;
-    
+
+    /**
+     * Specifies if debug symbols for all dependencies should be resolved and copied to the test directory.
+     *
+     * @parameter expression = "${test.resolvePdbs}" default-value="true"
+     */
+    private Boolean resolvePdbs;
+
+
     private File getExecutableHome() 
     {
         return (nunitHome != null) ? new File(nunitHome, "bin") : null;
@@ -162,9 +175,6 @@ public class TesterMojo
         {
             testAssemblyPath = "/" + testAssemblyPath;
         }
-
-
-
 
         commands.add( testAssemblyPath + File.separator + getTestFileName() );
 
@@ -224,12 +234,19 @@ public class TesterMojo
             return;
         }
 
-        List<Artifact> nunitLibs = new ArrayList<Artifact>();
         Set<Artifact> artifacts;
         try
         {
+            AndArtifactFilter filter = new AndArtifactFilter();
+            filter.add(new ScopeArtifactFilter("test"));
+            filter.add(new DotnetAssemblyArtifactFilter());
+
+            if (!resolvePdbs){
+              filter.add(new InversionArtifactFilter(new DotnetSymbolsArtifactFilter()));
+            }
+
             artifacts = dependencyResolution.require(
-                project, LocalRepositoryUtil.create( localRepository ), new ScopeArtifactFilter( "test" )
+                project, LocalRepositoryUtil.create( localRepository ), filter
             );
         }
         catch ( ArtifactResolutionException e )

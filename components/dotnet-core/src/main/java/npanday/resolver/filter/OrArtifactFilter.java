@@ -53,5 +53,10 @@ public class OrArtifactFilter
     {
         filters.add( artifactFilter );
     }
+
+    @Override
+    public String toString() {
+        return "Or{" + filters + '}';
+    }
 }
 

@@ -51,12 +51,22 @@
       <role>npanday.resolver.ArtifactResolvingContributor</role>
       <role-hint>gac</role-hint>
       <implementation>npanday.resolver.resolvers.GacResolver</implementation>
+      <requirements>
+        <requirement>
+          <role>npanday.resolver.NPandayResolutionCache</role>
+        </requirement>
+      </requirements>
     </component>
 
     <component>
       <role>npanday.resolver.ArtifactResolvingContributor</role>
       <role-hint>com</role-hint>
       <implementation>npanday.resolver.resolvers.ComReferenceResolver</implementation>
+      <requirements>
+        <requirement>
+          <role>npanday.resolver.NPandayResolutionCache</role>
+        </requirement>
+      </requirements>
     </component>
     
      <component>
@@ -70,7 +80,16 @@
         <requirement>
           <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
         </requirement>
+        <requirement>
+          <role>npanday.resolver.NPandayResolutionCache</role>
+        </requirement>
       </requirements>
     </component>
+
+    <component>
+      <role>npanday.resolver.NPandayResolutionCache</role>
+      <implementation>npanday.resolver.NPandayResolutionCache</implementation>
+    </component>
+
   </components>
 </component-set>

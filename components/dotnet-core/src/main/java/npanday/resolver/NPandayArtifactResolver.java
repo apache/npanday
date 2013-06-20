@@ -51,10 +51,18 @@ import java.util.Set;
 
 /**
  * NPanday-flavored implementation of the Artifact resolver.
+ *
+ * @author <a href="mailto:me@lcorneliussen.de>Lars Corneliussen, Faktum Software</a>
  */
 public interface NPandayArtifactResolver
     extends ArtifactResolver
 {
+    /**
+     * Should never try to resolve things that would get excluded by this filter.
+     * @param filter
+     */
+    public void initializeWithFilter(ArtifactFilter filter);
+
     /**
      * All artifacts that have been resolved outside of the maven
      * core, since they might need special treatment after resolving.

@@ -27,11 +27,16 @@ import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 /**
  * @author <a href="me@lcorneliussen.de">Lars Corneliussen, Faktum Software</a>
  */
-public class DebugSymbolsArtifactFilter
+public class DotnetSymbolsArtifactFilter
     implements ArtifactFilter
 {
     public boolean include( Artifact artifact )
     {
         return artifact.getType() == ArtifactType.DOTNET_SYMBOLS.getPackagingType();
+    }
+
+    @Override
+    public String toString() {
+        return "DotnetSymbols";
     }
 }

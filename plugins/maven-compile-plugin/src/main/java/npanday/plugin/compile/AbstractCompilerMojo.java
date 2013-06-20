@@ -35,9 +35,13 @@ import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.registry.RepositoryRegistry;
 import npanday.resolver.NPandayDependencyResolution;
+import npanday.resolver.filter.DotnetAssemblyArtifactFilter;
+import npanday.resolver.filter.OrArtifactFilter;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
+import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -1150,7 +1154,11 @@ public abstract class AbstractCompilerMojo
         String scope = test ? "test" : "compile";
         try
         {
-            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), scope );
+            AndArtifactFilter filter = new AndArtifactFilter();
+            filter.add(new ScopeArtifactFilter(scope));
+            filter.add(new DotnetAssemblyArtifactFilter());
+
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), filter );
         }
         catch ( ArtifactResolutionException e )
         {

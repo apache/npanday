@@ -70,6 +70,10 @@ public class NPandayDependencyResolution
         MavenProject project, ArtifactRepository localRepository, ArtifactFilter filter ) throws
         ArtifactResolutionException
     {
+        long startTime = System.currentTimeMillis();
+
+        artifactResolver.initializeWithFilter(filter);
+
         if (getLogger().isDebugEnabled()) {
             getLogger().debug( "NPANDAY-148-007: Resolving dependencies for " + project.getArtifact() );
         }
@@ -99,7 +103,12 @@ public class NPandayDependencyResolution
             
             Set<Artifact> resultRequire = Sets.newLinkedHashSet(result.getArtifacts());
             resultRequire.addAll(artifactResolver.getCustomDependenciesCache());
-            
+
+            if (getLogger().isInfoEnabled()) {
+                long endTime = System.currentTimeMillis();
+                getLogger().info( "NPANDAY-148-009: Took " + (endTime - startTime) + "ms to resolve dependencies for " + project.getArtifact() + " with filter " + filter.toString() );
+            }
+
             return resultRequire;
         }
         catch ( ArtifactResolutionException e )

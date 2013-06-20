@@ -147,4 +147,14 @@ public class ArtifactTypeHelper
     {
         return isDotnetLibraryOrExecutable( ArtifactType.getArtifactTypeForPackagingName( packaging ) );
     }
+
+    public static boolean isDotnetAssembly(String packaging) {
+        return isDotnetAssembly( ArtifactType.getArtifactTypeForPackagingName( packaging ) );
+    }
+
+    public static boolean isDotnetAssembly(ArtifactType artifactType) {
+        return isDotnetLibrary(artifactType)
+                || isDotnetExecutable(artifactType)
+                || isDotnetAnyGac(artifactType);
+    }
 }

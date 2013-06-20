@@ -25,13 +25,12 @@ import npanday.LocalRepositoryUtil;
 import npanday.PathUtil;
 import npanday.registry.RepositoryRegistry;
 import npanday.resolver.NPandayDependencyResolution;
-import npanday.resolver.filter.DebugSymbolsArtifactFilter;
+import npanday.resolver.filter.DotnetSymbolsArtifactFilter;
 import npanday.resolver.filter.DotnetExecutableArtifactFilter;
 import npanday.resolver.filter.DotnetLibraryArtifactFilter;
 import npanday.resolver.filter.OrArtifactFilter;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
@@ -161,7 +160,7 @@ public class CopyDependenciesMojo
         typeIncludes.add( new DotnetLibraryArtifactFilter() );
 
         if (includePdbs){
-            typeIncludes.add( new DebugSymbolsArtifactFilter() );
+            typeIncludes.add( new DotnetSymbolsArtifactFilter() );
         }
 
         includeFilter.add( typeIncludes );

@@ -19,6 +19,7 @@
 
 package npanday.resolver.filter;
 
+import npanday.ArtifactType;
 import npanday.ArtifactTypeHelper;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
@@ -26,16 +27,16 @@ import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 /**
  * @author <a href="me@lcorneliussen.de">Lars Corneliussen, Faktum Software</a>
  */
-public class DotnetExecutableArtifactFilter
+public class DotnetAssemblyArtifactFilter
     implements ArtifactFilter
 {
     public boolean include( Artifact artifact )
     {
-        return ArtifactTypeHelper.isDotnetExecutable( artifact.getType() );
+        return ArtifactTypeHelper.isDotnetAssembly(artifact.getType());
     }
 
     @Override
     public String toString() {
-        return "DotnetExecutable";
+        return "DotnetAssembly";
     }
 }

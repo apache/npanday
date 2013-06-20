@@ -70,8 +70,9 @@ public class DefaultNPandayArtifactResolver
     private PlexusContainer container;
 
     private Set<Artifact> customResolveCache = Sets.newHashSet();
-    
     private Set<Artifact> customDependenciesCache = Sets.newHashSet();
+
+    private ArtifactFilter filter;
 
     public void resolve( Artifact artifact, List remoteRepositories, ArtifactRepository localRepository ) throws
         ArtifactResolutionException,
@@ -119,8 +120,10 @@ public class DefaultNPandayArtifactResolver
     private List intercept( List listeners, ArtifactFilter filter, ArtifactRepository localRepository,
             List remoteRepositories )
     {
+
         if (listeners == null)
             listeners = Lists.newArrayList();
+
 
         NPandayResolutionListener listener = new NPandayResolutionListener(this, filter, localRepository, 
                 remoteRepositories);
@@ -139,10 +142,12 @@ public class DefaultNPandayArtifactResolver
     public void runArtifactContributors(Artifact artifact, ArtifactRepository localRepository, 
             List remoteRepositories) throws ArtifactNotFoundException 
     {
+        if(!artifact.isResolved()) {
+            runCustomResolvers(artifact);
+        }
+
         if(artifact.isResolved()) {
             runCustomDependencyContributors(artifact, localRepository, remoteRepositories);
-        } else {
-            runCustomResolvers(artifact);
         }
     }
 
@@ -160,7 +165,7 @@ public class DefaultNPandayArtifactResolver
         for ( ArtifactResolvingContributor contributor : contributors )
         {
             Set<Artifact> additionalDependenciesCollector = Sets.newHashSet();
-            contributor.tryResolve( artifact, additionalDependenciesCollector );
+            contributor.tryResolve( artifact, additionalDependenciesCollector, filter );
 
             if ( artifact.isResolved() )
             {
@@ -197,7 +202,7 @@ public class DefaultNPandayArtifactResolver
         for ( ArtifactResolvingContributor contributor : contributors )
         {
             Set<Artifact> additionalDependenciesCollector = Sets.newHashSet();
-            contributor.contribute(artifact, localRepository, remoteRepositories, additionalDependenciesCollector);
+            contributor.contribute(artifact, localRepository, remoteRepositories, additionalDependenciesCollector, filter);
 
             if ( additionalDependenciesCollector.size() > 0 )
             {
@@ -302,6 +307,10 @@ public class DefaultNPandayArtifactResolver
     {
         return resolveTransitively( artifacts, originatingArtifact, Collections.EMPTY_MAP, localRepository,
                                     remoteRepositories, source, null, listeners );
+    }
+
+    public void initializeWithFilter(ArtifactFilter filter) {
+        this.filter = filter;
     }
 
     public Set<Artifact> getCustomResolveCache()

@@ -21,8 +21,10 @@ package npanday.resolver.resolvers;
 
 import npanday.ArtifactTypeHelper;
 import npanday.resolver.ArtifactResolvingContributor;
+import npanday.resolver.NPandayResolutionCache;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.Os;
 import org.codehaus.plexus.util.cli.CommandLineException;
@@ -49,13 +51,15 @@ public class ComReferenceResolver
     extends AbstractLogEnabled
     implements ArtifactResolvingContributor
 {
-	public void contribute(Artifact artifact, ArtifactRepository localRepository, List remoteRepositories,
-			Set<Artifact> additionalDependenciesCollector) 
+    NPandayResolutionCache cache;
+
+    public void contribute(Artifact artifact, ArtifactRepository localRepository, List remoteRepositories,
+                           Set<Artifact> additionalDependenciesCollector, ArtifactFilter filter)
 	{
 		// NO-OP
 	}
 	
-    public void tryResolve( Artifact artifact, Set<Artifact> additionalDependenciesCollector )
+    public void tryResolve(Artifact artifact, Set<Artifact> additionalDependenciesCollector, ArtifactFilter filter)
     {
         // resolve com reference
         // flow:
@@ -64,6 +68,10 @@ public class ComReferenceResolver
         // MavenProject (CompilerContext.java)
         if ( ArtifactTypeHelper.isComReference(artifact.getType()) )
         {
+            if (cache.applyTo(artifact)){
+                return;
+            }
+
             String tokenId = artifact.getClassifier();
             String interopPath = null;
             try
@@ -89,6 +97,7 @@ public class ComReferenceResolver
 
             artifact.setFile( f );
             artifact.setResolved( true );
+            cache.put(artifact);
         }
     }
 
