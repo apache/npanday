@@ -34,6 +34,7 @@ import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
+import org.apache.maven.artifact.resolver.filter.InversionArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.artifact.versioning.VersionRange;
@@ -120,18 +121,15 @@ public class ResolveMojo
                 + "if native maven plugins require special dependencies to be resolved!"
         );
 
+        AndArtifactFilter filter = new AndArtifactFilter();
         try
         {
-            AndArtifactFilter filter = new AndArtifactFilter();
             filter.add(new ScopeArtifactFilter(requiredScope));
-
-            OrArtifactFilter types = new OrArtifactFilter();
-            types.add(new DotnetAssemblyArtifactFilter());
-            if (resolvePdbs){
-                types.add(new DotnetSymbolsArtifactFilter());
+            if (!resolvePdbs){
+                filter.add(new InversionArtifactFilter(new DotnetSymbolsArtifactFilter()));
             }
 
-            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), requiredScope );
+            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), filter );
         }
         catch ( ArtifactResolutionException e )
         {

@@ -24,9 +24,11 @@ import npanday.LocalRepositoryUtil;
 import npanday.assembler.AssemblerContext;
 import npanday.resolver.NPandayDependencyResolution;
 import npanday.resolver.filter.DotnetAssemblyArtifactFilter;
+import npanday.resolver.filter.DotnetSymbolsArtifactFilter;
 import npanday.resolver.filter.OrArtifactFilter;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
+import org.apache.maven.artifact.resolver.filter.InversionArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -81,7 +83,8 @@ public class ComponentInitializerMojo
         {
             AndArtifactFilter filter = new AndArtifactFilter();
             filter.add(new ScopeArtifactFilter("test"));
-            filter.add(new DotnetAssemblyArtifactFilter());
+            filter.add(new InversionArtifactFilter(new DotnetSymbolsArtifactFilter()));
+
 
             dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), filter );
         }

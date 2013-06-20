@@ -239,7 +239,6 @@ public class TesterMojo
         {
             AndArtifactFilter filter = new AndArtifactFilter();
             filter.add(new ScopeArtifactFilter("test"));
-            filter.add(new DotnetAssemblyArtifactFilter());
 
             if (!resolvePdbs){
               filter.add(new InversionArtifactFilter(new DotnetSymbolsArtifactFilter()));
