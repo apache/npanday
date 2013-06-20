@@ -32,7 +32,7 @@ public class DotnetSymbolsArtifactFilter
 {
     public boolean include( Artifact artifact )
     {
-        return artifact.getType() == ArtifactType.DOTNET_SYMBOLS.getPackagingType();
+        return artifact.getType().equals(ArtifactType.DOTNET_SYMBOLS.getPackagingType());
     }
 
     @Override
