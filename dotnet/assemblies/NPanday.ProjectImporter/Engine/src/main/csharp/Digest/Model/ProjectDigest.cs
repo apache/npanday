@@ -491,6 +491,13 @@ namespace NPanday.ProjectImporter.Digest.Model
             set { targetFrameworkVersion = value; }
         }
 
+        private string targetFrameworkProfile;
+        public string TargetFrameworkProfile
+        {
+            get { return targetFrameworkProfile; }
+            set { targetFrameworkProfile = value; }
+        }
+
         private Compile[] compiles;
         public Compile[] Compiles
         {

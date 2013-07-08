@@ -60,6 +60,7 @@
     <Compile Include="Converter\Algorithms\ASPNetPomConverter.cs" />
     <Compile Include="Converter\Algorithms\AzurePomConverter.cs" />
     <Compile Include="Converter\Algorithms\AzureWorkerPomConverter.cs" />
+    <Compile Include="Converter\Algorithms\PortablePomConverter.cs" />
     <Compile Include="Converter\Algorithms\SilverlightPomConverter.cs" />
     <Compile Include="Converter\Algorithms\WebWithVbOrCsProjectFilePomConverter.cs" />
     <Compile Include="DependencySearchConfiguration.cs" />

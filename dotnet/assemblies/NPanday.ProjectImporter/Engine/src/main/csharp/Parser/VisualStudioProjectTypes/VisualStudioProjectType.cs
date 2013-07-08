@@ -222,6 +222,11 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
             __visualStudioProjectTypes.Add("A1591282-1198-4647-A2B1-27E5FF5F6F3B", VisualStudioProjectTypeEnum.Silverlight);
             __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Silverlight, "A1591282-1198-4647-A2B1-27E5FF5F6F3B");
             __visualStudioProjectTypeSupported.Add("A1591282-1198-4647-A2B1-27E5FF5F6F3B", true);
+
+            //Portable Class Library {786C8304-07A1-408B-BD7F-6EE04809D6DB}
+            __visualStudioProjectTypes.Add("786C830F-07A1-408B-BD7F-6EE04809D6DB", VisualStudioProjectTypeEnum.PortableClassLibrary);
+            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.PortableClassLibrary, "786C830F-07A1-408B-BD7F-6EE04809D6DB");
+            __visualStudioProjectTypeSupported.Add("786C830F-07A1-408B-BD7F-6EE04809D6DB", true);
         }
 
 

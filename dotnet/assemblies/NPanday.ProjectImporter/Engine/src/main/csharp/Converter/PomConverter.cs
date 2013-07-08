@@ -181,6 +181,16 @@ namespace NPanday.ProjectImporter.Converter
                 VisualStudioProjectTypeEnum.Silverlight | VisualStudioProjectTypeEnum.Windows__VbDotNet,
                 typeof(SilverlightPomConverter)
             );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.PortableClassLibrary | VisualStudioProjectTypeEnum.Windows__CSharp,
+                typeof(PortablePomConverter)
+            );
+
+            __converterAlgorithms.Add(
+                VisualStudioProjectTypeEnum.PortableClassLibrary | VisualStudioProjectTypeEnum.Windows__VbDotNet,
+                typeof(PortablePomConverter)
+            );
         }
 
 

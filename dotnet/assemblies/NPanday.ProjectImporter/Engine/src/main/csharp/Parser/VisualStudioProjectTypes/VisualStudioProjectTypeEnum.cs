@@ -225,6 +225,12 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
 
         WindowsAzure_Worker = 1L << 32,
 
+        // <summary>
+        // Project Type: Portable Class Library
+        // GUID: {786C830F-07A1-408B-BD7F-6EE04809D6DB}
+        // </summary>
+        PortableClassLibrary = 1L << 33,
+
         // TODO: refactor so this is an enum of the GUIDs instead
     }
 }

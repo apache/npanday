@@ -555,6 +555,18 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return plugin;
         }
 
+        protected Plugin GetPlugin(string groupId, string artifactId)
+        {
+            foreach (Plugin plugin in model.build.plugins)
+            {
+                if (plugin.groupId == groupId && plugin.artifactId == artifactId)
+                {
+                    return plugin;
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// Adds PluginExecution
         /// </summary>

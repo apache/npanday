@@ -687,6 +687,10 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
             {
                 projectDigest.TargetFrameworkIdentifier = buildProperty.Value;
             }
+            else if ("TargetFrameworkProfile".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                projectDigest.TargetFrameworkProfile = buildProperty.Value;
+            }
             else if ("TargetFrameworkVersion".Equals(buildProperty.Name, StringComparison.OrdinalIgnoreCase) && projectDigest.TargetFramework == null)
             {
                 // Raw value from project
