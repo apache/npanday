@@ -101,7 +101,7 @@
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
 
     <executable>cspack</executable>
-    <executableVersion>1.9</executableVersion>
+    <executableVersion>2.0</executableVersion>
 
     <vendor>MICROSOFT</vendor>
 
@@ -112,7 +112,7 @@
     </frameworkVersions>
 
     <probingPaths>
-       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\v1.9@InstallPath}\bin</probingPath>
+       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\v2.0@InstallPath}\bin</probingPath>
     </probingPaths>
 
     <platforms>
