@@ -231,6 +231,12 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
         // </summary>
         PortableClassLibrary = 1L << 33,
 
+        // <summary>
+        // Project Type: Workflow (.NET 4.0+)
+        // GUID: {32F31D43-81CC-4C15-9DE6-3FC5453562B6}
+        // </summary>
+        Workflow = 1L << 34,
+
         // TODO: refactor so this is an enum of the GUIDs instead
     }
 }

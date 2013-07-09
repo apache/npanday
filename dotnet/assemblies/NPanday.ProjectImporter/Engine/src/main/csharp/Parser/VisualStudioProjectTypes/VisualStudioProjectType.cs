@@ -147,6 +147,11 @@ namespace NPanday.ProjectImporter.Parser.VisualStudioProjectTypes
             __visualStudioProjectTypeSupported.Add("D59BE175-2ED0-4C54-BE3D-CDAA9F3214C8", false);
 
 
+            //Workflow 4.0+ {32F31D43-81CC-4C15-9DE6-3FC5453562B6}
+            __visualStudioProjectTypes.Add("32F31D43-81CC-4C15-9DE6-3FC5453562B6", VisualStudioProjectTypeEnum.Workflow);
+            __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Workflow, "32F31D43-81CC-4C15-9DE6-3FC5453562B6");
+            __visualStudioProjectTypeSupported.Add("32F31D43-81CC-4C15-9DE6-3FC5453562B6", false);
+
             //Deployment Merge Module	 {06A35CCD-C46D-44D5-987B-CF40FF872267}
             __visualStudioProjectTypes.Add("06A35CCD-C46D-44D5-987B-CF40FF872267", VisualStudioProjectTypeEnum.Deployment_Merge_Module);
             __visualStudioProjectTypeGuids.Add(VisualStudioProjectTypeEnum.Deployment_Merge_Module, "06A35CCD-C46D-44D5-987B-CF40FF872267");
