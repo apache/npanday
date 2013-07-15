@@ -70,6 +70,7 @@ namespace NPanday.Utils
                                     if (new FileInfo(exe).Exists)
                                     {
                                         // override with later ones in the list
+                                        paths.Remove(location);
                                         paths.Add(location, new KeyValuePair<string,string>(sdk, exe));
                                     }
                                 }
