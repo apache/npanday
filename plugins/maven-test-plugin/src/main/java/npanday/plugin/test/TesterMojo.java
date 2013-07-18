@@ -99,7 +99,7 @@ public class TesterMojo
     /**
      * Directory where reports are written.
      * 
-     * @parameter expression = "${reportsDirectory}" default-value = "${project.build.directory}\\nunit-reports"
+     * @parameter expression = "${reportsDirectory}" default-value = "${project.build.directory}/nunit-reports"
      */
     private String reportsDirectory;
 

@@ -28,7 +28,7 @@ public abstract class AbstractTestrelatedMojo
     /**
      * Test Assembly Location
      *
-     * @parameter expression = "${testAssemblyPath}" default-value = "${project.build.directory}\\test-assemblies"
+     * @parameter expression = "${testAssemblyPath}" default-value = "${project.build.directory}/test-assemblies"
      */
     protected String testAssemblyPath;
 
