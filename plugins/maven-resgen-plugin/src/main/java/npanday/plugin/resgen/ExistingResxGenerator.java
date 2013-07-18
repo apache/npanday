@@ -173,7 +173,12 @@ public class ExistingResxGenerator extends AbstractMojo
     private List<String> getCommands( File sourceFile, String resourceDirectory, String name )    throws MojoExecutionException
     {
         List<String> commands = new ArrayList<String>();
-                                            
+                                       
+        // NPANDAY-358
+        // Adding the "/useSourcePath" argument to the RESGEN executable will
+        // allow RESGEN to use the relative paths defined inside *.resx files
+        commands.add("/useSourcePath");
+		
         commands.add( sourceFile.getAbsolutePath() );
         if( name != null || "".equals(name))
         {

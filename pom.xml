@@ -23,7 +23,7 @@ under the License.
   <parent>
     <groupId>org.apache</groupId>
     <artifactId>apache</artifactId>
-    <version>10</version>
+    <version>12</version>
   </parent>
   <groupId>org.apache.npanday</groupId>
   <artifactId>apache-npanday</artifactId>  
@@ -295,6 +295,9 @@ under the License.
     </contributor>
     <contributor>
       <name>Victor Stefoglo</name>
+    </contributor>
+    <contributor>
+      <name>Robert Savage</name>
     </contributor>
   </contributors>
   <modules>
