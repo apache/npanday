@@ -194,7 +194,6 @@ namespace NPanday.Plugin.Settings
             string sdkInstallRoot20 = sdkLocator.Find2_0();
             string sdkInstallRoot35 = sdkLocator.Find3_5();
             string sdkInstallRoot40 = sdkLocator.Find4_0();
-            string sdkInstallRoot45 = sdkLocator.Find4_5();
 
             if (installRoot == null) throw new ExecutionException("NPANDAY-9011-005");
 
@@ -290,23 +289,25 @@ namespace NPanday.Plugin.Settings
                 vendor.frameworks = vendorFrameworks;
                 vendors.Add(vendor);
             }
-            // SDK only
-            if (sdkInstallRoot45 != null && new DirectoryInfo(sdkInstallRoot45).Exists)
-            {
-                npandaySettingsVendorsVendor vendor = new npandaySettingsVendorsVendor();
-                vendor.vendorName = "MICROSOFT";
-                vendor.vendorVersion = "4.5";
-                npandaySettingsVendorsVendorFrameworksFramework[] vendorFrameworks = new npandaySettingsVendorsVendorFrameworksFramework[1];
-                npandaySettingsVendorsVendorFrameworksFramework vf = new npandaySettingsVendorsVendorFrameworksFramework();
-                vf.installRoot = dirInfo40.FullName;
-                vf.frameworkVersion = "4.5";
-                vendorFrameworks[0] = vf;
-                vf.sdkInstallRoot = sdkInstallRoot45;
-                FindAndAssignExecutablePaths(vf);
-                vendor.frameworks = vendorFrameworks;
-                vendors.Add(vendor);
-            }
 
+            foreach (string sdk in microsoftRegistryKey.GetSubKeyNames())
+            {
+                if (sdk == "v4.5.50709")
+                {
+                    npandaySettingsVendorsVendor vendor = new npandaySettingsVendorsVendor();
+                    vendor.vendorName = "MICROSOFT";
+                    vendor.vendorVersion = "4.5";
+                    npandaySettingsVendorsVendorFrameworksFramework[] vendorFrameworks = new npandaySettingsVendorsVendorFrameworksFramework[1];
+                    npandaySettingsVendorsVendorFrameworksFramework vf = new npandaySettingsVendorsVendorFrameworksFramework();
+                    vf.installRoot = dirInfo40.FullName;
+                    vf.frameworkVersion = "4.5";
+                    vendorFrameworks[0] = vf;
+                    vf.sdkInstallRoot = sdkInstallRoot40;
+                    FindAndAssignExecutablePaths(vf);
+                    vendor.frameworks = vendorFrameworks;
+                    vendors.Add(vendor);
+                }
+            }
             return vendors.ToArray();
         }
 

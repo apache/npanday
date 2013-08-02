@@ -83,16 +83,6 @@ namespace NPanday.Plugin.Settings
             );
         }
 
-        public string Find4_5()
-        {
-            return PathUtil.FirstExisting(
-                // prefer 32 bit until its made explicit
-                registryFind(Microsoft_SDKs_Windows_80a, "WinSDK-NetFx40Tools", "InstallationFolder"),
-                registryFind(Microsoft_SDKs_Windows_80a, "WinSDK-NetFx40Tools-x86", "InstallationFolder"),
-                registryFind(Microsoft_SDKs_Windows_80a, "WinSDK-NetFx40Tools-x64", "InstallationFolder")
-            );
-        }
-
         private string registryFind(RegistryKey root, string valueKey)
         {
             return registryFind(root, null, valueKey);
