@@ -27,5 +27,10 @@
       <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
       <outputDirectory></outputDirectory>
     </dependencySet>
+    <dependencySet>
+      <scope>system</scope>
+      <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+      <outputDirectory></outputDirectory>
+    </dependencySet>
   </dependencySets>
 </component>

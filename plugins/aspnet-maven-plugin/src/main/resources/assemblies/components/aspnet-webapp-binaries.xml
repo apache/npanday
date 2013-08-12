@@ -31,6 +31,11 @@
       <outputDirectory>bin</outputDirectory>
     </dependencySet>
     <dependencySet>
+      <scope>system</scope>
+      <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+      <outputDirectory>bin</outputDirectory>
+    </dependencySet>
+    <dependencySet>
       <useProjectArtifact>true</useProjectArtifact>
       <useTransitiveDependencies>true</useTransitiveDependencies>
       <scope>runtime</scope>
