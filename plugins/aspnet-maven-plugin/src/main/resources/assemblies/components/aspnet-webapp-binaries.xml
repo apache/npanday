@@ -50,5 +50,13 @@
         <include>*/*.resources.dll</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <useDefaultExcludes>true</useDefaultExcludes>
+      <directory>${project.basedir}</directory>
+      <outputDirectory>/bin</outputDirectory>
+      <includes>
+        <include>**/*.cmd</include>
+      </includes>
+    </fileSet>
   </fileSets>
 </component>

@@ -38,6 +38,7 @@
         <include>**/*.sitemaster</include>
         <include>**/*.cshtml</include>
         <include>**/*.vbhtml</include>
+        <include>**/*.cmd</include>
 
         <!-- web developers-->
         <include>**/*.css</include>
