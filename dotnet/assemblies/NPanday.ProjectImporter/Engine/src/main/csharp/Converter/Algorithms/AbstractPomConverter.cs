@@ -30,6 +30,7 @@ using NPanday.ProjectImporter.Digest.Model;
 using NPanday.Utils;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -918,7 +919,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
                     if (warnNonPortable)
                     {
-                        WarnNonPortableReference(path, refDependency);
+                        WarnNonPortableReference(path, refDependency, GetReferencedAssemblies(path));
                     }
                     else
                     {
@@ -1108,7 +1109,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return null;
         }
 
-        private void WarnNonPortableReference(string path, Dependency refDependency)
+        private void WarnNonPortableReference(string path, Dependency refDependency, List<Dependency> dependencies)
         {
             if (projectDigest.DependencySearchConfig.CopyToMaven)
             {
@@ -1118,6 +1119,16 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 // reset the dependency
                 refDependency.scope = null;
                 refDependency.systemPath = null;
+
+                Model.Pom.Model dependencyModel = new Model.Pom.Model();
+                dependencyModel.modelVersion = "4.0.0";
+                dependencyModel.groupId = refDependency.groupId;
+                dependencyModel.artifactId = refDependency.artifactId;
+                dependencyModel.version = refDependency.version;
+                dependencyModel.packaging = "dotnet-library";
+                dependencyModel.dependencies = dependencies.ToArray();
+                string file = RepositoryUtility.GetArtifactPath(refDependency.groupId, refDependency.artifactId, refDependency.version, "pom");
+                PomHelperUtility.WriteModelToPom(new FileInfo(file), dependencyModel);
             }
             else
             {
@@ -1142,17 +1153,25 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
         private Dependency ResolveDependencyFromHintPath(Reference reference)
         {
-            if (!string.IsNullOrEmpty(reference.HintFullPath) && new FileInfo(reference.HintFullPath).Exists)
+            return ResolveDependencyFromPath(reference.HintFullPath, reference.Name, reference.Version);
+        }
+
+        private Dependency ResolveDependencyFromPath(string hintFullPath, string name, string version)
+        {
+            if (!string.IsNullOrEmpty(hintFullPath) && new FileInfo(hintFullPath).Exists)
             {
                 string prjRefPath = Path.Combine(projectDigest.FullDirectoryName, ".references");
                 //verbose for new-import
-                if (!reference.HintFullPath.ToLower().StartsWith(prjRefPath.ToLower()) && !reference.Name.Contains("Interop"))
+                if (!hintFullPath.ToLower().StartsWith(prjRefPath.ToLower()) && !name.Contains("Interop"))
                 {
-                    Dependency refDependency = CreateDependencyFromSystemPath(reference, reference.HintFullPath);
+                    Dependency refDependency = CreateDependencyFromPartsAndSystemPath(name, version, hintFullPath);
 
-                    WarnNonPortableReference(reference.HintFullPath, refDependency);
+                    log.DebugFormat("Resolved {0} from hint path: {1}:{2}:{3}", name, refDependency.groupId, refDependency.artifactId, refDependency.version);
 
-                    log.DebugFormat("Resolved {0} from hint path: {1}:{2}:{3}", reference.Name, refDependency.groupId, refDependency.artifactId, refDependency.version);
+                    // this will pick up some NuGet packaged references
+                    List<Dependency> dependencies = GetReferencedAssemblies(hintFullPath);
+
+                    WarnNonPortableReference(hintFullPath, refDependency, dependencies);
 
                     return refDependency;
                 }
@@ -1162,21 +1181,21 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     // TODO: not a very good parsing of .references - if we have .references, don't we already know it from local repo?
 
                     Dependency refDependency = new Dependency();
-                    refDependency.artifactId = reference.Name;
+                    refDependency.artifactId = name;
                    
                     //get version from the name above the last path
-                    string[] pathTokens = reference.HintFullPath.Split("\\\\".ToCharArray());
+                    string[] pathTokens = hintFullPath.Split("\\\\".ToCharArray());
                     if (pathTokens.Length < 3)
                     {
                         // should only hit this if it is in .references, and it was incorrectly constructed
-                        throw new Exception("Invalid hint path: " + reference.HintFullPath);
+                        throw new Exception("Invalid hint path: " + hintFullPath);
                     }
                     refDependency.groupId = pathTokens[pathTokens.Length - 3];
-                    refDependency.version = pathTokens[pathTokens.Length-2].Replace(reference.Name+"-","") ?? "1.0.0.0";                    
+                    refDependency.version = pathTokens[pathTokens.Length-2].Replace(name+"-","") ?? "1.0.0.0";                    
                     refDependency.type = "dotnet-library";
 
                     log.DebugFormat("Resolved {0} from previously resolved references: {1}:{2}:{3}", 
-                        reference.Name, refDependency.groupId, refDependency.artifactId, refDependency.version);
+                        name, refDependency.groupId, refDependency.artifactId, refDependency.version);
                     
                     return refDependency;
                 }
@@ -1184,12 +1203,41 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return null;
         }
 
+        private List<Dependency> GetReferencedAssemblies(string path)
+        {
+            List<Dependency> dependencies = new List<Dependency>();
+
+            Mono.Cecil.AssemblyDefinition assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(path);
+
+            // resolve referenced assemblies in the same directory
+            foreach (Mono.Cecil.AssemblyNameReference assemblyName in assembly.MainModule.AssemblyReferences)
+            {
+                Dependency d = ResolveDependencyFromPath(Path.Combine(new FileInfo(path).DirectoryName, assemblyName.Name + ".dll"),
+                    assemblyName.Name,
+                    assemblyName.Version != null ? assemblyName.Version.ToString() : null);
+                if (d != null)
+                {
+                    dependencies.Add(d);
+
+                    // Add it to the POM as well, in case transitive dependency is not available later
+                    AddDependency(d);
+                }
+            }
+
+            return dependencies;
+        }
+
         private static Dependency CreateDependencyFromSystemPath(Reference reference, string path)
         {
+            return CreateDependencyFromPartsAndSystemPath(reference.Name, reference.Version, path);
+        }
+
+        private static Dependency CreateDependencyFromPartsAndSystemPath(string name, string version, string path)
+        {
             Dependency refDependency = new Dependency();
-            refDependency.artifactId = reference.Name;
-            refDependency.groupId = reference.Name;
-            refDependency.version = reference.Version ?? "1.0.0.0";
+            refDependency.artifactId = name;
+            refDependency.groupId = name;
+            refDependency.version = version ?? "1.0.0.0";
             refDependency.type = "dotnet-library";
             refDependency.scope = "system";
             refDependency.systemPath = path;

@@ -36,22 +36,17 @@ namespace NPanday.Utils
         {
             try
             {
-                string m2Dir = Path.GetFullPath(string.Format("{0}\\..\\.m2", System.Environment.GetFolderPath(Environment.SpecialFolder.Personal)));
-                string artifactDir = Path.Combine(m2Dir, string.Format(@"repository\{0}\{1}\{2}", groupId.Replace('.','\\'), artifactId, version));
-                string artifactFilename = string.Format("{0}-{1}{2}", artifactId, version, Path.GetExtension(filename));
+                string path = GetArtifactPath(groupId, artifactId, version, Path.GetExtension(filename).Substring(1));
 
                 if (!File.Exists(filename))
                     throw new Exception("Cannot find Assembly to install.");
 
-                if (!Directory.Exists(artifactDir))
-                    Directory.CreateDirectory(artifactDir);
-
                 //if assembly already installed skip the copying
-                if (File.Exists(Path.Combine(artifactDir, artifactFilename)))
+                if (File.Exists(path))
                 {
                     if (overwrite)
                     {
-                        File.Delete(Path.Combine(artifactDir, artifactFilename));
+                        File.Delete(path);
                     }
                     else
                     {
@@ -59,8 +54,12 @@ namespace NPanday.Utils
                     }
                 }
 
+                string artifactDir = Path.GetDirectoryName(path);
+                if (!Directory.Exists(artifactDir))
+                    Directory.CreateDirectory(artifactDir);
+
                 //copy file
-                File.Copy(filename, Path.Combine(artifactDir, artifactFilename));
+                File.Copy(filename, path);
                 return true;
 
             }
@@ -68,6 +67,14 @@ namespace NPanday.Utils
             {
                 throw;
             }
+        }
+
+        public static string GetArtifactPath(string groupId, string artifactId, string version, string ext)
+        {
+            string m2Dir = Path.GetFullPath(string.Format("{0}\\..\\.m2", System.Environment.GetFolderPath(Environment.SpecialFolder.Personal)));
+            string artifactDir = Path.Combine(m2Dir, string.Format(@"repository\{0}\{1}\{2}", groupId.Replace('.', '\\'), artifactId, version));
+            string artifactFilename = string.Format("{0}-{1}.{2}", artifactId, version, ext);
+            return Path.Combine(artifactDir, artifactFilename);
         }
     }
 }

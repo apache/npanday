@@ -90,6 +90,12 @@
       <type>dotnet-library</type>  
     </dependency>
     <dependency> 
+      <groupId>Mono.Cecil</groupId>  
+      <artifactId>Mono.Cecil</artifactId>  
+      <version>0.9.5.4</version>  
+      <type>dotnet-library</type>  
+    </dependency>  
+    <dependency> 
       <groupId>NUnit</groupId>  
       <artifactId>NUnit.Framework</artifactId>  
       <version>2.2.8.0</version>  
