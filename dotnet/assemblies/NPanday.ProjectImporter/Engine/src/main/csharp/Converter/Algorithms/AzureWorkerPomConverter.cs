@@ -23,6 +23,8 @@ using NPanday.Model.Pom;
 using NPanday.ProjectImporter.Digest.Model;
 using NPanday.Utils;
 using System.Collections.Generic;
+using System.Xml;
+using System.Text;
 
 namespace NPanday.ProjectImporter.Converter.Algorithms
 {
@@ -46,9 +48,61 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             Plugin plugin = AddPlugin("org.apache.npanday.plugins", "application-maven-plugin", null, false);
             AddPluginExecution(plugin, "package-application", goals.ToArray(), null);
 
+            if (projectDigest.Contents.Length > 0)
+            {
+                AddPluginConfiguration(plugin, "mixinAssemblyComponentDescriptors", "mixinAssemblyComponentDescriptor", new string[] { "npanday-content.xml" });
+                WriteAssemblyDescriptor(new FileInfo(Path.GetDirectoryName(projectDigest.FullFileName) + @"\npanday-content.xml"), projectDigest.Contents);
+            }
+
             if (writePom)
             {
                 PomHelperUtility.WriteModelToPom(new FileInfo(Path.GetDirectoryName(projectDigest.FullFileName) + @"\pom.xml"), Model);
+            }
+        }
+
+        private void WriteAssemblyDescriptor(FileInfo fileInfo, Content[] content)
+        {
+            XmlDocument doc = new XmlDocument();
+            XmlNode node = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+            doc.AppendChild(node);
+
+            string xmlns = "http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2";
+            XmlElement component = doc.CreateElement("component", xmlns);
+            XmlAttribute attrib = doc.CreateAttribute("xsi", "schemaLocation", "http://www.w3.org/2001/XMLSchema-instance");
+            attrib.Value = xmlns + " http://maven.apache.org/xsd/component-1.1.2.xsd";
+            component.Attributes.Append(attrib);
+            doc.AppendChild(component);
+
+            XmlElement files = doc.CreateElement("files", xmlns);
+            foreach (Content c in content)
+            {
+                XmlElement file = doc.CreateElement("file", xmlns);
+
+                XmlElement el = doc.CreateElement("source", xmlns);
+                el.InnerText = c.IncludePath;
+                file.AppendChild(el);
+
+                el = doc.CreateElement("outputDirectory", xmlns);
+                el.InnerText = "/";
+                file.AppendChild(el);
+
+                files.AppendChild(file);
+            }
+            component.AppendChild(files);
+
+            XmlTextWriter writer = null;
+            try
+            {
+                writer = new XmlTextWriter(fileInfo.FullName, Encoding.ASCII);
+                writer.Formatting = Formatting.Indented;
+                doc.WriteTo(writer);
+            }
+            finally
+            {
+                if (writer != null)
+                {
+                    writer.Close();
+                }
             }
         }
     }
