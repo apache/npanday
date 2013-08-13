@@ -19,7 +19,10 @@
 //
 #endregion
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Xml;
 using log4net;
 using NPanday.Model.Pom;
 using NPanday.ProjectImporter.Digest.Model;
@@ -94,6 +97,58 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             if (!string.IsNullOrEmpty(projectDigest.CloudConfig))
             {
                 AddPluginConfiguration(plugin, "serviceConfigurationFile", projectDigest.CloudConfig);
+            }
+
+            Dictionary<string, string> extraRoleContent = new Dictionary<string,string>();
+            foreach (Content content in projectDigest.Contents)
+            {
+                Regex r = new Regex(@"(\w+)Content\\(.+)");
+                Match m = r.Match(content.IncludePath);
+                if (m.Success)
+                {
+                    string role = m.Groups[1].Value;
+                    string include = m.Groups[2].Value;
+
+                    if (extraRoleContent.ContainsKey(role))
+                    {
+                        extraRoleContent[role] = extraRoleContent[role] + "," + include;
+                    }
+                    else
+                    {
+                        extraRoleContent.Add(role, include);
+                    }
+                }
+                else
+                {
+                    log.WarnFormat("Not copying content declared in project from an unknown path: {0}", content.IncludePath);
+                }
+            }
+
+            if (extraRoleContent.Count > 0)
+            {
+                Plugin antPlugin = AddPlugin("org.apache.maven.plugins", "maven-antrun-plugin", null, false);
+
+                Dictionary<string, string> configuration = new Dictionary<string, string>();
+
+                AddPluginExecution(antPlugin, "copy-files", new string[] { "run" }, "prepare-package");
+
+                XmlDocument xmlDocument = new XmlDocument();
+                string xmlns = @"http://maven.apache.org/POM/4.0.0";
+                XmlElement tasks = xmlDocument.CreateElement("tasks", xmlns);
+                foreach (string role in extraRoleContent.Keys)
+                {
+                    XmlElement copyTask = xmlDocument.CreateElement("copy", xmlns);
+                    copyTask.SetAttribute("todir", @"${project.build.directory}/packages/" + projectDigest.ProjectName + "/" + role);
+                    XmlElement fileset = xmlDocument.CreateElement("fileset", xmlns);
+                    fileset.SetAttribute("dir", role + "Content");
+                    fileset.SetAttribute("includes", extraRoleContent[role]);
+                    copyTask.AppendChild(fileset);
+                    tasks.AppendChild(copyTask);
+                }
+
+                PluginExecutionConfiguration config = new PluginExecutionConfiguration();
+                config.Any = new XmlElement[] { tasks };
+                antPlugin.executions[0].configuration = config;
             }
 
             if (writePom)
