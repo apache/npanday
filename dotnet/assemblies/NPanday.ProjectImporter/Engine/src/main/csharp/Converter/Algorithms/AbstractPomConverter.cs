@@ -919,7 +919,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
                     if (warnNonPortable)
                     {
-                        WarnNonPortableReference(path, refDependency, GetReferencedAssemblies(path));
+                        WarnNonPortableReference(path, refDependency);
                     }
                     else
                     {
@@ -1109,8 +1109,10 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             return null;
         }
 
-        private void WarnNonPortableReference(string path, Dependency refDependency, List<Dependency> dependencies)
+        private void WarnNonPortableReference(string path, Dependency refDependency)
         {
+            List<Dependency> dependencies = GetReferencedAssemblies(path);
+
             if (projectDigest.DependencySearchConfig.CopyToMaven)
             {
                 log.InfoFormat("Copying to Maven local repository: {0} as {1}:{2}:{3}", path, refDependency.groupId, refDependency.artifactId, refDependency.version);
@@ -1132,6 +1134,12 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
             else
             {
+                // Add dependencies to the POM as well, in case transitive dependency is not available later
+                foreach (Dependency d in dependencies)
+                {
+                    AddDependency(d);
+                }
+
                 // if it is in the project, we still consider it non-portable because packaging plugins will exclude system dependencies
                 // it would be nice to adjust the path to be a bit more portable across different checkouts like below, however basedir
                 // will not resolve correctly as a transitive dependency
@@ -1168,10 +1176,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
                     log.DebugFormat("Resolved {0} from hint path: {1}:{2}:{3}", name, refDependency.groupId, refDependency.artifactId, refDependency.version);
 
-                    // this will pick up some NuGet packaged references
-                    List<Dependency> dependencies = GetReferencedAssemblies(hintFullPath);
-
-                    WarnNonPortableReference(hintFullPath, refDependency, dependencies);
+                    WarnNonPortableReference(hintFullPath, refDependency);
 
                     return refDependency;
                 }
@@ -1218,9 +1223,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 if (d != null)
                 {
                     dependencies.Add(d);
-
-                    // Add it to the POM as well, in case transitive dependency is not available later
-                    AddDependency(d);
                 }
             }
 
