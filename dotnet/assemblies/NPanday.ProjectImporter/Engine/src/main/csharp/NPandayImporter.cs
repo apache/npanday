@@ -273,17 +273,14 @@ namespace NPanday.ProjectImporter
             {
                 if (depSearchConfig.CopyToMaven)
                 {
-                    warningMsg += "The following artifacts were copied to the local Maven repository:"
-                         + "\n\t" + string.Join("\n\t", nonPortableReferences.ToArray())
-                         + "\nDeploying the reference to a Repository will make the code portable to other machines.";
+                    warningMsg += "The following artifacts were copied to the local Maven repository:";
                 }
                 else
                 {
-                    warningMsg += "\nThe build may not be portable if local references are used:"
-                         + "\n\t" + string.Join("\n\t", nonPortableReferences.ToArray())
-                         + "\nDeploying the reference to a Repository will make the code portable to other machines." 
-                         + "\n\nNote: artifacts with a system path will not be packaged or used as a runtime dependency by Maven";
+                    warningMsg += "\nThe build may not be portable if local references are used:";
                 }
+                warningMsg += "\n\t" + string.Join("\n\t", nonPortableReferences.ToArray())
+                     + "\nDeploying the reference to a Repository will make the code portable to other machines.";
             }
             return result;
         }
