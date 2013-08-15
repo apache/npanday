@@ -187,18 +187,18 @@ under the License.
       <email>brett@apache.org</email>
     </developer>
     <developer>
+      <name>Matthias Wessendorf</name>
+      <id>matzew</id>
+      <roles>
+        <role>Former Mentor</role>
+      </roles>
+    </developer>
+    <!--Emeritus Committers-->
+    <developer>
       <name>Wendy Smoak</name>
       <id>wsmoak</id>
       <email>wsmoak@gmail.com</email>
     </developer>
-    <developer>
-      <name>Matthias Wessendorf</name>
-      <id>matzew</id>
-      <roles>
-        <role>Mentor</role>
-      </roles>
-    </developer>
-    <!--Emeritus Committers-->
     <developer>
       <name>C�dric</name>
       <id>mimil</id>
