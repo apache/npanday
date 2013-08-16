@@ -148,6 +148,11 @@ public final class CompilerMojo
             params.add("/debug+");
         }
 
+        if (platform != null)
+        {
+            params.add("/platform:" + platform);
+        }
+
         if (rootNamespace != null)
         {
             params.add("/rootnamespace:" + rootNamespace);

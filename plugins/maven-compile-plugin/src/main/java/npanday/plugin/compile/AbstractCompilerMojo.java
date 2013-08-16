@@ -206,16 +206,16 @@ public abstract class AbstractCompilerMojo
     protected String testKeycontainer;
 
     /**
-     * Limit the platforms this code can run on. (not currently supported)
+     * Limit the platforms this code can run on.
      *
-     * @parameter expression = "${platform} default-value = "anycpu"
+     * @parameter expression = "${platform}"
      */
     protected String platform;
 
     /**
-     * Limit the platforms this code can run on. (not currently supported)
+     * Limit the platforms this code can run on.
      *
-     * @parameter expression = "${testPlatform} default-value = "anycpu"
+     * @parameter expression = "${testPlatform}"
      */
     protected String testPlatform;
 

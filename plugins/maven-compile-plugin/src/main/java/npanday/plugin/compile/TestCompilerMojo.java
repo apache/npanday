@@ -152,6 +152,15 @@ public final class TestCompilerMojo
             params.add("/debug+");
         }
 
+        if (testPlatform != null)
+        {
+            params.add("/platform:" + testPlatform);
+        }
+        else if (platform != null)
+        {
+            params.add("/platform:" + platform);
+        }
+
         if (testRootNamespace != null)
         {
             params.add("/rootnamespace:" + testRootNamespace);
