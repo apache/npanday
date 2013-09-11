@@ -56,7 +56,7 @@ public enum ArtifactType
      * Configuration file attachable to a executable
      * artifact.
     */
-    DOTNET_EXECUTABLE_CONFIG("dotnet-executable-config", null, "exe.config"),
+    DOTNET_EXECUTABLE_CONFIG("dotnet-executable-config", null, "exe.config", true),
 
     /**
      * A library that is expected to be installed into the GAC
@@ -68,18 +68,18 @@ public enum ArtifactType
      * A pdb file containing debug symbols for either
      * a dll or executable.
      */
-    DOTNET_SYMBOLS("dotnet-symbols", null, "pdb"),
+    DOTNET_SYMBOLS("dotnet-symbols", null, "pdb", true),
     
     /**
      * A tlb-file that contains information about types
      * of a library that are accessible through COM.
      */
-    DOTNET_OLE_TYPE_LIB("ole-type-library", null, "tlb"),
+    DOTNET_OLE_TYPE_LIB("ole-type-library", null, "tlb", true),
     
     /**
      * Contains the inline code documentation.
      */
-    DOTNET_VSDOCS("dotnet-vsdocs", null, "xml"),
+    DOTNET_VSDOCS("dotnet-vsdocs", null, "xml", true),
     
     /**
      * A maven plugin authored in .NET.
@@ -91,7 +91,7 @@ public enum ArtifactType
      * files as debug symbols, docs or local satellite
      * assemblies.
      */
-    DOTNET_ARCHIVE("dotnet-archive", null, "zip"),
+    DOTNET_ARCHIVE("dotnet-archive", null, "zip", true),
 
     /**
      * A zip containing everything an application (or library) needs
@@ -138,7 +138,7 @@ public enum ArtifactType
      * Use DOTNET_EXECUTABLE_CONFIG instead
      */
     @Deprecated
-    EXECONFIG( "exe.config", "null", "exe.config" ),
+    EXECONFIG( "exe.config", "null", "exe.config", true),
     
     /**
      * Use DOTNET_MAVEN_PLUGIN instead
@@ -150,7 +150,7 @@ public enum ArtifactType
     
     SHARP_DEVELOP_ADDIN( "sharp-develop-addin", "library", "dll" ),
     
-    ASP ( "asp", "library", "zip" ),
+    ASP ( "asp", "library", "zip", true ),
     
     GAC ( "gac", null, "dll"),
 
@@ -175,8 +175,8 @@ public enum ArtifactType
     COM_REFERENCE( "com_reference", null, "dll"),
 
     /* Azure support */
-    AZURE_CLOUD_SERVICE ("azure-cloud-service", null, "cspkg"),
-    AZURE_CLOUD_SERVICE_CONFIGURATION ("azure-cloud-service-configuration", null, "cscfg"),
+    AZURE_CLOUD_SERVICE ("azure-cloud-service", null, "cspkg", true),
+    AZURE_CLOUD_SERVICE_CONFIGURATION ("azure-cloud-service-configuration", null, "cscfg", true),
 
     /* MSDeploy support */
     MSDEPLOY_PACKAGE ("msdeploy-package", null, "msdeploy.zip", true),
@@ -186,7 +186,7 @@ public enum ArtifactType
     SILVERLIGHT_APPLICATION ("silverlight-application", "library", "xap", true),
 
     /* Nuget support */
-    NUGET_PACKAGE ("nuget-package", null, "nupkg"),
+    NUGET_PACKAGE ("nuget-package", null, "nupkg", true),
     DOTNET_LIBRARY_IMPORTER("dotnet-library-importer", null, "pom")
     ;
 
