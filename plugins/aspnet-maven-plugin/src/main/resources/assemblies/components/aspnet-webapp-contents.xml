@@ -43,6 +43,7 @@
         <!-- web developers-->
         <include>**/*.css</include>
         <include>**/*.js</include>
+        <include>**/*.js.map</include>
         <include>**/*.htm</include>
         <include>**/*.html</include>
         <include>**/*.xml</include>
