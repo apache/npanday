@@ -172,13 +172,10 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
         // TODO: belongs in another utility class
         private static void SetReferenceFromFile(FileInfo dll, Reference reference)
         {
-            Assembly asm = null;
             string path = string.Empty;
 
-            //if (dll.Exists)
             if (dll.Exists)
             {
-                //asm = Assembly.ReflectionOnlyLoadFrom(dll.FullName);
                 path = dll.FullName;
             }
             else
@@ -197,14 +194,12 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                         if (File.Exists(localRepoPath))
                         {
                             File.Copy(localRepoPath, a.FileInfo.FullName);
-                            //asm = Assembly.ReflectionOnlyLoadFrom();
                             path = a.FileInfo.FullName;
                         }
                         else
                         {
                             if (Reference.downloadArtifactFromRemoteRepository(a, dll.Extension))
                             {
-                                //asm = Assembly.ReflectionOnlyLoadFrom(a.FileInfo.FullName);
                                 path = a.FileInfo.FullName;
                             }
                             else
@@ -237,28 +232,7 @@ namespace NPanday.ProjectImporter.Digest.Algorithms
                 }
             }
 
-            bool asmNotLoaded = true;
-            foreach (Assembly asmm in AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
-            {
-                // compare the assembly name to the filename of the reference to determine if it is a match
-                // as the location might not be set
-                // TODO: why do we need to load the assembly?
-                // added StringComparison.OrdinalIgnoreCase to assembly name compratison in order to avoid errors with 
-                // already loaded assemblies like nunit.framework and NUnit.Framework etc (note this can be reconsidered)
-                if (asmm.GetName().Name.Equals(Path.GetFileNameWithoutExtension(path), StringComparison.OrdinalIgnoreCase))
-                {
-                    asm = asmm;
-                    asmNotLoaded = false;
-                    break;
-                }
-            }
-            if (asmNotLoaded)
-            {
-                asm = Assembly.ReflectionOnlyLoadFrom(path);
-            }
-
-            reference.SetAssemblyInfoValues(asm.ToString());
-            //asm = null;
+            reference.SetAssemblyInfoValues(AssemblyName.GetAssemblyName(path).FullName);
         }
 
         private static void DigestBuildItems(Project project, ProjectDigest projectDigest, string projectBasePath, ICollection<ProjectReference> projectReferences, ICollection<Reference> references, ICollection<Compile> compiles, ICollection<None> nones, ICollection<WebReferenceUrl> webReferenceUrls, ICollection<Content> contents, ICollection<Folder> folders, ICollection<WebReferences> webReferencesList, ICollection<EmbeddedResource> embeddedResources, ICollection<BootstrapperPackage> bootstrapperPackages, ICollection<string> globalNamespaceImports, IList<ComReference> comReferenceList)
