@@ -3,9 +3,9 @@ target
 *.ipr
 *.iws
 *.suo
-pom-java.xml
 *.csproj.user
 bin
 obj
 plugins/netplugins/*/src/main/java
+plugins/netplugins/*/pom-java.xml
 .idea
