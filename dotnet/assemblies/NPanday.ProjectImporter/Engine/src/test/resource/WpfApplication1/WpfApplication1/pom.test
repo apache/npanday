@@ -44,7 +44,6 @@
           </execution>
         </executions>
         <configuration>
-          <frameworkVersion>4.0</frameworkVersion>
           <platform>x86</platform>
         </configuration>
       </plugin>
