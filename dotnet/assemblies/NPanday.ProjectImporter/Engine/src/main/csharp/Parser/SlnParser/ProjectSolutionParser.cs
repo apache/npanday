@@ -151,6 +151,17 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                                 prj.GlobalProperties.SetProperty(entry.Key, entry.Value);
                             }
                         }
+
+                        // Some debugging to troubleshoot an infrequent error where Microsoft.Build throws a NullReferenceException.
+                        // This may have been mitigated by setting VisualStudioVersion and can be removed if the problem doesn't re-appear.
+                        if (log.IsDebugEnabled)
+                        {
+                            log.DebugFormat("VisualStudioVersion: global {0}, evaluated {1}", 
+                                prj.GlobalProperties["VisualStudioVersion"], prj.EvaluatedProperties["VisualStudioVersion"]);
+                            log.DebugFormat("CloudExtensionsDir: global {0}, evaluated {1}",
+                                prj.GlobalProperties["CloudExtensionsDir"], prj.EvaluatedProperties["CloudExtensionsDir"]);
+                        }
+
                         prj.Load(fullpath);
                     }
                     catch (Exception e)
