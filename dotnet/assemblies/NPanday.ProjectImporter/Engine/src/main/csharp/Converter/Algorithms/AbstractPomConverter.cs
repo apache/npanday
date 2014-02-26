@@ -1182,7 +1182,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 }
                 else
                 {
-                    // The dependency is in .references, or an Interop. 
+                    // The dependency is in .references, or an Interop.
                     // TODO: not a very good parsing of .references - if we have .references, don't we already know it from local repo?
 
                     Dependency refDependency = new Dependency();

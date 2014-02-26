@@ -20,58 +20,58 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent> 
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>NPanday.Assemblies</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>NPanday.Assemblies</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.npanday.visualstudio</groupId>
-  <artifactId>NPanday.VisualStudio.ProjectWizard</artifactId>  
-  <packaging>dotnet-library</packaging>  
-  <name>NPanday :: VisualStudio Project Wizard</name>  
-  <dependencies> 
-    <dependency> 
-      <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>  
-      <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>  
-      <version>8.0.0.0</version>  
-      <classifier>b03f5f7f11d50a3a</classifier>  
-      <type>gac_msil</type> 
-    </dependency>  
-    <dependency> 
-      <groupId>EnvDTE</groupId>  
-      <artifactId>EnvDTE</artifactId>  
-      <version>8.0.0.0</version>  
-      <type>gac</type>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
-    </dependency>  
-    <dependency> 
-      <groupId>EnvDTE80</groupId>  
-      <artifactId>EnvDTE80</artifactId>  
-      <version>8.0.0.0</version>  
-      <type>gac</type>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
-    </dependency>  
-    <!-- TODO: remove? -->  
-    <dependency> 
-      <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
-      <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
-      <version>8.0.0.0</version>  
-      <type>gac</type>  
-      <classifier>b03f5f7f11d50a3a</classifier> 
-    </dependency> 
-  </dependencies>  
-  <build> 
+  <artifactId>NPanday.VisualStudio.ProjectWizard</artifactId>
+  <packaging>dotnet-library</packaging>
+  <name>NPanday :: VisualStudio Project Wizard</name>
+  <dependencies>
+    <dependency>
+      <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>
+      <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>
+      <version>8.0.0.0</version>
+      <classifier>b03f5f7f11d50a3a</classifier>
+      <type>gac_msil</type>
+    </dependency>
+    <dependency>
+      <groupId>EnvDTE</groupId>
+      <artifactId>EnvDTE</artifactId>
+      <version>8.0.0.0</version>
+      <type>gac</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
+    </dependency>
+    <dependency>
+      <groupId>EnvDTE80</groupId>
+      <artifactId>EnvDTE80</artifactId>
+      <version>8.0.0.0</version>
+      <type>gac</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
+    </dependency>
+    <!-- TODO: remove? -->
+    <dependency>
+      <groupId>Microsoft.VisualStudio.CommandBars</groupId>
+      <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>
+      <version>8.0.0.0</version>
+      <type>gac</type>
+      <classifier>b03f5f7f11d50a3a</classifier>
+    </dependency>
+  </dependencies>
+  <build>
     <pluginManagement>
-      <plugins> 
-        <plugin> 
+      <plugins>
+        <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
-          <artifactId>maven-compile-plugin</artifactId>  
+          <artifactId>maven-compile-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
           <configuration>
-            <keyfile>sample.snk</keyfile> 
-          </configuration> 
-        </plugin>  
+            <keyfile>sample.snk</keyfile>
+          </configuration>
+        </plugin>
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
@@ -83,7 +83,7 @@
             </excludes>
           </configuration>
         </plugin>
-      </plugins> 
+      </plugins>
     </pluginManagement>
-  </build> 
+  </build>
 </project>

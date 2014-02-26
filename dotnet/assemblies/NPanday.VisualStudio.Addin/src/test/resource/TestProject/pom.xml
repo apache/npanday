@@ -18,14 +18,14 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">  
-  <modelVersion>4.0.0</modelVersion>  
-  <groupId>Microsoft.TestProject</groupId>  
-  <artifactId>TestProject-parent</artifactId>  
-  <packaging>pom</packaging>  
-  <name>Microsoft.TestProject : TestProject-parent</name>  
-  <version>1.2.1-maestro-2.3.5.14-SNAPSHOT</version>  
-  <modules> 
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Microsoft.TestProject</groupId>
+  <artifactId>TestProject-parent</artifactId>
+  <packaging>pom</packaging>
+  <name>Microsoft.TestProject : TestProject-parent</name>
+  <version>1.2.1-maestro-2.3.5.14-SNAPSHOT</version>
+  <modules>
     <module>TestProject</module>
-  </modules> 
+  </modules>
 </project>

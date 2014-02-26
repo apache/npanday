@@ -18,24 +18,24 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>NPanday.Project</artifactId>  
-    <relativePath>../../dotnet/pom.xml</relativePath> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>NPanday.Project</artifactId>
+    <relativePath>../../dotnet/pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.npanday.plugins</groupId>
-  <artifactId>npanday.plugins</artifactId>  
-  <packaging>pom</packaging>  
-  <name>NPanday :: .NET Plugins</name>  
-  <modules> 
-    <module>NPanday.Plugin.Addin</module>  
-    <module>NPanday.Plugin.Devenv</module>  
-    <module>NPanday.Plugin.Resx</module>  
+  <artifactId>npanday.plugins</artifactId>
+  <packaging>pom</packaging>
+  <name>NPanday :: .NET Plugins</name>
+  <modules>
+    <module>NPanday.Plugin.Addin</module>
+    <module>NPanday.Plugin.Devenv</module>
+    <module>NPanday.Plugin.Resx</module>
     <module>NPanday.Plugin.Settings</module>
     <module>NPanday.Plugin.SysRef</module>
-    <module>NPanday.Plugin.Msbuild</module>            
-  </modules>  
+    <module>NPanday.Plugin.Msbuild</module>
+  </modules>
 </project>

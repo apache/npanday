@@ -259,7 +259,7 @@ namespace NPanday.VisualStudio.Addin
             this.searchAssemblyFoldersExCheckBox.TabIndex = 1;
             this.searchAssemblyFoldersExCheckBox.Text = "Extra Assembly Folders";
             this.searchAssemblyFoldersExCheckBox.UseVisualStyleBackColor = true;
-            // 
+            //
             // searchFrameworkCheckBox
             // 
             this.searchFrameworkCheckBox.AutoSize = true;

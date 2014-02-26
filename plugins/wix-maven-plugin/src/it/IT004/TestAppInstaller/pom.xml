@@ -29,7 +29,7 @@
   <packaging>pom</packaging>
   <name>NPanday WiX Plugin Integation Test 004</name>
   <description>
-    Simple integration test to execute candle and light 
+    Simple integration test to execute candle and light
     with an application that depends on a COM object.
   </description>
 <!-- TODO:  write the IT004.wxs file

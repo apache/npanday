@@ -18,29 +18,29 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"> 
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>NPanday.Assemblies</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>NPanday.Assemblies</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.npanday.plugins</groupId>
-  <artifactId>NPanday.Plugin</artifactId>  
-  <packaging>dotnet-library</packaging>  
-  <name>NPanday :: .NET Plugin</name>  
-  <dependencies> 
-    <dependency> 
+  <artifactId>NPanday.Plugin</artifactId>
+  <packaging>dotnet-library</packaging>
+  <name>NPanday :: .NET Plugin</name>
+  <dependencies>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>NPanday.Model.Pom</artifactId>  
+      <artifactId>NPanday.Model.Pom</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>dotnet-library</type>  
-    </dependency> 
-  </dependencies>  
-  <build> 
+      <type>dotnet-library</type>
+    </dependency>
+  </dependencies>
+  <build>
     <!-- TODO: ideally, avoid GAC installation of this artifact -->
     <plugins>
-      <plugin> 
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>1.5</version>
@@ -65,20 +65,20 @@ under the License.
       </plugin>
     </plugins>
     <pluginManagement>
-      <plugins> 
-        <plugin> 
+      <plugins>
+        <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-compile-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
           <configuration>
-            <keyfile>sample.snk</keyfile> 
-          </configuration> 
-        </plugin>  
-        <plugin> 
+            <keyfile>sample.snk</keyfile>
+          </configuration>
+        </plugin>
+        <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>  
+          <artifactId>maven-install-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
-        </plugin> 
+        </plugin>
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
@@ -89,7 +89,7 @@ under the License.
             </excludes>
           </configuration>
         </plugin>
-      </plugins> 
+      </plugins>
     </pluginManagement>
-  </build> 
+  </build>
 </project>

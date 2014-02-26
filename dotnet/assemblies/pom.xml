@@ -18,27 +18,27 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
-   
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
     <artifactId>NPanday.Project</artifactId>
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>NPanday.Assemblies</artifactId>  
-  <packaging>pom</packaging>  
-  <name>NPanday :: .NET Assemblies</name>  
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>NPanday.Assemblies</artifactId>
+  <packaging>pom</packaging>
+  <name>NPanday :: .NET Assemblies</name>
   <modules>
-    <module>NPanday.Model.Pom</module>  
-    <module>NPanday.Model.Settings</module>  
+    <module>NPanday.Model.Pom</module>
+    <module>NPanday.Model.Settings</module>
     <module>NPanday.Model.AutomationExtensibility</module>
     <module>NPanday.Utils</module>
-    <module>NPanday.Artifact</module> 
+    <module>NPanday.Artifact</module>
     <module>NPanday.Plugin</module>
     <module>NPanday.Plugin.MojoGenerator</module>	
-    <module>NPanday.Plugin.Loader</module>  
-    <module>NPanday.Plugin.Runner</module>  
+    <module>NPanday.Plugin.Loader</module>
+    <module>NPanday.Plugin.Runner</module>
   </modules>
 
   <profiles>

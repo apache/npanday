@@ -18,51 +18,51 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"> 
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>NPanday.Assemblies</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>NPanday.Assemblies</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.npanday</groupId>
-  <artifactId>NPanday.Artifact</artifactId>  
-  <packaging>dotnet-library</packaging>  
-  <name>NPanday :: .NET Artifact</name>  
-  <dependencies> 
-    <dependency> 
+  <artifactId>NPanday.Artifact</artifactId>
+  <packaging>dotnet-library</packaging>
+  <name>NPanday :: .NET Artifact</name>
+  <dependencies>
+    <dependency>
       <groupId>org.apache.logging</groupId>
-      <artifactId>log4net</artifactId>  
+      <artifactId>log4net</artifactId>
       <version>1.2.11</version>
-      <type>dotnet-library</type> 
+      <type>dotnet-library</type>
       <classifier>net-2.0</classifier>
-    </dependency>  
-    <dependency> 
+    </dependency>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>NPanday.Model.Pom</artifactId>  
+      <artifactId>NPanday.Model.Pom</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>dotnet-library</type>  
-    </dependency>  
-    <dependency> 
+      <type>dotnet-library</type>
+    </dependency>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>NPanday.Model.Settings</artifactId>  
+      <artifactId>NPanday.Model.Settings</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>dotnet-library</type>  
-    </dependency>  
-	<dependency> 
+      <type>dotnet-library</type>
+    </dependency>
+	<dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>NPanday.Utils</artifactId>  
+      <artifactId>NPanday.Utils</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>dotnet-library</type>  
-    </dependency> 
-    <dependency> 
-      <groupId>NUnit</groupId>  
-      <artifactId>NUnit.Framework</artifactId>  
-      <version>2.2.8.0</version>  
-      <type>dotnet-library</type>  
+      <type>dotnet-library</type>
+    </dependency>
+    <dependency>
+      <groupId>NUnit</groupId>
+      <artifactId>NUnit.Framework</artifactId>
+      <version>2.2.8.0</version>
+      <type>dotnet-library</type>
 <!-- Temporarily disabled as it may cause issues, however cause has not been diagnosed and may be unrelated
       <scope>test</scope>
 -->
-    </dependency>  
-  </dependencies> 
+    </dependency>
+  </dependencies>
 </project>

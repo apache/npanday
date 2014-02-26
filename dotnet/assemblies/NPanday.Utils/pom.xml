@@ -18,53 +18,53 @@
   ~ under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"> 
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>NPanday.Assemblies</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>NPanday.Assemblies</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.npanday</groupId>
-  <artifactId>NPanday.Utils</artifactId>  
-  <packaging>dotnet-library</packaging>  
-  <name>NPanday :: .NET Utils</name>  
-  <dependencies>  
-    <dependency> 
+  <artifactId>NPanday.Utils</artifactId>
+  <packaging>dotnet-library</packaging>
+  <name>NPanday :: .NET Utils</name>
+  <dependencies>
+    <dependency>
       <groupId>org.apache.logging</groupId>
-      <artifactId>log4net</artifactId>  
+      <artifactId>log4net</artifactId>
       <version>1.2.11</version>
-      <type>dotnet-library</type> 
+      <type>dotnet-library</type>
       <classifier>net-2.0</classifier>
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>NPanday.Model.Pom</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>dotnet-library</type> 
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>NPanday.Model.Settings</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>dotnet-library</type>  
     </dependency>
-	<dependency> 
-      <groupId>NUnit</groupId>  
-      <artifactId>NUnit.Framework</artifactId>  
-      <version>2.2.8.0</version>  
-      <type>dotnet-library</type>  
-      <scope>test</scope> 
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>NPanday.Model.Pom</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
+      <type>dotnet-library</type>
     </dependency>
-  </dependencies>  
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>NPanday.Model.Settings</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
+      <type>dotnet-library</type>
+    </dependency>
+	<dependency>
+      <groupId>NUnit</groupId>
+      <artifactId>NUnit.Framework</artifactId>
+      <version>2.2.8.0</version>
+      <type>dotnet-library</type>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <profiles>
     <profile>
       <id>partcover</id>
       <build>
         <plugins>
-          <plugin> 
+          <plugin>
             <groupId>org.apache.npanday.plugins</groupId>
-            <artifactId>partcover-maven-plugin</artifactId>  
+            <artifactId>partcover-maven-plugin</artifactId>
             <configuration>
               <!--<nUnit>C:\\Program Files\\NUnit 2.5.7\\bin\net-2.0\\nunit-console.exe</nUnit>-->
               <!--<partCover>C:\\Program Files\PartCover\\PartCover .NET 4.0\\PartCover.exe</partCover>-->
@@ -72,16 +72,16 @@
               <!--<msxsl>C:\\WINDOWS\\msxsl.exe</msxsl>-->
               <!--<xslt>C:\\Program Files\\PartCover\\PartCover .NET 4.0\\xslt\\Report By Assembly.xslt"<xslt>-->
             </configuration>
-            <executions> 
-              <execution> 
-                <goals> 
-                  <goal>generate</goal> 
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate</goal>
                   <goal>convert</goal>
-                </goals> 
-              </execution> 
-            </executions> 
-          </plugin>  
-        </plugins> 
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
       </build>
     </profile>
   </profiles>

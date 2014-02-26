@@ -17,32 +17,32 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
-  <modelVersion>4.0.0</modelVersion>  
-  <groupId>${groupId}</groupId>  
-  <artifactId>${artifactId}</artifactId>  
-  <version>${version}</version>  
-  <packaging>dotnet-executable</packaging>  
-  <dependencies> 
-    <dependency> 
-      <groupId>NUnit</groupId>  
-      <artifactId>NUnit.Framework</artifactId>  
-      <version>2.2.8.0</version>  
-      <type>dotnet-library</type> 
-    </dependency> 
-  </dependencies>  
-  <build> 
-    <sourceDirectory>src/main/vb</sourceDirectory>  
-    <testSourceDirectory>src/test/vb</testSourceDirectory>  
-    <plugins> 
-      <plugin> 
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>${groupId}</groupId>
+  <artifactId>${artifactId}</artifactId>
+  <version>${version}</version>
+  <packaging>dotnet-executable</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>NUnit</groupId>
+      <artifactId>NUnit.Framework</artifactId>
+      <version>2.2.8.0</version>
+      <type>dotnet-library</type>
+    </dependency>
+  </dependencies>
+  <build>
+    <sourceDirectory>src/main/vb</sourceDirectory>
+    <testSourceDirectory>src/test/vb</testSourceDirectory>
+    <plugins>
+      <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
-        <artifactId>maven-compile-plugin</artifactId>  
-        <extensions>true</extensions>  
-        <configuration> 
-          <language>VB</language> 
-        </configuration> 
-      </plugin> 
-    </plugins> 
-  </build> 
+        <artifactId>maven-compile-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <language>VB</language>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

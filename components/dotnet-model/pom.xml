@@ -20,30 +20,30 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent> 
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>dotnet-components</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>dotnet-model</artifactId>  
-  <packaging>pom</packaging>  
-  <name>NPanday :: Model</name>  
-  <modules> 
-    <module>assembly-plugins</module>  
-    <module>compiler-plugins</module>  
-    <module>executable-plugins</module>  
-    <module>netdependency</module>  
-    <module>configuration-appenders</module>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>dotnet-components</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>dotnet-model</artifactId>
+  <packaging>pom</packaging>
+  <name>NPanday :: Model</name>
+  <modules>
+    <module>assembly-plugins</module>
+    <module>compiler-plugins</module>
+    <module>executable-plugins</module>
+    <module>netdependency</module>
+    <module>configuration-appenders</module>
     <module>settings</module>
     <module>dotnet-model-library-import</module>
   </modules>
-  <dependencies> 
-    <dependency> 
-      <groupId>org.codehaus.plexus</groupId>  
-      <artifactId>plexus-utils</artifactId> 
-    </dependency> 
-  </dependencies>  
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
+  </dependencies>
   <build>
     <pluginManagement>
       <plugins>
@@ -76,20 +76,20 @@
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins> 
-      <plugin> 
-        <groupId>org.apache.maven.plugins</groupId>  
-        <artifactId>maven-site-plugin</artifactId>  
-        <configuration> 
-          <workingDirectory>${project.build.directory}/site</workingDirectory>  
-          <siteDirectory>${project.build.directory}/generated-site</siteDirectory> 
-        </configuration> 
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <workingDirectory>${project.build.directory}/site</workingDirectory>
+          <siteDirectory>${project.build.directory}/generated-site</siteDirectory>
+        </configuration>
       </plugin>
       <plugin>
         <!-- enable groovy testing -->
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
       </plugin>
-    </plugins> 
-  </build> 
+    </plugins>
+  </build>
 </project>

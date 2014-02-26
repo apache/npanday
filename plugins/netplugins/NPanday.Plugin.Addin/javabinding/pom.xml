@@ -18,35 +18,35 @@
   ~ under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday.plugins</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>maven-dotnet-plugins</artifactId>  
-    <relativePath>../../../pom.xml</relativePath> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>NPanday.Plugin.Addin.JavaBinding</artifactId>  
-  <packaging>maven-plugin</packaging>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>maven-dotnet-plugins</artifactId>
+    <relativePath>../../../pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>NPanday.Plugin.Addin.JavaBinding</artifactId>
+  <packaging>maven-plugin</packaging>
   <name>NPanday :: Add-in Plugin (Java Binding)</name>
   <description>Plugin for NPanday Addin for Visual Studio IDE</description>
-  <dependencies> 
-    <dependency> 
+  <dependencies>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-assembler</artifactId>  
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-executable</artifactId>  
+      <artifactId>dotnet-assembler</artifactId>
     </dependency>
-    <dependency> 
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-plugin</artifactId>  
+      <artifactId>dotnet-executable</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>dotnet-plugin</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>${plexus.utils.version}</version>
     </dependency>
-  </dependencies> 
+  </dependencies>
 </project>

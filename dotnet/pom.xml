@@ -18,55 +18,55 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
-   <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>apache-npanday</artifactId>  
-    <relativePath>../pom.xml</relativePath> 
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>apache-npanday</artifactId>
+    <relativePath>../pom.xml</relativePath>
   </parent>
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>NPanday.Project</artifactId>  
-  <packaging>pom</packaging>  
-  <name>NPanday :: .NET Projects</name>  
-  <modules> 
-    <module>assemblies</module>  
-    <module>../plugins/netplugins</module> 
-  </modules>  
-  <build> 
-    <sourceDirectory>src/main/csharp</sourceDirectory>  
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>NPanday.Project</artifactId>
+  <packaging>pom</packaging>
+  <name>NPanday :: .NET Projects</name>
+  <modules>
+    <module>assemblies</module>
+    <module>../plugins/netplugins</module>
+  </modules>
+  <build>
+    <sourceDirectory>src/main/csharp</sourceDirectory>
     <testSourceDirectory>src/test/csharp</testSourceDirectory>
-    <plugins> 
-      <plugin> 
+    <plugins>
+      <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
         <artifactId>maven-compile-plugin</artifactId>
         <version>${bootstrap.npanday.version}</version>
-        <extensions>true</extensions>  
-        <configuration> 
-          <frameworkVersion>2.0.50727</frameworkVersion> 
-        </configuration> 
-      </plugin>  
-    </plugins> 
+        <extensions>true</extensions>
+        <configuration>
+          <frameworkVersion>2.0.50727</frameworkVersion>
+        </configuration>
+      </plugin>
+    </plugins>
     <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
-          <artifactId>maven-compile-plugin</artifactId>  
+          <artifactId>maven-compile-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
-          <artifactId>maven-resgen-plugin</artifactId>  
+          <artifactId>maven-resgen-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
-          <artifactId>maven-repository-plugin</artifactId>  
+          <artifactId>maven-repository-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>  
+          <artifactId>maven-install-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
         </plugin>
         <plugin>
@@ -109,104 +109,104 @@
         </plugin>
       </plugins>
     </pluginManagement>
-  </build>  
+  </build>
   <!-- TODO: the current NPanday libraries won't apply these properly, so we had to repeat them in the POMs as well -->
-  <dependencyManagement> 
-    <dependencies> 
-      <dependency> 
-        <groupId>Microsoft.Build.Engine</groupId>  
-        <artifactId>Microsoft.Build.Engine</artifactId>  
-        <type>gac_msil</type>  
-        <version>2.0.0.0</version>  
-        <classifier>b03f5f7f11d50a3a</classifier> 
-      </dependency>  
-      <dependency> 
-        <groupId>EnvDTE</groupId>  
-        <artifactId>EnvDTE</artifactId>  
-        <type>gac</type>  
-        <version>8.0.0.0</version>  
-        <classifier>b03f5f7f11d50a3a</classifier> 
-      </dependency>  
-      <dependency> 
-        <groupId>EnvDTE80</groupId>  
-        <artifactId>EnvDTE80</artifactId>  
-        <type>gac</type>  
-        <version>8.0.0.0</version>  
-        <classifier>b03f5f7f11d50a3a</classifier> 
-      </dependency>  
-      <dependency> 
-        <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
-        <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
-        <version>8.0.0.0</version>  
-        <classifier>b03f5f7f11d50a3a</classifier>  
-        <type>gac</type> 
-      </dependency>  
-      <dependency> 
-        <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>  
-        <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>  
-        <version>8.0.0.0</version>  
-        <classifier>b03f5f7f11d50a3a</classifier>  
-        <type>gac_msil</type> 
-      </dependency>  
-      <dependency> 
-        <groupId>Extensibility</groupId>  
-        <artifactId>Extensibility</artifactId>  
-        <type>gac</type>  
-        <version>7.0.3300.0</version>  
-        <classifier>b03f5f7f11d50a3a</classifier> 
-      </dependency>  
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>Microsoft.Build.Engine</groupId>
+        <artifactId>Microsoft.Build.Engine</artifactId>
+        <type>gac_msil</type>
+        <version>2.0.0.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
+      </dependency>
+      <dependency>
+        <groupId>EnvDTE</groupId>
+        <artifactId>EnvDTE</artifactId>
+        <type>gac</type>
+        <version>8.0.0.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
+      </dependency>
+      <dependency>
+        <groupId>EnvDTE80</groupId>
+        <artifactId>EnvDTE80</artifactId>
+        <type>gac</type>
+        <version>8.0.0.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
+      </dependency>
+      <dependency>
+        <groupId>Microsoft.VisualStudio.CommandBars</groupId>
+        <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>
+        <version>8.0.0.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
+        <type>gac</type>
+      </dependency>
+      <dependency>
+        <groupId>Microsoft.VisualStudio.TemplateWizardInterface</groupId>
+        <artifactId>Microsoft.VisualStudio.TemplateWizardInterface</artifactId>
+        <version>8.0.0.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
+        <type>gac_msil</type>
+      </dependency>
+      <dependency>
+        <groupId>Extensibility</groupId>
+        <artifactId>Extensibility</artifactId>
+        <type>gac</type>
+        <version>7.0.3300.0</version>
+        <classifier>b03f5f7f11d50a3a</classifier>
+      </dependency>
 
-      <dependency> 
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>NPanday.Model.Pom</artifactId>  
+        <artifactId>NPanday.Model.Pom</artifactId>
         <version>1.5.0-incubating-SNAPSHOT</version>
-        <type>dotnet-library</type>  
-      </dependency>  
-      <dependency> 
+        <type>dotnet-library</type>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
+        <artifactId>NPanday.Model.AutomationExtensibility</artifactId>
         <version>1.5.0-incubating-SNAPSHOT</version>
-        <type>dotnet-library</type>  
-      </dependency>  
-      <dependency> 
+        <type>dotnet-library</type>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>NPanday.Model.Settings</artifactId>  
+        <artifactId>NPanday.Model.Settings</artifactId>
         <version>1.5.0-incubating-SNAPSHOT</version>
-        <type>dotnet-library</type>  
-      </dependency>  
-      <dependency> 
+        <type>dotnet-library</type>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>NPanday.Artifact</artifactId>  
+        <artifactId>NPanday.Artifact</artifactId>
         <version>1.5.0-incubating-SNAPSHOT</version>
-        <type>dotnet-library</type>  
-      </dependency>  
-      <dependency> 
+        <type>dotnet-library</type>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>NPanday.Utils</artifactId>  
+        <artifactId>NPanday.Utils</artifactId>
         <version>1.5.0-incubating-SNAPSHOT</version>
-        <type>dotnet-library</type>  
-      </dependency>  
-      <dependency> 
+        <type>dotnet-library</type>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday.plugins</groupId>
-        <artifactId>NPanday.Plugin</artifactId>  
+        <artifactId>NPanday.Plugin</artifactId>
         <version>1.5.0-incubating-SNAPSHOT</version>
-        <type>dotnet-library</type>  
-      </dependency>  
-      <dependency> 
+        <type>dotnet-library</type>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday.visualstudio</groupId>
-        <artifactId>NPanday.ProjectImporterEngine</artifactId>  
+        <artifactId>NPanday.ProjectImporterEngine</artifactId>
         <version>1.5.0-incubating-SNAPSHOT</version>
-        <type>dotnet-library</type>  
-      </dependency>  
-    </dependencies> 
-  </dependencyManagement> 
+        <type>dotnet-library</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
-    <dependency> 
-      <groupId>NUnit</groupId>  
-      <artifactId>NUnit.Framework</artifactId>  
-      <version>2.2.8.0</version>  
-      <type>dotnet-library</type>  
-      <scope>test</scope> 
-    </dependency> 
+    <dependency>
+      <groupId>NUnit</groupId>
+      <artifactId>NUnit.Framework</artifactId>
+      <version>2.2.8.0</version>
+      <type>dotnet-library</type>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

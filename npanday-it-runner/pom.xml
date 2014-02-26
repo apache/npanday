@@ -26,10 +26,10 @@ under the License.
     <version>1.5.0-incubating-SNAPSHOT</version>
     <artifactId>apache-npanday</artifactId>
   </parent>
-  
+
   <modelVersion>4.0.0</modelVersion>
   <artifactId>npanday-it-runner</artifactId>
-  
+
   <name>Integration Test Executor</name>
 
   <dependencies>
@@ -39,8 +39,8 @@ under the License.
       <version>${project.version}</version>
       <classifier>tests</classifier>
     </dependency>
-  </dependencies>    
-  
+  </dependencies>
+
   <build>
     <plugins>
       <plugin>
@@ -76,7 +76,7 @@ under the License.
             </configuration>
           </execution>
         </executions>
-      </plugin>      
+      </plugin>
     </plugins>
   </build>
 </project>

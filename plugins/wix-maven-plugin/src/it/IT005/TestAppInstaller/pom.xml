@@ -29,7 +29,7 @@
   <packaging>pom</packaging>
   <name>NPanday WiX Plugin Integation Test 005</name>
   <description>
-    Simple integration test to execute candle and light 
+    Simple integration test to execute candle and light
     in a multi-module project.
   </description>
 

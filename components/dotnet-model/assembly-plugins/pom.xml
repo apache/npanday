@@ -19,27 +19,27 @@
   ~ under the License.
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent> 
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>dotnet-model</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>dotnet-model-assembly-plugins</artifactId>  
-  <name>NPanday :: Model :: Assembly Plugins</name>  
-  <description>Assembly model used for reading in information about assembly info marshallers.</description>  
-  <build> 
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>dotnet-model</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>dotnet-model-assembly-plugins</artifactId>
+  <name>NPanday :: Model :: Assembly Plugins</name>
+  <description>Assembly model used for reading in information about assembly info marshallers.</description>
+  <build>
     <plugins>
-      <plugin> 
-        <groupId>org.codehaus.modello</groupId>  
-        <artifactId>modello-maven-plugin</artifactId>  
+      <plugin>
+        <groupId>org.codehaus.modello</groupId>
+        <artifactId>modello-maven-plugin</artifactId>
         <configuration>
           <models>
             <model>assembly-plugins.mdo</model>
           </models>
-          <version>1.0.0</version> 
-        </configuration> 
-      </plugin> 
-    </plugins> 
-  </build>  
+          <version>1.0.0</version>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

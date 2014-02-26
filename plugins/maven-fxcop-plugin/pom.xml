@@ -18,16 +18,16 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"> 
-  <parent> 
-    <artifactId>maven-dotnet-plugins</artifactId>  
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>maven-dotnet-plugins</artifactId>
     <groupId>org.apache.npanday.plugins</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>maven-fxcop-plugin</artifactId>  
-  <packaging>maven-plugin</packaging>  
-  <name>NPanday :: FxCop Maven Plugin</name>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>maven-fxcop-plugin</artifactId>
+  <packaging>maven-plugin</packaging>
+  <name>NPanday :: FxCop Maven Plugin</name>
   <description>Maven Plugin for .NET: Runs the FxCop Code Analysis Tool</description>
   <dependencies>
     <dependency>

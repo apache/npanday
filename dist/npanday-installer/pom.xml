@@ -18,9 +18,9 @@
   ~ under the License.
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent> 
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <artifactId>npanday-dist-parent</artifactId>  
+    <artifactId>npanday-dist-parent</artifactId>
     <version>1.5.0-incubating-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -34,49 +34,49 @@
       <version>${project.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>Microsoft.VisualStudio.CommandBars</groupId>  
-          <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>  
+          <groupId>Microsoft.VisualStudio.CommandBars</groupId>
+          <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>EnvDTE</groupId>  
-          <artifactId>EnvDTE</artifactId>  
+          <groupId>EnvDTE</groupId>
+          <artifactId>EnvDTE</artifactId>
          </exclusion>
         <exclusion>
-          <groupId>EnvDTE80</groupId>  
-          <artifactId>EnvDTE80</artifactId>  
+          <groupId>EnvDTE80</groupId>
+          <artifactId>EnvDTE80</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>Extensibility</groupId>  
-          <artifactId>Extensibility</artifactId>  
+          <groupId>Extensibility</groupId>
+          <artifactId>Extensibility</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>VSLangProj</groupId>  
-          <artifactId>VSLangProj</artifactId>  
+          <groupId>VSLangProj</groupId>
+          <artifactId>VSLangProj</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>VSLangProj80</groupId>  
-          <artifactId>VSLangProj80</artifactId>  
+          <groupId>VSLangProj80</groupId>
+          <artifactId>VSLangProj80</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>VsWebSite.Interop</groupId>  
-          <artifactId>VsWebSite.Interop</artifactId>  
+          <groupId>VsWebSite.Interop</groupId>
+          <artifactId>VsWebSite.Interop</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>Microsoft.Build.Engine</groupId>  
-          <artifactId>Microsoft.Build.Engine</artifactId>  
-        </exclusion>        
+          <groupId>Microsoft.Build.Engine</groupId>
+          <artifactId>Microsoft.Build.Engine</artifactId>
+        </exclusion>
         <exclusion>
-          <groupId>Microsoft.Build.Framework</groupId>  
-          <artifactId>Microsoft.Build.Framework</artifactId>  
-        </exclusion>        
+          <groupId>Microsoft.Build.Framework</groupId>
+          <artifactId>Microsoft.Build.Framework</artifactId>
+        </exclusion>
         <exclusion>
-          <groupId>Microsoft.Build.Utilities</groupId>  
-          <artifactId>Microsoft.Build.Utilities</artifactId>  
-        </exclusion>        
+          <groupId>Microsoft.Build.Utilities</groupId>
+          <artifactId>Microsoft.Build.Utilities</artifactId>
+        </exclusion>
         <exclusion>
-          <groupId>Microsoft.Build.Tasks</groupId>  
-          <artifactId>Microsoft.Build.Tasks</artifactId>  
-        </exclusion>        
+          <groupId>Microsoft.Build.Tasks</groupId>
+          <artifactId>Microsoft.Build.Tasks</artifactId>
+        </exclusion>
       </exclusions>
       <type>dotnet-library</type>
     </dependency>

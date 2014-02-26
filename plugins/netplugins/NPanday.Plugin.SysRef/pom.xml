@@ -18,42 +18,42 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"> 
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday.plugins</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>npanday.plugins</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>NPanday.Plugin.SysRef</artifactId>  
-  <packaging>dotnet-maven-plugin</packaging>  
-  <name>NPanday :: SysRef Plugin</name>  
-  <dependencies> 
-    <dependency> 
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>npanday.plugins</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>NPanday.Plugin.SysRef</artifactId>
+  <packaging>dotnet-maven-plugin</packaging>
+  <name>NPanday :: SysRef Plugin</name>
+  <dependencies>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>NPanday.Artifact</artifactId>  
+      <artifactId>NPanday.Artifact</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>dotnet-library</type> 
-    </dependency>  
-    <dependency> 
+      <type>dotnet-library</type>
+    </dependency>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>NPanday.Model.AutomationExtensibility</artifactId>  
+      <artifactId>NPanday.Model.AutomationExtensibility</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>dotnet-library</type>  
-    </dependency>  
-    <dependency> 
+      <type>dotnet-library</type>
+    </dependency>
+    <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
-      <artifactId>NPanday.Plugin</artifactId>  
+      <artifactId>NPanday.Plugin</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
-      <type>dotnet-library</type>  
-    </dependency> 
+      <type>dotnet-library</type>
+    </dependency>
     <dependency>
       <groupId>org.apache.npanday</groupId>
       <artifactId>NPanday.Model.Pom</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
       <type>dotnet-library</type>
     </dependency>
-  </dependencies> 
+  </dependencies>
   <build>
     <pluginManagement>
       <plugins>

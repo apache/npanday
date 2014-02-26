@@ -19,27 +19,27 @@
   ~ under the License.
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent> 
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>dotnet-components</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>dotnet-core</artifactId>  
-  <name>NPanday :: Core</name>  
-  <dependencies> 
-    <dependency> 
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>dotnet-components</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>dotnet-core</artifactId>
+  <name>NPanday :: Core</name>
+  <dependencies>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-registry</artifactId>  
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.maven</groupId>  
-      <artifactId>maven-plugin-api</artifactId> 
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.maven</groupId>  
-      <artifactId>maven-project</artifactId> 
-    </dependency> 
+      <artifactId>dotnet-registry</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-project</artifactId>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -73,11 +73,11 @@
         </executions>
       </plugin>
     </plugins>
-    <resources> 
-      <resource> 
-        <directory>src/main/resources</directory>  
-        <filtering>true</filtering> 
-      </resource> 
-    </resources> 
-  </build> 
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
 </project>

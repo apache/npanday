@@ -18,34 +18,34 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"> 
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>NPanday.Assemblies</artifactId>  
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>NPanday.Assemblies</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.npanday</groupId>
-  <artifactId>NPanday.Model.Pom</artifactId>  
-  <packaging>dotnet-library</packaging>  
-  <name>NPanday :: .NET Model :: POM</name>  
-  <build> 
-    <plugins> 
-      <plugin> 
+  <artifactId>NPanday.Model.Pom</artifactId>
+  <packaging>dotnet-library</packaging>
+  <name>NPanday :: .NET Model :: POM</name>
+  <build>
+    <plugins>
+      <plugin>
         <groupId>org.apache.npanday.plugins</groupId>
-        <artifactId>maven-xsd-plugin</artifactId>  
-        <executions> 
-          <execution> 
-            <goals> 
-              <goal>xsd</goal> 
-            </goals> 
-          </execution> 
-        </executions>  
-        <configuration> 
-          <xsdFile>${basedir}/Pom.xsd</xsdFile> 
-        </configuration> 
-      </plugin>  
-      <plugin> 
+        <artifactId>maven-xsd-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>xsd</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <xsdFile>${basedir}/Pom.xsd</xsdFile>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>1.5</version>
@@ -71,15 +71,15 @@ under the License.
     </plugins>
     <pluginManagement>
       <plugins>
-        <plugin> 
+        <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-compile-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
-          <configuration> 
-            <keyfile>sample.snk</keyfile> 
-          </configuration> 
-        </plugin>  
-        <plugin> 
+          <configuration>
+            <keyfile>sample.snk</keyfile>
+          </configuration>
+        </plugin>
+        <plugin>
           <groupId>org.apache.npanday.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
           <version>${bootstrap.npanday.version}</version>
@@ -96,5 +96,5 @@ under the License.
         </plugin>
       </plugins>
     </pluginManagement>
-  </build> 
+  </build>
 </project>

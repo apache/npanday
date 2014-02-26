@@ -40,7 +40,7 @@
             <sourceFile>Sample.wxs</sourceFile>
           </sourceFiles>
           <definitions>
-            <definition>VER=1.0</definition> 
+            <definition>VER=1.0</definition>
           </definitions>
         </configuration>
       </plugin>

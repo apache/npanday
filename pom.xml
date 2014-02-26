@@ -26,10 +26,10 @@ under the License.
     <version>12</version>
   </parent>
   <groupId>org.apache.npanday</groupId>
-  <artifactId>apache-npanday</artifactId>  
-  <packaging>pom</packaging>  
-  <version>1.5.0-incubating-SNAPSHOT</version>  
-  <name>Apache NPanday</name>  
+  <artifactId>apache-npanday</artifactId>
+  <packaging>pom</packaging>
+  <version>1.5.0-incubating-SNAPSHOT</version>
+  <name>Apache NPanday</name>
   <url>http://incubator.apache.org/npanday/</url>
   <description>NPanday provides Maven plugins to support building of .NET applications</description>
 
@@ -39,7 +39,7 @@ under the License.
     <plexus.utils.version>1.5.15</plexus.utils.version>
     <gmaven.version>1.2</gmaven.version>
     <!-- if you want to build NPanday with a specific version, replace this -->
-    <!-- 
+    <!--
       Note: this will cause problems trying to release the first time. We can do
       this:
         mvn release:prepare -Prun-its.dist
@@ -424,9 +424,9 @@ under the License.
     <dependencies>
       <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-assembler</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency>  
+        <artifactId>dotnet-assembler</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
+      </dependency>
       <dependency>
         <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-dao-project</artifactId>
@@ -434,58 +434,58 @@ under the License.
       </dependency>
       <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-executable</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
+        <artifactId>dotnet-executable</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
       </dependency>
-      <dependency> 
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-plugin</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
+        <artifactId>dotnet-plugin</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-registry</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
+        <artifactId>dotnet-registry</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-core</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
+        <artifactId>dotnet-core</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-vendor</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
+        <artifactId>dotnet-vendor</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-model-netdependency</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
+        <artifactId>dotnet-model-netdependency</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-model-assembly-plugins</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
+        <artifactId>dotnet-model-assembly-plugins</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-model-compiler-plugins</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
+        <artifactId>dotnet-model-compiler-plugins</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-model-executable-plugins</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
+        <artifactId>dotnet-model-executable-plugins</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-model-configuration-appenders</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
-      </dependency> 
-      <dependency> 
+        <artifactId>dotnet-model-configuration-appenders</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-model-settings</artifactId>  
-        <version>1.5.0-incubating-SNAPSHOT</version> 
+        <artifactId>dotnet-model-settings</artifactId>
+        <version>1.5.0-incubating-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.npanday</groupId>
@@ -612,13 +612,13 @@ under the License.
                 <excludes>
                   <exclude>site/target/**</exclude>
                   <exclude>.git*</exclude>
-     
+
                   <!-- ui artifacts, usually not checked in -->
                   <exclude>atlassian-ide-plugin.xml</exclude>
                   <exclude>**/*.user</exclude>
                   <exclude>**/*.iml</exclude>
                   <exclude>**/*.sln</exclude>
-  
+
                   <!-- often excluded from the modules build -->
                   <exclude>npanday-it-runner/target/**</exclude>
                   <exclude>dist/**/target/**</exclude>

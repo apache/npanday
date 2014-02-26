@@ -17,16 +17,16 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <artifactId>npanday-dist-parent</artifactId>  
-    <version>1.5.0-incubating-SNAPSHOT</version> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>npanday-repository-builder</artifactId>  
+    <artifactId>npanday-dist-parent</artifactId>
+    <version>1.5.0-incubating-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>npanday-repository-builder</artifactId>
   <packaging>pom</packaging>
-  <name>NPanday :: Repository Builder</name>  
+  <name>NPanday :: Repository Builder</name>
   <dependencies>
     <!--
     NPANDAY PLUGINS
@@ -149,54 +149,54 @@
 
     <!--
     NPANDAY NETPLUGINS
-     -->  
-    <dependency> 
+     -->
+    <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
-      <artifactId>NPanday.Plugin.Addin.JavaBinding</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version> 
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday.plugins</groupId>
-      <artifactId>NPanday.Plugin.Devenv.JavaBinding</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version> 
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday.plugins</groupId>
-      <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version> 
+      <artifactId>NPanday.Plugin.Addin.JavaBinding</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
     </dependency>
-    <dependency> 
+    <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
-      <artifactId>NPanday.Plugin.SysRef.JavaBinding</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version> 
+      <artifactId>NPanday.Plugin.Devenv.JavaBinding</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
     </dependency>
-    <dependency> 
+    <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
-      <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version> 
+      <artifactId>NPanday.Plugin.Settings.JavaBinding</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin.SysRef.JavaBinding</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
     </dependency>
 
     <!--
     NPANDAY ARCHETYPES
     -->
-    <dependency> 
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>maven-archetype-dotnet-simple</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version> 
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>maven-archetype-netexecutable</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version> 
+      <artifactId>maven-archetype-dotnet-simple</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
     </dependency>
-    <dependency> 
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>maven-archetype-vb-simple</artifactId>  
-      <version>1.5.0-incubating-SNAPSHOT</version> 
+      <artifactId>maven-archetype-netexecutable</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
     </dependency>
-  </dependencies>  
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>maven-archetype-vb-simple</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
   <build>
-    <plugins>   
+    <plugins>
       <!-- Incorporate the .NET repository just built -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -19,19 +19,19 @@
   ~ under the License.
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent> 
+  <parent>
     <groupId>org.apache.npanday</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>dotnet-model</artifactId> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
-  <artifactId>dotnet-model-executable-plugins</artifactId>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>dotnet-model</artifactId>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>dotnet-model-executable-plugins</artifactId>
   <name>NPanday :: Model :: Executable Plugins</name>
-  <build> 
-    <plugins> 
-      <plugin> 
-        <groupId>org.codehaus.modello</groupId>  
-        <artifactId>modello-maven-plugin</artifactId>  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.modello</groupId>
+        <artifactId>modello-maven-plugin</artifactId>
         <configuration>
           <models>
             <model>executable-plugins.mdo</model>
@@ -51,7 +51,7 @@
             </configuration>
           </execution>
         </executions>
-      </plugin> 
-    </plugins> 
-  </build>  
+      </plugin>
+    </plugins>
+  </build>
 </project>

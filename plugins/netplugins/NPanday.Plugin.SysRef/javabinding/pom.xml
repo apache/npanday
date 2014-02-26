@@ -17,31 +17,31 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
-  <parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
     <groupId>org.apache.npanday.plugins</groupId>
-    <version>1.5.0-incubating-SNAPSHOT</version>  
-    <artifactId>maven-dotnet-plugins</artifactId>  
-    <relativePath>../../../pom.xml</relativePath> 
-  </parent>  
-  <modelVersion>4.0.0</modelVersion>  
+    <version>1.5.0-incubating-SNAPSHOT</version>
+    <artifactId>maven-dotnet-plugins</artifactId>
+    <relativePath>../../../pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.npanday.plugins</groupId>
-  <artifactId>NPanday.Plugin.SysRef.JavaBinding</artifactId>  
-  <packaging>maven-plugin</packaging>  
+  <artifactId>NPanday.Plugin.SysRef.JavaBinding</artifactId>
+  <packaging>maven-plugin</packaging>
   <name>NPanday :: SysRef Plugin (Java Binding)</name>
   <description>Plugin that will generate the required system reference .dlls</description>
-  <dependencies> 
-    <dependency> 
+  <dependencies>
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-assembler</artifactId>  
-    </dependency>  
-    <dependency> 
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-executable</artifactId>  
+      <artifactId>dotnet-assembler</artifactId>
     </dependency>
-    <dependency> 
+    <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-plugin</artifactId>  
+      <artifactId>dotnet-executable</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>dotnet-plugin</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
