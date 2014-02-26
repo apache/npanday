@@ -1175,10 +1175,7 @@ namespace NPanday.Utils
                                 XmlNode nodeAdded = xmlDocument.CreateNode(XmlNodeType.Element, confProp, @"http://maven.apache.org/POM/4.0.0");
 
                                 nodeAdded.InnerText = confPropVal.Replace("\\", "/");
-                                if (!elems[count].InnerXml.Contains(nodeAdded.InnerText))
-                                {
-                                    elem.AppendChild(nodeAdded);
-                                }
+                                elem.AppendChild(nodeAdded);
                                 elems[count] = elem;
                             }
 
