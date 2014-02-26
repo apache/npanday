@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "SampleApp.csproj", "{5C72538E-6D6F-47B3-BF16-C379662B6351}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectAboveSolutionLevel", "..\ProjectAboveSolutionLevel\ProjectAboveSolutionLevel.csproj", "{93C16211-D9B9-4D41-97B8-EADEBE96FE2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C72538E-6D6F-47B3-BF16-C379662B6351}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C72538E-6D6F-47B3-BF16-C379662B6351}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C72538E-6D6F-47B3-BF16-C379662B6351}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C72538E-6D6F-47B3-BF16-C379662B6351}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93C16211-D9B9-4D41-97B8-EADEBE96FE2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93C16211-D9B9-4D41-97B8-EADEBE96FE2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93C16211-D9B9-4D41-97B8-EADEBE96FE2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93C16211-D9B9-4D41-97B8-EADEBE96FE2D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

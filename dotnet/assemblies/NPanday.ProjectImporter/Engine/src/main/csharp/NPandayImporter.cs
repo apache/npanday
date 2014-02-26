@@ -154,7 +154,8 @@ namespace NPanday.ProjectImporter
                     holder = (string)project["ProjectFullPath"];
                     if (holder.Contains("..\\"))
                     {
-                        throw new Exception( "Invalid folder structure for project." + " One of it's path contains '..' : " + holder);
+                        throw new Exception("Project Importer failed with project \""+ holder
+                                   + "\". Project directory structure may not be supported.");
                     }
                 }
             }

@@ -79,6 +79,7 @@
     <Compile Include="ImporterTests\SampleVBDependencyTest.cs" />
     <Compile Include="ImporterTests\SampleWebProjectsTest.cs" />
     <Compile Include="ImporterTests\SingleModuleCSharpTest.cs" />
+    <Compile Include="ImporterTests\UnsupportedProjectTest.cs" />
     <Compile Include="ImporterTests\WebSiteWithCSharpProjectFile.cs" />
   </ItemGroup>
   <ItemGroup>
