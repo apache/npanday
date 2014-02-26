@@ -653,7 +653,7 @@ namespace NPanday.VisualStudio.Addin
             }
             catch (Exception e)
             {
-                log.Error(e.Message);
+                log.Error("Unable to insert key tag in POM: " + e.Message);
             }
 
 
@@ -661,6 +661,9 @@ namespace NPanday.VisualStudio.Addin
 
         void SigningEvents_SignatureAdded()
         {
+            // TODO: Currently it seems this code is called unnecessarily sometimes, and should not iterate all projects (which may not require it - e.g. parent and ccproj)
+            // TODO: should also use PomHelperUtility instead of DOM manipulation
+
             Solution2 solution = (Solution2)_applicationObject.Solution;
             string pomFilePath = string.Empty;
             foreach (Project project in GetAllProjects(solution.Projects))
@@ -714,7 +717,7 @@ namespace NPanday.VisualStudio.Addin
                 }
                 catch (Exception e)
                 {
-                    log.Error(e.Message);
+                    log.Error("Unable to find signing tags in POM: " + e.Message, e);
                 }
                 try
                 {
@@ -730,6 +733,12 @@ namespace NPanday.VisualStudio.Addin
                         {
                             configurationNode = item.LastChild;
                         }
+                    }
+
+                    if (configurationNode == null)
+                    {
+                        // TODO: perhaps should add it here and proceed instead?
+                        return;
                     }
 
                     //isSigned adding keyfile tag
@@ -755,7 +764,7 @@ namespace NPanday.VisualStudio.Addin
                 }
                 catch (Exception e)
                 {
-                    log.Error(e.Message);
+                    log.Error("Unable to add signing configuration in POM: " + e.Message, e);
                 }
             }
         }
