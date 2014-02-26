@@ -61,8 +61,8 @@ namespace NPanday.VisualStudio.Addin_Test
         [SetUp]
         public void TestSetUp()
         {
-            File.Copy(pomPath, pomCopyPath);
-            File.Copy(pomPath2, pomCopyPath2);
+            File.Copy(pomPath, pomCopyPath, true);
+            File.Copy(pomPath2, pomCopyPath2, true);
 
             pomCopy = new PomHelperUtility(pomCopyPath);
             pomCopy2 = new PomHelperUtility(pomCopyPath2);
