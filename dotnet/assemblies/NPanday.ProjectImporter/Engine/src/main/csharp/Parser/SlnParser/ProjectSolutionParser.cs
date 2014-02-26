@@ -30,6 +30,7 @@ using Microsoft.Build.BuildEngine;
 using System.Xml;
 using System.Windows.Forms;
 using log4net;
+using System.Xml.Xsl;
 
 /// Author: Leopoldo Lee Agdeppa III
 
@@ -156,13 +157,22 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                         // This may have been mitigated by setting VisualStudioVersion and can be removed if the problem doesn't re-appear.
                         if (log.IsDebugEnabled)
                         {
-                            log.DebugFormat("VisualStudioVersion: global {0}, evaluated {1}", 
+                            log.DebugFormat("VisualStudioVersion: global {0}, evaluated {1}",
                                 prj.GlobalProperties["VisualStudioVersion"], prj.EvaluatedProperties["VisualStudioVersion"]);
                             log.DebugFormat("CloudExtensionsDir: global {0}, evaluated {1}",
                                 prj.GlobalProperties["CloudExtensionsDir"], prj.EvaluatedProperties["CloudExtensionsDir"]);
+                            log.DebugFormat("MSBuildExtensionsPath: global {0}, evaluated {1}",
+                                prj.GlobalProperties["MSBuildExtensionsPath"], prj.EvaluatedProperties["MSBuildExtensionsPath"]);
                         }
 
                         prj.Load(fullpath);
+                    }
+                    catch (NullReferenceException e)
+                    {
+                        log.Error("Error reading project from path " + fullpath, e);
+                        // workaround it by removing the imports
+                        prj.LoadXml(TransformProjectFile(fullpath));
+                        prj.FullFileName = fullpath;
                     }
                     catch (Exception e)
                     {
@@ -193,7 +203,24 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
             return list;
         }
 
-
+        private string TransformProjectFile(string fullpath)
+        {
+            XslCompiledTransform transform = new XslCompiledTransform();
+            transform.Load(XmlReader.Create(new StringReader(
+                @"<?xml version='1.0' encoding='ISO-8859-1'?>
+<xsl:stylesheet version='1.0' xmlns:xsl='http://www.w3.org/1999/XSL/Transform' xmlns:msbuild='http://schemas.microsoft.com/developer/msbuild/2003'>
+  <xsl:template match='@*|node()'>
+    <xsl:copy>
+      <xsl:apply-templates select='@*|node()'/>
+    </xsl:copy>
+  </xsl:template>
+  <xsl:template match='msbuild:Import[@Project != """"]'/>
+</xsl:stylesheet>" )));
+            StringWriter w = new StringWriter();
+            transform.Transform(fullpath, XmlWriter.Create(w));
+            log.DebugFormat("Project XML: {0}", w.ToString());
+            return w.ToString();
+        }
 
         protected void ParseProjectReferences(Dictionary<string, object> dictionary, NPanday.ProjectImporter.Parser.SlnParser.Model.Project project, NPanday.ProjectImporter.Parser.SlnParser.Model.Solution solution)
         {
