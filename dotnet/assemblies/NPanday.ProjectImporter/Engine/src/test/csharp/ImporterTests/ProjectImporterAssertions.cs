@@ -92,11 +92,7 @@ namespace NPanday.ProjectImporter.ImporterTests
             int pomCount = testPomFiles.Length;
             for (int index = 0; index < pomCount; index++)
             {
-                string returnMsg = FileUtil.CrossCheckPomElement(testPomFiles[index], pomFiles[index]);
-                if (!string.IsNullOrEmpty(returnMsg))
-                {
-                    Assert.Fail(returnMsg);
-                }
+                Assert.AreEqual(File.ReadAllText(testPomFiles[index]).Trim(), File.ReadAllText(pomFiles[index]).Trim());
             }
         }
         #endregion

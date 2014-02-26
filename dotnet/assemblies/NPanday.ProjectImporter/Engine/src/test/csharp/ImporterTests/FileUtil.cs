@@ -161,31 +161,6 @@ namespace NPanday.ProjectImporter.ImporterTests
             returnValue = returnValue.Substring(0, endIndex + 1);
             return returnValue;
         }
-        public static string CrossCheckPomElement(string refLocation, string pomPath)
-        {
-            if (!File.Exists(refLocation))
-            {
-                return string.Format(MSG_ERROR_EXPECTEDFILE_NOTFOUND, refLocation);
-            }
-            if (!File.Exists(pomPath))
-            {
-                return string.Format(MSG_ERROR_ACTUALFILE_NOTFOUND, pomPath);
-            }
-
-            FileInfo first = new FileInfo(pomPath);
-            FileInfo second = new FileInfo(refLocation);
-
-            using (FileStream fs1 = first.OpenRead())
-            using (FileStream fs2 = second.OpenRead())
-            {
-                for (int i = 0; i < first.Length; i++)
-                {
-                    if (fs1.ReadByte() != fs2.ReadByte())
-                        return string.Format("POMs {0} and {1} do not match @ byte {2}", pomPath, refLocation, i);
-                }
-            }
-            return null;
-        }
 
         public static string GetBaseDirectory()
         {
