@@ -89,7 +89,7 @@ namespace NPanday.VisualStudio.Addin
                 attachReferenceEvent();
             }
         }
-
+        
         void SolutionEvents_ProjectAdded(EnvDTE.Project project)
         {
             if (_applicationObject != null && _applicationObject.Solution != null)
@@ -121,7 +121,7 @@ namespace NPanday.VisualStudio.Addin
 
                 //determine which plugin the projectItem belongs to
 
-                if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb"))
+                if (projectItem.Name.Contains(".cs") || projectItem.Name.Contains(".vb") || projectItem.Name.Contains(".disco"))
                 {
                     //change addpluginConfiguration to accept xmlElement instead
                     pomUtil.AddMavenCompilePluginConfiguration("org.apache.npanday.plugins", "maven-compile-plugin", "includeSources", "includeSource", GetRelativePathToProject(projectItem, projectItem.Name));

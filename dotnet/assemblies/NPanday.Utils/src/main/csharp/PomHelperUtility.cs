@@ -1134,6 +1134,8 @@ namespace NPanday.Utils
         {
             NPanday.Model.Pom.Model model = ReadPomAsModel();
 
+            bool configExists = false;
+
             foreach (Plugin plugin in model.build.plugins)
             {
                 XmlDocument xmlDocument = new XmlDocument();
@@ -1161,17 +1163,24 @@ namespace NPanday.Utils
                                     XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
                                     node.InnerText = n.InnerText.Replace("\\", "/");
                                     elem.AppendChild(node);
+                                    if (n.InnerText.Equals(confPropVal))
+                                    {
+                                        configExists = true;
+                                    }
                                 }
                             }
 
-                            XmlNode nodeAdded = xmlDocument.CreateNode(XmlNodeType.Element, confProp, @"http://maven.apache.org/POM/4.0.0");
-
-                            nodeAdded.InnerText = confPropVal.Replace("\\", "/");
-                            if (!elems[count].InnerXml.Contains(nodeAdded.InnerText))
+                            if (!configExists)
                             {
-                                elem.AppendChild(nodeAdded);
+                                XmlNode nodeAdded = xmlDocument.CreateNode(XmlNodeType.Element, confProp, @"http://maven.apache.org/POM/4.0.0");
+
+                                nodeAdded.InnerText = confPropVal.Replace("\\", "/");
+                                if (!elems[count].InnerXml.Contains(nodeAdded.InnerText))
+                                {
+                                    elem.AppendChild(nodeAdded);
+                                }
+                                elems[count] = elem;
                             }
-                            elems[count] = elem;
 
                             break;
                         }
