@@ -13,27 +13,10 @@ namespace NPanday.ProjectImporter.ImporterTests
     [TestFixture]
     public class UnsupportedProjectTest
     {
-        private String slnFile;
-        private String warnMsg = String.Empty;
-        private DirectoryInfo UnsupportedProjectSource;
-        private DirectoryInfo UnsupportedProjectTarget;
-
-        public UnsupportedProjectTest()
-        {
-            UnsupportedProjectSource = new DirectoryInfo(FileUtil.GetBaseDirectory() + "\\src\\test\\resource\\UnsupportedProjectAboveSolution");
-            UnsupportedProjectTarget = new DirectoryInfo(FileUtil.GetBaseDirectory() + "\\src\\test\\resource\\UnsupportedProjectAboveSolutionCopy");
-        }
-
         [TestFixtureSetUp]
         public void TestSetUp()
         {
-            FileUtil.CopyDirectory(UnsupportedProjectSource, UnsupportedProjectTarget);
-        }
-
-        [TestFixtureTearDown]
-        public void TestTearDown()
-        {
-            Directory.Delete(UnsupportedProjectTarget.FullName, true);
+            NPanday.ProjectImporter.Converter.Algorithms.AbstractPomConverter.UseTestingArtifacts(new List<Artifact.Artifact>());
         }
 
         [Test]
@@ -42,20 +25,13 @@ namespace NPanday.ProjectImporter.ImporterTests
             string[] generatedPoms = null;
             try
             {
-                slnFile = UnsupportedProjectTarget.FullName + "\\SampleApp\\SampleApp.sln";
-                generatedPoms = NPandayImporter.ImportProject(slnFile, "test", "test-plugin", "1.0", "", UncheckedProject, ref warnMsg);
+                string slnFile = Path.Combine(ProjectImporterTestFixture.SampleProjectsPath, "UnsupportedProjectAboveSolution\\SampleApp\\SampleApp.sln");
+                string warnMsg = string.Empty;
+                generatedPoms = NPandayImporter.ImportProject(slnFile, "test", "test-plugin", "1.0", "", false, ref warnMsg);
             }
             catch
             {
                 Assert.IsNull(generatedPoms);
-            }
-        }
-
-        public void UncheckedProject(ref ProjectDigest[] projectDigests, ProjectStructureType structureType, string solutionFile, ref string groupId, ref string artifactId, ref string version)
-        {
-            foreach (ProjectDigest pDigest in projectDigests)
-            {
-                pDigest.UnitTest = false;
             }
         }
     }
