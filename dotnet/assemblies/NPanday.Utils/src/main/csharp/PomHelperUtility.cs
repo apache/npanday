@@ -318,7 +318,6 @@ namespace NPanday.Utils
                 throw new Exception("Pom file not found: " + pomfile.FullName);
             }
 
-
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(pomfile.FullName);
             String namespaceUri = xmlDocument.DocumentElement.NamespaceURI;
@@ -342,7 +341,7 @@ namespace NPanday.Utils
 
                 if (!serializer.CanDeserialize(reader))
                 {
-                    throw new Exception(string.Format("Pom File ({0}) Reading Error, Pom File might contain invalid or deformed data", pomfile.FullName));
+                    throw new Exception(string.Format("Pom File ({0}) Reading Error, Pom File might contain invalid or malformed data", pomfile.FullName));
                 }
 
                 model = (NPanday.Model.Pom.Model)serializer.Deserialize(reader);
@@ -1044,7 +1043,7 @@ namespace NPanday.Utils
                     if ("org.apache.npanday.plugins".Equals(plugin.groupId.ToLower(), StringComparison.InvariantCultureIgnoreCase)
                         && "maven-compile-plugin".Equals(plugin.artifactId.ToLower(), StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (plugin.configuration == null && plugin.configuration.Any == null)
+                        if (plugin.configuration == null || plugin.configuration.Any == null)
                         {
                             break;
                         }
@@ -1065,7 +1064,7 @@ namespace NPanday.Utils
                                     {
                                         XmlNode node = xmlDocument.CreateNode(XmlNodeType.Element, n.Name, @"http://maven.apache.org/POM/4.0.0");
 
-                                        node.InnerText = n.InnerText;
+                                        node.InnerText = n.InnerText.Replace("\\","/");
                                         if ((!elem.InnerXml.Contains(node.InnerText)) && (!node.InnerText.Contains(".disco")))
                                         {
                                             elem.AppendChild(node);

@@ -88,10 +88,12 @@ namespace NPanday.VisualStudio.Addin
                 {
                     string projectPath = Path.GetDirectoryName(Path.GetDirectoryName(this.referenceDirectory));
                     
-                    this.wsdlUrl = WebServicesReferenceUtils.GetWsdlUrl(WebServicesReferenceUtils.GetReferenceFile(this.referenceDirectory));
-                    this.wsdlFile = WebServicesReferenceUtils.GetWsdlFile(this.referenceDirectory);
-                    this.wsdlFile = this.wsdlFile.Substring(projectPath.Length+1);
-
+                    if (!string.IsNullOrEmpty(projectPath))
+                    {
+                        this.wsdlUrl = WebServicesReferenceUtils.GetWsdlUrl(WebServicesReferenceUtils.GetReferenceFile(this.referenceDirectory));
+                        this.wsdlFile = WebServicesReferenceUtils.GetWsdlFile(this.referenceDirectory);
+                        this.wsdlFile = this.wsdlFile.Substring(projectPath.Length+1);
+                    }
                 }
             }
         }

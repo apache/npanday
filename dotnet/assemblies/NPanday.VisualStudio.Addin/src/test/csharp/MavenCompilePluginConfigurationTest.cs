@@ -59,6 +59,16 @@ namespace NPanday.VisualStudio.Addin_Test
         }
 
         [Test]
+        public void AddDuplicateMavenCompilePluginConfigurationTest()
+        {
+            Assert.AreEqual(1, GetIncludedSourceCount(pomPath));
+
+            pomCopy.AddMavenCompilePluginConfiguration("org.apache.npanday.plugins", "maven-compile-plugin", "includeSources", "includeSource", "Settings.Designer.cs");
+
+            Assert.AreEqual(1, GetIncludedSourceCount(pomPath)); 
+        }
+        
+        [Test]
         public void RenameMavenCompilePluginConfigurationTest()
         {
             pomCopy.RenameMavenCompilePluginConfiguration("org.apache.npanday.plugins", "maven-compile-plugin", "includeSources", "includeSource", "IISHandler1.cs","IISHandlerRenamed.cs");
@@ -74,6 +84,24 @@ namespace NPanday.VisualStudio.Addin_Test
         public void TestCleanUp()
         {
             File.Delete(pomCopyPath);
+        }
+
+        private int GetIncludedSourceCount(String pom)
+        {
+            int ctr = 0;
+            String line;
+            StreamReader strm = new StreamReader(pom);
+
+            while ((line = strm.ReadLine()) != null)
+            {
+                if (line.ToString().Contains("<includeSource>Settings.Designer.cs</includeSource>"))
+                {
+                    ctr++;
+                }
+           }
+
+            strm.Close();
+            return ctr;
         }
 
     }

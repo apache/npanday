@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Threading;
 using System.Xml.XPath;
 using System.Windows.Forms;
 
@@ -32,16 +33,18 @@ namespace NPanday.VisualStudio.Addin
         public static string GetReferenceFile(string referenceDirectory)
         {
             string fname = "";
-            foreach (string f in Directory.GetFiles(referenceDirectory))
+            if (!string.IsNullOrEmpty(referenceDirectory))
             {
-                string fext = Path.GetExtension(f).ToLower();
-                if (fext.Equals(".map", StringComparison.InvariantCultureIgnoreCase) || fext.Equals(".discomap", StringComparison.InvariantCultureIgnoreCase)
-                    || fext.Equals(".svcmap", StringComparison.InvariantCultureIgnoreCase))
+                foreach (string f in Directory.GetFiles(referenceDirectory))
                 {
-                    fname = f;
-                    break;
+                    string fext = Path.GetExtension(f).ToLower();
+                    if (fext.Equals(".map", StringComparison.InvariantCultureIgnoreCase) || fext.Equals(".discomap", StringComparison.InvariantCultureIgnoreCase)
+                        || fext.Equals(".svcmap", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        fname = f;
+                        break;
+                    }
                 }
-
             }
             return fname;
         }
@@ -49,15 +52,18 @@ namespace NPanday.VisualStudio.Addin
         public static string GetWsdlFile(string referenceDirectory)
         {
             string fname = "";
-            foreach (string f in Directory.GetFiles(referenceDirectory))
+            if (!string.IsNullOrEmpty(referenceDirectory))
             {
-                string fext = Path.GetExtension(f).ToLower();
-                if (fext.Equals(".wsdl", StringComparison.InvariantCultureIgnoreCase))
+                foreach (string f in Directory.GetFiles(referenceDirectory))
                 {
-                    fname = f;
-                    break;
-                }
+                    string fext = Path.GetExtension(f).ToLower();
+                    if (fext.Equals(".wsdl", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        fname = f;
+                        break;
+                    }
 
+                }
             }
             return fname;
         }
