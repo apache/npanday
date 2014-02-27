@@ -44,6 +44,8 @@ public class CompilerConfig
 
     private List<String> deprecatedIncludeSourcesConfiguration;
 
+    private List<String> deprecatedIncludeTestSourcesConfiguration;
+
     private File outputDirectory;
 
     private File assemblyPath;
@@ -158,6 +160,24 @@ public class CompilerConfig
     public List<String> getDeprecatedIncludeSourcesConfiguration()
     {
         return deprecatedIncludeSourcesConfiguration;
+    }
+
+    /**
+     * @deprecated Rather use setTestExcludes + setTestIncludes!
+     *
+     * @param deprecatedIncludeTestSourcesConfiguration sources file List
+     */
+    public void setDeprecatedIncludeTestSourcesConfiguration( List<String> deprecatedIncludeTestSourcesConfiguration )
+    {
+        this.deprecatedIncludeTestSourcesConfiguration = deprecatedIncludeTestSourcesConfiguration;
+    }
+
+    /**
+     * Gets Include Sources
+     */
+    public List<String> getDeprecatedIncludeTestSourcesConfiguration()
+    {
+        return deprecatedIncludeTestSourcesConfiguration;
     }
 
     /**

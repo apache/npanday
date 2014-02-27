@@ -19,10 +19,7 @@ package npanday.plugin.compile;
  * under the License.
  */
 
-import com.google.common.collect.Lists;
 import npanday.ArtifactType;
-import npanday.PlatformUnsupportedException;
-import npanday.assembler.AssemblerContext;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerRequirement;
 import npanday.executable.compiler.KeyInfo;
@@ -30,7 +27,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Compiles test classes.
@@ -109,19 +105,11 @@ public final class TestCompilerMojo
 
         compilerConfig.setSourcePatterns(includes, excludes, testIncludes, testExcludes);
 
-        // TODO: NPANDAY-210 maybe this should be removed?
         if ( testIncludeSources != null && testIncludeSources.length != 0 )
         {
-            ArrayList<String> srcs = new ArrayList<String>();
-            for(File includeSource : testIncludeSources)
-            {
-                if(includeSource.exists())
-                {
-                    srcs.add(includeSource.getAbsolutePath());
-                }
-            }
+            ArrayList<String> srcs = convertIncludeSourcesConfiguration(testIncludeSources);
 
-          	compilerConfig.setDeprecatedIncludeSourcesConfiguration( srcs );
+            compilerConfig.setDeprecatedIncludeTestSourcesConfiguration(srcs);
         }
 
 
@@ -133,8 +121,6 @@ public final class TestCompilerMojo
         return compilerConfig;
 
     }
-
-
 
     protected ArrayList<String> getParameters()
     {

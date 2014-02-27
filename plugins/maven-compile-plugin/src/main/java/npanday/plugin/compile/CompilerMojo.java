@@ -95,17 +95,9 @@ public final class CompilerMojo
 
         compilerConfig.setSourcePatterns(includes, excludes, testIncludes, testExcludes);
 
-        // TODO: NPANDAY-210 maybe this should be removed?
         if ( includeSources != null && includeSources.length != 0 )
         {
-            ArrayList<String> srcs = new ArrayList<String>();
-            for(File includeSource : includeSources)
-            {
-                if(includeSource.exists())
-                {
-                    srcs.add(includeSource.getAbsolutePath());
-                }
-            }
+            ArrayList<String> srcs = convertIncludeSourcesConfiguration(includeSources);
 
           	compilerConfig.setDeprecatedIncludeSourcesConfiguration( srcs );
         }

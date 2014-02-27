@@ -465,13 +465,6 @@ public final class CompilerContextImpl
     private Set<File> expandSourceFiles()
     {
         Set<File> files = Sets.newHashSet();
-        if ( config.getDeprecatedIncludeSourcesConfiguration() != null )
-        {
-            for ( String file : config.getDeprecatedIncludeSourcesConfiguration() )
-            {
-                files.add( new File( file ) );
-            }
-        }
 
         files.addAll( expandSources( getGeneratedSourcesDirectory() ) );
 
@@ -544,6 +537,10 @@ public final class CompilerContextImpl
             "NPANDAY-061-012: Expanding main sources"
         );
         List<String> includes = Lists.newArrayList();
+        if ( config.getDeprecatedIncludeSourcesConfiguration() != null )
+        {
+            includes.addAll( Lists.newArrayList( config.getDeprecatedIncludeSourcesConfiguration() ) );
+        }
         if ( config.getIncludes() != null )
         {
             includes.addAll( Lists.newArrayList( config.getIncludes() ) );
@@ -575,6 +572,10 @@ public final class CompilerContextImpl
             "NPANDAY-061-013: Expanding test sources"
         );
         List<String> includes = Lists.newArrayList();
+        if ( config.getDeprecatedIncludeTestSourcesConfiguration() != null )
+        {
+            includes.addAll( Lists.newArrayList( config.getDeprecatedIncludeTestSourcesConfiguration() ) );
+        }
         if ( config.getTestIncludes() != null )
         {
             includes.addAll( Lists.newArrayList( config.getTestIncludes() ) );

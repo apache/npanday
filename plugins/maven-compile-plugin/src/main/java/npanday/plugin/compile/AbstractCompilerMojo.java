@@ -1289,6 +1289,22 @@ public abstract class AbstractCompilerMojo
 
     protected abstract void initializeDefaults() throws MojoExecutionException;
 
+    protected ArrayList<String> convertIncludeSourcesConfiguration(File[] includeSources) throws MojoExecutionException {
+        ArrayList<String> srcs = new ArrayList<String>();
+        for(File includeSource : includeSources)
+        {
+            if(includeSource.exists())
+            {
+                try {
+                    srcs.add(org.apache.tools.ant.util.FileUtils.getRelativePath(project.getBasedir(), includeSource));
+                } catch (Exception e) {
+                    throw new MojoExecutionException("Unable to find relative path for source: " + e.getMessage(), e);
+                }
+            }
+        }
+        return srcs;
+    }
+
     protected abstract ArrayList<String> getParameters();
 
     protected abstract CompilerRequirement getCompilerRequirement() throws MojoExecutionException;
