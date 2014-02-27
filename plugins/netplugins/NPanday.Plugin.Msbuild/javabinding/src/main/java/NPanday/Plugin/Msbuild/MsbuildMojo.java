@@ -21,6 +21,7 @@ package NPanday.Plugin.Msbuild;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -199,9 +200,10 @@ public class MsbuildMojo
     public boolean preExecute()
         throws MojoExecutionException, MojoFailureException
     {
+        Collection<Artifact> requiredArtifacts;
         try
         {
-            dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), "test" );
+            requiredArtifacts = dependencyResolution.require( project, LocalRepositoryUtil.create( localRepository ), "test" );
         }
         catch ( ArtifactResolutionException e )
         {
@@ -219,7 +221,7 @@ public class MsbuildMojo
             }
             getLog().info( "projects = " + projects.keySet() );
 
-            for ( Object artifact : project.getDependencyArtifacts() )
+            for ( Object artifact : requiredArtifacts )
             {
                 Artifact a = (Artifact) artifact;
 
