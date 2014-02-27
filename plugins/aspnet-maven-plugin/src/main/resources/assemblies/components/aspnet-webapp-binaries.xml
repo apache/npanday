@@ -32,6 +32,9 @@
     </dependencySet>
     <dependencySet>
       <scope>system</scope>
+      <excludes>
+        <exclude>*:*:silverlight-application</exclude>
+      </excludes>
       <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
       <outputDirectory>bin</outputDirectory>
     </dependencySet>
