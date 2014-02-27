@@ -93,11 +93,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
-      <artifactId>maven-repository-plugin</artifactId>
-      <version>1.5.0-incubating-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>maven-resgen-plugin</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
     </dependency>
@@ -148,6 +143,142 @@
     </dependency>
 
     <!--
+    NPANDAY ARCHETYPES
+    -->
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>maven-archetype-dotnet-simple</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>maven-archetype-netexecutable</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>maven-archetype-vb-simple</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
+    </dependency>
+
+    <!--assemblies-->
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>NPanday.Artifact</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-library</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging</groupId>
+      <artifactId>log4net</artifactId>
+      <version>1.2.11</version>
+      <type>dotnet-library</type>
+      <classifier>net-2.0</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>NPanday.Model.Pom</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-library</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>NPanday.Model.Pom</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-library</type>
+      <classifier>4b435f4d76e2f0e6</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday</groupId>
+      <artifactId>NPanday.Model.AutomationExtensibility</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-library</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-library</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-library</type>
+      <classifier>4b435f4d76e2f0e6</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin.Loader</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-executable</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin.MojoGenerator</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-executable</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin.Runner</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-executable</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.visualstudio</groupId>
+      <artifactId>NPanday.VisualStudio.Addin</artifactId>
+      <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>Microsoft.VisualStudio.CommandBars</groupId>
+          <artifactId>Microsoft.VisualStudio.CommandBars</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>EnvDTE</groupId>
+          <artifactId>EnvDTE</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>EnvDTE80</groupId>
+          <artifactId>EnvDTE80</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>Extensibility</groupId>
+          <artifactId>Extensibility</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>VSLangProj</groupId>
+          <artifactId>VSLangProj</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>VSLangProj80</groupId>
+          <artifactId>VSLangProj80</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>VsWebSite.Interop</groupId>
+          <artifactId>VsWebSite.Interop</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>Microsoft.Build.Engine</groupId>
+          <artifactId>Microsoft.Build.Engine</artifactId>
+        </exclusion>
+        <exclusion>
+         <groupId>Microsoft.Build.Framework</groupId>
+         <artifactId>Microsoft.Build.Framework</artifactId>
+       </exclusion>
+       <exclusion>
+         <groupId>Microsoft.Build.Utilities</groupId>
+         <artifactId>Microsoft.Build.Utilities</artifactId>
+       </exclusion>
+       <exclusion>
+         <groupId>Microsoft.Build.Tasks</groupId>
+         <artifactId>Microsoft.Build.Tasks</artifactId>
+       </exclusion>
+      </exclusions>
+      <type>visual-studio-addin</type>
+    </dependency>
+
+    <!--
     NPANDAY NETPLUGINS
      -->
     <dependency>
@@ -175,52 +306,55 @@
       <artifactId>NPanday.Plugin.Msbuild.JavaBinding</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
     </dependency>
-
-    <!--
-    NPANDAY ARCHETYPES
-    -->
     <dependency>
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>maven-archetype-dotnet-simple</artifactId>
-      <version>1.5.0-incubating-SNAPSHOT</version>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin.Msbuild</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-maven-plugin</type>
     </dependency>
     <dependency>
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>maven-archetype-netexecutable</artifactId>
-      <version>1.5.0-incubating-SNAPSHOT</version>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin.SysRef</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-maven-plugin</type>
     </dependency>
     <dependency>
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>maven-archetype-vb-simple</artifactId>
-      <version>1.5.0-incubating-SNAPSHOT</version>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin.Addin</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-maven-plugin</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin.Devenv</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-maven-plugin</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin.Resx</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-executable</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>NPanday.Plugin.Settings</artifactId>
+      <version>${project.version}</version>
+      <type>dotnet-maven-plugin</type>
+    </dependency>
+    <dependency>
+      <groupId>NUnit</groupId>
+      <artifactId>NUnit.Framework</artifactId>
+      <version>2.2.8.0</version>
+      <type>dotnet-library</type>
     </dependency>
   </dependencies>
   <build>
     <plugins>
-      <!-- Incorporate the .NET repository just built -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.0</version>
-        <executions>
-          <execution>
-            <id>dotnet</id>
-            <phase>process-resources</phase>
-            <configuration>
-              <outputDirectory>${project.build.directory}/dotnet</outputDirectory>
-              <excludeTransitive>true</excludeTransitive>
-              <includeTypes>tar.gz</includeTypes>
-            </configuration>
-            <goals>
-              <goal>unpack-dependencies</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.2-beta-3</version>
+        <version>2.4</version>
         <configuration>
           <descriptor>src/main/assembly/repo.xml</descriptor>
           <finalName>repository</finalName>
@@ -228,7 +362,7 @@
         </configuration>
         <executions>
           <execution>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>single</goal>
             </goals>
@@ -304,6 +438,12 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.npanday.plugins</groupId>
+        <artifactId>maven-compile-plugin</artifactId>
+        <version>${bootstrap.npanday.version}</version>
+        <extensions>true</extensions>
       </plugin>
     </plugins>
   </build>
