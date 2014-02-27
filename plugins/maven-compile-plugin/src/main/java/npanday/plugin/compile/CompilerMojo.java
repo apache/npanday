@@ -97,7 +97,7 @@ public final class CompilerMojo
 
         if ( includeSources != null && includeSources.length != 0 )
         {
-            ArrayList<String> srcs = convertIncludeSourcesConfiguration(includeSources);
+            ArrayList<String> srcs = convertIncludeSourcesConfiguration(project.getBuild().getSourceDirectory(), includeSources);
 
           	compilerConfig.setDeprecatedIncludeSourcesConfiguration( srcs );
         }

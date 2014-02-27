@@ -107,7 +107,7 @@ public final class TestCompilerMojo
 
         if ( testIncludeSources != null && testIncludeSources.length != 0 )
         {
-            ArrayList<String> srcs = convertIncludeSourcesConfiguration(testIncludeSources);
+            ArrayList<String> srcs = convertIncludeSourcesConfiguration(project.getBuild().getTestSourceDirectory(), testIncludeSources);
 
             compilerConfig.setDeprecatedIncludeTestSourcesConfiguration(srcs);
         }
