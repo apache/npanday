@@ -429,11 +429,6 @@ under the License.
       </dependency>
       <dependency>
         <groupId>org.apache.npanday</groupId>
-        <artifactId>dotnet-dao-project</artifactId>
-        <version>1.5.0-incubating-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.npanday</groupId>
         <artifactId>dotnet-executable</artifactId>
         <version>1.5.0-incubating-SNAPSHOT</version>
       </dependency>
