@@ -18,7 +18,11 @@
   ~ under the License.
   -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="Transform">
-  <UsingTask TaskName="TransformXml"  AssemblyFile="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\Web\Microsoft.Web.Publishing.Tasks.dll"/>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <UsingTask TaskName="TransformXml"  AssemblyFile="$(VSToolsPath)\Web\Microsoft.Web.Publishing.Tasks.dll" />
 
   <!--
   Input Parameters:
