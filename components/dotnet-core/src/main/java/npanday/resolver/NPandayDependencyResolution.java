@@ -21,23 +21,17 @@ package npanday.resolver;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
-import npanday.LocalRepositoryUtil;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
-import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
-import org.apache.maven.artifact.versioning.VersionRange;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.artifact.InvalidDependencyVersionException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.util.Set;
@@ -119,7 +113,7 @@ public class NPandayDependencyResolution
         {
             throw new ArtifactResolutionException( "NPANDAY-148-002: Could not resolve project dependencies", project.getArtifact(), e  );
         }
-        catch ( InvalidVersionSpecificationException e )
+        catch ( InvalidDependencyVersionException e )
         {
             throw new ArtifactResolutionException( "NPANDAY-148-003: Could not resolve project dependencies", project.getArtifact(), e  );
         }
@@ -145,22 +139,11 @@ public class NPandayDependencyResolution
         
     }
 
-    private void createArtifactsForMaven2BackCompat( MavenProject project ) throws InvalidVersionSpecificationException
-    {
+    private void createArtifactsForMaven2BackCompat( MavenProject project ) throws InvalidDependencyVersionException {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug( "NPANDAY-148-008: creating dependency collection for maven 2 projects" );
         }
 
-        project.setDependencyArtifacts( Sets.newHashSet() );
-        for ( Object o : project.getDependencies() )
-        {
-            Dependency d = (Dependency) o;
-            project.getDependencyArtifacts().add(
-                artifactFactory.createDependencyArtifact(
-                    d.getGroupId(), d.getArtifactId(), VersionRange.createFromVersionSpec( d.getVersion() ),
-                    d.getType(), d.getClassifier(), d.getScope()
-                )
-            );
-        }
+        project.setDependencyArtifacts( project.createArtifacts( artifactFactory, null, null ) );
     }
 }
