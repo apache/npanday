@@ -128,7 +128,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     // ignore AnyCPU or unknown values
                     if (projectDigest.Platform == "x64" || projectDigest.Platform == "x86" || projectDigest.Platform == "Itanium")
                         platform = projectDigest.Platform;
- 
+
                     string configuration = projectDigest.Configuration;
 
                     if (msBuildPlugin == null)
@@ -139,20 +139,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                             AddPluginConfiguration(msBuildPlugin, "platform", platform);
                         if (configuration != null && configuration != "Debug")
                             AddPluginConfiguration(msBuildPlugin, "configuration", configuration);
-                    }                    
-
-                    //set the path *.g.cs and *.g.vb files depending on target architecture of WPF projects as this changes path under obj folder
-                    string gFile = "obj";
-                    if (platform != null)
-                        gFile += "\\" + platform;
-                    gFile += "\\" + configuration + "\\";
-
-                    if (compilesFile.EndsWith(".cs"))
-                        gFile += compilesFile.Replace(".xaml.cs", ".g.cs");
-                    else
-                        gFile += compilesFile.Replace(".xaml.vb", ".g.vb");
-
-                    compiles.Add(gFile);
+                    }
                 }
             }
 

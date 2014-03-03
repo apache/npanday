@@ -22,9 +22,7 @@
           <define>DEBUG;TRACE</define>
           <includeSources>
             <includeSource>App.xaml.cs</includeSource>
-            <includeSource>obj\x86\Debug\App.g.cs</includeSource>
             <includeSource>MainWindow.xaml.cs</includeSource>
-            <includeSource>obj\x86\Debug\MainWindow.g.cs</includeSource>
             <includeSource>Properties\AssemblyInfo.cs</includeSource>
             <includeSource>Properties\Resources.Designer.cs</includeSource>
             <includeSource>Properties\Settings.Designer.cs</includeSource>

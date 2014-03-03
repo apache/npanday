@@ -40,9 +40,7 @@
           <frameworkVersion>3.5</frameworkVersion>
           <includeSources>
             <includeSource>App.xaml.cs</includeSource>
-            <includeSource>obj\Debug\App.g.cs</includeSource>
             <includeSource>Window1.xaml.cs</includeSource>
-            <includeSource>obj\Debug\Window1.g.cs</includeSource>
             <includeSource>Properties\AssemblyInfo.cs</includeSource>
             <includeSource>Properties\Resources.Designer.cs</includeSource>
             <includeSource>Properties\Settings.Designer.cs</includeSource>
