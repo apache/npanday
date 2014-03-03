@@ -129,9 +129,8 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                     if (projectDigest.Platform == "x64" || projectDigest.Platform == "x86" || projectDigest.Platform == "Itanium")
                         platform = projectDigest.Platform;
  
-                    // TODO: support others
-                    string configuration = "Debug";
- 
+                    string configuration = projectDigest.Configuration;
+
                     if (msBuildPlugin == null)
                     {
                         msBuildPlugin = AddPlugin("org.apache.npanday.plugins", "NPanday.Plugin.Msbuild.JavaBinding", null, false);
