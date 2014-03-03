@@ -27,7 +27,7 @@ Using the NPanday Nuget Maven Plugin
 
     * {{{http://nuget.codeplex.com/}Nuget 1.7+, will be automatically resolved}}
 
-    * {{{http://nuget.codeplex.com/}ManifestInfo 1.0+, will be automatically resolved}}
+    * {{{https://github.com/faktumsoftware/manifestinfo/releases/download/v1.0.0/manifestinfo.exe}ManifestInfo 1.0+, will be automatically resolved}}
 
 
 * Usage
