@@ -54,7 +54,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             }
 
             Plugin msdeployPlugin = AddPlugin("org.apache.npanday.plugins", "msdeploy-maven-plugin", null, false);
-            AddPluginExecution(msdeployPlugin, "create-msdeploy-package", new string[] { "create-iisApp-package" }, null);
+            AddPluginExecution(msdeployPlugin, "create-msdeploy-package", new string[] { "create-content-package" }, null);
 
             if (projectDigest.SilverlightApplicationList != null)
             {
