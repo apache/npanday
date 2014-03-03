@@ -55,6 +55,7 @@
     <Compile Include="ImporterTests\AzureImportOneWebRoleTest.cs" />
     <Compile Include="ImporterTests\AzureImportWorkerRoleTest.cs" />
     <Compile Include="ImporterTests\AzureImportMultipleRolesTest.cs" />
+    <Compile Include="ImporterTests\VS2013SolutionTest.cs" />
     <Compile Include="ImporterTests\PortableClassLibraryTest.cs" />
     <Compile Include="ImporterTests\WpfBrowserApplicationTest.cs" />
     <Compile Include="ImporterTests\WebAppWithCultureResTest.cs" />

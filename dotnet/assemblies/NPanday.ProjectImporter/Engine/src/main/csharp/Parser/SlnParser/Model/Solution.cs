@@ -56,8 +56,22 @@ namespace NPanday.ProjectImporter.Parser.SlnParser.Model
             get { return vsVersion; }
             set { vsVersion = value; }
         }
-        
 
+        // New property introduced in VS 2013
+        string visualStudioVersion;
+        public string VisualStudioVersion
+        {
+            get { return visualStudioVersion; }
+            set { visualStudioVersion = value; }
+        }
+
+        // New property introduced in VS 2013
+        string minimumVisualStudioVersion;
+        public string MinimumVisualStudioVersion
+        {
+            get { return minimumVisualStudioVersion; }
+            set { minimumVisualStudioVersion = value; }
+        }
 
 
         List<Project> projects = new List<Project>();
@@ -84,6 +98,8 @@ namespace NPanday.ProjectImporter.Parser.SlnParser.Model
             sb.AppendLine("Header: " + Header);
             sb.AppendLine("FormatVersion: " + FormatVersion);
             sb.AppendLine("VsVersion: " + VsVersion);
+            sb.AppendLine("VisualStudioVersion: " + VisualStudioVersion);
+            sb.AppendLine("MinimumVisualStudioVersion: " + MinimumVisualStudioVersion);
 
             sb.AppendLine(string.Format("\n\nProject Entries({0}):", projects.Count));
             foreach (Project project in projects)
@@ -148,6 +164,5 @@ namespace NPanday.ProjectImporter.Parser.SlnParser.Model
 
             return sb.ToString();
         }
-
     }
 }

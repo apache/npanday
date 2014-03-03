@@ -79,14 +79,37 @@ namespace NPanday.ProjectImporter.Parser.SlnParser
                     case Semantics.EOL:
                         break;
                     case Semantics.STRING_VALUE:
+                        if (lexan.Current.Value.Trim().Equals("VisualStudioVersion"))
+                        {
+                            solution.VisualStudioVersion = GetProperty(lexan);
+                        }
+                        else if (lexan.Current.Value.Trim().Equals("MinimumVisualStudioVersion"))
+                        {
+                            solution.MinimumVisualStudioVersion = GetProperty(lexan);
+                        }
                         break;
                     default:
-                        throw new Exception("Mal-formed Solution File!");
+                        throw new Exception("Unknown Solution token: " + lexan.Current.Token);
                 }
             }
 
 
             return solution;
+        }
+
+        private static string GetProperty(LexicalAnalizer lexan)
+        {
+            lexan.MoveNext();
+            lexan.Expect(Semantics.EQUALS);
+
+            lexan.MoveNext();
+            lexan.Expect(Semantics.STRING_VALUE);
+            string propertyValue = lexan.Current.Value;
+
+            lexan.MoveNext();
+            lexan.Expect(Semantics.EOL);
+
+            return propertyValue;
         }
 
         public static Solution GetSolution(string solutionFile)
