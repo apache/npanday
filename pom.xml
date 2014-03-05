@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -319,8 +319,8 @@ under the License.
           <branchBase>https://svn.apache.org/repos/asf/incubator/npanday/branches</branchBase>
           <useReleaseProfile>false</useReleaseProfile>
           <goals>deploy</goals>
-          <arguments>-Papache-release,dist,net40</arguments>
-          <preparationGoals>clean install</preparationGoals>
+          <arguments>-Papache-release,dist,net40,run-its</arguments>
+          <preparationGoals>clean validate</preparationGoals>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <mavenExecutorId>forked-path</mavenExecutorId>
           <suppressCommitBeforeTag>true</suppressCommitBeforeTag>
