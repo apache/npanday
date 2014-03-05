@@ -81,6 +81,13 @@ public class AutomationExtensibilityMojo
      */
     private ArtifactFactory artifactFactory;
 
+    /**
+     * @parameter expression="${plugin.version}"
+     * @required
+     * @readonly
+     */
+    private String pluginVersion;
+
     public String getMojoArtifactId()
         {
             return "NPanday.Plugin.Addin";
@@ -130,6 +137,11 @@ public class AutomationExtensibilityMojo
         {
             return frameworkVersion;
         }
+
+    @Override
+    protected String getPluginVersion() {
+        return pluginVersion;
+    }
 
     public ArtifactFactory getArtifactFactory()
     {

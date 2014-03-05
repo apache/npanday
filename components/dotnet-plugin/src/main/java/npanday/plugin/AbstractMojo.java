@@ -75,12 +75,6 @@ public abstract class AbstractMojo
         container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
     }
 
-    // TODO: get npandayVersion injected somehow
-    private String npandayVersion = "1.5.0-incubating-SNAPSHOT";
-
-    // TODO: get the version of the actual plugin to run; this can be external to NPanday!!!
-    private String pluginVersion = "1.5.0-incubating-SNAPSHOT";
-
     /**
      * Executes the mojo.
      *
@@ -164,7 +158,7 @@ public abstract class AbstractMojo
             Artifact artifact = getArtifactFactory().createDependencyArtifact(
                 getMojoGroupId(),
                 getMojoArtifactId(),
-                VersionRange.createFromVersion( pluginVersion ),
+                VersionRange.createFromVersion( getPluginVersion() ),
                 ArtifactType.DOTNET_MAVEN_PLUGIN.getPackagingType(),
                 null,
                 "runtime"
@@ -172,7 +166,7 @@ public abstract class AbstractMojo
 
             getNetExecutableFactory().getPluginExecutable(
                 project, artifact, vendorRequirement, localRepository, paramFile, getClassName(), targetDir,
-                npandayVersion
+                getNPandayVersion()
             ).execute();
         }
         catch ( PlatformUnsupportedException e )
@@ -267,6 +261,17 @@ public abstract class AbstractMojo
     public abstract String getVendorVersion();
 
     public abstract String getFrameworkVersion();
+
+    /** The version of the .NET plugin to resolve, will typically match that of the Java wrapper. */
+    protected abstract String getPluginVersion();
+
+    /**
+     * The version of the NPanday plugin runner to use. A plugin might supply a default, but should let the user
+     * customise it. The default is the plugin version, as it is typically suitable for those shipped with NPanday.
+     */
+    protected String getNPandayVersion() {
+        return getPluginVersion();
+    }
 
     public abstract ArtifactFactory getArtifactFactory();
 

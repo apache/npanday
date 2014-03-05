@@ -103,6 +103,13 @@ public class SettingsGeneratorMojo
      */
     private ArtifactFactory artifactFactory;
 
+    /**
+     * @parameter expression="${plugin.version}"
+     * @required
+     * @readonly
+     */
+    private String pluginVersion;
+
     public String getMojoArtifactId()
     {
         return "NPanday.Plugin.Settings";
@@ -151,6 +158,14 @@ public class SettingsGeneratorMojo
     public String getFrameworkVersion()
     {
         return frameworkVersion;
+    }
+
+    /**
+     * The version of the .NET plugin to resolve, will typically match that of the Java wrapper.
+     */
+    @Override
+    protected String getPluginVersion() {
+        return pluginVersion;
     }
 
     /**
