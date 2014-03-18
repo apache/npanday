@@ -827,41 +827,48 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             RegistryKey root = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\" + projectDigest.TargetFrameworkIdentifier);
 
             int v = 0;
-            if (projectDigest.TargetFrameworkVersion == "v4.5") {
-                v = 45;
+            if (projectDigest.TargetFrameworkVersion == "v4.5.1") {
+                v = 451;
+            }
+            else if (projectDigest.TargetFrameworkVersion == "v4.5") {
+                v = 450;
             }
             else if (projectDigest.TargetFrameworkVersion == "v4.0") {
-                v = 40;
+                v = 400;
             }
             else if (projectDigest.TargetFrameworkVersion == "v3.5") {
-                v = 35;
+                v = 350;
             }
             else if (projectDigest.TargetFrameworkVersion == "v3.0") {
-                v = 30;
+                v = 300;
             }
             else if (projectDigest.TargetFrameworkVersion == "v2.0") {
-                v = 20;
+                v = 200;
             }
 
 
-            if (v >= 45)
+            if (v >= 451)
+            {
+                GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v4.5.1\\AssemblyFoldersEx"));
+            }
+            if (v >= 450)
             {
                 GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v4.5.50709\\AssemblyFoldersEx"));
                 GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v4.5\\AssemblyFoldersEx"));
             }
-            if (v >= 40)
+            if (v >= 400)
             {
                 GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v4.0.30319\\AssemblyFoldersEx"));
             }
-            if (v >= 35)
+            if (v >= 350)
             {
                 GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v3.5\\AssemblyFoldersEx"));
             }
-            if (v >= 30)
+            if (v >= 300)
             {
                 GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v3.0\\AssemblyFoldersEx"));
             }
-            if (v >= 20)
+            if (v >= 200)
             {
                 GetTargetFrameworkDirectoriesAssemblyFoldersEx(directories, root.OpenSubKey("v2.0.50727\\AssemblyFoldersEx"));
             }
@@ -981,6 +988,11 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
                 Dictionary<string, string> targetFrameworkDirectories = new Dictionary<string, string>();
 
+                if (projectDigest.TargetFrameworkVersion == "v4.5.1")
+                {
+                    // v4.0+ overrides the path to just include the reference assemblies
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkReferenceAssemblies", "Version451", "FrameworkRef451");
+                }
                 if (projectDigest.TargetFrameworkVersion == "v4.5")
                 {
                     // v4.0+ overrides the path to just include the reference assemblies
@@ -1016,7 +1028,9 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
                 }
 
                 // Add SDK directory
-                if (projectDigest.TargetFrameworkVersion == "v4.5")
+                if (projectDigest.TargetFrameworkVersion == "v4.5.1")
+                    AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version451", "FrameworkSdk451");
+                else if (projectDigest.TargetFrameworkVersion == "v4.5")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version45", "FrameworkSdk45");
                 else if (projectDigest.TargetFrameworkVersion == "v4.0")
                     AddTargetFrameworkDirectory(targetFrameworkDirectories, "GetPathToDotNetFrameworkSdk", "Version40", "FrameworkSdk40");

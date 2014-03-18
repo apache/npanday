@@ -24,6 +24,7 @@
     <executable>NCover.Console</executable>
     <profile>NCover:NCover.Console</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5.1</frameworkVersion>
       <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
@@ -43,6 +44,7 @@
     <executable>BuildAssembler</executable>
     <profile>Microsoft:SandCastle:BuildAssembler</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5.1</frameworkVersion>
       <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
@@ -62,6 +64,7 @@
     <executable>XslTransform</executable>
     <profile>Microsoft:SandCastle:XslTransform</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5.1</frameworkVersion>
       <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
@@ -81,6 +84,7 @@
     <executable>MRefBuilder</executable>
     <profile>Microsoft:SandCastle:MRefBuilder</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5.1</frameworkVersion>
       <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
@@ -103,6 +107,7 @@
     <executable>gacutil</executable>
     <profile>GACUTIL</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5.1</frameworkVersion>
       <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
@@ -123,6 +128,7 @@
     <executable>gacutil</executable>
     <profile>GACUTIL</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5.1</frameworkVersion>
       <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>

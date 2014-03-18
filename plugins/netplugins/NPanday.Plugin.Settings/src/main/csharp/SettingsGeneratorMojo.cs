@@ -307,6 +307,21 @@ namespace NPanday.Plugin.Settings
                     vendor.frameworks = vendorFrameworks;
                     vendors.Add(vendor);
                 }
+                else if (sdk == "v4.5.1")
+                {
+                    npandaySettingsVendorsVendor vendor = new npandaySettingsVendorsVendor();
+                    vendor.vendorName = "MICROSOFT";
+                    vendor.vendorVersion = "4.5.1";
+                    npandaySettingsVendorsVendorFrameworksFramework[] vendorFrameworks = new npandaySettingsVendorsVendorFrameworksFramework[1];
+                    npandaySettingsVendorsVendorFrameworksFramework vf = new npandaySettingsVendorsVendorFrameworksFramework();
+                    vf.installRoot = dirInfo40.FullName;
+                    vf.frameworkVersion = "4.5.1";
+                    vendorFrameworks[0] = vf;
+                    vf.sdkInstallRoot = sdkInstallRoot40;
+                    FindAndAssignExecutablePaths(vf);
+                    vendor.frameworks = vendorFrameworks;
+                    vendors.Add(vendor);
+                }
             }
             return vendors.ToArray();
         }

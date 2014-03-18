@@ -74,7 +74,7 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
 
                 // for running .net framework 4.0 unit tests add new parameter in order to tell NUnit which runtime to
                 // use. If there is a way to get this parameter from maven-compile-plugin use it
-                if (projectDigest.TargetFramework == "4.5" || projectDigest.TargetFramework == "4.0")
+                if (projectDigest.TargetFramework == "4.5.1" || projectDigest.TargetFramework == "4.5" || projectDigest.TargetFramework == "4.0")
                 {
                     AddPluginConfiguration(testPlugin, "executionFrameworkVersion", projectDigest.TargetFramework);
                 }

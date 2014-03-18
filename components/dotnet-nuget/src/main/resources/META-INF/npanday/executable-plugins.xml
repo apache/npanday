@@ -28,6 +28,7 @@
         <vendor>MICROSOFT</vendor>
 
         <frameworkVersions>
+            <frameworkVersion>4.5.1</frameworkVersion>
             <frameworkVersion>4.5</frameworkVersion>
             <frameworkVersion>4.0</frameworkVersion>
             <frameworkVersion>3.5</frameworkVersion>

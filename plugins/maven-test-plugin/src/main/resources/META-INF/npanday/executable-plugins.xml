@@ -26,6 +26,7 @@ under the License.
     <executable>nunit-console</executable>
     <profile>NUNIT</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5.1</frameworkVersion>
       <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
@@ -46,6 +47,7 @@ under the License.
     <executable>nunit-console-x86</executable>
     <profile>NUNIT-x86</profile>
     <frameworkVersions>
+      <frameworkVersion>4.5.1</frameworkVersion>
       <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
       <frameworkVersion>3.5</frameworkVersion>
