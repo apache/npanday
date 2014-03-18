@@ -34,6 +34,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.artifact.InvalidDependencyVersionException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -91,10 +92,13 @@ public class NPandayDependencyResolution
             * dependencies to the projects DIRECT dependencies
             * */
 
-            addResolvedSpecialsToProjectDependencies( project, result );
-            // Add custom contribute dependencies to maven project dependencies 
-            project.getDependencyArtifacts().addAll(artifactResolver.getCustomDependenciesCache());
-            
+            Set<Artifact> dependencyArtifacts = new HashSet<Artifact>( project.getDependencyArtifacts() );
+            addResolvedSpecialsToProjectDependencies(result, dependencyArtifacts);
+
+            // Add custom contribute dependencies to maven project dependencies
+            dependencyArtifacts.addAll(artifactResolver.getCustomDependenciesCache());
+            project.setDependencyArtifacts(dependencyArtifacts);
+
             Set<Artifact> resultRequire = Sets.newLinkedHashSet(result.getArtifacts());
             resultRequire.addAll(artifactResolver.getCustomDependenciesCache());
 
@@ -119,7 +123,7 @@ public class NPandayDependencyResolution
         }
     }
 
-    private void addResolvedSpecialsToProjectDependencies( MavenProject project, ArtifactResolutionResult result )
+    private void addResolvedSpecialsToProjectDependencies(ArtifactResolutionResult result, Set<Artifact> dependencyArtifacts)
     {
         Set resolvedArtifacts = result.getArtifacts();
         Sets.SetView intersection = Sets.intersection(
@@ -129,11 +133,11 @@ public class NPandayDependencyResolution
         for ( Object ao : intersection )
         {
             Artifact a = (Artifact) ao;
-            if ( !project.getDependencyArtifacts().contains( a ) )
+            if ( !dependencyArtifacts.contains(a) )
             {
                 getLogger().info( "NPANDAY-148-005: Adding custom resolved " + a + " to project.dependencyArtifacts" );
 
-                project.getDependencyArtifacts().add( a );
+                dependencyArtifacts.add(a);
             }
         }
         
