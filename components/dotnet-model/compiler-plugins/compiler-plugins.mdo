@@ -92,9 +92,18 @@
         </field>
         <field>
           <name>profile</name>
-          <version>1.0.0+</version>
+          <version>1.0.0</version>
           <type>String</type>
           <description>Profile for the plugin.</description>
+        </field>
+        <field>
+          <name>profiles</name>
+          <version>1.5.0+</version>
+          <association>
+            <type>Profile</type>
+            <multiplicity>*</multiplicity>
+          </association>
+          <description>Profiles for the plugin.</description>
         </field>
         <field>
           <name>executable</name>
@@ -126,6 +135,7 @@
         </field>
         <field>
           <name>defaultAssemblyPath</name>
+          <version>1.0.0</version>
           <description>
             Path (absolute or relative) of the assemblies given in the assembly fields. This field
             is used in conjunction with the profile and the assemblies fields.
@@ -134,6 +144,7 @@
         </field>
         <field>
           <name>targetFramework</name>
+          <version>1.0.0</version>
           <description>
             Target framework for the compiled artifact.
           </description>
@@ -141,6 +152,7 @@
         </field>
         <field>
           <name>assemblies</name>
+          <version>1.0.0</version>
           <description>
             Assemblies to reference from the command line. This is used to create custom profiles (such as
             .NET Compact) that use a different set of system assemblies. Only include the name of the
@@ -211,6 +223,48 @@
           <version>1.0.0+</version>
           <type>String</type>
           <description>The architecture that the compiler is capable of running on.</description>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Profile</name>
+      <version>1.5.0+</version>
+      <fields>
+        <field>
+          <name>id</name>
+          <identifier>true</identifier>
+          <version>1.5.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>defaultAssemblyPath</name>
+          <version>1.5.0+</version>
+          <description>
+            Path (absolute or relative) of the assemblies given in the assembly fields. This field
+            is used in conjunction with the profile and the assemblies fields.
+          </description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>targetFramework</name>
+          <version>1.5.0+</version>
+          <description>
+            Target framework for the compiled artifact.
+          </description>
+          <type>String</type>
+        </field>
+        <field>
+          <name>assemblies</name>
+          <version>1.5.0+</version>
+          <description>
+            Assemblies to reference from the command line. This is used to create custom profiles (such as
+            .NET Compact) that use a different set of system assemblies. Only include the name of the
+            assembly, not the .dll extension.
+          </description>
+          <association>
+            <type>String</type>
+            <multiplicity>*</multiplicity>
+          </association>
         </field>
       </fields>
     </class>

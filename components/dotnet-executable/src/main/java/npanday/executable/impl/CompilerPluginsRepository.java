@@ -24,10 +24,7 @@ import com.google.common.collect.Iterables;
 import npanday.executable.CommandCapability;
 import npanday.executable.ExecutableCapability;
 import npanday.executable.compiler.MutableCompilerCapability;
-import npanday.model.compiler.plugins.CommandFilter;
-import npanday.model.compiler.plugins.CompilerPlugin;
-import npanday.model.compiler.plugins.CompilerPluginsModel;
-import npanday.model.compiler.plugins.Platform;
+import npanday.model.compiler.plugins.*;
 import npanday.model.compiler.plugins.io.xpp3.CompilerPluginXpp3Reader;
 import npanday.registry.ModelInterpolator;
 import npanday.registry.NPandayRepositoryException;
@@ -64,7 +61,7 @@ public final class CompilerPluginsRepository
      * List<npanday.model.compiler.plugins.CompilerPlugin> of compiler plugins pulled from the
      * various compiler-plugins.xml files.
      */
-    private List compilerPlugins = new ArrayList();
+    private List<CompilerPlugin> compilerPlugins = new ArrayList<CompilerPlugin>();
 
     @Override
     protected CompilerPluginsModel loadFromReader( Reader reader, Hashtable properties )
@@ -99,76 +96,69 @@ public final class CompilerPluginsRepository
     List<ExecutableCapability> getCompilerCapabilities( final VendorInfo vendorInfo )
     {
         List<ExecutableCapability> platformCapabilities = new ArrayList<ExecutableCapability>();
-        for ( Iterator i = compilerPlugins.iterator(); i.hasNext(); )
-        {
-            CompilerPlugin plugin = (CompilerPlugin) i.next();
-            String language = plugin.getLanguage();
-            String pluginClassName = plugin.getPluginClass();
-            Properties pluginConfiguration = plugin.getPluginConfiguration();
-            String executable = plugin.getExecutable();
-            String vendor = plugin.getVendor();
-            String vendorVersion = plugin.getVendorVersion();
-            String identifier = plugin.getIdentifier();
-            String profile = plugin.getProfile();
-            List<String> frameworkVersions = plugin.getFrameworkVersions();
-            List<String> coreAssemblies = plugin.getAssemblies();
-            String defaultAssemblyPath = plugin.getDefaultAssemblyPath();
-            String targetFramework = plugin.getTargetFramework();
-
-            if (vendor != null && !vendorInfo.getVendor().getVendorName().toLowerCase().equals( vendor.toLowerCase() ))
+        for (CompilerPlugin plugin : compilerPlugins) {
+            if (plugin.getVendor() != null && !vendorInfo.getVendor().getVendorName().toLowerCase().equals(plugin.getVendor().toLowerCase()))
                 continue;
 
-            if ( VersionComparer.isVendorVersionMissmatch(vendorVersion, vendorInfo.getVendorVersion()) )
-            {
+            if (VersionComparer.isVendorVersionMissmatch(plugin.getVendorVersion(), vendorInfo.getVendorVersion())) {
                 continue;
             }
 
-            if ( VersionComparer.isFrameworkVersionMissmatch(frameworkVersions, vendorInfo.getFrameworkVersion()) )
-            {
+            if (VersionComparer.isFrameworkVersionMissmatch(plugin.getFrameworkVersions(), vendorInfo.getFrameworkVersion())) {
                 continue;
             }
 
-            List platforms = plugin.getPlatforms();
-            for ( Iterator j = platforms.iterator(); j.hasNext(); )
-            {
-                MutableCompilerCapability platformCapability = new MutableCompilerCapability();
+            for (Platform platform : plugin.getPlatforms()) {
+                if (plugin.getProfiles() != null && !plugin.getProfiles().isEmpty()) {
+                    for (Profile profile : plugin.getProfiles()) {
+                        MutableCompilerCapability platformCapability = createPlatformCapability(vendorInfo, plugin, platform);
+                        platformCapability.setProfile(profile.getId());
+                        if (!isNullOrEmpty(profile.getDefaultAssemblyPath())) {
+                            platformCapability.setAssemblyPath(new File(profile.getDefaultAssemblyPath()));
+                        }
+                        platformCapability.setTargetFramework(profile.getTargetFramework());
+                        platformCapability.setCoreAssemblies(profile.getAssemblies());
 
-                platformCapability.setVendorInfo( vendorInfo );
-                platformCapability.setProbingPaths(plugin.getProbingPaths());
-
-                Platform platform = (Platform) j.next();
-                String os = platform.getOperatingSystem();
-
-                platformCapability.setLanguage( language );
-                platformCapability.setOperatingSystem( os );
-                platformCapability.setPluginClassName( pluginClassName );
-                platformCapability.setPluginConfiguration( pluginConfiguration );
-
-                platformCapability.setExecutableName( executable );
-                platformCapability.setIdentifier( identifier );
-                platformCapability.setFrameworkVersions( frameworkVersions );
-                platformCapability.setProfile( profile );
-                if (!isNullOrEmpty(defaultAssemblyPath))
-                {
-                    platformCapability.setAssemblyPath( new File(defaultAssemblyPath) );
+                        platformCapabilities.add(platformCapability);
+                    }
+                } else {
+                    MutableCompilerCapability platformCapability = createPlatformCapability(vendorInfo, plugin, platform);
+                    platformCapability.setProfile("FULL");
+                    platformCapabilities.add(platformCapability);
                 }
-                platformCapability.setTargetFramework( targetFramework );
-                String arch = platform.getArchitecture();
-                CommandFilter filter = plugin.getCommandFilter();
-                platformCapability.setCoreAssemblies( coreAssemblies );
-
-                List<String> includes = ( filter != null ) ? filter.getIncludes() : new ArrayList<String>();
-                List<String> excludes = ( filter != null ) ? filter.getExcludes() : new ArrayList<String>();
-                platformCapability.setCommandCapability(
-                    CommandCapability.Factory.createDefaultCommandCapability( includes, excludes ) );
-                if ( arch != null )
-                {
-                    platformCapability.setArchitecture( arch );
-                }
-                platformCapabilities.add( platformCapability );
             }
         }
         return platformCapabilities;
+    }
+
+    private static MutableCompilerCapability createPlatformCapability(VendorInfo vendorInfo, CompilerPlugin plugin, Platform platform) {
+        MutableCompilerCapability platformCapability = new MutableCompilerCapability();
+
+        platformCapability.setVendorInfo( vendorInfo );
+        platformCapability.setProbingPaths(plugin.getProbingPaths());
+
+        String os = platform.getOperatingSystem();
+
+        platformCapability.setLanguage(plugin.getLanguage());
+        platformCapability.setOperatingSystem( os );
+        platformCapability.setPluginClassName(plugin.getPluginClass());
+        platformCapability.setPluginConfiguration(plugin.getPluginConfiguration());
+
+        platformCapability.setExecutableName(plugin.getExecutable());
+        platformCapability.setIdentifier(plugin.getIdentifier());
+        platformCapability.setFrameworkVersions(plugin.getFrameworkVersions());
+        String arch = platform.getArchitecture();
+        CommandFilter filter = plugin.getCommandFilter();
+
+        List<String> includes = ( filter != null ) ? filter.getIncludes() : new ArrayList<String>();
+        List<String> excludes = ( filter != null ) ? filter.getExcludes() : new ArrayList<String>();
+        platformCapability.setCommandCapability(
+            CommandCapability.Factory.createDefaultCommandCapability( includes, excludes ) );
+        if ( arch != null )
+        {
+            platformCapability.setArchitecture( arch );
+        }
+        return platformCapability;
     }
 
     // ### COMPONENTS REQUIRED BY THE BASE CLASS
