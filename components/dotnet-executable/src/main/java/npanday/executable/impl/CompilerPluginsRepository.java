@@ -113,8 +113,10 @@ public final class CompilerPluginsRepository
                     for (Profile profile : plugin.getProfiles()) {
                         MutableCompilerCapability platformCapability = createPlatformCapability(vendorInfo, plugin, platform);
                         platformCapability.setProfile(profile.getId());
-                        if (!isNullOrEmpty(profile.getDefaultAssemblyPath())) {
-                            platformCapability.setAssemblyPath(new File(profile.getDefaultAssemblyPath()));
+                        String assemblyPath = profile.getDefaultAssemblyPath();
+                        if (!isNullOrEmpty(assemblyPath)) {
+                            assemblyPath = assemblyPath.replace("%PROGRAMFILES%", getProgramFilesDirectory(platform.getArchitecture()));
+                            platformCapability.setAssemblyPath(new File(assemblyPath));
                         }
                         platformCapability.setTargetFramework(profile.getTargetFramework());
                         platformCapability.setCoreAssemblies(profile.getAssemblies());
@@ -129,6 +131,20 @@ public final class CompilerPluginsRepository
             }
         }
         return platformCapabilities;
+    }
+
+    private String getProgramFilesDirectory(String architecture) {
+        String directory = null;
+        if ("x86".equals(architecture)) {
+            directory = System.getenv("PROGRAMFILES(X86)");
+        }
+        if (directory == null) {
+            directory = System.getenv("PROGRAMFILES");
+        }
+        if (directory == null) {
+            directory = "C:\\Program Files";
+        }
+        return directory;
     }
 
     private static MutableCompilerCapability createPlatformCapability(VendorInfo vendorInfo, CompilerPlugin plugin, Platform platform) {

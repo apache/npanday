@@ -204,7 +204,7 @@
     <profiles>
       <profile>
         <id>COMPACT</id>
-        <defaultAssemblyPath>C:\Program Files\Microsoft.NET\SDK\CompactFramework\v3.5\WindowsCE</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Microsoft.NET\SDK\CompactFramework\v3.5\WindowsCE</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Data</assembly>
@@ -495,7 +495,7 @@
       <profile>
         <id>.NETPortable,Profile1</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile1</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile1</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile1</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System</assembly>
@@ -507,7 +507,7 @@
       <profile>
         <id>.NETPortable,Profile2</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile2</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile2</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile2</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System</assembly>
@@ -523,7 +523,7 @@
       <profile>
         <id>.NETPortable,Profile3</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile3</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile3</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile3</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System</assembly>
@@ -540,7 +540,7 @@
       <profile>
         <id>.NETPortable,Profile4</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile4</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile4</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile4</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System</assembly>
@@ -558,7 +558,7 @@
       <profile>
         <id>.NETPortable,Profile5</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile5</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile5</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile5</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Core</assembly>
@@ -574,7 +574,7 @@
       <profile>
         <id>.NETPortable,Profile6</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile6</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile6</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile6</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.ComponentModel.DataAnnotations</assembly>
@@ -592,7 +592,7 @@
       <profile>
         <id>.NETPortable,Profile14</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile14</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile14</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile14</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.ComponentModel.Composition</assembly>
@@ -609,7 +609,7 @@
       <profile>
         <id>.NETPortable,Profile18</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile18</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile18</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile18</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.ComponentModel.Composition</assembly>
@@ -628,7 +628,7 @@
       <profile>
         <id>.NETPortable,Profile19</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile19</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile19</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile19</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.ComponentModel.Composition</assembly>
@@ -647,7 +647,7 @@
       <profile>
         <id>.NETPortable,Profile23</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile23</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile23</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile23</defaultAssemblyPath>
         <assemblies>
           <assembly>Microsoft.CSharp</assembly>
           <assembly>mscorlib</assembly>
@@ -669,7 +669,7 @@
       <profile>
         <id>.NETPortable,Profile24</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile24</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile24</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile24</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>Microsoft.CSharp</assembly>
@@ -691,7 +691,7 @@
       <profile>
         <id>.NETPortable,Profile36</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile36</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile36</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile36</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Core</assembly>
@@ -707,7 +707,7 @@
       <profile>
         <id>.NETPortable,Profile37</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile37</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile37</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile37</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Core</assembly>
@@ -723,7 +723,7 @@
       <profile>
         <id>.NETPortable,Profile41</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile41</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile41</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile41</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.ComponentModel.DataAnnotations</assembly>
@@ -741,7 +741,7 @@
       <profile>
         <id>.NETPortable,Profile42</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile42</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile42</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile42</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.ComponentModel.DataAnnotations</assembly>
@@ -759,7 +759,7 @@
       <profile>
         <id>.NETPortable,Profile46</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile46</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile46</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile46</defaultAssemblyPath>
         <assemblies>
           <assembly>Microsoft.CSharp</assembly>
           <assembly>mscorlib</assembly>
@@ -780,7 +780,7 @@
       <profile>
         <id>.NETPortable,Profile47</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile47</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile47</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile47</defaultAssemblyPath>
         <assemblies>
           <assembly>Microsoft.CSharp</assembly>
           <assembly>mscorlib</assembly>
@@ -801,7 +801,7 @@
       <profile>
         <id>.NETPortable,Profile88</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile88</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile88</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile88</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Core</assembly>
@@ -817,7 +817,7 @@
       <profile>
         <id>.NETPortable,Profile95</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile95</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile95</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile95</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Core</assembly>
@@ -834,7 +834,7 @@
       <profile>
         <id>.NETPortable,Profile96</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile96</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile96</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile96</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Core</assembly>
@@ -851,7 +851,7 @@
       <profile>
         <id>.NETPortable,Profile104</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile104</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile104</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile104</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Core</assembly>
@@ -869,7 +869,7 @@
       <profile>
         <id>.NETPortable,Profile131</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile131</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile131</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile131</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Core</assembly>
@@ -882,7 +882,7 @@
       <profile>
         <id>.NETPortable,Profile136</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile136</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile136</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile136</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Core</assembly>
@@ -898,7 +898,7 @@
       <profile>
         <id>.NETPortable,Profile143</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile143</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile143</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile143</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Core</assembly>
@@ -915,7 +915,7 @@
       <profile>
         <id>.NETPortable,Profile147</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile147</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile147</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile147</defaultAssemblyPath>
         <assemblies>
           <assembly>mscorlib</assembly>
           <assembly>System.Core</assembly>
@@ -932,7 +932,7 @@
       <profile>
         <id>.NETPortable,Profile154</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile154</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile154</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile154</defaultAssemblyPath>
         <assemblies>
           <assembly>Microsoft.CSharp</assembly>
           <assembly>mscorlib</assembly>
@@ -951,7 +951,7 @@
       <profile>
         <id>.NETPortable,Profile158</id>
         <targetFramework>.NETPortable,Version=v4.0,Profile=Profile158</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile158</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0\Profile\Profile158</defaultAssemblyPath>
         <assemblies>
           <assembly>Microsoft.CSharp</assembly>
           <assembly>mscorlib</assembly>
@@ -1036,7 +1036,7 @@
       <profile>
         <id>.NETPortable,Profile7</id>
         <targetFramework>.NETPortable,Version=v4.5,Profile=Profile7</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\Profile\Profile7</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\Profile\Profile7</defaultAssemblyPath>
         <assemblies>
           <assembly>Microsoft.CSharp</assembly>
           <assembly>Microsoft.VisualBasic</assembly>
@@ -1108,7 +1108,7 @@
       <profile>
         <id>.NETPortable,Profile49</id>
         <targetFramework>.NETPortable,Version=v4.5,Profile=Profile49</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\Profile\Profile49</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\Profile\Profile49</defaultAssemblyPath>
         <assemblies>
           <assembly>Microsoft.CSharp</assembly>
           <assembly>mscorlib</assembly>
@@ -1167,7 +1167,7 @@
       <profile>
         <id>.NETPortable,Profile78</id>
         <targetFramework>.NETPortable,Version=v4.5,Profile=Profile78</targetFramework>
-        <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\Profile\Profile78</defaultAssemblyPath>
+        <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\Profile\Profile78</defaultAssemblyPath>
         <assemblies>
           <assembly>Microsoft.CSharp</assembly>
           <assembly>mscorlib</assembly>
@@ -1225,7 +1225,7 @@
             <profile>
               <id>.NETPortable,Profile44</id>
               <targetFramework>.NETPortable,Version=v4.6,Profile=Profile44</targetFramework>
-              <defaultAssemblyPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6\Profile\Profile44</defaultAssemblyPath>
+              <defaultAssemblyPath>%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6\Profile\Profile44</defaultAssemblyPath>
               <assemblies>
                 <assembly>Microsoft.CSharp</assembly>
                 <assembly>Microsoft.VisualBasic</assembly>
