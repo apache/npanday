@@ -50,14 +50,18 @@ namespace NPanday.Plugin
 			FieldInjectorRepository fieldInjectorRepository = new FieldInjectorRepository();
 			
 			while(reader.Read() == true)
-			{	
-				FieldInfo fieldInfo = GetFieldInfoFor(this.GetMojoImplementationType(), reader.Name);				
-				if(fieldInfo != null) 
-				{
-					IFieldInjector fieldInjector = fieldInjectorRepository.getFieldInjectorFor(fieldInfo);
-					fieldInjector.Inject(this, fieldInfo, reader.ReadString() );									
-				}					
-			}        	
+			{
+			    // skip root element
+			    if (reader.Depth > 0)
+			    {
+                    FieldInfo fieldInfo = GetFieldInfoFor(this.GetMojoImplementationType(), reader.Name);
+                    if(fieldInfo != null)
+                    {
+                        IFieldInjector fieldInjector = fieldInjectorRepository.getFieldInjectorFor(fieldInfo);
+                        fieldInjector.Inject(this, fieldInfo, reader.ReadString() );
+                    }
+			    }
+			}
         }
         
        // public List<JavaClass> CreateJavaClassesForPlugin()

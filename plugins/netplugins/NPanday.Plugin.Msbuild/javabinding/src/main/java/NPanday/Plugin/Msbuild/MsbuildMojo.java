@@ -106,9 +106,10 @@ public class MsbuildMojo
     private File referencesDirectory;
 
     /**
-     * @parameter default-value="Debug"
+     * @parameter expression="${msbuild.configuration}" default-value="Debug"
      */
-    private String configuration;
+    @FieldAnnotation()
+    public String configuration;
 
     /**
      * @parameter 
@@ -253,8 +254,8 @@ public class MsbuildMojo
                     // Likely a project reference in MSBuild. 
                     // If the other project was not built with MSBuild, make sure the artifact is present where it will look for it
                     // Note: deliberately limited for now - will only work with reactor projects and doesn't test what are references and what are not
-                    // TODO: support other configurations, or more aligned MSBuild-based builds
-                    targetDir = new File( projects.get( vKey ).getBasedir(), "bin/Debug" );
+                    File binDir = new File( projects.get( vKey ).getBasedir(), "bin" );
+                    targetDir = new File( binDir, configuration );
                 }
                 File targetFile = new File( targetDir, a.getArtifactId() + "." + a.getArtifactHandler().getExtension() );
     

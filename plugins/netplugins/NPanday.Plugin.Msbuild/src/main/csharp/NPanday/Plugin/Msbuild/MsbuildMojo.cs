@@ -50,6 +50,9 @@ namespace NPanday.Plugin.Msbuild
         [FieldAttribute("extraArguments", Expression = "${msbuild.extraArguments}", Type = "java.lang.String")]
         public string extraArguments;
 
+        [FieldAttribute("configuration", Expression = "${msbuild.configuration}", Type = "java.lang.String")]
+        public string configuration;
+
         public override Type GetMojoImplementationType()
         {
             return this.GetType();
@@ -81,6 +84,10 @@ namespace NPanday.Plugin.Msbuild
                 // erroneously triggers the NPANDAY-063-001 error
                 // BuildingInsideVisualStudio is required to avoid building project references on framework 2.0
                 string args = "/v:q /p:BuildProjectReferences=false /p:BuildingInsideVisualStudio=true";
+                if (!string.IsNullOrEmpty(configuration))
+                {
+                    args += " /p:Configuration=" + configuration;
+                }
                 if (!string.IsNullOrEmpty(extraArguments))
                 {
                     args += " " + extraArguments;
