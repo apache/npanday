@@ -41,7 +41,7 @@
     <Reference Include="Microsoft.Build.Utilities" />
     <Reference Include="Mono.Cecil, Version=0.9.5.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\target\Mono.Cecil.dll</HintPath>
+      <HintPath>..\..\..\target\test-assemblies\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="NPanday.Model.Pom, Version=0.14.0.0, Culture=neutral, PublicKeyToken=4b435f4d76e2f0e6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
