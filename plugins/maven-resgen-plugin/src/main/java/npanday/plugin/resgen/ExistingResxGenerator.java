@@ -50,6 +50,11 @@ public class ExistingResxGenerator extends AbstractMojo
     private String settingsPath;
 
     /**
+     * @parameter
+     */
+    private List<String> extraArgs;
+
+    /**
      * @component
      */
     private RepositoryRegistry repositoryRegistry;
@@ -187,7 +192,12 @@ public class ExistingResxGenerator extends AbstractMojo
         else
         {
         	commands.add( resourceDirectory + File.separator + getFileNameMinusExtension(sourceFile) + ".resources"   );                               
-        }       
+        }
+
+        if (extraArgs != null) {
+            commands.addAll( extraArgs );
+        }
+
         return commands;
     }
     
