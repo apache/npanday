@@ -48,6 +48,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
+      <artifactId>library-importer-maven-plugin</artifactId>
+      <version>1.5.0-incubating-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>maven-compile-plugin</artifactId>
       <version>1.5.0-incubating-SNAPSHOT</version>
     </dependency>
