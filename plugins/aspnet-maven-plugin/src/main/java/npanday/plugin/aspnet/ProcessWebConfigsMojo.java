@@ -125,6 +125,7 @@ public class ProcessWebConfigsMojo
         super.innerExecute();
 
         final List<String> excludes = Lists.newArrayList( configExcludes );
+        excludes.add( "**/target/**" ); // exclude by default
 
         final String[] includes = configIncludes;
         final File targetFolder = PathUtil.getPreparedPackageFolder( project );
