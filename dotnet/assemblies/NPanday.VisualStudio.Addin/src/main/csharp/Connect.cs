@@ -894,10 +894,10 @@ namespace NPanday.VisualStudio.Addin
                 }
 
                 //setup default dependency values
-                string refType = "gac_msil";
+                string refType;
                 string refName = pReference.Name;
                 string refGroupId = pReference.Name;
-                string refToken = pReference.PublicKeyToken.ToLower();
+                string refToken = string.Empty;
                 string refVersion = pReference.Version;
                 string systemPath = string.Empty;
                 string scope = string.Empty;
@@ -942,37 +942,39 @@ namespace NPanday.VisualStudio.Addin
                     }
                     else
                     {
-                        // Because this might be a "reference assembly", which is a copy in a new location,
-                        // we can't just load it from the path - so try to find it in the GAC
-                        // TODO: can we get the process architecture from the project properties, so that it is more accurate if targeted to a different arch than we are generating on?
-                        List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(pReference.Name, pReference.Version, null);
-
-                        Assembly a = null;
-                        AssemblyName name = null;
-
-                        if (refs.Count > 0)
-                        {
-                            name = new System.Reflection.AssemblyName(refs[0]);
-                            a = Assembly.ReflectionOnlyLoad(name.FullName);
-                        }
-
-                        if (a != null)
-                        {
-                            refType = GacUtility.GetNPandayGacType(a.ImageRuntimeVersion, name.ProcessorArchitecture, refToken);
-                        }
-                        else
+                        // TODO: ideally this could reuse more logic from the project importer, while making use of the passed in information for version & path that can avoid having to scan the framework directories
+                        if (pReference.Path != null)
                         {
                             scope = "system";
                             systemPath = pReference.Path;
                             refType = "dotnet-library";
+                            /* This warning is only applicable for those added by browse, not for those from the framework. Can't currently differentiate, so avoid the warning to reduce misleading noise.
                             if (!iNPandayRepo)
                             {
-                                MessageBox.Show(string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository or in GAC."
+                                MessageBox.Show(string.Format("Warning: Build may not be portable if local references are used, Reference is not in Maven Repository."
                                          + "\nReference: {0}"
                                          + "\nDeploying the reference to a Repository, will make the code portable to other machines",
                                  pReference.Name
                              ), "Add Reference", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
+                             */
+                        }
+                        else
+                        {
+                            // TODO: can we get the process architecture from the project properties, so that it is more accurate if targeted to a different arch than we are generating on?
+                            List<string> refs = GacUtility.GetInstance().GetAssemblyInfo(pReference.Name, pReference.Version, null);
+
+                            Assembly a = null;
+                            AssemblyName name = null;
+
+                            if (refs.Count > 0)
+                            {
+                                name = new System.Reflection.AssemblyName(refs[0]);
+                                a = Assembly.ReflectionOnlyLoad(name.FullName);
+                            }
+
+                            refToken = pReference.PublicKeyToken.ToLower();
+                            refType = GacUtility.GetNPandayGacType(a.ImageRuntimeVersion, name.ProcessorArchitecture, refToken);
                         }
                     }
                 }
