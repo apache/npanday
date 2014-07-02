@@ -136,5 +136,5 @@ Using the NPanday Nuget Maven Plugin
 
 * Examples
 
-    For further examples have a look at the integration tests for {{library-importer-maven-plugin}}
+    For further examples have a look at the integration tests for {{{http://svn.apache.org/viewvc/incubator/npanday/trunk/plugins/library-importer-maven-plugin/src/it/} library-importer-maven-plugin}}
 
