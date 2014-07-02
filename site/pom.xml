@@ -57,7 +57,8 @@ under the License.
         <version>1.1</version>
         <configuration>
           <content>${project.build.directory}/site</content>
-          <checkoutDirectory>${basedir}/site-publish</checkoutDirectory>
+          <checkoutDirectory>${checkoutDirectory}</checkoutDirectory>
+          <tryUpdate>true</tryUpdate>
         </configuration>
         <executions>
           <execution>
@@ -156,6 +157,8 @@ under the License.
   <properties>
     <npandayReleaseVersion>1.4.0-incubating</npandayReleaseVersion>
     <npandayReleaseDate>06 May 2011</npandayReleaseDate>
+    <sitePublishUrl>https://svn.apache.org/repos/asf/incubator/npanday/site-publish/docs/${project.version}</sitePublishUrl>
+    <checkoutDirectory>${basedir}/site-publish</checkoutDirectory>
   </properties>
   <profiles>
     <profile>
@@ -175,11 +178,57 @@ under the License.
         </plugins>
       </reporting>
     </profile>
+    <profile>
+      <id>setup-checkout</id>
+      <activation>
+        <file>
+          <missing>site-publish</missing>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.7</version>
+            <executions>
+              <execution>
+                <id>prepare-checkout</id>
+                <phase>pre-site</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <tasks>
+                    <exec executable="svn">
+                      <arg line="checkout --depth immediates ${sitePublishUrl} ${checkoutDirectory}" />
+                    </exec>
+                
+                    <exec executable="svn">
+                      <arg line="update --set-depth exclude ${checkoutDirectory}/plugins" />
+                    </exec>
+                
+                    <pathconvert pathsep=" " property="dirs">
+                      <dirset dir="${checkoutDirectory}" includes="*" />
+                    </pathconvert>
+                    <exec executable="svn">
+                      <arg line="update --set-depth infinity ${dirs}" />
+                    </exec>
+                  </tasks>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
+
   <distributionManagement>
+    <!-- Site base required here for site:stage to calculate correct URLs -->
     <site>
       <id>site</id>
-      <url>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/site-publish/docs/${project.version}</url>
+      <url>scm:svn:${sitePublishUrl}</url>
     </site>
   </distributionManagement>
 </project>
