@@ -179,7 +179,7 @@ under the License.
   <distributionManagement>
     <site>
       <id>site</id>
-      <url>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/site-publish</url>
+      <url>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/site-publish/docs/${project.version}</url>
     </site>
   </distributionManagement>
 </project>
