@@ -30,7 +30,7 @@ under the License.
   <name>NPanday</name>
   <url>http://incubator.apache.org/npanday/docs/${project.version}</url>
   <prerequisites>
-    <maven>2.2.1</maven>
+    <maven>3.0</maven>
   </prerequisites>
 
   <build>
@@ -44,6 +44,27 @@ under the License.
             <phase>process-resources</phase>
             <goals>
               <goal>site</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <skipDeploy>true</skipDeploy>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-publish-plugin</artifactId>
+        <version>1.1</version>
+        <configuration>
+          <content>${project.build.directory}/site</content>
+          <checkoutDirectory>${basedir}/site-publish</checkoutDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>scm-publish</id>
+            <phase>site-deploy</phase>
+            <goals>
+              <goal>publish-scm</goal>
             </goals>
           </execution>
         </executions>
@@ -155,4 +176,10 @@ under the License.
       </reporting>
     </profile>
   </profiles>
+  <distributionManagement>
+    <site>
+      <id>site</id>
+      <url>scm:svn:https://svn.apache.org/repos/asf/incubator/npanday/site-publish</url>
+    </site>
+  </distributionManagement>
 </project>
