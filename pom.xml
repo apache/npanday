@@ -134,23 +134,29 @@ under the License.
     <developer>
       <name>Craig Bachelor</name>
       <id>craig</id>
+      <roles>
+        <role>PPMC</role>
+      </roles>
     </developer>
     <developer>
       <name>Marecor Baclay</name>
       <id>mbaclay</id>
       <email>mbaclay@exist.com</email>
+      <roles>
+        <role>PPMC</role>
+      </roles>
     </developer>
     <developer>
       <name>Maria Odea Ching</name>
       <id>oching</id>
-      <roles>
-        <role>Mentor</role>
-      </roles>
     </developer>
     <developer>
       <name>Lars Corneliussen</name>
       <id>lcorneliussen</id>
       <email>me@lcorneliussen.de</email>
+      <roles>
+        <role>PPMC</role>
+      </roles>
     </developer>
     <developer>
       <name>John Fallows</name>
@@ -159,45 +165,52 @@ under the License.
     <developer>
       <name>Dennis Lundberg</name>
       <id>dennisl</id>
-      <roles>
-        <role>Mentor</role>
-      </roles>
     </developer>
     <developer>
       <name>Joe Ocaba</name>
       <id>jocaba</id>
       <email>jocaba@maestrodev.com</email>
+      <roles>
+        <role>PPMC</role>
+      </roles>
     </developer>
     <developer>
       <name>Adelita Padilla</name>
       <id>apadilla</id>
       <email>apadilla@maestrodev.com</email>
+      <roles>
+        <role>PPMC</role>
+      </roles>
     </developer>
     <developer>
       <name>Brett Porter</name>
       <id>brett</id>
       <email>brett@apache.org</email>
+      <roles>
+        <role>PPMC</role>
+      </roles>
     </developer>
     <developer>
       <name>Matthias Wessendorf</name>
       <id>matzew</id>
-      <roles>
-        <role>Former Mentor</role>
-      </roles>
     </developer>
     <!--Emeritus Committers-->
     <developer>
       <name>Wendy Smoak</name>
       <id>wsmoak</id>
       <email>wsmoak@gmail.com</email>
+      <roles>
+        <role>Emeritus</role>
+      </roles>
     </developer>
     <developer>
       <name>C�dric</name>
-      <id>mimil</id>
+      <roles>
+        <role>Emeritus</role>
+      </roles>
     </developer>
     <developer>
       <name>Leopoldo Agdeppa</name>
-      <id>lagdeppa</id>
       <email>lagdeppa@exist.com</email>
       <roles>
         <role>Emeritus</role>
@@ -205,7 +218,6 @@ under the License.
     </developer>
     <developer>
       <name>Jan Ancajas</name>
-      <id>jancajas</id>
       <email>jancajas@exist.com</email>
       <roles>
         <role>Emeritus</role>
@@ -213,7 +225,6 @@ under the License.
     </developer>
     <developer>
       <name>Shein Ernacio</name>
-      <id>sernacio</id>
       <email>sernacio@exist.com</email>
       <roles>
         <role>Emeritus</role>
@@ -228,18 +239,17 @@ under the License.
       </roles>
     </developer>
     <developer>
+      <name>Melvin Sembrano</name>
+      <email>melvinsembrano@gmail.com</email>
+      <roles>
+        <role>Emeritus</role>
+      </roles>
+    </developer>
+    <developer>
       <name>Gavin McDonald</name>
       <id>gmcdonald</id>
       <roles>
         <role>Former Mentor</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Melvin Sembrano</name>
-      <id>melvinsembrano</id>
-      <email>melvinsembrano@gmail.com</email>
-      <roles>
-        <role>Emeritus</role>
       </roles>
     </developer>
     <developer>
