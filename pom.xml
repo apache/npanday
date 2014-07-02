@@ -65,14 +65,6 @@ under the License.
       </snapshots>
     </repository>
     <repository>
-      <id>openrdf</id>
-      <name>OpenRDF Repository</name>
-      <url>http://repository.aduna-software.org/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
       <releases>
         <enabled>false</enabled>
       </releases>

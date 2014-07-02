@@ -76,10 +76,7 @@ Setting up an Artifact Repository
   For the NPanday releases, they can be obtained as above either from the <<<npanday>>> subdirectory of the downloaded
   repository, or from a Maven repository.
 
-  For the dependencies, there are two needs:
-
-    * the Open RDF repository, which can be proxied from {{http://repository.aduna-software.org/maven2}}.
-      Only the <<<info/aduna/**>>> and <<<org/openrdf/**>>> artifacts need to be proxied.
+  For the dependencies, NUnit is needed:
 
     * 3rd party .NET dependencies. Some can be obtained from {{https://archiva-repository.apache.org/archiva/repository/3rdparty/}},
       or they can be uploaded manually to your own managed repository. Currently, only NUnit is included there.
