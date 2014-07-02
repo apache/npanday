@@ -207,20 +207,5 @@
         </plugins>
       </build>
     </profile>
-    <profile>
-      <id>local-docs</id>
-      <distributionManagement>
-        <site>
-          <id>local</id>
-          <url>${localdocs.folder}/plugins</url>
-        </site>
-      </distributionManagement>
-    </profile>
   </profiles>
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://people.apache.org/www/incubator.apache.org/npanday/docs/${project.version}/plugins</url>
-    </site>
-  </distributionManagement>
 </project>
