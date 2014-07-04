@@ -27,6 +27,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.npanday.plugins</groupId>
   <artifactId>maven-dotnet-plugins</artifactId>
+  <url>http://incubator.apache.org/npanday/docs/${project.version}/plugins/</url>
   <packaging>pom</packaging>
   <name>NPanday :: Maven Plugins</name>
   <modules>
