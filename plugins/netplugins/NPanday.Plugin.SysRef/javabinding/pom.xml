@@ -49,4 +49,10 @@ under the License.
       <version>${plexus.utils.version}</version>
     </dependency>
   </dependencies>
+  <distributionManagement>
+    <site>
+      <id>site</id>
+      <url>scm:svn:${sitePublishUrl}/plugins/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
 </project>
