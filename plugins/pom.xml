@@ -145,7 +145,8 @@
         <reportSets>
           <reportSet>
             <reports>
-
+              <report>index</report>
+              <report>modules</report>
             </reports>
           </reportSet>
         </reportSets>
@@ -208,4 +209,11 @@
       </build>
     </profile>
   </profiles>
+
+  <distributionManagement>
+    <site>
+      <id>site</id>
+      <url>scm:svn:${sitePublishUrl}/plugins</url>
+    </site>
+  </distributionManagement>
 </project>

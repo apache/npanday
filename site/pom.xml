@@ -47,28 +47,13 @@ under the License.
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <skipDeploy>true</skipDeploy>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-scm-publish-plugin</artifactId>
-        <version>1.1</version>
         <configuration>
           <content>${project.build.directory}/site</content>
-          <checkoutDirectory>${checkoutDirectory}</checkoutDirectory>
-          <tryUpdate>true</tryUpdate>
         </configuration>
-        <executions>
-          <execution>
-            <id>scm-publish</id>
-            <phase>site-deploy</phase>
-            <goals>
-              <goal>publish-scm</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -157,8 +142,6 @@ under the License.
   <properties>
     <npandayReleaseVersion>1.4.0-incubating</npandayReleaseVersion>
     <npandayReleaseDate>06 May 2011</npandayReleaseDate>
-    <sitePublishUrl>https://svn.apache.org/repos/asf/incubator/npanday/site-publish/docs/${project.version}</sitePublishUrl>
-    <checkoutDirectory>${basedir}/site-publish</checkoutDirectory>
   </properties>
   <profiles>
     <profile>
@@ -225,7 +208,7 @@ under the License.
   </profiles>
 
   <distributionManagement>
-    <!-- Site base required here for site:stage to calculate correct URLs -->
+    <!-- Site base required here for site plugin to calculate correct URLs -->
     <site>
       <id>site</id>
       <url>scm:svn:${sitePublishUrl}</url>

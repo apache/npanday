@@ -51,7 +51,8 @@ under the License.
     -->
     <bootstrap.npanday.version>${project.version}</bootstrap.npanday.version>
 
-    <localdocs.folder>file:///c:/Program Files/NPanday/docs</localdocs.folder>
+    <sitePublishUrl>https://svn.apache.org/repos/asf/incubator/npanday/site-publish/docs/${project.version}</sitePublishUrl>
+    <checkoutDirectory>${basedir}/site-publish</checkoutDirectory>
   </properties>
 
   <repositories>
@@ -329,6 +330,31 @@ under the License.
           <suppressCommitBeforeBranch>true</suppressCommitBeforeBranch>
           <remoteTagging>false</remoteTagging>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <skipDeploy>true</skipDeploy>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-publish-plugin</artifactId>
+        <version>1.1</version>
+        <configuration>
+          <checkoutDirectory>${checkoutDirectory}</checkoutDirectory>
+          <tryUpdate>true</tryUpdate>
+        </configuration>
+        <executions>
+          <execution>
+            <id>scm-publish</id>
+            <phase>site-deploy</phase>
+            <goals>
+              <goal>publish-scm</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
