@@ -151,7 +151,7 @@ public class CopyDependenciesMojo
             return;
         }
 
-        SettingsUtil.applyCustomSettingsIfAvailable( getLog(), repositoryRegistry, settingsPath );
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
         AndArtifactFilter includeFilter = new AndArtifactFilter();
 

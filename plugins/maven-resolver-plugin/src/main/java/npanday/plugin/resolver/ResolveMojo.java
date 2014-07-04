@@ -18,34 +18,21 @@
  */
 package npanday.plugin.resolver;
 
-import com.google.common.collect.Sets;
 import npanday.LocalRepositoryUtil;
 import npanday.registry.RepositoryRegistry;
-import npanday.resolver.NPandayArtifactResolver;
 import npanday.resolver.NPandayDependencyResolution;
-import npanday.resolver.filter.DotnetAssemblyArtifactFilter;
 import npanday.resolver.filter.DotnetSymbolsArtifactFilter;
-import npanday.resolver.filter.OrArtifactFilter;
 import npanday.vendor.SettingsUtil;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.InversionArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
-import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
-import org.apache.maven.artifact.versioning.VersionRange;
-import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.util.Set;
 
 /**
  * Resolves .NET assemblies from special locations, as for example the GAC.
@@ -114,7 +101,7 @@ public class ResolveMojo
             return;
         }
 
-        SettingsUtil.applyCustomSettingsIfAvailable( getLog(), repositoryRegistry, settingsPath );
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
         getLog().warn(
             "NPANDAY-149-002: Mojo for resolving dependencies beforehand is executed! It should only be run, "

@@ -20,14 +20,9 @@
 package npanday.plugin.resolver;
 
 import com.google.common.base.Strings;
-import npanday.ArtifactType;
 import npanday.LocalRepositoryUtil;
-import npanday.PathUtil;
 import npanday.registry.RepositoryRegistry;
 import npanday.resolver.NPandayDependencyResolution;
-import npanday.resolver.filter.DotnetExecutableArtifactFilter;
-import npanday.resolver.filter.DotnetLibraryArtifactFilter;
-import npanday.resolver.filter.OrArtifactFilter;
 import npanday.vendor.SettingsUtil;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
@@ -39,11 +34,8 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.FileUtils;
-import org.reflections.vfs.SystemDir;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -130,7 +122,7 @@ public class ListDependenciesMojo
             return;
         }
 
-        SettingsUtil.applyCustomSettingsIfAvailable( getLog(), repositoryRegistry, settingsPath );
+        SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );
 
         AndArtifactFilter includeFilter = new AndArtifactFilter();
 

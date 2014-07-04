@@ -119,25 +119,7 @@ public class SettingsUtil
             log,
             repositoryRegistry,
             settingsPathOrFile,
-            /* throw error, if file doesn't exist on windows */
-            Os.isFamily( Os.FAMILY_WINDOWS ) );
-    }
-
-    /**
-     * Applies the custom settings provided in settingsPathOrFile, if the file does exist.
-     *
-     * @param settingsPathOrFile If a path, 'npanday-settings.xml' is added.
-     * @throws MojoExecutionException If anything goes wrong reddddddddddddddddddading or initializing the settings
-     */
-    public static boolean applyCustomSettingsIfAvailable( Log log, RepositoryRegistry repositoryRegistry,
-                                                   String settingsPathOrFile)
-        throws  MojoExecutionException
-    {
-        return overrideDefaultSettings(
-            log,
-            repositoryRegistry,
-            settingsPathOrFile,
-            /*throw error, if file doesn exist*/ false );
+            false );
     }
 
 
