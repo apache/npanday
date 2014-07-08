@@ -36,6 +36,14 @@ under the License.
         <operatingSystem>Windows</operatingSystem>
       </platform>
     </platforms>
+    <probingPaths>
+      <!-- TODO: this should be broken up as XSD is, just means for now you always get newest available tools version, but will target right framework -->
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0\12.0@SDK40ToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0\11.0@SDK40ToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0\11.0@SDK40ToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@SDK40ToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows@CurrentInstallFolder}\bin</probingPath>
+    </probingPaths>
   </executablePlugin>
   <executablePlugin>
     <identifier>WSDL</identifier>
