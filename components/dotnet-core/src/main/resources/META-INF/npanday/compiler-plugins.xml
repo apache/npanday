@@ -1381,17 +1381,302 @@
     </commandFilter>
   </compilerPlugin>
   <compilerPlugin>
-    <identifier>MS-VB</identifier>
+    <identifier>MS-VB-4.5.1</identifier>
     <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>vbc</executable>
     <language>VB</language>
     <frameworkVersions>
       <frameworkVersion>4.5.1</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+    <probingPaths>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0@MSBuildToolsPath}</probingPath>
+    </probingPaths>
+    <commandFilter>
+      <includes>
+        <include>addmodule</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>codepage</include>
+        <include>debug</include>
+        <include>define</include>
+        <include>delaysign</include>
+        <include>doc</include>
+        <include>errorreport</include>
+        <include>filealign</include>
+        <!-- ignored:
+        <include>help</include>
+        -->
+        <include>imports</include>
+        <include>keycontainer</include>
+        <include>keyfile</include>
+        <include>langversion</include>
+        <include>libpath</include>
+        <include>link</include>
+        <include>linkresource</include>
+        <include>main</include>
+        <include>moduleassemblyname</include>
+        <include>netcf</include>
+        <include>noconfig</include>
+        <include>nologo</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>nowin32manifest</include>
+        <include>optimize</include>
+        <include>optioncompare</include>
+        <include>optionexplicit</include>
+        <include>optioninfer</include>
+        <include>optionstrict</include>
+        <include>out</include>
+        <include>platform</include>
+        <include>quiet</include>
+        <include>recurse</include>
+        <include>reference</include>
+        <include>removeintchecks</include>
+        <include>resource</include>
+        <include>rootnamespace</include>
+        <include>sdkpath</include>
+        <include>target</include>
+        <include>utf8output</include>
+        <include>vbruntime</include>
+        <include>verbose</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32manifest</include>
+        <include>win32resource</include>
+      </includes>
+    </commandFilter>
+  </compilerPlugin>
+  <compilerPlugin>
+    <identifier>MS-VB-4.5</identifier>
+    <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>vbc</executable>
+    <language>VB</language>
+    <frameworkVersions>
       <frameworkVersion>4.5</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+    <probingPaths>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0@MSBuildToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@MSBuildToolsPath}</probingPath>
+    </probingPaths>
+    <commandFilter>
+      <includes>
+        <include>addmodule</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>codepage</include>
+        <include>debug</include>
+        <include>define</include>
+        <include>delaysign</include>
+        <include>doc</include>
+        <include>errorreport</include>
+        <include>filealign</include>
+        <!-- ignored:
+        <include>help</include>
+        -->
+        <include>imports</include>
+        <include>keycontainer</include>
+        <include>keyfile</include>
+        <include>langversion</include>
+        <include>libpath</include>
+        <include>link</include>
+        <include>linkresource</include>
+        <include>main</include>
+        <include>moduleassemblyname</include>
+        <include>netcf</include>
+        <include>noconfig</include>
+        <include>nologo</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>nowin32manifest</include>
+        <include>optimize</include>
+        <include>optioncompare</include>
+        <include>optionexplicit</include>
+        <include>optioninfer</include>
+        <include>optionstrict</include>
+        <include>out</include>
+        <include>platform</include>
+        <include>quiet</include>
+        <include>recurse</include>
+        <include>reference</include>
+        <include>removeintchecks</include>
+        <include>resource</include>
+        <include>rootnamespace</include>
+        <include>sdkpath</include>
+        <include>target</include>
+        <include>utf8output</include>
+        <include>vbruntime</include>
+        <include>verbose</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32manifest</include>
+        <include>win32resource</include>
+      </includes>
+    </commandFilter>
+  </compilerPlugin>
+  <compilerPlugin>
+    <identifier>MS-VB-4.0</identifier>
+    <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>vbc</executable>
+    <language>VB</language>
+    <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+    <probingPaths>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@MSBuildToolsPath}</probingPath>
+    </probingPaths>
+    <commandFilter>
+      <includes>
+        <include>addmodule</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>codepage</include>
+        <include>debug</include>
+        <include>define</include>
+        <include>delaysign</include>
+        <include>doc</include>
+        <include>errorreport</include>
+        <include>filealign</include>
+        <!-- ignored:
+        <include>help</include>
+        -->
+        <include>imports</include>
+        <include>keycontainer</include>
+        <include>keyfile</include>
+        <include>langversion</include>
+        <include>libpath</include>
+        <include>link</include>
+        <include>linkresource</include>
+        <include>main</include>
+        <include>moduleassemblyname</include>
+        <include>netcf</include>
+        <include>noconfig</include>
+        <include>nologo</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>nowin32manifest</include>
+        <include>optimize</include>
+        <include>optioncompare</include>
+        <include>optionexplicit</include>
+        <include>optioninfer</include>
+        <include>optionstrict</include>
+        <include>out</include>
+        <include>platform</include>
+        <include>quiet</include>
+        <include>recurse</include>
+        <include>reference</include>
+        <include>removeintchecks</include>
+        <include>resource</include>
+        <include>rootnamespace</include>
+        <include>sdkpath</include>
+        <include>target</include>
+        <include>utf8output</include>
+        <include>vbruntime</include>
+        <include>verbose</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32manifest</include>
+        <include>win32resource</include>
+      </includes>
+    </commandFilter>
+  </compilerPlugin>
+  <compilerPlugin>
+    <identifier>MS-VB-3.5</identifier>
+    <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>vbc</executable>
+    <language>VB</language>
+    <frameworkVersions>
       <frameworkVersion>3.5</frameworkVersion>
       <frameworkVersion>3.0</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+    <probingPaths>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\3.5@MSBuildToolsPath}</probingPath>
+    </probingPaths>
+    <commandFilter>
+      <includes>
+        <include>addmodule</include>
+        <include>baseaddress</include>
+        <include>bugreport</include>
+        <include>codepage</include>
+        <include>debug</include>
+        <include>define</include>
+        <include>delaysign</include>
+        <include>doc</include>
+        <include>errorreport</include>
+        <include>filealign</include>
+        <!-- ignored:
+        <include>help</include>
+        -->
+        <include>imports</include>
+        <include>keycontainer</include>
+        <include>keyfile</include>
+        <include>langversion</include>
+        <include>libpath</include>
+        <include>link</include>
+        <include>linkresource</include>
+        <include>main</include>
+        <include>moduleassemblyname</include>
+        <include>netcf</include>
+        <include>noconfig</include>
+        <include>nologo</include>
+        <include>nostdlib</include>
+        <include>nowarn</include>
+        <include>nowin32manifest</include>
+        <include>optimize</include>
+        <include>optioncompare</include>
+        <include>optionexplicit</include>
+        <include>optioninfer</include>
+        <include>optionstrict</include>
+        <include>out</include>
+        <include>platform</include>
+        <include>quiet</include>
+        <include>recurse</include>
+        <include>reference</include>
+        <include>removeintchecks</include>
+        <include>resource</include>
+        <include>rootnamespace</include>
+        <include>sdkpath</include>
+        <include>target</include>
+        <include>utf8output</include>
+        <include>vbruntime</include>
+        <include>verbose</include>
+        <include>warnaserror</include>
+        <include>win32icon</include>
+        <include>win32manifest</include>
+        <include>win32resource</include>
+      </includes>
+    </commandFilter>
+  </compilerPlugin>
+  <compilerPlugin>
+    <identifier>MS-VB-2.0</identifier>
+    <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>vbc</executable>
+    <language>VB</language>
+    <frameworkVersions>
       <frameworkVersion>2.0.50727</frameworkVersion>
       <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
@@ -1401,10 +1686,6 @@
       </platform>
     </platforms>
     <probingPaths>
-      <!-- TODO: this should be broken up as CSC is, just means for now you always get newest available tools version, but will target right framework -->
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0@MSBuildToolsPath}</probingPath>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@MSBuildToolsPath}</probingPath>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\3.5@MSBuildToolsPath}</probingPath>
       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\2.0@MSBuildToolsPath}</probingPath>
     </probingPaths>
     <commandFilter>
@@ -1499,7 +1780,7 @@
       </includes>
     </commandFilter>
   </compilerPlugin>
-  
+
   <compilerPlugin>
     <identifier>MONO-CS</identifier>
     <pluginClass>npanday.executable.compiler.impl.DefaultCompiler</pluginClass>
