@@ -521,9 +521,11 @@ public class WinRegistry
         try
         {
             String value = WinRegistry.readString( registryHKey.getHKey(), key, valueName );
-            Matcher m = REGISTRY_REFERENCE_REGEX.matcher(value);
-            if (m.matches()) {
-                value = getValue(RegistryHKey.tryGetFromName(m.group(1)), m.group(2), m.group(3));
+            if (value != null) {
+                Matcher m = REGISTRY_REFERENCE_REGEX.matcher(value);
+                if (m.matches()) {
+                    value = getValue(RegistryHKey.tryGetFromName(m.group(1)), m.group(2), m.group(3));
+                }
             }
             return value;
         }
