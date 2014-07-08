@@ -208,6 +208,9 @@
               <filterProperties>
                 <npandayVersion>${bootstrap.npanday.version}</npandayVersion>
               </filterProperties>
+              <properties>
+                <npanday.settings>${project.build.directory}/npanday-settings.xml</npanday.settings>
+              </properties>
             </configuration>
             <executions>
               <execution>
