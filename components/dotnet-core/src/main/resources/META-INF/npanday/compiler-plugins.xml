@@ -311,7 +311,7 @@
       </platform>
     </platforms>
     <probingPaths>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0\12.0@FrameworkSDKRoot}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0@MSBuildToolsPath}</probingPath>
     </probingPaths>
     <commandFilter>
       <includes>
@@ -382,8 +382,8 @@
       </platform>
     </platforms>
     <probingPaths>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0\11.0@FrameworkSDKRoot}</probingPath>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0\11.0@FrameworkSDKRoot}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0@MSBuildToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@MSBuildToolsPath}</probingPath>
     </probingPaths>
     <commandFilter>
       <includes>
@@ -453,7 +453,7 @@
       </platform>
     </platforms>
     <probingPaths>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@FrameworkSDKRoot}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@MSBuildToolsPath}</probingPath>
     </probingPaths>
     <commandFilter>
       <includes>
@@ -997,7 +997,7 @@
       </platform>
     </platforms>
     <probingPaths>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@FrameworkSDKRoot}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@MSBuildToolsPath}</probingPath>
     </probingPaths>
     <commandFilter>
       <includes>
@@ -1328,8 +1328,8 @@
       </platform>
     </platforms>
     <probingPaths>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0\11.0@FrameworkSDKRoot}</probingPath>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0\11.0@FrameworkSDKRoot}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0@MSBuildToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@MSBuildToolsPath}</probingPath>
     </probingPaths>
     <commandFilter>
       <includes>
@@ -1402,10 +1402,8 @@
     </platforms>
     <probingPaths>
       <!-- TODO: this should be broken up as CSC is, just means for now you always get newest available tools version, but will target right framework -->
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0\12.0@FrameworkSDKRoot}</probingPath>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0\11.0@FrameworkSDKRoot}</probingPath>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0\11.0@FrameworkSDKRoot}</probingPath>
-      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@FrameworkSDKRoot}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0@MSBuildToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@MSBuildToolsPath}</probingPath>
       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\3.5@MSBuildToolsPath}</probingPath>
       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\2.0@MSBuildToolsPath}</probingPath>
     </probingPaths>
