@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 <executablePlugins>
-   <executablePlugin>
+  <executablePlugin>
     <identifier>MONO:XSD</identifier>
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MONO</vendor>
@@ -131,18 +131,120 @@ under the License.
     <profile>XSD:SCHEMA</profile>
     <frameworkVersions>
       <frameworkVersion>4.5.1</frameworkVersion>
-      <frameworkVersion>4.5</frameworkVersion>
-      <frameworkVersion>4.0</frameworkVersion>
-      <frameworkVersion>3.5</frameworkVersion>
-      <frameworkVersion>3.0</frameworkVersion>
-      <frameworkVersion>2.0.50727</frameworkVersion>
-      <frameworkVersion>1.1.4322</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
         <operatingSystem>Windows</operatingSystem>
       </platform>
     </platforms>
+    <probingPaths>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0\12.0@SDK40ToolsPath}</probingPath>
+    </probingPaths>
+    <commandFilter>
+      <includes>
+        <include>classes</include>
+        <include>dataset</include>
+        <include>element</include>
+        <include>fields</include>
+        <include>enableDataBinding</include>
+        <include>namespace</include>
+        <include>language</include>
+        <include>out</include>
+        <include>o</include>
+        <include>type</include>
+        <include>uri</include>
+        <include>parameters</include>
+      </includes>
+    </commandFilter>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>MS:XSD:SCHEMA</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>xsd</executable>
+    <profile>XSD:SCHEMA</profile>
+    <frameworkVersions>
+      <frameworkVersion>4.5</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+    <probingPaths>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0\11.0@SDK40ToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0\11.0@SDK40ToolsPath}</probingPath>
+    </probingPaths>
+    <commandFilter>
+      <includes>
+        <include>classes</include>
+        <include>dataset</include>
+        <include>element</include>
+        <include>fields</include>
+        <include>enableDataBinding</include>
+        <include>namespace</include>
+        <include>language</include>
+        <include>out</include>
+        <include>o</include>
+        <include>type</include>
+        <include>uri</include>
+        <include>parameters</include>
+      </includes>
+    </commandFilter>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>MS:XSD:SCHEMA</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>xsd</executable>
+    <profile>XSD:SCHEMA</profile>
+    <frameworkVersions>
+      <frameworkVersion>4.0</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+    <probingPaths>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@SDK40ToolsPath}</probingPath>
+    </probingPaths>
+    <commandFilter>
+      <includes>
+        <include>classes</include>
+        <include>dataset</include>
+        <include>element</include>
+        <include>fields</include>
+        <include>enableDataBinding</include>
+        <include>namespace</include>
+        <include>language</include>
+        <include>out</include>
+        <include>o</include>
+        <include>type</include>
+        <include>uri</include>
+        <include>parameters</include>
+      </includes>
+    </commandFilter>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>MS:XSD:SCHEMA</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>xsd</executable>
+    <profile>XSD:SCHEMA</profile>
+    <frameworkVersions>
+      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>3.0</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+    <probingPaths>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows@CurrentInstallFolder}\bin</probingPath>
+    </probingPaths>
     <commandFilter>
       <includes>
         <include>classes</include>
