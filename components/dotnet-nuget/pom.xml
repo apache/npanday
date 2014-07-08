@@ -27,7 +27,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>dotnet-nuget</artifactId>
-  <name>NPanday :: MSBuild</name>
+  <name>NPanday :: NuGet</name>
   <description>Shared logic for executing Nuget in the context of Mojos.</description>
   <dependencies>
     <dependency>
