@@ -1743,24 +1743,65 @@
       </includes>
     </commandFilter>
   </compilerPlugin>
-  
+
   <compilerPlugin>
-    <identifier>ASP</identifier>
+    <identifier>ASP-4.0</identifier>
     <pluginClass>npanday.executable.compiler.impl.AspxCompiler</pluginClass>
     <vendor>MICROSOFT</vendor>
     <executable>aspnet_compiler</executable>
     <language>ASP</language>
     <frameworkVersions>
-      <frameworkVersion>2.0.50727</frameworkVersion>
-      <frameworkVersion>3.0</frameworkVersion>
-      <frameworkVersion>3.5</frameworkVersion>
-      <frameworkVersion>4.0</frameworkVersion>      
+      <frameworkVersion>4.5.1</frameworkVersion>
+      <frameworkVersion>4.5</frameworkVersion>
+      <frameworkVersion>4.0</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
         <operatingSystem>Windows</operatingSystem>
       </platform>
     </platforms>
+    <probingPaths>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@MSBuildToolsPath}</probingPath>
+    </probingPaths>
+    <commandFilter>
+      <includes>
+        <include>m</include>
+        <include>v</include>
+        <include>p</include>
+        <include>u</include>
+        <include>f</include>
+        <include>d</include>
+        <include>c</include>
+        <include>keyfile</include>
+        <include>keycontainer</include>
+        <include>aptca</include>
+        <include>delaysign</include>
+        <include>fixednames</include>
+        <include>nologo</include>
+        <include>errorstack</include>
+      </includes>
+    </commandFilter>
+  </compilerPlugin>
+  <compilerPlugin>
+    <identifier>ASP-2.0</identifier>
+    <pluginClass>npanday.executable.compiler.impl.AspxCompiler</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>aspnet_compiler</executable>
+    <language>ASP</language>
+    <frameworkVersions>
+      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>3.0</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+    <probingPaths>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\3.5@MSBuildToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\2.0@MSBuildToolsPath}</probingPath>
+    </probingPaths>
     <commandFilter>
       <includes>
         <include>m</include>
