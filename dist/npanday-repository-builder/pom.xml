@@ -313,12 +313,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.npanday.plugins</groupId>
-      <artifactId>NPanday.Plugin.Msbuild</artifactId>
-      <version>${project.version}</version>
-      <type>dotnet-maven-plugin</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.npanday.plugins</groupId>
       <artifactId>NPanday.Plugin.SysRef</artifactId>
       <version>${project.version}</version>
       <type>dotnet-maven-plugin</type>

@@ -43,11 +43,6 @@
     <artifactId>NPanday.Plugin.SysRef</artifactId>
     <type>netplugin</type>
   </netDependency>
-  <netDependency>
-    <groupId>org.apache.npanday.plugins</groupId>
-    <artifactId>NPanday.Plugin.Msbuild</artifactId>
-    <type>netplugin</type>
-  </netDependency>
   <!--IDE-->
   <netDependency>
     <groupId>org.apache.npanday.visualstudio</groupId>
