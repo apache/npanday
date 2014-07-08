@@ -27,13 +27,18 @@ import java.util.List;
 import java.util.Map;
 
 import npanday.LocalRepositoryUtil;
-import npanday.plugin.FieldAnnotation;
+import npanday.PlatformUnsupportedException;
+import npanday.msbuild.MsbuildException;
+import npanday.msbuild.MsbuildInvocationParameters;
+import npanday.msbuild.MsbuildInvoker;
 import npanday.resolver.NPandayDependencyResolution;
+import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.model.Resource;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
@@ -46,20 +51,8 @@ import org.codehaus.plexus.util.FileUtils;
  * @goal compile
  */
 public class MsbuildMojo
-    extends npanday.plugin.AbstractMojo
+    extends AbstractMojo
 {
-    /**
-     * @parameter expression = "${settings.localRepository}"
-     */
-    @FieldAnnotation()
-    public java.lang.String repository;
-
-    /**
-     * @parameter expression = "${project}"
-     */
-    @FieldAnnotation()
-    public org.apache.maven.project.MavenProject mavenProject;
-
     /**
      * @parameter expression = "${project}"
      */
@@ -93,12 +86,7 @@ public class MsbuildMojo
     /**
      * @component
      */
-    private npanday.executable.NetExecutableFactory netExecutableFactory;
-
-    /**
-     * @component
-     */
-    private npanday.plugin.PluginContext pluginContext;
+    private MsbuildInvoker msbuildInvoker;
 
     /**
      * @parameter default-value=".references"
@@ -108,7 +96,6 @@ public class MsbuildMojo
     /**
      * @parameter expression="${msbuild.configuration}" default-value="Debug"
      */
-    @FieldAnnotation()
     public String configuration;
 
     /**
@@ -143,77 +130,16 @@ public class MsbuildMojo
 
     /**
      * @parameter expression="${msbuild.extraArguments}"
+     * @deprecated use {@linkplain #extraArgs}. This does not support quoted strings containing spaces
      */
-    @FieldAnnotation()
     public String extraArguments;
 
     /**
-     * @parameter expression="${plugin.version}"
-     * @required
-     * @readonly
+     * @parameter
      */
-    private String pluginVersion;
+    private List<String> extraArgs;
 
-    public String getMojoArtifactId()
-    {
-        return "NPanday.Plugin.Msbuild";
-    }
-
-    public String getMojoGroupId()
-    {
-        return "org.apache.npanday.plugins";
-    }
-
-    public String getClassName()
-    {
-        return "NPanday.Plugin.Msbuild.MsbuildMojo";
-    }
-
-    public npanday.plugin.PluginContext getNetPluginContext()
-    {
-        return pluginContext;
-    }
-
-    public npanday.executable.NetExecutableFactory getNetExecutableFactory()
-    {
-        return netExecutableFactory;
-    }
-
-    public org.apache.maven.project.MavenProject getMavenProject()
-    {
-        return project;
-    }
-
-    public String getLocalRepository()
-    {
-        return localRepository;
-    }
-
-    public String getVendorVersion()
-    {
-        return vendorVersion;
-    }
-
-    public String getVendor()
-    {
-        return vendor;
-    }
-
-    public String getFrameworkVersion()
-    {
-        return frameworkVersion;
-    }
-
-    /**
-     * The version of the .NET plugin to resolve, will typically match that of the Java wrapper.
-     */
-    @Override
-    protected String getPluginVersion() {
-        return pluginVersion;
-    }
-
-    @Override
-    public boolean preExecute()
+    public final void execute()
         throws MojoExecutionException, MojoFailureException
     {
         Collection<Artifact> requiredArtifacts;
@@ -230,73 +156,84 @@ public class MsbuildMojo
 
         if ( copyReferences )
         {
-            Map<String,MavenProject> projects = new HashMap<String,MavenProject>();
-            for ( MavenProject p : reactorProjects )
-            {
-                projects.put( ArtifactUtils.versionlessKey( p.getGroupId(), p.getArtifactId() ), p );
-            }
-            getLog().info( "projects = " + projects.keySet() );
+            copyDependencies(requiredArtifacts);
+        }
 
-            for ( Object artifact : requiredArtifacts )
-            {
-                Artifact a = (Artifact) artifact;
-
-                File targetDir;
-                String vKey = ArtifactUtils.versionlessKey( a );
-                if ( !projects.containsKey( vKey ) )
-                {
-                    String path =
-                        a.getGroupId() + "/" + a.getArtifactId() + "-" + a.getBaseVersion();
-                    targetDir = new File( referencesDirectory, path );
-                }
-                else
-                {
-                    // Likely a project reference in MSBuild. 
-                    // If the other project was not built with MSBuild, make sure the artifact is present where it will look for it
-                    // Note: deliberately limited for now - will only work with reactor projects and doesn't test what are references and what are not
-                    File binDir = new File( projects.get( vKey ).getBasedir(), "bin" );
-                    targetDir = new File( binDir, configuration );
-                }
-                File targetFile = new File( targetDir, a.getArtifactId() + "." + a.getArtifactHandler().getExtension() );
-    
-                getLog().info( "Copying reference " + vKey + " to " + targetFile );
-                if ( !targetFile.exists() )
-                {
-                    targetFile.getParentFile().mkdirs();
-
-                    try
-                    {
-                        FileUtils.copyFile( a.getFile(), targetFile );
-                    }
-                    catch ( IOException e )
-                    {
-                        throw new MojoExecutionException(
-                            "Error copying reference from the local repository to .references: " + e.getMessage(), e );
-                    }
-                }
+        File msbuildFile = null;
+        for (String ext : new String[] { "csproj", "vbproj", "ccproj" }) {
+            msbuildFile = new File(project.getBuild().getSourceDirectory(), project.getArtifactId() + "." + ext);
+            if (msbuildFile.exists()) {
+                break;
             }
         }
-        return super.preExecute();
+        if (msbuildFile == null) {
+            throw new MojoFailureException("No MSBuild project file found in the current directory");
+        }
+        MsbuildInvocationParameters params = new MsbuildInvocationParameters(
+                new VendorRequirement(vendor, vendorVersion, frameworkVersion), msbuildFile);
+
+        // must use /v:q here, as /v:m and above report the csc command, that includes '/errorprompt', which
+        // erroneously triggers the NPANDAY-063-001 error
+        params.setVerbosity("q");
+
+        // BuildingInsideVisualStudio is required to avoid building project references on framework 2.0
+        params.setProperty("BuildProjectReferences", "false");
+        params.setProperty("BuildingInsideVisualStudio", "true");
+
+        if (configuration != null) {
+            params.setProperty("Configuration", configuration);
+        }
+
+        if (extraArguments != null) {
+            params.addExtraArguments(Arrays.asList(extraArguments.split(" ")));
+        }
+        if (extraArgs != null) {
+            params.addExtraArguments(extraArgs);
+        }
+
+        try {
+            msbuildInvoker.invoke(params);
+        } catch (PlatformUnsupportedException e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        } catch (MsbuildException e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+
+        // #12549 - add resources generated by MSBuild to the project
+        String directory = getMSBuildOutputDirectory();
+
+        addGeneratedResources(directory);
+
+        addGeneratedSources(directory);
+
+        if (attachXBAP) {
+            attachXBAPArtifact(directory);
+        }
     }
 
-    @Override
-    public void postExecute()
-        throws MojoExecutionException, MojoFailureException
-    {
-        // #12549 - add resources generated by MSBuild to the project
+    private String getMSBuildOutputDirectory() {
         String directory = new File( project.getBasedir(), "obj" ).getAbsolutePath();
         if ( platform != null )
         {
             directory += "/" + platform;
         }
         directory += "/" + configuration;
+        return directory;
+    }
 
-        getLog().info( "Adding resources from " + directory + " generated by MSBuild" );
-        Resource resource = new Resource();
-        resource.setDirectory( directory );
-        resource.addInclude( "**/*.resources" );
-        project.addResource( resource );
+    private void attachXBAPArtifact(String directory) {
+        projectHelper.attachArtifact(project, "xbap", new File(directory, project.getArtifactId() + ".xbap"));
+        File manifest = new File(directory, project.getArtifactId() + ".exe.manifest");
+        if (manifest.exists()) {
+            getLog().info("Attaching manifest: " + manifest);
+            projectHelper.attachArtifact(project, "exe.manifest", manifest);
+        }
+        else {
+            getLog().debug("Manifest not found: " + manifest);
+        }
+    }
 
+    private void addGeneratedSources(String directory) throws MojoExecutionException {
         if ( new File( directory ).exists() ) {
             // Pick up generated source patterns to compile
             DirectoryScanner scanner = new DirectoryScanner();
@@ -315,7 +252,7 @@ public class MsbuildMojo
                     File dest = new File( generatedSourcesDirectory, f );
                     dest.getParentFile().mkdirs();
                     try {
-                        FileUtils.copyFile( src, dest );
+                        FileUtils.copyFile(src, dest);
                     } catch (IOException e) {
                         throw new MojoExecutionException("Unable to copy source file: " + e.getLocalizedMessage(), e);
                     }
@@ -323,23 +260,61 @@ public class MsbuildMojo
                 project.addCompileSourceRoot( generatedSourcesDirectory.getAbsolutePath() );
             }
         }
-
-        if (attachXBAP) {
-            projectHelper.attachArtifact(project, "xbap", new File(directory, project.getArtifactId() + ".xbap"));
-            File manifest = new File(directory, project.getArtifactId() + ".exe.manifest");
-            if (manifest.exists()) {
-                getLog().info("Attaching manifest: " + manifest);
-                projectHelper.attachArtifact(project, "exe.manifest", manifest);
-            }
-            else {
-                getLog().debug("Manifest not found: " + manifest);
-            }
-        }
-        super.postExecute();
     }
 
-    public ArtifactFactory getArtifactFactory()
-    {
-        return artifactFactory;
+    private void addGeneratedResources(String directory) {
+        getLog().info( "Adding resources from " + directory + " generated by MSBuild" );
+        Resource resource = new Resource();
+        resource.setDirectory( directory );
+        resource.addInclude( "**/*.resources" );
+        project.addResource( resource );
+    }
+
+    private void copyDependencies(Collection<Artifact> requiredArtifacts) throws MojoExecutionException {
+        Map<String,MavenProject> projects = new HashMap<String,MavenProject>();
+        for ( MavenProject p : reactorProjects )
+        {
+            projects.put( ArtifactUtils.versionlessKey(p.getGroupId(), p.getArtifactId()), p );
+        }
+        getLog().info( "projects = " + projects.keySet() );
+
+        for ( Object artifact : requiredArtifacts )
+        {
+            Artifact a = (Artifact) artifact;
+
+            File targetDir;
+            String vKey = ArtifactUtils.versionlessKey( a );
+            if ( !projects.containsKey( vKey ) )
+            {
+                String path =
+                    a.getGroupId() + "/" + a.getArtifactId() + "-" + a.getBaseVersion();
+                targetDir = new File( referencesDirectory, path );
+            }
+            else
+            {
+                // Likely a project reference in MSBuild.
+                // If the other project was not built with MSBuild, make sure the artifact is present where it will look for it
+                // Note: deliberately limited for now - will only work with reactor projects and doesn't test what are references and what are not
+                File binDir = new File( projects.get( vKey ).getBasedir(), "bin" );
+                targetDir = new File( binDir, configuration );
+            }
+            File targetFile = new File( targetDir, a.getArtifactId() + "." + a.getArtifactHandler().getExtension() );
+
+            getLog().info( "Copying reference " + vKey + " to " + targetFile );
+            if ( !targetFile.exists() )
+            {
+                targetFile.getParentFile().mkdirs();
+
+                try
+                {
+                    FileUtils.copyFile(a.getFile(), targetFile);
+                }
+                catch ( IOException e )
+                {
+                    throw new MojoExecutionException(
+                        "Error copying reference from the local repository to .references: " + e.getMessage(), e );
+                }
+            }
+        }
     }
 }

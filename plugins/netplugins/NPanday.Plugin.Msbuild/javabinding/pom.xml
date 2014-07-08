@@ -34,15 +34,7 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-assembler</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-executable</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.npanday</groupId>
-      <artifactId>dotnet-plugin</artifactId>
+      <artifactId>dotnet-msbuild</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>

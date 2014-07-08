@@ -25,6 +25,7 @@ import com.google.common.collect.Maps;
 import npanday.vendor.VendorRequirement;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,10 @@ public class MsbuildInvocationParameters
     private File file;
 
     private Map<String, String> properties = Maps.newHashMap();
+
+    private String verbosity;
+
+    private List<String> extraArguments = new ArrayList<String>();
 
     public MsbuildInvocationParameters(
         VendorRequirement vendor, File file )
@@ -67,15 +72,37 @@ public class MsbuildInvocationParameters
     {
         List<String> commands = Lists.newArrayList();
 
-        // TODO: support /target, /maxcpucount, /toolsversion, /verbosity
+        // TODO: support /target, /maxcpucount, /toolsversion
+
+        if ( verbosity != null ) {
+            commands.add( "/v:" + verbosity );
+        }
 
         for ( Map.Entry<String, String> propEntry : properties.entrySet() )
         {
             commands.add( "/p:" + propEntry.getKey() + "=" + propEntry.getValue() );
         }
 
+        commands.addAll(extraArguments);
+
         commands.add( file.getAbsolutePath() );
 
         return commands;
+    }
+
+    public void setVerbosity(String verbosity) {
+        this.verbosity = verbosity;
+    }
+
+    public String getVerbosity() {
+        return verbosity;
+    }
+
+    public List<String> getExtraArguments() {
+        return extraArguments;
+    }
+
+    public void addExtraArguments(List<String> extraArgs) {
+        extraArguments.addAll(extraArgs);
     }
 }
