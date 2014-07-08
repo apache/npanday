@@ -80,7 +80,7 @@ public class SettingsGeneratorMojo
     /**
      * @component
      */
-    private npanday.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetPluginExecutableFactory netPluginExecutableFactory;
 
     /**
      * @component
@@ -130,9 +130,9 @@ public class SettingsGeneratorMojo
         return pluginContext;
     }
 
-    public npanday.executable.NetExecutableFactory getNetExecutableFactory()
+    public npanday.executable.NetPluginExecutableFactory getNetPluginExecutableFactory()
     {
-        return netExecutableFactory;
+        return netPluginExecutableFactory;
     }
 
     public org.apache.maven.project.MavenProject getMavenProject()

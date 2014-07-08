@@ -114,7 +114,7 @@ public class MojoGeneratorMojo
     /**
      * @component
      */
-    private npanday.executable.NetExecutableFactory netExecutableFactory;
+    private npanday.executable.NetPluginExecutableFactory netPluginExecutableFactory;
 
     /**
      * @component
@@ -157,7 +157,7 @@ public class MojoGeneratorMojo
                 "runtime"
             );
 
-            netExecutableFactory.getPluginRunner(
+            netPluginExecutableFactory.getPluginRunner(
                 project, artifact, null, vendorRequirement, LocalRepositoryUtil.create( localRepository ), commands,
                 targetDir, pluginVersion
             ).execute();

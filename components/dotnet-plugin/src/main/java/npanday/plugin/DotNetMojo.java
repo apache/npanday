@@ -19,8 +19,8 @@ package npanday.plugin;
  * under the License.
  */
 
+import npanday.executable.NetPluginExecutableFactory;
 import org.apache.maven.project.MavenProject;
-import npanday.executable.NetExecutableFactory;
 import org.w3c.dom.Document;
 
 import javax.xml.transform.dom.DOMSource;
@@ -67,7 +67,7 @@ public interface DotNetMojo
      *
      * @return the net executable factory
      */
-    NetExecutableFactory getNetExecutableFactory();
+    NetPluginExecutableFactory getNetPluginExecutableFactory();
 
    // PluginContext getPluginContext();
 }

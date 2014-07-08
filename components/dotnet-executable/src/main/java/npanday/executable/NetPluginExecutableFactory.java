@@ -26,7 +26,6 @@ import npanday.executable.compiler.CompilerRequirement;
 import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.DefaultArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.project.MavenProject;
@@ -42,16 +41,23 @@ import java.util.Set;
  * @author Shane Isbell
  * @author <a href="me@lcorneliussen.de">Lars Corneliussen, Faktum Software</a>
  */
-public interface NetExecutableFactory
+public interface NetPluginExecutableFactory
 {
-    String ROLE = NetExecutableFactory.class.getName();
+    String ROLE = NetPluginExecutableFactory.class.getName();
 
+    NetExecutable getPluginExecutable(
+            MavenProject project, Artifact artifact, VendorRequirement vendorRequirement,
+            ArtifactRepository localRepository, File parameterFile, String mojoName, File targetDir, String npandayVersion) throws
+        PlatformUnsupportedException,
+        ArtifactResolutionException,
+        ArtifactNotFoundException;
 
-    NetExecutable getExecutable(
-        ExecutableRequirement executableRequirement, List<String> commands, File netHome ) throws
-        PlatformUnsupportedException;
+    public NetExecutable getPluginRunner(
+            MavenProject project, Artifact pluginArtifact, Set<Artifact> additionalDependencies,
+            VendorRequirement vendorRequirement, ArtifactRepository localRepository, List<String> commands, File targetDir,
+            String npandayVersion) throws
 
-    CompilerExecutable getCompilerExecutable(
-        CompilerRequirement compilerRequirement, CompilerConfig compilerConfig, MavenProject project ) throws
-        PlatformUnsupportedException;
+        PlatformUnsupportedException,
+        ArtifactResolutionException,
+        ArtifactNotFoundException;
 }

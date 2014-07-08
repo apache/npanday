@@ -25,6 +25,7 @@ import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutableFactory;
+import npanday.executable.NetPluginExecutableFactory;
 import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -164,7 +165,7 @@ public abstract class AbstractMojo
                 "runtime"
             );
 
-            getNetExecutableFactory().getPluginExecutable(
+            getNetPluginExecutableFactory().getPluginExecutable(
                 project, artifact, vendorRequirement, localRepository, paramFile, getClassName(), targetDir,
                 getNPandayVersion()
             ).execute();
@@ -244,9 +245,9 @@ public abstract class AbstractMojo
     public abstract MavenProject getMavenProject();
 
     /**
-     * @see DotNetMojo#getNetExecutableFactory()
+     * @see DotNetMojo#getNetPluginExecutableFactory()
      */
-    public abstract NetExecutableFactory getNetExecutableFactory();
+    public abstract NetPluginExecutableFactory getNetPluginExecutableFactory();
 
     public abstract PluginContext getNetPluginContext();
 

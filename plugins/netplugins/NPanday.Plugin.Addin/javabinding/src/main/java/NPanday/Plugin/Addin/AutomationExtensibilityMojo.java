@@ -69,7 +69,7 @@ public class AutomationExtensibilityMojo
        /**
         * @component
         */
-        private npanday.executable.NetExecutableFactory netExecutableFactory;
+        private npanday.executable.NetPluginExecutableFactory netPluginExecutableFactory;
 
        /**
         * @component
@@ -108,10 +108,10 @@ public class AutomationExtensibilityMojo
             return pluginContext;
         }
 
-        public npanday.executable.NetExecutableFactory getNetExecutableFactory()
-        {
-            return netExecutableFactory;
-        }
+        public npanday.executable.NetPluginExecutableFactory getNetPluginExecutableFactory()
+    {
+        return netPluginExecutableFactory;
+    }
 
         public org.apache.maven.project.MavenProject getMavenProject()
         {
