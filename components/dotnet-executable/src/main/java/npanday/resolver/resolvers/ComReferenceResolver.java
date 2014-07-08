@@ -20,6 +20,10 @@
 package npanday.resolver.resolvers;
 
 import npanday.ArtifactTypeHelper;
+import npanday.executable.ExecutableRequirement;
+import npanday.executable.ExecutionResult;
+import npanday.executable.NetExecutable;
+import npanday.executable.NetExecutableFactory;
 import npanday.resolver.ArtifactResolvingContributor;
 import npanday.resolver.NPandayResolutionCache;
 import org.apache.maven.artifact.Artifact;
@@ -27,11 +31,6 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.Os;
-import org.codehaus.plexus.util.cli.CommandLineException;
-import org.codehaus.plexus.util.cli.CommandLineUtils;
-import org.codehaus.plexus.util.cli.Commandline;
-import org.codehaus.plexus.util.cli.DefaultConsumer;
-import org.codehaus.plexus.util.cli.StreamConsumer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -46,12 +45,17 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:me@lcorneliussen.de>Lars Corneliussen, Faktum Software</a>
+ * @plexus.component role="npanday.resolver.ArtifactResolvingContributor" role-hint="com"
  */
 public class ComReferenceResolver
     extends AbstractLogEnabled
     implements ArtifactResolvingContributor
 {
+    /** @plexus.requirement */
     NPandayResolutionCache cache;
+
+    /** @plexus.requirement */
+    protected NetExecutableFactory netExecutableFactory;
 
     public void contribute(Artifact artifact, ArtifactRepository localRepository, List remoteRepositories,
                            Set<Artifact> additionalDependenciesCollector, ArtifactFilter filter)
@@ -73,7 +77,7 @@ public class ComReferenceResolver
             }
 
             String tokenId = artifact.getClassifier();
-            String interopPath = null;
+            String interopPath;
             try
             {
                 interopPath = generateInteropDll( artifact.getArtifactId(), tokenId );
@@ -83,6 +87,7 @@ public class ComReferenceResolver
                 getLogger().error(
                     "NPANDAY-150-002: Error creating interop dll for " + artifact.getId()
                 );
+                return;
             }
 
             File f = new File( interopPath );
@@ -130,7 +135,10 @@ public class ComReferenceResolver
 
         try
         {
-            execute( "tlbimp", params );
+            final NetExecutable executable = netExecutableFactory.getExecutable(
+                    new ExecutableRequirement( "MICROSOFT", null, null, "TLBIMP" ), params, null
+            );
+            executable.execute();
         }
         catch ( Exception e )
         {
@@ -277,13 +285,13 @@ public class ComReferenceResolver
         parameters.add( registryPath );
         parameters.add( "/ve" );
 
-        StreamConsumer outConsumer = new StreamConsumerImpl();
-        StreamConsumer errorConsumer = new StreamConsumerImpl();
-
+        ExecutionResult res;
         try
         {
-            // TODO: investigate why outConsumer ignores newline
-            execute( "reg", parameters, outConsumer, errorConsumer );
+            final NetExecutable executable = netExecutableFactory.getExecutable(
+                    new ExecutableRequirement( "MICROSOFT", null, null, "REG" ), parameters, null
+            );
+            res = executable.execute();
         }
         catch ( Exception e )
         {
@@ -291,8 +299,7 @@ public class ComReferenceResolver
                                      + "] ActiveX component in your system, you need to install this component first to continue." );
         }
 
-        // parse outConsumer
-        String out = outConsumer.toString();
+        String out = res.getStandardOut();
 
         String tokens[] = out.split( "\n" );
 
@@ -311,75 +318,5 @@ public class ComReferenceResolver
         }
 
         return null;
-    }
-
-    // can't use dotnet-executable due to cyclic dependency.
-    private void execute( String executable, List<String> commands )
-        throws Exception
-    {
-        execute( executable, commands, null, null );
-    }
-
-    private void execute( String executable, List<String> commands, StreamConsumer systemOut, StreamConsumer systemError )
-        throws Exception
-    {
-        int result = 0;
-        Commandline commandline = new Commandline();
-        commandline.setExecutable( executable );
-        commandline.addArguments( commands.toArray( new String[commands.size()] ) );
-        try
-        {
-            result = CommandLineUtils.executeCommandLine( commandline, systemOut, systemError );
-
-            System.out.println( "NPANDAY-040-000: Executed command: Commandline = " + commandline + ", Result = "
-                                    + result );
-
-            if ( result != 0 )
-            {
-                throw new Exception( "NPANDAY-040-001: Could not execute: Command = " + commandline.toString()
-                                         + ", Result = " + result );
-            }
-        }
-        catch ( CommandLineException e )
-        {
-            throw new Exception( "NPANDAY-040-002: Could not execute: Command = " + commandline.toString(), e);
-        }
-    }
-
-    /**
-     * TODO: refactor this to another class and all methods concerning com_reference StreamConsumer instance that
-     * buffers the entire output
-     */
-    class StreamConsumerImpl
-        implements StreamConsumer
-    {
-
-        private DefaultConsumer consumer;
-
-        private StringBuffer sb = new StringBuffer();
-
-        public StreamConsumerImpl()
-        {
-            consumer = new DefaultConsumer();
-        }
-
-        public void consumeLine( String line )
-        {
-            sb.append( line );
-            if ( getLogger() != null )
-            {
-                consumer.consumeLine( line );
-            }
-        }
-
-        /**
-         * Returns the stream
-         *
-         * @return the stream
-         */
-        public String toString()
-        {
-            return sb.toString();
-        }
     }
 }

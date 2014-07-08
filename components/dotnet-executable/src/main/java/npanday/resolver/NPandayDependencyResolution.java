@@ -42,12 +42,18 @@ import java.util.Set;
  * resolver logic for GAC, e.g.
  *
  * @author <a href="mailto:me@lcorneliussen.de>Lars Corneliussen, Faktum Software</a>
+ * @plexus.component role="npanday.resolver.NPandayDependencyResolution"
  */
 public class NPandayDependencyResolution
     extends AbstractLogEnabled
 {
+    /** @plexus.requirement */
     private NPandayArtifactResolver artifactResolver;
+
+    /** @plexus.requirement */
     private ArtifactFactory artifactFactory;
+
+    /** @plexus.requirement */
     private ArtifactMetadataSource metaDataSource;
 
     public Set<Artifact> require(MavenProject project, ArtifactRepository localRepository, String scope) throws

@@ -19,12 +19,17 @@ import npanday.resolver.ArtifactResolvingContributor;
 
 /**
  * PDB assemblies contributor class.
+ * @plexus.component role="npanday.resolver.ArtifactResolvingContributor" role-hint="pdb"
  */
 public class PdbAssemblyResolver extends AbstractLogEnabled implements ArtifactResolvingContributor 
 {
+    /** @plexus.requirement */
     ArtifactResolver mavenResolver;
+
+    /** @plexus.requirement */
     ArtifactFactory artifactFactory;
 
+    /** @plexus.requirement */
     NPandayResolutionCache cache;
 
     /**

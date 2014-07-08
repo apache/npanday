@@ -19,5 +19,18 @@
 <component-set>
   <components>
     <!-- created through annotations -->
+    <component>
+      <role>npanday.resolver.NPandayArtifactResolver</role>
+      <implementation>npanday.resolver.DefaultNPandayArtifactResolver</implementation>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+        </requirement>
+        <requirement>
+          <role>npanday.resolver.ArtifactResolvingContributor</role>
+          <field-name>contributors</field-name>
+        </requirement>
+      </requirements>
+    </component>
   </components>
 </component-set>

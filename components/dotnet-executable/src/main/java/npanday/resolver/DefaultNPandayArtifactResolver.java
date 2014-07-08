@@ -22,7 +22,6 @@ package npanday.resolver;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import npanday.resolver.resolvers.GacResolver;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -31,19 +30,10 @@ import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.resolver.DebugResolutionListener;
-import org.apache.maven.artifact.resolver.ResolutionListener;
 import org.apache.maven.artifact.resolver.WarningResolutionListener;
-import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
-import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,13 +51,11 @@ import javax.annotation.Nullable;
  */
 public class DefaultNPandayArtifactResolver
     extends AbstractLogEnabled
-    implements NPandayArtifactResolver, Contextualizable, Initializable
+    implements NPandayArtifactResolver, Initializable
 {
-    private ArtifactResolvingContributor[] contributors;
+    private List<ArtifactResolvingContributor> contributors;
 
     ArtifactResolver original;
-
-    private PlexusContainer container;
 
     private Set<Artifact> customResolveCache = Sets.newHashSet();
     private Set<Artifact> customDependenciesCache = Sets.newHashSet();
@@ -134,12 +122,7 @@ public class DefaultNPandayArtifactResolver
         return listeners;
     }
 
-    public void contextualize( Context context ) throws ContextException
-    {
-        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
-    }
-    
-    public void runArtifactContributors(Artifact artifact, ArtifactRepository localRepository, 
+    public void runArtifactContributors(Artifact artifact, ArtifactRepository localRepository,
             List remoteRepositories) throws ArtifactNotFoundException 
     {
         if(!artifact.isResolved()) {
@@ -228,26 +211,12 @@ public class DefaultNPandayArtifactResolver
 		customDependenciesCache.addAll(resolvedArtifacts);
     }
 
-    public void initialize() throws InitializationException
-    {
-        try
-        {
-            List list = container.lookupList(
-                ArtifactResolvingContributor.role
-            );
-
-            contributors = (ArtifactResolvingContributor[]) list.toArray( new ArtifactResolvingContributor[0] );
-
-            if (contributors.length == 0) {
-                getLogger().warn( "NPANDAY-147-005: could not find any custom artifact resolving contributors!" );
-            }
-            else{
-                getLogger().debug( "NPANDAY-147-004: resolved " + contributors.length + " contributors: " + list );
-            }
+    public void initialize() {
+        if (contributors.size() == 0) {
+            getLogger().warn( "NPANDAY-147-005: could not find any custom artifact resolving contributors!" );
         }
-        catch ( ComponentLookupException e )
-        {
-            getLogger().error( "NPANDAY-147-003: could not resolve contributors" );
+        else{
+            getLogger().debug( "NPANDAY-147-004: resolved " + contributors.size() + " contributors: " + contributors );
         }
     }
 

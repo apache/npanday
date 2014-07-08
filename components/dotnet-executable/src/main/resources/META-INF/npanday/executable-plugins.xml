@@ -1,0 +1,73 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements.  See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership.  The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+<executablePlugins>
+
+  <executablePlugin>
+    <identifier>TLBIMP</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>tlbimp</executable>
+    <profile>TLBIMP</profile>
+    <frameworkVersions>
+      <frameworkVersion>4.5.1</frameworkVersion>
+      <frameworkVersion>4.5</frameworkVersion>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>3.0</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+    <probingPaths>
+      <!-- TODO: this should be broken up as XSD is, just means for now you always get newest available tools version, but will target right framework -->
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0\12.0@SDK40ToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\12.0\11.0@SDK40ToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0\11.0@SDK40ToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@SDK40ToolsPath}</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows@CurrentInstallFolder}\bin</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@SDK35ToolsPath}</probingPath>
+    </probingPaths>
+  </executablePlugin>
+  <executablePlugin>
+    <identifier>REG</identifier>
+    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
+    <vendor>MICROSOFT</vendor>
+    <executable>reg</executable>
+    <profile>REG</profile>
+    <frameworkVersions>
+      <frameworkVersion>4.5.1</frameworkVersion>
+      <frameworkVersion>4.5</frameworkVersion>
+      <frameworkVersion>4.0</frameworkVersion>
+      <frameworkVersion>3.5</frameworkVersion>
+      <frameworkVersion>3.0</frameworkVersion>
+      <frameworkVersion>2.0.50727</frameworkVersion>
+      <frameworkVersion>1.1.4322</frameworkVersion>
+    </frameworkVersions>
+    <platforms>
+      <platform>
+        <operatingSystem>Windows</operatingSystem>
+      </platform>
+    </platforms>
+  </executablePlugin>
+
+</executablePlugins>

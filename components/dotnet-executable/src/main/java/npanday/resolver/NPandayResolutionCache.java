@@ -32,6 +32,7 @@ import java.util.Hashtable;
  * Resolving the artifact file once pr. artifact id is enough.
  *
  * @author <a href="mailto:me@lcorneliussen.de>Lars Corneliussen, Faktum Software</a>
+ * @plexus.component role="npanday.resolver.NPandayResolutionCache"
  */
 public class NPandayResolutionCache
         extends AbstractLogEnabled

@@ -34,10 +34,12 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:me@lcorneliussen.de>Lars Corneliussen, Faktum Software</a>
+ * @plexus.component role="npanday.resolver.ArtifactResolvingContributor" role-hint="gac"
  */
 public class GacResolver
     implements ArtifactResolvingContributor
 {
+    /** @plexus.requirement */
     NPandayResolutionCache cache;
 
     public void tryResolve(Artifact artifact, Set<Artifact> additionalDependenciesCollector, ArtifactFilter filter) throws
