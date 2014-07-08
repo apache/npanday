@@ -44,6 +44,7 @@ under the License.
       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0\11.0@SDK40ToolsPath}</probingPath>
       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@SDK40ToolsPath}</probingPath>
       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows@CurrentInstallFolder}\bin</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@SDK35ToolsPath}</probingPath>
     </probingPaths>
   </executablePlugin>
   <executablePlugin>

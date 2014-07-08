@@ -244,6 +244,7 @@ under the License.
     </platforms>
     <probingPaths>
       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows@CurrentInstallFolder}\bin</probingPath>
+      <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0@SDK35ToolsPath}</probingPath>
     </probingPaths>
     <commandFilter>
       <includes>
