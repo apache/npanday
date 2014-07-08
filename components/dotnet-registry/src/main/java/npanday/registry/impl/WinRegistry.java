@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WinRegistry
     implements WindowsRegistryAccessProvider
@@ -69,6 +71,8 @@ public class WinRegistry
     private static Method regDeleteKey = null;
 
     private static Method regDeleteValue = null;
+
+    private static Pattern REGISTRY_REFERENCE_REGEX = Pattern.compile( "\\$\\(Registry:([A-Z_]+)\\\\(.*)@(.*)\\)" );
 
     static
     {
@@ -516,9 +520,12 @@ public class WinRegistry
 
         try
         {
-            return WinRegistry.readString(
-                registryHKey.getHKey(), key, valueName
-            );
+            String value = WinRegistry.readString( registryHKey.getHKey(), key, valueName );
+            Matcher m = REGISTRY_REFERENCE_REGEX.matcher(value);
+            if (m.matches()) {
+                value = getValue(RegistryHKey.tryGetFromName(m.group(1)), m.group(2), m.group(3));
+            }
+            return value;
         }
         catch ( InvocationTargetException e )
         {
