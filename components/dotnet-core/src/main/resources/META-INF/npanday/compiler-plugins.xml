@@ -298,11 +298,6 @@
     <language>C_SHARP</language>
     <frameworkVersions>
       <frameworkVersion>4.5.1</frameworkVersion>
-      <frameworkVersion>4.5</frameworkVersion>
-      <frameworkVersion>4.0</frameworkVersion>
-      <frameworkVersion>3.5</frameworkVersion>
-      <frameworkVersion>3.0</frameworkVersion>
-      <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
@@ -371,9 +366,6 @@
     <frameworkVersions>
       <frameworkVersion>4.5</frameworkVersion>
       <frameworkVersion>4.0</frameworkVersion>
-      <frameworkVersion>3.5</frameworkVersion>
-      <frameworkVersion>3.0</frameworkVersion>
-      <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
@@ -442,9 +434,6 @@
     <language>C_SHARP</language>
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
-      <frameworkVersion>3.5</frameworkVersion>
-      <frameworkVersion>3.0</frameworkVersion>
-      <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
