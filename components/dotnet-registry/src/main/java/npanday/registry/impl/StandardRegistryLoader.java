@@ -101,61 +101,6 @@ public class StandardRegistryLoader
         return repoMap;
     }
 
-
-    /**
-     * Resolves system variables within the path
-     *
-     * @param fileName name of the configuration file
-     * @return path of the file with resolved system variables. Default value is '.'
-     */
-    private String toPath( String fileName )
-    {
-        byte[] path = fileName.getBytes();
-        int length = path.length;
-        StringBuffer env = new StringBuffer();
-        StringBuffer filePath = new StringBuffer();
-        for ( int i = 0; i < length; )
-        {
-            if ( i >= length - 2 )
-            {
-                filePath.append( (char) path[i++] );
-            }
-            else if ( path[i] == 36 )
-            {
-                if ( path[++i] == 123 )
-                {
-                    i++;
-                    while ( i < length - 1 && path[i] != 125 )
-                    {
-                        env.append( (char) path[i++] );
-                    }
-                    if ( path[i] == 125 )
-                    {
-                        i++;
-                    }
-                }
-                else
-                {
-                    i--;
-                    i--;
-                }
-                String pathEnv = System.getProperty( env.toString().trim(), "." );
-                filePath.append( pathEnv.toString() );
-            }
-            else
-            {
-                filePath.append( (char) path[i++] );
-            }
-        }//end for:i
-        String str = filePath.toString();
-        if (!str.startsWith("/")) {
-            str = str.replaceAll("/", "\\\\");
-            str = str.replaceAll("\\\\:", ":");
-            str = str.replaceAll("\\\\\\\\", "\\\\");
-        }
-        return str;
-    }
-
     /**
      * Loads all of the repositories into the registry
      *
@@ -179,7 +124,7 @@ public class StandardRegistryLoader
 
             //instantiate class based on info in the registry-config file
             Repository repository =
-                repositoryLoader.loadRepository( toPath( fileName ), className, repositoryObject.getInitParams() );
+                repositoryLoader.loadRepository( fileName, className, repositoryObject.getInitParams() );
 
             if ( repository != null )
             {
