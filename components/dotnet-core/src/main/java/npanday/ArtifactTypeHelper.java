@@ -155,6 +155,9 @@ public class ArtifactTypeHelper
     public static boolean isDotnetAssembly(ArtifactType artifactType) {
         return isDotnetLibrary(artifactType)
                 || isDotnetExecutable(artifactType)
-                || isDotnetAnyGac(artifactType);
+                || isDotnetAnyGac(artifactType)
+                || isDotnetMavenPlugin(artifactType)
+                || artifactType == ArtifactType.VISUAL_STUDIO_ADDIN
+                || artifactType == ArtifactType.SHARP_DEVELOP_ADDIN;
     }
 }
