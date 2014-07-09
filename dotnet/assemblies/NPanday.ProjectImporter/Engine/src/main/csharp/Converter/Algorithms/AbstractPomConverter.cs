@@ -954,7 +954,6 @@ namespace NPanday.ProjectImporter.Converter.Algorithms
             {
                 foreach (XmlElement e in model.properties.Any)
                 {
-                    Console.WriteLine(e.ToString());
                     if (e.Name == var)
                     {
                         if (e.InnerText != value)
