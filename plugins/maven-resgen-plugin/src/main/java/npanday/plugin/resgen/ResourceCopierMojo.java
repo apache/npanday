@@ -60,6 +60,8 @@ public class ResourceCopierMojo
 		{
 		
 			copyAllResources(project.getResources());
+
+            // TODO: this might need to be handled differently, otherwise they could be copied into the artifact
 			copyAllResources(project.getTestResources());
 		}
 		catch (Exception ex) 
