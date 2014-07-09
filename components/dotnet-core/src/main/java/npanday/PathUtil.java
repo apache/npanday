@@ -19,10 +19,7 @@ package npanday;
  * under the License.
  */
 
-import com.google.common.base.Preconditions;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
-import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -107,61 +104,6 @@ public final class PathUtil
         return new File( "C:\\WINDOWS\\assembly\\" + artifact.getType() + File.separator + artifact.getArtifactId() +
                              File.separator + version + "__" + artifact.getClassifier() + File.separator +
                              artifact.getArtifactId() + ".dll" );
-    }
-
-    /**
-     * Returns the path of the artifact within the private application base.
-     *
-     *
-     * @param artifact        the artifact to find the path of.  This value should not be null.
-     * @param localRepository the local repository.  This value should not be null.
-     * @param outputDir
-     * @return the path of the artifact within the private application base or null if either of the specified
-     *         parameters is null
-     */
-    public static File getPrivateApplicationBaseFileFor( Artifact artifact, File localRepository, File outputDir )
-    {
-        if ( artifact == null )
-        {
-            logger.warning( "NPANDAY-040-003: Artifact is null - Cannot get application file." );
-            return null;
-        }
-
-        return  getDotNetArtifact( artifact, outputDir );
-    }
-
-    /**
-     * Returns the path of the artifact within the user assembly cache.
-     *
-     *
-     * @param artifact        the artifact to find the path of. This value should not be null.
-     * @param outputDir
-     * @return the path of the artifact within the user assembly cache or null if either of the specified
-     *         parameters is null
-     */
-    public static File getDotNetArtifact( Artifact artifact, File outputDir )
-    {
-        if ( artifact == null )
-        {
-            logger.warning( "NPANDAY-040-0532: Artifact is null - Cannot get application file." );
-            return null;
-        }
-
-        outputDir.mkdir();
-
-        String filename = artifact.getArtifactId() + "." + artifact.getArtifactHandler().getExtension();
-        File targetFile = new File( outputDir, filename );
-
-        try
-        {
-            FileUtils.copyFile( artifact.getFile(), targetFile );
-        }
-        catch (IOException ioe)
-        {
-            logger.warning("\nNPANDAY-1005-0001: Error copying dependency " + artifact +" "+ioe.getMessage());
-        }
-
-        return targetFile;
     }
 
     public static String getExecutable( String executable, Collection<String> executablePaths,

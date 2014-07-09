@@ -26,8 +26,6 @@ import npanday.InitializationException;
 import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.*;
-import npanday.executable.compiler.*;
-import npanday.registry.RepositoryRegistry;
 import npanday.resolver.NPandayArtifactResolver;
 import npanday.vendor.IllegalStateException;
 import npanday.vendor.*;
@@ -42,8 +40,10 @@ import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -81,6 +81,40 @@ public class NetPluginExecutableFactoryImpl
      * @plexus.requirement
      */
     private ArtifactMetadataSource artifactMetadataSource;
+
+    /**
+     * Returns the path of the artifact within the private application base.
+     *
+     *
+     *
+     * @param artifact        the artifact to find the path of.  This value should not be null.
+     * @param outputDir
+     * @return the path of the artifact within the private application base or null if either of the specified
+     *         parameters is null
+     */
+    private File getPrivateApplicationBaseFileFor(Artifact artifact, File outputDir) throws ArtifactResolutionException {
+        if ( artifact == null )
+        {
+            getLogger().warn( "NPANDAY-040-003: Artifact is null - Cannot get application file." );
+            return null;
+        }
+
+        outputDir.mkdir();
+
+        String filename = artifact.getArtifactId() + "." + artifact.getArtifactHandler().getExtension();
+        File targetFile = new File(outputDir, filename );
+
+        try
+        {
+            FileUtils.copyFile(artifact.getFile(), targetFile);
+        }
+        catch (IOException ioe)
+        {
+            throw new ArtifactResolutionException("NPANDAY-1005-0001: Error copying dependency", artifact, ioe);
+        }
+
+        return targetFile;
+    }
 
     public NetExecutable getPluginRunner(
         MavenProject project, Artifact pluginArtifact, Set<Artifact> additionalDependencies,
@@ -264,7 +298,7 @@ public class NetPluginExecutableFactoryImpl
 
         // preresolve this one
         artifactResolver.resolve( pluginArtifact, project.getRemoteArtifactRepositories(), localRepository );
-        File pluginArtifactPath = PathUtil.getPrivateApplicationBaseFileFor( pluginArtifact, null, targetDir );
+        File pluginArtifactPath = getPrivateApplicationBaseFileFor(pluginArtifact, targetDir);
 
         List<String> commands = new ArrayList<String>();
         commands.add( "parameterFile=" + parameterFile.getAbsolutePath() );
@@ -299,7 +333,7 @@ public class NetPluginExecutableFactoryImpl
 
         for(Object ao : results.getArtifacts()){
             Artifact a = (Artifact)ao;
-            a.setFile( PathUtil.getPrivateApplicationBaseFileFor( a, null, targetDir ) );
+            a.setFile( getPrivateApplicationBaseFileFor(a, targetDir) );
         }
 
         return results.getArtifacts();

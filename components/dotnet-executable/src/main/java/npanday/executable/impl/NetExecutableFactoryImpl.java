@@ -19,10 +19,6 @@ package npanday.executable.impl;
  * under the License.
  */
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import npanday.ArtifactType;
-import npanday.InitializationException;
 import npanday.PathUtil;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.CapabilityMatcher;
@@ -33,38 +29,18 @@ import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
 import npanday.executable.NetExecutableFactory;
-import npanday.executable.RepositoryExecutableContext;
 import npanday.executable.compiler.CompilerCapability;
 import npanday.executable.compiler.CompilerConfig;
 import npanday.executable.compiler.CompilerContext;
 import npanday.executable.compiler.CompilerExecutable;
 import npanday.executable.compiler.CompilerRequirement;
-import npanday.registry.RepositoryRegistry;
-import npanday.resolver.NPandayArtifactResolver;
-import npanday.vendor.IllegalStateException;
-import npanday.vendor.StateMachineProcessor;
-import npanday.vendor.Vendor;
-import npanday.vendor.VendorInfo;
-import npanday.vendor.VendorInfoRepository;
-import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
-import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Provides an implementation of <code>NetExecutableFactory</code>.
@@ -155,15 +131,6 @@ public class NetExecutableFactoryImpl
 
         if ( executionPaths == null || executionPaths.size() == 0 )
         {
-            getLogger().warn( "NPANDAY-231: previously netDependencyId was used to resolve some private bin path..." );
-            // TODO: remove!
-            Artifact artifact = null;
-            if ( artifact != null )
-            {
-                File artifactPath = PathUtil.getPrivateApplicationBaseFileFor( artifact, compilerConfig.getLocalRepository(), targetDir );
-                executionPaths.add( artifactPath.getParentFile().getAbsolutePath() );
-            }
-
             compilerConfig.setExecutionPaths( executionPaths );
         }
 
