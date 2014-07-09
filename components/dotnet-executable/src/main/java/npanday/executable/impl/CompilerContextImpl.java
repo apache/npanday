@@ -395,34 +395,14 @@ public final class CompilerContextImpl
                 {
                     modules.add( artifact );
                 }
-                else if ( (
-                    artifactType != ArtifactType.NULL && (
-                        StringUtils.equals( artifactType.getTargetCompileType(), "library" )
-                            || artifactType.getExtension().equals( "dll" ) || artifactType.getExtension().equals(
-                            "exe"
-                        )
-                    )
-                ) || type.equals( "jar" ) )
-                {
+                else if ( ArtifactTypeHelper.isDotnetAssembly(artifactType) ) {
                     libraries.add( artifact );
                 }
 
                 if ( type.equals( ArtifactType.COM_REFERENCE.getPackagingType() ) )
                 {
-                    moveInteropDllToBuildDirectory( artifact );
-                    libraries.add( artifact );
+                    moveInteropDllToBuildDirectory(artifact);
                 }
-                else if ( (
-                    artifactType != null && (
-                        "library".equals( artifactType.getTargetCompileType() ) || "dll".equals(
-                            artifactType.getExtension()
-                        ) || "exe".equals( artifactType.getExtension() )
-                    )
-                ) || "jar".equals( type ) )
-                {
-                    libraries.add( artifact );
-                }
-
             }
         }
 
