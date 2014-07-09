@@ -22,6 +22,7 @@ package npanday.executable.compiler.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Interners;
 import com.google.common.collect.Iterables;
+import npanday.ArtifactTypeHelper;
 import npanday.PlatformUnsupportedException;
 import npanday.executable.CommandFilter;
 import npanday.executable.ExecutionException;
@@ -131,7 +132,7 @@ public final class DefaultCompiler
                 }
                 String path = artifact.getFile().getAbsolutePath();
 
-                if( !path.contains( ".jar" ) )
+                if(ArtifactTypeHelper.isDotnetAssembly(artifact.getType()))
                 {
                     commands.add( "/reference:" + path );
                 }
