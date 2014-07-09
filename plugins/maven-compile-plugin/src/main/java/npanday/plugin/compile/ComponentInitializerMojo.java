@@ -19,13 +19,9 @@ package npanday.plugin.compile;
  * under the License.
  */
 
-import npanday.InitializationException;
 import npanday.LocalRepositoryUtil;
-import npanday.assembler.AssemblerContext;
 import npanday.resolver.NPandayDependencyResolution;
-import npanday.resolver.filter.DotnetAssemblyArtifactFilter;
 import npanday.resolver.filter.DotnetSymbolsArtifactFilter;
-import npanday.resolver.filter.OrArtifactFilter;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.InversionArtifactFilter;
@@ -68,11 +64,6 @@ public class ComponentInitializerMojo
     /**
      * @component
      */
-    private AssemblerContext assemblerContext;
-
-    /**
-     * @component
-     */
     private NPandayDependencyResolution dependencyResolution;
 
     public void execute()
@@ -94,16 +85,5 @@ public class ComponentInitializerMojo
                 "NPANDAY-901-003: Could not satisfy required dependencies for scope " + "test", e
             );
         }
-
-        try
-        {
-            assemblerContext.init( project );
-        }
-        catch ( InitializationException e )
-        {
-            throw new MojoExecutionException( "NPANDAY-901-002: Failed to initialize the assembler context", e );
-        }
-
-        long endTime = System.currentTimeMillis();
     }
 }

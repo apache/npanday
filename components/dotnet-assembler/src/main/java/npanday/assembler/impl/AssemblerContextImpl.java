@@ -23,12 +23,13 @@ import npanday.assembler.AssemblerContext;
 import npanday.assembler.AssemblyInfo;
 import npanday.assembler.AssemblyInfoMarshaller;
 import npanday.assembler.AssemblyInfoException;
-import npanday.InitializationException;
 import npanday.PlatformUnsupportedException;
 import npanday.model.assembly.plugins.AssemblyPlugin;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.model.Organization;
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
@@ -45,7 +46,7 @@ import java.io.*;
  *   role="npanday.assembler.AssemblerContext"
  */
 public final class AssemblerContextImpl
-    implements AssemblerContext, LogEnabled
+    implements AssemblerContext, LogEnabled, Initializable
 {
 
     private static final String SNAPSHOT_SUFFIX = "SNAPSHOT";
@@ -56,11 +57,6 @@ public final class AssemblerContextImpl
      * @plexus.requirement
      */
     private RepositoryRegistry repositoryRegistry;
-
-    /**
-     * The maven project
-     */
-    private MavenProject mavenProject;
 
     /**
      * A logger for writing log messages
@@ -88,10 +84,7 @@ public final class AssemblerContextImpl
         this.logger = logger;
     }
 
-    /**
-     * @see npanday.assembler.AssemblerContext#getAssemblyInfo()
-     */
-    public AssemblyInfo getAssemblyInfo()
+    public AssemblyInfo getAssemblyInfo( MavenProject mavenProject )
     {
         String basedir = mavenProject.getBasedir().toString();
         AssemblyInfo assemblyInfo = new AssemblyInfo();
@@ -196,13 +189,7 @@ public final class AssemblerContextImpl
         }
     }
 
-    /**
-     * @see AssemblerContext#init(org.apache.maven.project.MavenProject)
-     */
-    public void init( MavenProject mavenProject )
-        throws InitializationException
-    {
-        this.mavenProject = mavenProject;
+    public void initialize() throws InitializationException {
         repository = (AssemblyPluginsRepository) repositoryRegistry.find( "assembly-plugins" );
         if ( repository == null )
         {

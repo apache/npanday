@@ -19,7 +19,6 @@ package npanday.assembler;
  * under the License.
  */
 
-import npanday.InitializationException;
 import npanday.PlatformUnsupportedException;
 import org.apache.maven.project.MavenProject;
 
@@ -41,7 +40,7 @@ public interface AssemblerContext
      *
      * @return the assembly info associated with this context.
      */
-    AssemblyInfo getAssemblyInfo();
+    AssemblyInfo getAssemblyInfo( MavenProject mavenProject );
 
     /**
      * Returns the marshaller for the given language
@@ -60,13 +59,4 @@ public interface AssemblerContext
      * @throws PlatformUnsupportedException the language is not supported
      */
     String getClassExtensionFor( String language ) throws PlatformUnsupportedException;
-
-    /**
-     * Initializes the context
-     *
-     * @param mavenProject the maven project
-     * @throws InitializationException if the context cannot be initialized
-     */
-    void init( MavenProject mavenProject ) throws InitializationException;
-
 }

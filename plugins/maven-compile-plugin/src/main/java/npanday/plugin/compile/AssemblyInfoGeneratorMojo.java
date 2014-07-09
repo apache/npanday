@@ -180,7 +180,7 @@ public class AssemblyInfoGeneratorMojo
         //managed by the framework. I intended to keep vendor info and state machine processor out of the
         // Mojos. Unable to do so for this case. Look at new API.
         VendorRequirement vendorRequirement = new VendorRequirement(vendor, vendorVersion,  frameworkVersion);
-        AssemblyInfo assemblyInfo = assemblerContext.getAssemblyInfo();
+        AssemblyInfo assemblyInfo = assemblerContext.getAssemblyInfo( project );
         assemblyInfo.setCustomStringAttributes(this.assemblyInfo);
 
         VendorInfo vendorInfo;
