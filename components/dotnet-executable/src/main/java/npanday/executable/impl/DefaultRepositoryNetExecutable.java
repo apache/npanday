@@ -102,6 +102,7 @@ public class DefaultRepositoryNetExecutable
             );
         }
 
+        // TODO: find out under what situation this was needed and remove hard coding - can catch false positives (see MSBuild plugin need for /v:q), better to rely on exit code
         if ( commandExecutor.getStandardOut().contains( "error" ) && !commandExecutor.getStandardOut().contains(
             "exit code = 0"
         ) )
