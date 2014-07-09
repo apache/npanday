@@ -63,7 +63,8 @@ public class NetPluginExecutableFactoryImpl
     private RepositoryExecutableContext repositoryExecutableContext;
 
     /**
-     * @plexus.requirement
+     * Need to force the type here, for some reason the component metadata plugin is getting confused
+     * @plexus.requirement role="npanday.vendor.StateMachineProcessor"
      */
     private StateMachineProcessor processor;
 
