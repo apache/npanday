@@ -176,11 +176,6 @@ public final class PathUtil
         return new File( settingsPathOrFile, "npanday-settings.xml" );
     }
 
-    public static String getHomeM2Folder()
-    {
-        return new File(System.getProperty( "user.home" ), ".m2").getAbsolutePath();
-    }
-
     public static File getPrivateApplicationBaseDirectory( MavenProject project )
     {
         // Maven already basedir aligns this
