@@ -595,7 +595,7 @@ namespace NPanday.Utils
                     {
                         id = "*";
                     }
-                    // TODO: support '!' syntax
+                    // TODO: support '!' syntax, or comma separated lists (above requires external to be first)
                     mirrors.Add(id, mirror.url);
                 }
             }
