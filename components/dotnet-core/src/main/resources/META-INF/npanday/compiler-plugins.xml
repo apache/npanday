@@ -1606,6 +1606,7 @@
     </platforms>
     <probingPaths>
       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\3.5@MSBuildToolsPath}</probingPath>
+      <probingPath>${env.SYSTEMROOT}\Microsoft.NET\Framework\v3.5</probingPath>
     </probingPaths>
     <commandFilter>
       <includes>
@@ -1679,6 +1680,7 @@
     </platforms>
     <probingPaths>
       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\2.0@MSBuildToolsPath}</probingPath>
+      <probingPath>${env.SYSTEMROOT}\Microsoft.NET\Framework\v2.0.50727</probingPath>
     </probingPaths>
     <commandFilter>
       <includes>
@@ -1793,6 +1795,7 @@
     <probingPaths>
       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\3.5@MSBuildToolsPath}</probingPath>
       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MSBuild\ToolsVersions\2.0@MSBuildToolsPath}</probingPath>
+      <probingPath>${env.SYSTEMROOT}\Microsoft.NET\Framework\v2.0.50727</probingPath>
     </probingPaths>
     <commandFilter>
       <includes>
