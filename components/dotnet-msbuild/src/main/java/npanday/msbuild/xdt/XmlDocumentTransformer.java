@@ -30,6 +30,7 @@ import npanday.msbuild.MsbuildException;
 import npanday.msbuild.MsbuildInvocationParameters;
 import npanday.msbuild.MsbuildInvoker;
 import npanday.vendor.VendorRequirement;
+import org.codehaus.plexus.interpolation.os.Os;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -90,6 +91,7 @@ public class XmlDocumentTransformer
         parameters.setProperty( "Source", baseFile.getAbsolutePath() );
         parameters.setProperty( "Transform", transformationFile.getAbsolutePath() );
         parameters.setProperty( "Destination", targetFile.getAbsolutePath() );
+        parameters.setProperty( "VisualStudioVersion", findRequiredVSVersion() );
 
         targetFile.getParentFile().mkdirs();
 
@@ -104,6 +106,32 @@ public class XmlDocumentTransformer
                     + transformationFile.getName(), e
             );
         }
+    }
+
+    private static String findRequiredVSVersion() throws XmlDocumentTransformException {
+        if (Os.isArch("amd64")) {
+            return findRequiredVSVersion(System.getenv("PROGRAMFILES(X86)"));
+        }
+        else {
+            return findRequiredVSVersion(System.getenv("PROGRAMFILES"));
+        }
+    }
+
+    private static String findRequiredVSVersion(String programfiles) throws XmlDocumentTransformException {
+        File[] dirs = new File( programfiles, "MSBuild/Microsoft/VisualStudio" ).listFiles();
+        String version = null;
+        if (dirs != null) {
+            for (File dir : dirs) {
+                if (new File(dir, "Web/Microsoft.Web.Publishing.Tasks.dll").exists()) {
+                    version = dir.getName().substring(1);
+                }
+            }
+        }
+        if (version == null) {
+            throw new XmlDocumentTransformException("Unable to find required tasks file in '" + programfiles +
+                    "\\MSBuild\\Microsoft\\VisualStudio'");
+        }
+        return version;
     }
 
     private File extractResource( String resourceName ) throws IOException
