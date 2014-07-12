@@ -187,8 +187,13 @@ public class ConfigFileHandler
 
             final File targetConfigFile = new File( targetFolder, configFilePath );
 
+            // clone vendorRequirement as it gets mutated, which isn't good for loop
+            VendorRequirement vr = new VendorRequirement(vendorRequirement.getVendor(),
+                    vendorRequirement.getVendorVersion(), vendorRequirement.getFrameworkVersion());
+
+            // TODO: should pass in the wohle list and amend the file to minimise the number of msbuild invocations
             handleConfigFile(
-                vendorRequirement, configFile, transformationHint, targetConfigFile
+                vr, configFile, transformationHint, targetConfigFile
             );
         }
     }
