@@ -64,17 +64,31 @@
             </excludes>
           </configuration>
         </plugin>
+        <!-- TODO: remove when XDT doesn't rely on Visual Studio being installed -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <configuration>
+            <pomExcludes>
+              <!-- This test requires Visual Studio 2010 be installed -->
+              <pomExclude>IT001_TransformAppConfig/pom.xml</pomExclude>
+              <pomExclude>IT002_TransformFurtherConfigs/pom.xml</pomExclude>
+              <pomExclude>IT004_CopyTransformOtherXmlFiles/pom.xml</pomExclude>
+            </pomExcludes>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
 
   <profiles>
-    <!-- TODO: remove when XDT doesn't rely on Visual Studio being installed -->
     <profile>
-      <id>no-visual-studio</id>
+      <id>visualstudio</id>
       <activation>
         <file>
-          <missing>${env.ProgramFiles}/MSBuild/Microsoft/VisualStudio/v10.0/Web/Microsoft.Web.Publishing.Tasks.dll</missing>
+          <exists>
+            ${env.PROGRAMFILES(X86)}\MSBuild\Microsoft\VisualStudio\v10.0\Web\Microsoft.Web.Publishing.Tasks.dll
+          </exists>
         </file>
       </activation>
       <build>
@@ -84,12 +98,29 @@
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-invoker-plugin</artifactId>
               <configuration>
-                <pomExcludes>
-                  <!-- This test requires Visual Studio 2010 be installed -->
-                  <pomExclude>IT001_TransformAppConfig/pom.xml</pomExclude>
-                  <pomExclude>IT002_TransformFurtherConfigs/pom.xml</pomExclude>
-                  <pomExclude>IT004_CopyTransformOtherXmlFiles/pom.xml</pomExclude>
-                </pomExcludes>
+                <pomExcludes combine.self="override"/>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+    <profile>
+      <id>visualstudiox86</id>
+      <activation>
+        <file>
+          <exists>${env.PROGRAMFILES}\MSBuild\Microsoft\VisualStudio\v10.0\Web\Microsoft.Web.Publishing.Tasks.dll
+          </exists>
+        </file>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-invoker-plugin</artifactId>
+              <configuration>
+                <pomExcludes combine.self="override"/>
               </configuration>
             </plugin>
           </plugins>
