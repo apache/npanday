@@ -43,7 +43,7 @@
 
   <profiles>
     <profile>
-      <id>VisualStudio</id>
+      <id>windows</id>
       <activation>
         <os>
           <family>windows</family>
@@ -52,8 +52,28 @@
       <modules>
         <!-- TODO: uses MSBuild from gac / could rely on Xbuild from Mono on non-windows... -->
         <module>NPanday.ProjectImporter</module>
-
-        <!-- TODO: should be optional -->
+      </modules>
+    </profile>
+    <profile>
+      <id>visualstudio</id>
+      <activation>
+        <file>
+          <exists>${env.COMMONPROGRAMFILES}\Microsoft Shared\MSEnv\PublicAssemblies</exists>
+        </file>
+      </activation>
+      <modules>
+        <module>NPanday.VisualStudio.Addin</module>
+        <module>NPanday.VisualStudio.ProjectWizard</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>visualstudiox86</id>
+      <activation>
+        <file>
+          <exists>${env.COMMONPROGRAMFILES(X86)}\Microsoft Shared\MSEnv\PublicAssemblies</exists>
+        </file>
+      </activation>
+      <modules>
         <module>NPanday.VisualStudio.Addin</module>
         <module>NPanday.VisualStudio.ProjectWizard</module>
       </modules>
