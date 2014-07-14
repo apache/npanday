@@ -85,14 +85,14 @@ public class NetExecutableFactoryImpl
             ? new ArrayList<String>()
             : executableConfig.getExecutionPaths();
 
+        executableConfig.setExecutionPaths( executablePaths );
+
         if ( netHome != null )
         {
             getLogger().info( "NPANDAY-066-014: Found executable path in pom: Path = " + netHome.getAbsolutePath() );
             executableConfig.getExecutionPaths().add( netHome.getAbsolutePath() );
         }
 
-
-        executableConfig.setExecutionPaths( executablePaths );
 
         final ExecutableCapability executableCapability =
                     capabilityMatcher.matchExecutableCapabilityFor( executableRequirement );
