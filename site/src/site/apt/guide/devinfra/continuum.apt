@@ -56,5 +56,5 @@ Using Continuum to release .NET projects
   Once this completes successfully, you can proceed with a release as usual.
   
   For instructions on releasing projects using {{{http://continuum.apache.org/} Apache Continuum}},
-  you can refer to Apache Continuum {{{http://continuum.apache.org/docs/1.3.5/user_guides/release/index.html} release documentation}}.
+  you can refer to Apache Continuum {{{http://continuum.apache.org/docs/latest/user_guides/release/index.html} release documentation}}.
   

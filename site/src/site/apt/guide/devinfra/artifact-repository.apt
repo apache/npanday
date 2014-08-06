@@ -24,7 +24,7 @@ Setting up an Artifact Repository
 
   In this example, we configure {{{http://archiva.apache.org/} Apache Archiva}}, however other repository managers
   will operate similarly. Instructions on installing Archiva can be found on the
-  {{{http://archiva.apache.org/docs/1.3/quick-start.html} Archiva web site}}.
+  {{{http://archiva.apache.org/docs/current/quick-start.html} Archiva web site}}.
 
 * Proxying Future Releases
 

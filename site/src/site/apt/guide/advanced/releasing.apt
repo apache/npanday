@@ -23,9 +23,7 @@
 Releasing .NET Projects with Maven
 
   Releasing a project with NPanday follows the same technique as for any Maven project, so the Maven documentation can
-  be consulted on the topic. Here we will provide a brief summary, and give notes on NPanday specific issues. You can
-  refer to the release documentation in
-  {{{http://maestrodev.com/node/196} Better Builds with Maven}} for more information.
+  be consulted on the topic. Here we will provide a brief summary, and give notes on NPanday specific issues.
 
 * Setting up the POM
 
