@@ -25,42 +25,90 @@ Building NPanday
 
 * Pre-requisites
 
-  Since NPanday is built using NPanday, you must fulfil all the prerequisites documented in the
-  {{{../guide/installation/index.html} Installation Guide}}. NPanday trunk usually builds against one
-  of the latest releases. If you want
+  You must fulfil the same prerequisites that are documented in the
+  {{{../guide/installation/index.html} Installation Guide}}.
 
-  <<NPanday builds using .NET 2.0.>> So, if you do not have Visual Studio 2005 installed, you must install
-  .NET SDK 2.0 or Windows SDK 6.1 (includes .NET SDK 2.0) manually. This is, because neither VS 2008 or VS 2010
-  include the SDK for .NET 2.0. Find the download locations in the Installation Guide.
+  If you already have Visual Studio 2005 or later installed, then the
+  environment will already be sufficient.
 
-  NUnit-Binaries must be on the PATH environment variable.
-  
+  If you are building with just the Windows SDK, then the Add-in will be
+  skipped. To build that as well, either install Visual Studio, or the freely
+  available {{{http://www.microsoft.com/download/details.aspx?id=1366} Visual
+  Studio 2010 Shell Integration}} package.
+
+  If you are building using Mono, no additional requirements are needed, and
+  Windows-specific modules such as the Add-in will be skipped.
+
+  Depending on the other software you have installed, several integration
+  tests may be skipped. If you'd like to ensure maximum compatibility of your
+  changes, you should have the following installed:
+
+    * Windows Azure SDK 1.6 (November 2011)
+
+    * Windows Azure SDK 1.7 (June 2012)
+
+    * WiX Toolset 3.x
+
+    * Microsoft Web Deploy 2.1
+
+    * .NET Framework 2.0
+
+    * .NET Framework 3.5
+
+    * .NET Framework 4.0
+
+    * ASP.NET MVC 2
+
 * Checking out the Source Code
 
-  You can check out the latest source code from {{https://svn.apache.org/repos/asf/incubator/npanday/trunk}}. You can also
-  download a previous version as an archive from the web site, or from check it out from the subdirectory of
+  You can check out the latest source code from
+  {{https://svn.apache.org/repos/asf/incubator/npanday/trunk}}. You can also
+  download a previous version as an archive from the web site, or check it
+  out from the subdirectory of
   {{https://svn.apache.org/repos/asf/incubator/npanday/tags}}.
 
   For example:
 
-----
++----+
 svn co https://svn.apache.org/repos/asf/incubator/npanday/trunk npanday
-----
++----+
 
 * Building All with Maven
 
-  Everything in the distribution, including the Visual Studio add-in, is built using the following command:
+  To build the default modules for the current platform, run Maven:
 
-----
++----+
 mvn clean install
-----
++----+
 
-  <Note:> On Windows Vista and Windows 7, this presently needs to be run as an administrator to build successfully,
-          as it installs 3 libraries into the GAC.
+  Once this command has completed, you can proceed to use the Maven plugins
+  immediately.
 
-  Once this command has completed, you can proceed to use the Maven plugins immediately. To install the Visual Studio
-  Add-in, you will need to still run the <<<mvn npanday.plugin:maven-vsinstaller-plugin:install>>> command as described
-  in the {{{../guide/installation/index.html} Installation Guide}}.
+  This build assumes that a suitable version of NPanday is available to build
+  itself. If necessary, you may need to first run this:
+
++----+
+bootstrap
++----+
+
+  After that, you may simply use <<<mvn clean install>>> each time.
+
+  Several profiles are available for more extensive support or tests:
+
+    * <<<net40>>> - run additional .NET 4.0 tests for the project importer
+
+    * <<<run-its>>> - run the integration tests for plugins and the overall
+      NPanday suite
+
+    * <<<dist>>> - build the distribution files including the MSI
+
+  Therefore, a complete build might be:
+
++----+
+mvn clean install -Pnet40,run-its,dist
++----+
+
+  More information on these options can be found in the following sections.
 
 * Building the Visual Studio Add-in with Visual Studio / MSBuild
 
@@ -75,19 +123,16 @@ mvn clean install
 
   For example:
 
-----
++----+
 svn co https://svn.apache.org/repos/asf/incubator/npanday/npanday-its/trunk npanday-its
-----
++----+
 
   From within that directory, you can run it against the latest available version of NPanday (likely the one you have
   just built above) using the following command:
 
-----
++----+
 mvn test -Prun-its
-----
-
-  NOTE: In order to successfully run the integration tests, <<<ildasm>>> needs to be on the PATH.
-  (this is to be fixed {{{https://issues.apache.org/jira/browse/NPANDAY-393} NPANDAY-393}})
++----+
 
   The command will indicate which version of NPanday is being used, and which tests pass and fail. It will also
   indicate which version of .NET SDK is installed and used by the tests - for example, if .NET 3.5 SDK is not available,
@@ -96,9 +141,9 @@ mvn test -Prun-its
   You can also run them against a specific previous version of NPanday (which will be downloaded from the repository
   if needed):
 
-----
++----+
 mvn test -Prun-its -Dnpanday.version=${project.version}
-----
++----+
 
   When contributing fixes for issues in the Maven plugins, it is appropriate to write an integration test along with it.
   They are written in Java, using JUnit, and contain a sample project against which <<<mvn>>> is run against, and the
@@ -107,18 +152,22 @@ mvn test -Prun-its -Dnpanday.version=${project.version}
 * Building NPanday and executing the ITs
 
   You can also build the source code and execute the ITs in one command. But first you have to install the ITs in your
-  local repository using the following command:
+  local repository using the following command from the npanday-its checkout:
 
-----
++----+
 mvn clean install
-----
++----+
 
   After you have installed the ITs locally, you can now build the source code and execute the ITs by
   using the following command:
 
-----
++----+
 mvn clean install -Prun-its
-----
++----+
+
+  Note that in addition to running the suite of integration tests for
+  NPanday, this also enables integration tests for certain plugins that use the
+  Maven invoker framework.
 
 * Generating NPanday's documentation locally
 
@@ -128,12 +177,11 @@ mvn clean install -Prun-its
   The documentation site and PDF can be generated using the following command within the <<<site>>> and the
   <<<plugins>>> directory of the NPanday trunk:
 
-----
-  mvn site-deploy -P local-docs
-----
++----+
+mvn site
++----+
 
-  Open <<<file:///c:/Program Files/NPanday/docs/index.html>>> in your browser to view the documentation.
-
-  You may also override the default local deployment through an additional argument <<<-Dlocaldocs.folder=file:///...>>>.
+  Open <<<target/site/index.html>>> in your browser to view the
+  documentation for each module.
 
   It is recommended to add <<<-o>>> for speeding up the generation after the first successful build.

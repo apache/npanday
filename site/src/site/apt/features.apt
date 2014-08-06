@@ -85,6 +85,10 @@ Features
 
   * .NET 4.0 / Visual Studio 2010
 
+  * .NET 4.5 / Visual Studio 2012
+
+  * .NET 4.5.1 / Visual Studio 2013
+
   []
 
   <<Note:>> There is partial support for Mono, .NET 1.1 and other vendors, but these are currently untested.

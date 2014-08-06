@@ -31,9 +31,9 @@ Publishing the Documentation
   This is done with the following command within the release checkout, first from the <<<plugins>>> subdirectory, then
   the <<<site>>> subdirectory:
 
-----
-mvn site-deploy -P apache-docs
-----
++----+
+mvn site-deploy
++----+
 
   <Note:> It's important to do them in this order so that the generic plugins index page will get overwritten by the
           correct one in the docs for this version.

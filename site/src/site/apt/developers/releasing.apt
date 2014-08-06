@@ -86,9 +86,9 @@ mvn release:prepare
   
   [[5]] After successful release:prepare, run the following command:
 
-----
-mvn release:perform -Dtag=url_tag
-----
++----+
+mvn release:perform
++----+
 
 * Steps in releasing NPanday:
 

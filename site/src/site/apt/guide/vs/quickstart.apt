@@ -28,9 +28,7 @@ Quick Start Guide
 
 * Starting the Add-in
 
-  Start Visual Studio ensuring that your PATH is set correctly, as described in the installation guide.
-
-  Next, in Visual Studio start the NPanday Build System from Tools>NPanday Build System. You will see NPanday starting
+  In Visual Studio start the NPanday Build System from Tools>NPanday Build System. You will see NPanday starting
   in the Visual Studio Output pane.
 
   <Note:> After you start the NPanday Build System and it is running, it no longer appears as an option on the Tools
