@@ -90,9 +90,9 @@ Executing Maven Goals
   You can scroll up and down in the output window to display all the text.
   
   Next, verify the artifacts were placed into the local repository under the following path:
-  <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository\\groupId\\artifactId>>>
+  <<<C:\\Users\\[username]\\.m2\\repository\\groupId\\artifactId>>>
   
-  Finally, verify that <<<C:\\Documents and Settings\\[user_home]\\.m2\\npanday-settings.xml>>> is also created.
+  Finally, verify that <<<C:\\Users\\[username]\\.m2\\npanday-settings.xml>>> is also created.
   
   The contents of npanday-settings.xml looks similar to the following:
   

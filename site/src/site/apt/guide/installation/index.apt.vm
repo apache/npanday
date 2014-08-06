@@ -144,8 +144,8 @@ Installing the Visual Studio Add-in using the NPanday Installer
 [../../images/vs/installer/screen5.jpg]
  
   After running the installer the add-in will be located here:
-  <<<C:\\Documents and Settings\\[user_home]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
-  (or equivalent for Visual Studio 2008 or equivalent for Visual Studio 2010).
+  <<<C:\\Users\\[username]\\My Documents\\Visual Studio 2005\\Addins\\NPanday.VisualStudio.AddIn>>>
+  (or equivalent for other versions of Visual Studio).
 
   You can verify that the Maven plugins are also installed correctly by following the same steps as shown in the previous section.
   

@@ -41,7 +41,7 @@ Remote Repository Configuration
             appropriate box.
 
       [[5]] Click Update. This will save the configuration to
-            <<<C:\\Documents and Settings\\[user_home]\\.m2\\settings.xml>>>. To edit multiple repositories, repeat
+            <<<C:\\Users\\[username]\\.m2\\settings.xml>>>. To edit multiple repositories, repeat
             steps 3 to 5 by selecting another repository to be configured form the drop down list.
 
       [[6]] Click Close when done configuring the repository.
@@ -56,7 +56,7 @@ Remote Repository Configuration
 * Manually Configure a Remote Maven Repository
 
   To manually add a remote repository, add the following lines in your
-  <<<C:\\Documents and Settings\\[user_home]\\.m2\\settings.xml>>> file within the <<< \<profiles\> >>>
+  <<<C:\\Users\\[username]\\.m2\\settings.xml>>> file within the <<< \<profiles\> >>>
   <<< \</profiles\> >>> tag.  Modify the values for the <<< \<repository\> >>> and <<< \<id\> >>>elements
   with the repository url you want to access.
 

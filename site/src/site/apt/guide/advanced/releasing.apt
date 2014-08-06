@@ -55,7 +55,7 @@ mvn org.apache.npanday.plugins:NPanday.Plugin.SysRef.JavaBinding:prepare
   <<<C:\\WINDOWS\\Temp\\NPanday>>> then renamed following the artifact filename format <<<[artifactId]-[version].[packaging]>>>.
 
   After the reference is renamed, it will then be installed in the local repository
-  <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository>>> for it to be used when releasing the project.
+  <<<C:\\Users\\[username]\\.m2\\repository>>> for it to be used when releasing the project.
 
   The following are examples of references of different types which are renamed then installed in the local repository,
 

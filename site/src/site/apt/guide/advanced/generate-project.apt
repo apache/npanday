@@ -69,7 +69,7 @@ mvn archetype:generate -DarchetypeArtifactId=maven-archetype-dotnet-simple -Darc
   <<<mvn install>>>
   
   The <<<mvn install>>> command typically puts artifacts (installs them) into the repository here,
-  <<<C:\\Documents and Settings\\[user_home]\\.m2\\repository>>>.
+  <<<C:\\Users\\[username]\\.m2\\repository>>>.
   
   The sample project contains NUnit tests. If the build fails on <<<nunit-console>>>, make sure you have NUnit 2.2+
   installed and located in the PATH.
