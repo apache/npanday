@@ -92,6 +92,10 @@ mvn org.apache.npanday.plugins:maven-install-plugin:install-file -Dfile=[path_to
 
     []
 
+  If you use the Visual Studio Add-in, you can also have your project's
+  references installed to the local repository as part of generating a Maven
+  POM.
+
 * Adding System Scope Dependencies
 
   To add a system scope dependency, add a configuration similar to the following in the project's <<<pom.xml>>>:
