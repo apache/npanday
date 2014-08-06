@@ -22,7 +22,7 @@ Pre-release checklist
 
   * Check the build is successful for both NPanday and NPanday-ITs
 
-  * Ensure all issues in the jira for that version have been resolved, or are moved to a later version
+  * Ensure all issues in the JIRA for that version have been resolved, or are moved to a later version
   
   * NPanday staging repo {{http://vmbuild.apache.org/archiva/repository/staged-npanday/}} should be re-created before the release to ensure that the repo only contains the 
     artifacts for the said release version.
@@ -32,13 +32,12 @@ Pre-release checklist
   
   To do this, run the following command:
   
-----
++----+
 mvn clean install -Ppre-release
-----
++----+
 
-  Ensure that the build is successful before proceeding to the release proper.  
-  
-<Note: (This is needed for the signature of the artifacts to be deployed)>
+  Ensure that the build is successful before proceeding to the release proper.
+  <Note: (This is needed for the signature of the artifacts to be deployed)>
   
   * The release manager should generate a sign key and register the key at http://pgp.mit.edu/
   
@@ -70,9 +69,9 @@ Creating a Release Candidate
 
   [[2]] Run the following command:
 
-----  
++----+
 mvn release:prepare
-----
++----+
 
   [[3]] Fill in the following values: 
 

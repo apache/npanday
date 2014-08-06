@@ -20,13 +20,13 @@
  
 COM References
 
- 	When Visual Studio compiles code that uses a COM object, it creates a wrapper DLL. For example, compiling code in
- 	<<<MyProject>>> that uses <<<Shell32.dll>>> will result in both <<<MyProject.dll>>> and <<<Interop.Shell32.dll>>>
- 	being created.
+  When Visual Studio compiles code that uses a COM object, it creates a wrapper DLL. For example, compiling code in
+  <<<MyProject>>> that uses <<<Shell32.dll>>> will result in both <<<MyProject.dll>>> and <<<Interop.Shell32.dll>>>
+  being created.
 
- 	This also needs to happen if there is a transitive dependency - if <<<OtherProject>>> depends on <<<MyProject>>>, and
- 	<<<MyProject>>> uses <<<Shell32.dll>>>, then <<<Interop.Shell32.dll>>> also needs to be available when building
- 	<<<OtherProject>>>.
+  This also needs to happen if there is a transitive dependency - if <<<OtherProject>>> depends on <<<MyProject>>>, and
+  <<<MyProject>>> uses <<<Shell32.dll>>>, then <<<Interop.Shell32.dll>>> also needs to be available when building
+  <<<OtherProject>>>.
 
 * Requirements
 

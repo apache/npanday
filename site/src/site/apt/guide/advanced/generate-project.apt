@@ -83,10 +83,10 @@ mvn archetype:generate -DarchetypeArtifactId=maven-archetype-dotnet-simple -Darc
   Other types of template projects are available. To use them instead, change the <<<archetypeArtifactId>>> option to
   one of the following:
 
-    * <<<maven-artchetype-dotnet-simple>>> - simple C# project with unit tests in the Maven directory layout
+    * <<<maven-archetype-dotnet-simple>>> - simple C# project with unit tests in the Maven directory layout
 
-    * <<<maven-artchetype-vb-simple>>> - simple Visual Basic project with unit tests in the Maven directory layout
+    * <<<maven-archetype-vb-simple>>> - simple Visual Basic project with unit tests in the Maven directory layout
 
-    * <<<maven-artchetype-netexecutable>>> - simple project for creating a console executable
+    * <<<maven-archetype-netexecutable>>> - simple project for creating a console executable
 
     []

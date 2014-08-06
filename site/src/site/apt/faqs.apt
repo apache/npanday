@@ -50,7 +50,7 @@ NPanday Frequently Asked Questions
   
 * Can NPanday build projects outside of Visual Studio?
 
-  Yes. Since the NPanday Visual Studio Addin creates a POM file from your corresponding .NET Project you can build your
+  Yes. Since the NPanday Visual Studio Add-in creates a POM file from your corresponding .NET Project you can build your
   .NET Projects using standard Apache Maven commands.
   
 * Why use NPanday when you can build .NET Applications in Visual Studio or MSBuild?
@@ -62,7 +62,7 @@ NPanday Frequently Asked Questions
   In addition, NPanday brings Maven's dependency management and other plugins (such as developer site generation) to
   .NET projects with little additional work needed.
   
-* How can a custom <<<settings.xml>>> be used for the Visual Studio Addin?
+* How can a custom <<<settings.xml>>> be used for the Visual Studio Add-in?
   
   Add the <<<\-DsettingsFile\=\[path_to_custom_settings.xml_file\]>>> parameter when executing
   <<<mvn org.apache.npanday.plugins:maven\-vsinstaller\-plugin:install>>>. For example,
