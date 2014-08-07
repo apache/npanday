@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Reflection;
 
 using NUnit.Framework;
 using NPanday.ProjectImporter;
@@ -168,15 +168,15 @@ namespace NPanday.ProjectImporter.ImporterTests
         public void CheckWebMVC(string version)
         {
             // check MVC 2 installed
-//            string name = "System.Web.MVC, Version=" + version + ", Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL";
-//            try
-//            {
-//                Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(name).FullName);
-//            }
-//            catch
-//            {
-//                Assert.Ignore("Test only runs with MVC " + version + " installed");
-//            }
+            string name = "System.Web.MVC, Version=" + version + ", Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL";
+            try
+            {
+                Assembly.ReflectionOnlyLoad(new System.Reflection.AssemblyName(name).FullName);
+            }
+            catch
+            {
+                Assert.Ignore("Test only runs with MVC " + version + " installed");
+            }
         }
 
 		[Test]
