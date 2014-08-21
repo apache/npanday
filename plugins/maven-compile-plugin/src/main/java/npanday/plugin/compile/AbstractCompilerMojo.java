@@ -798,6 +798,14 @@ public abstract class AbstractCompilerMojo
      */
 
 
+    /**
+     * artifactType
+     *
+     * @parameter expression = "${artifactType}"
+     */
+    protected String artifactType;
+
+
     public void execute() throws MojoExecutionException
     {
         SettingsUtil.applyCustomSettings( getLog(), repositoryRegistry, settingsPath );

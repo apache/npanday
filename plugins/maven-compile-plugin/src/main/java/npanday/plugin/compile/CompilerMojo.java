@@ -104,7 +104,8 @@ public final class CompilerMojo
 
         compilerConfig.setCommands( getParameters() );
 
-        String artifactTypeName = project.getArtifact().getType();
+	
+        String artifactTypeName = (null!=artifactType)?artifactType:project.getArtifact().getType();
         ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( artifactTypeName );
         if ( artifactType.equals( ArtifactType.NULL ) )
         {
