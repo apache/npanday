@@ -62,13 +62,6 @@ NPanday Frequently Asked Questions
   In addition, NPanday brings Maven's dependency management and other plugins (such as developer site generation) to
   .NET projects with little additional work needed.
   
-* How can a custom <<<settings.xml>>> be used for the Visual Studio Add-in?
-  
-  Add the <<<\-DsettingsFile\=\[path_to_custom_settings.xml_file\]>>> parameter when executing
-  <<<mvn org.apache.npanday.plugins:maven\-vsinstaller\-plugin:install>>>. For example,
-  
-  <<<mvn org.apache.npanday.plugins:maven\-vsinstaller\-plugin:install \-DsettingsFile\="C:\\common\\settings.xml">>>
-  
 * How do I set the root namespace for a Visual Basic assembly?
   
   Add the <<< \<rootNameSpace\> >>> element under <<< \<configuration\> >>> inside the <<<maven-compile-plugin>>> plugin.
