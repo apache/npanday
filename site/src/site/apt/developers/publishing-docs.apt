@@ -28,8 +28,14 @@ Publishing the Documentation
 
     * the main documentation site
 
-  This is done with the following command within the release checkout, first from the <<<plugins>>> subdirectory, then
-  the <<<site>>> subdirectory:
+  This is done with commands within the release checkout. First, from the
+  <<<plugins>>> directory:
+
++----+
+mvn site site:stage scm-publish:publish-scm
++----+
+
+  Then, from the <<<site>>> directory:
 
 +----+
 mvn site-deploy
