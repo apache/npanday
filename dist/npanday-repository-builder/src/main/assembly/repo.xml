@@ -26,7 +26,6 @@
   <repositories>
     <repository>
       <outputDirectory>releases</outputDirectory>
-      <includeMetadata>true</includeMetadata>
     </repository>
   </repositories>
   <!-- dummy required to make dependency resolution fire and populate the repository -->
