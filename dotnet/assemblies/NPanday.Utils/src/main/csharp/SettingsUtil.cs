@@ -247,7 +247,7 @@ namespace NPanday.Utils
                 }
                 else
                 {
-                    XmlNode profilesNode = settingsXmlDoc.SelectSingleNode("//settings/profiles");
+                    XmlNode profilesNode = settingsXmlDoc.SelectSingleNode("//*[local-name()='profiles']");
                     if (profilesNode == null)
                     {
                         // create profiles
@@ -293,7 +293,7 @@ namespace NPanday.Utils
                 foreach (Mirror mirror in settings.mirrors)
                 {
                     // assumes you only changed url of existing ones
-                    XmlNode node = settingsXmlDoc.SelectSingleNode("//settings/mirrors/mirror[id = '" + mirror.id + "']/url");
+                    XmlNode node = settingsXmlDoc.SelectSingleNode("(//*[local-name() = 'mirror'])[*[local-name()='id']='" + mirror.id + "']/*[local-name() = 'url']");
                     if (node != null)
                         node.InnerText = mirror.url;
                 }
