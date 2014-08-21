@@ -98,7 +98,8 @@ bootstrap
     * <<<net40>>> - run additional .NET 4.0 tests for the project importer
 
     * <<<run-its>>> - run the integration tests for plugins and the overall
-      NPanday suite
+      NPanday suite (requires <<<mvn clean install>>> to have been run once
+      first)
 
     * <<<dist>>> - build the distribution files including the MSI
 
