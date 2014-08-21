@@ -145,7 +145,7 @@ def writer = outputFile.withWriter("UTF-8") { writer ->
                       'util:XmlFile'(Id:"VS${vs}XmlModifyFriendlyName", Action:"setValue",
                                      ElementPath:"/Extensibility/Addin/FriendlyName",
                                      File:"[VS${vs}Addin]NPanday.VisualStudio.Addin",
-                                     Value:"NPanday ${pom.version} Maven in .NET Applications")
+                                     Value:"Apache NPanday ${pom.version} - Maven in .NET Applications")
                     }
                   }
                 }
