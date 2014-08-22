@@ -311,6 +311,9 @@ under the License.
     <contributor>
       <name>David Akehurst</name>
     </contributor>
+    <contributor>
+      <name>Anthony Whitford</name>
+    </contributor>
   </contributors>
   <modules>
     <module>components</module>

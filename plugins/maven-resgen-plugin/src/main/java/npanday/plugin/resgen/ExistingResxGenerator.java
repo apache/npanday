@@ -131,7 +131,10 @@ public class ExistingResxGenerator extends AbstractMojo
             for (EmbeddedResource embeddedResource : embeddedResources)
             {   
             	File file = new File(project.getBuild().getSourceDirectory() + File.separator + embeddedResource.getSourceFile());
-            	if(!file.exists()) continue;
+                if (!file.exists()) {
+                    getLog().warn("embeddedResource does not exist: " + embeddedResource.getSourceFile());
+                    continue;
+                }
                 commands = getCommands(file.getAbsoluteFile(), resourceDirectory, embeddedResource.getName());
                 netExecutableFactory.getExecutable(
                     new ExecutableRequirement( vendor, null, frameworkVersion, "RESGEN" ), commands, netHome
@@ -139,15 +142,15 @@ public class ExistingResxGenerator extends AbstractMojo
                     .execute();
             }
           
-            if(embeddedResources == null)
+            if(embeddedResources.length == 0)
             {
                String sourceDirectory = project.getBasedir().getPath();
         	   String[] resourceFilenames  = FileUtils.getFilesFromExtension(sourceDirectory, new String[]{"resx"});
         	
                for(String resourceFilename : resourceFilenames)
                {
+                  getLog().debug("processing " + resourceFilename);
             	  File file = new File(resourceFilename);
-            	  if(!file.exists()) continue;
             	  String name = resourceFilename.substring(sourceDirectory.length() + 1).replace('\\', '.');
             	  name = project.getArtifactId() + "." + name.substring(0, name.lastIndexOf('.'));
 
