@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <log4net>
   <appender name="RollingFile" type="log4net.Appender.RollingFileAppender">
     <file value="${LOCALAPPDATA}/NPanday/npanday-debug.log" />
