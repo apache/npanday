@@ -35,6 +35,9 @@ import npanday.resolver.filter.DotnetSymbolsArtifactFilter;
 import npanday.resolver.filter.OrArtifactFilter;
 import npanday.vendor.SettingsUtil;
 import npanday.vendor.StateMachineProcessor;
+import npanday.vendor.Vendor;
+import npanday.vendor.VendorInfo;
+import npanday.vendor.VendorRequirement;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
@@ -307,15 +310,38 @@ public class TesterMojo
         // pretty print nunit logs
         getLog().info( System.getProperty( "line.separator" ) );
 
-        String profile = "NUNIT" + (forceX86 ? "-x86" : "");
         File executableHome = getExecutableHome();
+
+        VendorRequirement vendorRequirement = new VendorRequirement( vendor, vendorVersion, executionFrameworkVersion );
+
+        VendorInfo vendorInfo;
+        try
+        {
+            vendorInfo = processor.process( vendorRequirement );
+        }
+        catch ( npanday.vendor.IllegalStateException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-902-008: Illegal state of vendor info: Message =  " + e.getMessage(), e);
+        }
+        catch ( PlatformUnsupportedException e )
+        {
+            throw new MojoExecutionException(
+                "NPANDAY-902-009: Platform is unsupported: Message =  " + e.getMessage(), e);
+        }
+
+        String profile = "NUNIT";
+        if ( !vendorInfo.getVendor().equals( Vendor.MONO ) && forceX86 )
+        {
+            profile = "NUNIT-x86";
+        }
 
         try
         {
             try
             {
                 NetExecutable executable = netExecutableFactory.getExecutable(
-                    new ExecutableRequirement( vendor, vendorVersion, executionFrameworkVersion, profile ), commands,
+                    new ExecutableRequirement( vendorRequirement, profile ), commands,
                     executableHome
                 );
 

@@ -124,17 +124,13 @@ under the License.
 
 
   <executablePlugin>
-    <identifier>NUNIT-x86</identifier>
+    <identifier>NUNIT-4.0</identifier>
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
     <vendor>MONO</vendor>
-    <!-- this does not work with the packaged MONO nunit runners! -->
-    <executable>nunit-console-x86</executable>
-    <profile>NUNIT-x86</profile>
+    <executable>nunit-console4</executable>
+    <profile>NUNIT</profile>
     <frameworkVersions>
       <frameworkVersion>4.0</frameworkVersion>
-      <frameworkVersion>3.5</frameworkVersion>
-      <frameworkVersion>3.0</frameworkVersion>
-      <frameworkVersion>2.0.50727</frameworkVersion>
     </frameworkVersions>
     <platforms>
       <platform>
