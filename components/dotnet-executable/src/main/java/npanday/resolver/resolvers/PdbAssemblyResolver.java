@@ -96,7 +96,7 @@ public class PdbAssemblyResolver extends AbstractLogEnabled implements ArtifactR
                 throw new ArtifactNotFoundException(e.getMessage(), artifact);
             }
 
-            cache.put(artifact);
+            cache.put(pdbArtifact);
         }
         if (pdbArtifact.isResolved()){
             additionalDependenciesCollector.add(pdbArtifact);

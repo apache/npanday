@@ -44,7 +44,7 @@ public class NPandayResolutionCache
     }
 
     public Boolean applyTo(Artifact artifact){
-        String key = artifact.getArtifactId();
+        String key = artifact.getId();
         if (cache.containsKey(key)){
            File resolvedFile = cache.get(key);
            if (resolvedFile != null){
