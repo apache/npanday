@@ -238,9 +238,7 @@ public final class DefaultCompiler
         if ( compilerContext.getVendor().equals( Vendor.MONO ) &&
                  "FULL".equals( compilerContext.getTargetProfile() ) )
         {
-            commands.add( "/nostdlib" );
             commands.add( "/noconfig" );
-            commands.add( "/reference:mscorlib" );
             commands.add( "/reference:System.Data" );
             commands.add( "/reference:System" );
             commands.add( "/reference:System.Drawing" );
