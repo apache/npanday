@@ -23,15 +23,19 @@ import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.registry.RepositoryRegistry;
 import npanday.vendor.SettingsUtil;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -98,6 +102,14 @@ public class ExistingResxGenerator extends AbstractMojo
      * @parameter expression="${netHome}"
      */
     private File netHome;
+
+    /**
+     * Embedded resource directories. If none are specified, and no embeddedResources are present, then the default is
+     * all files in src/main/resgen
+     *
+     * @parameter
+     */
+    private List<Resource> resources = new ArrayList<Resource>();
     
     public static final String ASSEMBLY_RESOURCES_DIR = "assembly-resources";
 
@@ -141,25 +153,35 @@ public class ExistingResxGenerator extends AbstractMojo
                 )
                     .execute();
             }
-          
-            if(embeddedResources.length == 0)
-            {
-               String sourceDirectory = project.getBasedir().getPath();
-        	   String[] resourceFilenames  = FileUtils.getFilesFromExtension(sourceDirectory, new String[]{"resx"});
-        	
-               for(String resourceFilename : resourceFilenames)
-               {
-                  getLog().debug("processing " + resourceFilename);
-            	  File file = new File(resourceFilename);
-            	  String name = resourceFilename.substring(sourceDirectory.length() + 1).replace('\\', '.');
-            	  name = project.getArtifactId() + "." + name.substring(0, name.lastIndexOf('.'));
 
-            	  commands = getCommands(file.getAbsoluteFile(), resourceDirectory, name);
-                   netExecutableFactory.getExecutable(
-                       new ExecutableRequirement( vendor, null, frameworkVersion, "RESGEN" ), commands, netHome
-                   )
-                       .execute();
-              }
+            List<Resource> resources = this.resources;
+            if (resources.isEmpty() && embeddedResources.length == 0) {
+                Resource resource = new Resource();
+                resource.setDirectory(new File(project.getBasedir(), "src/main/resgen").getAbsolutePath());
+                resources.add(resource);
+            }
+
+            for (Resource resource : resources) {
+                String sourceDirectory = resource.getDirectory();
+                String includes = StringUtils.join(resource.getIncludes().iterator(), ",");
+                String excludes = StringUtils.join(resource.getExcludes().iterator(), ",");
+
+                File directory = new File(sourceDirectory);
+                if (directory.exists()) {
+                    List resourceFilenames = FileUtils.getFiles(directory, includes, excludes);
+
+                    for(File file : (List<File>)resourceFilenames)
+                    {
+                        getLog().debug("processing " + file);
+                        String name = file.getPath().substring(sourceDirectory.length() + 1).replace(File.separatorChar, '.');
+                        name = project.getArtifactId() + "." + name.substring(0, name.lastIndexOf('.'));
+
+                        commands = getCommands(file.getAbsoluteFile(), resourceDirectory, name);
+                        netExecutableFactory.getExecutable(
+                                new ExecutableRequirement( vendor, null, frameworkVersion, "RESGEN" ), commands, netHome
+                        ).execute();
+                    }
+                }
             }
         }
         catch ( ExecutionException e )
@@ -170,7 +192,9 @@ public class ExistingResxGenerator extends AbstractMojo
         catch ( PlatformUnsupportedException e )
         {
             throw new MojoExecutionException( "NPANDAY-1501-003: Platform Unsupported", e );
-        }        
+        } catch (IOException e) {
+            throw new MojoExecutionException( "NPANDAY-1501-004: Error finding resource files", e );
+        }
     }
     
     private List<String> getCommands( File sourceFile, String resourceDirectory)    throws MojoExecutionException

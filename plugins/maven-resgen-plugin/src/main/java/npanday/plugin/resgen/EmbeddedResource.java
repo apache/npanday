@@ -21,11 +21,9 @@ package npanday.plugin.resgen;
 
 
 /**
- * Webreference Pojo
- * 
  * @author Shein Ernacio
   */
-public class EmbeddedResource 
+public class EmbeddedResource
 {
 	public String getName()
     {
