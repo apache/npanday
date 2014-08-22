@@ -23,7 +23,7 @@
     <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
 
     <executable>cspack</executable>
-    <executableVersion>1.6</executableVersion>
+    <executableVersion>[1.6,)</executableVersion>
 
     <vendor>MICROSOFT</vendor>
 
@@ -34,90 +34,11 @@
       <frameworkVersion>3.5</frameworkVersion>
     </frameworkVersions>
 
+    <!-- Paths are supplied in the mojo, so it can lookup the one matching the version used
     <probingPaths>
        <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\v1.6@InstallPath}\bin</probingPath>
     </probingPaths>
-
-    <platforms>
-      <platform>
-        <operatingSystem>Windows</operatingSystem>
-      </platform>
-    </platforms>
-
-  </executablePlugin>
-  <executablePlugin>
-    <profile>CSPACK</profile>
-    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
-
-    <executable>cspack</executable>
-    <executableVersion>1.7</executableVersion>
-
-    <vendor>MICROSOFT</vendor>
-
-    <frameworkVersions>
-      <frameworkVersion>4.5.1</frameworkVersion>
-      <frameworkVersion>4.5</frameworkVersion>
-      <frameworkVersion>4.0</frameworkVersion>
-      <frameworkVersion>3.5</frameworkVersion>
-    </frameworkVersions>
-
-    <probingPaths>
-       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\v1.7@InstallPath}\bin</probingPath>
-    </probingPaths>
-
-    <platforms>
-      <platform>
-        <operatingSystem>Windows</operatingSystem>
-      </platform>
-    </platforms>
-
-  </executablePlugin>
-  <executablePlugin>
-    <profile>CSPACK</profile>
-    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
-
-    <executable>cspack</executable>
-    <executableVersion>1.8</executableVersion>
-
-    <vendor>MICROSOFT</vendor>
-
-    <frameworkVersions>
-      <frameworkVersion>4.5.1</frameworkVersion>
-      <frameworkVersion>4.5</frameworkVersion>
-      <frameworkVersion>4.0</frameworkVersion>
-      <frameworkVersion>3.5</frameworkVersion>
-    </frameworkVersions>
-
-    <probingPaths>
-       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\v1.8@InstallPath}\bin</probingPath>
-    </probingPaths>
-
-    <platforms>
-      <platform>
-        <operatingSystem>Windows</operatingSystem>
-      </platform>
-    </platforms>
-
-  </executablePlugin>
-  <executablePlugin>
-    <profile>CSPACK</profile>
-    <pluginClass>npanday.executable.impl.DefaultNetExecutable</pluginClass>
-
-    <executable>cspack</executable>
-    <executableVersion>2.0</executableVersion>
-
-    <vendor>MICROSOFT</vendor>
-
-    <frameworkVersions>
-      <frameworkVersion>4.5.1</frameworkVersion>
-      <frameworkVersion>4.5</frameworkVersion>
-      <frameworkVersion>4.0</frameworkVersion>
-      <frameworkVersion>3.5</frameworkVersion>
-    </frameworkVersions>
-
-    <probingPaths>
-       <probingPath>${HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\v2.0@InstallPath}\bin</probingPath>
-    </probingPaths>
+    -->
 
     <platforms>
       <platform>

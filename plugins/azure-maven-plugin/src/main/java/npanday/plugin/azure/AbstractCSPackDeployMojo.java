@@ -23,9 +23,12 @@ import npanday.PlatformUnsupportedException;
 import npanday.executable.ExecutableRequirement;
 import npanday.executable.ExecutionException;
 import npanday.executable.NetExecutable;
+import npanday.registry.impl.WinRegistry;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -67,12 +70,26 @@ public abstract class AbstractCSPackDeployMojo
 
         try
         {
-            // TODO: confusion of 'identifier' and 'profile' / align to new NPANDAY-499
+            File sdkHome = null;
+            try {
+                String azureSdkInstallPath = WinRegistry.readString(WinRegistry.HKEY_LOCAL_MACHINE,
+                        "SOFTWARE\\Microsoft\\Microsoft SDKs\\ServiceHosting\\v" + executableVersion, "InstallPath");
+                if ( azureSdkInstallPath != null )
+                {
+                    sdkHome = new File(azureSdkInstallPath, "bin");
+                }
+            } catch (IllegalAccessException e) {
+                getLog().warn("Error looking up Azure SDK location from registry: " + e.getLocalizedMessage() + " - will rely on PATH");
+            } catch (InvocationTargetException e) {
+                getLog().warn("Error looking up Azure SDK location from registry: " + e.getLocalizedMessage() + " - will rely on PATH");
+            }
+
+             // TODO: confusion of 'identifier' and 'profile' / align to new NPANDAY-499
             final NetExecutable executable = netExecutableFactory.getExecutable(
                 new ExecutableRequirement(
                     vendor, vendorVersion, frameworkVersion, executableIdentifier, executableVersion
                     /*, executableProfile*/
-                ), getCommands(), null
+                ), getCommands(), sdkHome
             );
             executable.execute();
         }

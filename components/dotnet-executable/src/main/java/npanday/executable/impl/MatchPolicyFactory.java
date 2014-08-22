@@ -22,6 +22,9 @@ package npanday.executable.impl;
 import npanday.executable.ExecutableCapability;
 import npanday.executable.ExecutableMatchPolicy;
 import npanday.executable.compiler.CompilerCapability;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
+import org.apache.maven.artifact.versioning.VersionRange;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
@@ -123,14 +126,21 @@ final class MatchPolicyFactory
                 if (isNullOrEmpty(requiredExecutableVersion))
                     return true;
 
-                final String offeredExecutableVersion = executableCapability.getExecutableVersion();
+                String offeredExecutableVersion = executableCapability.getExecutableVersion();
 
                 // if not specified, it is valid for all versions!
                 if (isNullOrEmpty( offeredExecutableVersion ))
                     return true;
 
-                // TODO: NPANDAY-499 this should support version range expressions
-                return requiredExecutableVersion.toLowerCase().trim().equals( offeredExecutableVersion.toLowerCase().trim() );
+                String required = requiredExecutableVersion.toLowerCase().trim();
+                offeredExecutableVersion = offeredExecutableVersion.toLowerCase().trim();
+                try {
+                    VersionRange range = VersionRange.createFromVersionSpec( offeredExecutableVersion );
+                    return range.containsVersion( new DefaultArtifactVersion( required ) );
+                } catch (InvalidVersionSpecificationException e) {
+                    // fallback to just matching version if not a valid range
+                    return required.equals(offeredExecutableVersion);
+                }
             }
 
             public String toString()
