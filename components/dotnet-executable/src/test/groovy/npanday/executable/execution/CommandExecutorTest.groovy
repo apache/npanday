@@ -89,13 +89,16 @@ public class CommandExecutorTest
     public void testCommandArgWithSpaces()
     throws ExecutionException
     {
-        testArgExpansion(["a b"], '"a b\"');
+        testArgExpansion(["a b"], stripQuotes('"a b\"'));
     }
 
     @Test
     public void testCommandArgWithEmbeddedSingleQuotes_middle()
     throws ExecutionException
     {
+        // Not supported by *nix single quoting
+      if (!isWindows()) return;
+
         testArgExpansion(["a ' b"], '"a \' b"');
     }
 
@@ -417,4 +420,12 @@ public class CommandExecutorTest
     {
        return Os.isFamily(Os.FAMILY_WINDOWS);
     }
+
+  private static String stripQuotes(String s) {
+    // On bash, surrounding quotes are not shown by echo
+    if (!isWindows()) {
+      s = s.substring( 1, s.length() - 1 );
+    }
+    return s;
+  }
 }
