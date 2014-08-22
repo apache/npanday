@@ -19,19 +19,50 @@ package npanday.plugin.wix;
  * under the License.
  */
 
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteException;
+import npanday.PlatformUnsupportedException;
+import npanday.executable.ExecutableRequirement;
+import npanday.executable.ExecutionException;
+import npanday.executable.NetExecutable;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
+import com.google.common.collect.Lists;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public abstract class AbstractWixMojo
     extends AbstractMojo
 {
+    /**
+     * The vendor of the framework, the executable is provided by or compatible with.
+     *
+     * @parameter expression="${vendor}"
+     */
+    private String vendor;
+
+    /**
+     * The version of the framework vendor, the executable is provided by or compatible with.
+     *
+     * @parameter expression="${vendorVersion}"
+     */
+    private String vendorVersion;
+
+    /**
+     * The framework version, the executable is compatible with.
+     *
+     * @parameter expression = "${frameworkVersion}"
+     */
+    private String frameworkVersion;
+
+    /**
+     * The configured executable version, from executable-plugins.xml, to be used.
+     *
+     * @parameter expression="${wix.version}" default-value="3.0"
+     */
+    private String executableVersion;
+
     /**
      * WiX extensions to use
      *
@@ -59,64 +90,62 @@ public abstract class AbstractWixMojo
      */
     private boolean suppressSchemaValidation;
 
+    /**
+     * @component
+     */
+    private npanday.executable.NetExecutableFactory netExecutableFactory;
+
     public void execute()
         throws MojoExecutionException
     {
         try
         {
-            CommandLine commandLine = new CommandLine( getWixPath( getCommand() ) );
-
+            List<String> commands = Lists.newArrayList();
+                    
             if ( extensions != null )
             {
                 for ( String ext : extensions )
                 {
-                    commandLine.addArgument( "-ext" );
-                    commandLine.addArgument( ext );
+                    commands.add( "-ext" );
+                    commands.add( ext );
                 }
             }
 
             if ( suppressSchemaValidation )
             {
-                commandLine.addArgument( "-ss" );
+                commands.add( "-ss" );
             }
 
             if ( arguments != null )
             {
-                commandLine.addArgument( arguments );
+                commands.add( arguments );
             }
 
-            commandLine.addArguments( getArguments().toArray( new String[0] ) );
-
-            getLog().info( "Executing " + commandLine );
-
-            DefaultExecutor executor = new DefaultExecutor();
-            int exitValue = executor.execute( commandLine );
-            if ( exitValue != 0 )
-            {
-                throw new MojoExecutionException( "Problem executing " + getCommand() + ", return code " + exitValue );
-            }
+            commands.addAll( getArguments() );
+            
+            NetExecutable executor = netExecutableFactory.getExecutable(
+                new ExecutableRequirement(
+                        vendor, vendorVersion, frameworkVersion, getExecutableIdentifier(), executableVersion
+                        ), commands, (wixHome != null) ? new File( wixHome, "bin" ) : null
+                    );
+            executor.execute();
         }
-        catch ( ExecuteException e )
-        {
-            throw new MojoExecutionException( "Problem executing " + getCommand(), e );
+        catch (ExecutionException e) {
+            throw new MojoExecutionException(
+                "Unable to execute '" + getExecutableIdentifier() + "' for vendor " + vendor + " v"
+                    + vendorVersion + " and frameworkVersion = " + frameworkVersion, e
+                );
         }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "Problem executing " + getCommand(), e );
+        catch (PlatformUnsupportedException e) {
+            throw new MojoExecutionException(
+                "Unable to execute '" + getExecutableIdentifier() + "' for vendor " + vendor + " v"
+                    + vendorVersion + " and frameworkVersion = " + frameworkVersion, e
+                );
         }
     }
 
-    private String getWixPath( String name )
-    {
-        if ( wixHome != null )
-        {
-            return new File( new File( wixHome, "bin" ), name ).getAbsolutePath();
-        }
-        return name;
-    }
-
-    public abstract String getCommand();
-
+    public abstract String getExecutableIdentifier();
+    
     public abstract List<String> getArguments()
         throws MojoExecutionException;
 }

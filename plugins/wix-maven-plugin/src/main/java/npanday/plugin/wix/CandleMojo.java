@@ -63,10 +63,15 @@ public class CandleMojo
      */
     private File outputDirectory;
 
+    /**
+     * The executable identifier used to locate the right configurations from executable-plugins.xml. Can't be changed.
+     */
+    private String executableIdentifier = "CANDLE";
+
     @Override
-    public String getCommand()
+    public String getExecutableIdentifier()
     {
-        return "candle";
+        return executableIdentifier;
     }
 
     @Override

@@ -90,7 +90,7 @@ public class NetExecutableFactoryImpl
         if ( netHome != null )
         {
             getLogger().info( "NPANDAY-066-014: Found executable path in pom: Path = " + netHome.getAbsolutePath() );
-            executableConfig.getExecutionPaths().add( netHome.getAbsolutePath() );
+            executablePaths.add( netHome.getAbsolutePath() );
         }
 
 

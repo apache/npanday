@@ -72,10 +72,15 @@ public class LightMojo
      */
     private String[] cultures;
 
+    /**
+     * The executable identifier used to locate the right configurations from executable-plugins.xml. Can't be changed.
+     */
+    private String executableIdentifier = "LIGHT";
+
     @Override
-    public String getCommand()
+    public String getExecutableIdentifier()
     {
-        return "light";
+        return executableIdentifier;
     }
 
     @Override
