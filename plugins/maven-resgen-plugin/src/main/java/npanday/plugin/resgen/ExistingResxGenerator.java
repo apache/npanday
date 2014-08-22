@@ -163,8 +163,8 @@ public class ExistingResxGenerator extends AbstractMojo
 
             for (Resource resource : resources) {
                 String sourceDirectory = resource.getDirectory();
-                String includes = StringUtils.join(resource.getIncludes().iterator(), ",");
-                String excludes = StringUtils.join(resource.getExcludes().iterator(), ",");
+                String includes = !resource.getIncludes().isEmpty() ? StringUtils.join(resource.getIncludes().iterator(), ",") : null;
+                String excludes = !resource.getExcludes().isEmpty() ? StringUtils.join(resource.getExcludes().iterator(), ",") : null;
 
                 File directory = new File(sourceDirectory);
                 if (directory.exists()) {
