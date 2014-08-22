@@ -22,6 +22,7 @@
     <component>
       <role>npanday.resolver.NPandayArtifactResolver</role>
       <implementation>npanday.resolver.DefaultNPandayArtifactResolver</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
       <requirements>
         <requirement>
           <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>

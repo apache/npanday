@@ -42,7 +42,7 @@ import java.util.Set;
  * resolver logic for GAC, e.g.
  *
  * @author <a href="mailto:me@lcorneliussen.de>Lars Corneliussen, Faktum Software</a>
- * @plexus.component role="npanday.resolver.NPandayDependencyResolution"
+ * @plexus.component role="npanday.resolver.NPandayDependencyResolution" instantiation-strategy="per-lookup"
  */
 public class NPandayDependencyResolution
     extends AbstractLogEnabled
