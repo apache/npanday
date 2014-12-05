@@ -121,6 +121,12 @@ public enum ArtifactType
      */
     @Deprecated
     LIBRARY( "library", "library", "dll" ),
+
+    /**
+     * Use DOTNET_LIBRARY instead
+     */
+    @Deprecated
+    DLL( "dll", "library", "dll" ),
     
     /** 
      * Use DOTNET_EXECUTABLE instead

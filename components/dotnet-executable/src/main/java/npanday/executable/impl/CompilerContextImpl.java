@@ -45,7 +45,6 @@ import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.PathTool;
 
 import java.io.File;
@@ -388,8 +387,9 @@ public final class CompilerContextImpl
             for ( Artifact artifact : artifacts )
             {
                 String type = artifact.getType();
-                logger.debug( "NPANDAY-061-006: Artifact Type:" + type );
-                logger.debug( "NPANDAY-061-007: Artifact Type:" + ArtifactTypeHelper.isDotnetGenericGac( type ) );
+                logger.debug( "NPANDAY-061-003: Artifact Id:" + artifact.getArtifactId() );
+                logger.debug( "NPANDAY-061-004: Artifact Type:" + type );
+//                logger.debug( "NPANDAY-061-007: Artifact Type:" + ArtifactTypeHelper.isDotnetGenericGac( type ) );
                 ArtifactType artifactType = ArtifactType.getArtifactTypeForPackagingName( type );
                 if ( ArtifactTypeHelper.isDotnetModule( type ) )
                 {

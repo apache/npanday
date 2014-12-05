@@ -58,7 +58,7 @@ class CompileLifecycleMap extends LifecycleMap
 		forTypes([
 
                 /* --> DLL */
-                ArtifactType.DOTNET_LIBRARY, ArtifactType.LIBRARY,
+                ArtifactType.DOTNET_LIBRARY, ArtifactType.LIBRARY, ArtifactType.DLL,
                 /* see https://issues.apache.org/jira/browse/NPANDAY-526 */
                 ArtifactType.SHARP_DEVELOP_ADDIN, ArtifactType.VISUAL_STUDIO_ADDIN,
 
