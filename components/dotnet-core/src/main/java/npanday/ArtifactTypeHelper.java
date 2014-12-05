@@ -59,7 +59,8 @@ public class ArtifactTypeHelper
     {
         return packaging.equals( ArtifactType.DOTNET_LIBRARY )
                 || packaging.equals( ArtifactType.COM_REFERENCE )
-                || packaging.equals( ArtifactType.LIBRARY );
+                || packaging.equals( ArtifactType.LIBRARY )
+                || packaging.equals( ArtifactType.DLL );
     }
 
     public static boolean isDotnetModule(String packaging)
