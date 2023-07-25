@@ -554,7 +554,7 @@ under the License.
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-archiver</artifactId>
-        <version>2.0</version>
+        <version>4.8.0</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
